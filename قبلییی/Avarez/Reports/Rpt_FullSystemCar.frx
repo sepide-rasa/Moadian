@@ -1,0 +1,145 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Report ScriptLanguage="CSharp" ReportInfo.Created="08/22/2013 12:59:48" ReportInfo.Modified="08/02/2017 11:30:53" ReportInfo.CreatorVersion="2015.1.2.0">
+  <Styles>
+    <Style Name="Style1" Fill.Color="213, 226, 238"/>
+  </Styles>
+  <Dictionary>
+    <TableDataSource Name="sp_PictureSelect" ReferenceName="complicationsCarDBDataSet1.sp_PictureSelect" DataType="System.Int32" Enabled="true">
+      <Column Name="fldID" DataType="System.Int32"/>
+      <Column Name="fldPic" DataType="System.Byte[]" BindableControl="Picture"/>
+      <Column Name="fldMunicipalityPic" DataType="System.String"/>
+      <Column Name="fldMunicipalityPicID" DataType="System.Int32"/>
+      <Column Name="fldBankPic" DataType="System.String"/>
+      <Column Name="fldBankPicID" DataType="System.Int32"/>
+      <Column Name="fldUserPic" DataType="System.String"/>
+      <Column Name="fldUserPicID" DataType="System.Int64"/>
+      <Column Name="fldUserName" DataType="System.String"/>
+      <Column Name="fldUserID" DataType="System.Int64"/>
+      <Column Name="fldDesc" DataType="System.String"/>
+      <Column Name="fldDate" DataType="System.String"/>
+    </TableDataSource>
+    <TableDataSource Name="sp_SelectFullCarForSetMony" ReferenceName="complicationsCarDBDataSet1.sp_SelectFullCarForSetMony" DataType="System.Int32" Enabled="true">
+      <Column Name="fldCarMakeName" DataType="System.String"/>
+      <Column Name="fldCarMakeID" DataType="System.Int32"/>
+      <Column Name="fldCarAccountName" DataType="System.String"/>
+      <Column Name="fldCarAccountID" DataType="System.Int32"/>
+      <Column Name="fldCarCabinName" DataType="System.String"/>
+      <Column Name="fldCarCabinID" DataType="System.Int32"/>
+      <Column Name="fldCarSystemName" DataType="System.String"/>
+      <Column Name="fldCarSystemID" DataType="System.Int32"/>
+      <Column Name="fldCarModelName" DataType="System.String"/>
+      <Column Name="fldCarModelID" DataType="System.Int32"/>
+      <Column Name="fldCarClassName" DataType="System.String"/>
+      <Column Name="fldCarClassID" DataType="System.Int32"/>
+      <Column Name="fldYear" DataType="System.String"/>
+      <Column Name="fldFromCylinder" DataType="System.String"/>
+      <Column Name="fldToCylinder" DataType="System.String"/>
+      <Column Name="fldFromWheel" DataType="System.String"/>
+      <Column Name="fldToWheel" DataType="System.String"/>
+      <Column Name="fldFromModel" DataType="System.String"/>
+      <Column Name="fldToModel" DataType="System.String"/>
+      <Column Name="fldFromContentMotor" DataType="System.String"/>
+      <Column Name="fldToContentMotor" DataType="System.String"/>
+      <Column Name="fldPrice" DataType="System.String"/>
+    </TableDataSource>
+    <Parameter Name="date" DataType="System.String"/>
+    <Parameter Name="time" DataType="System.String"/>
+    <Parameter Name="StateName" DataType="System.String"/>
+    <Parameter Name="MunicipalityName" DataType="System.String"/>
+    <Parameter Name="AreaName" DataType="System.String"/>
+    <Parameter Name="OfficeName" DataType="System.String"/>
+    <Parameter Name="MyTablighat" DataType="System.String"/>
+  </Dictionary>
+  <ReportPage Name="Page1">
+    <ReportTitleBand Name="ReportTitle1" Width="718.2"/>
+    <PageHeaderBand Name="PageHeader1" Top="4" Width="718.2" Height="130.03">
+      <TableObject Name="Table3" Left="-0.03" Width="769.76" Height="94.14">
+        <TableColumn Name="Column10" Width="198.75"/>
+        <TableColumn Name="Column11" Width="323.8"/>
+        <TableColumn Name="Column12" Width="247.21"/>
+        <TableRow Name="Row3" Height="94.14">
+          <TableCell Name="Cell10" VertAlign="Center" RightToLeft="true" Font="Microsoft Sans Serif, 10pt">
+            <TextObject Name="Text3" Left="9.45" Top="18.9" Width="179.55" Height="18.9" Fill="Glass" Fill.Color="White" Fill.Blend="0.2" Fill.Hatch="true" Text="تاریخ چاپ :[date]" VertAlign="Center" RightToLeft="true" Font="RasaFont, 11pt"/>
+            <TextObject Name="Text4" Left="9.45" Top="37.8" Width="179.55" Height="18.9" Fill="Glass" Fill.Color="White" Fill.Blend="0.2" Fill.Hatch="true" Text="ساعت چاپ:[time]" VertAlign="Center" RightToLeft="true" Font="RasaFont, 11pt"/>
+            <TextObject Name="Text5" Top="56.7" Width="189" Height="18.9" Fill="Glass" Fill.Color="White" Fill.Blend="0.2" Fill.Hatch="true" Text="صفحه:[Page#] از [TotalPages#]" VertAlign="Center" RightToLeft="true" Font="RasaFont, 11pt"/>
+          </TableCell>
+          <TableCell Name="Cell11" Text="[StateName]&#13;&#10;[MunicipalityName]&#13;&#10;[AreaName]&#13;&#10;[OfficeName]" HorzAlign="Center" VertAlign="Center" RightToLeft="true" Font="RasaFont, 12pt"/>
+          <TableCell Name="Cell12" HorzAlign="Center" VertAlign="Center" Font="Microsoft Sans Serif, 10pt">
+            <PictureObject Name="Picture1" Left="68.96" Top="18.72" Width="75.6" Height="75.6" DataColumn="sp_PictureSelect.fldPic"/>
+          </TableCell>
+        </TableRow>
+      </TableObject>
+      <TextObject Name="Text2" Left="230.01" Top="102.06" Width="258.18" Height="21.73" Text="لیست سیستم های کامل خودرو" HorzAlign="Center" VertAlign="Center" Font="RasaFont, 12pt, style=Bold"/>
+    </PageHeaderBand>
+    <GroupHeaderBand Name="GroupHeader1" Top="138.03" Width="718.2" Height="32.35" Condition="[sp_SelectFullCarForSetMony.fldCarMakeID]">
+      <TableObject Name="Table2" Left="75.6" Top="4.96" Width="566.13" Height="27.39">
+        <TableColumn Name="Column14" Width="467.82"/>
+        <TableColumn Name="Column15" Width="98.31"/>
+        <TableRow Name="Row5" Height="27.39">
+          <TableCell Name="Cell14" Border.Lines="All" Border.Color="White" Fill.Color="54, 96, 133" Text="[sp_SelectFullCarForSetMony.fldCarMakeName]" HorzAlign="Right" VertAlign="Center" Font="RasaFont, 12pt" TextFill.Color="White"/>
+          <TableCell Name="Cell15" Border.Lines="All" Border.Color="White" Fill.Color="54, 96, 133" Text="ساخت" HorzAlign="Center" VertAlign="Center" Font="RasaFont, 12pt" TextFill.Color="White"/>
+        </TableRow>
+      </TableObject>
+      <GroupHeaderBand Name="GroupHeader2" Top="174.38" Width="718.2" Height="27.39" Condition="[sp_SelectFullCarForSetMony.fldCarAccountID]">
+        <TableObject Name="Table4" Left="75.6" Width="518.92" Height="27.39">
+          <TableColumn Name="Column16" Width="417.84"/>
+          <TableColumn Name="Column17" Width="101.08"/>
+          <TableRow Name="Row6" Height="27.39">
+            <TableCell Name="Cell16" Border.Lines="All" Border.Color="White" Fill.Color="72, 129, 179" Text="[sp_SelectFullCarForSetMony.fldCarAccountName]" HorzAlign="Right" VertAlign="Center" Font="RasaFont, 12pt" TextFill.Color="White"/>
+            <TableCell Name="Cell17" Border.Lines="All" Border.Color="White" Fill.Color="72, 129, 179" Text="کاربری" HorzAlign="Center" VertAlign="Center" Font="RasaFont, 12pt" TextFill.Color="White"/>
+          </TableRow>
+        </TableObject>
+        <GroupHeaderBand Name="GroupHeader3" Top="205.77" Width="718.2" Height="18.9" Condition="[sp_SelectFullCarForSetMony.fldCarCabinID]">
+          <TableObject Name="Table5" Left="75.6" Width="466.94" Height="18.9">
+            <TableColumn Name="Column18" Width="370.8"/>
+            <TableColumn Name="Column19" Width="96.14"/>
+            <TableRow Name="Row7">
+              <TableCell Name="Cell18" Border.Lines="All" Border.Color="White" Fill.Color="113, 157, 198" Text="[sp_SelectFullCarForSetMony.fldCarCabinName]" HorzAlign="Right" VertAlign="Center" Font="RasaFont, 12pt" TextFill.Color="Maroon"/>
+              <TableCell Name="Cell19" Border.Lines="All" Border.Color="White" Fill.Color="113, 157, 198" Text="کابین" HorzAlign="Center" VertAlign="Center" Font="RasaFont, 12pt" TextFill.Color="Maroon"/>
+            </TableRow>
+          </TableObject>
+          <GroupHeaderBand Name="GroupHeader4" Top="228.67" Width="718.2" Height="18.9" Condition="[sp_SelectFullCarForSetMony.fldCarSystemID]">
+            <TableObject Name="Table6" Left="75.6" Width="419.45" Height="18.9">
+              <TableColumn Name="Column20" Width="324.01"/>
+              <TableColumn Name="Column21" Width="95.44"/>
+              <TableRow Name="Row8">
+                <TableCell Name="Cell20" Border.Lines="All" Border.Color="White" Fill.Color="156, 187, 216" Text="[sp_SelectFullCarForSetMony.fldCarSystemName]" HorzAlign="Right" VertAlign="Center" Font="RasaFont, 11pt" TextFill.Color="Maroon"/>
+                <TableCell Name="Cell21" Border.Lines="All" Border.Color="White" Fill.Color="156, 187, 216" Text="سیستم" HorzAlign="Center" VertAlign="Center" Font="RasaFont, 11pt" TextFill.Color="Maroon"/>
+              </TableRow>
+            </TableObject>
+            <GroupHeaderBand Name="GroupHeader5" Top="251.57" Width="718.2" Height="18.9" Condition="[sp_SelectFullCarForSetMony.fldCarModelID]">
+              <TableObject Name="Table7" Left="75.6" Width="370.59" Height="18.9">
+                <TableColumn Name="Column22" Width="279.66"/>
+                <TableColumn Name="Column23" Width="90.93"/>
+                <TableRow Name="Row9">
+                  <TableCell Name="Cell22" Border.Lines="All" Border.Color="White" Fill.Color="187, 208, 227" Text="[sp_SelectFullCarForSetMony.fldCarModelName]" HorzAlign="Right" VertAlign="Center" Font="RasaFont, 11pt" TextFill.Color="Maroon"/>
+                  <TableCell Name="Cell23" Border.Lines="All" Border.Color="White" Fill.Color="187, 208, 227" Text="تیپ" HorzAlign="Center" VertAlign="Center" Font="RasaFont, 11pt" TextFill.Color="Maroon"/>
+                </TableRow>
+              </TableObject>
+              <DataBand Name="Data1" Top="274.47" Width="718.2" Height="18.9" DataSource="sp_SelectFullCarForSetMony" Columns.Count="1" Columns.Layout="DownThenAcross">
+                <TableObject Name="Table8" Left="75.6" Width="324.83" Height="18.9" Fill.Color="Gainsboro" EvenStyle="Style1">
+                  <TableColumn Name="Column24" Width="237.73"/>
+                  <TableColumn Name="Column25" Width="87.1"/>
+                  <TableRow Name="Row10">
+                    <TableCell Name="Cell24" Border.Lines="All" Border.Color="White" Text="[sp_SelectFullCarForSetMony.fldCarClassName]" HorzAlign="Right" VertAlign="Center" Font="RasaFont, 10pt"/>
+                    <TableCell Name="Cell25" Border.Lines="All" Border.Color="White" Text="کلاس" HorzAlign="Center" VertAlign="Center" Font="RasaFont, 11pt"/>
+                  </TableRow>
+                </TableObject>
+              </DataBand>
+              <GroupFooterBand Name="GroupFooter5" Top="297.37" Width="718.2"/>
+            </GroupHeaderBand>
+            <GroupFooterBand Name="GroupFooter4" Top="301.37" Width="718.2"/>
+          </GroupHeaderBand>
+          <GroupFooterBand Name="GroupFooter3" Top="305.37" Width="718.2"/>
+        </GroupHeaderBand>
+        <GroupFooterBand Name="GroupFooter2" Top="309.37" Width="718.2"/>
+      </GroupHeaderBand>
+      <GroupFooterBand Name="GroupFooter1" Top="313.37" Width="718.2" Height="4.76">
+        <LineObject Name="Line5" Left="700.7" Top="1.88" Width="-687.9" Border.Color="255, 128, 128"/>
+      </GroupFooterBand>
+    </GroupHeaderBand>
+    <PageFooterBand Name="PageFooter1" Top="322.13" Width="718.2" Height="43.46" CanGrow="true">
+      <TextObject Name="Text1" Left="5.66" Top="1.88" Width="705.95" Height="39.67" CanGrow="true" GrowToBottom="true" Text="[MyTablighat]" RightToLeft="true" Font="RasaFont, 11pt, style=Bold"/>
+    </PageFooterBand>
+  </ReportPage>
+</Report>

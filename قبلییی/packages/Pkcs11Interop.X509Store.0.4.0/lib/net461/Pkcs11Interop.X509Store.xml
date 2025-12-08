@@ -1,0 +1,1036 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Pkcs11Interop.X509Store</name>
+    </assembly>
+    <members>
+        <member name="T:Net.Pkcs11Interop.X509Store.AsymmetricKeyType">
+            <summary>
+            Type of asymmetric key
+            </summary>
+        </member>
+        <member name="F:Net.Pkcs11Interop.X509Store.AsymmetricKeyType.Other">
+            <summary>
+            Any other (currently unsupported) type
+            </summary>
+        </member>
+        <member name="F:Net.Pkcs11Interop.X509Store.AsymmetricKeyType.RSA">
+            <summary>
+            RSA (OID 1.2.840.113549.1.1.1)
+            </summary>
+        </member>
+        <member name="F:Net.Pkcs11Interop.X509Store.AsymmetricKeyType.EC">
+            <summary>
+            Elliptic Curve (OID 1.2.840.10045.2.1)
+            </summary>
+        </member>
+        <member name="T:Net.Pkcs11Interop.X509Store.GetPinResult">
+            <summary>
+            Result for PIN request with instructions on how to perform login
+            </summary>
+        </member>
+        <member name="F:Net.Pkcs11Interop.X509Store.GetPinResult._cancel">
+            <summary>
+            Flag indicating whether login should be cancelled
+            </summary>
+        </member>
+        <member name="P:Net.Pkcs11Interop.X509Store.GetPinResult.Cancel">
+            <summary>
+            Flag indicating whether login should be cancelled
+            </summary>
+        </member>
+        <member name="F:Net.Pkcs11Interop.X509Store.GetPinResult._pin">
+            <summary>
+            Value of PIN that should be used for the login.
+            Null value indicates that login should be perfromed using protected authentication path (e.g. pin pad).
+            </summary>
+        </member>
+        <member name="P:Net.Pkcs11Interop.X509Store.GetPinResult.Pin">
+            <summary>
+            Value of PIN that should be used for the login.
+            Null value indicates that login should be perfromed using protected authentication path (e.g. pin pad).
+            </summary>
+        </member>
+        <member name="M:Net.Pkcs11Interop.X509Store.GetPinResult.#ctor(System.Boolean,System.Byte[])">
+            <summary>
+            Creates new instance of GetPinResult class
+            </summary>
+            <param name="cancel">Flag indicating whether login should be cancelled</param>
+            <param name="pin">Value of PIN that should be used for the login. Null value indicates that login should be perfromed using protected authentication path (e.g. pin pad).</param>
+        </member>
+        <member name="T:Net.Pkcs11Interop.X509Store.IPinProvider">
+            <summary>
+            Interface for provider of PIN codes for PKCS#11 tokens and keys
+            </summary>
+        </member>
+        <member name="M:Net.Pkcs11Interop.X509Store.IPinProvider.GetTokenPin(Net.Pkcs11Interop.X509Store.Pkcs11X509StoreInfo,Net.Pkcs11Interop.X509Store.Pkcs11SlotInfo,Net.Pkcs11Interop.X509Store.Pkcs11TokenInfo)">
+            <summary>
+            Requests PIN code for PKCS#11 token
+            </summary>
+            <param name="storeInfo">Detailed information about PKCS#11 based X.509 store</param>
+            <param name="slotInfo">Detailed information about PKCS#11 slot representing a logical reader that potentially contains a token</param>
+            <param name="tokenInfo">Detailed information about PKCS#11 token (cryptographic device) that is typically present in the slot</param>
+            <returns>Result for PIN request with instructions on how to perform login</returns>
+        </member>
+        <member name="M:Net.Pkcs11Interop.X509Store.IPinProvider.GetKeyPin(Net.Pkcs11Interop.X509Store.Pkcs11X509StoreInfo,Net.Pkcs11Interop.X509Store.Pkcs11SlotInfo,Net.Pkcs11Interop.X509Store.Pkcs11TokenInfo,Net.Pkcs11Interop.X509Store.Pkcs11X509CertificateInfo)">
+            <summary>
+            Requests PIN code for private key stored on PKCS#11 token
+            </summary>
+            <param name="storeInfo">Detailed information about PKCS#11 based X.509 store</param>
+            <param name="slotInfo">Detailed information about PKCS#11 slot representing a logical reader that potentially contains a token</param>
+            <param name="tokenInfo">Detailed information about PKCS#11 token (cryptographic device) that is typically present in the slot</param>
+            <param name="certificateInfo">Detailed information about X.509 certificate stored on PKCS#11 token</param>
+            <returns>Result for PIN request with instructions on how to perform login</returns>
+        </member>
+        <member name="T:Net.Pkcs11Interop.X509Store.LoginCancelledException">
+            <summary>
+            Exception indicating that login operation was cancelled
+            </summary>
+        </member>
+        <member name="M:Net.Pkcs11Interop.X509Store.LoginCancelledException.#ctor(System.String)">
+            <summary>
+            Initializes new instance of LoginCancelledException class
+            </summary>
+            <param name="message">Message that describes the error</param>
+        </member>
+        <member name="M:Net.Pkcs11Interop.X509Store.LoginCancelledException.#ctor(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)">
+            <summary>
+            Initializes new instance of LoginCancelledException class
+            </summary>
+            <param name="info">SerializationInfo that holds the serialized object data about the exception being thrown</param>
+            <param name="context">StreamingContext that contains contextual information about the source or destination</param>
+        </member>
+        <member name="T:Net.Pkcs11Interop.X509Store.PinProviderUtils">
+            <summary>
+            Utility class for calling provider of PIN codes for PKCS#11 tokens and keys
+            </summary>
+        </member>
+        <member name="M:Net.Pkcs11Interop.X509Store.PinProviderUtils.GetTokenPin(Net.Pkcs11Interop.X509Store.Pkcs11TokenContext)">
+            <summary>
+            Requests PIN code for PKCS#11 token
+            </summary>
+            <param name="tokenContext">Internal context for Pkcs11Token class</param>
+            <returns>PIN code</returns>
+        </member>
+        <member name="M:Net.Pkcs11Interop.X509Store.PinProviderUtils.GetKeyPin(Net.Pkcs11Interop.X509Store.Pkcs11X509CertificateContext)">
+            <summary>
+            Requests PIN code for private key stored on PKCS#11 token
+            </summary>
+            <param name="certificateContext">Internal context for Pkcs11X509Certificate2 class</param>
+            <returns>PIN code</returns>
+        </member>
+        <member name="T:Net.Pkcs11Interop.X509Store.Pkcs11ECDsaProvider">
+            <summary>
+            PKCS#11 based implementation of the Elliptic Curve Digital Signature Algorithm (ECDSA)
+            </summary>
+        </member>
+        <member name="F:Net.Pkcs11Interop.X509Store.Pkcs11ECDsaProvider._certContext">
+            <summary>
+            Internal context for Pkcs11X509Certificate2 class
+            </summary>
+        </member>
+        <member name="M:Net.Pkcs11Interop.X509Store.Pkcs11ECDsaProvider.#ctor(Net.Pkcs11Interop.X509Store.Pkcs11X509CertificateContext)">
+            <summary>
+            Creates new instance of Pkcs11ECDsaProvider class
+            </summary>
+            <param name="certContext">Internal context for Pkcs11X509Certificate2 class</param>
+        </member>
+        <member name="M:Net.Pkcs11Interop.X509Store.Pkcs11ECDsaProvider.SignHash(System.Byte[])">
+            <summary>
+            Generates a digital signature for the specified hash value
+            </summary>
+            <param name="hash">The hash value of the data that is being signed</param>
+            <returns>A digital signature that consists of the given hash value encrypted with the private key</returns>
+        </member>
+        <member name="M:Net.Pkcs11Interop.X509Store.Pkcs11ECDsaProvider.VerifyHash(System.Byte[],System.Byte[])">
+            <summary>
+            Verifies a digital signature against the specified hash value
+            </summary>
+            <param name="hash">The hash value of a block of data</param>
+            <param name="signature">The digital signature to be verified</param>
+            <returns>True if the hash value equals the decrypted signature, false otherwise</returns>
+        </member>
+        <member name="M:Net.Pkcs11Interop.X509Store.Pkcs11ECDsaProvider.HashData(System.Byte[],System.Int32,System.Int32,System.Security.Cryptography.HashAlgorithmName)">
+            <summary>
+            Computes the hash value of a specified portion of a byte array by using a specified hashing algorithm
+            </summary>
+            <param name="data">The data to be hashed</param>
+            <param name="offset">The index of the first byte in data that is to be hashed</param>
+            <param name="count">The number of bytes to hash</param>
+            <param name="hashAlgorithm">The algorithm to use in hash the data</param>
+            <returns>The hashed data</returns>
+        </member>
+        <member name="M:Net.Pkcs11Interop.X509Store.Pkcs11ECDsaProvider.HashData(System.IO.Stream,System.Security.Cryptography.HashAlgorithmName)">
+            <summary>
+            Computes the hash value of a specified binary stream by using a specified hashing algorithm
+            </summary>
+            <param name="data">The binary stream to hash</param>
+            <param name="hashAlgorithm">The hash algorithm</param>
+            <returns>The hashed data</returns>
+        </member>
+        <member name="T:Net.Pkcs11Interop.X509Store.Pkcs11RsaProvider">
+            <summary>
+            PKCS#11 based implementation of the RSA algorithm
+            </summary>
+        </member>
+        <member name="F:Net.Pkcs11Interop.X509Store.Pkcs11RsaProvider._certContext">
+            <summary>
+            Internal context for Pkcs11X509Certificate2 class
+            </summary>
+        </member>
+        <member name="M:Net.Pkcs11Interop.X509Store.Pkcs11RsaProvider.#ctor(Net.Pkcs11Interop.X509Store.Pkcs11X509CertificateContext)">
+            <summary>
+            Creates new instance of Pkcs11RsaProvider class
+            </summary>
+            <param name="certContext">Internal context for Pkcs11X509Certificate2 class</param>
+        </member>
+        <member name="M:Net.Pkcs11Interop.X509Store.Pkcs11RsaProvider.SignHash(System.Byte[],System.Security.Cryptography.HashAlgorithmName,System.Security.Cryptography.RSASignaturePadding)">
+            <summary>
+            Computes the signature for the specified hash value by encrypting it with the private key using the specified padding
+            </summary>
+            <param name="hash">The hash value of the data to be signed</param>
+            <param name="hashAlgorithm">The hash algorithm used to create the hash value of the data</param>
+            <param name="padding">The padding</param>
+            <returns>The RSA signature for the specified hash value</returns>
+        </member>
+        <member name="M:Net.Pkcs11Interop.X509Store.Pkcs11RsaProvider.VerifyHash(System.Byte[],System.Byte[],System.Security.Cryptography.HashAlgorithmName,System.Security.Cryptography.RSASignaturePadding)">
+            <summary>
+            Verifies that a digital signature is valid by determining the hash value in the signature using the specified hash algorithm and padding, and comparing it to the provided hash value
+            </summary>
+            <param name="hash">he hash value of the signed data</param>
+            <param name="signature">The signature data to be verified</param>
+            <param name="hashAlgorithm">The hash algorithm used to create the hash value</param>
+            <param name="padding">The padding mode</param>
+            <returns>True if the signature is valid, false otherwise</returns>
+        </member>
+        <member name="M:Net.Pkcs11Interop.X509Store.Pkcs11RsaProvider.DecryptValue(System.Byte[])">
+            <summary>
+            Decrypts the input data using the private key
+            </summary>
+            <param name="rgb">The cipher text to be decrypted</param>
+            <returns>The resulting decryption of the rgb parameter in plain text</returns>
+        </member>
+        <member name="M:Net.Pkcs11Interop.X509Store.Pkcs11RsaProvider.EncryptValue(System.Byte[])">
+            <summary>
+            Encrypts the input data using the public key
+            </summary>
+            <param name="rgb">The plain text to be encrypted</param>
+            <returns>The resulting encryption of the rgb parameter as cipher text</returns>
+        </member>
+        <member name="M:Net.Pkcs11Interop.X509Store.Pkcs11RsaProvider.HashData(System.Byte[],System.Int32,System.Int32,System.Security.Cryptography.HashAlgorithmName)">
+            <summary>
+            Computes the hash value of a specified portion of a byte array by using a specified hashing algorithm
+            </summary>
+            <param name="data">The data to be hashed</param>
+            <param name="offset">The index of the first byte in data that is to be hashed</param>
+            <param name="count">The number of bytes to hash</param>
+            <param name="hashAlgorithm">The algorithm to use in hash the data</param>
+            <returns>The hashed data</returns>
+        </member>
+        <member name="M:Net.Pkcs11Interop.X509Store.Pkcs11RsaProvider.HashData(System.IO.Stream,System.Security.Cryptography.HashAlgorithmName)">
+            <summary>
+            Computes the hash value of a specified binary stream by using a specified hashing algorithm
+            </summary>
+            <param name="data">The binary stream to hash</param>
+            <param name="hashAlgorithm">The hash algorithm</param>
+            <returns>The hashed data</returns>
+        </member>
+        <member name="M:Net.Pkcs11Interop.X509Store.Pkcs11RsaProvider.ExportParameters(System.Boolean)">
+            <summary>
+            Exports the parameters (key) for RSA algorithm
+            </summary>
+            <param name="includePrivateParameters">Flag indicating whether to include private parameters</param>
+            <returns>The parameters (key) for RSA algorithm</returns>
+        </member>
+        <member name="M:Net.Pkcs11Interop.X509Store.Pkcs11RsaProvider.ImportParameters(System.Security.Cryptography.RSAParameters)">
+            <summary>
+            Imports the parameters (key) for RSA algorithm
+            </summary>
+            <param name="parameters">The parameters (key) for RSA algorithm</param>
+        </member>
+        <member name="M:Net.Pkcs11Interop.X509Store.Pkcs11RsaProvider.CreatePkcs1DigestInfo(System.Byte[],System.Security.Cryptography.HashAlgorithmName)">
+            <summary>
+            Creates DER encoded PKCS#1 DigestInfo structure defined in RFC 8017
+            </summary>
+            <param name="hash">Hash value</param>
+            <param name="hashAlgorithm">Hash algorithm</param>
+            <returns>DER encoded PKCS#1 DigestInfo structure or null</returns>
+        </member>
+        <member name="M:Net.Pkcs11Interop.X509Store.Pkcs11RsaProvider.CreateCkRsaPkcsPssParams(Net.Pkcs11Interop.HighLevelAPI.Factories.IMechanismParamsFactory,System.Byte[],System.Security.Cryptography.HashAlgorithmName)">
+            <summary>
+            Creates parameters for CKM_RSA_PKCS_PSS mechanism
+            </summary>
+            <param name="mechanismParamsFactory">Factory for creation of IMechanismParams instances</param>
+            <param name="hash">Hash value</param>
+            <param name="hashAlgorithm">Hash algorithm</param>
+            <returns>Parameters for CKM_RSA_PKCS_PSS mechanism or null</returns>
+        </member>
+        <member name="T:Net.Pkcs11Interop.X509Store.Pkcs11Slot">
+            <summary>
+            PKCS#11 slot representing a logical reader that potentially contains a token
+            </summary>
+        </member>
+        <member name="F:Net.Pkcs11Interop.X509Store.Pkcs11Slot._disposed">
+            <summary>
+            Flag indicating whether instance has been disposed
+            </summary>
+        </member>
+        <member name="F:Net.Pkcs11Interop.X509Store.Pkcs11Slot._slotContext">
+            <summary>
+            Internal context for Pkcs11Slot class
+            </summary>
+        </member>
+        <member name="P:Net.Pkcs11Interop.X509Store.Pkcs11Slot.Info">
+            <summary>
+            Detailed information about PKCS#11 slot representing a logical reader
+            </summary>
+        </member>
+        <member name="F:Net.Pkcs11Interop.X509Store.Pkcs11Slot._token">
+            <summary>
+            PKCS#11 token (cryptographic device) that is typically present in the slot
+            </summary>
+        </member>
+        <member name="P:Net.Pkcs11Interop.X509Store.Pkcs11Slot.Token">
+            <summary>
+            PKCS#11 token (cryptographic device) that is typically present in the slot
+            </summary>
+        </member>
+        <member name="M:Net.Pkcs11Interop.X509Store.Pkcs11Slot.#ctor(Net.Pkcs11Interop.HighLevelAPI.ISlot,Net.Pkcs11Interop.X509Store.Pkcs11X509StoreContext)">
+            <summary>
+            Creates new instance of Pkcs11Slot class
+            </summary>
+            <param name="slot">High level PKCS#11 slot</param>
+            <param name="storeContext">Internal context for Pkcs11X509Store class</param>
+        </member>
+        <member name="M:Net.Pkcs11Interop.X509Store.Pkcs11Slot.GetSlotContext(Net.Pkcs11Interop.HighLevelAPI.ISlot,Net.Pkcs11Interop.X509Store.Pkcs11X509StoreContext)">
+            <summary>
+            Constructs internal context for Pkcs11Slot class
+            </summary>
+            <param name="slot">High level PKCS#11 slot</param>
+            <param name="storeContext">Internal context for Pkcs11X509Store class</param>
+            <returns>Internal context for Pkcs11Slot class</returns>
+        </member>
+        <member name="M:Net.Pkcs11Interop.X509Store.Pkcs11Slot.GetToken">
+            <summary>
+            Gets PKCS#11 token (cryptographic device) that is typically present in the slot
+            </summary>
+            <returns>PKCS#11 token (cryptographic device) that is typically present in the slot</returns>
+        </member>
+        <member name="M:Net.Pkcs11Interop.X509Store.Pkcs11Slot.Dispose">
+            <summary>
+            Disposes object
+            </summary>
+        </member>
+        <member name="M:Net.Pkcs11Interop.X509Store.Pkcs11Slot.Dispose(System.Boolean)">
+            <summary>
+            Disposes object
+            </summary>
+            <param name="disposing">Flag indicating whether managed resources should be disposed</param>
+        </member>
+        <member name="M:Net.Pkcs11Interop.X509Store.Pkcs11Slot.Finalize">
+            <summary>
+            Class destructor that disposes object if caller forgot to do so
+            </summary>
+        </member>
+        <member name="T:Net.Pkcs11Interop.X509Store.Pkcs11SlotContext">
+            <summary>
+            Internal context for Pkcs11Slot class
+            </summary>
+        </member>
+        <member name="F:Net.Pkcs11Interop.X509Store.Pkcs11SlotContext._disposed">
+            <summary>
+            Flag indicating whether instance has been disposed
+            </summary>
+        </member>
+        <member name="F:Net.Pkcs11Interop.X509Store.Pkcs11SlotContext._slot">
+            <summary>
+            High level PKCS#11 slot
+            </summary>
+        </member>
+        <member name="P:Net.Pkcs11Interop.X509Store.Pkcs11SlotContext.Slot">
+            <summary>
+            High level PKCS#11 slot
+            </summary>
+        </member>
+        <member name="F:Net.Pkcs11Interop.X509Store.Pkcs11SlotContext._slotInfo">
+            <summary>
+            Detailed information about PKCS#11 slot
+            </summary>
+        </member>
+        <member name="P:Net.Pkcs11Interop.X509Store.Pkcs11SlotContext.SlotInfo">
+            <summary>
+            Detailed information about PKCS#11 slot
+            </summary>
+        </member>
+        <member name="F:Net.Pkcs11Interop.X509Store.Pkcs11SlotContext._storeContext">
+            <summary>
+            Internal context for Pkcs11X509Store class
+            </summary>
+        </member>
+        <member name="P:Net.Pkcs11Interop.X509Store.Pkcs11SlotContext.StoreContext">
+            <summary>
+            Internal context for Pkcs11X509Store class
+            </summary>
+        </member>
+        <member name="M:Net.Pkcs11Interop.X509Store.Pkcs11SlotContext.#ctor(Net.Pkcs11Interop.HighLevelAPI.ISlot,Net.Pkcs11Interop.X509Store.Pkcs11SlotInfo,Net.Pkcs11Interop.X509Store.Pkcs11X509StoreContext)">
+            <summary>
+            Creates new instance of Pkcs11SlotContext class
+            </summary>
+            <param name="slot">High level PKCS#11 slot</param>
+            <param name="slotInfo">Detailed information about PKCS#11 slot</param>
+            <param name="storeContext">Internal context for Pkcs11X509Store class</param>
+        </member>
+        <member name="T:Net.Pkcs11Interop.X509Store.Pkcs11SlotInfo">
+            <summary>
+            Detailed information about PKCS#11 slot representing a logical reader that potentially contains a token
+            </summary>
+        </member>
+        <member name="F:Net.Pkcs11Interop.X509Store.Pkcs11SlotInfo._description">
+            <summary>
+            Description of the slot
+            </summary>
+        </member>
+        <member name="P:Net.Pkcs11Interop.X509Store.Pkcs11SlotInfo.Description">
+            <summary>
+            Description of the slot
+            </summary>
+        </member>
+        <member name="F:Net.Pkcs11Interop.X509Store.Pkcs11SlotInfo._manufacturer">
+            <summary>
+            Manufacturer of the slot
+            </summary>
+        </member>
+        <member name="P:Net.Pkcs11Interop.X509Store.Pkcs11SlotInfo.Manufacturer">
+            <summary>
+            Manufacturer of the slot
+            </summary>
+        </member>
+        <member name="M:Net.Pkcs11Interop.X509Store.Pkcs11SlotInfo.#ctor(Net.Pkcs11Interop.HighLevelAPI.ISlotInfo)">
+            <summary>
+            Creates new instance of Pkcs11SlotInfo class
+            </summary>
+            <param name="slotInfo">Information about PKCS#11 slot (CK_SLOT_INFO)</param>
+        </member>
+        <member name="T:Net.Pkcs11Interop.X509Store.Pkcs11Token">
+            <summary>
+            PKCS#11 token (cryptographic device) that is typically present in the slot
+            </summary>
+        </member>
+        <member name="F:Net.Pkcs11Interop.X509Store.Pkcs11Token._disposed">
+            <summary>
+            Flag indicating whether instance has been disposed
+            </summary>
+        </member>
+        <member name="F:Net.Pkcs11Interop.X509Store.Pkcs11Token._tokenContext">
+            <summary>
+            Internal context for Pkcs11Token class
+            </summary>
+        </member>
+        <member name="P:Net.Pkcs11Interop.X509Store.Pkcs11Token.Info">
+            <summary>
+            Detailed information about PKCS#11 token (cryptographic device)
+            </summary>
+        </member>
+        <member name="F:Net.Pkcs11Interop.X509Store.Pkcs11Token._certificates">
+            <summary>
+            Certificates present on token.
+            </summary>
+        </member>
+        <member name="P:Net.Pkcs11Interop.X509Store.Pkcs11Token.Certificates">
+            <summary>
+            Certificates present on token.
+            This property may use provider of PIN codes (IPinProvider) on access.
+            </summary>
+        </member>
+        <member name="M:Net.Pkcs11Interop.X509Store.Pkcs11Token.#ctor(Net.Pkcs11Interop.X509Store.Pkcs11SlotContext)">
+            <summary>
+            Creates new instance of Pkcs11Token class
+            </summary>
+            <param name="slotContext">Internal context for Pkcs11Slot class</param>
+        </member>
+        <member name="M:Net.Pkcs11Interop.X509Store.Pkcs11Token.ReloadCertificates">
+            <summary>
+            Reloads certificates present on token.
+            This method may use provider of PIN codes (IPinProvider).
+            </summary>
+        </member>
+        <member name="M:Net.Pkcs11Interop.X509Store.Pkcs11Token.GetTokenContext(Net.Pkcs11Interop.X509Store.Pkcs11SlotContext)">
+            <summary>
+            Constructs internal context for Pkcs11Token class
+            </summary>
+            <param name="slotContext">Internal context for Pkcs11Slot class</param>
+            <returns>Internal context for Pkcs11Token class</returns>
+        </member>
+        <member name="M:Net.Pkcs11Interop.X509Store.Pkcs11Token.FindCertificates">
+            <summary>
+            Finds all X.509 certificates present on token
+            </summary>
+            <returns>All X.509 certificates present on token</returns>
+        </member>
+        <member name="M:Net.Pkcs11Interop.X509Store.Pkcs11Token.SessionIsAuthenticated(Net.Pkcs11Interop.HighLevelAPI.ISession)">
+            <summary>
+            Check whether session is authenticated
+            </summary>
+            <param name="session">Session to be checked</param>
+            <returns>True if session is authenticated, false otherwise</returns>
+        </member>
+        <member name="M:Net.Pkcs11Interop.X509Store.Pkcs11Token.Dispose">
+            <summary>
+            Disposes object
+            </summary>
+        </member>
+        <member name="M:Net.Pkcs11Interop.X509Store.Pkcs11Token.Dispose(System.Boolean)">
+            <summary>
+            Disposes object
+            </summary>
+            <param name="disposing">Flag indicating whether managed resources should be disposed</param>
+        </member>
+        <member name="M:Net.Pkcs11Interop.X509Store.Pkcs11Token.Finalize">
+            <summary>
+            Class destructor that disposes object if caller forgot to do so
+            </summary>
+        </member>
+        <member name="T:Net.Pkcs11Interop.X509Store.Pkcs11TokenContext">
+            <summary>
+            Internal context for Pkcs11Token class
+            </summary>
+        </member>
+        <member name="F:Net.Pkcs11Interop.X509Store.Pkcs11TokenContext._disposed">
+            <summary>
+            Flag indicating whether instance has been disposed
+            </summary>
+        </member>
+        <member name="F:Net.Pkcs11Interop.X509Store.Pkcs11TokenContext._tokenInfo">
+            <summary>
+            Detailed information about PKCS#11 token (cryptographic device)
+            </summary>
+        </member>
+        <member name="P:Net.Pkcs11Interop.X509Store.Pkcs11TokenContext.TokenInfo">
+            <summary>
+            Detailed information about PKCS#11 token (cryptographic device)
+            </summary>
+        </member>
+        <member name="F:Net.Pkcs11Interop.X509Store.Pkcs11TokenContext._authenticatedSession">
+            <summary>
+            High level PKCS#11 session that preserves authenticated state of the token
+            </summary>
+        </member>
+        <member name="P:Net.Pkcs11Interop.X509Store.Pkcs11TokenContext.AuthenticatedSession">
+            <summary>
+            High level PKCS#11 session that preserves authenticated state of the token
+            </summary>
+        </member>
+        <member name="F:Net.Pkcs11Interop.X509Store.Pkcs11TokenContext._slotContext">
+            <summary>
+            Internal context for Pkcs11Slot class
+            </summary>
+        </member>
+        <member name="P:Net.Pkcs11Interop.X509Store.Pkcs11TokenContext.SlotContext">
+            <summary>
+            Internal context for Pkcs11Slot class
+            </summary>
+        </member>
+        <member name="M:Net.Pkcs11Interop.X509Store.Pkcs11TokenContext.#ctor(Net.Pkcs11Interop.X509Store.Pkcs11TokenInfo,Net.Pkcs11Interop.HighLevelAPI.ISession,Net.Pkcs11Interop.X509Store.Pkcs11SlotContext)">
+            <summary>
+            Creates new instance of Pkcs11TokenContext class
+            </summary>
+            <param name="tokenInfo">Detailed information about PKCS#11 token (cryptographic device)</param>
+            <param name="authenticatedSession">High level PKCS#11 session that holds authenticated state of the token</param>
+            <param name="slotContext">Internal context for Pkcs11Slot class</param>
+        </member>
+        <member name="M:Net.Pkcs11Interop.X509Store.Pkcs11TokenContext.Dispose">
+            <summary>
+            Disposes object
+            </summary>
+        </member>
+        <member name="M:Net.Pkcs11Interop.X509Store.Pkcs11TokenContext.Dispose(System.Boolean)">
+            <summary>
+            Disposes object
+            </summary>
+            <param name="disposing">Flag indicating whether managed resources should be disposed</param>
+        </member>
+        <member name="M:Net.Pkcs11Interop.X509Store.Pkcs11TokenContext.Finalize">
+            <summary>
+            Class destructor that disposes object if caller forgot to do so
+            </summary>
+        </member>
+        <member name="T:Net.Pkcs11Interop.X509Store.Pkcs11TokenInfo">
+            <summary>
+            Detailed information about PKCS#11 token (cryptographic device) that is typically present in the slot
+            </summary>
+        </member>
+        <member name="F:Net.Pkcs11Interop.X509Store.Pkcs11TokenInfo._manufacturer">
+            <summary>
+            Manufacturer of the token
+            </summary>
+        </member>
+        <member name="P:Net.Pkcs11Interop.X509Store.Pkcs11TokenInfo.Manufacturer">
+            <summary>
+            Manufacturer of the token
+            </summary>
+        </member>
+        <member name="F:Net.Pkcs11Interop.X509Store.Pkcs11TokenInfo._model">
+            <summary>
+            Model of the token
+            </summary>
+        </member>
+        <member name="P:Net.Pkcs11Interop.X509Store.Pkcs11TokenInfo.Model">
+            <summary>
+            Model of the token
+            </summary>
+        </member>
+        <member name="F:Net.Pkcs11Interop.X509Store.Pkcs11TokenInfo._serialNumber">
+            <summary>
+            Serial number of the token
+            </summary>
+        </member>
+        <member name="P:Net.Pkcs11Interop.X509Store.Pkcs11TokenInfo.SerialNumber">
+            <summary>
+            Serial number of the token
+            </summary>
+        </member>
+        <member name="F:Net.Pkcs11Interop.X509Store.Pkcs11TokenInfo._label">
+            <summary>
+            Label of the token
+            </summary>
+        </member>
+        <member name="P:Net.Pkcs11Interop.X509Store.Pkcs11TokenInfo.Label">
+            <summary>
+            Label of the token
+            </summary>
+        </member>
+        <member name="F:Net.Pkcs11Interop.X509Store.Pkcs11TokenInfo._hasProtectedAuthenticationPath">
+            <summary>
+            Flag indicating whether token has a protected authentication path (e.g. pin pad) whereby a user can log into the token without passing a PIN through the API
+            </summary>
+        </member>
+        <member name="P:Net.Pkcs11Interop.X509Store.Pkcs11TokenInfo.HasProtectedAuthenticationPath">
+            <summary>
+            Flag indicating whether token has a protected authentication path (e.g. pin pad) whereby a user can log into the token without passing a PIN through the API
+            </summary>
+        </member>
+        <member name="F:Net.Pkcs11Interop.X509Store.Pkcs11TokenInfo._initialized">
+            <summary>
+            Flag indicating whether token has been initialized and is usable
+            </summary>
+        </member>
+        <member name="P:Net.Pkcs11Interop.X509Store.Pkcs11TokenInfo.Initialized">
+            <summary>
+            Flag indicating whether token has been initialized and is usable
+            </summary>
+        </member>
+        <member name="M:Net.Pkcs11Interop.X509Store.Pkcs11TokenInfo.#ctor(Net.Pkcs11Interop.HighLevelAPI.ITokenInfo)">
+            <summary>
+            Creates new instance of Pkcs11TokenInfo class
+            </summary>
+            <param name="tokenInfo">Information about PKCS#11 token (CK_TOKEN_INFO)</param>
+        </member>
+        <member name="T:Net.Pkcs11Interop.X509Store.Pkcs11X509Certificate">
+            <summary>
+            X.509 certificate stored on PKCS#11 token
+            </summary>
+        </member>
+        <member name="F:Net.Pkcs11Interop.X509Store.Pkcs11X509Certificate._certContext">
+            <summary>
+            Internal context for Pkcs11X509Certificate2 class
+            </summary>
+        </member>
+        <member name="P:Net.Pkcs11Interop.X509Store.Pkcs11X509Certificate.Info">
+            <summary>
+            Detailed information about X.509 certificate stored on PKCS#11 token
+            </summary>
+        </member>
+        <member name="P:Net.Pkcs11Interop.X509Store.Pkcs11X509Certificate.HasPrivateKeyObject">
+            <summary>
+            Flag indicating whether private key object corresponding to certificate object was found on token
+            </summary>
+        </member>
+        <member name="P:Net.Pkcs11Interop.X509Store.Pkcs11X509Certificate.HasPublicKeyObject">
+            <summary>
+            Flag indicating whether public key object corresponding to certificate object was found on token
+            </summary>
+        </member>
+        <member name="M:Net.Pkcs11Interop.X509Store.Pkcs11X509Certificate.#ctor(Net.Pkcs11Interop.HighLevelAPI.IObjectHandle,Net.Pkcs11Interop.X509Store.Pkcs11TokenContext)">
+            <summary>
+            Creates new instance of Pkcs11X509Certificate2 class
+            </summary>
+            <param name="certHandle">High level PKCS#11 object handle of certificate object</param>
+            <param name="tokenContext">Internal context for Pkcs11Token class</param>
+        </member>
+        <member name="M:Net.Pkcs11Interop.X509Store.Pkcs11X509Certificate.GetCertificateContext(Net.Pkcs11Interop.HighLevelAPI.IObjectHandle,Net.Pkcs11Interop.X509Store.Pkcs11TokenContext)">
+            <summary>
+            Constructs internal context for Pkcs11X509Certificate class
+            </summary>
+            <param name="certHandle">High level PKCS#11 object handle of certificate object</param>
+            <param name="tokenContext">Internal context for Pkcs11Token class</param>
+            <returns>Internal context for Pkcs11X509Certificate class</returns>
+        </member>
+        <member name="M:Net.Pkcs11Interop.X509Store.Pkcs11X509Certificate.GetCkaAlwaysAuthenticateValue(Net.Pkcs11Interop.HighLevelAPI.ISession,Net.Pkcs11Interop.HighLevelAPI.IObjectHandle)">
+            <summary>
+            Gets value of CKA_ALWAYS_AUTHENTICATE attribute of private key object
+            </summary>
+            <param name="session">PKCS#11 session for finding operation</param>
+            <param name="privKeyHandle">Handle of private key object</param>
+            <returns>Value of CKA_ALWAYS_AUTHENTICATE</returns>
+        </member>
+        <member name="M:Net.Pkcs11Interop.X509Store.Pkcs11X509Certificate.FindKey(Net.Pkcs11Interop.HighLevelAPI.ISession,Net.Pkcs11Interop.Common.CKO,System.Byte[],System.String)">
+            <summary>
+            Finds handle of key object present on token
+            </summary>
+            <param name="session">PKCS#11 session for finding operation</param>
+            <param name="keyClass">Value of CKA_CLASS attribute used in search template</param>
+            <param name="ckaId">Value of CKA_ID attribute used in search template</param>
+            <param name="ckaLabel">Value of CKA_LABEL attribute used in search template</param>
+            <returns>Handle of key object present on token or null</returns>
+        </member>
+        <member name="M:Net.Pkcs11Interop.X509Store.Pkcs11X509Certificate.GetRSAPrivateKey">
+            <summary>
+            Gets the System.Security.Cryptography.RSA implementation for private key
+            </summary>
+            <returns>System.Security.Cryptography.RSA implementation for private key or null if RSA private key is not present on token</returns>
+        </member>
+        <member name="M:Net.Pkcs11Interop.X509Store.Pkcs11X509Certificate.GetRSAPublicKey">
+            <summary>
+            Gets the System.Security.Cryptography.RSA implementation for public key
+            </summary>
+            <returns>System.Security.Cryptography.RSA implementation for public key or null if RSA public key is not present on token</returns>
+        </member>
+        <member name="M:Net.Pkcs11Interop.X509Store.Pkcs11X509Certificate.GetECDsaPrivateKey">
+            <summary>
+            Gets the System.Security.Cryptography.ECDsa implementation for private key
+            </summary>
+            <returns>System.Security.Cryptography.ECDsa implementation for private key or null if ECDsa private key is not present on token</returns>
+        </member>
+        <member name="M:Net.Pkcs11Interop.X509Store.Pkcs11X509Certificate.GetECDsaPublicKey">
+            <summary>
+            Gets the System.Security.Cryptography.ECDsa implementation for public key
+            </summary>
+            <returns>System.Security.Cryptography.ECDsa implementation for public key or null if ECDsa public key is not present on token</returns>
+        </member>
+        <member name="M:Net.Pkcs11Interop.X509Store.Pkcs11X509Certificate.GetPrivateKey">
+            <summary>
+            Gets the System.Security.Cryptography.AsymmetricAlgorithm implementation for private key
+            </summary>
+            <returns>System.Security.Cryptography.AsymmetricAlgorithm implementation for private key or null if private key is not present on token</returns>
+        </member>
+        <member name="M:Net.Pkcs11Interop.X509Store.Pkcs11X509Certificate.GetPublicKey">
+            <summary>
+            Gets the System.Security.Cryptography.AsymmetricAlgorithm implementation for public key
+            </summary>
+            <returns>System.Security.Cryptography.AsymmetricAlgorithm implementation for public key or null if public key is not present on token</returns>
+        </member>
+        <member name="T:Net.Pkcs11Interop.X509Store.Pkcs11X509CertificateContext">
+            <summary>
+            Internal context for Pkcs11X509Certificate2 class
+            </summary>
+        </member>
+        <member name="F:Net.Pkcs11Interop.X509Store.Pkcs11X509CertificateContext._certificateInfo">
+            <summary>
+            Detailed information about X.509 certificate stored on PKCS#11 token
+            </summary>
+        </member>
+        <member name="P:Net.Pkcs11Interop.X509Store.Pkcs11X509CertificateContext.CertificateInfo">
+            <summary>
+            Detailed information about X.509 certificate stored on PKCS#11 token
+            </summary>
+        </member>
+        <member name="F:Net.Pkcs11Interop.X509Store.Pkcs11X509CertificateContext._certHandle">
+            <summary>
+            High level PKCS#11 object handle of certificate object
+            </summary>
+        </member>
+        <member name="P:Net.Pkcs11Interop.X509Store.Pkcs11X509CertificateContext.CertHandle">
+            <summary>
+            High level PKCS#11 object handle of certificate object
+            </summary>
+        </member>
+        <member name="F:Net.Pkcs11Interop.X509Store.Pkcs11X509CertificateContext._privKeyHandle">
+            <summary>
+            High level PKCS#11 object handle of private key object
+            </summary>
+        </member>
+        <member name="P:Net.Pkcs11Interop.X509Store.Pkcs11X509CertificateContext.PrivKeyHandle">
+            <summary>
+            High level PKCS#11 object handle of private key object
+            </summary>
+        </member>
+        <member name="F:Net.Pkcs11Interop.X509Store.Pkcs11X509CertificateContext._pubKeyHandle">
+            <summary>
+            High level PKCS#11 object handle of public key object
+            </summary>
+        </member>
+        <member name="P:Net.Pkcs11Interop.X509Store.Pkcs11X509CertificateContext.PubKeyHandle">
+            <summary>
+            High level PKCS#11 object handle of public key object
+            </summary>
+        </member>
+        <member name="F:Net.Pkcs11Interop.X509Store.Pkcs11X509CertificateContext._keyUsageRequiresLogin">
+            <summary>
+            Flag indicating whether key usage requires context specific login to be perfromed
+            </summary>
+        </member>
+        <member name="P:Net.Pkcs11Interop.X509Store.Pkcs11X509CertificateContext.KeyUsageRequiresLogin">
+            <summary>
+            Flag indicating whether key usage requires context specific login to be perfromed
+            </summary>
+        </member>
+        <member name="F:Net.Pkcs11Interop.X509Store.Pkcs11X509CertificateContext._tokenContext">
+            <summary>
+            Internal context for Pkcs11Token class
+            </summary>
+        </member>
+        <member name="P:Net.Pkcs11Interop.X509Store.Pkcs11X509CertificateContext.TokenContext">
+            <summary>
+            Internal context for Pkcs11Token class
+            </summary>
+        </member>
+        <member name="M:Net.Pkcs11Interop.X509Store.Pkcs11X509CertificateContext.#ctor(Net.Pkcs11Interop.X509Store.Pkcs11X509CertificateInfo,Net.Pkcs11Interop.HighLevelAPI.IObjectHandle,Net.Pkcs11Interop.HighLevelAPI.IObjectHandle,Net.Pkcs11Interop.HighLevelAPI.IObjectHandle,System.Boolean,Net.Pkcs11Interop.X509Store.Pkcs11TokenContext)">
+            <summary>
+            Creates new instance of Pkcs11X509Certificate2Context class
+            </summary>
+            <param name="certificateInfo">Detailed information about X.509 certificate stored on PKCS#11 token</param>
+            <param name="certHandle">High level PKCS#11 object handle of certificate object</param>
+            <param name="privKeyHandle">High level PKCS#11 object handle of private key object</param>
+            <param name="pubKeyHandle">High level PKCS#11 object handle of public key object</param>
+            <param name="keyUsageRequiresLogin">Flag indicating whether key usage requires context specific login to be perfromed</param>
+            <param name="tokenContext">Internal context for Pkcs11Token class</param>
+        </member>
+        <member name="T:Net.Pkcs11Interop.X509Store.Pkcs11X509CertificateInfo">
+            <summary>
+            Detailed information about X.509 certificate stored on PKCS#11 token
+            </summary>
+        </member>
+        <member name="F:Net.Pkcs11Interop.X509Store.Pkcs11X509CertificateInfo._id">
+            <summary>
+            Hex encoded identifier of PKCS#11 certificate object (value of CKA_ID attribute)
+            </summary>
+        </member>
+        <member name="P:Net.Pkcs11Interop.X509Store.Pkcs11X509CertificateInfo.Id">
+            <summary>
+            Hex encoded identifier of PKCS#11 certificate object (value of CKA_ID attribute)
+            </summary>
+        </member>
+        <member name="F:Net.Pkcs11Interop.X509Store.Pkcs11X509CertificateInfo._label">
+            <summary>
+            Label of PKCS#11 certificate object (value of CKA_LABEL attribute)
+            </summary>
+        </member>
+        <member name="P:Net.Pkcs11Interop.X509Store.Pkcs11X509CertificateInfo.Label">
+            <summary>
+            Label of PKCS#11 certificate object (value of CKA_LABEL attribute)
+            </summary>
+        </member>
+        <member name="F:Net.Pkcs11Interop.X509Store.Pkcs11X509CertificateInfo._rawData">
+            <summary>
+            DER encoded value of X.509 certificate (value of CKA_VALUE attribute)
+            </summary>
+        </member>
+        <member name="P:Net.Pkcs11Interop.X509Store.Pkcs11X509CertificateInfo.RawData">
+            <summary>
+            DER encoded value of X.509 certificate (value of CKA_VALUE attribute)
+            </summary>
+        </member>
+        <member name="F:Net.Pkcs11Interop.X509Store.Pkcs11X509CertificateInfo._parsedCertificate">
+            <summary>
+            X.509 certificate parsed as System.Security.Cryptography.X509Certificates.X509Certificate2 instance for convenience
+            </summary>
+        </member>
+        <member name="P:Net.Pkcs11Interop.X509Store.Pkcs11X509CertificateInfo.ParsedCertificate">
+            <summary>
+            X.509 certificate parsed as System.Security.Cryptography.X509Certificates.X509Certificate2 instance for convenience
+            </summary>
+        </member>
+        <member name="F:Net.Pkcs11Interop.X509Store.Pkcs11X509CertificateInfo._keyType">
+            <summary>
+            Type of certified asymmetric key
+            </summary>
+        </member>
+        <member name="P:Net.Pkcs11Interop.X509Store.Pkcs11X509CertificateInfo.KeyType">
+            <summary>
+            Type of certified asymmetric key
+            </summary>
+        </member>
+        <member name="M:Net.Pkcs11Interop.X509Store.Pkcs11X509CertificateInfo.#ctor(System.Byte[],System.String,System.Byte[])">
+            <summary>
+            Creates new instance of Pkcs11X509CertificateInfo class
+            </summary>
+            <param name="ckaId">Value of CKA_ID attribute</param>
+            <param name="ckaLabel">Value of CKA_LABEL attribute</param>
+            <param name="ckaValue">Value of CKA_VALUE attribute</param>
+        </member>
+        <member name="T:Net.Pkcs11Interop.X509Store.Pkcs11X509Store">
+            <summary>
+            PKCS#11 based read-only X.509 store with certificates and corresponding asymmetric keys
+            </summary>
+        </member>
+        <member name="F:Net.Pkcs11Interop.X509Store.Pkcs11X509Store._disposed">
+            <summary>
+            Flag indicating whether instance has been disposed
+            </summary>
+        </member>
+        <member name="F:Net.Pkcs11Interop.X509Store.Pkcs11X509Store._storeContext">
+            <summary>
+            Internal context for Pkcs11X509Store class
+            </summary>
+        </member>
+        <member name="P:Net.Pkcs11Interop.X509Store.Pkcs11X509Store.Info">
+            <summary>
+            Detailed information about PKCS#11 based X.509 store
+            </summary>
+        </member>
+        <member name="F:Net.Pkcs11Interop.X509Store.Pkcs11X509Store._slots">
+            <summary>
+            List of available PKCS#11 slots representing logical readers
+            </summary>
+        </member>
+        <member name="P:Net.Pkcs11Interop.X509Store.Pkcs11X509Store.Slots">
+            <summary>
+            List of available PKCS#11 slots representing logical readers
+            </summary>
+        </member>
+        <member name="M:Net.Pkcs11Interop.X509Store.Pkcs11X509Store.#ctor(System.String,Net.Pkcs11Interop.X509Store.IPinProvider)">
+            <summary>
+            Creates new instance of Pkcs11X509Store class.
+            Also loads and initializes unmanaged PCKS#11 library.
+            </summary>
+            <param name="libraryPath">Name of or path to PKCS#11 library</param>
+            <param name="pinProvider">Provider of PIN codes for PKCS#11 tokens and keys</param>
+        </member>
+        <member name="M:Net.Pkcs11Interop.X509Store.Pkcs11X509Store.GetStoreContext(System.String,Net.Pkcs11Interop.X509Store.IPinProvider)">
+            <summary>
+            Constructs internal context for Pkcs11X509Store class
+            </summary>
+            <param name="libraryPath">Name of or path to PKCS#11 library</param>
+            <param name="pinProvider">Provider of PIN codes for PKCS#11 tokens and keys</param>
+            <returns>Internal context for Pkcs11X509Store class</returns>
+        </member>
+        <member name="M:Net.Pkcs11Interop.X509Store.Pkcs11X509Store.GetSlots">
+            <summary>
+            Gets list of available PKCS#11 slots representing logical readers
+            </summary>
+            <returns>List of available PKCS#11 slots representing logical readers</returns>
+        </member>
+        <member name="M:Net.Pkcs11Interop.X509Store.Pkcs11X509Store.Dispose">
+            <summary>
+            Disposes object
+            </summary>
+        </member>
+        <member name="M:Net.Pkcs11Interop.X509Store.Pkcs11X509Store.Dispose(System.Boolean)">
+            <summary>
+            Disposes object
+            </summary>
+            <param name="disposing">Flag indicating whether managed resources should be disposed</param>
+        </member>
+        <member name="M:Net.Pkcs11Interop.X509Store.Pkcs11X509Store.Finalize">
+            <summary>
+            Class destructor that disposes object if caller forgot to do so
+            </summary>
+        </member>
+        <member name="T:Net.Pkcs11Interop.X509Store.Pkcs11X509StoreContext">
+            <summary>
+            Internal context for Pkcs11X509Store class
+            </summary>
+        </member>
+        <member name="F:Net.Pkcs11Interop.X509Store.Pkcs11X509StoreContext._disposed">
+            <summary>
+            Flag indicating whether instance has been disposed
+            </summary>
+        </member>
+        <member name="F:Net.Pkcs11Interop.X509Store.Pkcs11X509StoreContext._pkcs11Library">
+            <summary>
+            High level PKCS#11 wrapper
+            </summary>
+        </member>
+        <member name="P:Net.Pkcs11Interop.X509Store.Pkcs11X509StoreContext.Pkcs11Library">
+            <summary>
+            High level PKCS#11 wrapper
+            </summary>
+        </member>
+        <member name="F:Net.Pkcs11Interop.X509Store.Pkcs11X509StoreContext._storeInfo">
+            <summary>
+            Detailed information about PKCS#11 based X.509 store
+            </summary>
+        </member>
+        <member name="P:Net.Pkcs11Interop.X509Store.Pkcs11X509StoreContext.StoreInfo">
+            <summary>
+            Detailed information about PKCS#11 based X.509 store
+            </summary>
+        </member>
+        <member name="F:Net.Pkcs11Interop.X509Store.Pkcs11X509StoreContext._pinProvider">
+            <summary>
+            Provider of PIN codes for PKCS#11 tokens and keys
+            </summary>
+        </member>
+        <member name="P:Net.Pkcs11Interop.X509Store.Pkcs11X509StoreContext.PinProvider">
+            <summary>
+            Provider of PIN codes for PKCS#11 tokens and keys
+            </summary>
+        </member>
+        <member name="M:Net.Pkcs11Interop.X509Store.Pkcs11X509StoreContext.#ctor(Net.Pkcs11Interop.HighLevelAPI.IPkcs11Library,Net.Pkcs11Interop.X509Store.Pkcs11X509StoreInfo,Net.Pkcs11Interop.X509Store.IPinProvider)">
+            <summary>
+            Creates new instance of Pkcs11X509StoreContext class
+            </summary>
+            <param name="pkcs11Library">High level PKCS#11 wrapper</param>
+            <param name="storeInfo">Detailed information about PKCS#11 based X.509 store</param>
+            <param name="pinProvider">Provider of PIN codes for PKCS#11 tokens and keys</param>
+        </member>
+        <member name="M:Net.Pkcs11Interop.X509Store.Pkcs11X509StoreContext.Dispose">
+            <summary>
+            Disposes object
+            </summary>
+        </member>
+        <member name="M:Net.Pkcs11Interop.X509Store.Pkcs11X509StoreContext.Dispose(System.Boolean)">
+            <summary>
+            Disposes object
+            </summary>
+            <param name="disposing">Flag indicating whether managed resources should be disposed</param>
+        </member>
+        <member name="M:Net.Pkcs11Interop.X509Store.Pkcs11X509StoreContext.Finalize">
+            <summary>
+            Class destructor that disposes object if caller forgot to do so
+            </summary>
+        </member>
+        <member name="T:Net.Pkcs11Interop.X509Store.Pkcs11X509StoreInfo">
+            <summary>
+            Detailed information about PKCS#11 based X.509 store
+            </summary>
+        </member>
+        <member name="F:Net.Pkcs11Interop.X509Store.Pkcs11X509StoreInfo._libraryPath">
+            <summary>
+            Name of or path to PKCS#11 library
+            </summary>
+        </member>
+        <member name="P:Net.Pkcs11Interop.X509Store.Pkcs11X509StoreInfo.LibraryPath">
+            <summary>
+            Name of or path to PKCS#11 library
+            </summary>
+        </member>
+        <member name="F:Net.Pkcs11Interop.X509Store.Pkcs11X509StoreInfo._manufacturer">
+            <summary>
+            Manufacturer of PKCS#11 library
+            </summary>
+        </member>
+        <member name="P:Net.Pkcs11Interop.X509Store.Pkcs11X509StoreInfo.Manufacturer">
+            <summary>
+            Manufacturer of PKCS#11 library
+            </summary>
+        </member>
+        <member name="F:Net.Pkcs11Interop.X509Store.Pkcs11X509StoreInfo._description">
+            <summary>
+            Description of PKCS#11 library
+            </summary>
+        </member>
+        <member name="P:Net.Pkcs11Interop.X509Store.Pkcs11X509StoreInfo.Description">
+            <summary>
+            Description of PKCS#11 library
+            </summary>
+        </member>
+        <member name="M:Net.Pkcs11Interop.X509Store.Pkcs11X509StoreInfo.#ctor(System.String,Net.Pkcs11Interop.HighLevelAPI.ILibraryInfo)">
+            <summary>
+            Creates new instance of Pkcs11X509StoreInfo class
+            </summary>
+            <param name="libraryPath">Name of or path to PKCS#11 library</param>
+            <param name="libraryInfo">General information about PKCS#11 library (CK_INFO)</param>
+        </member>
+    </members>
+</doc>

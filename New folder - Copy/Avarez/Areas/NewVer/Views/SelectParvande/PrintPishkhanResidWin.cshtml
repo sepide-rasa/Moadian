@@ -1,0 +1,11 @@
+﻿@using Ext.Net.MVC;
+@(
+ Html.X().Window().Height(565).Width(850)
+            .Title("پیش نمایش")
+            .AutoScroll(true)
+            .Closable(true)
+                .Modal(true)
+            .CloseAction(Ext.Net.CloseAction.Destroy)
+        //.Items(Html.X().Container().Content("<center><object style='width: 1200px;height: 550px;border: 1px solid #ccc;' type='application/pdf' data='/NewVer/SodorFish/GeneratPdfReceipt?ResidId=" + @ViewBag.ResidId + "&Type=" + @ViewBag.Type + "'></object></center>"))
+                        .Html("<center><object class='se-pre-con' style='width: 830px;height: 530px;border: 1px solid #ccc;' type='application/pdf' data='/NewVer/SelectParvande/rptpishkhanRecipt?id=" + @ViewBag.resiptId + "'></object></center>")
+)

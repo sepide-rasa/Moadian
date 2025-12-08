@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:tns="http://tempuri.org/" elementFormDefault="qualified" targetNamespace="http://tempuri.org/" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:element name="GetData">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" maxOccurs="1" name="codemeli" type="xs:string" />
+        <xs:element minOccurs="0" maxOccurs="1" name="birthDate" type="xs:string" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetDataResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" maxOccurs="1" name="GetDataResult" type="tns:Sp_PersonsSelect" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:complexType name="Sp_PersonsSelect">
+    <xs:sequence>
+      <xs:element minOccurs="1" maxOccurs="1" name="Id" type="xs:int" />
+      <xs:element minOccurs="0" maxOccurs="1" name="birthDate" type="xs:string" />
+      <xs:element minOccurs="0" maxOccurs="1" name="bookNo" type="xs:string" />
+      <xs:element minOccurs="0" maxOccurs="1" name="bookRow" type="xs:string" />
+      <xs:element minOccurs="0" maxOccurs="1" name="deathStatus" type="xs:string" />
+      <xs:element minOccurs="0" maxOccurs="1" name="family" type="xs:string" />
+      <xs:element minOccurs="0" maxOccurs="1" name="fatherName" type="xs:string" />
+      <xs:element minOccurs="0" maxOccurs="1" name="gender" type="xs:string" />
+      <xs:element minOccurs="0" maxOccurs="1" name="message" type="xs:string" />
+      <xs:element minOccurs="0" maxOccurs="1" name="name" type="xs:string" />
+      <xs:element minOccurs="0" maxOccurs="1" name="nin" type="xs:string" />
+      <xs:element minOccurs="0" maxOccurs="1" name="officeCode" type="xs:string" />
+      <xs:element minOccurs="0" maxOccurs="1" name="officeName" type="xs:string" />
+      <xs:element minOccurs="0" maxOccurs="1" name="shenasnameNo" type="xs:string" />
+      <xs:element minOccurs="0" maxOccurs="1" name="shenasnameSeri" type="xs:string" />
+      <xs:element minOccurs="0" maxOccurs="1" name="shenasnameSerial" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="GetDataUsingDataContract">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" maxOccurs="1" name="composite" type="tns:CompositeType" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:complexType name="CompositeType">
+    <xs:sequence>
+      <xs:element minOccurs="1" maxOccurs="1" name="BoolValue" type="xs:boolean" />
+      <xs:element minOccurs="0" maxOccurs="1" name="StringValue" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="GetDataUsingDataContractResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" maxOccurs="1" name="GetDataUsingDataContractResult" type="tns:CompositeType" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

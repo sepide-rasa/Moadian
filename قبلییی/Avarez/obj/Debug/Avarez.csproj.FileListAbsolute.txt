@@ -1,0 +1,702 @@
+D:\AvarezTeam\Avarez\obj\Debug\Avarez.csprojResolveAssemblyReference.cache
+D:\AvarezTeam\Avarez\bin\Antlr3.Runtime.dll
+D:\AvarezTeam\Avarez\bin\DotNetOpenAuth.AspNet.dll
+D:\AvarezTeam\Avarez\bin\DotNetOpenAuth.Core.dll
+D:\AvarezTeam\Avarez\bin\DotNetOpenAuth.OAuth.Consumer.dll
+D:\AvarezTeam\Avarez\bin\DotNetOpenAuth.OAuth.dll
+D:\AvarezTeam\Avarez\bin\DotNetOpenAuth.OpenId.dll
+D:\AvarezTeam\Avarez\bin\DotNetOpenAuth.OpenId.RelyingParty.dll
+D:\AvarezTeam\Avarez\bin\EntityFramework.dll
+D:\AvarezTeam\Avarez\bin\Kendo.Mvc.dll
+D:\AvarezTeam\Avarez\bin\Microsoft.Web.Infrastructure.dll
+D:\AvarezTeam\Avarez\bin\Microsoft.Web.WebPages.OAuth.dll
+D:\AvarezTeam\Avarez\bin\Newtonsoft.Json.dll
+D:\AvarezTeam\Avarez\bin\System.Net.Http.dll
+D:\AvarezTeam\Avarez\bin\System.Net.Http.Formatting.dll
+D:\AvarezTeam\Avarez\bin\System.Net.Http.WebRequest.dll
+D:\AvarezTeam\Avarez\bin\System.Web.Helpers.dll
+D:\AvarezTeam\Avarez\bin\System.Web.Http.dll
+D:\AvarezTeam\Avarez\bin\System.Web.Http.WebHost.dll
+D:\AvarezTeam\Avarez\bin\System.Web.Mvc.dll
+D:\AvarezTeam\Avarez\bin\System.Web.Razor.dll
+D:\AvarezTeam\Avarez\bin\System.Web.WebPages.Deployment.dll
+D:\AvarezTeam\Avarez\bin\System.Web.WebPages.dll
+D:\AvarezTeam\Avarez\bin\System.Web.WebPages.Razor.dll
+D:\AvarezTeam\Avarez\bin\WebGrease.dll
+D:\AvarezTeam\Avarez\bin\WebMatrix.Data.dll
+D:\AvarezTeam\Avarez\bin\WebMatrix.WebData.dll
+D:\AvarezTeam\Avarez\bin\Microsoft.Web.Infrastructure.xml
+D:\AvarezTeam\Avarez\bin\System.Net.Http.xml
+D:\AvarezTeam\Avarez\bin\System.Net.Http.Formatting.xml
+D:\AvarezTeam\Avarez\bin\System.Net.Http.WebRequest.xml
+D:\AvarezTeam\Avarez\bin\System.Web.Helpers.xml
+D:\AvarezTeam\Avarez\bin\System.Web.Http.xml
+D:\AvarezTeam\Avarez\bin\System.Web.Http.WebHost.xml
+D:\AvarezTeam\Avarez\bin\System.Web.Mvc.xml
+D:\AvarezTeam\Avarez\bin\System.Web.Razor.xml
+D:\AvarezTeam\Avarez\bin\System.Web.WebPages.xml
+D:\AvarezTeam\Avarez\bin\System.Web.WebPages.Deployment.xml
+D:\AvarezTeam\Avarez\bin\System.Web.WebPages.Razor.xml
+D:\AvarezTeam\Avarez\bin\WebMatrix.Data.xml
+D:\AvarezTeam\Avarez\bin\Microsoft.Web.WebPages.OAuth.xml
+D:\AvarezTeam\Avarez\bin\WebMatrix.WebData.xml
+D:\AvarezTeam\Avarez\obj\Debug\Avarez.dll
+D:\AvarezTeam\Avarez\obj\Debug\Avarez.pdb
+D:\AvarezTeam\Avarez\bin\Avarez.dll.config
+D:\AvarezTeam\Avarez\bin\Avarez.dll
+D:\AvarezTeam\Avarez\bin\Avarez.pdb
+E:\Projects\Avarez\Avarez\bin\Avarez.dll.config
+E:\Projects\Avarez\Avarez\bin\Avarez.dll
+E:\Projects\Avarez\Avarez\bin\Avarez.pdb
+E:\Projects\Avarez\Avarez\bin\FastReport.xml
+E:\Projects\Avarez\Avarez\bin\FastReport.Web.xml
+E:\Projects\Avarez\Avarez\bin\Microsoft.Web.Infrastructure.xml
+E:\Projects\Avarez\Avarez\bin\System.Net.Http.xml
+E:\Projects\Avarez\Avarez\bin\System.Net.Http.WebRequest.xml
+E:\Projects\Avarez\Avarez\bin\System.Web.Helpers.xml
+E:\Projects\Avarez\Avarez\bin\System.Web.Razor.xml
+E:\Projects\Avarez\Avarez\bin\System.Web.WebPages.xml
+E:\Projects\Avarez\Avarez\bin\System.Web.WebPages.Deployment.xml
+E:\Projects\Avarez\Avarez\bin\System.Web.WebPages.Razor.xml
+E:\Projects\Avarez\Avarez\bin\WebMatrix.Data.xml
+E:\Projects\Avarez\Avarez\bin\Microsoft.Web.WebPages.OAuth.xml
+E:\Projects\Avarez\Avarez\bin\WebMatrix.WebData.xml
+E:\Projects\Avarez\Avarez\obj\Debug\Avarez.csprojResolveAssemblyReference.cache
+E:\Projects\Avarez\Avarez\obj\Debug\Avarez.dll
+E:\Projects\Avarez\Avarez\obj\Debug\Avarez.pdb
+D:\Avarez team\Avarez\Avarez\bin\Avarez.dll.config
+D:\Avarez team\Avarez\Avarez\bin\Avarez.dll
+D:\Avarez team\Avarez\Avarez\bin\Avarez.pdb
+D:\Avarez team\Avarez\Avarez\bin\FastReport.xml
+D:\Avarez team\Avarez\Avarez\bin\FastReport.Web.xml
+D:\Avarez team\Avarez\Avarez\bin\Microsoft.Web.Infrastructure.xml
+D:\Avarez team\Avarez\Avarez\bin\System.Net.Http.xml
+D:\Avarez team\Avarez\Avarez\bin\System.Net.Http.Formatting.xml
+D:\Avarez team\Avarez\Avarez\bin\System.Net.Http.WebRequest.xml
+D:\Avarez team\Avarez\Avarez\bin\System.Web.Helpers.xml
+D:\Avarez team\Avarez\Avarez\bin\System.Web.Http.xml
+D:\Avarez team\Avarez\Avarez\bin\System.Web.Http.WebHost.xml
+D:\Avarez team\Avarez\Avarez\bin\System.Web.Mvc.xml
+D:\Avarez team\Avarez\Avarez\bin\System.Web.Razor.xml
+D:\Avarez team\Avarez\Avarez\bin\System.Web.WebPages.xml
+D:\Avarez team\Avarez\Avarez\bin\System.Web.WebPages.Deployment.xml
+D:\Avarez team\Avarez\Avarez\bin\System.Web.WebPages.Razor.xml
+D:\Avarez team\Avarez\Avarez\bin\WebMatrix.Data.xml
+D:\Avarez team\Avarez\Avarez\bin\Microsoft.Web.WebPages.OAuth.xml
+D:\Avarez team\Avarez\Avarez\bin\WebMatrix.WebData.xml
+D:\Avarez team\Avarez\Avarez\obj\Debug\Avarez.csprojResolveAssemblyReference.cache
+D:\Avarez team\Avarez\Avarez\obj\Debug\Avarez.dll
+D:\Avarez team\Avarez\Avarez\obj\Debug\Avarez.pdb
+E:\Avarez\Avarez\bin\Avarez.dll.config
+E:\Avarez\Avarez\bin\Avarez.dll
+E:\Avarez\Avarez\bin\Avarez.pdb
+E:\Avarez\Avarez\bin\Aspose.Imaging.dll
+E:\Avarez\Avarez\bin\Ext.Net.dll
+E:\Avarez\Avarez\bin\Ext.Net.Utilities.dll
+E:\Avarez\Avarez\bin\Hogaf.ExtNet.UX.dll
+E:\Avarez\Avarez\bin\Microsoft.ReportViewer.WebForms.DLL
+E:\Avarez\Avarez\bin\Transformer.NET.dll
+E:\Avarez\Avarez\bin\FastReport.xml
+E:\Avarez\Avarez\bin\FastReport.Web.xml
+E:\Avarez\Avarez\bin\Kendo.Mvc.xml
+E:\Avarez\Avarez\bin\Microsoft.Web.Infrastructure.xml
+E:\Avarez\Avarez\bin\System.Net.Http.xml
+E:\Avarez\Avarez\bin\System.Net.Http.Formatting.xml
+E:\Avarez\Avarez\bin\System.Net.Http.WebRequest.xml
+E:\Avarez\Avarez\bin\System.Web.Helpers.xml
+E:\Avarez\Avarez\bin\System.Web.Http.xml
+E:\Avarez\Avarez\bin\System.Web.Http.WebHost.xml
+E:\Avarez\Avarez\bin\System.Web.Mvc.xml
+E:\Avarez\Avarez\bin\System.Web.Razor.xml
+E:\Avarez\Avarez\bin\System.Web.WebPages.xml
+E:\Avarez\Avarez\bin\System.Web.WebPages.Deployment.xml
+E:\Avarez\Avarez\bin\System.Web.WebPages.Razor.xml
+E:\Avarez\Avarez\bin\WebMatrix.Data.xml
+E:\Avarez\Avarez\bin\Microsoft.Web.WebPages.OAuth.xml
+E:\Avarez\Avarez\bin\WebMatrix.WebData.xml
+E:\Avarez\Avarez\bin\bg-BG\Kendo.Mvc.resources.dll
+E:\Avarez\Avarez\bin\da-DK\Kendo.Mvc.resources.dll
+E:\Avarez\Avarez\bin\de-DE\Kendo.Mvc.resources.dll
+E:\Avarez\Avarez\bin\es-ES\Kendo.Mvc.resources.dll
+E:\Avarez\Avarez\bin\fr-FR\Kendo.Mvc.resources.dll
+E:\Avarez\Avarez\bin\nl-NL\Kendo.Mvc.resources.dll
+E:\Avarez\Avarez\bin\pl-PL\Kendo.Mvc.resources.dll
+E:\Avarez\Avarez\bin\pt-BR\Kendo.Mvc.resources.dll
+E:\Avarez\Avarez\bin\pt-PT\Kendo.Mvc.resources.dll
+E:\Avarez\Avarez\bin\ru-RU\Kendo.Mvc.resources.dll
+E:\Avarez\Avarez\bin\uk-UA\Kendo.Mvc.resources.dll
+E:\Avarez\Avarez\bin\zh-CN\Kendo.Mvc.resources.dll
+E:\Avarez\Avarez\obj\Debug\Avarez.csprojResolveAssemblyReference.cache
+E:\Avarez\Avarez\obj\Debug\RdlCompile.cache
+E:\Avarez\Avarez\obj\Debug\RdlCompile.compiled
+E:\Avarez\Avarez\obj\Debug\Avarez.dll
+E:\Avarez\Avarez\obj\Debug\Avarez.pdb
+E:\projects\NewAvarez\Avarez\Avarez\bin\Avarez.dll.config
+E:\projects\NewAvarez\Avarez\Avarez\bin\Avarez.dll
+E:\projects\NewAvarez\Avarez\Avarez\bin\Avarez.pdb
+E:\projects\NewAvarez\Avarez\Avarez\bin\Aspose.Imaging.dll
+E:\projects\NewAvarez\Avarez\Avarez\bin\Ext.Net.dll
+E:\projects\NewAvarez\Avarez\Avarez\bin\Ext.Net.Utilities.dll
+E:\projects\NewAvarez\Avarez\Avarez\bin\Hogaf.ExtNet.UX.dll
+E:\projects\NewAvarez\Avarez\Avarez\bin\Microsoft.ReportViewer.WebForms.DLL
+E:\projects\NewAvarez\Avarez\Avarez\bin\Transformer.NET.dll
+E:\projects\NewAvarez\Avarez\Avarez\bin\FastReport.xml
+E:\projects\NewAvarez\Avarez\Avarez\bin\FastReport.Web.xml
+E:\projects\NewAvarez\Avarez\Avarez\bin\Kendo.Mvc.xml
+E:\projects\NewAvarez\Avarez\Avarez\bin\Microsoft.Web.Infrastructure.xml
+E:\projects\NewAvarez\Avarez\Avarez\bin\System.Net.Http.xml
+E:\projects\NewAvarez\Avarez\Avarez\bin\System.Net.Http.Formatting.xml
+E:\projects\NewAvarez\Avarez\Avarez\bin\System.Net.Http.WebRequest.xml
+E:\projects\NewAvarez\Avarez\Avarez\bin\System.Web.Helpers.xml
+E:\projects\NewAvarez\Avarez\Avarez\bin\System.Web.Http.xml
+E:\projects\NewAvarez\Avarez\Avarez\bin\System.Web.Http.WebHost.xml
+E:\projects\NewAvarez\Avarez\Avarez\bin\System.Web.Mvc.xml
+E:\projects\NewAvarez\Avarez\Avarez\bin\System.Web.Razor.xml
+E:\projects\NewAvarez\Avarez\Avarez\bin\System.Web.WebPages.xml
+E:\projects\NewAvarez\Avarez\Avarez\bin\System.Web.WebPages.Deployment.xml
+E:\projects\NewAvarez\Avarez\Avarez\bin\System.Web.WebPages.Razor.xml
+E:\projects\NewAvarez\Avarez\Avarez\bin\WebMatrix.Data.xml
+E:\projects\NewAvarez\Avarez\Avarez\bin\Microsoft.Web.WebPages.OAuth.xml
+E:\projects\NewAvarez\Avarez\Avarez\bin\WebMatrix.WebData.xml
+E:\projects\NewAvarez\Avarez\Avarez\bin\bg-BG\Kendo.Mvc.resources.dll
+E:\projects\NewAvarez\Avarez\Avarez\bin\da-DK\Kendo.Mvc.resources.dll
+E:\projects\NewAvarez\Avarez\Avarez\bin\de-DE\Kendo.Mvc.resources.dll
+E:\projects\NewAvarez\Avarez\Avarez\bin\es-ES\Kendo.Mvc.resources.dll
+E:\projects\NewAvarez\Avarez\Avarez\bin\fr-FR\Kendo.Mvc.resources.dll
+E:\projects\NewAvarez\Avarez\Avarez\bin\nl-NL\Kendo.Mvc.resources.dll
+E:\projects\NewAvarez\Avarez\Avarez\bin\pl-PL\Kendo.Mvc.resources.dll
+E:\projects\NewAvarez\Avarez\Avarez\bin\pt-BR\Kendo.Mvc.resources.dll
+E:\projects\NewAvarez\Avarez\Avarez\bin\pt-PT\Kendo.Mvc.resources.dll
+E:\projects\NewAvarez\Avarez\Avarez\bin\ru-RU\Kendo.Mvc.resources.dll
+E:\projects\NewAvarez\Avarez\Avarez\bin\uk-UA\Kendo.Mvc.resources.dll
+E:\projects\NewAvarez\Avarez\Avarez\bin\zh-CN\Kendo.Mvc.resources.dll
+E:\projects\NewAvarez\Avarez\Avarez\obj\Debug\Avarez.csprojResolveAssemblyReference.cache
+E:\projects\NewAvarez\Avarez\Avarez\obj\Debug\RdlCompile.cache
+E:\projects\NewAvarez\Avarez\Avarez\obj\Debug\RdlCompile.compiled
+E:\projects\NewAvarez\Avarez\Avarez\obj\Debug\Avarez.dll
+E:\projects\NewAvarez\Avarez\Avarez\obj\Debug\Avarez.pdb
+D:\AvarezKhodro\Avarez\Avarez\bin\Avarez.dll.config
+D:\AvarezKhodro\Avarez\Avarez\bin\Avarez.dll
+D:\AvarezKhodro\Avarez\Avarez\bin\Avarez.pdb
+D:\AvarezKhodro\Avarez\Avarez\bin\Aspose.Imaging.dll
+D:\AvarezKhodro\Avarez\Avarez\bin\Ext.Net.dll
+D:\AvarezKhodro\Avarez\Avarez\bin\Ext.Net.Utilities.dll
+D:\AvarezKhodro\Avarez\Avarez\bin\Hogaf.ExtNet.UX.dll
+D:\AvarezKhodro\Avarez\Avarez\bin\Microsoft.ReportViewer.WebForms.DLL
+D:\AvarezKhodro\Avarez\Avarez\bin\Transformer.NET.dll
+D:\AvarezKhodro\Avarez\Avarez\obj\Debug\RdlCompile.cache
+D:\AvarezKhodro\Avarez\Avarez\obj\Debug\RdlCompile.compiled
+D:\AvarezKhodro\Avarez\Avarez\obj\Debug\Avarez.dll
+D:\AvarezKhodro\Avarez\Avarez\obj\Debug\Avarez.pdb
+D:\AvarezKhodro\Avarez\Avarez\obj\Debug\Avarez.csprojResolveAssemblyReference.cache
+D:\Avarez\Avarez\Avarez\bin\Avarez.dll.config
+D:\Avarez\Avarez\Avarez\bin\Avarez.dll
+D:\Avarez\Avarez\Avarez\bin\Avarez.pdb
+D:\Avarez\Avarez\Avarez\bin\Microsoft.ReportViewer.WebForms.DLL
+D:\Avarez\Avarez\Avarez\obj\Debug\Avarez.csprojResolveAssemblyReference.cache
+D:\Avarez\Avarez\Avarez\obj\Debug\RdlCompile.cache
+D:\Avarez\Avarez\Avarez\obj\Debug\RdlCompile.compiled
+D:\Avarez\Avarez\Avarez\obj\Debug\Avarez.dll
+D:\Avarez\Avarez\Avarez\obj\Debug\Avarez.pdb
+D:\Avarez\Avarez\Avarez\bin\Aspose.Imaging.dll
+D:\Avarez\Avarez\Avarez\bin\Ext.Net.Utilities.dll
+D:\Avarez\Avarez\Avarez\bin\Hogaf.ExtNet.UX.dll
+D:\Avarez\Avarez\Avarez\bin\Transformer.NET.dll
+E:\Projects\AvarezTeam\Avarez\Avarez\bin\Avarez.dll.config
+E:\Projects\AvarezTeam\Avarez\Avarez\bin\Avarez.dll
+E:\Projects\AvarezTeam\Avarez\Avarez\bin\Avarez.pdb
+E:\Projects\AvarezTeam\Avarez\Avarez\bin\Aspose.Imaging.dll
+E:\Projects\AvarezTeam\Avarez\Avarez\bin\Ext.Net.Utilities.dll
+E:\Projects\AvarezTeam\Avarez\Avarez\bin\Hogaf.ExtNet.UX.dll
+E:\Projects\AvarezTeam\Avarez\Avarez\bin\Microsoft.ReportViewer.WebForms.DLL
+E:\Projects\AvarezTeam\Avarez\Avarez\bin\Transformer.NET.dll
+E:\Projects\AvarezTeam\Avarez\Avarez\obj\Debug\Avarez.csprojResolveAssemblyReference.cache
+E:\Projects\AvarezTeam\Avarez\Avarez\obj\Debug\RdlCompile.cache
+E:\Projects\AvarezTeam\Avarez\Avarez\obj\Debug\RdlCompile.compiled
+E:\Projects\AvarezTeam\Avarez\Avarez\obj\Debug\Avarez.dll
+E:\Projects\AvarezTeam\Avarez\Avarez\obj\Debug\Avarez.pdb
+F:\Avarez\Avarez\bin\Avarez.dll.config
+F:\Avarez\Avarez\bin\Avarez.dll
+F:\Avarez\Avarez\bin\Avarez.pdb
+F:\Avarez\Avarez\bin\Aspose.Imaging.dll
+F:\Avarez\Avarez\bin\Ext.Net.Utilities.dll
+F:\Avarez\Avarez\bin\Hogaf.ExtNet.UX.dll
+F:\Avarez\Avarez\bin\Microsoft.ReportViewer.WebForms.DLL
+F:\Avarez\Avarez\bin\Transformer.NET.dll
+F:\Avarez\Avarez\obj\Debug\RdlCompile.cache
+F:\Avarez\Avarez\obj\Debug\RdlCompile.compiled
+F:\Avarez\Avarez\obj\Debug\Avarez.dll
+F:\Avarez\Avarez\obj\Debug\Avarez.pdb
+F:\Avarez\Avarez\obj\Debug\Avarez.csprojResolveAssemblyReference.cache
+E:\projects\Avarez\Avarez\obj\Debug\RdlCompile.cache
+E:\projects\Avarez\Avarez\obj\Debug\RdlCompile.compiled
+E:\projects\Avarez\Avarez\bin\Microsoft.ReportViewer.WebForms.DLL
+E:\projects\Avarez\Avarez\bin\Aspose.Imaging.dll
+E:\projects\Avarez\Avarez\bin\Ext.Net.dll
+E:\projects\Avarez\Avarez\bin\Ext.Net.Utilities.dll
+E:\projects\Avarez\Avarez\bin\Hogaf.ExtNet.UX.dll
+F:\RasaCo Programs\Avarez Team\Avarez\Avarez\obj\Debug\RdlCompile.cache
+F:\RasaCo Programs\Avarez Team\Avarez\Avarez\obj\Debug\RdlCompile.compiled
+F:\RasaCo Programs\Avarez Team\Avarez\Avarez\obj\Debug\Avarez.csprojResolveAssemblyReference.cache
+F:\RasaCo Programs\Avarez Team\Avarez\Avarez\bin\Avarez.dll.config
+F:\RasaCo Programs\Avarez Team\Avarez\Avarez\bin\Avarez.dll
+F:\RasaCo Programs\Avarez Team\Avarez\Avarez\bin\Avarez.pdb
+F:\RasaCo Programs\Avarez Team\Avarez\Avarez\bin\EntityFramework.dll
+F:\RasaCo Programs\Avarez Team\Avarez\Avarez\bin\EntityFramework.SqlServer.dll
+F:\RasaCo Programs\Avarez Team\Avarez\Avarez\bin\Ext.Net.dll
+F:\RasaCo Programs\Avarez Team\Avarez\Avarez\bin\Ext.Net.Utilities.dll
+F:\RasaCo Programs\Avarez Team\Avarez\Avarez\bin\FastReport.VSDesign.dll
+F:\RasaCo Programs\Avarez Team\Avarez\Avarez\bin\Kendo.Mvc.dll
+F:\RasaCo Programs\Avarez Team\Avarez\Avarez\bin\Microsoft.ReportViewer.WebForms.DLL
+F:\RasaCo Programs\Avarez Team\Avarez\Avarez\bin\Microsoft.SqlServer.ConnectionInfo.dll
+F:\RasaCo Programs\Avarez Team\Avarez\Avarez\bin\Microsoft.SqlServer.ConnectionInfoExtended.dll
+F:\RasaCo Programs\Avarez Team\Avarez\Avarez\bin\Microsoft.SqlServer.Management.Sdk.Sfc.dll
+F:\RasaCo Programs\Avarez Team\Avarez\Avarez\bin\Microsoft.SqlServer.Smo.dll
+F:\RasaCo Programs\Avarez Team\Avarez\Avarez\bin\Microsoft.SqlServer.SmoExtended.dll
+F:\RasaCo Programs\Avarez Team\Avarez\Avarez\bin\Microsoft.SqlServer.SqlClrProvider.dll
+F:\RasaCo Programs\Avarez Team\Avarez\Avarez\bin\Microsoft.SqlServer.SqlEnum.dll
+F:\RasaCo Programs\Avarez Team\Avarez\Avarez\bin\Microsoft.Web.Infrastructure.dll
+F:\RasaCo Programs\Avarez Team\Avarez\Avarez\bin\Microsoft.Web.WebPages.OAuth.dll
+F:\RasaCo Programs\Avarez Team\Avarez\Avarez\bin\Newtonsoft.Json.dll
+F:\RasaCo Programs\Avarez Team\Avarez\Avarez\bin\System.Net.Http.dll
+F:\RasaCo Programs\Avarez Team\Avarez\Avarez\bin\System.Net.Http.Formatting.dll
+F:\RasaCo Programs\Avarez Team\Avarez\Avarez\bin\System.Net.Http.WebRequest.dll
+F:\RasaCo Programs\Avarez Team\Avarez\Avarez\bin\System.Web.Helpers.dll
+F:\RasaCo Programs\Avarez Team\Avarez\Avarez\bin\System.Web.Http.dll
+F:\RasaCo Programs\Avarez Team\Avarez\Avarez\bin\System.Web.Http.WebHost.dll
+F:\RasaCo Programs\Avarez Team\Avarez\Avarez\bin\System.Web.Mvc.dll
+F:\RasaCo Programs\Avarez Team\Avarez\Avarez\bin\System.Web.Razor.dll
+F:\RasaCo Programs\Avarez Team\Avarez\Avarez\bin\System.Web.WebPages.Deployment.dll
+F:\RasaCo Programs\Avarez Team\Avarez\Avarez\bin\System.Web.WebPages.dll
+F:\RasaCo Programs\Avarez Team\Avarez\Avarez\bin\System.Web.WebPages.Razor.dll
+F:\RasaCo Programs\Avarez Team\Avarez\Avarez\bin\WebMatrix.Data.dll
+F:\RasaCo Programs\Avarez Team\Avarez\Avarez\bin\WebMatrix.WebData.dll
+F:\RasaCo Programs\Avarez Team\Avarez\Avarez\bin\EntityFramework.xml
+F:\RasaCo Programs\Avarez Team\Avarez\Avarez\bin\EntityFramework.SqlServer.xml
+F:\RasaCo Programs\Avarez Team\Avarez\Avarez\bin\System.Net.Http.xml
+F:\RasaCo Programs\Avarez Team\Avarez\Avarez\bin\System.Net.Http.Formatting.xml
+F:\RasaCo Programs\Avarez Team\Avarez\Avarez\bin\System.Net.Http.WebRequest.xml
+F:\RasaCo Programs\Avarez Team\Avarez\Avarez\bin\System.Web.Helpers.xml
+F:\RasaCo Programs\Avarez Team\Avarez\Avarez\bin\System.Web.Http.xml
+F:\RasaCo Programs\Avarez Team\Avarez\Avarez\bin\System.Web.Http.WebHost.xml
+F:\RasaCo Programs\Avarez Team\Avarez\Avarez\bin\System.Web.Razor.xml
+F:\RasaCo Programs\Avarez Team\Avarez\Avarez\bin\System.Web.WebPages.xml
+F:\RasaCo Programs\Avarez Team\Avarez\Avarez\bin\System.Web.WebPages.Deployment.xml
+F:\RasaCo Programs\Avarez Team\Avarez\Avarez\bin\System.Web.WebPages.Razor.xml
+F:\RasaCo Programs\Avarez Team\Avarez\Avarez\bin\WebMatrix.Data.xml
+F:\RasaCo Programs\Avarez Team\Avarez\Avarez\bin\Microsoft.Web.WebPages.OAuth.xml
+F:\RasaCo Programs\Avarez Team\Avarez\Avarez\bin\WebMatrix.WebData.xml
+F:\RasaCo Programs\Avarez Team\Avarez\Avarez\obj\Debug\Avarez.dll
+F:\RasaCo Programs\Avarez Team\Avarez\Avarez\obj\Debug\Avarez.pdb
+D:\NewProject\Avarez\Avarez\bin\Avarez.dll.config
+D:\NewProject\Avarez\Avarez\bin\Avarez.dll
+D:\NewProject\Avarez\Avarez\bin\Avarez.pdb
+D:\NewProject\Avarez\Avarez\bin\Aspose.Imaging.dll
+D:\NewProject\Avarez\Avarez\bin\EntityFramework.dll
+D:\NewProject\Avarez\Avarez\bin\EntityFramework.SqlServer.dll
+D:\NewProject\Avarez\Avarez\bin\Hogaf.ExtNet.UX.dll
+D:\NewProject\Avarez\Avarez\bin\Microsoft.ReportViewer.WebForms.DLL
+D:\NewProject\Avarez\Avarez\bin\Microsoft.SqlServer.ConnectionInfo.dll
+D:\NewProject\Avarez\Avarez\bin\Microsoft.SqlServer.ConnectionInfoExtended.dll
+D:\NewProject\Avarez\Avarez\bin\Microsoft.SqlServer.Management.Sdk.Sfc.dll
+D:\NewProject\Avarez\Avarez\bin\Microsoft.SqlServer.Smo.dll
+D:\NewProject\Avarez\Avarez\bin\Microsoft.SqlServer.SmoExtended.dll
+D:\NewProject\Avarez\Avarez\bin\Microsoft.SqlServer.SqlClrProvider.dll
+D:\NewProject\Avarez\Avarez\bin\Microsoft.SqlServer.SqlEnum.dll
+D:\NewProject\Avarez\Avarez\bin\Microsoft.Web.Infrastructure.dll
+D:\NewProject\Avarez\Avarez\bin\Microsoft.Web.WebPages.OAuth.dll
+D:\NewProject\Avarez\Avarez\bin\Newtonsoft.Json.dll
+D:\NewProject\Avarez\Avarez\bin\System.Net.Http.dll
+D:\NewProject\Avarez\Avarez\bin\System.Net.Http.Formatting.dll
+D:\NewProject\Avarez\Avarez\bin\System.Net.Http.WebRequest.dll
+D:\NewProject\Avarez\Avarez\bin\System.Web.Helpers.dll
+D:\NewProject\Avarez\Avarez\bin\System.Web.Http.dll
+D:\NewProject\Avarez\Avarez\bin\System.Web.Http.WebHost.dll
+D:\NewProject\Avarez\Avarez\bin\System.Web.Mvc.dll
+D:\NewProject\Avarez\Avarez\bin\System.Web.Razor.dll
+D:\NewProject\Avarez\Avarez\bin\System.Web.WebPages.Deployment.dll
+D:\NewProject\Avarez\Avarez\bin\System.Web.WebPages.dll
+D:\NewProject\Avarez\Avarez\bin\System.Web.WebPages.Razor.dll
+D:\NewProject\Avarez\Avarez\bin\WebMatrix.Data.dll
+D:\NewProject\Avarez\Avarez\bin\WebMatrix.WebData.dll
+D:\NewProject\Avarez\Avarez\bin\EntityFramework.xml
+D:\NewProject\Avarez\Avarez\bin\EntityFramework.SqlServer.xml
+D:\NewProject\Avarez\Avarez\bin\System.Net.Http.xml
+D:\NewProject\Avarez\Avarez\bin\System.Net.Http.Formatting.xml
+D:\NewProject\Avarez\Avarez\bin\System.Net.Http.WebRequest.xml
+D:\NewProject\Avarez\Avarez\bin\System.Web.Helpers.xml
+D:\NewProject\Avarez\Avarez\bin\System.Web.Http.xml
+D:\NewProject\Avarez\Avarez\bin\System.Web.Http.WebHost.xml
+D:\NewProject\Avarez\Avarez\bin\System.Web.Mvc.xml
+D:\NewProject\Avarez\Avarez\bin\System.Web.Razor.xml
+D:\NewProject\Avarez\Avarez\bin\System.Web.WebPages.xml
+D:\NewProject\Avarez\Avarez\bin\System.Web.WebPages.Deployment.xml
+D:\NewProject\Avarez\Avarez\bin\System.Web.WebPages.Razor.xml
+D:\NewProject\Avarez\Avarez\bin\WebMatrix.Data.xml
+D:\NewProject\Avarez\Avarez\bin\Microsoft.Web.WebPages.OAuth.xml
+D:\NewProject\Avarez\Avarez\bin\WebMatrix.WebData.xml
+D:\NewProject\Avarez\Avarez\obj\Debug\RdlCompile.cache
+D:\NewProject\Avarez\Avarez\obj\Debug\RdlCompile.compiled
+D:\NewProject\Avarez\Avarez\obj\Debug\Avarez.dll
+D:\NewProject\Avarez\Avarez\obj\Debug\Avarez.pdb
+D:\NewProject\Avarez\Avarez\bin\ReportViewerForMvc.dll
+D:\NewProject\Avarez\Avarez\obj\Debug\Avarez.csprojResolveAssemblyReference.cache
+D:\NewProject\Avarez\Avarez\bin\RestSharp.dll
+D:\NewProject\Avarez\Avarez\bin\RestSharp.xml
+F:\project\Avarez\Avarez\bin\Avarez.dll.config
+F:\project\Avarez\Avarez\bin\Avarez.dll
+F:\project\Avarez\Avarez\bin\Avarez.pdb
+F:\project\Avarez\Avarez\bin\Aspose.Imaging.dll
+F:\project\Avarez\Avarez\bin\EntityFramework.dll
+F:\project\Avarez\Avarez\bin\EntityFramework.SqlServer.dll
+F:\project\Avarez\Avarez\bin\Hogaf.ExtNet.UX.dll
+F:\project\Avarez\Avarez\bin\Microsoft.ReportViewer.WebForms.DLL
+F:\project\Avarez\Avarez\bin\Microsoft.SqlServer.ConnectionInfo.dll
+F:\project\Avarez\Avarez\bin\Microsoft.SqlServer.ConnectionInfoExtended.dll
+F:\project\Avarez\Avarez\bin\Microsoft.SqlServer.Management.Sdk.Sfc.dll
+F:\project\Avarez\Avarez\bin\Microsoft.SqlServer.Smo.dll
+F:\project\Avarez\Avarez\bin\Microsoft.SqlServer.SmoExtended.dll
+F:\project\Avarez\Avarez\bin\Microsoft.SqlServer.SqlClrProvider.dll
+F:\project\Avarez\Avarez\bin\Microsoft.SqlServer.SqlEnum.dll
+F:\project\Avarez\Avarez\bin\Microsoft.Web.Infrastructure.dll
+F:\project\Avarez\Avarez\bin\Microsoft.Web.WebPages.OAuth.dll
+F:\project\Avarez\Avarez\bin\Newtonsoft.Json.dll
+F:\project\Avarez\Avarez\bin\ReportViewerForMvc.dll
+F:\project\Avarez\Avarez\bin\System.Net.Http.dll
+F:\project\Avarez\Avarez\bin\System.Net.Http.Formatting.dll
+F:\project\Avarez\Avarez\bin\System.Net.Http.WebRequest.dll
+F:\project\Avarez\Avarez\bin\System.Web.Helpers.dll
+F:\project\Avarez\Avarez\bin\System.Web.Http.dll
+F:\project\Avarez\Avarez\bin\System.Web.Http.WebHost.dll
+F:\project\Avarez\Avarez\bin\System.Web.Mvc.dll
+F:\project\Avarez\Avarez\bin\System.Web.Razor.dll
+F:\project\Avarez\Avarez\bin\System.Web.WebPages.Deployment.dll
+F:\project\Avarez\Avarez\bin\System.Web.WebPages.dll
+F:\project\Avarez\Avarez\bin\System.Web.WebPages.Razor.dll
+F:\project\Avarez\Avarez\bin\WebMatrix.Data.dll
+F:\project\Avarez\Avarez\bin\WebMatrix.WebData.dll
+F:\project\Avarez\Avarez\bin\EntityFramework.xml
+F:\project\Avarez\Avarez\bin\EntityFramework.SqlServer.xml
+F:\project\Avarez\Avarez\bin\RestSharp.xml
+F:\project\Avarez\Avarez\bin\System.Net.Http.xml
+F:\project\Avarez\Avarez\bin\System.Net.Http.Formatting.xml
+F:\project\Avarez\Avarez\bin\System.Net.Http.WebRequest.xml
+F:\project\Avarez\Avarez\bin\System.Web.Helpers.xml
+F:\project\Avarez\Avarez\bin\System.Web.Http.xml
+F:\project\Avarez\Avarez\bin\System.Web.Http.WebHost.xml
+F:\project\Avarez\Avarez\bin\System.Web.Mvc.xml
+F:\project\Avarez\Avarez\bin\System.Web.Razor.xml
+F:\project\Avarez\Avarez\bin\System.Web.WebPages.xml
+F:\project\Avarez\Avarez\bin\System.Web.WebPages.Deployment.xml
+F:\project\Avarez\Avarez\bin\System.Web.WebPages.Razor.xml
+F:\project\Avarez\Avarez\bin\WebMatrix.Data.xml
+F:\project\Avarez\Avarez\bin\Microsoft.Web.WebPages.OAuth.xml
+F:\project\Avarez\Avarez\bin\WebMatrix.WebData.xml
+F:\project\Avarez\Avarez\obj\Debug\Avarez.csprojResolveAssemblyReference.cache
+F:\project\Avarez\Avarez\obj\Debug\RdlCompile.cache
+F:\project\Avarez\Avarez\obj\Debug\RdlCompile.compiled
+F:\project\Avarez\Avarez\obj\Debug\Avarez.dll
+F:\project\Avarez\Avarez\obj\Debug\Avarez.pdb
+F:\project\Avarez\Avarez\bin\Newtonsoft.Json.xml
+\\192.168.1.179\Avarez\Avarez\bin\Avarez.dll.config
+\\192.168.1.179\Avarez\Avarez\bin\Avarez.dll
+\\192.168.1.179\Avarez\Avarez\bin\Avarez.pdb
+\\192.168.1.179\Avarez\Avarez\bin\Aspose.Imaging.dll
+\\192.168.1.179\Avarez\Avarez\bin\EntityFramework.dll
+\\192.168.1.179\Avarez\Avarez\bin\EntityFramework.SqlServer.dll
+\\192.168.1.179\Avarez\Avarez\bin\Hogaf.ExtNet.UX.dll
+\\192.168.1.179\Avarez\Avarez\bin\Microsoft.ReportViewer.WebForms.DLL
+\\192.168.1.179\Avarez\Avarez\bin\Microsoft.SqlServer.ConnectionInfo.dll
+\\192.168.1.179\Avarez\Avarez\bin\Microsoft.SqlServer.ConnectionInfoExtended.dll
+\\192.168.1.179\Avarez\Avarez\bin\Microsoft.SqlServer.Management.Sdk.Sfc.dll
+\\192.168.1.179\Avarez\Avarez\bin\Microsoft.SqlServer.Smo.dll
+\\192.168.1.179\Avarez\Avarez\bin\Microsoft.SqlServer.SmoExtended.dll
+\\192.168.1.179\Avarez\Avarez\bin\Microsoft.SqlServer.SqlClrProvider.dll
+\\192.168.1.179\Avarez\Avarez\bin\Microsoft.SqlServer.SqlEnum.dll
+\\192.168.1.179\Avarez\Avarez\bin\Microsoft.Web.Infrastructure.dll
+\\192.168.1.179\Avarez\Avarez\bin\Microsoft.Web.WebPages.OAuth.dll
+\\192.168.1.179\Avarez\Avarez\bin\Newtonsoft.Json.dll
+\\192.168.1.179\Avarez\Avarez\bin\ReportViewerForMvc.dll
+\\192.168.1.179\Avarez\Avarez\bin\System.Net.Http.dll
+\\192.168.1.179\Avarez\Avarez\bin\System.Net.Http.Formatting.dll
+\\192.168.1.179\Avarez\Avarez\bin\System.Net.Http.WebRequest.dll
+\\192.168.1.179\Avarez\Avarez\bin\System.Web.Helpers.dll
+\\192.168.1.179\Avarez\Avarez\bin\System.Web.Http.dll
+\\192.168.1.179\Avarez\Avarez\bin\System.Web.Http.WebHost.dll
+\\192.168.1.179\Avarez\Avarez\bin\System.Web.Mvc.dll
+\\192.168.1.179\Avarez\Avarez\bin\System.Web.Razor.dll
+\\192.168.1.179\Avarez\Avarez\bin\System.Web.WebPages.Deployment.dll
+\\192.168.1.179\Avarez\Avarez\bin\System.Web.WebPages.dll
+\\192.168.1.179\Avarez\Avarez\bin\System.Web.WebPages.Razor.dll
+\\192.168.1.179\Avarez\Avarez\bin\WebMatrix.Data.dll
+\\192.168.1.179\Avarez\Avarez\bin\WebMatrix.WebData.dll
+\\192.168.1.179\Avarez\Avarez\bin\EntityFramework.xml
+\\192.168.1.179\Avarez\Avarez\bin\EntityFramework.SqlServer.xml
+\\192.168.1.179\Avarez\Avarez\bin\Newtonsoft.Json.xml
+\\192.168.1.179\Avarez\Avarez\bin\RestSharp.xml
+\\192.168.1.179\Avarez\Avarez\bin\System.Net.Http.xml
+\\192.168.1.179\Avarez\Avarez\bin\System.Net.Http.Formatting.xml
+\\192.168.1.179\Avarez\Avarez\bin\System.Net.Http.WebRequest.xml
+\\192.168.1.179\Avarez\Avarez\bin\System.Web.Helpers.xml
+\\192.168.1.179\Avarez\Avarez\bin\System.Web.Http.xml
+\\192.168.1.179\Avarez\Avarez\bin\System.Web.Http.WebHost.xml
+\\192.168.1.179\Avarez\Avarez\bin\System.Web.Mvc.xml
+\\192.168.1.179\Avarez\Avarez\bin\System.Web.Razor.xml
+\\192.168.1.179\Avarez\Avarez\bin\System.Web.WebPages.xml
+\\192.168.1.179\Avarez\Avarez\bin\System.Web.WebPages.Deployment.xml
+\\192.168.1.179\Avarez\Avarez\bin\System.Web.WebPages.Razor.xml
+\\192.168.1.179\Avarez\Avarez\bin\WebMatrix.Data.xml
+\\192.168.1.179\Avarez\Avarez\bin\Microsoft.Web.WebPages.OAuth.xml
+\\192.168.1.179\Avarez\Avarez\bin\WebMatrix.WebData.xml
+\\192.168.1.179\Avarez\Avarez\obj\Debug\Avarez.csprojResolveAssemblyReference.cache
+\\192.168.1.179\Avarez\Avarez\obj\Debug\RdlCompile.cache
+\\192.168.1.179\Avarez\Avarez\obj\Debug\RdlCompile.compiled
+\\192.168.1.179\Avarez\Avarez\obj\Debug\Avarez.dll
+\\192.168.1.179\Avarez\Avarez\obj\Debug\Avarez.pdb
+G:\Avarez\Avarez\bin\Avarez.dll.config
+G:\Avarez\Avarez\bin\Avarez.dll
+G:\Avarez\Avarez\bin\Avarez.pdb
+G:\Avarez\Avarez\bin\System.Runtime.InteropServices.RuntimeInformation.dll
+G:\Avarez\Avarez\bin\System.Security.Cryptography.Algorithms.dll
+G:\Avarez\Avarez\bin\Microsoft.Win32.Primitives.dll
+G:\Avarez\Avarez\bin\netstandard.dll
+G:\Avarez\Avarez\bin\System.AppContext.dll
+G:\Avarez\Avarez\bin\System.Collections.Concurrent.dll
+G:\Avarez\Avarez\bin\System.Collections.dll
+G:\Avarez\Avarez\bin\System.Collections.NonGeneric.dll
+G:\Avarez\Avarez\bin\System.Collections.Specialized.dll
+G:\Avarez\Avarez\bin\System.ComponentModel.dll
+G:\Avarez\Avarez\bin\System.ComponentModel.EventBasedAsync.dll
+G:\Avarez\Avarez\bin\System.ComponentModel.Primitives.dll
+G:\Avarez\Avarez\bin\System.ComponentModel.TypeConverter.dll
+G:\Avarez\Avarez\bin\System.Console.dll
+G:\Avarez\Avarez\bin\System.Data.Common.dll
+G:\Avarez\Avarez\bin\System.Diagnostics.Contracts.dll
+G:\Avarez\Avarez\bin\System.Diagnostics.Debug.dll
+G:\Avarez\Avarez\bin\System.Diagnostics.FileVersionInfo.dll
+G:\Avarez\Avarez\bin\System.Diagnostics.Process.dll
+G:\Avarez\Avarez\bin\System.Diagnostics.StackTrace.dll
+G:\Avarez\Avarez\bin\System.Diagnostics.TextWriterTraceListener.dll
+G:\Avarez\Avarez\bin\System.Diagnostics.Tools.dll
+G:\Avarez\Avarez\bin\System.Diagnostics.TraceSource.dll
+G:\Avarez\Avarez\bin\System.Diagnostics.Tracing.dll
+G:\Avarez\Avarez\bin\System.Drawing.Primitives.dll
+G:\Avarez\Avarez\bin\System.Dynamic.Runtime.dll
+G:\Avarez\Avarez\bin\System.Globalization.Calendars.dll
+G:\Avarez\Avarez\bin\System.Globalization.dll
+G:\Avarez\Avarez\bin\System.Globalization.Extensions.dll
+G:\Avarez\Avarez\bin\System.IO.Compression.dll
+G:\Avarez\Avarez\bin\System.IO.Compression.ZipFile.dll
+G:\Avarez\Avarez\bin\System.IO.dll
+G:\Avarez\Avarez\bin\System.IO.FileSystem.dll
+G:\Avarez\Avarez\bin\System.IO.FileSystem.DriveInfo.dll
+G:\Avarez\Avarez\bin\System.IO.FileSystem.Primitives.dll
+G:\Avarez\Avarez\bin\System.IO.FileSystem.Watcher.dll
+G:\Avarez\Avarez\bin\System.IO.IsolatedStorage.dll
+G:\Avarez\Avarez\bin\System.IO.MemoryMappedFiles.dll
+G:\Avarez\Avarez\bin\System.IO.Pipes.dll
+G:\Avarez\Avarez\bin\System.IO.UnmanagedMemoryStream.dll
+G:\Avarez\Avarez\bin\System.Linq.dll
+G:\Avarez\Avarez\bin\System.Linq.Expressions.dll
+G:\Avarez\Avarez\bin\System.Linq.Parallel.dll
+G:\Avarez\Avarez\bin\System.Linq.Queryable.dll
+G:\Avarez\Avarez\bin\System.Net.Http.dll
+G:\Avarez\Avarez\bin\System.Net.NameResolution.dll
+G:\Avarez\Avarez\bin\System.Net.NetworkInformation.dll
+G:\Avarez\Avarez\bin\System.Net.Ping.dll
+G:\Avarez\Avarez\bin\System.Net.Primitives.dll
+G:\Avarez\Avarez\bin\System.Net.Requests.dll
+G:\Avarez\Avarez\bin\System.Net.Security.dll
+G:\Avarez\Avarez\bin\System.Net.Sockets.dll
+G:\Avarez\Avarez\bin\System.Net.WebHeaderCollection.dll
+G:\Avarez\Avarez\bin\System.Net.WebSockets.Client.dll
+G:\Avarez\Avarez\bin\System.Net.WebSockets.dll
+G:\Avarez\Avarez\bin\System.ObjectModel.dll
+G:\Avarez\Avarez\bin\System.Reflection.dll
+G:\Avarez\Avarez\bin\System.Reflection.Extensions.dll
+G:\Avarez\Avarez\bin\System.Reflection.Primitives.dll
+G:\Avarez\Avarez\bin\System.Resources.Reader.dll
+G:\Avarez\Avarez\bin\System.Resources.ResourceManager.dll
+G:\Avarez\Avarez\bin\System.Resources.Writer.dll
+G:\Avarez\Avarez\bin\System.Runtime.CompilerServices.VisualC.dll
+G:\Avarez\Avarez\bin\System.Runtime.dll
+G:\Avarez\Avarez\bin\System.Runtime.Extensions.dll
+G:\Avarez\Avarez\bin\System.Runtime.Handles.dll
+G:\Avarez\Avarez\bin\System.Runtime.InteropServices.dll
+G:\Avarez\Avarez\bin\System.Runtime.Numerics.dll
+G:\Avarez\Avarez\bin\System.Runtime.Serialization.Formatters.dll
+G:\Avarez\Avarez\bin\System.Runtime.Serialization.Json.dll
+G:\Avarez\Avarez\bin\System.Runtime.Serialization.Primitives.dll
+G:\Avarez\Avarez\bin\System.Runtime.Serialization.Xml.dll
+G:\Avarez\Avarez\bin\System.Security.Claims.dll
+G:\Avarez\Avarez\bin\System.Security.Cryptography.Csp.dll
+G:\Avarez\Avarez\bin\System.Security.Cryptography.Encoding.dll
+G:\Avarez\Avarez\bin\System.Security.Cryptography.Primitives.dll
+G:\Avarez\Avarez\bin\System.Security.Cryptography.X509Certificates.dll
+G:\Avarez\Avarez\bin\System.Security.Principal.dll
+G:\Avarez\Avarez\bin\System.Security.SecureString.dll
+G:\Avarez\Avarez\bin\System.Text.Encoding.dll
+G:\Avarez\Avarez\bin\System.Text.Encoding.Extensions.dll
+G:\Avarez\Avarez\bin\System.Text.RegularExpressions.dll
+G:\Avarez\Avarez\bin\System.Threading.dll
+G:\Avarez\Avarez\bin\System.Threading.Overlapped.dll
+G:\Avarez\Avarez\bin\System.Threading.Tasks.dll
+G:\Avarez\Avarez\bin\System.Threading.Tasks.Parallel.dll
+G:\Avarez\Avarez\bin\System.Threading.Thread.dll
+G:\Avarez\Avarez\bin\System.Threading.ThreadPool.dll
+G:\Avarez\Avarez\bin\System.Threading.Timer.dll
+G:\Avarez\Avarez\bin\System.Xml.ReaderWriter.dll
+G:\Avarez\Avarez\bin\System.Xml.XDocument.dll
+G:\Avarez\Avarez\bin\System.Xml.XmlDocument.dll
+G:\Avarez\Avarez\bin\System.Xml.XmlSerializer.dll
+G:\Avarez\Avarez\bin\System.Xml.XPath.dll
+G:\Avarez\Avarez\bin\System.Xml.XPath.XDocument.dll
+G:\Avarez\Avarez\bin\Aspose.Imaging.dll
+G:\Avarez\Avarez\bin\BouncyCastle.Crypto.dll
+G:\Avarez\Avarez\bin\EntityFramework.dll
+G:\Avarez\Avarez\bin\EntityFramework.SqlServer.dll
+G:\Avarez\Avarez\bin\FastMember.dll
+G:\Avarez\Avarez\bin\Hogaf.ExtNet.UX.dll
+G:\Avarez\Avarez\bin\jose-jwt.dll
+G:\Avarez\Avarez\bin\JWT.dll
+G:\Avarez\Avarez\bin\Microsoft.Bcl.AsyncInterfaces.dll
+G:\Avarez\Avarez\bin\Microsoft.Extensions.DependencyInjection.Abstractions.dll
+G:\Avarez\Avarez\bin\Microsoft.Extensions.DependencyInjection.dll
+G:\Avarez\Avarez\bin\Microsoft.Extensions.Http.dll
+G:\Avarez\Avarez\bin\Microsoft.Extensions.Logging.Abstractions.dll
+G:\Avarez\Avarez\bin\Microsoft.Extensions.Logging.dll
+G:\Avarez\Avarez\bin\Microsoft.Extensions.Options.dll
+G:\Avarez\Avarez\bin\Microsoft.Extensions.Primitives.dll
+G:\Avarez\Avarez\bin\Microsoft.ReportViewer.Common.dll
+G:\Avarez\Avarez\bin\Microsoft.ReportViewer.WebForms.DLL
+G:\Avarez\Avarez\bin\Microsoft.SqlServer.ConnectionInfo.dll
+G:\Avarez\Avarez\bin\Microsoft.SqlServer.ConnectionInfoExtended.dll
+G:\Avarez\Avarez\bin\Microsoft.SqlServer.Management.Sdk.Sfc.dll
+G:\Avarez\Avarez\bin\Microsoft.SqlServer.Smo.dll
+G:\Avarez\Avarez\bin\Microsoft.SqlServer.SmoExtended.dll
+G:\Avarez\Avarez\bin\Microsoft.SqlServer.SqlClrProvider.dll
+G:\Avarez\Avarez\bin\Microsoft.SqlServer.SqlEnum.dll
+G:\Avarez\Avarez\bin\Microsoft.VisualStudio.Threading.dll
+G:\Avarez\Avarez\bin\Microsoft.VisualStudio.Validation.dll
+G:\Avarez\Avarez\bin\Microsoft.Web.Infrastructure.dll
+G:\Avarez\Avarez\bin\Microsoft.Web.WebPages.OAuth.dll
+G:\Avarez\Avarez\bin\Microsoft.Win32.Registry.dll
+G:\Avarez\Avarez\bin\Newtonsoft.Json.dll
+G:\Avarez\Avarez\bin\Pkcs11Interop.dll
+G:\Avarez\Avarez\bin\Pkcs11Interop.X509Store.dll
+G:\Avarez\Avarez\bin\ReportViewerForMvc.dll
+G:\Avarez\Avarez\bin\RestSharp.dll
+G:\Avarez\Avarez\bin\System.Buffers.dll
+G:\Avarez\Avarez\bin\System.Diagnostics.DiagnosticSource.dll
+G:\Avarez\Avarez\bin\System.IO.Compression.FileSystem.dll
+G:\Avarez\Avarez\bin\System.Memory.dll
+G:\Avarez\Avarez\bin\System.Net.Http.Formatting.dll
+G:\Avarez\Avarez\bin\System.Net.Http.Json.dll
+G:\Avarez\Avarez\bin\System.Numerics.Vectors.dll
+G:\Avarez\Avarez\bin\System.Runtime.CompilerServices.Unsafe.dll
+G:\Avarez\Avarez\bin\System.Security.AccessControl.dll
+G:\Avarez\Avarez\bin\System.Security.Cryptography.Cng.dll
+G:\Avarez\Avarez\bin\System.Security.Principal.Windows.dll
+G:\Avarez\Avarez\bin\System.Text.Encodings.Web.dll
+G:\Avarez\Avarez\bin\System.Text.Json.dll
+G:\Avarez\Avarez\bin\System.Threading.Tasks.Extensions.dll
+G:\Avarez\Avarez\bin\System.ValueTuple.dll
+G:\Avarez\Avarez\bin\System.Web.Helpers.dll
+G:\Avarez\Avarez\bin\System.Web.Http.dll
+G:\Avarez\Avarez\bin\System.Web.Http.WebHost.dll
+G:\Avarez\Avarez\bin\System.Web.Mvc.dll
+G:\Avarez\Avarez\bin\System.Web.Razor.dll
+G:\Avarez\Avarez\bin\System.Web.WebPages.Deployment.dll
+G:\Avarez\Avarez\bin\System.Web.WebPages.dll
+G:\Avarez\Avarez\bin\System.Web.WebPages.Razor.dll
+G:\Avarez\Avarez\bin\TaxCollectData.Library.dll
+G:\Avarez\Avarez\bin\WebMatrix.Data.dll
+G:\Avarez\Avarez\bin\WebMatrix.WebData.dll
+G:\Avarez\Avarez\bin\Microsoft.SqlServer.Dmf.dll
+G:\Avarez\Avarez\bin\Microsoft.SqlServer.ServiceBrokerEnum.dll
+G:\Avarez\Avarez\bin\Microsoft.SqlServer.RegSvrEnum.dll
+G:\Avarez\Avarez\bin\Microsoft.VisualStudio.Shell.Interop.dll
+G:\Avarez\Avarez\bin\Microsoft.VisualStudio.OLE.Interop.dll
+G:\Avarez\Avarez\bin\Microsoft.VisualStudio.Shell.Interop.8.0.dll
+G:\Avarez\Avarez\bin\Microsoft.VisualStudio.ProjectAggregator.dll
+G:\Avarez\Avarez\bin\Microsoft.VisualStudio.TextManager.Interop.dll
+G:\Avarez\Avarez\bin\EnvDTE.dll
+G:\Avarez\Avarez\bin\Microsoft.VisualStudio.VSHelp.dll
+G:\Avarez\Avarez\bin\Microsoft.VisualStudio.TextManager.Interop.8.0.dll
+G:\Avarez\Avarez\bin\stdole.dll
+G:\Avarez\Avarez\bin\Microsoft.MSXML.dll
+G:\Avarez\Avarez\bin\EntityFramework.xml
+G:\Avarez\Avarez\bin\EntityFramework.SqlServer.xml
+G:\Avarez\Avarez\bin\JWT.pdb
+G:\Avarez\Avarez\bin\JWT.xml
+G:\Avarez\Avarez\bin\Microsoft.Bcl.AsyncInterfaces.xml
+G:\Avarez\Avarez\bin\Microsoft.Extensions.DependencyInjection.xml
+G:\Avarez\Avarez\bin\Microsoft.Extensions.DependencyInjection.Abstractions.xml
+G:\Avarez\Avarez\bin\Microsoft.Extensions.Http.xml
+G:\Avarez\Avarez\bin\Microsoft.Extensions.Logging.xml
+G:\Avarez\Avarez\bin\Microsoft.Extensions.Logging.Abstractions.xml
+G:\Avarez\Avarez\bin\Microsoft.Extensions.Options.xml
+G:\Avarez\Avarez\bin\Microsoft.Extensions.Primitives.xml
+G:\Avarez\Avarez\bin\Microsoft.VisualStudio.Threading.xml
+G:\Avarez\Avarez\bin\Microsoft.VisualStudio.Validation.xml
+G:\Avarez\Avarez\bin\Microsoft.Win32.Registry.xml
+G:\Avarez\Avarez\bin\Newtonsoft.Json.xml
+G:\Avarez\Avarez\bin\Pkcs11Interop.xml
+G:\Avarez\Avarez\bin\Pkcs11Interop.X509Store.xml
+G:\Avarez\Avarez\bin\RestSharp.xml
+G:\Avarez\Avarez\bin\System.Buffers.xml
+G:\Avarez\Avarez\bin\System.Diagnostics.DiagnosticSource.xml
+G:\Avarez\Avarez\bin\System.IO.Compression.FileSystem.xml
+G:\Avarez\Avarez\bin\System.Memory.xml
+G:\Avarez\Avarez\bin\System.Net.Http.Json.xml
+G:\Avarez\Avarez\bin\System.Numerics.Vectors.xml
+G:\Avarez\Avarez\bin\System.Runtime.CompilerServices.Unsafe.xml
+G:\Avarez\Avarez\bin\System.Security.AccessControl.xml
+G:\Avarez\Avarez\bin\System.Security.Cryptography.Cng.xml
+G:\Avarez\Avarez\bin\System.Security.Principal.Windows.xml
+G:\Avarez\Avarez\bin\System.Text.Encodings.Web.xml
+G:\Avarez\Avarez\bin\System.Text.Json.xml
+G:\Avarez\Avarez\bin\System.Threading.Tasks.Extensions.xml
+G:\Avarez\Avarez\bin\System.ValueTuple.xml
+G:\Avarez\Avarez\bin\System.Net.Http.Formatting.xml
+G:\Avarez\Avarez\bin\System.Web.Helpers.xml
+G:\Avarez\Avarez\bin\System.Web.Http.xml
+G:\Avarez\Avarez\bin\System.Web.Http.WebHost.xml
+G:\Avarez\Avarez\bin\System.Web.Mvc.xml
+G:\Avarez\Avarez\bin\System.Web.Razor.xml
+G:\Avarez\Avarez\bin\System.Web.WebPages.xml
+G:\Avarez\Avarez\bin\System.Web.WebPages.Deployment.xml
+G:\Avarez\Avarez\bin\System.Web.WebPages.Razor.xml
+G:\Avarez\Avarez\bin\WebMatrix.Data.xml
+G:\Avarez\Avarez\bin\Microsoft.Web.WebPages.OAuth.xml
+G:\Avarez\Avarez\bin\WebMatrix.WebData.xml
+G:\Avarez\Avarez\bin\cs\Microsoft.VisualStudio.Threading.resources.dll
+G:\Avarez\Avarez\bin\de\Microsoft.VisualStudio.Threading.resources.dll
+G:\Avarez\Avarez\bin\es\Microsoft.VisualStudio.Threading.resources.dll
+G:\Avarez\Avarez\bin\fr\Microsoft.VisualStudio.Threading.resources.dll
+G:\Avarez\Avarez\bin\it\Microsoft.VisualStudio.Threading.resources.dll
+G:\Avarez\Avarez\bin\ja\Microsoft.VisualStudio.Threading.resources.dll
+G:\Avarez\Avarez\bin\ko\Microsoft.VisualStudio.Threading.resources.dll
+G:\Avarez\Avarez\bin\pl\Microsoft.VisualStudio.Threading.resources.dll
+G:\Avarez\Avarez\bin\pt-BR\Microsoft.VisualStudio.Threading.resources.dll
+G:\Avarez\Avarez\bin\ru\Microsoft.VisualStudio.Threading.resources.dll
+G:\Avarez\Avarez\bin\tr\Microsoft.VisualStudio.Threading.resources.dll
+G:\Avarez\Avarez\bin\zh-Hans\Microsoft.VisualStudio.Threading.resources.dll
+G:\Avarez\Avarez\bin\zh-Hant\Microsoft.VisualStudio.Threading.resources.dll
+G:\Avarez\Avarez\bin\cs\Microsoft.VisualStudio.Validation.resources.dll
+G:\Avarez\Avarez\bin\de\Microsoft.VisualStudio.Validation.resources.dll
+G:\Avarez\Avarez\bin\es\Microsoft.VisualStudio.Validation.resources.dll
+G:\Avarez\Avarez\bin\fr\Microsoft.VisualStudio.Validation.resources.dll
+G:\Avarez\Avarez\bin\it\Microsoft.VisualStudio.Validation.resources.dll
+G:\Avarez\Avarez\bin\ja\Microsoft.VisualStudio.Validation.resources.dll
+G:\Avarez\Avarez\bin\ko\Microsoft.VisualStudio.Validation.resources.dll
+G:\Avarez\Avarez\bin\pl\Microsoft.VisualStudio.Validation.resources.dll
+G:\Avarez\Avarez\bin\pt-BR\Microsoft.VisualStudio.Validation.resources.dll
+G:\Avarez\Avarez\bin\ru\Microsoft.VisualStudio.Validation.resources.dll
+G:\Avarez\Avarez\bin\tr\Microsoft.VisualStudio.Validation.resources.dll
+G:\Avarez\Avarez\bin\zh-Hans\Microsoft.VisualStudio.Validation.resources.dll
+G:\Avarez\Avarez\bin\zh-Hant\Microsoft.VisualStudio.Validation.resources.dll
+G:\Avarez\Avarez\obj\Debug\Avarez.csproj.CopyComplete
+G:\Avarez\Avarez\obj\Debug\Avarez.dll
+G:\Avarez\Avarez\obj\Debug\Avarez.pdb
+G:\Avarez\Avarez\obj\Debug\Avarez.csprojAssemblyReference.cache

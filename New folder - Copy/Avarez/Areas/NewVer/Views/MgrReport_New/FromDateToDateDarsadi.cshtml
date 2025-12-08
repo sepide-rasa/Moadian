@@ -1,0 +1,141 @@
+﻿@using Ext.Net.MVC
+@using Hogaf.ExtNet.UX
+@using Ext.Net;
+@{
+    var X = Html.X();
+}
+
+
+@(Html.X().Panel().Border(false)//.Modal(true)
+       // .Listeners(l => l.AfterRender.Handler = "FormLoadDarsadi()")
+        //.Width(500)//.Height(300)
+        .Title("گزارش آماری(درصدی)")
+                 .ID("FromDateToDateDarsadi")
+    .Closable(true)
+    .CloseAction(Ext.Net.CloseAction.Destroy)
+    .Items(
+                X.TabPanel().Border(false).ID("FromDateToDateDarsadiTab")
+                .Items(
+
+                    X.Panel().Border(false).Title("گزارش آماری(درصدی)")
+                    .ButtonAlign(Ext.Net.Alignment.Center)
+                .DefaultButton("btn")
+            .TitleAlign(Ext.Net.TitleAlign.Center)
+                   .Buttons(X.Button().Text("چاپ").Icon(Ext.Net.Icon.Printer).Margin(10)
+                               .Listeners(l =>
+                               {
+                                   l.Click.Handler = "PrintDarsadi()";
+
+                               })
+                               .ItemID("btnSave")
+                                ,
+                                X.Button().Text("خروج").Icon(Ext.Net.Icon.DoorOut).ToolTip("کلید میانبر Esc")
+                                               .OnClientClick("App.FromDateToDateDarsadi.destroy()"))
+                .Items(
+
+                X.FieldSet().Border(false)
+                .Center()
+                .LayoutConfig(new Ext.Net.TableLayoutConfig { Columns = 4 })
+                .Defaults(new { Margin = 2 })
+                .Items(
+                        X.Label().Text("از تاریخ:")
+                    , X.PDateField()
+                        .ItemID("txtAzTarikh")
+                        .Width(160)
+                        .Editable(false)
+                        .MsgTarget(Ext.Net.MessageTarget.Side)
+                        .AllowBlank(false)
+                        .MaskRe("/[0-9,/]/")
+                        .BlankText("لطفا تاریخ را انتخاب نمایید.")
+                        .Listeners(l => l.Change.Handler = "AzTarikhDarsadi()")
+                        .Listeners(l => l.AfterRender.Handler = "setOnlyOneMonth6()")
+                        .LabelAlign(Ext.Net.LabelAlign.Top)
+                    , X.Label().Text("تا تاریخ:")
+                    , X.PDateField()
+                                .ItemID("txtTaTarikh")//.PaddingSpec("0 0 9px 0")
+                        .Width(160)
+                        .MsgTarget(Ext.Net.MessageTarget.Side)
+                        .AllowBlank(false)
+                        .Editable(false)
+                        .MaskRe("/[0-9,/]/")
+                        .BlankText("لطفا تاریخ را انتخاب نمایید.")
+                        .LabelAlign(Ext.Net.LabelAlign.Top)
+                            .Listeners(l => l.Change.Handler = "TaTarikhDarsadi()")
+                ).ColSpan(3)
+
+                       )
+                            .Layout(Ext.Net.LayoutType.VBox)
+                            .LayoutConfig(new Ext.Net.VBoxLayoutConfig { Align = Ext.Net.VBoxAlign.Center })
+                    )
+
+                )
+)
+
+
+<script type="text/javascript">
+    function setOnlyOneMonth5() {
+        if ('@ViewBag.StartDate' != "0") {
+            var txtAzTarikh = App.FromDateToDateDarsadi.queryById('txtAzTarikh');
+            txtAzTarikh.setMinValue(new Date('@ViewBag.StartDate'));
+        }
+    }
+    function AzTarikhDarsadi() {
+        var txtAzTarikh = App.FromDateToDateDarsadi.queryById('txtAzTarikh');
+        var txtTaTarikh = App.FromDateToDateDarsadi.queryById('txtTaTarikh');
+        txtTaTarikh.setMinValue(txtAzTarikh.getValue());
+        txtTaTarikh.minText = "تاریخ شروع نباید از تاریخ پایان بزرگتر باشد.";
+    }
+    function TaTarikhDarsadi() {
+        var txtAzTarikh = App.FromDateToDateDarsadi.queryById('txtAzTarikh');
+        var txtTaTarikh = App.FromDateToDateDarsadi.queryById('txtTaTarikh');
+        txtAzTarikh.setMaxValue(txtTaTarikh.getValue());
+        txtAzTarikh.maxText = "تاریخ شروع نباید از تاریخ پایان بزرگتر باشد.";
+    }
+    function PrintDarsadi() {
+        var txtAzTarikh = App.FromDateToDateDarsadi.queryById('txtAzTarikh');
+        var txtTaTarikh = App.FromDateToDateDarsadi.queryById('txtTaTarikh');
+        var er = false;
+        if (txtAzTarikh.validate() == false) {
+            er = true;
+        }
+        if (txtTaTarikh.validate() == false) {
+            er = true;
+        }
+        if (er == true)
+            return;
+
+            showBargozary();
+            Ext.net.DirectMethod.request({
+                url: '/NewVer/MgrReport_New/PrintPersentChart',
+                params: {
+                    containerId: "FromDateToDateDarsadiTab",
+                    SDate: txtAzTarikh.rawValue,
+                    EDate: txtTaTarikh.rawValue
+                },
+                success: function () {
+                    Ext.MessageBox.hide();
+                }
+            });
+
+    }
+    function showBargozary() {
+        Ext.MessageBox.show({
+            msg: 'لطفاً منتظر باشید',
+            progressText: 'در حال بارگذاری...',
+            width: 300,
+            wait: true,
+            waitConfig:
+            {
+                /*duration: 10000,*/
+                interval: 200,
+                /*increment: 15,*/
+                text: 'در حال بارگذاری...',
+                scope: this
+                /*fn: function () {
+                    Ext.MessageBox.hide();
+                    Ext.Msg.alert('Status', 'Saved successfully!');
+                }*/
+            }
+        });
+    }
+</script>

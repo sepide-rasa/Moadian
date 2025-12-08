@@ -1,0 +1,51 @@
+﻿@model IEnumerable<Avarez.Models.sp_CarFile_LogSelect2>
+@using Ext.Net.MVC
+@using Hogaf.ExtNet.UX
+@using Ext.Net;
+@{
+
+    var X = Html.X();
+}
+
+@(X.Window()
+    .Title("تاریخچه پرونده")
+    .Border(false)
+    .Modal(true)
+    .ID("CarFileLogRow")
+    .Width(800)
+    .Height(400)
+    .AutoScroll(true)
+    .Closable(true)
+    .CloseAction(Ext.Net.CloseAction.Destroy)
+    .Layout(LayoutType.Fit)
+    .Items(
+        X.GridPanel()
+            .AutoScroll(true)
+            .BottomBar(X.PagingToolbar())
+            .ItemID("GridCarFileLogRow")
+            .Store(
+                X.StoreForModel()
+                    .Proxy(Html.X().AjaxProxy()
+                        .Url(Url.Action("ReadLogsRow"))
+                        .Reader(Html.X().JsonReader().Root("data"))
+                        .ExtraParams(l => l.Add(new { id = ViewBag.id }))
+                            )
+                    .PageSize(15)
+                    .RemoteFilter(true)
+                    .RemotePaging(true)
+                        )
+                .ColumnModel(
+                    Html.X().Column().DataIndex(Model, m => m.fldLogID).Text("کد").Flex(2),//.Renderer("getDetailsOneLog"),
+                    Html.X().Column().DataIndex(Model, m => m.fldDatePlaque).Text("تاریخ پلاک").Flex(3),
+                    Html.X().Column().DataIndex(Model, m => m.fldDate).Text("تاریخ ایجاد").Flex(3),
+                    Html.X().Column().DataIndex(Model, m => m.fldCarPlaqueName).Text("پلاک خودرو").Flex(4),
+                    Html.X().Column().DataIndex(Model, m => m.fldUserID).Text("کاربر ایجاد کننده").Flex(6),
+                    Html.X().Column().DataIndex(Model, m => m.fldTypeLogName).Text("نوع تغییرات").Flex(3),
+                    Html.X().Column().DataIndex(Model, m => m.fldTime).Text("ساعت تغییرات").Flex(4)
+                        )
+            .SelectionModel(Html.X().RowSelectionModel().Mode(SelectionMode.Multi))
+        )
+)
+<script type="text/javascript">
+
+</script>

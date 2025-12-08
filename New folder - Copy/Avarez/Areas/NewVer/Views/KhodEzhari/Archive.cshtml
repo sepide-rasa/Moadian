@@ -1,0 +1,252 @@
+﻿@model List<Avarez.Models.sp_CarFileSelect>
+@using Ext.Net.MVC;
+@using Ext.Net;
+@using Hogaf.ExtNet.UX;
+@{
+    var X = Html.X();
+}
+@(Html.X().Window()
+    .Modal(true)
+    .Width(900)
+    .Height(400)
+        .Title("آرشیو پرونده ها ")
+        .ID("Archive")
+    .Closable(true)
+    .Border(false)
+    .CloseAction(Ext.Net.CloseAction.Destroy)
+    .Layout(Ext.Net.LayoutType.Fit)
+    .Items(
+        X.Panel()
+            .Border(false)
+                .Layout(Ext.Net.LayoutType.Fit)
+            .Items(
+                X.GridPanel()
+                        .ItemID("GridArchive")
+                    .Flex(2)
+                    //.BottomBar(X.PagingToolbar())
+                    .Listeners(l=>l.AfterRender.Handler="ReloadArchive()")
+                    .Store(
+                    
+                        X.StoreForModel()
+                //.Proxy(Html.X().AjaxProxy()
+                //        .Url(Url.Action("Read"))
+                //    .Reader(Html.X().JsonReader().Root("data"))
+                //)
+                        .PageSize(15)
+                        .RemoteFilter(true)
+                        .RemotePaging(true)
+
+                    )
+                    .View(
+                        Html.X().GridView().LoadingText("در حال بارگذاری...").RTL(true)
+                    )
+                    //.Plugins(X.FilterHeader().Remote(true))
+                        .SelectionModel(
+                            Html.X().RowSelectionModel()
+                                .Mode(SelectionMode.Single))
+                         .ColumnModel(
+                              Html.X().RowNumbererColumn(),
+                                    Html.X().Column().DataIndex(Model, m => m.fldID).Text("کد").Flex(2).Hidden(true),
+                                                Html.X().Column().DataIndex(Model, m => m.fldOwnerName).Text("نام مالک").Flex(5),
+                                                Html.X().Column().DataIndex(Model, m => m.fldPlaqueNumber).Text("شماره پلاک").Flex(4),
+                                                Html.X().Column().DataIndex(Model, m => m.fldMotorNumber).Text("شماره موتور").Flex(4),
+                                                Html.X().Column().DataIndex(Model, m => m.fldVIN).Text("VIN").Flex(5),
+                                                Html.X().Column().DataIndex(Model, m => m.fldShasiNumber).Text("شماره شاسی").Flex(5),
+                                                Html.X().Column().DataIndex(Model, m => m.fldAccept).Text("تائید").Hidden(true).Flex(1),
+                                                Html.X().Column().DataIndex(Model, m => m.fldCarID).Text("").Hidden(true).Flex(1),
+                                             //  Html.X().ImageCommandColumn().PrepareCommand("prepareCommandArchive")
+                                             //.Listeners(l => l.Command.Fn = "ShowInfoShareholder"), 
+                                    Html.X().CommandColumn().Flex(5).PrepareToolbar("disableMafasa").Listeners(ls => ls.Command.Fn = "ShowMafasa")
+                                            .Commands(
+                                                Html.X().GridCommand()
+                                                        .CommandName("BtnMafasa")
+                                                    .StandOut(true)
+                                                    .MinWidth(60)
+                                                    .Text("مفاصا")
+                                                    .ToolTip(tt => tt.Text = "مفاصا"),
+                                                        Html.X().GridCommand()
+                                                            .CommandName("BtnPardakhyt")
+                                                            .StandOut(true)
+                                                            .MinWidth(70)
+                                                            .Text("پرداخت آنلاین")
+                                                            .ToolTip(tt => tt.Text = "پرداخت آنلاین")
+                                            )
+                                                    /*, Html.X().CommandColumn().Flex(4).PrepareToolbar("disablePardakht").Listeners(ls => ls.Command.Handler = "ShowPardakht(record);")
+                                                .Commands(
+                                                    Html.X().GridCommand()                                                        
+                                                        .CommandName("BtnPardakhyt")
+                                                        .StandOut(true)
+                                                        .MinWidth(70)
+                                                        .Text("پرداخت آنلاین")
+                                                        .ToolTip(tt => tt.Text = "پرداخت آنلاین")
+                                                )*/
+
+                        )
+
+            )
+        )
+)
+
+<script type="text/javascript">
+    var Mablagh = 0;
+    var fldFine;
+    var fldValueAddPrice;
+    var fldPrice;
+    var Years;
+    var Bed;
+    var fldOtherPrice;
+    var fldMainDiscount;
+    var fldFineDiscount;
+    var fldValueAddDiscount;
+    var fldOtherDiscount;
+
+    var disablePardakht = function (grid, toolbar, rowIndex, record) {
+        var Button = toolbar.items.get(0);
+        Ext.net.DirectMethod.request({
+            url: '/NewVer/KhodEzhari/calc',
+            params: {
+                carid: record.data.fldCarID
+            },
+            success: function (data) {
+
+                if (data.State == 2) {
+                    Ext.net.DirectMethod.request({
+                        url: '/NewVer/KhodEzhari/SendToSupporter',
+                        params: {
+                            msg: data.msg,
+                            Year: data.Year,
+                            CarClassId: 0,
+                            carid: record.data.fldCarID
+                        },
+                        success: function (data) {
+
+                            /*   Ext.MessageBox.show({
+                                   title: "هشدار",
+                                   msg: data.msg,
+                                   icon: Ext.MessageBox.INFO,
+                                   buttons: Ext.MessageBox.OK*/
+                        }
+                    });
+                    Years = data.Year;
+                }
+                else {
+                    Mablagh = data.mablagh;
+                    barcode = data.barcode;
+                    if (data.mablagh == 0)
+                        Button.setDisabled(true);
+
+                    fldFine = data.fldFine;
+                    fldValueAddPrice = data.fldValueAddPrice;
+                    fldPrice = data.fldPrice;
+                    Years = data.Years;
+                    Bed = data.Bed;
+                    fldOtherPrice = data.fldOtherPrice;
+                    fldMainDiscount = data.fldMainDiscount;
+                    fldFineDiscount = data.fldFineDiscount;
+                    fldValueAddDiscount = data.fldValueAddDiscount;
+                    fldOtherDiscount = data.fldOtherDiscount;
+
+                    if (data.msg != '') {
+                        Ext.net.DirectMethod.request({
+                            url: '/NewVer/KhodEzhari/SendToSupporter',
+                            params: {
+                                msg: data.msg,
+                                Year: data.Year,
+                                CarClassId: 0,
+                                carid: record.data.fldCarID
+                            },
+                            success: function (data) {
+                                /*  Ext.MessageBox.show({
+                                      title: "هشدار",
+                                      msg: data.msg,
+                                      icon: Ext.MessageBox.INFO,
+                                      buttons: Ext.MessageBox.OK
+                                  });*/
+                            }
+                        });
+                    }
+                }
+            }
+        });
+
+
+
+    };
+
+    function ReloadArchive() {
+        Ext.net.DirectMethod.request({
+            url: '/NewVer/KhodEzhari/ReloadArchive',
+            success: function (data) {
+                App.Archive.queryById('GridArchive').getStore().loadData(data);
+            }
+        });
+    }
+
+    var disableMafasa = function (grid, toolbar, rowIndex, record) {
+        App.Archive.body.mask("در حال بارگذاری...");
+        var Button1 = toolbar.items.get(0);
+        var Button2 = toolbar.items.get(1);
+
+        Ext.net.DirectMethod.request({
+            url: '/NewVer/KhodEzhari_OnlinePay/calc',
+            params: {
+                carid: record.data.fldCarID,
+                carFileid: record.data.fldID
+            },
+            success: function (data) {
+                if (data.Msg != "") {
+                    /*Ext.MessageBox.show({
+                        title: "خطا",
+                        msg: data.Msg,
+                        icon: Ext.MessageBox.ERROR,
+                        buttons: Ext.MessageBox.OK
+                    });*/
+                    Button1.setDisabled(true);
+                    Button2.setDisabled(false);
+
+                    if (rowIndex == grid.store.count() - 1) {
+                        App.Archive.body.mask().hide();
+                    }
+                }
+                else {
+                    if (data.mablagh <= 10000) {
+                        Button1.setDisabled(false);
+                        Button2.setDisabled(true);
+                        if (data.DisableMafasa == 1)
+                            Button1.setDisabled(true);
+                    }
+                    else {
+                        Button1.setDisabled(true);
+                        Button2.setDisabled(false);
+                    }
+                    if (rowIndex == grid.store.count() - 1) {
+                        App.Archive.body.mask().hide();
+                    }
+                }
+                
+            }
+        });
+    };
+
+    function ShowMafasa(grid, command,record) {
+        if (command == "BtnPardakhyt") {
+            Ext.net.DirectMethod.request({
+                url: '/NewVer/KhodEzhari/Pardakht',
+                params: {
+                    CarID: record.data.fldCarID,
+                    CarFileID: record.data.fldID,
+                }
+            });
+        }
+        else if (command == "BtnMafasa") {
+            Ext.net.DirectMethod.request({
+                url: '/NewVer/KhodEzhari/ShowMafasa',
+                params: {
+                    CarId: record.data.fldCarID
+                }
+            });
+        }
+    }
+</script>
+
+

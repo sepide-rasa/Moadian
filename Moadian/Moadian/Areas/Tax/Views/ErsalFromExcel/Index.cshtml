@@ -1,0 +1,368 @@
+﻿@model IEnumerable<Avarez.Areas.Tax.Models.prs_tblSooratHesab_HeaderSelect>
+@using Ext.Net.MVC
+@using Hogaf.ExtNet.UX
+@using Ext.Net;
+@using Ext.Net.Utilities;
+@{
+    var X = Html.X();
+}
+
+<script>
+    var template = '<img src={0} alt="" onclick={2} onmouseover="" style="{3}" title={1} />';
+
+    var ColorRatingg = function (value) {
+         var Pic = "@Url.Content("~/Content/bullet_gray.png")";
+        var ToolTip = "ارسال"+'&nbsp;'+"نشده";
+        if (value == 1) {
+            var Pic = "@Url.Content("~/Content/bullet_green1.png")";
+            var ToolTip = "ارسال"+'&nbsp;'+"موفق";
+            var m = "cursor: pointer;";
+            var f = "Showstatus(" + String(record.record.data.fldId) + ");";
+
+            return Ext.String.format(template, Pic, ToolTip,f,m);
+        }
+        if (value == 2) {
+            var Pic = "@Url.Content("~/Content/bullet_yellow.png")";
+            var ToolTip = "هشدار";
+            var m = "cursor: pointer;";
+            var f = "Showstatus(" + String(record.record.data.fldId) + ");";
+
+            return Ext.String.format(template, Pic, ToolTip,f,m);
+        }
+        else if(value == 3) {
+            var Pic = "@Url.Content("~/Content/bullet_red1.png")";
+            var ToolTip = "خطا";
+            var m = "cursor: pointer;";
+            var f = "Showstatus(" + String(record.record.data.fldId) + ");";
+
+            return Ext.String.format(template, Pic, ToolTip,f,m);
+        }
+        else if(value == 4) {
+            var Pic = "@Url.Content("~/Content/bullet_yellow.png")";
+            var ToolTip = "عدم دریافت پاسخ";
+            var m = "cursor: pointer;";
+            var f = "Showstatus(" + String(record.record.data.fldId) + ");";
+
+            return Ext.String.format(template, Pic, ToolTip,f,m);
+        }
+        else
+        return Ext.String.format(template, Pic, ToolTip);
+    };
+</script>
+@(X.Window().Maximized(true)
+                .ID("ErsalFromExcel")
+            .Closable(true)
+            //.Listeners(l => l.AfterRender.Handler = "App.GridErsalFromExcel.setHeight(Ext.getBody().getViewSize().height-70);")
+            .Height(500)
+                .Title("ارسال به مودیان")
+            .AutoScroll(true)
+            .CloseAction(Ext.Net.CloseAction.Destroy)
+        .Layout(Ext.Net.LayoutType.Fit)
+            .Items(
+    
+                X.FieldSet().Border(false)
+                
+            .Layout(Ext.Net.LayoutType.VBox)
+            .LayoutConfig(new Ext.Net.VBoxLayoutConfig { Align = Ext.Net.VBoxAlign.Center })
+            .Items(
+                X.FormPanel().Border(false)
+                
+            .Layout(Ext.Net.LayoutType.HBox)
+            .LayoutConfig(new Ext.Net.HBoxLayoutConfig { Align = Ext.Net.HBoxAlign.Middle })
+                    .Defaults(new { Margin = 5 })
+                .Items(
+
+                    X.Label("الگو فایل اکسل:"),
+                                X.ComboBox()
+                                    .ItemID("CboTemp")
+                                    .Width(200)
+                                    .EmptyText("...")
+                                    .AllowBlank(false)
+                                    .BlankText("لطفا الگو را انتخاب نمایید.")
+                                    .TypeAhead(true)
+                                    .Editable(false)
+                                    .QueryMode(DataLoadMode.Local)
+                                    .ForceSelection(true)
+                                    .TriggerAction(TriggerAction.All)
+                                    .DisplayField("fldName")
+                                    .ValueField("ID")
+                                    //.Listeners(l => l.Change.Handler = "ShowHideTXT()")
+                                    .Store(
+                                        X.Store()
+                                                .Listeners(l => l.Load.Handler = "setDefaultTemp();")
+                                            .Model(X.Model()
+                                            .IDProperty("ID")
+                                            .Fields(
+                                                new ModelField("ID", ModelFieldType.String) { Mapping = "ID" },
+                                                new ModelField("fldName", ModelFieldType.String) { Mapping = "fldName" })
+                                            )
+         .Proxy(X.AjaxProxy()
+                                                .Url(Url.Action("GetTemp"))
+                                                .Reader(X.JsonReader().Root("data"))
+                                            )
+                                        )
+                                    ,
+              X.FileUploadField()
+                    .FieldStyle("direction:ltr;")
+                .ID("FileUploadField1")
+                .ButtonOnly(true).ButtonText("انتخاب فایل اکسل")
+                .DirectEvents(l =>
+                {
+                    l.Change.Action = "Upload";
+                    l.Change.Success = "hideprogress();";
+                })
+                .Listeners(l => l.Change.Fn = "showFile")
+
+                            , X.Container().Content(@<center><div id="fi-button-msg" style="display:none; width:210px;height:25px"></div></center>)
+
+)
+,
+
+  X.Panel()
+                .Border(false).Width(500)
+                .ID("pnlGrid")
+                .AutoScroll(true)
+            .Layout(Ext.Net.LayoutType.Fit)
+                    .Listeners(l => l.AfterRender.Handler = "App.pnlGrid.setSize(Ext.getBody().getViewSize().width-40,Ext.getBody().getViewSize().height-80);")
+                .Items(
+X.GridPanel().AutoScroll(true)
+//.TopBar(
+//Html.X().Toolbar()
+//.Items(
+///*X.ComboBox()
+//                 .ItemID("CboType")
+//             .Editable(false)
+//             .TypeAhead(true)
+//              .Width(200)
+//                 .BlankText("...")
+//             .QueryMode(DataLoadMode.Local)
+//             .TriggerAction(TriggerAction.All)
+//             .Items(
+//                     new ListItem("ارسال نشده ها", "0"),
+//                     new ListItem("دارای هشدار", "2"),
+//                     new ListItem("دارای خطا", "3"),
+//                     new ListItem("ارسال شده ها", "1")
+
+//                                         )
+//              .SelectedItems(new { Value = "0" })
+//                  .Listeners(l => { l.Select.Handler = "ChangeType()";
+//               })
+//,*/
+//X.Button().Text("ارسال به مودیان").Icon(Ext.Net.Icon.EmailGo)
+//.Listeners(li => li.Click.Handler = "SendMsg();")
+//)
+//)
+.ItemID("GridErsalFromExcel").Flex(2)
+// .BottomBar(X.PagingToolbar())
+//.Height(600).Width(800)
+//.ColumnWidth(0.6)
+//.Layout(Ext.Net.LayoutType.Column)
+.Store(
+//X.StoreForModel()
+X.StoreForModel()
+.AutoLoad(false)
+.Proxy(Html.X().AjaxProxy()
+
+//.Url(Url.Action("Read"))
+.Reader(Html.X().JsonReader().Root("data"))
+
+)
+.PageSize(2000)
+.RemoteFilter(true)
+.RemotePaging(true)
+// .Listeners(l => l.DataChanged.Handler = "var grid=App.ErsalFromExcel.queryById('GridErsalFromExcel');grid.setHeight(App.ErsalFromExcel.height-500);App.ErsalFromExcel.queryById('GridErsalFromExcel').selModel.refresh();")
+)
+.View(
+Html.X().GridView().LoadingText("در حال بارگذاری...").RTL(true)
+)
+//  .Plugins(X.FilterHeader().Remote(true))
+.ColumnModel(
+Html.X().RowNumbererColumn(),
+Html.X().Column().DataIndex(Model, m => m.fldId).Text("کد").Flex(1).Hidden(true),
+//Html.X().Column().DataIndex(Model, m => m.fldStatus).Text("وضعیت ارسال").Flex(1).Renderer("ColorRatingg").Filterable(false),,
+Html.X().Column().DataIndex(Model, m => m.fldStatusName).Text("وضعیت ارسال").Flex(2),
+Html.X().ImageCommandColumn().Listeners(l => l.Command.Handler = "SendAgain(record);")
+                              .Flex(1).Commands(Html.X().ImageCommand().Icon(Ext.Net.Icon.Reload).ToolTip(tt => tt.Text = "ارسال مجدد")
+                          ),
+Html.X().Column().DataIndex(Model, m => m.fldIndatim).Text("تاریخ").Flex(3),
+Html.X().Column().DataIndex(Model, m => m.fldTypeSooratHesab).Text("نوع").Flex(3),
+Html.X().Column().DataIndex(Model, m => m.fldSubject).Text("موضوع").Flex(3),
+Html.X().Column().DataIndex(Model, m => m.fldf_Name).Text("فروشنده").Flex(3),
+Html.X().Column().DataIndex(Model, m => m.fldf_NationalCode).Text("شناسه ملی فروشنده").Flex(3),
+Html.X().Column().DataIndex(Model, m => m.fldkh_name).Text("خریدار").Flex(3),
+Html.X().Column().DataIndex(Model, m => m.fldkh_fldNationalCode).Text("شناسه ملی خریدار").Flex(3),
+                        Html.X().Column().DataIndex(Model, m => m.SumSooratHesab).Text("مجموع صورتحساب").Flex(3),
+                        Html.X().Column().DataIndex(Model, m => m.fldShomareFish).Text("شماره فیش").Flex(3)
+)
+
+
+)
+)
+
+)
+)
+
+
+<script type="text/javascript">
+
+    var fileId = 0;
+    var Mojaz = 0;
+    var sizee = 0;
+    var EndUpload = false;
+    var AllHeaderIds = "";
+
+    var Check = setInterval(CheckEnd, 1000);
+
+    function Showstatus(HeaderId) {
+         Ext.net.Mask.show({ msg: 'در حال بارگذاری...' });
+            Ext.net.DirectMethod.request({
+                url: '/Tax/SooratHesab/ShowstatusWin',
+                params: {
+                    HeaderId: HeaderId
+                },
+                success: function (data) {
+        
+                    Ext.net.Mask.hide();
+                }
+            });
+    }
+    function SendAgain(record) {
+        if (record.data.fldStatus != 1 && record.data.fldStatus != 2) {
+            Ext.net.Mask.show({ msg: 'در حال بارگذاری...' });
+            Ext.net.DirectMethod.request({
+                url: '/Tax/ErsalFromExcel/CheckErsal',
+                params: {
+                    HeaderIds: record.data.fldId,
+                    AllHeaderIds:AllHeaderIds
+                },
+                success: function (data) {
+        
+                    App.ErsalFromExcel.queryById("GridErsalFromExcel").getStore().loadData(data);
+                    Ext.net.Mask.hide();
+                }
+            });
+        }
+        else {
+            Ext.MessageBox.show({
+                title: 'هشدار',
+                msg: 'صورتحساب موردنظر قبلا ارسال شده است.',
+                icon: Ext.MessageBox.INFO,
+                buttons: Ext.MessageBox.OK
+            });
+        }
+
+    }
+    function setDefaultTemp() {
+            App.ErsalFromExcel.queryById("CboTemp").setValue(App.ErsalFromExcel.queryById("CboTemp").store.getAt(0));
+
+    }
+    function CheckEnd() {
+        if (EndUpload == true) {
+            Ext.MessageBox.hide();
+            /* Ext.Msg.alert('عملیات موفق', 'فایل با موفقیت آپلود شد.');*/
+
+            Ext.MessageBox.show({
+                title: 'عملیات موفق',
+                msg: 'فایل با موفقیت آپلود شد.تایید جهت ارسال به سامانه مودیان',
+                icon: Ext.MessageBox.INFO,
+                buttons: Ext.MessageBox.OK,
+                fn: function (btn) {
+                    if (btn == 'ok') {
+                        ReloadGrid();
+                    }
+                }
+            });
+            clearInterval(CheckEnd);
+            EndUpload = false;
+        }
+    }
+    var showFile = function (fb, v) {
+        var id = fb.fileInputEl.dom.id;
+        var el = Ext.get('fi-button-msg');
+        if (v) {
+            showProgressBar();
+            if (v.split('.').pop().toLowerCase() == "xlsx") {
+                Mojaz = 1;
+                if (document.getElementById(id).files[0].size <= 1024000000) {
+                    sizee = 1;
+                }
+                if (sizee == 1) {
+                    el.update('<b>فایل انتخاب شده:</b> ' + v);
+                }
+                else {
+                    el.update("");
+                }
+
+                if (!el.isVisible()) {
+                    el.slideIn('t', {
+                        duration: .2,
+                        easing: 'easeIn',
+                        callback: function () {
+                            el.highlight();
+                        }
+                    });
+                } else {
+                    el.highlight();
+                }
+            }
+            else {
+                el.update("");
+            }
+        }
+    };
+    
+    function hideprogress() {
+        if (Mojaz == 1 && sizee == 1) {
+            EndUpload = true;
+        }
+        Mojaz = 0;
+        sizee = 0;
+        /* ReloadGrid();*/
+    }
+
+    function showProgressBar() {
+        Ext.MessageBox.show({
+            msg: 'لطفاً منتظر باشید',
+            progressText: 'در حال آپلود فایل...',
+            width: 300,
+            wait: true,
+            waitConfig:
+            {
+                interval: 200,
+                text: 'در حال آپلود فایل...',
+                scope: this
+            }
+        });
+    }
+
+    function ReloadGrid() {
+    /* var CboType = App.ErsalFromExcel.queryById("CboType");*/
+        var CboTemp=App.ErsalFromExcel.queryById("CboTemp");
+      
+
+        Ext.net.Mask.show({ msg: 'در حال بارگذاری...' });
+        Ext.net.DirectMethod.request({
+            url: '/Tax/ErsalFromExcel/ReloadRecords',
+            params: {
+                TempalteId:CboTemp.getValue()
+               /* TypeShow: CboType.getValue()*/
+            },
+            success: function (data) {
+                AllHeaderIds = data.HeaderIds;
+                    App.ErsalFromExcel.queryById("GridErsalFromExcel").getStore().loadData(data.Records);
+
+                Ext.net.Mask.hide();
+            }
+        });
+    }
+     function test() {
+        Ext.net.Mask.show({ msg: 'در حال بارگذاری...' });
+        Ext.net.DirectMethod.request({
+            url: '/Tax/TestErsal/Index',
+            success: function () {
+
+                Ext.net.Mask.hide();
+            }
+        });
+    }
+</script>

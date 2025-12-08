@@ -1,0 +1,111 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Report ScriptLanguage="CSharp" ReportInfo.Created="11/15/2014 08:07:19" ReportInfo.Modified="12/22/2021 10:04:05" ReportInfo.CreatorVersion="2015.1.2.0">
+  <Dictionary>
+    <TableDataSource Name="sp_RptMonthlyChart" ReferenceName="CarTaxDataSet.sp_RptMonthlyChart" DataType="System.Int32" Enabled="true">
+      <Column Name="fldPrice" DataType="System.Int64"/>
+      <Column Name="fldMonth" DataType="System.String"/>
+    </TableDataSource>
+    <TableDataSource Name="sp_PictureSelect" ReferenceName="CarTaxDataSet.sp_PictureSelect" DataType="System.Int32" Enabled="true">
+      <Column Name="fldID" DataType="System.Int32"/>
+      <Column Name="fldPic" DataType="System.Byte[]" BindableControl="Picture"/>
+      <Column Name="fldMunicipalityPic" DataType="System.String"/>
+      <Column Name="fldMunicipalityPicID" DataType="System.Int32"/>
+      <Column Name="fldBankPic" DataType="System.String"/>
+      <Column Name="fldBankPicID" DataType="System.Int32"/>
+      <Column Name="fldUserPic" DataType="System.String"/>
+      <Column Name="fldUserPicID" DataType="System.Int64"/>
+      <Column Name="fldUserName" DataType="System.String"/>
+      <Column Name="fldUserID" DataType="System.Int64"/>
+      <Column Name="fldDesc" DataType="System.String"/>
+      <Column Name="fldDate" DataType="System.String"/>
+    </TableDataSource>
+    <Parameter Name="sal" DataType="System.String"/>
+    <Parameter Name="date" DataType="System.String"/>
+    <Parameter Name="time" DataType="System.String"/>
+    <Parameter Name="StateName" DataType="System.String"/>
+    <Parameter Name="MunicipalityName" DataType="System.String"/>
+    <Parameter Name="AreaName" DataType="System.String"/>
+    <Parameter Name="OfficeName" DataType="System.String"/>
+    <Parameter Name="MyTablighat" DataType="System.String"/>
+  </Dictionary>
+  <ReportPage Name="Page1" Landscape="true" PaperWidth="297" PaperHeight="210" RawPaperSize="9" FirstPageSource="15" OtherPagesSource="15">
+    <ReportTitleBand Name="ReportTitle1" Width="1047.06"/>
+    <PageHeaderBand Name="PageHeader1" Top="3.23" Width="1047.06" Height="116.82">
+      <TableObject Name="Table3" Left="24.95" Width="997.17" Height="99.81">
+        <TableColumn Name="Column59" Width="262.14"/>
+        <TableColumn Name="Column60" Width="481.04"/>
+        <TableColumn Name="Column61" Width="253.99"/>
+        <TableRow Name="Row4" Height="99.81">
+          <TableCell Name="Cell59" Text="تاریخ چاپ :[date]&#13;&#10;ساعت چاپ:[time]&#13;&#10;صفحه:[Page#] از [TotalPages#]" VertAlign="Center" RightToLeft="true" Font="RasaFont, 12pt"/>
+          <TableCell Name="Cell60" Text="[StateName]&#13;&#10;[MunicipalityName]&#13;&#10;[AreaName]&#13;&#10;[OfficeName]" HorzAlign="Center" VertAlign="Center" RightToLeft="true" Font="RasaFont, 12pt, style=Bold">
+            <TextObject Name="Text1" Left="128.43" Top="90.78" Width="227.83" Height="24.56" Text="گزارش تفکیکی در آمد به ماه و سال" HorzAlign="Center" VertAlign="Center" RightToLeft="true" Font="RasaFont, 12pt, style=Bold"/>
+          </TableCell>
+          <TableCell Name="Cell61" HorzAlign="Right" VertAlign="Center" Font="RasaFont, 10pt">
+            <PictureObject Name="Picture1" Left="89.78" Top="12.28" Width="75.6" Height="75.6" DataColumn="sp_PictureSelect.fldPic"/>
+          </TableCell>
+        </TableRow>
+      </TableObject>
+    </PageHeaderBand>
+    <DataBand Name="Data1" Top="123.27" Width="1047.06" Height="77.13">
+      <MatrixObject Name="Matrix1" Width="142.07" Height="72.6" FixedRows="1" FixedColumns="1" Layout="Wrapped" DataSource="sp_RptMonthlyChart">
+        <MatrixColumns>
+          <Header Expression="[sp_RptMonthlyChart.fldMonth]"/>
+        </MatrixColumns>
+        <MatrixRows>
+          <Header Expression="[sal]"/>
+        </MatrixRows>
+        <MatrixCells>
+          <Cell Expression="[sp_RptMonthlyChart.fldPrice]"/>
+        </MatrixCells>
+        <TableColumn Name="Column65" Width="37.81" AutoSize="true"/>
+        <TableColumn Name="Column66" Width="75.76" AutoSize="true"/>
+        <TableColumn Name="Column67" Width="28.5" AutoSize="true"/>
+        <TableRow Name="Row6" Height="24.2" AutoSize="true">
+          <TableCell Name="Cell65" Border.Lines="All" Text="سال" HorzAlign="Center" VertAlign="Center" Font="RasaFont, 10pt, style=Bold"/>
+          <TableCell Name="Cell66" Border.Lines="All" Text="[fldMonth]" HorzAlign="Center" VertAlign="Center" Font="RasaFont, 10pt, style=Bold"/>
+          <TableCell Name="Cell71" Border.Lines="All" Text="جمع" HorzAlign="Center" VertAlign="Center" Font="RasaFont, 10pt, style=Bold"/>
+        </TableRow>
+        <TableRow Name="Row7" Height="24.2" AutoSize="true">
+          <TableCell Name="Cell67" Border.Lines="All" Text="[sal]" HorzAlign="Center" VertAlign="Center" Font="RasaFont, 10pt, style=Bold"/>
+          <TableCell Name="Cell68" Border.Lines="All" Text="[fldPrice]" Format="Number" Format.UseLocale="false" Format.DecimalDigits="0" Format.DecimalSeparator="." Format.GroupSeparator="," Format.NegativePattern="1" HorzAlign="Right" VertAlign="Center" Font="RasaFont, 10pt, style=Bold"/>
+          <TableCell Name="Cell72" Border.Lines="All" Format="Number" Format.UseLocale="false" Format.DecimalDigits="0" Format.DecimalSeparator="." Format.GroupSeparator="," Format.NegativePattern="1" HorzAlign="Right" VertAlign="Center" Font="RasaFont, 10pt, style=Bold"/>
+        </TableRow>
+        <TableRow Name="Row8" Height="24.2" AutoSize="true">
+          <TableCell Name="Cell69" Border.Lines="All" Text="جمع" HorzAlign="Center" VertAlign="Center" Font="RasaFont, 10pt, style=Bold"/>
+          <TableCell Name="Cell70" Border.Lines="All" Format="Number" Format.UseLocale="false" Format.DecimalDigits="0" Format.DecimalSeparator="." Format.GroupSeparator="," Format.NegativePattern="1" HorzAlign="Right" VertAlign="Center" Font="RasaFont, 10pt, style=Bold"/>
+          <TableCell Name="Cell73" Border.Lines="All" Format="Number" Format.UseLocale="false" Format.DecimalDigits="0" Format.DecimalSeparator="." Format.GroupSeparator="," Format.NegativePattern="1" HorzAlign="Right" VertAlign="Center" Font="RasaFont, 10pt, style=Bold"/>
+        </TableRow>
+      </MatrixObject>
+    </DataBand>
+    <PageFooterBand Name="PageFooter1" Top="203.63" Width="1047.06" Height="29.28" CanGrow="true">
+      <TextObject Name="Text3" Left="40.62" Top="4.72" Width="909.12" Height="22.67" CanGrow="true" GrowToBottom="true" Text="[MyTablighat]" VertAlign="Center" RightToLeft="true" Font="RasaFont, 12pt, style=Bold"/>
+    </PageFooterBand>
+  </ReportPage>
+  <ReportPage Name="Page2" Landscape="true" PaperWidth="297" PaperHeight="210" RawPaperSize="9" FirstPageSource="15" OtherPagesSource="15">
+    <ReportTitleBand Name="ReportTitle2" Width="1047.06"/>
+    <PageHeaderBand Name="PageHeader2" Top="4" Width="1047.06" Height="79.96">
+      <TableObject Name="Table4" Left="24.95" Top="-1.89" Width="997.17" Height="81.85">
+        <TableColumn Name="Column62" Width="262.14"/>
+        <TableColumn Name="Column63" Width="481.04"/>
+        <TableColumn Name="Column64" Width="253.99"/>
+        <TableRow Name="Row5" Height="81.85">
+          <TableCell Name="Cell62" Text="تاریخ چاپ :[date]&#13;&#10;ساعت چاپ:[time]&#13;&#10;صفحه:[Page#] از [TotalPages#]" VertAlign="Center" RightToLeft="true" Font="RasaFont, 12pt"/>
+          <TableCell Name="Cell63" HorzAlign="Center" VertAlign="Center" RightToLeft="true" Font="RasaFont, 12pt">
+            <TextObject Name="Text2" Left="131.28" Top="36.88" Width="227.83" Height="24.56" Text="گزارش تفکیکی در آمد به ماه و سال" HorzAlign="Center" VertAlign="Center" RightToLeft="true" Font="RasaFont, 12pt, style=Bold"/>
+          </TableCell>
+          <TableCell Name="Cell64" HorzAlign="Right" VertAlign="Center" Font="RasaFont, 10pt">
+            <PictureObject Name="Picture2" Left="89.78" Top="2.83" Width="75.6" Height="75.6" DataColumn="sp_PictureSelect.fldPic"/>
+          </TableCell>
+        </TableRow>
+      </TableObject>
+    </PageHeaderBand>
+    <DataBand Name="Data2" Top="87.96" Width="1047.06" Height="558.54">
+      <MSChartObject Name="MSChart1" Left="4.76" Top="2.89" Width="1035.73" Height="555.65" DataSource="sp_RptMonthlyChart" AutoSeriesColumn="" ChartData="PENoYXJ0IFBhbGV0dGU9IlNlYUdyZWVuIiBCYWNrQ29sb3I9IjIwMCwgMjE1LCAyMDAiIEJvcmRlcmxpbmVDb2xvcj0iTGlnaHRTbGF0ZUdyYXkiIEJvcmRlcmxpbmVEYXNoU3R5bGU9IlNvbGlkIj4NCiAgPFNlcmllcz4NCiAgICA8U2VyaWVzIE5hbWU9IltzYWxdIiBMZWdlbmQ9IkRlZmF1bHQiIFhWYWx1ZVR5cGU9IlN0cmluZyIgWVZhbHVlVHlwZT0iRG91YmxlIiBDaGFydEFyZWE9IkRlZmF1bHQiIExhYmVsPSIjVkFMWSIgRm9udD0iQiBaYXIsIDkuNzVwdCwgR2RpQ2hhclNldD0xNzgiIEN1c3RvbVByb3BlcnRpZXM9IkRyYXdpbmdTdHlsZT1DeWxpbmRlciI+DQogICAgICA8UG9pbnRzPg0KICAgICAgICA8RGF0YVBvaW50IFlWYWx1ZXM9IjEiIEF4aXNMYWJlbD0iQSIgLz4NCiAgICAgICAgPERhdGFQb2ludCBZVmFsdWVzPSIyIiBBeGlzTGFiZWw9IkIiIC8+DQogICAgICA8L1BvaW50cz4NCiAgICA8L1Nlcmllcz4NCiAgPC9TZXJpZXM+DQogIDxMZWdlbmRzPg0KICAgIDxMZWdlbmQgTmFtZT0iRGVmYXVsdCIgRW5hYmxlZD0iRmFsc2UiIEJhY2tDb2xvcj0iMjM3LCAyNDQsIDI0NyIgQm9yZGVyQ29sb3I9IkxpZ2h0U2xhdGVHcmF5Ij4NCiAgICA8L0xlZ2VuZD4NCiAgPC9MZWdlbmRzPg0KICA8VGl0bGVzPg0KICAgIDxUaXRsZSBOYW1lPSJUaXRsZTEiIFZpc2libGU9IkZhbHNlIj4NCiAgICA8L1RpdGxlPg0KICA8L1RpdGxlcz4NCiAgPENoYXJ0QXJlYXM+DQogICAgPENoYXJ0QXJlYSBOYW1lPSJEZWZhdWx0IiBCYWNrQ29sb3I9IjIyMCwgMjM1LCAyMjAiIEJhY2tTZWNvbmRhcnlDb2xvcj0iMjM3LCAyMzcsIDI0NyIgU2hhZG93T2Zmc2V0PSIxIiBCb3JkZXJDb2xvcj0iTGlnaHRTbGF0ZUdyYXkiIEJvcmRlckRhc2hTdHlsZT0iU29saWQiPg0KICAgICAgPEF4aXNZIElzTGFiZWxBdXRvRml0PSJGYWxzZSI+DQogICAgICAgIDxNYWpvckdyaWQgTGluZUNvbG9yPSIxMDAsIDAsIDAsIDAiIExpbmVEYXNoU3R5bGU9IkRhc2giIC8+DQogICAgICAgIDxNaW5vckdyaWQgTGluZUNvbG9yPSIyNSwgMCwgMCwgMCIgLz4NCiAgICAgICAgPExhYmVsU3R5bGUgRm9udD0iVGFob21hLCA4cHQiIC8+DQogICAgICA8L0F4aXNZPg0KICAgICAgPEF4aXNYIElzTGFiZWxBdXRvRml0PSJGYWxzZSIgVGl0bGVGb250PSJCIFphciwgOS43NXB0LCBHZGlDaGFyU2V0PTE3OCI+DQogICAgICAgIDxNYWpvckdyaWQgTGluZUNvbG9yPSIxMDAsIDAsIDAsIDAiIExpbmVEYXNoU3R5bGU9IkRhc2giIC8+DQogICAgICAgIDxNaW5vckdyaWQgTGluZUNvbG9yPSIyNSwgMCwgMCwgMCIgLz4NCiAgICAgICAgPExhYmVsU3R5bGUgRm9udD0iQiBaYXIsIDguMjVwdCwgR2RpQ2hhclNldD0xNzgiIC8+DQogICAgICA8L0F4aXNYPg0KICAgICAgPEF4aXNYMiBJc0xhYmVsQXV0b0ZpdD0iRmFsc2UiPg0KICAgICAgPC9BeGlzWDI+DQogICAgICA8QXhpc1kyIElzTGFiZWxBdXRvRml0PSJGYWxzZSI+DQogICAgICA8L0F4aXNZMj4NCiAgICA8L0NoYXJ0QXJlYT4NCiAgPC9DaGFydEFyZWFzPg0KICA8Qm9yZGVyU2tpbiBTa2luU3R5bGU9IkVtYm9zcyIgLz4NCjwvQ2hhcnQ+">
+        <MSChartSeries Name="Series1" SortBy="XValue" XValue="[sp_RptMonthlyChart.fldMonth]" YValue1="[sp_RptMonthlyChart.fldPrice]"/>
+      </MSChartObject>
+    </DataBand>
+    <PageFooterBand Name="PageFooter2" Top="650.5" Width="1047.06" Height="56.72">
+      <TextObject Name="Text4" Left="113.84" Top="1.91" Width="800.48" Height="45.36" Text="[MyTablighat]" VertAlign="Center" RightToLeft="true" Font="RasaFont, 12pt, style=Bold"/>
+    </PageFooterBand>
+  </ReportPage>
+</Report>

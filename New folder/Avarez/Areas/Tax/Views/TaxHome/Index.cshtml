@@ -1,0 +1,413 @@
+﻿@{
+    Layout = "~/Areas/Tax/Views/Shared/_Layout.cshtml";
+}<meta http-equiv="content-type" content="text/html; charset=Error" />
+@{
+
+    Avarez.Areas.Tax.Models.cartaxtest2Entities m = new Avarez.Areas.Tax.Models.cartaxtest2Entities();
+    Avarez.Models.cartaxEntities mm = new Avarez.Models.cartaxEntities();
+    //var setting = hh.sp_tblProgramSettingSelect("", "", 1, Convert.ToInt32(Session["UserId"]), Session["UserPass"].ToString()).FirstOrDefault();
+    var user = m.prs_User_GharardadSelect("fldId", Session["TaxUserId"].ToString(), 1, "", 1, "").FirstOrDefault();
+    //var q = hh.sp_tblCommisionSelect("fldStaffID", user.fldStaffID.ToString(), 0, 1, "");
+    var Date = mm.sp_GetDate().FirstOrDefault().CurrentDateTime;
+    //var LastLogin = servic.GetInputInfoFilter("fldUserId", Session["UserId"].ToString(), 2, true, Session["Username"].ToString(), Session["Password"].ToString(), out Err).ToList();
+    string _Date = "", Time = "", Ip = "", Name = "", Location = "";
+    long UsersId = 0;
+    UsersId = user.fldID;
+    int UserLoginCount = 0;
+    //UserLoginCount=Avarez.UserLoginCount.userObj.Count();
+    Name = user.fldName + ' ' + user.fldFamily;
+
+    string Mojodi = "نا محدود"; 
+    string trnUser = "", trnPass = "";
+    //var TransactionInf = mm.sp_TransactionInfSelect("fldTarafGharardadId", Session["TarafGharardadId"].ToString(), 0).FirstOrDefault();
+    //if (System.Web.Configuration.WebConfigurationManager.AppSettings["InnerExeption"].ToString() == "false")
+    //{
+    //    Avarez.WebTransaction.TransactionWebService h = new Avarez.WebTransaction.TransactionWebService();
+       
+    //        if (TransactionInf != null)
+    //        {
+    //            trnUser = TransactionInf.fldUserName;
+    //            trnPass = TransactionInf.fldPass;
+    //            var y = h.CheckAccountCharge(TransactionInf.fldUserName, TransactionInf.fldPass, (int)TransactionInf.CountryType, TransactionInf.fldCountryDivisionsName);
+    //            if (y != null)
+    //            {
+    //                Mojodi = /*int.Parse(*/y.Mojodi/*).ToString("N0")+" ریال"*/;
+    //            }
+    //        }
+    //}
+    
+    //Location = user.fldLocation;
+    //if (LastLogin.Count == 2)
+    //{
+    //    _Date = LastLogin[1].fldDateTime.ToString();
+    //    Time = LastLogin[1].fldTime.ToString();
+    //    Ip = LastLogin[1].fldIP.ToString();
+
+    //}
+    
+    
+    
+    //string SharjSms = "0";
+    //var haveSmsPanel = m.sp_tblSMSSettingSelect("", "", 1).FirstOrDefault();
+    //try
+    //{
+    //    WebFish.SMSPanel.RasaSMSPanel_Send Sms = new WebFish.SMSPanel.RasaSMSPanel_Send();
+    //    SharjSms = Sms.CheckAccountCharge(haveSmsPanel.fldUserName, haveSmsPanel.fldPassword);
+    //}
+    //catch (Exception)
+    //{
+    //    SharjSms = "قطع ارتباط";
+    //}
+}
+@using Ext.Net.MVC
+@using Hogaf.ExtNet.UX
+@using Ext.Net;
+
+@{var X = Html.X();}
+@(
+
+ Html.X().Desktop().Listeners(k => k.Ready.Handler = "$('.ux-start-button .x-btn-inner').html('شروع');")
+.ID("Desktop1")
+.Modules(
+
+                Html.X().DesktopModule()
+                                                     .ModuleID("_Person")
+                                        .Shortcut(
+                                           Html.X().DesktopShortcut()
+                                                .Name("اشخاص")
+                                                    .IconCls("shortcut_Tax_Person").SortIndex(2)
+                                                        .Handler("Ext.net.DirectMethod.request({url: '/Tax/Shakhs/Index'})")
+
+                                        )
+                                        .Launcher(
+                                            Html.X().MenuItem()
+                                                    .Text("اشخاص")
+                                                                    .IconCls("shortcut_Tax_Person")
+                                                                            .Handler("Ext.net.DirectMethod.request({url: '/Tax/Shakhs/Index'})")
+                                            )
+                                               
+                                    , Html.X().DesktopModule()
+                                                    .ModuleID("_User")
+                                                    .Shortcut(
+                                                        Html.X().DesktopShortcut()
+                                                                .Name("کاربران")
+                                                                    .IconCls("shortcut_Tax_User").SortIndex(1)
+                                                                                .Handler("Ext.net.DirectMethod.request({url: '/Tax/UserTax/Index'})")
+
+                                                    )
+                                                    .Launcher(
+                                                        Html.X().MenuItem()
+                                                                .Text("کاربران")
+                                                                    .IconCls("shortcut_Tax_User")
+                                                                        .Handler("Ext.net.DirectMethod.request({url: '/Tax/UserTax/Index'})")
+                                                        )
+    , Html.X().DesktopModule()
+                                                        .ModuleID("_SooratHesab")
+                                                        .Shortcut(
+                                                            Html.X().DesktopShortcut()
+                                                                    .Name("صورت حساب")
+                                                                            .IconCls("shortcut_Tax_SooratHesab").SortIndex(1)
+                                                                                        .Handler("Ext.net.DirectMethod.request({url: '/Tax/SooratHesab/Index'})")
+
+                                                        )
+                                                        .Launcher(
+                                                            Html.X().MenuItem()
+                                                                        .Text("صورت حساب")
+                                                                            .IconCls("shortcut_Tax_SooratHesab")
+                                                                                .Handler("Ext.net.DirectMethod.request({url: '/Tax/SooratHesab/Index'})")
+                                                            )
+
+    
+)
+                    .DesktopConfig(
+                    Html.X().DesktopConfig()
+                                    .Wallpaper("~/Content/backTax.jpg").WallpaperStretch(true).ShortcutDragSelector(true)
+                                    .Cls("background-size:cover!important;")
+                        .ShortcutDefaults(defaults =>
+                        {
+                            defaults.IconCls = "x-default-shortcut";
+                        })
+                        .ContextMenu(
+                            Html.X().Menu()
+                                .Items(
+                                    Html.X().MenuItem().Text("Change Settings"),
+                                    Html.X().MenuSeparator(),
+                                        Html.X().MenuItem().Text("Title").Icon(Ext.Net.Icon.ApplicationTileVertical),
+                                        Html.X().MenuItem().Text("Cascade").Icon(Ext.Net.Icon.ApplicationCascade)
+                                )
+                        )
+                        @*.Content(@<text>
+                            @(
+                             Html.X().Image()
+                                                                    .ImageUrl("~/Content/blank.png")
+                                                            .StyleSpec("position:absolute;top: 40%;left: 40%;width: 227px;margin-top: -39px; margin-left: -39px;")
+                                                    )
+                            </text>)*@
+)
+                                        .StartMenu(
+                                            Html.X().DesktopStartMenu()
+                                                .Title("رسا سیستم البرز")
+                                                .IconCls("RasaIco")
+                                                .Height(300)
+                                                .ToolConfig(
+                                                    Html.X().Toolbar()
+                                                        .Width(100)
+                                                        .Items(
+        //                                            Html.X().Button()
+        //                                                        .Text("تنظیمات")
+        ////.Hidden(!Permossions.haveAccess(Convert.ToInt32(Session["UserId"]), 90))
+        //                                                        .Icon(Ext.Net.Icon.Cog)
+        //                                                        .DirectEvents(de =>
+        //                                                        {
+        //                                                            de.Click.Action = "Setting";
+
+                    //                                                        }),
+        //Html.X().Button()
+        //    .Text("Settings")
+        //                                .Icon(Ext.Net.Icon.Cog),
+                                                               Html.X().Button()
+                                                                        .Text("مدیریت کاربران")
+        //.Hidden(!Permossions.haveAccess(Convert.ToInt32(Session["UserId"]), 39))
+                                                                                                .Icon(Ext.Net.Icon.User)
+                                                                    .DirectEvents(
+                                                                        de =>
+                                                                        {
+                                                                            de.Click.Url = "/faces/User/index";
+                                                                            de.Click.ExtraParams.Add(new { containerId = "UserTab" });
+                                                                            de.Click.Before = "if(App.User!=null){var tab =App.UserTab.getComponent('User');App.UserTab.setActiveTab(tab);return false;}Ext.net.Mask.show({ msg : 'در حال بارگذاری...' });";
+                                                                            de.Click.Success = "Ext.net.Mask.hide();";
+                                                                        })
+                                                                    ,
+                                                                    Html.X().Button()
+                                                                    .Text("تغییر رمز عبور")
+                                                                          .Icon(Ext.Net.Icon.Key)
+                                                                                .DirectEvents(
+                                                                            de =>
+                                                                            {
+                                                                                de.Click.Action = "ChangePassAdmin";
+
+                                                                            })
+                                                                , Html.X().Button()
+                                                                .Text("خروج")
+                                                                                            .Icon(Ext.Net.Icon.DoorOut)
+                                                                .DirectEvents(de =>
+                                                                {
+                                                                    de.Click.Action = "LogOff";
+                                                                    de.Click.EventMask.ShowMask = true;
+                                                                    de.Click.EventMask.Msg = "خدانگهدار...";
+                                                                    de.Click.EventMask.MinDelay = 1000;
+                                                                })
+
+                                                        )
+                                                )
+                                        )
+                                        .TaskBar(
+                                            Html.X().DesktopTaskBar()
+                                                .TrayWidth(250).HideQuickStart(true)
+        //.QuickStart(
+        //    Html.X().Toolbar()
+        //        .Items(
+        //            Html.X().Button()
+        //             .Icon(Ext.Net.Icon.ApplicationTileVertical)
+        //                .ToolTip("Tile windows"),
+
+                                                //            Html.X().Button()
+        //          .Icon(Ext.Net.Icon.ApplicationCascade)
+        //                .ToolTip("Cascade windows")
+        //        )
+        //)
+                                                    .Tray(
+                                                        Html.X().Toolbar()
+                                                            .Items(
+                                                                Html.X().Label()
+                                                                    .Text(Location),
+                                                                Html.X().ToolbarFill()
+                                                            )
+                                                    )
+                                        )
+)
+@X.TaskManager().ID("TaskManager1").Tasks(X.Task().TaskID("Task1")
+    .Interval(100)
+    .AutoRun(false)
+    .DirectEvents(de => de.Update.Action = "RefreshProgress")
+)
+@(X.Viewport().ID("Section")
+
+                .Margin(50)
+              .Frame(true)
+                      .Layout(Ext.Net.LayoutType.Absolute)
+
+                          //.LayoutConfig(new Ext.Net.AccordionLayoutConfig { Multi = true, OriginalHeader = true }).Border(true)
+        //.Layout(Ext.Net.LayoutType.HBox)
+            .Items(
+                                    X.Panel().X(0).Y(0)
+                    .Frame(false)
+                .Width(220).RTL(false)
+            .Layout(Ext.Net.LayoutType.Accordion)
+            .LayoutConfig(new Ext.Net.AccordionLayoutConfig { Multi = true, OriginalHeader = true }).Border(true)
+            .Items(
+            @* X.Panel().ID("pnlUserAdmin")
+                                         .RTL(true)
+                                    .Title("اطلاعات کاربر")
+                                    .Icon(Ext.Net.Icon.UserTick)
+                                    .X(0)
+                                   .Items(
+                                   X.Container().Content(
+                                @<div style="margin:10px; height:50px;">
+                                    <center>
+                                        <div style="font-weight:600"> @Name خوش آمدید.</div>
+                                        <br />
+                                       <div>موقعیت کاربر: @Location</div>
+                <br /><br />
+
+                <img alt="" src="@Url.Action("ShowPic", "Home")" width="90px" height="120px" style=" border-color: #2E4796; border-radius: 6px 6px 6px 6px; border-style: solid;border-width:2px;" />
+                                        <br />
+                                        <br />
+                                        تاریخ آخرین ورود: @_Date
+                                        <br />
+                                        <br />
+                                        زمان آخرین ورود: @Time
+                                        <br />
+                                        <br />
+                                        IP آخرین ورود: @Ip
+
+                                    </center>
+                                </div>)
+                                   ),*@
+X.Panel()
+                                        .ID("pnlUserOnline")
+                                        .Title("کاربر")
+                                        .Icon(Ext.Net.Icon.Comments)
+                                        .RTL(true)
+                                        .Items(
+                                       X.Container().Content(
+                                    @<div style="margin:10px;height:300px;">
+                                        <center>
+                                            <div style="font-weight:600"> @Name خوش آمدید.</div>
+                                            <br />
+                                            <div>
+                                                <span id="lblUserOnline">تعداد کاربران آنلاین: @UserLoginCount</span>
+                                            </div>
+                                            <div id="container">
+                                                <div class="rotatingHands">
+                                                    <img alt="" id="hours" src="@Url.Content("~/Content/hours.png")" />
+                                                </div>
+                                                <div class="rotatingHands">
+                                                    <img alt="" id="minutes" src="@Url.Content("~/Content/minutes.png")" />
+                                                </div>
+                                                <div class="rotatingHands">
+                                                    <img alt="" id="seconds" src="@Url.Content("~/Content/seconds.png")" />
+                                                </div>
+                                                <div class="glass">
+                                                    <img alt="" src="@Url.Content("~/Content/glass.png")" />
+                                                </div>
+                                                <img alt="" src="@Url.Content("~/Content/clock.png")" />
+                                            </div>
+                                            <div>
+                                                <span id="lblUserOnline">موجودی حساب: @Mojodi</span>
+
+                                                <p>@X.Button().Text("شارژ پنل").ItemID("btnSharj").Listeners(l => l.Click.Handler = "sharjT()")</p>
+                                            </div>
+                                        </center>
+                                    </div>)
+
+                       )
+                        )
+                        )
+
+            //.LayoutConfig(new Ext.Net.HBoxLayoutConfig { Pack=Ext.Net.BoxPack.Center,Align=Ext.Net.HBoxAlign.StretchMax})
+        //.Floating(true)
+                .Shadow(false)
+                    .Listeners(l =>
+                    {
+                        //l.AfterRender.Handler = "App.Section.el.alignTo(document.body, 'tr-tr', [0, 0], true);";
+                        //l.Far.Handler = "this.component.el.alignTo(Ext.net.Desktop.desktop.body, 'tl-tl', [0, 0], true);";
+                    })
+
+
+)
+
+<script src="@Url.Content("~/Content/jQueryRotate.2.2.js")" type="text/javascript"></script>
+<link href="~/Content/style.css" rel="stylesheet" />
+<script>
+    var datetime = '@ViewBag.time';
+    function sharjT() {
+        window.location.href = 'http://trn.ecartax.ir/_account/LoginFromPrg?username=' + '@trnUser' + '&pass=' + '@trnPass';
+    }
+    $(document).ready(function () {
+        var angleSec = 0;
+        var angleMin = 0;
+        var angleHour = 0;
+        var min, hor;
+        var treeRefresh;
+        var WatchRefresh = 0;
+
+        angleHour = datetime.substring(0, 2);
+        angleMin = datetime.substring(3, 5);
+        angleSec = datetime.substring(6, 8);
+        angleSec = angleSec * 6;
+        angleMin = angleMin * 6;
+        angleHour = (angleHour * 5 + (angleMin / 6) / 12) * 6;
+        $("#seconds").rotate(angleSec);
+        $("#minutes").rotate(angleMin);
+        $("#hours").rotate(angleHour);
+
+        setInterval(function () {
+            angleSec = ((angleSec / 6 + 1) * 6);
+            $("#seconds").rotate(angleSec);
+            if (angleSec >= 360) {
+
+                angleMin = (angleMin / 6 + 1) * 6;
+                $("#minutes").rotate(angleMin);
+                angleSec = 0;
+            }
+            if (angleMin >= 360) {
+                angleMin = 0;
+            }
+
+            treeRefresh++;
+            if (treeRefresh == 30) {
+                @*var URL = '@Url.Content("Home/ShowPic")';*@
+                var g = URL;
+                alert();
+                $('#Image').attr('src', g);
+                $('#lblUserOnline').html('تعداد کاربران آنلاین: UserLoginCount');
+                treeRefresh = 0;
+            }
+
+            WatchRefresh++;
+            if (WatchRefresh == 120) {
+                Ext.net.DirectMethod.request({
+                    url: "/Tax/TaxHome/GetDate",
+                    success: function (data) {
+                        angleHour = data.datetime.substring(0, 2);
+                        angleMin = data.datetime.substring(3, 5);
+                        angleSec = data.datetime.substring(6, 8);
+                        angleSec = angleSec * 6;
+                        angleMin = angleMin * 6;
+                        angleHour = (angleHour * 5 + (angleMin / 6) / 12) * 6;
+                        $("#seconds").rotate(angleSec);
+                        $("#minutes").rotate(angleMin);
+                        $("#hours").rotate(angleHour);
+                        WatchRefresh = 0;
+                    }
+                });
+            }
+        }, 1000);
+
+        if ('@ViewBag.FirstLogin' == 'True') {
+            Ext.net.Mask.show({ msg: 'در حال بارگذاری...' });
+            Ext.net.DirectMethod.request({
+                url: "/Tax/ChangePassword/index",
+                params: {
+                    State: 1
+                },
+                success: function () {
+                    Ext.net.Mask.hide();
+                }
+            });
+        }
+
+    });
+
+</script>

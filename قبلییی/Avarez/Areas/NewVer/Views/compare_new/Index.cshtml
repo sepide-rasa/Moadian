@@ -1,0 +1,330 @@
+﻿@using Ext.Net.MVC;
+@using Ext.Net;
+@{
+    ViewBag.Title = "Index";
+    var X = Html.X();
+    var mah = MyLib.Shamsi.Miladi2ShamsiString(DateTime.Now).Substring(5, 2);
+}
+
+<style type="text/css">
+    #container1 {
+        width: 50%;
+        height: 50%;
+        border-bottom:solid;
+        border-width:0.5px;
+        border-color:#2dcbfe;
+        position:absolute;
+        top:0px;
+        left:0px;
+    }
+    #container2 {
+        width: 50%;
+        height: 50%;
+        border-bottom:solid;
+        border-left: solid;
+        border-width:0.5px;
+        position:absolute;
+        border-color:#2dcbfe;
+        top:0px;
+        right:0px;
+    }
+    #container3 {
+        width: 50%;
+        height: 50%;        
+        position:absolute;
+        bottom:0px;
+        right:0px;
+    }
+    #container4 {
+        width: 50%;
+        height: 50%;
+        border-right:solid;
+        border-width:0.5px;
+        position:absolute;
+        border-color:#2dcbfe;
+        bottom:0px;
+        left:0px;
+    }
+</style>
+@(X.Panel()
+    .Listeners(l => l.AfterRender.Handler = "DashboarddSetSize()")
+    .ID("Dashboardd1")
+    .Border(false)
+    .AutoScroll(true)
+    .Title("داشبورد مدیریتی")
+    .Closable(true)
+    .CloseAction(CloseAction.Destroy)
+    .Layout(LayoutType.Fit)
+    .Items(
+        X.Panel()
+            .Border(true)
+            .Layout(LayoutType.Fit)       
+                .ID("BarChart")                
+                .Html(@<div>
+                        <div id="container1">
+                            <div style="width:100%;height:100%;" id="chart1"></div>                                    
+                        </div>
+                        <div id="container2">
+                            ماه:
+                            <select id="car_mah" onchange="change();">
+                                <option value="1">فروردین</option>
+                                <option value="2">اردیبهشت</option>
+                                <option value="3">خرداد</option>
+                                <option value="4">تیر</option>
+                                <option value="5">مرداد</option>
+                                <option value="6">شهریور</option>
+                                <option value="7">مهر</option>
+                                <option value="8">آبان</option>
+                                <option value="9">آذر</option>
+                                <option value="10">دی</option>
+                                <option value="11">بهمن</option>
+                                <option value="12">اسفند</option>
+                            </select>
+                            <div style="width:100%;height:88%;" id="chart2"></div>                                    
+                        </div>
+                        <div id="container3">
+                            ماه:
+                            <select id="user_mah" onchange="change1();">
+                                <option value="1">فروردین</option>
+                                <option value="2">اردیبهشت</option>
+                                <option value="3">خرداد</option>
+                                <option value="4">تیر</option>
+                                <option value="5">مرداد</option>
+                                <option value="6">شهریور</option>
+                                <option value="7">مهر</option>
+                                <option value="8">آبان</option>
+                                <option value="9">آذر</option>
+                                <option value="10">دی</option>
+                                <option value="11">بهمن</option>
+                                <option value="12">اسفند</option>
+                            </select>
+                            <div style="width:100%;height:88%;" id="chart3"></div>                                    
+                        </div>
+                        <div id="container4"> 
+                            ماه:
+                            <select id="pay_mah" onchange="change2();">
+                                <option value="1">فروردین</option>
+                                <option value="2">اردیبهشت</option>
+                                <option value="3">خرداد</option>
+                                <option value="4">تیر</option>
+                                <option value="5">مرداد</option>
+                                <option value="6">شهریور</option>
+                                <option value="7">مهر</option>
+                                <option value="8">آبان</option>
+                                <option value="9">آذر</option>
+                                <option value="10">دی</option>
+                                <option value="11">بهمن</option>
+                                <option value="12">اسفند</option>
+                            </select>                              
+                            <div style="width:95%;height:88%;left: 0px;position: absolute;" id="chart4"></div>                                    
+                        </div>
+                    </div>)
+                )
+)
+                
+
+<script>
+    
+    function DashboarddSetSize() {
+        var mm = '@mah';
+        $('#car_mah').val(parseInt(mm));
+        $('#user_mah').val(parseInt(mm));
+        $('#pay_mah').val(parseInt(mm));
+        chartload();
+    }
+    var data1, dataSet, data;
+    function change() {        
+        while (data.Zb.length > 0) data.remove(0);
+        $.ajax({
+            url: '/compare_new/getCars',
+            type: 'json',
+            data: { mah: $('#car_mah').val()},
+            method: 'get',
+            success: function (res) {
+                for (var i = 0; i < res.data.length; i += 2) {
+                    data.append({ 'x': res.data[i + 1], 'value': res.data[i] });
+                }                
+            }
+        });
+    }
+    function change1() {
+        while (data1.Zb.length > 0) data1.remove(0);
+        $.ajax({
+            url: '/compare_new/getusers',
+            type: 'json',
+            data: { mah: $('#user_mah').val() },
+            method: 'get',
+            success: function (res) {
+                for (var i = 0; i < res.data.length; i += 2) {
+                    data1.append({ 'x': res.data[i], 'value': res.data[i+1] });
+                }
+            }
+        });
+    }
+    function change2() {
+        while (data2.Zb.length > 0) data2.remove(0);
+        $.ajax({
+            url: '/compare_new/getpayType',
+            type: 'json',
+            data: { mah: $('#pay_mah').val() },
+            method: 'get',
+            success: function (res) {
+                for (var i = 0; i < res.data.length; i += 2) {
+                    data2.append({ 'x': res.data[i + 1], 'value': res.data[i] });
+                }
+            }
+        });
+    }
+    function chartload() {
+        Ext.net.Mask.show({ msg: 'در حال بارگذاری...' });
+        var oldyera, newyear, year;
+        dataSet = anychart.data.set([
+                    ['فروردین', 0, 0],
+                    ['اردیبهشت', 0, 0],
+                    ['خرداد', 0, 0],
+                    ['تیر', 0, 0],
+                    ['مرداد', 0, 0],
+                    ['شهریور', 0, 0],
+                    ['مهر', 0, 0],
+                    ['آبان', 0, 0],
+                    ['آذر', 0, 0],
+                    ['دی', 0, 0],
+                    ['بهمن', 0, 0],
+                    ['اسفند', 0, 0]
+        ]);
+        $.ajax({
+            url: '/compare_new/GetData',
+            method: 'get',
+            type: 'json',
+            success: function (res) {
+                for (var i = 0; i < 12; i++) {
+                    dataSet.row(i)[1] = res.oldyear[i];
+                    dataSet.row(i)[2] = res.newYear[i];
+                }
+                year = res.year;
+
+                var seriesData_1 = dataSet.mapAs({ 'x': 0, 'value': 1 });
+
+                var seriesData_2 = dataSet.mapAs({ 'x': 0, 'value': 2 });
+
+                var chart = anychart.column();
+
+                chart.animation(true);
+
+                chart.title('مقایسه درآمد وصولی');
+
+                var series;
+
+                var setupSeries = function (series, name) {
+                    series.name(name);
+                    series.selected()
+                            .fill('#f48fb1 0.8')
+                            .stroke('1.5 #c2185b');
+                };
+
+                series = chart.column(seriesData_1);
+                series.xPointPosition(0.45);
+                setupSeries(series, parseInt(year - 1).toString());
+
+                series = chart.column(seriesData_2);
+                series.xPointPosition(0.70);
+                setupSeries(series, parseInt(year).toString());
+
+                chart.barGroupsPadding(0.3);
+
+                chart.yAxis().labels().format('{%Value}ریال');
+
+
+
+                chart.legend()
+                        .enabled(true)
+                        .fontSize(13)
+                        .padding([0, 0, 0, 0]);
+
+                chart.interactivity().hoverMode('single');
+
+                chart.tooltip().format('{%Value}ریال');
+
+                chart.container('chart1');
+
+                chart.draw();
+                Ext.net.Mask.hide();
+            }
+        });
+        
+
+        data = anychart.data.set([]);
+        $.ajax({
+            url: '/compare_new/getCars',
+            type: 'json',
+            method: 'get',
+            success: function (res) {
+                t = res;
+                for (var i = 0; i < res.data.length; i += 2) {
+                    data.append({ 'x': res.data[i+1], 'value': res.data[i] });
+                }
+                
+                var seriesData_4 = data.mapAs({ 'x': 0, 'value': 1 });
+                var chart1;
+                chart1 = anychart.pie3d(seriesData_4);
+                chart1.innerRadius("30%");
+                chart1.title("درآمدهای وصولی به تفکیک خودرو");
+                chart1.container("chart2");
+                chart1.animation(true);
+                chart1.draw();
+            }
+        });
+        
+
+        data1 = anychart.data.set([]);
+        $.ajax({
+            url: '/compare_new/getusers',
+            type: 'json',
+            method: 'get',
+            success: function (res) {
+                t = res;
+                for (var i = 0; i < res.data.length; i += 2) {
+                    data1.append({ 'x': res.data[i], 'value': res.data[i+1] });
+                }
+
+                var seriesData_3 = data1.mapAs({ 'x': 0, 'value': 1 });
+                var chart2 = anychart.bar();
+
+                var series = chart2.bar(seriesData_3);
+                chart2.title("فیش های وصولی به تفکیک کاربر");
+                chart2.container("chart3");
+                chart2.tooltip().format('تعداد وصولی: {%Value}');
+                chart2.animation(true);
+                chart2.draw();
+
+                
+            }
+        });
+
+        data2 = anychart.data.set([]);
+        $.ajax({
+            url: '/compare_new/getpayType',
+            type: 'json',
+            method: 'get',
+            success: function (res) {
+                t = res;
+                for (var i = 0; i < res.data.length; i += 2) {
+                    data2.append({ 'x': res.data[i + 1], 'value': res.data[i] });                }
+
+                var seriesData_4 = data2.mapAs({ 'x': 0, 'value': 1 });
+                var chart3;
+                chart3 = anychart.pie3d(seriesData_4);
+                chart3.innerRadius("30%");
+                chart3.title("درآمدهای وصولی به تفکیک نوع واریز");
+                chart3.container("chart4");
+                chart3.animation(true);
+                chart3.draw();
+            }
+        });
+        
+
+        
+        
+        
+    }
+</script>

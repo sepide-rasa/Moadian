@@ -1,0 +1,286 @@
+﻿@using Ext.Net.MVC
+@using Hogaf.ExtNet.UX
+@using Ext.Net;
+@using Ext.Net.Utilities;
+@{
+    var X = Html.X();
+    string h = "";
+}
+
+
+
+@*<script src="~/Scripts/accounting.js"></script>*@
+
+@(Html.X().Window()
+    .Modal(true)
+        //.Listeners(li => li.AfterRender.Handler = "LoadPardakhtFiles();")
+    .Width(455)//.Height(300)
+    .Title("ثبت فایل پرداخت الکترونیک جدید")
+    .Resizable(false)
+    .ID("NewPardakhtFiles")
+    .Closable(true)
+    .CloseAction(Ext.Net.CloseAction.Destroy)
+    .Layout(LayoutType.Fit)
+    .ButtonAlign(Ext.Net.Alignment.Center)
+    .Buttons(
+        X.Button()
+            .Text("ذخیره")
+            .Icon(Ext.Net.Icon.Disk)
+            .Listeners(l =>
+            {
+                l.Click.Handler = "SavePardakhtFiles();";
+            })
+            .ItemID("btnSave"),
+        X.Button()
+            .Text("خروج")
+            .Icon(Ext.Net.Icon.BulletCross)
+            .ToolTip("کلید میانبر Esc")
+            .OnClientClick("App.NewPardakhtFiles.destroy()"))
+    .Items(
+        X.FormPanel()
+            .Border(false)
+            .MarginSpec("10px 0 10px 0")
+            .Layout(Ext.Net.LayoutType.VBox)
+            .LayoutConfig(new Ext.Net.VBoxLayoutConfig { Align = Ext.Net.VBoxAlign.Right })
+            .Items(
+                            X.FieldSet()
+        //.Width(500)
+            .Border(false)
+                             //  .Height(70)
+                               .Width(400)
+                               .LayoutConfig(new Ext.Net.TableLayoutConfig { Columns = 2 })
+                                .Defaults(new { Margin = 2 })
+                           .Items(
+                           X.Hidden()
+                                    .ItemID("fldId"),                               
+                            X.FileUploadField()
+                                .FieldStyle("direction:ltr;")
+                                .ID("FileUploadField1")
+                            .MarginSpec("0.25px 0 0 0")
+                            .ButtonOnly(true).ButtonText("انتخاب فایل")
+                            .DirectEvents(l =>
+                                    {
+                                        l.Change.Action = "UploadFileNew";
+                                        l.Change.Success = "hideprogressDocuments();";
+                                    }
+                                )
+                            .Listeners(l => l.Change.Fn = "showFile")
+                            .Icon(Ext.Net.Icon.DiskUpload)
+                            , X.Container().Content(@<center><div id="fi-button-msg" style="display:none; width:220px;height:25px;text-align:right;"></div></center>)
+                               )
+                               ,
+                                    X.FieldSet()
+        //.Width(500)
+                .Border(false)
+                                   .Height(30)
+                                   .Width(400)
+                                    .Defaults(new { Margin = 2 })
+                               .Items(
+                               X.Container().Content(@<center><div id="bank-msg" style="display:inline; width:350px;height:25px;text-align:right;"></div></center>)
+                               )
+                    )
+                )
+)
+
+<script type="text/javascript">
+    var fldStatus = false;
+    var MadrakId = 0;
+    var MojazDocuments = 0;
+    var sizeeDocuments = 0;
+    var fileId = 0;
+    var EndUploadDocuments = false;
+
+    function hideprogressDocuments() {
+        if (MojazDocuments == 1 && sizeeDocuments == 1) {
+            EndUploadDocuments = true;
+        }
+        MojazDocuments = 0;
+        sizeeDocuments = 0;
+    }
+    var CheckDocuments = setInterval(CheckEndDocuments, 500);
+
+    function CheckEndDocuments() {
+        if (EndUploadDocuments == true) {
+            /*var el2 = Ext.get('bank-msg');
+            Ext.net.DirectMethod.request({
+                url: '/NewVer/PardakhtFiles_New/BankName',
+                success: function (BankName) {
+                    el2.update('<b>نام بانک:</b> ' + BankName);
+                }
+            });*/
+            Ext.MessageBox.hide();
+            Ext.Msg.alert('عملیات موفق', 'فایل با موفقیت آپلود شد.');
+            clearInterval(CheckEndDocuments);
+            EndUploadDocuments = false;
+        }
+    }
+
+    var showFile = function (fb, v) {
+        var id = fb.fileInputEl.dom.id;
+        var el = Ext.get('fi-button-msg');
+        /*var el2 = Ext.get('bank-msg');*/
+        if (v) {
+            showProgressBarDocuments();
+            if (v.split('.').pop().toLowerCase() == "zip") {
+                MojazDocuments = 1;
+                if (document.getElementById(id).files[0].size <= 5242880) {
+                    sizeeDocuments = 1;
+                }
+                if (sizeeDocuments == 1) {
+                    el.update('<b>فایل انتخاب شده:</b> ' + v);
+                }
+                else {
+                    el.update("");
+                    /*el2.update("");*/
+                }
+
+                if (!el.isVisible()) {
+                    el.slideIn('t', {
+                        duration: .2,
+                        easing: 'easeIn',
+                        callback: function () {
+                            el.highlight();
+                        }
+                    });
+                } else {
+                    el.highlight();
+                }
+            }
+            else {
+                el.update("");
+            }
+        }
+    };
+
+    function showProgressBarDocuments() {
+        Ext.MessageBox.show({
+            msg: 'لطفاً منتظر باشید',
+            progressText: 'در حال آپلود فایل...',
+            width: 300,
+            wait: true,
+            waitConfig:
+            {
+                interval: 200,
+                text: 'در حال آپلود فایل...',
+                scope: this
+            }
+        });
+    }  
+
+    function SavePardakhtFiles() {
+        var Id = App.NewPardakhtFiles.queryById('fldId');
+        App.NewPardakhtFiles.queryById('btnSave').setDisabled(true);
+        App.NewPardakhtFiles.body.mask('در حال ذخیره سازی...');
+
+        @*Ext.net.DirectMethod.request({
+            url: '/NewVer/PardakhtFiles_New/checkDuplicateFile',
+            success: function (data) {
+                if (data.Duplicate == 1) {
+                    Ext.MessageBox.show({
+                        title: "هشدار",
+                        msg: "فایل انتخاب شده تکراری است.آیا مایل به ویرایش می باشید؟",
+                        icon: Ext.MessageBox.WARNING,
+                        buttons: Ext.MessageBox.YESNO,
+                        fn: function (btn) {
+                            if (btn == 'yes') {
+                                Ext.net.DirectMethod.request({
+                                    url: '/NewVer/PardakhtFiles_New/Save',
+                                    success: function (data) {
+                                        var ic = Ext.MessageBox.INFO;
+                                        if (data.Er == 1) {
+                                            ic = Ext.MessageBox.ERROR;
+                                            Ext.get('fi-button-msg').update("");
+                                            /*Ext.get('bank-msg').update("");*/
+                                        }
+
+                                        Ext.MessageBox.show({
+                                            title: data.MsgTitle,
+                                            msg: data.Msg,
+                                            icon: ic,
+                                            buttons: Ext.MessageBox.OK
+                                        });
+                                        App.PardakhtFiles.queryById('GridPardakhtFiles').store.load();
+                                        if (data.Er != 1) {
+                                            ClearPardakhtFiles();
+                                        }
+                                        App.NewPardakhtFiles.queryById('btnSave').setDisabled(false);
+                                        App.NewPardakhtFiles.body.mask().hide();
+                                    }
+
+                                });
+                            }
+                            else {
+                                App.NewPardakhtFiles.body.mask().hide();
+                                App.NewPardakhtFiles.queryById('btnSave').setDisabled(false);
+                            }
+                        }
+                    });
+                }
+                else {*@
+                    @*Ext.net.DirectMethod.request({
+                        url: '/NewVer/PardakhtFiles_New/Save',
+                        success: function (data) {
+                            var ic = Ext.MessageBox.INFO;
+                            if (data.Er == 1) {
+                                ic = Ext.MessageBox.ERROR;
+                                Ext.get('fi-button-msg').update("");
+                                /*Ext.get('bank-msg').update("");*/
+                            }
+
+                            Ext.MessageBox.show({
+                                title: data.MsgTitle,
+                                msg: data.Msg,
+                                icon: ic,
+                                buttons: Ext.MessageBox.OK
+                            });
+                            App.PardakhtFiles.queryById('GridPardakhtFiles').store.load();
+                            if (data.Er != 1) {
+                                ClearPardakhtFiles();
+                            }
+                            App.NewPardakhtFiles.queryById('btnSave').setDisabled(false);
+                            App.NewPardakhtFiles.body.mask().hide();
+                        }
+
+                    });*@
+        $.ajax({
+            type: "POST",
+            url: '/NewVer/PardakhtFiles_New/Save',
+            datatype: "json",
+            contentType: "application/json; charset=utf-8",
+            success: function (result) {
+                var ic = Ext.MessageBox.INFO;
+                if (result.Er == 1) {
+                    ic = Ext.MessageBox.ERROR;
+                    Ext.get('fi-button-msg').update("");
+                    /*Ext.get('bank-msg').update("");*/
+                }
+
+                Ext.MessageBox.show({
+                    title: result.MsgTitle,
+                    msg: result.Msg,
+                    icon: ic,
+                    buttons: Ext.MessageBox.OK
+                });
+                App.PardakhtFiles.queryById('GridPardakhtFiles').store.load();
+                if (result.Er != 1) {
+                    ClearPardakhtFiles();
+                }
+                App.NewPardakhtFiles.queryById('btnSave').setDisabled(false);
+                App.NewPardakhtFiles.body.mask().hide();
+            },
+            failure: function (data) {
+                alert(data.data);
+            }
+        });
+                /*}
+            }
+        });*/
+    }
+
+    function ClearPardakhtFiles() {
+        App.NewPardakhtFiles.queryById('fldId').setValue(0);
+        Ext.get('fi-button-msg').update("");
+        /*Ext.get('bank-msg').update("");*/
+    }
+    
+</script>

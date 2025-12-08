@@ -1,0 +1,274 @@
+﻿@using Ext.Net.MVC
+@using Hogaf.ExtNet.UX
+@using Ext.Net;
+@{
+    var X = Html.X();
+}
+
+@(Html.X().Window()
+    .Modal(true)
+        // .Listeners(li => li.AfterRender.Handler = "LoadDegreeMun();")
+    .Resizable(false)
+    .Width(370)
+    .Height(300)
+        .Title(" تعیین درجه شهرداری")
+    .Layout(LayoutType.Fit)
+        .ID("NewDegreeMun")
+    .Closable(true)
+    .ButtonAlign(Ext.Net.Alignment.Center)
+    .Buttons(
+        X.Button()
+            .Text("ذخیره")
+            .Icon(Ext.Net.Icon.Disk)
+        //.ToolTip("کلید میانبر F8")
+                .Listeners(l => l.Click.Handler = "SaveDegreeMun();"),
+        X.Button()
+            .Text("خروج")
+            .Icon(Ext.Net.Icon.DoorOut)
+        //.ToolTip("کلید میانبر Esc")
+                .OnClientClick("App.NewDegreeMun.destroy();"))
+    .CloseAction(Ext.Net.CloseAction.Destroy)
+    .Items(
+        X.FormPanel()
+            .Border(false)
+           // .Layout(LayoutType.Fit)
+            .Items(
+                X.Panel()
+                    .Border(false)
+                    .PaddingSpec("10px 0 0 0")
+                         .Layout(LayoutType.VBox)
+                                    .LayoutConfig(new VBoxLayoutConfig { Align = VBoxAlign.Center })
+                    .Items(
+                        X.FieldSet()
+                           .Border(true)
+                               .Width(320)
+                                    .Height(215)
+                                        .Defaults(new { Margin = 4 })  
+                            .Layout(LayoutType.Table)
+                                .Title("مشخصات ")
+                            .LayoutConfig(new TableLayoutConfig { Columns = 2 })
+                                
+                            .Items(
+                                X.Hidden()
+                                    .ItemID("fldId"),
+                            X.Label("استان:"),
+                                     X.ComboBox()
+                                        .ItemID("CboState")
+                                    .LabelAlign(Ext.Net.LabelAlign.Top)
+                                    .Editable(false)
+                                    .TypeAhead(true)
+                                    .QueryMode(DataLoadMode.Local)
+                                    .ForceSelection(true)
+                                    .TriggerAction(TriggerAction.All)
+                                        .DisplayField("Name")
+                                        .ValueField("ID")
+                                    .EmptyText("استان")
+                                    .Width(190)
+                                    .Listeners(ls =>
+                                                        ls.Select.Handler = " App.NewDegreeMun.queryById('CboMunicipality').getStore().load();"
+                                                            )
+        //.ValueNotFoundText("استان...")
+                                            .Store(X.Store()//.AutoLoad(false)
+                                        .Model(X.Model()
+                                                    .IDProperty("fldState")
+                                            .Fields(
+                                                        new ModelField("ID", ModelFieldType.String) { Mapping = "fldID" },
+                                                        new ModelField("Name", ModelFieldType.String) { Mapping = "fldName" }
+                                            )
+                                        )
+                                        .Proxy(X.AjaxProxy()
+                                            .Url(Url.Action("GetState"))
+                                            .Reader(X.JsonReader().Root("data"))
+                                        )
+                                                .Listeners(li => li.Load.Handler = "LoadDegreeMun();")
+                                )
+                                    .AllowBlank(false)
+                                        .MsgTarget(Ext.Net.MessageTarget.Side)
+                                    .BlankText("لطفا استان را انتخاب نمایید."),
+                            X.Label("شهرداری:"),
+                                    X.ComboBox()
+                                            .ItemID("CboMunicipality")
+                                    .EmptyText("شهرداری...")
+                                    .LabelAlign(Ext.Net.LabelAlign.Top)
+                                    .TypeAhead(true)
+                                    .Editable(false)
+                                    .AllowBlank(false)
+                                    .MsgTarget(Ext.Net.MessageTarget.Side)
+                                    .BlankText("لطفا شهرداری مورد نظر را انتخاب نمایید.")
+                                    .QueryMode(DataLoadMode.Local)
+                                    .ForceSelection(true)
+                                    .Width(190)
+                                    .TriggerAction(TriggerAction.All)
+                                        .DisplayField("Name")
+                                        .ValueField("ID")
+                                                .Store(X.Store().AutoLoad(false)
+                                        .Model(X.Model()
+                                                            .IDProperty("fldMunicipalityID")
+                                            .Fields(
+                                                new ModelField("ID", ModelFieldType.String) { Mapping = "fldID" },
+                                                new ModelField("Name", ModelFieldType.String) { Mapping = "fldName" })
+                                                )
+                                        .Proxy(X.AjaxProxy()
+                                                            .Url(Url.Action("GetMunicipality"))
+                                            .Reader(X.JsonReader().Root("data")))
+                                                                .Parameters(ps => ps.Add(new StoreParameter("ID", "App.NewDegreeMun.queryById('CboState').getValue()", ParameterMode.Raw)))
+                                                        ),
+                                   X.Label("درجه شهرداری:"),
+
+                                X.TextField()
+                                            .ItemID("txtDegree")
+                                                  .MaskRe("/[0-9]/")
+                                            .EnforceMaxLength(true)
+                                                 
+                                        .MaxLength(50)
+                                    .Width(190)
+                                         
+                                    .AllowBlank(false)
+                                    .BlankText("لطفا درجه شهرداری را وارد نمایید.")
+                                    .MsgTarget(Ext.Net.MessageTarget.Side),
+
+                                         X.Label("تاریخ اخذ:"),
+                                            X.PDateField()
+                                                .ItemID("txtDateDegree")
+                                                .Width(190)
+                                                .AllowBlank(false)
+                                                .BlankText("لطفا تاریخ اخذ را وارد نمایید.")
+                                                .MsgTarget(Ext.Net.MessageTarget.Side),
+                                X.Label("توضیحات:"),
+                                X.TextArea()
+                                .Width(190)
+                                    .ItemID("txtDesc")
+                                  
+                            )
+                )
+            )
+        )
+)
+
+@(Html.X().KeyMap()
+                 .ID("NewDegreeMunMap")
+                 .Target("={App.NewDegreeMun.getTargetEl()}")
+            .Binding(b =>
+            {
+                b.Add(Html.X().KeyBinding()
+                .KeysString(((int)Ext.Net.KeyCode.F8).ToString())
+                .Handler("SaveDegreeMun(); ")
+                );
+
+            }))
+<script type="text/javascript">
+    function LoadDegreeMun() {
+        if ('@ViewBag.Id' != '0') {
+            App.NewDegreeMun.body.mask("در حال بارگذاری...");
+            Ext.net.DirectMethod.request({
+                url: '/NewVer/DegreeMun_New/Details',
+                params: {
+                    Id: '@ViewBag.Id'
+                },
+                success: function (data) {
+                    if (data.Er == 0) {
+                        var CboState = App.NewDegreeMun.queryById('CboState');
+                        CboState.setValue(data.fldState);
+                        App.NewDegreeMun.queryById('CboMunicipality').clearValue();
+                        App.NewDegreeMun.queryById('CboMunicipality').getStore().load();
+                        var CboMunicipality = App.NewDegreeMun.queryById('CboMunicipality');
+                        CboMunicipality.setValue(data.fldMunicipalityID);
+                        var txtDegree = App.NewDegreeMun.queryById('txtDegree');
+                        txtDegree.setValue(data.fldDegree);
+                        var txtDateDegree = App.NewDegreeMun.queryById('txtDateDegree');
+                        txtDateDegree.setValue(data.fldDateDegree);
+                        var txtDesc = App.NewDegreeMun.queryById('txtDesc');
+                        txtDesc.setValue(data.fldDesc);
+                        var Id = App.NewDegreeMun.queryById('fldId');
+                        Id.setValue(data.fldId);
+                    }
+                    else if (data.Er == 1) {
+                        Ext.MessageBox.show({
+                            title: data.MsgTitle,
+                            msg: data.Msg,
+                            icon: Ext.MessageBox.ERROR,
+                            buttons: Ext.MessageBox.OK
+                        });
+                    }
+                    App.NewDegreeMun.body.mask().hide();
+                }
+            });
+        }
+        else {
+            App.NewDegreeMun.queryById('txtDegree').validate();
+            App.NewDegreeMun.queryById('CboState').validate();
+            App.NewDegreeMun.queryById('CboMunicipality').validate();
+            App.NewDegreeMun.queryById('txtDateDegree').validate();
+
+        }
+
+    }
+
+    function SaveDegreeMun() {
+        var txtDegree = App.NewDegreeMun.queryById('txtDegree');
+        var CboMunicipality = App.NewDegreeMun.queryById('CboMunicipality');
+        var CboState = App.NewDegreeMun.queryById('CboState');
+        var txtDateDegree = App.NewDegreeMun.queryById('txtDateDegree');
+        var txtDesc = App.NewDegreeMun.queryById('txtDesc');
+        var Id = App.NewDegreeMun.queryById('fldId');
+            var er = false;
+
+            if (txtDegree.validate() == false) {
+                er = true;
+            }
+            if (CboMunicipality.validate() == false) {
+                er = true;
+            }
+            if (CboState.validate() == false) {
+                er = true;
+            }
+            if (txtDateDegree.validate() == false) {
+                er = true;
+            }
+            if (er == true)
+                return;
+            App.NewDegreeMun.body.mask("در حال ذخیره سازی...");
+            Ext.net.DirectMethod.request({
+                url: '/NewVer/DegreeMun_New/Save',
+                params: {
+                    fldID: Id.getValue(),
+                    fldDegree: txtDegree.getValue(),
+                    fldMunicipalityID: CboMunicipality.getValue(),
+                    fldDateDegree: txtDateDegree.rawValue,
+                    fldDesc: txtDesc.getValue()
+                },
+                success: function (data) {
+                    var ic = Ext.MessageBox.INFO;
+                    if (data.Er == 1)
+                        ic = Ext.MessageBox.ERROR;
+                    Ext.MessageBox.show({
+                        title: data.MsgTitle,
+                        msg: data.Msg,
+                        icon: ic,
+                        buttons: Ext.MessageBox.OK
+                    });
+                    App.NewDegreeMun.body.mask().hide();
+                    App.DegreeMun.queryById('GridDegreeMun').store.load();
+                    if (data.Er != 1)
+                        ClearDegreeMun();
+                   
+                }
+
+            });
+        }
+    function ClearDegreeMun() {
+        App.NewDegreeMun.queryById('txtDegree').setValue("");
+        App.NewDegreeMun.queryById('CboMunicipality').setValue("");
+        App.NewDegreeMun.queryById('CboState').setValue("");
+        App.NewDegreeMun.queryById('txtDateDegree').setValue("");
+        App.NewDegreeMun.queryById('txtDesc').setValue("");
+        App.NewDegreeMun.queryById('fldId').setValue(0);
+    }
+    /*function EnterNext() {
+        var keyfield = App.NewDegreeMun.queryById(Ext.getCmp((Ext.Element.getActiveElement()).name).itemId);
+        var nextfld = keyfield.nextSibling();
+        nextfld.focus();
+        nextfld.selectText();
+    }*/
+
+</script>

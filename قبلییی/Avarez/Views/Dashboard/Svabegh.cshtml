@@ -1,0 +1,146 @@
+﻿@model List<Avarez.Models.sp_CarExperienceSelect>
+@using Ext.Net.MVC;
+@using Ext.Net;
+@using Hogaf.ExtNet.UX;
+@{
+    var X = Html.X();
+}
+@(X.Panel().Border(false)
+            .ID("Savabegh").Title("انتقال سوابق")
+            .AutoScroll(true)
+            .Closable(true)
+            .CloseAction(Ext.Net.CloseAction.Destroy)
+            .Items(
+                X.Panel().Border(false)
+                .Border(false)
+                .AutoScroll(true)
+                .Items(
+                        X.TabPanel().ID("SavabeghTab")
+                    .AutoScroll(true).Items(
+                        X.Panel().ItemID("GridPanel")
+                        .Title("انتقال سوابق")
+                        .Items(
+                    X.GridPanel().AutoScroll(true)
+                        .TopBar(
+                        Html.X().Toolbar()
+                        
+                    )
+                        .ItemID("Grid1").Flex(2)
+                    .BottomBar(X.PagingToolbar())
+                    .Height(540)
+        //.ColumnWidth(0.6)
+        //.Layout(Ext.Net.LayoutType.Column)
+            .Listeners(l => l.AfterRender.Handler = "Reload();")
+                    .Store(
+                        X.StoreForModel()
+        //.Proxy(Html.X().AjaxProxy()
+        //.Url(Url.Action("Read"))
+        //.Reader(Html.X().JsonReader().Root("data"))
+
+                        //)
+                        .PageSize(20)
+                        .RemoteFilter(true)
+                        .RemotePaging(true)
+        //.Listeners(l => l.DataChanged.Handler = "App.EdaratKol.queryById('GridEdaratKol').selModel.refresh();")
+                    )
+                    .View(
+                        Html.X().GridView().LoadingText("در حال بارگذاری...").RTL(true)
+                    )
+                    .Plugins(X.FilterHeader().Remote(true))
+                    .ColumnModel(
+                            Html.X().Column().DataIndex(Model, m => m.fldID).Hidden(true),
+                            Html.X().Column().DataIndex(Model, m => m.fldStartDate).Text("از تاریخ").Flex(5),
+                            Html.X().Column().DataIndex(Model, m => m.fldEndDate).Text("تا تاریخ").Flex(5),
+                            Html.X().Column().DataIndex(Model, m => m.fldLetterNumber).Text("شماره نامه").Flex(5),
+                            Html.X().Column().DataIndex(Model, m => m.fldName).Text("نام شهرداری").Flex(5),
+                            Html.X().Column().DataIndex(Model, m => m.fldUserName).Text("نام کاربر").Flex(5)
+                            , Html.X().Column().DataIndex(Model, m => m.fldDate).Text("تاریخ ثبت").Flex(5)
+                            , Html.X().ComponentColumn().ItemID("buttonMadrakS").Text("").Component(Html.X().Button().ItemID("btnbind").Text("مدرک").Listeners(l => l.Click.Handler = "ShowMadrakSavabegh();")).Filterable(false)
+                               .Width(50)
+                        , Html.X().CommandColumn().Text("").ItemID("buttonMadrakAcc").PrepareToolbar("disablebtn")
+                    //.Flex(1)
+                    .Width(80)
+                    .Commands(
+                        Html.X().GridCommand()
+                                .CommandName("Acc")
+                            .StandOut(true)
+                                .Text("تایید")
+                                .ToolTip(tt => tt.Text = "تایید")
+                    )
+                        .Listeners(ls => ls.Command.Handler = "AccMadrakSavabegh(record);")
+                            ,
+                                    Html.X().Column().DataIndex(Model, m => m.fldNameTaeedKonande).Text("کاربر تاییدکننده").Flex(5)
+                                    , Html.X().Column().DataIndex(Model, m => m.fldDateAccept).Text("تاریخ تایید").Flex(5)
+                    )
+
+                )
+                )
+            )
+        )
+)
+
+<script type="text/javascript">
+    function ShowMadrakSavabegh() {
+        var id = App.Savabegh.queryById('buttonMadrakS').activeRecord.record.data.fldID;
+        Ext.net.DirectMethod.request({
+            url: '/NewVer/PreviewFile',
+            params: {
+                State: 1,
+                Id: id
+            }
+        });
+    }
+    function Reload() {
+
+        Ext.net.DirectMethod.request({
+            url: '/Dashboard/ReadSavabegh',
+            params: {
+                CarfileId: '@ViewBag.CarFileId'
+            },
+            success: function (data) {
+                App.Savabegh.queryById('Grid1').getStore().loadData(data);
+            }
+        });
+    }
+  
+    var disablebtn = function (grid, toolbar, rowIndex, record) {
+        Ext.net.Mask.show({ msg: 'در حال بارگذاری...' });
+        var Button = toolbar.items.get(0);
+        Ext.net.DirectMethod.request({
+            url: '/Dashboard/CheckTaiidSavabegh',
+            params: {
+                id: record.data.fldID
+            },
+            success: function (data) {
+                if (data.HaveTaiid) {
+                    Button.setDisabled(true);
+                }
+                Ext.net.Mask.hide();
+
+
+            }
+        })
+    };
+    function AccMadrakSavabegh(record) {
+        Ext.net.Mask.show({ msg: 'در حال بارگذاری...' });
+        Ext.net.DirectMethod.request({
+            url: '/Dashboard/AccMadrakSavabegh',
+            params: {
+                id: record.data.fldID,
+                CarfileId: '@ViewBag.CarFileId'
+            },
+            success: function (data) {
+                Ext.net.Mask.hide();
+                Ext.MessageBox.show({
+                    Name: data.MsgTitle,
+                    msg: data.Msg,
+                    icon: Ext.MessageBox.INFO,
+                    buttons: Ext.MessageBox.OK
+                });
+                Reload();
+            }
+        });
+    }
+</script>
+
+

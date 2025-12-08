@@ -1,0 +1,259 @@
+﻿@model IEnumerable<Avarez.Models.sp_AnnouncementManagerAttachmentSelect>
+@using Ext.Net.MVC
+@using Hogaf.ExtNet.UX
+@using Ext.Net;
+@{
+
+    var X = Html.X();
+}
+
+@(X.Window()
+        .ID("AnnouncementAttach")
+    .Width(630).Height(488)
+    .Resizable(false)
+    .Title("انتخاب فایل ضمیمه")
+        .Closable(true)
+        .CloseAction(Ext.Net.CloseAction.Destroy)
+    .Items( 
+                X.FormPanel()
+            .ItemID("PnlAnnouncementAttach")
+            .Border(false)
+            .Layout(Ext.Net.LayoutType.Fit)
+            .Items(
+                    X.Panel().Layout(LayoutType.VBox).Border(false).PaddingSpec("10px 0 0 0")
+              .LayoutConfig(new VBoxLayoutConfig { Align = VBoxAlign.Center }).Height(155)
+            .Items(
+            X.FieldSet()
+                    .Border(true)
+                    .Height(130)
+                    .Title("انتخاب ضمیمه (حجم فایل بایستی کمتر از 200 KB باشد.)")
+                    .Layout(LayoutType.Table)
+                    //.LayoutConfig(new HBoxLayoutConfig { Align = HBoxAlign.Middle })
+                        .LayoutConfig(new TableLayoutConfig { Columns = 1 })
+                    .Width(565)
+                    .Items(
+                     X.FieldSet().Width(530).Border(false)
+                            .LayoutConfig(new HBoxLayoutConfig { Align = HBoxAlign.Middle })
+                        .Items(
+                        X.FileUploadField()
+                            .ID("FileUploadField1")
+                            .MarginSpec("0 10px 0 0")
+                            .Icon(Ext.Net.Icon.DiskUpload)
+                            .ButtonOnly(true)
+                            .ButtonText("انتخاب فایل")
+                            .DirectEvents(l =>
+                            {
+                                l.Change.Action = "Upload";
+                                l.Change.Success = "hideprogressAttach();";
+                            })
+                            .Listeners(l => l.Change.Fn = "showFile"),
+                        X.Container()
+                            .Content(@<div id="fi-button-msg" style="width: 350px; text-align:right;"><b>فایل انتخاب شده:</b></div>)
+                           )
+                            , X.FieldSet().Width(300).Border(false)
+                                        .LayoutConfig(new HBoxLayoutConfig { Align = HBoxAlign.Middle })
+                                    .Items(
+                                    X.Label("توضیحات:"),
+                                     X.TextArea().Width(190)
+                                     .ItemID("txtDesc")
+                                    )    
+                             
+                    )
+                        
+            ))
+                    , X.Panel().Border(false)
+            .Items(
+            X.GridPanel().Height(300)
+                    .AutoScroll(true)
+                    .TopBar(
+                        Html.X().Toolbar()
+                            .Items(
+                                X.Button()
+                                    .Text("ذخیره")
+                                    .Icon(Ext.Net.Icon.Disk)
+                                    .Listeners(li => li.Click.Handler = "SaveAnnouncementAttach();")
+                                ,X.Button()
+                                .Text("حذف")   
+                                .Icon(Ext.Net.Icon.Delete)
+                                    .Listeners(l => l.Click.Handler = "DeleteAttach();") 
+                                    )
+                                    )
+                                .ItemID("GridAnnouncementAttach")
+                    .BottomBar(X.PagingToolbar())
+                    .Store(
+                        Html.X().StoreForModel()
+                            .Proxy(Html.X().AjaxProxy()
+                                    .Url(Url.Action("Read_AnnouncementAttach"))
+                                .Reader(Html.X().JsonReader().Root("data"))
+                                .ExtraParams(ex => ex.Add(new { fldAnnouncementID = @ViewBag.fldAnnouncementID }))
+        )
+                    .PageSize(20)
+                    .RemoteFilter(true)
+                    .RemotePaging(true)
+                                            .Listeners(l => l.DataChanged.Handler = "App.AnnouncementAttach.queryById('GridAnnouncementAttach').selModel.refresh();")
+    )
+                    .View(
+                        Html.X().GridView().LoadingText("در حال بارگذاری...").RTL(true)
+    )
+                    .Plugins(X.FilterHeader().Remote(true))
+                    .ColumnModel(
+                        Html.X().RowNumbererColumn(),
+                        Html.X().Column().DataIndex(Model, m => m.fldID).Text("کد").Flex(1),
+                        Html.X().Column().DataIndex(Model, m => m.fldDesc).Text("توضیحات").Flex(6).Wrap(true),
+                            Html.X().ComponentColumn().ItemID("buttonDownload").Text("دانلود فایل").Component(Html.X().Button().ItemID("btnbind").Text("دانلود فایل").Listeners(l => l.Click.Handler = "DownloadAttach();")).Filterable(false)
+    )
+                .SelectionModel(
+                    Html.X().RowSelectionModel()
+                        .Mode(Ext.Net.SelectionMode.Single)
+    )
+    )
+)
+)
+<script type="text/javascript">
+    var MojazAttach = 0;
+    var sizeeAttach = 0;
+    var EndUploadAttach = false;
+    function hideprogressAttach() {
+        if (MojazAttach == 1 && sizeeAttach == 1) {
+            EndUploadAttach = true;
+        }
+        MojazAttach = 0;
+        sizeeAttach = 0;
+    }
+    var CheckAttach = setInterval(CheckEndAttach, 500);
+
+    function CheckEndAttach() {
+        if (EndUploadAttach == true) {
+            Ext.MessageBox.hide();
+            Ext.Msg.alert('عملیات موفق', 'فایل با موفقیت آپلود شد.');
+            clearInterval(CheckEndAttach);
+            EndUploadAttach = false;
+        }
+    }
+    var showFile = function (fb, v) {
+        var id = fb.fileInputEl.dom.id;
+        var el = Ext.get('fi-button-msg');
+        if (v) {
+            showProgressBarAttach();
+            /* if (v.split('.').pop().toLowerCase() == "pdf") {*/
+            MojazAttach = 1;
+            if (document.getElementById(id).files[0].size <= 204800) {
+                sizeeAttach = 1;
+            }
+            if (sizeeAttach == 1) {
+                el.update('<b>فایل انتخاب شده:</b> ' + v);
+            }
+            else {
+                el.update("");
+            }
+
+            if (!el.isVisible()) {
+                el.slideIn('t', {
+                    duration: .2,
+                    easing: 'easeIn',
+                    callback: function () {
+                        el.highlight();
+                    }
+                });
+            } else {
+                el.highlight();
+            }
+            /* }
+             else {
+                 el.update("");
+             }*/
+        }
+    };
+    function showProgressBarAttach() {
+        Ext.MessageBox.show({
+            msg: 'لطفاً منتظر باشید',
+            progressText: 'در حال آپلود فایل...',
+            width: 300,
+            wait: true,
+            waitConfig:
+            {
+                interval: 200,
+                text: 'در حال آپلود فایل...',
+                scope: this
+            }
+        });
+    }
+    function SaveAnnouncementAttach() {
+        var txtDesc = App.AnnouncementAttach.queryById('txtDesc');
+        App.AnnouncementAttach.body.mask("در حال ذخیره سازی...");
+        Ext.net.DirectMethod.request({
+            url: '/NewVer/Announcement_New/SaveAttach',
+            params: {
+                fldAnnouncementID: '@ViewBag.fldAnnouncementID',
+                fldDesc: txtDesc.getValue()
+            },
+            success: function (data) {
+                var ic = Ext.MessageBox.INFO;
+                if (data.Er == 1)
+                    ic = Ext.MessageBox.ERROR;
+                Ext.MessageBox.show({
+                    title: data.MsgTitle,
+                    msg: data.Msg,
+                    icon: ic,
+                    buttons: Ext.MessageBox.OK
+                });
+                App.AnnouncementAttach.queryById('GridAnnouncementAttach').store.load();
+                if (data.Er == 0) {
+                    ClearAttach();
+                }
+                App.AnnouncementAttach.body.mask().hide();
+            }
+        });
+    }
+    function ClearAttach() {
+        App.AnnouncementAttach.queryById('txtDesc').setValue("");
+        Ext.get('fi-button-msg').update("");
+    }
+    function DeleteAttach() {
+        var SelectedRow = App.AnnouncementAttach.queryById('GridAnnouncementAttach').selModel.getLastSelected();
+        if (SelectedRow != null) {
+            Ext.MessageBox.show({
+                title: "هشدار",
+                msg: "آیا برای حذف مطمئن هستید؟",
+                icon: Ext.MessageBox.WARNING,
+                buttons: Ext.MessageBox.YESNO,
+                fn: function (btn) {
+                    if (btn == 'yes') {
+                        Ext.net.Mask.show({ msg: 'در حال انجام عملیات...' });
+                        Ext.net.DirectMethod.request({
+                            url: '/NewVer/Announcement_New/DeleteAttach',
+                            params: {
+                                Id: SelectedRow.data.fldID
+                            },
+                            success: function (data) {
+                                var ic = Ext.MessageBox.INFO;
+                                if (data.Er == 1)
+                                    ic = Ext.MessageBox.ERROR;
+                                Ext.MessageBox.show({
+                                    title: data.MsgTitle,
+                                    msg: data.Msg,
+                                    icon: ic,
+                                    buttons: Ext.MessageBox.OK
+                                });
+                                App.AnnouncementAttach.queryById('GridAnnouncementAttach').store.load();
+                                Ext.net.Mask.hide();
+                            }
+                        });
+                    }
+                }
+            });
+        }
+        else {
+            Ext.MessageBox.show({
+                title: "خطا",
+                msg: "لطفا یک سطر را انتخاب نمایید.",
+                icon: Ext.MessageBox.ERROR,
+                buttons: Ext.MessageBox.OK
+            });
+        }
+    }
+    function DownloadAttach() {
+        var RowId = App.AnnouncementAttach.queryById("buttonDownload").activeRecord.record.data.fldID;
+        window.location.href = '@Url.Content("~/Announcement_New/Download?Id=")' + RowId;
+    }
+</script>

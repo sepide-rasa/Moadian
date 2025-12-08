@@ -1,0 +1,415 @@
+﻿@{
+    ViewBag.Title = "ثبت نام کاربران دفاتر پیشخوان";
+}
+<link href="@Url.Content("~/Content/web/kendo.common.min.css")" rel="stylesheet" type="text/css" />
+<link href="@Url.Content("~/Content/web/kendo.default.min.css")" rel="stylesheet" type="text/css" />
+<link href="@Url.Content("~/Content/web/kendo.rtl.min.css")" rel="stylesheet" type="text/css" />
+<script src="@Url.Content("~/Scripts/console.min.js")" type="text/javascript"></script>
+<script src="@Url.Content("~/Scripts/kendo.web.min.js")" type="text/javascript"></script>
+<script src="@Url.Content("~/Scripts/prettify.min.js")" type="text/javascript"></script>
+<script src="@Url.Content("~/Scripts/kendo.aspnetmvc.min.js")" type="text/javascript"></script>
+<script src="@Url.Content("~/Scripts/kendo.splitter.min.js")" type="text/javascript"></script>
+<script src="@Url.Content("~/Scripts/cultures/kendo.fa-IR.js")" type="text/javascript"></script>
+@using Kendo.Mvc.UI;
+<br />
+<br />
+<center><h2>ثبت نام کاربران دفاتر پیشخوان
+    <br />
+            لطفا جهت آموزش به کاربران پس از ثبت مشخصات دفتر، از لینک انتهای صفحه جهت ثبت مشخصات کاربران استفاده کنید.
+    </h2></center>
+<div class="modal" id="Savabegh">
+
+    @{
+        Avarez.Models.cartaxEntities car = new Avarez.Models.cartaxEntities();
+        var q = car.sp_StateSelect("", "", 0, 1, "").ToList();
+    }
+    <script src="@Url.Content("~/Content/Base.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~//Scripts/jquery.ui.datepicker-cc.all.min.js")" type="text/javascript"></script>
+    <div>
+        <center>
+            <table>
+                <tr>
+                    <td align="left">
+                        @Html.Hidden("fldId")
+                        استان:
+                    </td>
+                    <td>
+                        @Html.DropDownList("cboState", new SelectList(q, "", ""))
+                    </td>
+                </tr>
+                <tr>
+                    <td align="left">
+                        <span style="color: Red;">*</span> شهرداری:
+                    </td>
+                    <td>
+                        @Html.TextBox("cboMnu")
+                        <span id="lblcboMnuError" style="color: Red;"></span>
+                    </td>
+                </tr>
+                @*<tr>
+                        <td align="left">
+                            منطقه:
+                        </td>
+                        <td>
+                            @Html.TextBox("cboLocal")
+                        </td>
+                    </tr>
+                    <tr>
+                        <td align="left">
+                            ناحیه:
+                        </td>
+                        <td>
+                            @Html.TextBox("cboArea")
+                        </td>
+                    </tr>*@
+                <tr>
+                    <td align="left">
+                        <span style="color: Red;">*</span>شماره مجوز:
+                    </td>
+                    <td>
+                        @Html.TextBox("codeDaftar", null, new { @dir = "ltr", @style = "width: 120px;", @maxlength = "4", @onkeypress = "return isNumber(event)" })
+                        @*@Html.TextBox("codeDaftar")*@
+                        7216     
+                        (كد4رقمي)                            
+                            <span id="lblcodeDaftarError" style="color: Red"></span>
+</td>
+                </tr>
+                <tr>
+                    <td align="left">
+                        <span style="color: Red;">*</span>نام مسئول دفتر:
+                    </td>
+                    <td>
+                        @Html.TextBox("modirDaftar")
+                        <span id="lblmodirDaftarError" style="color: Red;"></span>
+                    </td>
+                </tr>
+                <tr>
+                    <td align="left">
+                        <span style="color: Red;">*</span>نام خانوادگی:
+                    </td>
+                    <td>
+                        @Html.TextBox("modirFamily")
+                        <span id="lblmodirFamilyError" style="color: Red;"></span>
+                    </td>
+                </tr>
+                <tr>
+                    <td align="left">
+                        <span style="color: Red;">*</span>كد ملي:
+                    </td>
+                    <td>
+                        @Html.TextBox("codeMeli", null, new { @dir = "ltr", @style = "width: 150px;", @maxlength = "10", @onkeypress = "return isNumber(event)" })
+                        <span id="lblcodeMeliError" style="color: Red;"></span>
+                    </td>
+                </tr>
+                <tr>
+                    <td align="left">
+                        <span style="color: Red;">*</span>آدرس:
+                    </td>
+                    <td>
+                        <span id="lblAddress" style="color: black;"></span>
+                        @Html.TextBox("Address", null, new {@style = "width: 250px;" })
+                        @*@Html.TextBox("Address")*@
+                        <span id="lblAddressError" style="color: Red;"></span>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td align="left">
+                        <span style="color: Red;">*</span>تلفن:
+                    </td>
+                    <td>
+                        @Html.TextBox("txtTel", null, new { @dir = "ltr", @style = "width: 150px;", @maxlength = "8", @onkeypress = "return isNumber(event)" })
+                        @*@Html.TextBox("txtTel")*@
+                        <span id="lblTelError" style="color: Red;"></span>
+                    </td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td>
+                        <img id="m_imgCaptcha" />
+                    </td>
+                </tr>
+                <tr>
+                    <td align="left" id="capt">
+                        کد امنیتی:
+                    </td>
+                    <td id="_capt">
+                        @Html.TextBox("Captcha", null, new { @dir = "ltr", @style = "width: 150px;" })
+                        <br />
+                        <span id="lblCaptchaError" style="color: Red;"></span>
+                    </td>
+                </tr>
+            </table>
+            <p>
+                @Avarez.Helper.winClass.Buttons("AddLink", "ثبت نام", "Save")
+                <a href="register/registerdetail">ثبت نام کاربران دفتر جهت آموزش</a>
+            </p>
+
+        </center>
+        <br />
+    </div>
+    <div class="k-rtl">
+       @(Html.Kendo().DropDownList()
+          .Name("cboState")
+          .OptionLabel("نام استان...")
+          .DataTextField("fldName")
+          .DataValueField("fldID")
+          .DataSource(source =>
+          {
+              source.Read(read =>
+              {
+                  read.Action("GetCascadeState", "Home");
+              });
+          }).HtmlAttributes(new { @style = "display: none;width:105px;" })
+    )
+    @(Html.Kendo().DropDownList()
+          .Name("cboMnu")
+          .OptionLabel("نام شهرداری...")
+                  .DataTextField("fldName")
+                  .DataValueField("fldID")
+          .DataSource(source =>
+          {
+              source.Read(read =>
+              {
+                  read.Action("GetCascadeCounty", "Home")
+                      .Data("selectCity");
+              })
+              .ServerFiltering(true);
+          })
+          .Enable(true)
+          .AutoBind(false)
+          .CascadeFrom("cboState")
+          .HtmlAttributes(new { @style = "display: none;width:105px;" })
+    )
+    @*@(Html.Kendo().DropDownList()
+              .Name("cboLocal")
+              .OptionLabel("نام منطقه...")
+              .DataTextField("fldName")
+              .DataValueField("fldID")
+              .DataSource(source =>
+              {
+                  source.Read(read =>
+                  {
+                      read.Action("GetCascadeLocal", "Register")
+                          .Data("selectLocal");
+                  })
+                  .ServerFiltering(true);
+              })
+              .Enable(true)
+              .AutoBind(false)
+              .CascadeFrom("cboMnu")
+              .HtmlAttributes(new { @style = "display: none;width:105px;" })
+        )
+        @(Html.Kendo().DropDownList()
+                      .Name("cboArea")
+              .OptionLabel("نام ناحیه...")
+              .DataTextField("fldName")
+              .DataValueField("fldID")
+              .DataSource(source =>
+              {
+                  source.Read(read =>
+                  {
+                      read.Action("GetCascadeArea", "Register")
+                          .Data("selectArea");
+                  })
+                  .ServerFiltering(true);
+              })
+              .Enable(true)
+              .AutoBind(false)
+              .CascadeFrom("cboMnu")
+              .HtmlAttributes(new { @style = "display: none;width:105px;" })
+        )*@
+    </div>
+    <script type="text/javascript">
+        function selectCity() {
+            return {
+                cboState: $("#cboState").val()
+            };
+        }
+        function loadCaptcha() {
+            var originalSrc = '@Url.Content("~/Register/generateCaptcha")';
+            var antiCachePart = (new Date()).getTime();
+            var newSrc = originalSrc + '?dc=' + antiCachePart;
+            $("#m_imgCaptcha").attr('src', newSrc);
+        }
+        //function selectLocal() {
+
+        //    return {
+        //        cboMnu: $("#cboMnu").val()
+        //    };
+        //}
+        //function selectArea() {
+
+        //    return {
+        //        cboMnu: $("#cboMnu").val()
+        //    };
+        //}
+        var AddressTxt = "";
+
+        $("document").ready(function () {
+            loadCaptcha();
+            $("#AddLink").button();
+
+            $("#AddLink").click(function () {
+                SaveRecord();
+            });
+            var dropDown = $("#cboState").data("kendoDropDownList");
+            dropDown.value("11");
+            dropDown.enable(false);
+
+            $("#cboState").change(function () {
+                AddressTxt = ($("#cboState").data("kendoDropDownList").text() + "،").replace("شهرداری", "شهر");
+                $('#lblAddress').html(AddressTxt);
+            });
+            $("#cboMnu").change(function () {
+                if ($("#cboMnu").val() != '') {
+                    $("#cboMnu").removeClass("input-validation-error");
+                    $("#lblcboMnuError").html("");
+                }
+                else {
+                    $("#cboMnu").addClass("input-validation-error");
+                    $('#lblcboMnuError').html('لطفا شهرداری را انتخاب کنید.');
+                }
+                AddressTxt = ($("#cboState").data("kendoDropDownList").text() + "،" + $("#cboMnu").data("kendoDropDownList").text() + "،").replace("شهرداری", "شهر");
+                $('#lblAddress').html(AddressTxt);
+            });
+            
+        });
+        function isNumber(evt) {
+            evt = (evt) ? evt : window.event;
+            var charCode = (evt.which) ? evt.which : evt.keyCode;
+            if (charCode > 31 && (charCode < 48 || charCode > 57)) {
+                return false;
+            }
+            return true;
+        }
+        function Clear() {
+            $('#fldId').val(0);
+            $("#txtPaperNum").val('');
+            $("#txtFromDate").val('');
+            $('#txtToDate').val('');
+            $('#txtDesc').val('');
+        }
+        function SaveRecord() {
+            var er = false;
+
+            if ($("#Captcha").val() == '') {
+                $("#Captcha").addClass("input-validation-error");
+                $('#lblCaptchaError').html('لطفا کد امنیتی را وارد کنید.');
+                er = true;
+            }
+            else
+                $('#lblCaptchaError').html('');
+
+            if ($("#cboMnu").val() == '') {
+                $("#cboMnu").addClass("input-validation-error");
+                $('#lblcboMnuError').html('لطفا شهرداری را انتخاب کنید.');
+                er = true;
+            }
+            else
+                $('#lblcboMnuError').html('');
+
+            if ($("#codeDaftar").val() == '') {
+                $("#codeDaftar").addClass("input-validation-error");
+                $('#lblcodeDaftarError').html('لطفا کد دفتر را وارد کنید.');
+                er = true;
+            }
+            else
+                $('#lblcodeDaftarError').html('');
+
+            if ($("#Address").val() == '') {
+                $("#Address").addClass("input-validation-error");
+                $('#lblAddressError').html('لطفا آدرس دفتر را وارد کنید.');
+                er = true;
+            }
+            else
+                $('#lblAddressError').html('');
+
+            if ($("#txtTel").val() == '') {
+                $("#txtTel").addClass("input-validation-error");
+                $('#lblTelError').html('لطفا تلفن دفتر را وارد کنید.');
+                er = true;
+            }
+            else
+                $('#lblTelError').html('');
+            if (er)
+                return;
+
+            if ($("#modirDaftar").val() == '') {
+                $("#modirDaftar").addClass("input-validation-error");
+                $('#lblmodirDaftarError').html('لطفا نام مدیر دفتر را وارد کنید.');
+                er = true;
+            }
+            else
+                $('#lblmodirDaftarError').html('');
+            if (er)
+                return;
+
+            if ($("#modirFamily").val() == '') {
+                $("#modirFamily").addClass("input-validation-error");
+                $('#lblmodirFamilyError').html('لطفا کد نام خانوادگی را وارد کنید.');
+                er = true;
+            }
+            else
+                $('#lblmodirFamilyError').html('');
+            if (er)
+                return;
+            if ($("#codeMeli").val() == '') {
+                $("#codeMeli").addClass("input-validation-error");
+                $('#lblcodeMeliError').html('لطفا کد ملی را وارد کنید.');
+                er = true;
+            }
+            else
+                $('#lblcodeMeliError').html('');
+            if (er)
+                return;
+
+            var data = {
+                fldCodeDaftar: "7216"+$("#codeDaftar").val(),
+                fldAddress: AddressTxt+$("#Address").val(),
+                fldTel: $("#txtTel").val(),
+                fldMunId: $("#cboMnu").val(),
+                //fldLocalId: $("#cboLocal").val(),
+                //fldAreaId: $("#cboArea").val(),
+                fldmodirDaftar: $("#modirDaftar").val(),
+                fldmodirFamily: $('#modirFamily').val(),
+                fldcodeMeli: $("#codeMeli").val(),
+                Captcha: $("#Captcha").val()
+            };
+            if (data != '') {
+                PostForm(data, '@Url.Content("~/Register/Save")', "#win");
+            }
+            Clear();
+        }
+
+        function PostForm(datas, url, id) {
+            var sendInfo = datas;
+            $('#Lock').show();
+            $.ajax({
+                type: "POST",
+                url: url,
+                data: sendInfo,
+                datatype: "json",
+                success: function (data) {
+                    var m = data;
+                    windowAppend("body", "/metro/error");
+                    $("#message").html(m.data);
+                    switch (m.state) {
+                        case 0:
+                            $("#error .wintitle").html("ذخیره موفق");
+                            loadCaptcha();
+                            break;
+                        case 1:
+                            $("#error .wintitle").html("خطا");
+                            loadCaptcha();
+                            break;
+                    }
+                    $('#Lock').hide();
+                },
+                failure: function (data) {
+                    alert(data.data);
+                }
+            });
+        }
+    </script>
+</div>

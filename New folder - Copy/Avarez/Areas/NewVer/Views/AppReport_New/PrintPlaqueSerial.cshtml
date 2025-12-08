@@ -1,0 +1,12 @@
+﻿@using Ext.Net.MVC;
+
+@(
+ Html.X().Panel().Height(560)
+        .Title("پیش نمایش")
+        .ID("PrintPlaqueSerial")
+        .AutoScroll(true)
+        .Closable(true)
+        .CloseAction(Ext.Net.CloseAction.Destroy)
+        .Layout(Ext.Net.LayoutType.Fit)
+        .Html("<center><iframe class='se-pre-con2' style='width: 1200px;height: 550px;border: 1px solid #ccc;' src='/NewVer/AppReport_New/GeneratePDFPlaqueSerial' type='application/pdf'></iframe></center>")
+)

@@ -1,0 +1,82 @@
+﻿@model IEnumerable<Avarez.Models.sp_CarFile_LogSelect2>
+@using Ext.Net.MVC
+@using Hogaf.ExtNet.UX
+@using Ext.Net;
+@{
+
+    var X = Html.X();
+}
+
+@(X.Window()
+    .Title("تاریخچه پرونده ها")
+    .Border(false)
+    .Modal(true)
+    .ID("CarFileLog")
+    .Width(900)
+    .Height(670)
+    .AutoScroll(true)
+    .Closable(true)
+    .CloseAction(Ext.Net.CloseAction.Destroy)
+    .Layout(LayoutType.Fit)
+    .Items(
+        X.GridPanel()
+            .AutoScroll(true)
+            .BottomBar(X.PagingToolbar())
+            .ItemID("GridCarFileLog")
+            .Store(
+                X.StoreForModel()
+                    .Proxy(Html.X().AjaxProxy()
+                        .Url(Url.Action("ReadLogs"))
+                        .Reader(Html.X().JsonReader().Root("data"))
+                        .ExtraParams(l => l.Add(new { TaTarikh = ViewBag.TaTarikh }))
+                        .ExtraParams(l => l.Add(new { AzTarikh = ViewBag.AzTarikh }))
+                            )
+                    .PageSize(20)
+                    .RemoteFilter(false)
+                    .RemotePaging(true)
+                        )
+            .ColumnModel(
+                Html.X().Column().DataIndex(Model, m => m.fldID).Text("شماره پرونده"),/*.Renderer("getDetailsOneLog"),*/
+                Html.X().Column().DataIndex(Model, m => m.fldTypePlaque).Text("نوع پلاک").Filterable(false).Wrap(true),
+                Html.X().Column().DataIndex(Model, m => m.fldCarMakeName).Text("نوع ساخت").Filterable(false).Wrap(true),
+                Html.X().Column().DataIndex(Model, m => m.fldCarAccountTypeName).Text("نوع كاربري").Filterable(false).Wrap(true),
+                Html.X().Column().DataIndex(Model, m => m.fldCabinTypeName).Text("نوع كابين").Filterable(false).Wrap(true),
+                Html.X().Column().DataIndex(Model, m => m.fldCarSystemName).Text("سيستم خودرو").Filterable(false).Wrap(true),
+                Html.X().Column().DataIndex(Model, m => m.fldCarModelName).Text("تیپ خودرو").Filterable(false).Wrap(true),
+                Html.X().Column().DataIndex(Model, m => m.fldCarClassName).Text("کلاس خودرو").Filterable(false).Wrap(true),
+                Html.X().Column().DataIndex(Model, m => m.fldMotorNumber).Text("شماره موتور").Filterable(false).Wrap(true),
+                Html.X().Column().DataIndex(Model, m => m.fldShasiNumber).Text("شماره شاسی").Filterable(false).Wrap(true),
+                Html.X().Column().DataIndex(Model, m => m.fldVIN).Text("VIN").Filterable(false).Wrap(true),
+                Html.X().Column().DataIndex(Model, m => m.fldColor).Text("رنگ خودرو").Filterable(false).Wrap(true),
+                Html.X().Column().DataIndex(Model, m => m.fldModel).Text("سال تولید").Filterable(false).Wrap(true),
+                Html.X().Column().DataIndex(Model, m => m.fldStartDateInsurance).Text("تاریخ سند کارخانه").Filterable(false).Wrap(true),
+                Html.X().Column().DataIndex(Model, m => m.fldDatePlaque).Text("تاریخ پلاک").Flex(3).Filterable(false).Wrap(true),
+                Html.X().Column().DataIndex(Model, m => m.fldDate).Text("تاریخ ایجاد").Flex(3).Filterable(false).Wrap(true),
+                Html.X().Column().DataIndex(Model, m => m.fldCarPlaqueName).Text("پلاک خودرو").Flex(4).Filterable(false).Wrap(true),
+                Html.X().Column().DataIndex(Model, m => m.fldUserID).Text("کاربر ایجاد کننده").Flex(6).Filterable(false).Wrap(true),
+                Html.X().Column().DataIndex(Model, m => m.fldTypeLogName).Text("نوع تغییرات").Flex(3).Filterable(false).Wrap(true),
+                Html.X().Column().DataIndex(Model, m => m.fldTime).Text("ساعت تغییرات").Flex(4).Filterable(false).Wrap(true)
+                    )
+            .Plugins(X.FilterHeader().Remote(false))
+            .SelectionModel(Html.X().RowSelectionModel().Mode(SelectionMode.Multi))
+        )
+)
+<script type="text/javascript">
+    var getDetailsOneLog = function (value,record) {
+        return '<a href="javascript:myFunc2(' + record.record.data.fldID+')">'+value+'</a>';
+    };
+
+    function myFunc2(value) {
+        Ext.net.Mask.show({ msg: 'در حال بارگذاری...' });
+        Ext.net.DirectMethod.request({
+            url: '/NewVer/NameTable_New/getLogsforSpecifyrow',
+            params: {
+                id: value
+            },
+            success: function (data) {
+                Ext.net.Mask.hide();
+            }
+        });
+    }
+
+</script>

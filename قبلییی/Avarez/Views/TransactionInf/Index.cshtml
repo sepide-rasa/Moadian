@@ -1,0 +1,369 @@
+﻿@using Kendo.Mvc.UI;
+<div id="TransactionInf">
+
+    <div>
+        <br />
+        <center>
+
+            <table>
+                <tr>
+                    @Html.Hidden("fldId")
+                    <td align="left">
+                        <span style="color: Red;">*</span> نام کاربری:
+                    </td>
+                    <td>
+                        @Avarez.Helper.winClass.textbox("txtUserName")
+                        <span id="lblNameError" style="color: Red;"></span>
+                    </td>
+                    <td align="left">
+                        <span style="color: Red;">*</span>رمز عبور:
+                    </td>
+                    <td>
+                        @Html.Password("txtPass")
+                        <span id="lblFamilyError" style="color: Red;"></span>
+                    </td>
+                    
+                </tr>
+                <tr>
+                    <td align="center" colspan="4">
+                        @Html.CheckBox("chInherit")
+                    </td>
+                </tr>
+                <tr>
+                    <td align="center" colspan="4">
+                        <p>
+                            @Avarez.Helper.winClass.Buttons("AddLink", "ذخیره", "Save")
+                            @Avarez.Helper.winClass.Buttons("EditLink", "ویرایش", "Edit")
+                            @Avarez.Helper.winClass.Buttons("DelLink", "حذف", "Del")
+                            @Avarez.Helper.winClass.Buttons("exit", "خروج", "Exit")
+                        </p>
+                    </td>
+                </tr>
+                <tr>
+                    <td align="left">
+                        تقسیمات کشوری:
+                    </td>
+                    <td colspan="4" dir="rtl" id="P_Tree" align="right"></td>
+
+                </tr>
+                <tr>
+                    <td colspan="4" align="center" style="height: 30px;">
+                        @Html.Label("موقعیت انتخاب شده: ", new { @id = "Position" })
+                    </td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td dir="rtl" id="Location" style="color: Red ;" align="center"></td>
+                </tr>
+
+            </table>
+
+        </center>
+        <div class="k-rtl demo-section">
+            @(Html.Kendo().Grid<Avarez.Models.sp_TransactionInfSelect>()
+                .Name("Grid")
+                .Columns(columns =>
+                {
+                    columns.Bound(p => p.fldId).Title("کد").Visible(false);
+                    columns.Bound(p => p.fldUserName).Title("نام کاربری");
+                    columns.Bound(p => p.fldCountryDivisionsName).Title("موقعیت");
+
+                })
+            .Selectable(selectable => selectable.Mode(GridSelectionMode.Single))
+            .Pageable()
+            .Scrollable()
+            .DataSource(data =>
+                data.Ajax()
+                .PageSize(10)
+                        .Read("Fill", "TransactionInf")
+            )
+            )
+        </div>
+
+        <script type="text/javascript">
+            var dataItem = '';
+            var Win = 0;
+            var id;
+            var SID;
+            var NType;
+            function select(e) {
+                dataItem = this.dataItem(e.node);
+                id = dataItem.id;
+                SID = dataItem.fldSid;
+                NType = dataItem.fldNodeType;
+
+                var url = '@Url.Content("~/TransactionInf/Position")';
+                $.ajax({
+                    type: "post",
+                    url: url,
+                    data: { id: id },
+                    datatype: "json",
+                    success: function (data) {
+                        var m = data;
+                        $('#Position').html('موقعیت انتخاب شده: ' + m.Position);
+                        var treeview = $("#treeview").data("kendoTreeView");
+                        treeview.collapse(".k-item");
+                    },
+                    failure: function (data) {
+                        alert(data.data);
+                    }
+                });
+            }
+
+
+
+            $("document").ready(function () {
+
+                $('#P_Tree').html($('#LocationDiv').valueOf());
+                $("#AddLink").button();
+                $("#EditLink").button();
+                $("#DelLink").button();
+                $("#exit").button();
+
+                $('#txtSearch').keyup(function () {
+                    var url = '@Url.Action("Reload", "TransactionInf")';
+                    Reload(url, 'Grid', $("#cboSearchFiald").val(), $("#txtSearch").val(), $("#txtTop").val(), $("#cboSearchType").val());
+                });
+
+                $('#TransactionInf').on('keyup', 'input', function (event) {
+                    if (event.which == 13) {
+                        var inputs = $('#TransactionInf').find(':input:visible');
+                        inputs.eq(inputs.index(this) + 1).focus();
+                    }
+                });
+
+                $("#exit").click(function () {
+                    $("#TransactionInf").remove();
+                });
+
+                $(document).keyup(function (event) {
+                    if (event.which == 119) {
+                        SaveRecord();
+                    }
+                    else if (event.which == 113) {
+                        EditRecord();
+                    }
+                    else if (event.which == 115) {
+                        DeleteRecord();
+                    }
+                });
+                $('#AddLink').attr('title', 'کلید میانبر (F8)'); //119
+                $('#EditLink').attr('title', 'کلید میانبر (F2)'); //113
+                $('#DelLink').attr('title', 'کلید میانبر (F4)'); //115
+
+                jQuery("#EditLink").click(function () {
+                    EditRecord();
+                });
+
+                $('#DelLink').click(function () {
+                    DeleteRecord();
+                });
+
+                $("#AddLink").click(function () {
+                    SaveRecord();
+                });
+
+                $("#txtUserName").keyup(function () {
+                    if ($("#txtUserName").val() != '') {
+                        $("#txtUserName").removeClass("input-validation-error");
+                        $("#lblUserNameError").html("");
+                    }
+                    else {
+                        $("#txtUserName").addClass("input-validation-error");
+                        $('#lblUserNameError').html('لطفا نام کاربری را وارد کنید.');
+                    }
+                });
+                $("#txtPass").keyup(function () {
+                    if ($("#txtPass").val() != '') {
+                        $("#txtPass").removeClass("input-validation-error");
+                        $("#lblPassError").html("");
+                    }
+                    else {
+                        $("#txtPass").addClass("input-validation-error");
+                        $('#lblPassError').html('لطفا رمز عبور را وارد کنید.');
+                    }
+                });
+            });
+            function Clear() {
+                $("#txtUserName").val('');
+                $("#txtPass").val('');
+                $('#fldId').val('0');
+            }
+            function SaveRecord() {
+                var er = false;
+                if ($("#txtUserName").val() == '') {
+                    $("#txtUserName").addClass("input-validation-error");
+                    $('#lblUserNameError').html('لطفا نام کاربری را وارد کنید.');
+                    er = true;
+                }
+                else
+                    $('#lblNameError').html('');
+
+                if ($("#txtPass").val() == '') {
+                    $("#txtPass").addClass("input-validation-error");
+                    $('#lblPassError').html('لطفا رمز عبور را وارد کنید.');
+                    er = true;
+                }
+                else
+                    $('#lblPassError').html('');
+
+                if (er)
+                    return;
+
+
+
+                var data = {
+                    fldUserName: $("#txtUserName").val(),
+                    fldPass: $("#txtPass").val(),
+                    CountryCode: SID, CountryType: NType,
+                    fldId: $("#fldId").val(),
+                    fldInherit: document.getElementById('chInherit').checked
+                };
+                if (data != '') {
+                    PostForm(data, '@Url.Content("~/TransactionInf/Save")', "#win");
+                }
+                Clear();
+            }
+            function EditRecord() {
+
+                var entityGrid = $("#Grid").data("kendoGrid");
+                var selectedItem = entityGrid.dataItem(entityGrid.select());
+                if (selectedItem) {
+                    var id = selectedItem.fldId;
+                    var URL = '@Url.Content("~/TransactionInf/Details")';
+                    URL = URL + "/" + id;
+                    $.ajax({
+                        type: "GET",
+                        url: URL,
+                        success: function (data) {
+                            $('#txtUserName').val(data.fldUserName);
+                            $('#txtPass').val(data.fldPass);
+                            $('#fldId').val(data.fldId);
+                            document.getElementById('chInherit').checked = data.fldInherit;
+                            SID = data.CountryCode;
+                            NType = data.CountryType;
+                            id = data.fldCountryId;
+
+                            var url = '@Url.Content("~/TransactionInf/Position")';
+                            $.ajax({
+                                type: "post",
+                                url: url,
+                                data: { id: id },
+                                datatype: "json",
+                                success: function (data) {
+                                    var m = data;
+                                    $('#Position').html('موقعیت انتخاب شده: ' + m.Position);
+                                },
+                                failure: function (data) {
+                                    alert(data.data);
+                                }
+                            });
+                        },
+                        failure: function (data) {
+                            alert(data.data);
+                        }
+                    });
+                }
+                else {
+                    alert('لطفا یک سطر را انتخاب کنید.');
+                }
+            }
+            function DeleteRecord() {
+                var entityGrid = $("#Grid").data("kendoGrid");
+                var selectedItem = entityGrid.dataItem(entityGrid.select());
+                if (selectedItem) {
+                    var id = selectedItem.fldId;
+                    var URL = '@Url.Content("~/metro/YesNomsg")';
+                    URL = URL + "/?id=" + id + "&URL=" + '@Url.Content("~/TransactionInf/Delete")';
+                    windowAppend("body", URL);
+                    $("#message").html('آیا مایل به حذف رکورد انتخاب شده هستید؟');
+                }
+                else {
+                    alert('لطفا یک سطر را انتخاب کنید.');
+                }
+                Clear();
+            }
+
+            function Reload(Url, gridname, field, value, top, searchType) {
+                var grid = $('#' + gridname).data('kendoGrid');
+                $.ajax({
+                    url: Url,
+                    type: 'get',
+                    datatype: 'json',
+                    data: { field: field, value: value, top: top, searchtype: searchType },
+                    error: function (xhr, status, error) {
+                        alert(xhr + status);
+                    },
+                    success: function (result) {
+                        $("#" + gridname).data("kendoGrid").dataSource.data(result);
+                    }
+
+                });
+            }
+            function PostForm(datas, url, id) {
+                var sendInfo = datas;
+                $('#Lock').show();
+                $.ajax({
+                    type: "POST",
+                    url: url,
+                    data: sendInfo,
+                    datatype: "json",
+                    success: function (data) {
+                        var m = data;
+                        windowAppend("body", "/metro/error");
+                        $("#message").html(m.data);
+                        switch (m.state) {
+                            case 0:
+                                $("#error .wintitle").html("ذخیره موفق");
+                                break;
+                            case 1:
+                                $("#error .wintitle").html("خطا");
+                                break;
+                        }
+
+                        var url = '@Url.Action("Reload", "TransactionInf")';
+                        Reload(url, 'Grid', '0', '', 30, 1);
+                        $('#Lock').hide();
+
+                    },
+                    failure: function (data) {
+                        alert(data.data);
+                    }
+                });
+            }
+
+        </script>
+    </div>
+    <div class="treeview-back  k-rtl" dir="rtl" id="LocationDiv">
+        @(Html.Kendo().TreeView()
+                        .Name("treeview")
+                        .DataImageUrlField("image")
+
+                        .DataTextField("Name")
+                        .Checkboxes(chkbxs =>
+                        {
+                            chkbxs.Enabled(false).CheckChildren(false);
+                        })
+                        .DataSource(dataSource => dataSource
+                        .Read(read => read
+                        .Action("_Tree", "User")
+                        )
+                        )
+                        .Events(events =>
+                        events.Select("select"))
+        )
+    </div>
+    <style type="text/css">
+        .treeview-back {
+            width: 400px;
+            margin: 30px;
+            padding: 20px;
+            -moz-box-shadow: 0 1px 2px rgba(0,0,0,0.45), inset 0 0 30px rgba(0,0,0,0.07);
+            -webkit-box-shadow: 0 1px 2px rgba(0,0,0,0.45), inset 0 0 30px rgba(0,0,0,0.07);
+            box-shadow: 0 1px 2px rgba(0,0,0,0.45), inner 0 0 30px rgba(0,0,0,0.07);
+            -webkit-border-radius: 8px;
+            -moz-border-radius: 8px;
+            border-radius: 8px;
+        }
+    </style>
+</div>

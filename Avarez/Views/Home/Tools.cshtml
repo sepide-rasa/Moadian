@@ -1,0 +1,192 @@
+﻿@using Avarez.Controllers.Users;
+<div id="PhoneBook">
+    @using Kendo.Mvc.UI;
+    <link href="@Url.Content("~/Content/Site.css")" rel="stylesheet" type="text/css" />
+    <script src="@Url.Content("~/Content/Base.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Scripts/jquery-1.7.1.min.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Scripts/jquery-ui-1.8.20.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Scripts/jquery-ui-1.8.20.min.js")" type="text/javascript"></script>
+    <link href="@Url.Content("~/Content/themes/base/ui.css")" rel="stylesheet" type="text/css" />
+    <link href="@Url.Content("~/Content/web/kendo.common.min.css")" rel="stylesheet" type="text/css" />
+    <link href="@Url.Content("~/Content/web/kendo.default.min.css")" rel="stylesheet" type="text/css" />
+    <link href="@Url.Content("~/Content/web/kendo.rtl.min.css")" rel="stylesheet" type="text/css" />
+    <script src="@Url.Content("~/Scripts/console.min.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Scripts/kendo.web.min.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Scripts/prettify.min.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Scripts/kendo.aspnetmvc.min.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Scripts/kendo.splitter.min.js")" type="text/javascript"></script>
+   
+    <script src="@Url.Content("~/Scripts/cultures/kendo.fa-IR.js")" type="text/javascript"></script>
+    <script type="text/javascript">
+        $("document").ready(function () {
+            $('#ChangeLocation').button();
+            $('#Exit').button();
+            $('#HomePage').button();
+            $('#HomePage').click(function () {
+                window.location.href = '/Home/Home';
+            });
+            $('#Exit').click(function () {
+                window.location.href = '/Account/LogOff';
+            });
+
+            $('#ChangeLocation').click(function () {
+                window.location.href = '/Home/ChangeLocation';
+            });
+            $("#Contact").click(function () {
+                windows("#win", "/Contact/Index");
+            });
+            $("#AccostType").click(function () {
+                windows("#win", "/AccostType/Index");
+            });
+            $("#Error").click(function () {
+                windows("#win", "/Error/Index");
+            });
+            $("#NameTable").click(function () {
+                windows("#win", "/NameTable/Index");
+            });
+            $("#Announcement").click(function () {
+                windows("#win", "/Announcement/Index");
+            });
+            $("#BankParametr").click(function () {
+                windows("#win", "/BankParametr/Index");
+            });
+            $("#Support").click(function () {
+                windows("#win", "/SupportRate/Index");
+            });
+            $("#OnlineUsers").click(function () {
+                windows("#win", "/OnlineUsers/Index");
+            }); 
+            $("#Dashboard").click(function () {
+                window.open("/Dashboard/Index","_blank");
+            });
+        });
+    </script>
+    @{Avarez.Models.cartaxEntities p = new Avarez.Models.cartaxEntities();
+      var state = p.sp_StateSelect("fldId", Session["UserState"].ToString(), 1, Convert.ToInt32(Session["UserId"]), Session["UserPass"].ToString()).FirstOrDefault();
+      var Mnu = p.sp_MunicipalitySelect("fldId", Session["UserMnu"].ToString(), 1, Convert.ToInt32(Session["UserId"]), Session["UserPass"].ToString()).FirstOrDefault();
+      var Location = state.fldName + " --> " + Mnu.fldName + Session["Location"];}
+    @(Html.Kendo().Splitter()
+      .Name("vertical")
+      .Orientation(SplitterOrientation.Vertical)
+          .HtmlAttributes(new { style = "height: 750px;" })
+      .Panes(verticalPanes =>
+      {
+          verticalPanes.Add()
+           .Size("30px")
+           .Collapsible(false)
+           .Resizable(false)
+           .Content(@<div dir="rtl" style="text-align: center;">
+               <span style="font-weight: bold; color: #127AA3; font-size: 11px;">موقعیت فعلی شما: @Location
+               </span>
+               <button id="ChangeLocation" title="برای تغییر موقعیت از این گزینه استفاده کنید."
+                   style="font-size: 11px;">
+                   ...</button>
+               <button id="Exit" style="font-size: 11px; float: left; text-align: left; background-image: url('/Content/images/1377957633_exit.png');
+                   background-repeat: no-repeat; background-position: right; width: 70px; background-size: 14px;
+                   background-position-x: 50px;">
+                   خروج</button>
+               <button id="HomePage" style="float: right; font-size: 11px; text-align: left; background-image: url('/Content/images/1377958371_Home.png');
+                   background-repeat: no-repeat; background-position: right; width: 100px; background-size: 16px;
+                   background-position-x: 80px;">
+                   صفحه اصلی</button></div>);
+          verticalPanes.Add()
+              .HtmlAttributes(new { id = "top-pane" })
+              .Scrollable(false)
+              .Collapsible(false)
+              .Content(
+                Html.Kendo().Splitter()
+                    .Name("horizontal")
+                    .HtmlAttributes(new { style = "height: 100%;" })
+                    .Panes(horizontalPanes =>
+                    {
+                        horizontalPanes.Add()
+                            .HtmlAttributes(new { id = "left-pane" })
+                            .Size("688px")
+                            .Content(@<div id="win" class="pane-content">
+                            </div>);
+
+
+
+                        horizontalPanes.Add()
+                            .HtmlAttributes(new { id = "right-pane" })
+                            .Size("210px")
+                            .Content(@<div class="pane-content">
+                                @(Html.Kendo().PanelBar()
+                                .Name("panelbar-images")
+                                .Items(panelbar =>
+                                {
+                                    panelbar.Add().Text("دفترچه تلفن")
+                                        .Expanded(true)
+
+                        .Visible(Permossions.haveAccess(Convert.ToInt32(Session["UserId"]), 270))
+                                        .Items(Banks =>
+                                        {
+
+                                            Banks.Add().Text("تعریف نوع مخاطب")
+                                            .HtmlAttributes(new { id = "AccostType" })
+                        .Visible(Permossions.haveAccess(Convert.ToInt32(Session["UserId"]), 271))
+                                            .ImageUrl(Url.Content("~/Content/images/icontexto_user_web20_technorati.png"));
+
+                                            Banks.Add().Text("تعریف و جستجوی مخاطب")
+                                            .HtmlAttributes(new { id = "Contact" })
+                        .Visible(Permossions.haveAccess(Convert.ToInt32(Session["UserId"]), 275))
+                                            .ImageUrl(Url.Content("~/Content/images/preferences_contact_list.png"));
+
+                                        });
+
+                                    panelbar.Add().Text("ابزارهای مدیریتی")
+                                        .Expanded(true)
+
+                        .Visible(Permossions.haveAccess(Convert.ToInt32(Session["UserId"]), 279))
+                                        .Items(Banks =>
+                                        {
+                                            Banks.Add().Text("مدیریت خطا")
+                                            .HtmlAttributes(new { id = "Error" })
+                        .Visible(Permossions.haveAccess(Convert.ToInt32(Session["UserId"]), 280))
+                                            .ImageUrl(Url.Content("~/Content/images/agt_action_fail.png"));
+                                            Banks.Add().Text("تاریخچه کاربران")
+                                            .HtmlAttributes(new { id = "NameTable" })
+                        .Visible(Permossions.haveAccess(Convert.ToInt32(Session["UserId"]), 281))
+                                            .ImageUrl(Url.Content("~/Content/images/contacts.png"));
+                                            Banks.Add().Text("ثبت اطلاعیه")
+                                            .HtmlAttributes(new { id = "Announcement" })
+                        .Visible(Permossions.haveAccess(Convert.ToInt32(Session["UserId"]), 282))
+                                            .ImageUrl(Url.Content("~/Content/images/note.png"));
+                                            Banks.Add().Text("ثبت پارامترهای بانکها")
+                                            .HtmlAttributes(new { id = "BankParametr" })
+                        .Visible(Permossions.haveAccess(Convert.ToInt32(Session["UserId"]), 286))
+                                            .ImageUrl(Url.Content("~/Content/images/money.png"));
+                                        });
+                                      panelbar.Add().Text("پشتیبانی")
+                                        .Expanded(true)
+                        .Visible(Permossions.haveAccess(Convert.ToInt32(Session["UserId"]), 367))
+                                        .Items(Banks =>
+                                        {
+                                            Banks.Add().Text("پشتیبانی نرخ ها")
+                                            .HtmlAttributes(new { id = "Support" })
+                        .Visible(Permossions.haveAccess(Convert.ToInt32(Session["UserId"]), 368))
+                                            .ImageUrl(Url.Content("~/Content/images/پشتیبانی نرخ ها.png"));
+                                           
+                                        });
+                                      panelbar.Add().Text("پنل مديريتي")
+                                          .Expanded(true)
+                          .Visible(Permossions.haveAccess(Convert.ToInt32(Session["UserId"]), 372))
+                                          .Items(Banks =>
+                                          {
+                                              Banks.Add().Text("كاربران آنلاين")
+                                              .HtmlAttributes(new { id = "OnlineUsers" })
+                                                .Visible(Permossions.haveAccess(Convert.ToInt32(Session["UserId"]), 373))
+                                              .ImageUrl(Url.Content("~/Content/images/کاربران آنلاین.png"));
+                                              Banks.Add().Text("داشبورد")
+                                             .HtmlAttributes(new { id = "Dashboard" })
+                                               .Visible(Permossions.haveAccess(Convert.ToInt32(Session["UserId"]), 374))
+                                             .ImageUrl(Url.Content("~/Content/images/داشبورد.png"));
+                                          });
+                                })
+                                 )
+                            </div>);
+                    }).ToHtmlString()
+             );
+      })
+)
+</div>

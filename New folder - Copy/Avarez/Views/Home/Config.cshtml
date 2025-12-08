@@ -1,0 +1,240 @@
+﻿@using Avarez.Controllers.Users;
+<div id="Config">
+    @using Kendo.Mvc.UI;
+    <link href="@Url.Content("~/Content/web/kendo.common.min.css")" rel="stylesheet" type="text/css" />
+    <link href="@Url.Content("~/Content/web/kendo.default.min.css")" rel="stylesheet" type="text/css" />
+    <link href="@Url.Content("~/Content/web/kendo.rtl.min.css")" rel="stylesheet" type="text/css" />
+    <script src="@Url.Content("~/Scripts/console.min.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Scripts/kendo.web.min.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Scripts/prettify.min.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Scripts/kendo.aspnetmvc.min.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Scripts/kendo.splitter.min.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Scripts/cultures/kendo.fa-IR.js")" type="text/javascript"></script>
+    <script type="text/javascript">
+        $("document").ready(function () {
+            $('#ChangeLocation').button();
+            $('#Exit').button();
+            $('#HomePage').button();
+            $('#HomePage').click(function () {
+                window.location.href = '/Home/Home';
+            });
+            $('#Exit').click(function () {
+                window.location.href = '/Account/LogOff';
+            });
+
+            $('#ChangeLocation').click(function () {
+                window.location.href = '/Home/ChangeLocation';
+            });
+            $("#Organization").click(function () {
+                windows("#win", "/Organization/Index");
+            });
+            $("#News").click(function () {
+                windows("#win", "/News/Index");
+            });
+            $("#PicMun").click(function () {
+                windows("#win", "/PicMun/Index");
+            });
+            $("#User").click(function () {
+                windows("#win", "/User/Index");
+            });
+            $("#DegreeMun").click(function () {
+                windows("#win", "/DegreeMun/Index");
+            });
+            $("#MainSetting").click(function () {
+                windows("#win", "/MainSetting/Index");
+            });
+            $("#SubSetting").click(function () {
+                windows("#win", "/SubSetting/Index");
+            });
+            $("#ReportType").click(function () {
+                windows("#win", "/ReportType/Index");
+            });
+            $("#Pattern").click(function () {
+                windows("#win", "/Pattern/Index");
+            });
+            $("#SmsSetting").click(function () {
+                windows("#win", "/SmsSetting/Index");
+            });
+            $("#SmsSendingSetting").click(function () {
+                windows("#win", "/SmsSending/Index");
+            });
+            $("#PcPosInfo").click(function () {
+                windows("#win", "/PcPosInfo/Index");
+            });
+            $("#PcPosUser").click(function () {
+                windows("#win", "/PcPosUser/Index");
+            });
+            $("#PcPosParametr").click(function () {
+                windows("#win", "/PcPosParametr/Index");
+            });
+            $("#PcPosParam_Detail").click(function () {
+                windows("#win", "/PcPosParam_Detail/Index");
+            });
+        }); 
+    </script>
+    @{Avarez.Models.cartaxEntities p = new Avarez.Models.cartaxEntities();
+      var state = p.sp_StateSelect("fldId", Session["UserState"].ToString(), 1, Convert.ToInt32(Session["UserId"]), Session["UserPass"].ToString()).FirstOrDefault();
+      var Mnu = p.sp_MunicipalitySelect("fldId", Session["UserMnu"].ToString(), 1, Convert.ToInt32(Session["UserId"]), Session["UserPass"].ToString()).FirstOrDefault();
+      var Location = state.fldName + " --> " + Mnu.fldName + Session["Location"];}
+    @(Html.Kendo().Splitter()
+      .Name("vertical")
+      .Orientation(SplitterOrientation.Vertical)
+          .HtmlAttributes(new { style = "height: 750px;" })
+      .Panes(verticalPanes =>
+      {
+          verticalPanes.Add()
+            .Size("30px")
+            .Collapsible(false)
+            .Resizable(false)
+            .Content(@<div dir="rtl" style="text-align: center;">
+                <span style="font-weight: bold; color: #127AA3; font-size: 11px;">موقعیت فعلی شما: @Location
+                </span>
+                <button id="ChangeLocation" title="برای تغییر موقعیت از این گزینه استفاده کنید."
+                    style="font-size: 11px;">
+                    ...</button>
+                <button id="Exit" style="font-size: 11px; float: left; text-align: left; background-image: url('/Content/images/1377957633_exit.png');
+                        background-repeat: no-repeat; background-position: right; width: 70px; background-size: 14px;
+                        background-position-x: 50px;">
+                        خروج</button>
+                <button id="HomePage" style="float: right; font-size: 11px; text-align: left; background-image: url('/Content/images/1377958371_Home.png');
+                    background-repeat: no-repeat; background-position: right; width: 100px; background-size: 16px;
+                    background-position-x: 80px;">
+                    صفحه اصلی</button></div>);
+          verticalPanes.Add()
+              .HtmlAttributes(new { id = "top-pane" })
+              .Scrollable(false)
+              .Collapsible(false)
+              .Content(
+                Html.Kendo().Splitter()
+                    .Name("horizontal")
+                    .HtmlAttributes(new { style = "height: 100%;" })
+                    .Panes(horizontalPanes =>
+                    {
+                        horizontalPanes.Add()
+                            .HtmlAttributes(new { id = "left-pane" })
+                            .Size("688px")
+                            .Content(@<div id="win" class="pane-content">
+                            </div>);
+                        horizontalPanes.Add()
+                            .HtmlAttributes(new { id = "right-pane" })
+                            .Size("210px")
+                            .Content(@<div class="pane-content">
+                                @(Html.Kendo().PanelBar()
+        .Name("panelbar-images")
+        .Items(panelbar =>
+        {
+            panelbar.Add().Text("سفارشی سازی گزارشات")
+                .Expanded(true)
+                        .Visible(Permossions.haveAccess(Convert.ToInt32(Session["UserId"]), 169))
+                .ImageUrl(Url.Content("~/Content/images/سفارشی سازی گزارشات 2.png"))
+                .Items(Setting =>
+                {
+                    Setting.Add().Text("سفارشی سازی گزارشات")
+                        .HtmlAttributes(new { id = "ReportType" })
+                        .Visible(Permossions.haveAccess(Convert.ToInt32(Session["UserId"]), 170))
+                        .ImageUrl(Url.Content("~/Content/images/سفارشی سازی گزارشات.png"));
+                });
+            panelbar.Add().Text("تنظیمات")
+                .Expanded(true)
+                        .Visible(Permossions.haveAccess(Convert.ToInt32(Session["UserId"]), 176))
+                .ImageUrl(Url.Content("~/Content/images/1375985679_package_system.png"))
+                .Items(Setting =>
+                {
+                    Setting.Add().Text("تنظیمات اصلی")
+                        .HtmlAttributes(new { id = "MainSetting" })
+                        .Visible(Permossions.haveAccess(Convert.ToInt32(Session["UserId"]), 177))
+                        .ImageUrl(Url.Content("~/Content/images/1376576179_setting.png"));
+                    Setting.Add().Text("تنظیمات فرعی")
+                        .HtmlAttributes(new { id = "SubSetting" })
+                        .Visible(Permossions.haveAccess(Convert.ToInt32(Session["UserId"]), 181))
+                        .ImageUrl(Url.Content("~/Content/images/1376570661_kget.png"));
+                    Setting.Add().Text("تعیین درجه شهرداری")
+                        .HtmlAttributes(new { id = "DegreeMun" })
+                        .Visible(Permossions.haveAccess(Convert.ToInt32(Session["UserId"]), 185))
+                        .ImageUrl(Url.Content("~/Content/images/1376576264_Test-paper-128.png"));
+                });
+
+            panelbar.Add().Text("دبیرخانه")
+                .Expanded(true)
+                        .Visible(Permossions.haveAccess(Convert.ToInt32(Session["UserId"]), 189))
+                .ImageUrl(Url.Content("~/Content/images/1376576398_Forward.png"))
+                .Items(Secretariat =>
+                {
+                    Secretariat.Add().Text("تعریف سازمان")
+                        .HtmlAttributes(new { id = "Organization" })
+                        .Visible(Permossions.haveAccess(Convert.ToInt32(Session["UserId"]), 190))
+                        .ImageUrl(Url.Content("~/Content/images/1375793337_Office-Building.png"));
+                    Secretariat.Add().Text("الگوی شماره دهی")
+                        .HtmlAttributes(new { id = "Pattern" })
+                        .Visible(Permossions.haveAccess(Convert.ToInt32(Session["UserId"]), 294))
+                        .ImageUrl(Url.Content("~/Content/images/1376576820_Mail.png"));
+                });
+
+            panelbar.Add().Text("تصاویر و اخبار")
+                .Expanded(true)
+                        .Visible(Permossions.haveAccess(Convert.ToInt32(Session["UserId"]), 194))
+                .ImageUrl(Url.Content("~/Content/images/1376576985_iPhoto.png"))
+                .Items(Pic_News =>
+                {
+                    Pic_News.Add().Text("تعیین تصاویر")
+                    .HtmlAttributes(new { id = "PicMun" })
+                        .Visible(Permossions.haveAccess(Convert.ToInt32(Session["UserId"]), 195))
+                    .ImageUrl(Url.Content("~/Content/images/1376577020_kolourpaint.png"));
+                    Pic_News.Add().Text("تعیین اخبار")
+                    .HtmlAttributes(new { id = "News" })
+                        .Visible(Permossions.haveAccess(Convert.ToInt32(Session["UserId"]), 199))
+                    .ImageUrl(Url.Content("~/Content/images/1376577020_Green RSS reader.png"));
+                });
+            panelbar.Add().Text("اطلاع رسانی")
+            .Expanded(true)
+                        .Visible(Permossions.haveAccess(Convert.ToInt32(Session["UserId"]), 203))
+            .ImageUrl(Url.Content("~/Content/images/1376577135_contact.png"))
+            .Items(Info =>
+            {
+                Info.Add().Text("تنظیمات پنل پیامک")
+                    .HtmlAttributes(new { id = "SmsSetting" })
+                        .Visible(Permossions.haveAccess(Convert.ToInt32(Session["UserId"]), 204))
+                    .ImageUrl(Url.Content("~/Content/images/sms.png"));
+                Info.Add().Text("تنظیمات ارسال پیامک")
+                    .HtmlAttributes(new { id = "SmsSendingSetting" })
+                        .Visible(Permossions.haveAccess(Convert.ToInt32(Session["UserId"]), 208))
+                    .ImageUrl(Url.Content("~/Content/images/تنظیمات ارسال پیامک.png"));
+                Info.Add().Text("تعریف سیستم ایمیل")
+                    .HtmlAttributes(new { id = "FuelType" })
+                        .Visible(false)
+                    .ImageUrl(Url.Content("~/Content/images/1376577200_Email.png"));
+            });
+            panelbar.Add().Text("اطلاعات PcPos")
+               .Expanded(true)
+                        .Visible(Permossions.haveAccess(Convert.ToInt32(Session["UserId"]), 326))
+               .ImageUrl(Url.Content("~/Content/images/اطلاعات pcpos.png"))
+               .Items(Pic_News =>
+               {
+                   Pic_News.Add().Text("تعیین بانک")
+                   .HtmlAttributes(new { id = "PcPosInfo" })
+                        .Visible(Permossions.haveAccess(Convert.ToInt32(Session["UserId"]), 327))
+                   .ImageUrl(Url.Content("~/Content/images/تعیین بانک.png"));
+                   Pic_News.Add().Text("تعریف کاربران PcPos")
+                   .HtmlAttributes(new { id = "PcPosUser" })
+                        .Visible(Permossions.haveAccess(Convert.ToInt32(Session["UserId"]), 331))
+                   .ImageUrl(Url.Content("~/Content/images/تعریف کاربران.png"));
+                   Pic_News.Add().Text("پارامترهای PcPos")
+                   .HtmlAttributes(new { id = "PcPosParametr" })
+                        .Visible(Permossions.haveAccess(Convert.ToInt32(Session["UserId"]), 335))
+                   .ImageUrl(Url.Content("~/Content/images/پارامترها.png"));
+                   Pic_News.Add().Text("مقداردهی پارامترهای PcPos")
+                   .HtmlAttributes(new { id = "PcPosParam_Detail" })
+                        .Visible(Permossions.haveAccess(Convert.ToInt32(Session["UserId"]), 339))
+                   .ImageUrl(Url.Content("~/Content/images/مقداردهی پارامترها.png"));
+               });
+            
+        })
+    )
+                            </div>);
+                    }).ToHtmlString()
+              );
+
+
+      })
+)
+</div>

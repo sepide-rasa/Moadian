@@ -1,0 +1,133 @@
+﻿<br />
+<br />
+<center>
+    <h2>معرفی کاربران دفتر پیشخوان جهت آموزش</h2>
+    <br /><h3 style="color:red;width:600px;">
+        لطفا در این قسمت اطلاعات مربوط به کاربرانی که می بایست در جلسه آموزشی حضور داشته باشند را ثبت کنید و لزومی به ثبت مجدد اطلاعات مسئول دفتر نمی باشد.
+        <br /><br /> برای این منظور در قسمت پایین ابتدا کد دفتر ثبت شده در مرحله قبل را وارد کرده و دکمه ادامه را انتخاب کنید. سپس در قسمت پایین اطلاعات کاربران را ثبت کنید.
+    </h3>
+</center>
+
+<script src="@Url.Content("~/Content/Base.js")" type="text/javascript"></script>
+<script src="@Url.Content("~/Scripts/jquery.ui.datepicker-cc.all.min.js")" type="text/javascript"></script>
+<center>
+    <div id="RegisterDetail" style="width:650px;">
+        <table>
+            <tr>
+                <td align="left">
+                    کد دفتر:
+                </td>
+                <td>
+                    @Html.TextBox("codeDaftar")@Avarez.Helper.winClass.Buttons("next", "ادامه", "next")
+                </td>
+                <td align="left">
+                    نام مسئول دفتر:
+                </td>
+                <td width="200px">
+                    <span id="lblDaftar" style="color:red;"></span>
+                </td>
+            </tr>
+            <tr><td colspan="4"><br /><span>اطلاعات کاربر:</span></td></tr>
+            <tr>
+                <td align="left">
+                    نام:
+                </td>
+                <td>
+                    @Html.TextBox("Name")
+                    <span id="lblNameError" style="color: Red;"></span>
+                </td>
+                <td align="left">
+                    نام خانوادگی:
+                </td>
+                <td width="200px">
+                    @Html.TextBox("Family")
+                    <span id="lblFamilyError" style="color: Red;"></span>
+                </td>
+            </tr>
+            <tr>
+                <td align="left">
+                    کد ملی:
+                </td>
+                <td>
+                    @Html.TextBox("codeMeli")
+                    <span id="lblcodeMeliError" style="color: Red;"></span>
+                </td>
+                <td align="left">
+                    نام پدر:
+                </td>
+                <td width="200px">
+                    @Html.TextBox("Father")
+                    <span id="lblFatherError" style="color: Red;"></span>
+                </td>
+            </tr>
+            <tr>
+                <td align="left">
+                    تاریخ تولد:
+                </td>
+                <td>
+                    @Html.TextBox("Bdate")
+                    <span id="lblBdateError" style="color: Red;"></span>
+                </td>
+                <td align="left"></td>
+                <td width="200px"></td>
+            </tr>
+        </table>
+        <p>@Avarez.Helper.winClass.Buttons("save", "ثبت", "save")</p>
+        <br />
+    </div>
+</center>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#next").button();
+        $("#save").button();
+        $("#Bdate").datepicker({
+            showButtonPanel: true
+        });
+        $("#next").click(function () {
+            $.ajax({
+                type: "get",
+                url: '/register/Daftar',
+                data: { Code: $('#codeDaftar').val() },
+                datatype: "json",
+                success: function (data) {
+                    $('#lblDaftar').html(data.Name);
+                },
+                failure: function (data) {
+                    alert(data.data);
+                }
+            });
+        });
+        $('#save').click(function () {
+            var er = false;
+            if ($("#Name").val() == '') {
+                $("#Name").addClass("input-validation-error");
+                $('#lblNameError').html('لطفا نام را وارد کنید.');
+                er = true;
+            }
+            else {
+                $("#Name").removeClass("input-validation-error");
+                $('#lblNameError').html('');
+            }
+            if ($("#Family").val() == '') {
+                $("#Family").addClass("input-validation-error");
+                $('#lblFamilyError').html('لطفا نام خانوادگی را وارد کنید.');
+                er = true;
+            }
+            else {
+                $("#Family").removeClass("input-validation-error");
+                $('#lblFamilyError').html('');
+            }
+            if ($("#codeMeli").val() == '') {
+                $("#codeMeli").addClass("input-validation-error");
+                $('#lblcodeMeliError').html('لطفا نام خانوادگی را وارد کنید.');
+                er = true;
+            }
+            else {
+                $("#codeMeli").removeClass("input-validation-error");
+                $('#lblcodeMeliError').html('');
+            }
+            /*Name Family codeMeli Father Bdate*/
+
+        });
+    });
+</script>

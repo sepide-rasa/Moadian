@@ -1,0 +1,37 @@
+﻿@using Ext.Net;
+@using Ext.Net.MVC;
+@using Ext.Net.Utilities;
+@{
+    var X = Html.X();
+}
+@(
+ Html.X().Panel().Height(560)
+     .Listeners(l => l.AfterRender.Handler = "SetSizeSooratVaziyat()")
+        //.Title("پیش نمایش")
+                .ID("PrintSooratVaziyat")
+        .AutoScroll(true)
+        .Closable(false)
+        .CloseAction(Ext.Net.CloseAction.Destroy)
+                   .Html("<center><object class='se-pre-con' id='PrintTabSooratVaziyat' style='width: 1000px;height: 600px;border: 1px solid #ccc;' type='application/pdf' data='/NewVer/SelectParvande/GeneratePDFSooratVaziyat?carId=" + @ViewBag.Id + "'></object></center>")
+)
+
+
+<script type="text/javascript">
+    function SetSizeSooratVaziyat() {
+        App.PrintSooratVaziyat.setHeight(Ext.getBody().getViewSize().height);
+        $('#PrintTabSooratVaziyat').height(Ext.getBody().getViewSize().height - 10);
+    }
+
+</script>
+
+@*@using Ext.Net.MVC;
+
+    @(
+     Html.X().Window().Width(800).Height(650)
+            .Title("خلاصه وضعیت")
+                    .ID("PrintSooratVaziyat")
+            .AutoScroll(true)
+            .Closable(true)
+            .CloseAction(Ext.Net.CloseAction.Destroy)
+                        .Html("<center><object style='width: 750px;height: 600px;border: 1px solid #ccc;' type='application/pdf' data='/NewVer/SelectParvande/GeneratePDFSooratVaziyat?carId="+ @ViewBag.Id + "'></object></center>")
+    )*@

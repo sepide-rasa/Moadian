@@ -1,0 +1,153 @@
+﻿@using Ext.Net.MVC
+@using Hogaf.ExtNet.UX
+@using Ext.Net;
+@{
+    var X = Html.X();
+}
+
+@(Html.X().Window()
+    .Modal(true)
+        // .Resizable(false)
+                .Listeners(l => l.AfterRender.Handler = "LoadCharacterPersianPlaque()")
+    .Width(340)
+  
+    .Title("تعریف کاراکتر وسط پلاک")
+    .Layout(LayoutType.Fit)
+            .ID("NewCharacterPersianPlaque")
+    .Closable(true)
+    .ButtonAlign(Ext.Net.Alignment.Center)
+    .Buttons(
+        X.Button()
+            .Text("ذخیره")
+            .Icon(Ext.Net.Icon.Disk)
+        //.ToolTip("کلید میانبر F8")
+                    .Listeners(l => l.Click.Handler = "SaveCharacterPersianPlaque();"),
+        X.Button()
+            .Text("خروج")
+            .Icon(Ext.Net.Icon.DoorOut)
+        //.ToolTip("کلید میانبر Esc")
+                    .OnClientClick("App.NewCharacterPersianPlaque.destroy();"))
+    .CloseAction(Ext.Net.CloseAction.Destroy)
+    .Items(
+        X.FormPanel()
+            .Border(false)
+            .Layout(LayoutType.Fit)
+            .Items(
+                X.Panel()
+                    .Border(false)
+                    .PaddingSpec("13px 0 0 0")
+                    .Layout(LayoutType.VBox)
+                    .LayoutConfig(new VBoxLayoutConfig { Align = VBoxAlign.Center })
+                    .Items(
+                        X.FieldSet()
+                            .Border(true)
+                            .Height(116)
+                            .Defaults(new { Margin = 2 })
+                            .Layout(LayoutType.Table)
+                            .Title("کاراکتر وسط پلاک")
+                            .LayoutConfig(new TableLayoutConfig { Columns = 2 })
+                            .Items(
+                                X.Hidden()
+                                    .ItemID("fldId"),
+
+                                X.Label("کاراکتر وسط پلاک:"),
+                                X.TextField()
+                                            .ItemID("txtCharacterPersianPlaque")
+                                    .Width(190)
+                                    .AllowBlank(false)
+                                    .EnforceMaxLength(true)
+                                    .MaxLength(1)
+                                    .BlankText("لطفا کاراکتر  را وارد نمایید.")
+                                    .MsgTarget(Ext.Net.MessageTarget.Side),
+
+                                X.Label("توضیحات:"),
+                                X.TextArea()
+                                    .ItemID("txtDesc")
+                                    .ColSpan(2)
+                                    .Width(190)
+                            )
+
+
+                )
+            )
+        )
+)
+
+<script type="text/javascript">
+
+
+
+    function LoadCharacterPersianPlaque() {
+        if ('@ViewBag.Id' != '0') {
+            Ext.net.DirectMethod.request({
+                url: '/NewVer/CharPerPlaque_New/Details',
+                params: {
+                    Id: '@ViewBag.Id'
+                },
+                success: function (data) {
+                    var txtCharacterPersianPlaque = App.NewCharacterPersianPlaque.queryById('txtCharacterPersianPlaque');
+                    txtCharacterPersianPlaque.setValue(data.fldName);
+                    var txtDesc = App.NewCharacterPersianPlaque.queryById('txtDesc');
+                    txtDesc.setValue(data.fldDesc);
+                    var Id = App.NewCharacterPersianPlaque.queryById('fldId');
+                    Id.setValue(data.fldId);
+                }
+            });
+        }
+        else {
+            App.NewCharacterPersianPlaque.queryById('txtCharacterPersianPlaque').validate();
+        }
+    }
+
+
+    function SaveCharacterPersianPlaque() {
+        var txtCharacterPersianPlaque = App.NewCharacterPersianPlaque.queryById('txtCharacterPersianPlaque');
+        var Id = App.NewCharacterPersianPlaque.queryById('fldId');
+        var txtDesc = App.NewCharacterPersianPlaque.queryById('txtDesc');
+
+        var er = false;
+
+        if (txtCharacterPersianPlaque.validate() == false) {
+            er = true;
+        }
+        if (er == true)
+            return;
+
+        Ext.net.DirectMethod.request({
+            url: '/NewVer/CharPerPlaque_New/Save',
+            params: {
+                fldID: Id.getValue(),
+                fldName: txtCharacterPersianPlaque.getValue(),
+                fldDesc: txtDesc.getValue()
+            },
+            success: function (data) {
+                var ic = Ext.MessageBox.INFO;
+                if (data.Er == 1)
+                    ic = Ext.MessageBox.ERROR;
+                Ext.MessageBox.show({
+                    title: data.MsgTitle,
+                    msg: data.Msg,
+                    icon: ic,
+                    buttons: Ext.MessageBox.OK
+                });
+                App.CharacterPersianPlaque.queryById('GridCharacterPersianPlaque').store.load();
+
+                ClearCharacterPersianPlaque();
+            }
+        });
+    }
+
+    function ClearCharacterPersianPlaque() {
+        App.NewCharacterPersianPlaque.queryById('txtDesc').setValue("");
+        App.NewCharacterPersianPlaque.queryById('txtCharacterPersianPlaque').setValue("");
+        App.NewCharacterPersianPlaque.queryById('fldId').setValue(0);
+    }
+
+   /* function EnterNext() {
+        var keyfield = App.NewCustomer.queryById(Ext.getCmp((Ext.Element.getActiveElement()).name).itemId);
+        var nextfld = keyfield.nextSibling();
+        nextfld.focus();
+        nextfld.selectText();
+    }*/
+
+</script>

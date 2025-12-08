@@ -1,0 +1,190 @@
+﻿@model IEnumerable<Avarez.Areas.Tax.Models.prs_tblShakhsHaghighi_HoghoghiSelect>
+@using Ext.Net.MVC;
+
+@using Hogaf.ExtNet.UX
+@using Ext.Net;
+@{
+
+    var X = Html.X();
+}
+@(Html.X().Window()
+    .Modal(true)
+    .Width(650)
+    .Height(320)
+    .Title("لیست اشخاص")
+    .ID("SearchHuman")
+    .Closable(true)
+    .CloseAction(Ext.Net.CloseAction.Destroy)
+           // .Listeners(l => { l.Destroy.Handler = "if(state==2){App.NewAnvaMaharat_Ashkhas.queryById('txtName').focus();}else if(state==3){App.NewGroupMaharat.queryById('txtName').focus();}"; l.AfterRender.Handler = "LoadSearchAshkhas()"; })
+    .Layout(LayoutType.Fit)
+    .Items(
+        X.AntiForgeryField()
+            .ItemID("antiForgeryToken")
+            .Hidden(true),
+        X.Panel()
+            .Border(false)
+            .AutoScroll(true)
+            .Layout(LayoutType.Fit)
+            .Items(
+                X.GridPanel()
+                    .AutoScroll(true)
+                    .Border(false)
+                        .ItemID("GridSearchHuman")
+                              .Listeners(a => a.CellDblClick.Handler = "NextSearchHuman();")
+                    .TopBar(
+                      Html.X().Toolbar()
+                            .Items(
+                                X.ComboBox()
+                                        .ItemID("CboShakhsType")
+                                        .Width(200)
+                                        .EmptyText("نوع شخص...")
+                                        .AllowBlank(false)
+                                        .TypeAhead(true)
+                                        .Editable(false)
+                                        .QueryMode(DataLoadMode.Local)
+                                        .ForceSelection(true)
+                                        .TriggerAction(TriggerAction.All)
+                                        .DisplayField("fldName")
+                                        .ValueField("ID")
+                                            .Listeners(l => l.Change.Handler = "ReloadGrid()")
+                                            .Hidden(@ViewBag.state == 1)
+                                        .Store(
+                                            X.Store()
+                                                    .Listeners(l => l.Load.Handler = "setDefaultShakhsType();")
+                                                .Model(X.Model()
+                                                .IDProperty("ID")
+                                                .Fields(
+                                                    new ModelField("ID", ModelFieldType.String) { Mapping = "ID" },
+                                                    new ModelField("fldName", ModelFieldType.String) { Mapping = "fldName" })
+                                                )
+        //.Listeners(l => l.BeforeLoad.Handler = "App.NewContact.queryById('CboContactType').getStore().getProxy().setExtraParam('__RequestVerificationToken', App.NewContact.queryById('antiForgeryToken').getValue());")
+                                                .Proxy(X.AjaxProxy()
+        //.ActionMethods(l => l.Read = Ext.Net.HttpMethod.POST)
+                                                    .Url(Url.Action("GetShakhsType"))
+                                                    .Reader(X.JsonReader().Root("data"))
+                                                )
+                                            )
+                                        ,
+                            X.Button().Text("جدید").Icon(Ext.Net.Icon.UserAdd)//.ToolTip("کلید میانبر F8")
+                                    .Listeners(li => li.Click.Handler = "NewShakhsss();")
+                            )
+                            )
+                    .BottomBar(X.PagingToolbar())
+                       
+                    .Store(
+                        X.StoreForModel().AutoLoad(false)
+                          //  .Listeners(l => l.BeforeLoad.Handler = "App.SearchHuman.queryById('GridSearchHuman').getStore().getProxy().setExtraParam('__RequestVerificationToken', App.SearchHuman.queryById('antiForgeryToken').getValue());")
+                            .Proxy(Html.X().AjaxProxy()
+                             //   .ActionMethods(l => l.Read = Ext.Net.HttpMethod.POST)
+                                .Url(Url.Action("Read"))
+                                .Reader(Html.X().JsonReader().Root("data"))
+                                    //    .ExtraParams(x => x.Add(new { state = @ViewBag.state, UserType = @ViewBag.UserType }))
+                        )
+                        .PageSize(10)
+                        .RemoteFilter(true)
+                        .RemotePaging(true)
+                    )
+                    .View(
+                        Html.X().GridView().LoadingText("در حال بارگذاری...").RTL(true)
+                    )
+                    .Plugins(X.FilterHeader().Remote(true))
+                    .ColumnModel(
+                        Html.X().RowNumbererColumn(),
+                             Html.X().Column().DataIndex(Model, m => m.fldIdTarfGharardad).Text("fldIdTarfGharardad").Hidden(true).Flex(1),
+                             Html.X().Column().DataIndex(Model, m => m.fldId).Text("کد").Flex(1),
+                                Html.X().Column().DataIndex(Model, m => m.fldNameTypeShakhs).Text("نوع شخص").Flex(1),
+                            Html.X().Column().DataIndex(Model, m => m.fldName).Text("نام").Flex(1),
+                            Html.X().Column().DataIndex(Model, m => m.fldFamily).Text("نام خانوادگی").Flex(1),
+                                    Html.X().Column().DataIndex(Model, m => m.fldNationalCode).Text("کد/شناسه ملی").Flex(1)
+                    )
+
+                    //.Listeners(a => a.CellDblClick.Handler = "NextSearchHuman();")
+                    .SelectionModel(
+                        Html.X().RowSelectionModel()
+                            .Mode(Ext.Net.SelectionMode.Single)
+                    )
+            )
+        )
+)
+
+<script type="text/javascript">
+    var state = '@ViewBag.state';
+    function NewShakhsss() {
+        Ext.net.Mask.show({ msg: 'در حال بارگذاری...' });
+        Ext.net.DirectMethod.request({
+            url: '/Tax/Shakhs/New',
+            params: {
+                id: 0,
+                typeShakhs: App.SearchHuman.queryById("CboShakhsType").getValue()
+            },
+            success: function () {
+                Ext.net.Mask.hide();
+            }
+        });
+    }
+
+
+    function NextSearchHuman() {
+        var SelectedRow = App.SearchHuman.queryById('GridSearchHuman').selModel.getLastSelected();
+        if (SelectedRow != null) {
+            if (state == 1) {
+                App.NewUser.queryById('ShakhsId').setValue(SelectedRow.data.fldIdTarfGharardad);
+                App.NewUser.queryById('txtName').setValue(SelectedRow.data.fldName + " " + SelectedRow.data.fldFamily);
+                App.NewUser.queryById('txtUserName').setValue(SelectedRow.data.fldNationalCode);
+                App.NewUser.queryById('txtCodeMeli').setValue(SelectedRow.data.fldNationalCode);
+            }
+            else if (state == 2) {
+                App.NewForush1.queryById('fldForushandeId').setValue(SelectedRow.data.fldId);
+                App.NewForush1.queryById('txtNameF').setValue(SelectedRow.data.fldName + " " + SelectedRow.data.fldFamily);
+                App.NewForush1.queryById('txtShEghtesadiF').setValue(SelectedRow.data.fldCodeEghtesadi);
+                App.NewForush1.queryById('txtShenaseF').setValue(SelectedRow.data.fldNationalCode);
+                App.NewForush1.queryById('txtShobeF').setValue(SelectedRow.data.fldCodeShobe);
+                App.NewForush1.queryById('txtPostiF').setValue(SelectedRow.data.fldCodePosti);
+            }
+            else if (state == 3) {
+                App.NewForush1.queryById('fldKharidarId').setValue(SelectedRow.data.fldId);
+                App.NewForush1.queryById('txtNameK').setValue(SelectedRow.data.fldName + " " + SelectedRow.data.fldFamily);
+                App.NewForush1.queryById('txtShEghtesadiK').setValue(SelectedRow.data.fldCodeEghtesadi);
+                App.NewForush1.queryById('txtShenaseK').setValue(SelectedRow.data.fldNationalCode);
+                App.NewForush1.queryById('txtShobeK').setValue(SelectedRow.data.fldCodeShobe);
+                App.NewForush1.queryById('txtPostiK').setValue(SelectedRow.data.fldCodePosti);
+            }
+             else if (state == 4) {
+                App.NewForush2.queryById('fldForushandeId').setValue(SelectedRow.data.fldId);
+                App.NewForush2.queryById('txtNameF').setValue(SelectedRow.data.fldName + " " + SelectedRow.data.fldFamily);
+                App.NewForush2.queryById('txtShEghtesadiF').setValue(SelectedRow.data.fldCodeEghtesadi);
+                App.NewForush2.queryById('txtShenaseF').setValue(SelectedRow.data.fldNationalCode);
+                App.NewForush2.queryById('txtShobeF').setValue(SelectedRow.data.fldCodeShobe);
+                App.NewForush2.queryById('txtPostiF').setValue(SelectedRow.data.fldCodePosti);
+            }
+            else if (state == 5) {
+                App.NewForush2.queryById('fldKharidarId').setValue(SelectedRow.data.fldId);
+                App.NewForush2.queryById('txtNameK').setValue(SelectedRow.data.fldName + " " + SelectedRow.data.fldFamily);
+                App.NewForush2.queryById('txtShEghtesadiK').setValue(SelectedRow.data.fldCodeEghtesadi);
+                App.NewForush2.queryById('txtShenaseK').setValue(SelectedRow.data.fldNationalCode);
+                App.NewForush2.queryById('txtShobeK').setValue(SelectedRow.data.fldCodeShobe);
+                App.NewForush2.queryById('txtPostiK').setValue(SelectedRow.data.fldCodePosti);
+            }
+            App.SearchHuman.destroy();
+        }
+        else {
+            Ext.MessageBox.show({
+                title: "خطا",
+                msg: "لطفا یک شخص را انتخاب کنید",
+                icon: Ext.MessageBox.ERROR,
+                buttons: Ext.MessageBox.OK
+            });
+        }
+    }
+    function ReloadGrid() {
+        App.SearchHuman.queryById('GridSearchHuman').getStore().getProxy().setExtraParam('state', '@ViewBag.state');
+        if (state == 1)
+            App.SearchHuman.queryById('GridSearchHuman').getStore().getProxy().setExtraParam('UserType', '@ViewBag.UserType');
+            else
+        App.SearchHuman.queryById('GridSearchHuman').getStore().getProxy().setExtraParam('UserType', App.SearchHuman.queryById('CboShakhsType').getValue());
+        App.SearchHuman.queryById('GridSearchHuman').store.load();
+    }
+    function setDefaultShakhsType() {
+        App.SearchHuman.queryById("CboShakhsType").setValue("2");
+    }
+</script>

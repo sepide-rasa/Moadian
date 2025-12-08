@@ -1,0 +1,167 @@
+﻿@using Kendo.Mvc.UI;
+<div class="modal" id="SupportRate">
+    <script src="@Url.Content("~/Content/Base.js")" type="text/javascript"></script>
+    <div>
+        <br />
+        <center>
+            
+            <p>
+                @Avarez.Helper.winClass.Buttons("AddLink", "Refresh", "yes")
+                @Avarez.Helper.winClass.Buttons("EditLink", "تایید", "yes")
+
+            </p>
+        </center>
+        @(Html.Kendo().PanelBar()
+        .Name("panelbar-images")
+        .Items(panelbar =>
+        {
+            panelbar.Add().Text("جستجو")
+                .ImageUrl(Url.Content("~/Content/images/search.png"))
+                .Content(@<div>
+                    <table>
+                        <tr>
+                            <td>
+                                فیلد جستجو:@Html.DropDownList("cboSearchFiald", new SelectList(new[] { new { ID = "0", Name = "نوع کابین" }, new { ID = "1", Name = "نوع خودرو" }, new { ID = "2", Name = "مدل خودرو" }, new { ID = "3", Name = "سازنده" }, new { ID = "4", Name = "کلاس خودرو" }, new { ID = "5", Name = "سال" }}, "ID", "Name"))
+
+                                        
+                            </td>
+                            <td>
+                                نوع جستجو: @Html.DropDownList("cboSearchType", new SelectList(new[] { new { ID = "0", Name = "مشابه عبارت" }, new { ID = "1", Name = "مشابه عبارت از سمت راست" }, new { ID = "2", Name = "عین عبارت" } }, "ID", "Name"))
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                عبارت جستجو: @Avarez.Helper.winClass.textbox("txtSearch")
+                            </td>
+                            <td>
+                                نتیجه رکوردها:  @Html.TextBox("txtTop", 30, new { @style = "width:30px;" }) رکورد
+                            </td>
+                        </tr>
+                    </table>
+                    <br />
+                </div>);
+        })
+        )
+        <div class="k-rtl demo-section">
+            @(Html.Kendo().Grid<Avarez.Models.sp_SupportRateSelect>()
+                .Name("Grid")
+                .Columns(columns =>
+                {
+                    columns.Bound(p => p.fldId).Title("کد").Hidden(true);
+                    columns.Bound(p => p.fldMakeName).Title("نوع ساخت");
+                    columns.Bound(p => p.fldCarTypeName).Title("نوع کاربری");
+                    columns.Bound(p => p.fldCabinTypeName).Title("نوع کابین");
+                    columns.Bound(p => p.fldCarModelName).Title("تیپ خودرو");
+                    columns.Bound(p => p.fldCarSystemName).Title("سیستم خودرو");
+                    columns.Bound(p => p.fldNameClass).Title("کلاس خودرو");
+                    columns.Bound(p => p.fldYear).Title("سال");
+                    columns.Bound(p => p.fldDesc).Title("توضیحات");
+                })
+            .Selectable(selectable => selectable.Mode(GridSelectionMode.Single))
+            .Pageable()
+            .Scrollable()
+            .DataSource(data =>
+                data.Ajax()
+                .PageSize(10)
+                .Read("Fill", "SupportRate")
+            )
+            )
+        </div>
+    </div>
+    <script type="text/javascript">
+    $("document").ready(function () {
+        $("#AddLink").button();
+        $("#EditLink").button();
+        $("#exit").button();
+        $('#Help').button();
+
+
+        $("#exit").click(function () {
+            $("#SupportRate").remove();
+        });
+
+        $('#SupportRate').on('keyup', 'input', function (event) {
+            if (event.which == 13) {
+                var inputs = $('#SupportRate').find(':input:visible');
+                inputs.eq(inputs.index(this) + 1).focus();
+            }
+        });
+
+        $(document).keyup(function (event) {
+            if (event.which == 119) {
+                Refresh();
+            }
+            else if (event.which == 113) {
+                Taeed();
+            }
+
+        });
+        $('#AddLink').attr('title', 'کلید میانبر (F8)'); //119
+        $('#EditLink').attr('title', 'کلید میانبر (F2)'); //113
+
+
+        jQuery("#EditLink").click(function () {
+            Taeed();
+        });
+
+        $("#AddLink").click(function () {
+            Refresh();
+        });
+
+        $('#txtSearch').keyup(function () {
+            var url = '@Url.Action("Reload", "SupportRate")';
+            Reload(url, 'Grid', $("#cboSearchFiald").val(), $("#txtSearch").val(), $("#txtTop").val(), $("#cboSearchType").val());
+        });
+
+
+    });
+
+    function Taeed() {
+        var entityGrid = $("#Grid").data("kendoGrid");
+        var selectedItem = entityGrid.dataItem(entityGrid.select());
+        if (selectedItem) {
+            var id = selectedItem.fldId;
+            var URL = '@Url.Action("Taeed", "SupportRate")';
+            URL = URL + "/" + id;
+            $.ajax({
+                type: "GET",
+                url: URL,
+                success: function (data) {
+                    Refresh();
+                },
+                failure: function (data) {
+                    alert(data.data);
+                }
+            });
+        }
+        else {
+            alert('لطفا یک سطر را انتخاب کنید.');
+        }
+    }
+
+        function Refresh() {
+            var url = '@Url.Action("Reload", "SupportRate")';
+            Reload(url, 'Grid', 6, "", 0, 0);
+        }
+
+        function Reload(Url, gridname, field, value, top, searchType) {
+         
+        var grid = $('#' + gridname).data('kendoGrid');
+        $.ajax({
+            url: Url,
+            type: 'get',
+            datatype: 'json',
+            data: { field: field, value: value, top: top, searchtype: searchType },
+            error: function (xhr, status, error) {
+                alert(xhr + status);
+            },
+            success: function (result) {
+                $("#" + gridname).data("kendoGrid").dataSource.data(result);
+            }
+
+        });
+    }
+
+    
+    </script>
+</div>

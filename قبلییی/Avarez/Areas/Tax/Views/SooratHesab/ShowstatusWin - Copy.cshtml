@@ -1,0 +1,96 @@
+﻿@model IEnumerable<Avarez.Areas.Tax.Models.prs_tblSooratHesabStatus_DetailSelect>
+@using Ext.Net.MVC;
+@{
+
+    var X = Html.X();
+}
+<style>
+    .wrapmessage {
+        word-wrap: break-word;
+        text-justify: auto;
+    }
+</style>
+@(X.Window()
+    .Height(300)
+    .Width(500)
+    .Modal(true)
+    .ID("MsgDi")
+    .Title("نمایش وضعیت")
+    .Closable(true)
+    .Resizable(false)
+    .Border(false)
+    .CloseAction(Ext.Net.CloseAction.Destroy)
+    .Layout(Ext.Net.LayoutType.VBox)
+    .LayoutConfig(new Ext.Net.VBoxLayoutConfig { Align = Ext.Net.VBoxAlign.Right })
+    .ButtonAlign(Ext.Net.Alignment.Center)
+    .Buttons(
+        Html.X().Button()
+            .Text("خروج")
+            .Icon(Ext.Net.Icon.BulletCross)
+            .OnClientClick("App.MsgDi.destroy();")
+    )
+    .Items(
+        X.Panel()
+            .Border(false)
+            .AutoScroll(true)
+            .ItemID("panelMsgDi2")
+              .Layout(Ext.Net.LayoutType.VBox)
+                            .LayoutConfig(new Ext.Net.VBoxLayoutConfig { Align = Ext.Net.VBoxAlign.Center })
+            .Items(
+                X.Label()
+                    .AutoScroll(true)
+                    .MarginSpec("5px 5px 5px 5px")
+                    .Cls("wrapmessage")
+                    .ItemID("lableMsgDi")
+                    .Listeners(l => l.Render.Handler = "FillMsgDi();")
+                   ,
+
+                X.GridPanel()
+                    .AutoScroll(true)
+
+                    .ItemID("GridDetailStatus")
+        //    .BottomBar(X.PagingToolbar())
+                    .Store(
+                            X.StoreForModel()
+                 //   .Listeners(l => l.BeforeLoad.Handler = "App.Navaghes.queryById('GridTaahod').getStore().getProxy().setExtraParam('HeaderId', vi);")
+            .Proxy(Html.X().AjaxProxy()
+          //  .ActionMethods(l => l.Read = Ext.Net.HttpMethod.POST)
+            .Url(Url.Action("ReadDetailStatus"))
+                                .Reader(Html.X().JsonReader().Root("data"))
+            )
+            .Parameters(ps => ps.Add(new Ext.Net.StoreParameter("HeaderId", @ViewBag.HeaderId, Ext.Net.ParameterMode.Raw)))
+                        .PageSize(1000)
+                        .RemoteFilter(false)
+                        .RemotePaging(true)
+        )
+                        .View(
+                            Html.X().GridView().LoadingText("در حال بارگذاری...").RTL(true)
+        )
+                 
+    
+                        .ColumnModel(
+                        Html.X().RowNumbererColumn(),
+                                Html.X().Column().DataIndex(Model, m => m.fldId).Text("کد").Hidden(true).Hideable(false).Flex(1),
+                                               Html.X().Column().DataIndex(Model, m => m.fldStatusErrorName).Text("عنوان").Flex(2),
+                                       Html.X().Column().DataIndex(Model, m => m.fldCode).Text("کد").Flex(2),
+                                       Html.X().Column().DataIndex(Model, m => m.fldMatn).Text("متن خطا").Flex(10).Wrap(true)
+                      
+
+    )
+                .SelectionModel(
+                    Html.X().RowSelectionModel()
+                        .Mode(Ext.Net.SelectionMode.Single)
+    )
+
+
+                    )
+    )
+)
+
+<script>
+    function FillMsgDi() {
+            App.MsgDi.queryById('panelMsgDi2').setSize(App.MsgDi.getWidth() - 10, App.MsgDi.getHeight() - 59);
+        App.MsgDi.queryById("lableMsgDi").setText('@ViewBag.Message');
+    }
+
+</script>

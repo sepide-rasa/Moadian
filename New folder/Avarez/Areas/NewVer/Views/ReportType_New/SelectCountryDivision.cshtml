@@ -1,0 +1,262 @@
+﻿@model IEnumerable<Avarez.Models.sp_Report_CountryDivitionSelect>
+@using Ext.Net.MVC;
+@{
+
+    var X = Html.X();
+}
+<style>
+    .lblStyle{
+        height:auto;
+    }
+    .LblRed {
+        color: red;
+    }
+</style>
+@(Html.X().Window().Modal(true)//.Listeners(l => l.AfterRender.Handler = "SetDefault1()")
+            .Width(600)//.Height(600)
+            .Title("موقعیت در تقسیمات کشوری")
+                        .ID("SelectCountryDivision")
+            .Closable(true)
+            .CloseAction(Ext.Net.CloseAction.Destroy)
+            .Items(
+                X.Panel().Border(false)
+                .Border(false)
+                //.AutoScroll(true)
+                .Items(
+                    X.Hidden().ItemID("countryId"),
+                    X.Hidden().ItemID("countrySID"),
+                    X.Hidden().ItemID("countryNType"),
+                //X.FieldSet()
+                //        .Border(false)
+                //        .Width(685)
+                //            .Layout(Ext.Net.LayoutType.VBox)
+                //                .LayoutConfig(new Ext.Net.VBoxLayoutConfig { Align = Ext.Net.VBoxAlign.Center })
+                //                .Items(
+                        X.FieldSet()
+                        .Border(false)
+                            .Width(580)
+                            .Layout(Ext.Net.LayoutType.VBox)
+                                .LayoutConfig(new Ext.Net.VBoxLayoutConfig { Align = Ext.Net.VBoxAlign.Right })
+                        //.LayoutConfig(new Ext.Net.TableLayoutConfig { Columns = 1 })
+                        .Defaults(new { Margin = 2 })
+                        .Items(
+                              X.TreePanel()
+                                .ID("TreeStructureCd")
+                                .AutoScroll(true)
+                                .Width(555)
+                                .ColSpan(2)
+                                .Expand(true)
+                                .Height(250)
+                                .Expand(true)
+                                .UseArrows(true)
+                                .Border(false)
+                                .Store(
+                                Html.X().TreeStore()
+                                    .Proxy(
+                                            Html.X().AjaxProxy().Url(Url.Action("nodeLoadTreeStructureCd"))
+                                            )
+                                        )
+
+                                    .Listeners(a =>
+                                    {
+                                        a.ItemClick.Handler = "GetTreeStructureIdCd(record);";
+                                        a.AfterRender.Handler = "this.getRootNode().expand();";
+                                    })
+                                       // .Root(Html.X().Node().NodeID("0").Text("تقسیمات کشوری"))
+                                            .Root(Html.X().Node().NodeID("0").Cls("0").DataPath("0").Text("تقسیمات کشوری"))
+                                                .Listeners(l =>
+                                                {
+                                                    l.BeforeLoad.Fn = "nodeLoadTreeStructureCd";
+                                                })
+                                , X.Label()
+                                    .Cls("LblRed")
+                                .Text("مورد انتخاب شده: ")
+                                    , X.Label()
+                                        .ItemID("lblTitle").Width(550).Cls("lblStyle")
+                                )
+                                
+                                ,
+                            X.FieldSet()
+                                    .Border(false)
+                                    .Width(685)
+                                        .Layout(Ext.Net.LayoutType.VBox)
+                                            .LayoutConfig(new Ext.Net.VBoxLayoutConfig { Align = Ext.Net.VBoxAlign.Center })
+                                            .Items(
+                                                    X.FieldSet().Border(false).Width(140)
+                                                      .Layout(Ext.Net.LayoutType.HBox)
+                                                        .LayoutConfig(new Ext.Net.HBoxLayoutConfig { Align = Ext.Net.HBoxAlign.Middle })
+                                                           //.LayoutConfig(new Ext.Net.TableLayoutConfig { Columns = 2 })
+                                                    .Items(
+                                                            X.Button().Text("ذخیره").Icon(Ext.Net.Icon.Disk).Listeners(l => l.Click.Handler = "SaveDiv()"),
+                                                                X.Button().Text("خروج").MarginSpec("0 0 0 5px").Icon(Ext.Net.Icon.DoorOut).OnClientClick("App.SelectCountryDivision.destroy();")
+                                                        )
+                                    )
+                                ,
+                    X.GridPanel().AutoScroll(true).Width(587)
+                        .TopBar(
+                            Html.X().Toolbar()
+                                .Items(
+                                    X.Button().Text("حذف").Icon(Ext.Net.Icon.Delete)
+                                            .Listeners(li => li.Click.Handler = "DelSelectCountry();")
+
+                            )
+                        )
+                                    .ItemID("GridSelectCountryDivision").Flex(2)
+         .BottomBar(X.PagingToolbar())
+                    .Height(190)
+                    .ColumnWidth(0.6)
+                    .Layout(Ext.Net.LayoutType.Column)
+                    .Store(
+                        X.StoreForModel()
+                        .Proxy(Html.X().AjaxProxy()
+                            .Url(Url.Action("ReadSelectCountryDivision"))
+                            .Reader(Html.X().JsonReader().Root("data"))
+                                .ExtraParams(x => x.Add(new { ReportId = @ViewBag.ReportId }))
+                        )
+                        .PageSize(5)
+                        .RemoteFilter(true)
+                        .RemotePaging(true)
+            .Listeners(l => l.DataChanged.Handler = "App.SelectCountryDivision.queryById('GridSelectCountryDivision').selModel.refresh();")
+                    )
+                    .View(
+                        Html.X().GridView().LoadingText("در حال بارگذاری...").RTL(true)
+                    )
+        // .Plugins(X.FilterHeader().Remote(true))
+                    .ColumnModel(
+                        Html.X().RowNumbererColumn(),
+                                Html.X().Column().DataIndex(Model, m => m.fldID).Text("کد").Flex(1).Hidden(true),
+                                Html.X().Column().DataIndex(Model, m => m.fldCountryDivisionsName).Text("تقسیمات کشوری").Flex(4)
+                               // Html.X().Column().DataIndex(Model, m => m.fldDesc).Text("توضیحات").Flex(4)
+                    )
+                    .SelectionModel(
+                        Html.X().RowSelectionModel()
+                            .Mode(Ext.Net.SelectionMode.Single)
+                    )
+                 //   )
+            )
+        )
+)
+
+<script type="text/javascript">
+
+    function DelSelectCountry() {
+        var SelectedRow = App.SelectCountryDivision.queryById('GridSelectCountryDivision').selModel.getLastSelected();
+        if (SelectedRow != null) {
+            Ext.MessageBox.show({
+                title: "هشدار",
+                msg: "آیا برای حذف مطمئن هستید؟",
+                icon: Ext.MessageBox.WARNING,
+                buttons: Ext.MessageBox.YESNO,
+                fn: function (btn) {
+                    if (btn == 'yes') {
+                        Ext.net.Mask.show({ msg: 'در حال انجام عملیات...' });
+                        Ext.net.DirectMethod.request({
+                            url: '/NewVer/ReportType_New/DeleteDivision',
+                            params: {
+                                Id: SelectedRow.data.fldID
+                            },
+                            success: function (data) {
+                                var ic = Ext.MessageBox.INFO;
+                                if (data.Er == 1)
+                                    ic = Ext.MessageBox.ERROR;
+                                Ext.MessageBox.show({
+                                    title: data.MsgTitle,
+                                    msg: data.Msg,
+                                    icon: ic,
+                                    buttons: Ext.MessageBox.OK
+                                });
+                               
+                                App.SelectCountryDivision.queryById('GridSelectCountryDivision').store.load();
+                                Ext.net.Mask.hide();
+                            }
+                        });
+                    }
+                }
+            });
+        }
+        else {
+            Ext.MessageBox.show({
+                title: "خطا",
+                msg: "لطفا یک سطر را انتخاب نمایید.",
+                icon: Ext.MessageBox.ERROR,
+                buttons: Ext.MessageBox.OK
+            });
+        }
+    }
+    var nodeLoadTreeStructureCd = function (store, operation, options) {
+        var node = operation.node;
+        Ext.net.DirectMethod.request({
+            url: '/NewVer/ReportType_New/NodeLoadTreeStructure',
+            params: {
+                nod: node.getId()
+            },
+            success: function (result) {
+                node.set('loading', false);
+                node.set('loaded', true);
+                node.appendChild(result);
+                node.expand();
+            },
+
+            failure: function (errorMsg) {
+                Ext.Msg.alert('Failure', errorMsg);
+            }
+        });
+
+        return false;
+    };
+
+    function GetTreeStructureIdCd(record) {
+        var path = record.getPath("text");
+        var Text = path.split('/').splice(1).join("-->");
+        App.SelectCountryDivision.queryById('countryId').setValue(record.getId());
+        App.SelectCountryDivision.queryById('countrySID').setValue(record.data.cls);
+        App.SelectCountryDivision.queryById('countryNType').setValue(record.data.dataPath);
+        if (record.getId() != 0) {
+            App.SelectCountryDivision.queryById('lblTitle').setText(Text);
+        }
+        else {
+            App.SelectCountryDivision.queryById('lblTitle').setText("");
+        }
+    };
+    function SaveDiv() {
+        if (App.SelectCountryDivision.queryById('countryId').getValue() == 0 || App.SelectCountryDivision.queryById('countryId').getValue()=="") {
+            Ext.MessageBox.show({
+                title: "خطا",
+                msg: "موقعیت در تقسیمات کشوری انتخاب نشده است.",
+                icon: Ext.MessageBox.ERROR,
+                buttons: Ext.MessageBox.OK
+            });
+        }
+        else {
+            App.SelectCountryDivision.body.mask("در حال ذخیره سازی...");
+            Ext.net.DirectMethod.request({
+                url: '/NewVer/ReportType_New/SaveDiv',
+                params: {
+                    fldReportsID: '@ViewBag.ReportId',
+                    fldTypeCountryDivisions: App.SelectCountryDivision.queryById('countryNType').getValue(),
+                    fldCodeCountryDivisions: App.SelectCountryDivision.queryById('countrySID').getValue()
+                },
+                success: function (data) {
+                    var ic = Ext.MessageBox.INFO;
+                    if (data.Er == 1)
+                        ic = Ext.MessageBox.ERROR;
+                    Ext.MessageBox.show({
+                        title: data.MsgTitle,
+                        msg: data.Msg,
+                        icon: ic,
+                        buttons: Ext.MessageBox.OK
+                    });
+                    App.SelectCountryDivision.queryById('GridSelectCountryDivision').store.load();
+                    App.SelectCountryDivision.body.mask().hide();
+                    if (data.Er == 0) {
+                        App.TreeStructureCd.getSelectionModel().deselectAll();
+                        App.SelectCountryDivision.queryById('lblTitle').setText("");
+                        App.SelectCountryDivision.queryById('countryId').setValue(0);
+                        App.SelectCountryDivision.queryById('countrySID').setValue(0);
+                        App.SelectCountryDivision.queryById('countryNType').setValue(0);
+                    }
+                }
+            });
+        }
+    }
+</script>

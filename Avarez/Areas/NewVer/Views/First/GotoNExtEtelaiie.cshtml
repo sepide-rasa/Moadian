@@ -1,0 +1,96 @@
+﻿@using Ext.Net.MVC
+@using Hogaf.ExtNet.UX
+@using Ext.Net;
+@{
+    var X = Html.X();
+}
+<style>
+    .a{
+        height:auto;
+        text-align:justify;
+    }
+</style>
+@(Html.X().Window()
+    .Modal(true)
+        .Listeners(li => li.AfterRender.Handler = "LoadInfoPage();")
+    .Resizable(false)
+        .Width(540)
+  //  .Height(235)
+    .Title("جزئیات اطلاعیه")
+    .Layout(LayoutType.Fit)
+        .ID("NewInfoPage")
+    .Closable(true)
+    .ButtonAlign(Ext.Net.Alignment.Center)
+    .Buttons(
+        X.Button()
+            .Text("خروج")
+            .Icon(Ext.Net.Icon.DoorOut)
+        //.ToolTip("کلید میانبر Esc")
+                        .OnClientClick("App.NewInfoPage.destroy();"))
+    .CloseAction(Ext.Net.CloseAction.Destroy)
+    .Items(
+        X.FormPanel()
+            .Border(false)
+            .Layout(LayoutType.Fit)
+            .Items(
+                X.Panel()
+                .Border(false)
+                //.AutoScroll(true)
+                    .Layout(LayoutType.Fit)
+                    .PaddingSpec("15px 0 0 0")
+                    .Items(
+                        X.FieldSet()
+                            .Width(530)
+                     //   .Height(200)
+                            .Layout(Ext.Net.LayoutType.VBox)
+                .LayoutConfig(new Ext.Net.VBoxLayoutConfig { Align = Ext.Net.VBoxAlign.Right })
+                            .Border(false)
+                            .Defaults(new { Margin = 2 })
+                            .Items(
+                                X.Label().ItemID("LblTarikh"),
+                                X.Label().ItemID("LblSubject").Width(500),
+                                X.Label().ItemID("LblInfo").Width(500).Cls("a"),
+                                X.Label("ضمیمه ها:").ItemID("z"),
+                                X.Container().ItemID("zPic").Height(30).Content(@<center><div id="ZamimePic" style="display:inline; width:350px;height:60px;text-align:right;"></div></center>)
+                            )
+                )
+            )
+        )
+)
+
+<script type="text/javascript">
+    var attachemnst = '';
+    var a;
+    function LoadInfoPage() {
+        App.NewInfoPage.body.mask("در حال بارگذاری...");
+        Ext.net.DirectMethod.request({
+            url: '/NewVer/First/DetailsInfoPage',
+            params: {
+                Id: '@ViewBag.ID'
+            },
+            success: function (data) {
+                var LblInfo = App.NewInfoPage.queryById('LblInfo');
+                LblInfo.setText("متن: "+data.fldMemo);
+                var LblTarikh = App.NewInfoPage.queryById('LblTarikh');
+                LblTarikh.setText("تاریخ: "+data.fldDate);
+                var LblSubject = App.NewInfoPage.queryById('LblSubject');
+                LblSubject.setText("عنوان: " + data.fldSubject);
+                a = data.attach;
+                if (data.attach != null) {
+                    for (var i = 0; i < data.attach.length; i++) {
+                        attachemnst = attachemnst + '<a href="/NewVer/First/DownloadAnnouncementAttach?Id=' + data.attach[i].toString() + '"><img src="@Url.Content("~/content/images/1379792081_attachment.png")" style="width:30px;" title="ضمیمه ' + (i + 1) + '" /></a>';
+                    }
+                    var el = Ext.get('ZamimePic');
+                    el.update(attachemnst);
+                }
+                else {
+                    App.NewInfoPage.queryById('z').hide();
+                    App.NewInfoPage.queryById('zPic').hide();
+                }
+                App.NewInfoPage.body.mask().hide();
+            }
+        });
+    }
+
+
+</script>

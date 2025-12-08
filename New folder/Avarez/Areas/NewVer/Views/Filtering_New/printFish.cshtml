@@ -1,0 +1,13 @@
+﻿@using Ext.Net.MVC;
+
+@(
+ Html.X().Window().Height(560)
+ .Width(1000)
+    .Title("پیش نمایش")
+    .AutoScroll(true)
+    .Modal(true)
+    .Closable(true)
+    .CloseAction(Ext.Net.CloseAction.Destroy)
+            .Html("<center><object class='se-pre-con2' style='width: 950px;height: 550px;border: 1px solid #ccc;' type='application/pdf' data='/NewVer/Filtering_New/RptFish?FishId=" + ViewBag.FishId + "'></object></center>")
+
+)

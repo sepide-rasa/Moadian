@@ -1,0 +1,170 @@
+﻿@using Ext.Net.MVC
+@using Hogaf.ExtNet.UX
+@using Ext.Net;
+@{
+    var X = Html.X();
+}
+
+
+@(Html.X().Window().Modal(true).Listeners(li => li.AfterRender.Handler = "LoadOfficeType_New();")
+.Width(305)//.Height(300)
+    .Resizable(false)
+    .Title("تعریف نوع دفتر")
+         .ID("NewOfficeType_New")
+        .Closable(true).ButtonAlign(Ext.Net.Alignment.Center)
+    .CloseAction(Ext.Net.CloseAction.Destroy)
+                   .Buttons(X.Button().Text("ذخیره").Icon(Ext.Net.Icon.Disk)//.ToolTip("کلید میانبر F8")
+                               .Listeners(l =>
+                               {
+                                   l.Click.Handler = "SaveOfficeType_New();";
+
+                               })
+                               .ItemID("btnSave")
+                                ,
+                                X.Button().Text("خروج").Icon(Ext.Net.Icon.DoorOut)//.ToolTip("کلید میانبر Esc")
+                                       .OnClientClick("App.NewOfficeType_New.destroy()"))
+    .Items(
+        X.FormPanel().Border(false)
+        .Border(false)
+            .Margin(5)
+            .DefaultButton("btn")
+        .TitleAlign(Ext.Net.TitleAlign.Center)
+
+
+                .Items(
+                    X.Panel().Border(false).PaddingSpec("10px 0 0 0")
+
+            .Items(
+                X.FieldSet().Border(true).Height(118)
+                .Title("نوع دفتر")
+                .Center()
+                .LayoutConfig(new Ext.Net.TableLayoutConfig { Columns = 2 })
+                .Defaults(new { Margin = 2 })
+                .Items(
+                X.Hidden().ItemID("fldId"),
+               
+                     X.Label("نوع دفتر:"),
+                     X.TextField()
+                     .ItemID("txtTitle")
+                    .MaxLength(50)
+                    .MsgTarget(Ext.Net.MessageTarget.Side)
+                    .AllowBlank(false)
+                    .Width(190)
+                    .BlankText("لطفا نوع دفتر را وارد نمایید.")
+                    .MaskRe("/[ا-ی,ئ,آ, ]/")
+                    .EnforceMaxLength(true)
+                    .MaxLength(50)
+                    .AutoFocus(true)
+                    , X.Label("توضیحات:"),
+                    X.TextArea()
+                    .ItemID("txtDesc")
+                    .ColSpan(4)
+                    .Width(190)
+                        )
+
+                )
+                    .Layout(Ext.Net.LayoutType.VBox)
+                    .LayoutConfig(new Ext.Net.VBoxLayoutConfig { Align = Ext.Net.VBoxAlign.Center })
+            )
+        )
+)
+@(Html.X().KeyMap()
+                 .ID("NewOfficeType_NewMap")
+                 .Target("={App.NewOfficeType_New.getTargetEl()}")
+            .Binding(b =>
+            {
+                b.Add(Html.X().KeyBinding()
+                .KeysString(((int)Ext.Net.KeyCode.F8).ToString())
+                .Handler("SaveOfficeType_New(); ")
+                );
+
+            }))
+<script type="text/javascript">
+    function LoadOfficeType_New() {
+        if ('@ViewBag.Id' != '0') {
+            App.NewOfficeType_New.body.mask("در حال بارگذاری...");
+            Ext.net.DirectMethod.request({
+                url: '/NewVer/OfficeType_New/Details',
+                params: {
+                    Id: '@ViewBag.Id'
+                },
+                success: function (data) {
+                    if (data.Er == 0) {
+                        var txtTitle = App.NewOfficeType_New.queryById('txtTitle');
+                        txtTitle.setValue(data.fldType);
+                        var txtDesc = App.NewOfficeType_New.queryById('txtDesc');
+                        txtDesc.setValue(data.fldDesc);
+                        var Id = App.NewOfficeType_New.queryById('fldId');
+                        Id.setValue(data.fldId);
+                    }
+                    else if (data.Er == 1) {
+                        Ext.MessageBox.show({
+                            title: data.MsgTitle,
+                            msg: data.Msg,
+                            icon: Ext.MessageBox.ERROR,
+                            buttons: Ext.MessageBox.OK
+                        });
+                    }
+                    App.NewOfficeType_New.body.mask().hide();
+                }
+            });
+        }
+        else {
+            App.NewOfficeType_New.queryById('txtTitle').validate();
+        }
+
+    }
+
+    function SaveOfficeType_New() {
+  
+        var txtTitle = App.NewOfficeType_New.queryById('txtTitle');
+        var txtDesc = App.NewOfficeType_New.queryById('txtDesc');
+        var Id = App.NewOfficeType_New.queryById('fldId');
+        var er = false;
+
+        if (txtTitle.validate() == false) {
+            er = true;
+        }
+      
+        if (er == true)
+            return;
+        App.NewOfficeType_New.body.mask("در حال ذخیره سازی...");
+        Ext.net.DirectMethod.request({
+            url: '/NewVer/OfficeType_New/Save',
+            params: {
+                fldId: Id.getValue(),
+                fldType: txtTitle.getValue(),
+                fldDesc: txtDesc.getValue()
+            },
+            success: function (data) {
+                var ic = Ext.MessageBox.INFO;
+                if (data.Er == 1)
+                    ic = Ext.MessageBox.ERROR;
+                Ext.MessageBox.show({
+                    title: data.MsgTitle,
+                    msg: data.Msg,
+                    icon: ic,
+                    buttons: Ext.MessageBox.OK
+                });
+                App.OfficeType_New.queryById('GridOfficeType_New').store.load();
+                if (data.Er != 1)
+                    ClearOfficeType_New();
+                App.NewOfficeType_New.body.mask().hide();
+
+            }
+
+        });
+    }
+    function ClearOfficeType_New() {
+        App.NewOfficeType_New.queryById('txtTitle').setValue("");
+        App.NewOfficeType_New.queryById('txtDesc').setValue("");
+        App.NewOfficeType_New.queryById('fldId').setValue(0);
+    }
+  /*  function EnterNext() {
+        var keyfield = App.NewOfficeType_New.queryById(Ext.getCmp((Ext.Element.getActiveElement()).name).itemId);
+        var nextfld = keyfield.nextSibling();
+        nextfld.focus();
+        nextfld.selectText();
+
+    }*/
+</script>

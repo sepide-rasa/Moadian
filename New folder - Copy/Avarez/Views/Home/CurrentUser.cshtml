@@ -1,0 +1,112 @@
+﻿@using Avarez.Controllers.Users;
+<div id="Config">
+    @using Kendo.Mvc.UI;
+    <link href="@Url.Content("~/Content/web/kendo.common.min.css")" rel="stylesheet" type="text/css" />
+    <link href="@Url.Content("~/Content/web/kendo.default.min.css")" rel="stylesheet" type="text/css" />
+    <link href="@Url.Content("~/Content/web/kendo.rtl.min.css")" rel="stylesheet" type="text/css" />
+    <script src="@Url.Content("~/Scripts/console.min.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Scripts/kendo.web.min.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Scripts/prettify.min.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Scripts/kendo.aspnetmvc.min.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Scripts/kendo.splitter.min.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Scripts/cultures/kendo.fa-IR.js")" type="text/javascript"></script>
+    <script type="text/javascript">
+        $("document").ready(function () {
+            $('#ChangeLocation').button();
+            $('#Exit').button();
+            $('#HomePage').button();
+            $('#HomePage').click(function () {
+                window.location.href = '/Home/Home';
+            });
+            $('#Exit').click(function () {
+                window.location.href = '/Account/LogOff';
+            });
+
+            $('#ChangeLocation').click(function () {
+                window.location.href = '/Home/ChangeLocation';
+            });
+            $('#User').click(function () {
+                windows("#win", "/User/Index");
+            });
+            $('#ChPass').click(function () {
+                windows("#win", "/Account/ChangePassword");
+            });
+
+        });
+    </script>
+    @{Avarez.Models.cartaxEntities p = new Avarez.Models.cartaxEntities();
+      var state = p.sp_StateSelect("fldId", Session["UserState"].ToString(), 1, Convert.ToInt32(Session["UserId"]), Session["UserPass"].ToString()).FirstOrDefault();
+      var Mnu = p.sp_MunicipalitySelect("fldId", Session["UserMnu"].ToString(), 1, Convert.ToInt32(Session["UserId"]), Session["UserPass"].ToString()).FirstOrDefault();
+      var Location = state.fldName + " --> " + Mnu.fldName + Session["Location"];}
+    @(Html.Kendo().Splitter()
+      .Name("vertical")
+      .Orientation(SplitterOrientation.Vertical)
+          .HtmlAttributes(new { style = "height: 750px;" })
+      .Panes(verticalPanes =>
+      {
+          verticalPanes.Add()
+            .Size("30px")
+            .Collapsible(false)
+            .Resizable(false)
+            .Content(@<div dir="rtl" style="text-align: center;">
+                <span style="font-weight: bold; color: #127AA3; font-size: 11px;">موقعیت فعلی شما: @Location
+                </span>
+                <button id="ChangeLocation" title="برای تغییر موقعیت از این گزینه استفاده کنید."
+                    style="font-size: 11px;">
+                    ...</button>
+                <button id="Exit" style="font-size: 11px; float: left; text-align: left; background-image: url('/Content/images/1377957633_exit.png');
+                        background-repeat: no-repeat; background-position: right; width: 70px; background-size: 14px;
+                        background-position-x: 50px;">
+                        خروج</button>
+                <button id="HomePage" style="float: right; font-size: 11px; text-align: left; background-image: url('/Content/images/1377958371_Home.png');
+                    background-repeat: no-repeat; background-position: right; width: 100px; background-size: 16px;
+                    background-position-x: 80px;">
+                    صفحه اصلی</button></div>);
+          verticalPanes.Add()
+              .HtmlAttributes(new { id = "top-pane" })
+              .Scrollable(false)
+              .Collapsible(false)
+              .Content(
+                Html.Kendo().Splitter()
+                    .Name("horizontal")
+                    .HtmlAttributes(new { style = "height: 100%;" })
+                    .Panes(horizontalPanes =>
+                    {
+                        horizontalPanes.Add()
+                            .HtmlAttributes(new { id = "left-pane" })
+                            .Size("688px")
+                            .Content(@<div id="win" class="pane-content">
+                            </div>);
+                        horizontalPanes.Add()
+                            .HtmlAttributes(new { id = "right-pane" })
+                            .Size("210px")
+                            .Content(@<div class="pane-content">
+                                @(Html.Kendo().PanelBar()
+        .Name("panelbar-images")
+        .Items(panelbar =>
+        {            
+            panelbar.Add().Text("کاربر جاری")
+                .Expanded(true)
+                .ImageUrl(Url.Content("~/Content/images/1375797163_group.png"))
+                .Items(Users =>
+                {
+                    Users.Add().Text("تغییر رمز")
+                    .HtmlAttributes(new { id = "ChPass" })
+                    .ImageUrl(Url.Content("~/Content/images/decrypted.png"));
+                    Users.Add().Text("مدیریت دوستان")
+                    .HtmlAttributes(new { id = "User" })
+                        .Visible(Permossions.haveAccess(Convert.ToInt32(Session["UserId"]), 264))
+                    .ImageUrl(Url.Content("~/Content/images/1405516682_kuser.png"));                   
+                    
+                });
+        })
+    )
+                            </div>);
+                    }).ToHtmlString()
+              );
+
+
+      })
+)
+</div>
+

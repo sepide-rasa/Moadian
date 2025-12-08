@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ReferenceGroup xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" ID="02e0c94e-143e-4588-a4b5-1c8e940a3335" xmlns="urn:schemas-microsoft-com:xml-wcfservicemap">
+  <ClientOptions>
+    <GenerateAsynchronousMethods>false</GenerateAsynchronousMethods>
+    <EnableDataBinding>true</EnableDataBinding>
+    <ExcludedTypes />
+    <ImportXmlTypes>false</ImportXmlTypes>
+    <GenerateInternalTypes>false</GenerateInternalTypes>
+    <GenerateMessageContracts>false</GenerateMessageContracts>
+    <NamespaceMappings />
+    <CollectionMappings />
+    <GenerateSerializableTypes>true</GenerateSerializableTypes>
+    <Serializer>Auto</Serializer>
+    <UseSerializerForFaults>true</UseSerializerForFaults>
+    <ReferenceAllAssemblies>true</ReferenceAllAssemblies>
+    <ReferencedAssemblies />
+    <ReferencedDataContractTypes />
+    <ServiceContractMappings />
+  </ClientOptions>
+  <MetadataSources>
+    <MetadataSource Address="https://bill.samanepay.com/CheckBill/BillStateService.svc?wsdl" Protocol="http" SourceId="1" />
+  </MetadataSources>
+  <Metadata>
+    <MetadataFile FileName="BillStateService.wsdl" MetadataType="Wsdl" ID="8a10de11-660d-46db-9ee0-56e9807fd875" SourceId="1" SourceUrl="https://bill.samanepay.com/CheckBill/BillStateService.svc?wsdl" />
+    <MetadataFile FileName="BillStateService.xsd" MetadataType="Schema" ID="4b796b0a-8edf-4ad8-9106-746268fb9c42" SourceId="1" SourceUrl="https://bill.samanepay.com/CheckBill/BillStateService.svc?xsd=xsd0" />
+    <MetadataFile FileName="BillStateService1.xsd" MetadataType="Schema" ID="ea9927fe-b232-438e-a116-a8528985ba53" SourceId="1" SourceUrl="https://bill.samanepay.com/CheckBill/BillStateService.svc?xsd=xsd1" />
+  </Metadata>
+  <Extensions>
+    <ExtensionFile FileName="configuration91.svcinfo" Name="configuration91.svcinfo" />
+    <ExtensionFile FileName="configuration.svcinfo" Name="configuration.svcinfo" />
+  </Extensions>
+</ReferenceGroup>

@@ -1,0 +1,271 @@
+﻿@using Kendo.Mvc.UI;
+<div id="DigitalTree">
+  
+    <div>
+        <br />
+        <center>
+        <h3>ساختار درختی بایگانی دیجیتال</h3>
+            <table>
+                <tr>
+                    @Html.Hidden("fldId")
+                    <td align="left">
+                    <span style="color: Red;">*</span>عنوان پوشه:
+                    </td>
+                    <td align="right">
+                        @Html.TextBox("txtName")  
+                        <span id="lblNameError" style="color: Red;"></span>                      
+                    </td>
+                </tr>
+                <tr>
+                <td align="left">
+                امکان اضافه نمودن فایل
+                </td>
+                <td>
+                  <input type="checkbox" name="Addable" id="Addable" />
+                </td>
+                </tr>
+                <tr>
+                    <td align="center" colspan="2">
+                        <p>
+                            @Avarez.Helper.winClass.Buttons("AddLink", "ذخیره", "Save")
+                            @Avarez.Helper.winClass.Buttons("EditLink", "ویرایش", "Edit")
+                            @Avarez.Helper.winClass.Buttons("DelLink", "حذف", "Del")
+                            @Avarez.Helper.winClass.Buttons("exit", "خروج", "Exit")
+                        </p>
+                    </td>
+                </tr>
+                <tr>
+                    <td align="left">ساختار درختی بایگانی دیجیتال:
+                    </td>
+                    <td colspan="2" dir="rtl" id="P_Tree" align="right"></td>
+
+                </tr>
+                <tr>
+              <td></td>
+                    <td  dir="rtl" id="Location" style="color: Red";  align="center">
+                    </td>
+                </tr>
+                
+            </table>
+        </center>
+        
+        <script type="text/javascript">
+            var isWinOpen = false;
+            var dataItem = '';
+            var Pid = null;
+            var Pid2 = null;
+            var Win = 0;
+
+            function select(e) {
+                dataItem = this.dataItem(e.node);
+                Pid = dataItem.id;
+                Pid2 = Pid;
+            }
+            
+            function expand() {
+                var treeview = $("#treeview").data("kendoTreeView");
+                treeview.expand(".k-item");
+            }
+
+            $("document").ready(function () {
+
+                $('#P_Tree').html($('#LocationDiv').valueOf());
+                $("#AddLink").button();
+                $("#EditLink").button();
+                $("#DelLink").button();
+                $("#exit").button();
+
+                $('#DigitalTree').on('keyup', 'input', function (event) {
+                    if (event.which == 13) {
+                        var inputs = $('#DigitalTree').find(':input:visible');
+                        inputs.eq(inputs.index(this) + 1).focus();
+                    }
+                });
+
+                $("#exit").click(function () {
+                    $("#DigitalTree").remove();
+                });
+
+                $(document).keyup(function (event) {
+                    if (event.which == 119) {
+                        SaveRecord();
+                    }
+                    else if (event.which == 113) {
+                        EditRecord();
+                    }
+                    else if (event.which == 115) {
+                        DeleteRecord();
+                    }
+                });
+                $('#AddLink').attr('title', 'کلید میانبر (F8)'); //119
+                $('#EditLink').attr('title', 'کلید میانبر (F2)'); //113
+                $('#DelLink').attr('title', 'کلید میانبر (F4)'); //115
+
+                jQuery("#EditLink").click(function () {
+                    EditRecord();
+                });
+
+                $('#DelLink').click(function () {
+                    DeleteRecord();
+                });
+
+                $("#AddLink").click(function () {
+                    SaveRecord();
+                });
+
+                $("#txtName").keyup(function () {
+                    if ($("#txtName").val() != '') {
+                        $("#txtName").removeClass("input-validation-error");
+                        $("#lblNameError").html("");
+                    }
+                    else {
+                        $("#txtName").addClass("input-validation-error");
+                        $('#lblNameError').html('لطفا عنوان را وارد کنید.');
+                    }
+                });
+
+            });
+            function Clear() {
+                $("#txtName").val('');
+                $('#fldId').val('0');
+                Pid = null;
+                Addable.checked = false;
+            }
+            function SaveRecord() {
+                var er = false;
+                if ($("#txtName").val() == '') {
+                    $("#txtName").addClass("input-validation-error");
+                    $('#lblNameError').html('لطفا عنوان را وارد کنید.');
+                    er = true;
+                }
+                else
+                    $('#lblNameError').html('');
+
+
+                if (er)
+                    return;
+
+                var z = false;
+                if (Addable.checked)
+                    z = true;
+
+                var data = {
+                    fldName: $("#txtName").val(),
+                    fldAddable: z,
+                    PId: Pid,
+                    fldId: $("#fldId").val()
+                };
+                if (data != '') {
+                    PostForm(data, '@Url.Content("~/DigitalTree/Save")', "#win");
+                }
+                Clear();
+            }
+            function EditRecord() {
+
+                if (Pid2 != null) {
+                    var URL = '@Url.Content("~/DigitalTree/Details")';
+                    URL = URL + "/" + Pid2;
+                    $.ajax({
+                        type: "GET",
+                        url: URL,
+                        success: function (data) {
+                            Pid = data.fldPId;
+                            $("#fldId").val(data.fldId);
+                            $("#txtName").val(data.fldName);
+                            Addable.checked = data.fldAddable;
+                        },
+                        failure: function (data) {
+                            alert(data.data);
+                        }
+                    });
+                    
+                }
+                else {
+                    windowAppend('body', '/metro/error');
+                    $('#message').html('لطفا یک مورد را انتخاب کنید.');
+                    $("#error .wintitle").html("خطا");
+                }
+            }
+            function DeleteRecord() {
+                if (Pid != null) {
+                    var URL = '@Url.Content("~/metro/YesNomsg")';
+                    URL = URL + "/?id=" + Pid + "&URL=" + '@Url.Content("~/DigitalTree/Delete")';
+                    windowAppend("body", URL);
+                    $("#message").html('آیا مایل به حذف رکورد انتخاب شده هستید؟');
+                }
+                else {
+                    windowAppend('body', '/metro/error');
+                    $('#message').html('لطفا یک مورد را انتخاب کنید.');
+                    $("#error .wintitle").html("خطا");
+                }
+                Clear();
+            }
+            
+
+            function PostForm(datas, url, id) {
+                var sendInfo = datas;
+                $('#Lock').show();
+                $.ajax({
+                    type: "POST",
+                    url: url,
+                    data: sendInfo,
+                    datatype: "json",
+                    success: function (data) {
+                        var m = data;
+                        windowAppend("body", "/metro/error");
+                        $("#message").html(m.data);
+                        switch (m.state) {
+                            case 0:
+                                $("#error .wintitle").html("ذخیره موفق");
+                                break;
+                            case 1:
+                                $("#error .wintitle").html("خطا");
+                                break;
+                        }
+                       
+                        var tree = $('#treeview').data("kendoTreeView");
+                        tree.dataSource.read();
+                        $('#Lock').hide();
+
+                    },
+                    failure: function (data) {
+                        alert(data.data);
+                    }
+                });
+            }
+
+        </script>
+    </div>
+    <div class="treeview-back  k-rtl" dir="rtl" id="LocationDiv">
+        @(Html.Kendo().TreeView()
+                        .Name("treeview")
+                        .DataTextField("Name")
+                        
+                        .DataSource(dataSource => dataSource
+                        .Read(read => read
+                         .Action("_ProductTree", "DigitalTree")
+                        )
+                        )
+                        .Events(events =>
+                        {
+                            events.Select("select");
+                            events.DataBound("expand");
+                        })
+                        )
+    </div>
+    <style type="text/css">
+    .treeview-back
+    {
+        width: 400px;
+        margin: 30px;
+        padding: 20px;
+        -moz-box-shadow: 0 1px 2px rgba(0,0,0,0.45), inset 0 0 30px rgba(0,0,0,0.07);
+        -webkit-box-shadow: 0 1px 2px rgba(0,0,0,0.45), inset 0 0 30px rgba(0,0,0,0.07);
+        box-shadow: 0 1px 2px rgba(0,0,0,0.45), inner 0 0 30px rgba(0,0,0,0.07);
+        -webkit-border-radius: 8px;
+        -moz-border-radius: 8px;
+        border-radius: 8px;
+    }
+</style>
+</div>
+

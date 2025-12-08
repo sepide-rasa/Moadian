@@ -1,0 +1,374 @@
+﻿@using Ext.Net.MVC
+@using Hogaf.ExtNet.UX
+@using Ext.Net;
+@{
+    var X = Html.X();
+}
+
+
+@(Html.X().Window()
+    .Modal(true)
+    .Resizable(false)
+    .Width(565)
+   // .Height(260)
+        .Title("تعریف و جستجوی مخاطب")
+    .Layout(LayoutType.Fit)
+    .ID("NewContact")
+    .Closable(true)
+    .ButtonAlign(Ext.Net.Alignment.Center)
+    .Buttons(
+        X.Button()
+            .Text("ذخیره")
+            .Icon(Ext.Net.Icon.Disk)
+        //.ToolTip("کلید میانبر F8")
+            .Listeners(l => l.Click.Handler = "SaveContact();"),
+        X.Button()
+            .Text("خروج")
+            .Icon(Ext.Net.Icon.DoorOut)
+        //.ToolTip("کلید میانبر Esc")
+            .OnClientClick("App.NewContact.destroy();"))
+    .CloseAction(Ext.Net.CloseAction.Destroy)
+    .Items(
+        X.FormPanel()
+            .Border(false)
+            .Layout(LayoutType.Fit)
+            .Items(
+                X.Panel().RTL(true)
+                    .Border(false)
+                    .PaddingSpec("15px 0 0 0")
+                          .Layout(LayoutType.VBox)
+                        .LayoutConfig(new VBoxLayoutConfig { Align = VBoxAlign.Center })
+                    .Items(
+                        X.FieldSet()
+                            .Border(true)
+                            .Defaults(new { Margin = 2 })
+                            .Title("تعریف و جستجوی مخاطب")
+                            .Height(198)
+                            .Layout(LayoutType.Table)
+                            .LayoutConfig(new TableLayoutConfig { Columns = 4 })
+                            .Items(
+                                X.Hidden()
+                                    .ItemID("fldId"),
+                                       
+                                X.Label("نام :"),
+                                
+                                X.TextField()
+                                        .ItemID("txtName")
+                                    .Width(180)
+                                    .AllowBlank(false)
+                                          .MaskRe("/[ا-ی,ئ,آ, ]/")
+                                    .EnforceMaxLength(true)
+                                    .MaxLength(50)
+                                    .BlankText("لطفا نام را وارد نمایید.")
+                                    .MsgTarget(Ext.Net.MessageTarget.Side),
+                                    
+                                            X.Label("نام خانوادگی :"),
+                                    X.TextField()
+                                                .ItemID("txtFamily")
+                                        .Width(180)
+                                        .AllowBlank(false)
+                                              .MaskRe("/[ا-ی,ئ,آ, ]/")
+                                        .EnforceMaxLength(true)
+                                        .MaxLength(50)
+                                        .BlankText("لطفا نام خانوادگی را وارد نمایید.")
+                                        .MsgTarget(Ext.Net.MessageTarget.Side),
+                                        
+                                                X.Label("تلفن1 :"),
+                                    X.TextField()
+                                                .ItemID("txtTel1")
+                                                     .MaskRe("/[0-9]/")
+                                       // .MaxLength(11)
+                                        //.EnforceMaxLength(true)
+                                        .Width(180)
+                                        .AllowBlank(false)
+                                        .EnforceMaxLength(true)
+                                        .MaxLength(50)
+                                        .BlankText("لطفا تلفن1 را وارد نمایید.")
+                                        .MsgTarget(Ext.Net.MessageTarget.Side),
+                                        
+                                                X.Label("تلفن2 :"),
+                                    X.TextField()
+                                                .ItemID("txtTel2")
+                                                     .MaskRe("/[0-9]/")
+                                        //.MaxLength(11)
+                                        //.EnforceMaxLength(true)
+                                        .Width(180)
+                                       // .AllowBlank(false)
+                                        .EnforceMaxLength(true)
+                                     
+                                        .BlankText("لطفا تلفن2 را وارد نمایید.")
+                                        .MsgTarget(Ext.Net.MessageTarget.Side),
+
+
+                                               X.Label("موبایل1 :"),
+                                        X.TextField()
+                                                        .ItemID("txtMobile1")
+                                                             .MaskRe("/[0-9]/")
+                                        .MaxLength(11)
+                                        .EnforceMaxLength(true)
+                                            .Width(180)
+                                            .AllowBlank(false)
+                                            .EnforceMaxLength(true)
+                                           
+                                            .BlankText("لطفا موبایل1 را وارد نمایید.")
+                                            .MsgTarget(Ext.Net.MessageTarget.Side),
+
+                                                    X.Label("موبایل2 :"),
+                                        X.TextField()
+                                                        .ItemID("txtMobile2")
+                                                             .MaskRe("/[0-9]/")
+                                        .MaxLength(11)
+                                        .EnforceMaxLength(true)
+                                            .Width(180)
+                                            //.AllowBlank(false)
+                                            .EnforceMaxLength(true)
+                                           
+                                            .BlankText("لطفا موبایل2 را وارد نمایید.")
+                                            .MsgTarget(Ext.Net.MessageTarget.Side),
+
+
+                                                   X.Label("ایمیل :"),
+                                            X.TextField()
+                                                                .ItemID("txtEmail")
+                                                .Width(180)
+                                               // .AllowBlank(false)
+                                                .EnforceMaxLength(true)
+                                                .MaxLength(50)
+                                                .BlankText("لطفا ایمیل را وارد نمایید.")
+                                                .MsgTarget(Ext.Net.MessageTarget.Side),
+
+                                                        X.Label("فکس :"),
+                                            X.TextField()
+                                                                .ItemID("txtFax")
+                                                                     .MaskRe("/[0-9]/")
+                                        .MaxLength(20)
+                                        .EnforceMaxLength(true)
+                                                .Width(180)
+                                               // .AllowBlank(false)
+                                                .EnforceMaxLength(true)
+                                                .MaxLength(50)
+                                                .BlankText("لطفا فکس را وارد نمایید.")
+                                                .MsgTarget(Ext.Net.MessageTarget.Side),
+
+
+                                                   X.Label("وب سایت :"),
+                                            X.TextField()
+                                                .ItemID("txtWebsite")
+                                                .Width(180)
+                                                
+                                                //.AllowBlank(false)
+                                                .EnforceMaxLength(true)
+                                                .MaxLength(50)
+                                                .BlankText("لطفا وب سایت را وارد نمایید.")
+                                                .MsgTarget(Ext.Net.MessageTarget.Side),
+
+                                                        X.Label("کد پستی:"),
+                                            X.TextField()
+                                                  .ItemID("txtPostalCode")
+                                                .Width(180)
+                                               // .AllowBlank(false)
+                                                   
+                                                .EnforceMaxLength(true)
+                                                .MaxLength(50)
+                                                .BlankText("لطفا کد پستی را وارد نمایید.")
+                                                .MsgTarget(Ext.Net.MessageTarget.Side),
+
+                                                          X.Label("نوع مخاطب:"),
+                                    X.ComboBox()
+                                            .ItemID("cboCascadeType")
+                                        .EmptyText("نوع مخاطب ...")
+                                        .TypeAhead(true)
+                                        .AllowBlank(false)
+                                        .BlankText("لطفا نوع مخاطب را انتخاب نمایید.")
+                                        .MsgTarget(Ext.Net.MessageTarget.Side)
+                                        .QueryMode(DataLoadMode.Local)
+                                        .ForceSelection(true)
+                                        .Editable(false)
+                                        .Width(180)
+                                        .TriggerAction(TriggerAction.All)
+                                            .DisplayField("fldName")
+                                            .ValueField("fldID")
+                                        .Store(X.Store()
+                                            .Model(X.Model()
+                                                    .IDProperty("fldID")
+                                                .Fields(
+                                                            new ModelField("fldID", ModelFieldType.String) { Mapping = "fldID" },
+                                                            new ModelField("fldName", ModelFieldType.String) { Mapping = "fldName" })
+                                                    )
+                                            .Proxy(X.AjaxProxy()
+                                                    .Url(Url.Action("GetCascadeType"))
+                                                .Reader(X.JsonReader().Root("data")))
+                                            .Listeners(li => li.Load.Handler = "LoadContact();")
+                                                ),
+                      
+                                X.Label("توضیحات:"),
+                                X.TextArea()
+                                    .ItemID("txtDesc")
+                                    .Width(180)
+                                    .Height(40)
+                            )
+                )
+            )
+        )
+)
+
+<script type="text/javascript">
+    function LoadContact() {
+        ReplaceArabic();
+        if ('@ViewBag.Id' != '0') {
+            App.NewContact.body.mask("در حال بارگذاری...");
+            Ext.net.DirectMethod.request({
+                url: '/NewVer/Contact_New/Details',
+                params: {
+                    Id: '@ViewBag.Id'
+                },
+                success: function (data) {
+                    if (data.Er == 1) {
+                        Ext.MessageBox.show({
+                            title: data.MsgTitle,
+                            msg: data.Msg,
+                            icon: Ext.MessageBox.ERROR,
+                            buttons: Ext.MessageBox.OK
+                        });
+                    }
+                    else {
+                        var cboCascadeType = App.NewContact.queryById('cboCascadeType');
+                        cboCascadeType.setValue(String(data.fldAccostTypeID));
+                        var txtName = App.NewContact.queryById('txtName');
+                        txtName.setValue(data.fldName);
+                        var txtFamily = App.NewContact.queryById('txtFamily');
+                        txtFamily.setValue(data.fldFamily);
+                        var txtTel1 = App.NewContact.queryById('txtTel1');
+                        txtTel1.setValue(data.fldTel1);
+                        var txtTel2 = App.NewContact.queryById('txtTel2');
+                        txtTel2.setValue(data.fldTel2);
+                        var txtMobile1 = App.NewContact.queryById('txtMobile1');
+                        txtMobile1.setValue(data.fldMobile1);
+                        var txtMobile2 = App.NewContact.queryById('txtMobile2');
+                        txtMobile2.setValue(data.fldMobile2);
+                        var txtEmail = App.NewContact.queryById('txtEmail');
+                        txtEmail.setValue(data.fldEmail);
+                        var txtFax = App.NewContact.queryById('txtFax');
+                        txtFax.setValue(data.fldFax);
+                        var txtWebsite = App.NewContact.queryById('txtWebsite');
+                        txtWebsite.setValue(data.fldWebsite);
+                        var txtPostalCode = App.NewContact.queryById('txtPostalCode');
+                        txtPostalCode.setValue(data.fldPostalCode);
+                        var txtDesc = App.NewContact.queryById('txtDesc');
+                        txtDesc.setValue(data.fldDesc);
+                        var Id = App.NewContact.queryById('fldId');
+                        Id.setValue(data.fldId);
+                    }
+                    App.NewContact.body.mask().hide();
+                }
+            });
+        }
+        else {
+            App.NewContact.queryById('cboCascadeType').validate();
+            App.NewContact.queryById('txtName').validate();
+            App.NewContact.queryById('txtFamily').validate();
+            App.NewContact.queryById('txtTel1').validate();
+            App.NewContact.queryById('txtMobile1').validate();
+          
+        }
+    }
+
+    function SaveContact() {
+        var cboCascadeType = App.NewContact.queryById('cboCascadeType');
+        var Id = App.NewContact.queryById('fldId');
+        var txtName = App.NewContact.queryById('txtName');
+        var txtFamily = App.NewContact.queryById('txtFamily');
+        var txtTel1 = App.NewContact.queryById('txtTel1');
+        var txtTel2 = App.NewContact.queryById('txtTel2');
+        var txtMobile1 = App.NewContact.queryById('txtMobile1');
+        var txtMobile2 = App.NewContact.queryById('txtMobile2');
+        var txtEmail = App.NewContact.queryById('txtEmail');
+        var txtFax = App.NewContact.queryById('txtFax');
+        var txtWebsite = App.NewContact.queryById('txtWebsite');
+        var txtPostalCode = App.NewContact.queryById('txtPostalCode');
+        var txtDesc = App.NewContact.queryById('txtDesc');
+
+        var er = false;
+
+        if (cboCascadeType.validate() == false) {
+            er = true;
+        }
+        if (txtName.validate() == false) {
+            er = true;
+        }
+        if (txtFamily.validate() == false) {
+            er = true;
+        }
+
+        if (txtTel1.validate() == false) {
+            er = true;
+        }
+        if (txtMobile1.validate() == false) {
+            er = true;
+        }
+       
+
+        if (er == true)
+            return;
+
+        App.NewContact.body.mask("در حال ذخیره سازی...");
+        Ext.net.DirectMethod.request({
+            url: '/NewVer/Contact_New/Save',
+            params: {
+                fldId: Id.getValue(),
+                fldName: txtName.getValue(),
+                fldFamily: txtFamily.getValue(),
+                fldTel1: txtTel1.getValue(),
+                fldTel2: txtTel2.getValue(),
+                fldMobile1: txtMobile1.getValue(),
+                fldMobile2: txtMobile2.getValue(),
+                fldEmail: txtEmail.getValue(),
+                fldFax: txtFax.getValue(),
+                fldWebsite: txtWebsite.getValue(),
+                fldPostalCode: txtPostalCode.getValue(),
+                fldAccostTypeID: cboCascadeType.getValue(),
+                fldDesc: txtDesc.getValue()
+            },
+            success: function (data) {
+                var ic = Ext.MessageBox.INFO;
+                if (data.Er == 1)
+                    ic = Ext.MessageBox.ERROR;
+                Ext.MessageBox.show({
+                    title: data.MsgTitle,
+                    msg: data.Msg,
+                    icon: ic,
+                    buttons: Ext.MessageBox.OK
+                });
+                App.Contact.queryById('GridContact').store.load();
+                if (data.Er == 0) {
+                    ClearContact();
+                }
+                App.NewContact.body.mask().hide();
+            }
+        });
+    }
+
+    function ClearContact() {
+        App.NewContact.queryById('cboCascadeType').setValue("");
+        App.NewContact.queryById('txtName').setValue("");
+        App.NewContact.queryById('txtFamily').setValue("");
+        App.NewContact.queryById('txtTel1').setValue("");
+        App.NewContact.queryById('txtTel2').setValue("");
+        App.NewContact.queryById('txtMobile1').setValue("");
+        App.NewContact.queryById('txtMobile2').setValue("");
+        App.NewContact.queryById('txtEmail').setValue("");
+        App.NewContact.queryById('txtFax').setValue("");
+        App.NewContact.queryById('txtWebsite').setValue("");
+        App.NewContact.queryById('txtPostalCode').setValue("");
+        App.NewContact.queryById('txtDesc').setValue("");
+        App.NewContact.queryById('fldId').setValue(0);
+    }
+
+   /* function EnterNext() {
+        var keyfield = App.NewCustomer.queryById(Ext.getCmp((Ext.Element.getActiveElement()).name).itemId);
+        var nextfld = keyfield.nextSibling();
+        nextfld.focus();
+        nextfld.selectText();
+    }*/
+
+</script>

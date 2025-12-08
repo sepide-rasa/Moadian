@@ -1,0 +1,88 @@
+﻿<div class="modal" id="SendToSupporter">
+    @if (Session["ER1"] != null)
+    {
+        Layout = Url.Content("~/views/Shared/_Layout.cshtml");
+    }
+    @Avarez.Helper.winClass.windowHeader("", "پیغام", 550, 180)
+    <br />
+    <div id="message1">
+        @if (Session["ER1"] != null)
+        {
+            <span>@Session["ER1"].ToString()</span>
+            Session.Remove("ER1");
+        }
+    </div>
+    <br />
+    @Avarez.Helper.winClass.Buttons("SendSuporter", "ارسال به پشتیبان", "yes")
+    @Avarez.Helper.winClass.Buttons("Recieve", "دریافت از سرور", "yes")
+    @Avarez.Helper.winClass.Buttons("ok1", "خروج", "yes")
+    <br />
+    <script type="text/javascript">
+        $("document").ready(function () {
+            $("#ok1").button();
+            $("#SendSuporter").button();
+            $("#Recieve").button();
+
+            $('#SendToSupporter #btnClose').click(function () {
+                $("#SendToSupporter").remove();
+            });
+
+            $("#ok1").click(function () {
+                $("#SendToSupporter").remove();
+            });
+            $("#SendSuporter").click(function () {
+                $.ajax({
+                    url: '/InFacture/InsertInSuporter',
+                    datatype: 'json',
+                    data: {
+                        Year: '@ViewBag.Year',
+                        fldCarClassId: '@ViewBag.fldCarClassId',
+                        fldCarModelId: '@ViewBag.fldCarModelId',
+                        fldCarSystemId: '@ViewBag.fldCarSystemId',
+                        fldCabinTypeId: '@ViewBag.fldCabinTypeId',
+                        fldCarAccountTypeId: '@ViewBag.fldCarAccountTypeId',
+                        fldCarMakeId: '@ViewBag.fldCarMakeId'
+                    },
+                    error: function (xhr, status, error) {
+                        alert(xhr + status);
+                    },
+                    success: function (result) {
+                        //$("#SendToSupporter").remove();
+
+                        windowAppend("body", "/metro/error");
+                        $("#message").html(result.msg);
+                        $("#error .wintitle").html("ارسال موفق");
+                    }
+                });
+            });
+            $("#Recieve").click(function () {
+                $.ajax({
+                    type: "POST",
+                    url: '/UpdateRate/Update',
+                    datatype: 'json',
+                    data: {
+                        FromYear: '@ViewBag.Year',
+                        ToYear: "",
+                        CarClass: '@ViewBag.fldCarClassId',
+                        CarTip: '@ViewBag.fldCarModelId',
+                        CarSystem: '@ViewBag.fldCarSystemId',
+                        CarCabin: '@ViewBag.fldCabinTypeId',
+                        CarAccountType: '@ViewBag.fldCarAccountTypeId',
+                        CarMakeType: '@ViewBag.fldCarMakeId'
+                    },
+                    error: function (xhr, status, error) {
+                        alert(xhr + status);
+                    },
+                    success: function (result) {
+                        $("#SendToSupporter").remove();
+
+                        windowAppend("body", "/metro/error");
+                        $("#message").html(result.data);
+                        $("#error .wintitle").html("دریافت موفق");
+                    }
+                });
+            });
+        });
+    </script>
+    @Avarez.Helper.winClass.windowFother()
+</div>

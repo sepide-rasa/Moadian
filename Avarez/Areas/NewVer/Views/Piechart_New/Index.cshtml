@@ -1,0 +1,121 @@
+﻿@model List<Avarez.Models.sp_RptChart>
+@using Ext.Net.MVC;
+@using Ext.Net;
+@{
+    ViewBag.Title = "Bar Chart - Ext.NET MVC Examples";
+    var X = Html.X();
+    string mah = MyLib.Shamsi.Miladi2ShamsiString(DateTime.Now).Substring(5, 2);
+}
+
+<script>
+    var saveChart = function (btn) {
+        Ext.MessageBox.confirm('دانلود نمودار', 'آیا مایل به دانلود فایل نمودار هستید؟', function (choice) {
+            if (choice == 'yes') {
+                btn.up('panel').down('chart').save({
+                    type: 'image/png'
+                });
+            }
+        });
+    }
+
+</script>
+@(X.Panel()
+                .ID("Piechart")
+            .Title("نمودار خودروهای ماه جاری")
+    .Closable(true)
+    .Border(false)
+    .CloseAction(Ext.Net.CloseAction.Destroy)
+    .Layout(Ext.Net.LayoutType.Fit)
+.Items(
+        X.Panel()
+        .Layout(LayoutType.Fit)
+        .Width(900)
+        .Height(580)
+        .TopBar(X.Toolbar()
+            .Items(
+            X.Label("ماه:"),
+                    X.ComboBox()
+                        .Width(150)
+                        .LabelAlign(Ext.Net.LabelAlign.Right)
+                        //.FieldLabel("ماه")
+                        .ID("CboMah2")
+                        .TypeAhead(true)
+                        .BlankText("لطفا ماه را انتخاب کنید.")
+                        .QueryMode(DataLoadMode.Local)
+                        .ForceSelection(true)
+                                .Listeners(l => l.Select.Handler = "App.Chart2.getStore().reload({params:{mah: App.CboMah2.getValue()}});")
+                            .SelectedItems(mah)
+                        .TriggerAction(TriggerAction.All)
+                        .Items(
+                            new ListItem("فروردین", "01"),
+                            new ListItem("اردیبهشت", "02"),
+                            new ListItem("خرداد", "03"),
+                            new ListItem("تیر", "04"),
+                            new ListItem("مرداد", "05"),
+                            new ListItem("شهریور", "06"),
+                            new ListItem("مهر", "07"),
+                            new ListItem("آبان", "08"),
+                            new ListItem("آذر", "09"),
+                            new ListItem("دی", "10"),
+                            new ListItem("بهمن", "11"),
+                            new ListItem("اسفند", "12")
+                            )
+                            ,
+                X.Button()
+                    .Text("بروز رسانی")
+                    .Icon(Icon.ArrowRefresh)
+                        .Handler("#{Chart2}.getStore().reload({params:{mah: App.CboMah2.getValue()}})"),
+                X.Button()
+                    .Text("ذخیره نمودار")
+                    .Icon(Icon.Disk)
+                    .Handler("saveChart")
+            )
+        ).AutoScroll(true)
+        .Items(
+            X.Chart()
+            .ID("Chart2")
+            .Animate(true)
+            .RTL(false)
+            .Shadow(true)
+                .AutoScroll(true)
+            .InsetPadding(60)
+            .Theme("Base:gradients")
+            .LegendConfig(X.ChartLegend().Position(LegendPosition.Right))
+            .AutoScroll(true)
+            .StyleSpec("background:#fff;")
+            .Store(X.Store()
+                .Data(Model)
+                .Model(X.Model()
+                    .Fields(
+                            X.ModelField().Name("CarModelTip"),
+                            X.ModelField().Name("fldPrice")
+                    )
+                )
+                .Proxy(X.AjaxProxy()
+                        .Url(Url.Action("PieGetData"))
+                    .Reader(X.JsonReader().Root("data"))
+                )
+            )
+            .Series(X.PieSeries()
+                    .AngleField("fldPrice")
+                .ShowInLegend(true)
+                .Donut(0)
+                .Highlight(true)
+                .HighlightSegmentMargin(20)
+                .Label(X.SeriesLabel()
+                    .Display(SeriesLabelDisplay.Rotate)
+                        .Field(new[] { "CarModelTip" })
+                    .Contrast(true)
+                    .Font("18px Arial")
+                    .Orientation(Orientation.Horizontal)
+                )
+                .Tips(X.ChartTip()
+                    .TrackMouse(true)
+                    .Width(140)
+                    .Height(28)
+                    .Renderer(r => r.Handler = "this.setTitle(storeItem.get('CarModelTip') + ': ' + storeItem.get('fldPrice'));")
+                )
+            )
+        )
+)
+)

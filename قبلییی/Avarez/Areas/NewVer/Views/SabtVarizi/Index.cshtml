@@ -1,0 +1,924 @@
+﻿@model IEnumerable<Avarez.Models.sp_CollectionSelect>
+@using Ext.Net.MVC
+@using Hogaf.ExtNet.UX
+@using Ext.Net;
+@using Ext.Net.Utilities;
+@{
+    var X = Html.X();
+}
+<style>
+    .colorlbl{
+        color:red;
+    }
+</style>
+<script src="@Url.Content("~/Scripts/accounting.min.js")" type="text/javascript"></script>
+
+@(Html.X().FormPanel()
+    .Border(false)
+    .ID("SabtVarizi")
+        //.Listeners(l => l.AfterRender.Handler = "setSizePnl();")
+    .Title("ثبت واریزی")
+    .AutoScroll(true)
+    .Closable(true)
+    .CloseAction(CloseAction.Destroy)
+        //.Height(620)
+    .Width(1000)
+    .Layout(LayoutType.Fit)
+    .Items(
+    Html.X().Panel().Border(false).AutoScroll(true)
+        .Layout(Ext.Net.LayoutType.VBox)
+        .LayoutConfig(new VBoxLayoutConfig { Align = VBoxAlign.Center }).Items(
+        X.Hidden()
+            .ItemID("fldId"),
+        X.Hidden()
+            .ItemID("fldFileId"),
+        X.Label()
+            .Margin(10)
+            .Text("<<لطفا پس از وارد کردن سریال قبض، کلید Enter صفحه کلید خود را بفشارید.>>")
+            .ItemID("text")
+            .Cls("colorlbl"),
+        X.Panel()
+            .Border(false)
+            .AutoScroll(true)
+            .ItemID("pnlup")
+            .KeyMap(
+                Html.X().KeyMap()
+                    .ID("SabtVariziMap")
+                    .Target("={Ext.isGecko ? Ext.getDoc() : Ext.getBody()}")
+                    .Binding(b =>
+                    {
+                        b.Add(Html.X().KeyBinding()
+                            .KeysString(((int)Ext.Net.KeyCode.F8).ToString())
+                            .Handler("SaveSabtVarizi(); ")
+                        );
+                        b.Add(Html.X().KeyBinding()
+                            .KeysString(((int)Ext.Net.KeyCode.F2).ToString())
+                            .Handler("EditSabtVarizi(); ")
+                        );
+                        b.Add(Html.X().KeyBinding()
+                            .KeysString(((int)Ext.Net.KeyCode.F4).ToString())
+                            .Handler("DeleteSabtVarizi(); ")
+                        );
+
+                    }))
+            .BodyStyle("background-color:transparent;")
+            .Layout(LayoutType.VBox)
+            .LayoutConfig(new VBoxLayoutConfig { Align=VBoxAlign.Center})
+            .ButtonAlign(Alignment.Center)
+            .Buttons(
+                X.Button()
+                    .Text("ذخیره")
+                    .Icon(Ext.Net.Icon.Disk)
+        //.MarginSpec("5px 0 0 0")
+                    .ToolTip("کلید میانبر F8")
+                        .Hidden(!Avarez.Controllers.Users.Permossions.haveAccess(Convert.ToInt32(Session["UserId"]), 291))
+                    .Listeners(l =>
+                    {
+                        l.Click.Handler = "SaveSabtVarizi();";
+                    })
+                    .ItemID("btnSave"),
+                X.Button()
+                    .Text("راهنما")
+                    .Icon(Ext.Net.Icon.Help)
+        //.MarginSpec("5px 0 0 0")
+                    .Listeners(l =>
+                    {
+                        l.Click.Handler = "HelpSabtVarizi();";
+                    }),
+                X.Button()
+                    .Text("خروج")
+                    .Icon(Ext.Net.Icon.DoorOut)
+                    .ToolTip("کلید میانبر Esc")
+                    .OnClientClick("App.SabtVarizi.destroy();"))
+            .Items(
+                X.FieldSet()
+                    .Title("مشخصات فیش")
+                    .AutoScroll(true)
+                    .Width(600)
+                    .Height(185)
+                    .ItemID("baseFieldset")
+                    .Defaults(new { Margin = 2 })
+                    .Layout(LayoutType.Table)
+                    .LayoutConfig(new TableLayoutConfig { Columns = 2 })
+                    .Items(
+                        X.PDateField()
+                            .ItemID("txtDateVariz")
+                            .AllowBlank(false)
+                            .Width(250)
+                            .BlankText("لطفا تاریخ واریز را وارد نمایید.")
+                            .MsgTarget(Ext.Net.MessageTarget.Side)
+                            .FieldLabel("تاریخ واریز")
+                            .Editable(false)
+                            .LabelAlign(Ext.Net.LabelAlign.Left)
+                            .Listeners(l => l.Render.Handler = "SetDate()"),
+                        X.ComboBox()
+                            .ItemID("cboNoePardakht")
+                            .Width(250)
+                            .AllowBlank(false)
+                            .Listeners(l =>
+                            {
+                                l.Change.Handler = "showhideItems()";
+                                l.Render.Handler = "App.SabtVarizi.queryById('cboNoePardakht').setValue('1');";
+                            })
+                            .BlankText("لطفاً نحوه پرداخت فیش را انتخاب نمایید.")
+                            .Editable(false)
+                            .FieldLabel("نحوه پرداخت")
+                            .LabelAlign(Ext.Net.LabelAlign.Left)
+                            .Items(
+                                X.ListItem()
+                                    .Text("عادی")
+                                    .Value("1"),
+                                X.ListItem()
+                                    .Text("علی الحساب")
+                                    .Value("2")),
+                        X.TextField()
+                            .ItemID("txtSerial")
+                            .Width(250).AutoFocus(true)
+                            .AllowBlank(false)
+                            .BlankText("لطفا سریال قبض را وارد نمایید.")
+                            .FieldLabel("سریال قبض")
+                            .EnableKeyEvents(true)
+                            .Listeners(l =>
+                            {
+                                l.KeyDown.Fn = "setPrice";
+                                l.Render.Handler = "App.SabtVarizi.queryById('txtSerial').validate();";
+                            })
+                            .MsgTarget(Ext.Net.MessageTarget.Side),
+                        X.TextField()
+                            .ItemID("txtMun")
+                            .AllowBlank(false)
+                            .Width(250)
+                            .BlankText("لطفا یک شهرداری را انتخاب نمایید.")
+                            .FieldLabel("شهرداری")
+                            .MsgTarget(Ext.Net.MessageTarget.Side)
+                            .ReadOnly(true)
+                            .Icon(Icon.Add)
+                            .Listeners(l =>
+                            {
+                                l.IconClick.Handler = "showSearchMun()";
+                                l.Render.Handler = "App.SabtVarizi.queryById('txtMun').validate();";
+                            }),
+                        X.TextField()
+                            .ItemID("txtSerialFish")
+                            .Width(250)
+                            .AllowBlank(false)
+                            .BlankText("لطفا سریال قبض را وارد نمایید.")
+                            .FieldLabel("سریال قبض")
+                            .Listeners(l => l.Render.Handler = "App.SabtVarizi.queryById('txtSerialFish').validate();")
+                            .MsgTarget(Ext.Net.MessageTarget.Side),
+                        X.ComboBox()
+                            .ItemID("CboNoeVariz")
+                            .Width(250)
+                            .TypeAhead(true)
+                            .ForceSelection(true)
+                            .QueryMode(DataLoadMode.Local)
+                            .TriggerAction(TriggerAction.All)
+                            .DisplayField("Name")
+                            .AllowBlank(false)
+                            .BlankText("لطفا نوع واریز را انتخاب نمایید")
+                            .MsgTarget(Ext.Net.MessageTarget.Side)
+                            .ValueField("ID")
+                            .Listeners(l => l.Select.Handler = "GetChecked();")
+                            .FieldLabel("نوع واریز")
+                            .LabelAlign(LabelAlign.Left)
+                            .Store(
+                                X.Store()
+                                    .Listeners(l => l.Load.Handler = "setDefaultCbo()")
+                                    .Model(X.Model()
+                                        .IDProperty("ID")
+                                        .Fields(
+                                            new ModelField("ID", ModelFieldType.String) { Mapping = "SettleTypeID" },
+                                            new ModelField("Name", ModelFieldType.String) { Mapping = "SettleTypeName" }))
+                                    .Proxy(X.AjaxProxy()
+                                        .Url(Url.Action("GetSettleType"))
+                                    .Reader(X.JsonReader().Root("data")))
+                        ),
+                        X.TextField()
+                            .ItemID("txtPrice")
+                            .Width(250)
+                            .AllowBlank(false)
+                            .BlankText("لطفا مبلغ واریزی را وارد نمایید.")
+                            .FieldLabel("مبلغ واریزی")
+                            .MsgTarget(Ext.Net.MessageTarget.Side)
+                            .Listeners(l =>
+                            {
+                                l.Change.Handler = "if(App.SabtVarizi.queryById('txtPrice').getValue()!=''){App.SabtVarizi.queryById('txtPrice').setValue(accounting.formatNumber(App.SabtVarizi.queryById('txtPrice').getValue()))}";
+                                l.Render.Handler = "App.SabtVarizi.queryById('txtPrice').validate();";
+                            })
+                            .ReadOnly(true),
+                        X.TextField()
+                            .Width(250)
+                            .ItemID("txtSerialLable")
+                            .FieldLabel("سریال برچسب")
+                            .ColSpan(2)
+                            .MsgTarget(Ext.Net.MessageTarget.Side),
+                        X.TextArea()
+                            .FieldLabel("توضیحات")
+                            .ItemID("txtDescV")
+                            .Width(508)
+                            .ColSpan(2)
+                            .LabelAlign(LabelAlign.Left)
+
+                ),
+                X.FormPanel()
+        //.ColSpan(2)
+                    .Border(false)
+                    .Layout(LayoutType.VBox)
+                    .AutoScroll(true)
+                    .LayoutConfig(new VBoxLayoutConfig { Align = VBoxAlign.Center })
+                    .Items(
+                        X.FieldSet()
+                            .Border(true)
+                            .Width(600)
+                            .ItemID("FieldsetUp")
+                            .Title("آپلود فایل")
+                            .Layout(LayoutType.HBox)
+                            .Height(45)
+                            .Items(
+                                X.FormPanel()
+                                    .Border(false)
+                                    .Width(230)
+                                    .Layout(LayoutType.HBox)
+                                    .BodyStyle("background-color:transparent;")
+                                    .Items(
+                                        X.Label("تصویر مدرک(حداکثر تا 5MB):"),
+                                        X.FileUploadField()
+                                            .ID("FileUploadFieldFish")
+                                            .ButtonOnly(true)
+                                            .Icon(Icon.Attach)
+                                            .ButtonText("انتخاب فایل")
+                                            .DirectEvents(l =>
+                                            {
+                                                l.Change.Action = "Upload";
+                                                l.Change.Success = "hideprogressV();";
+                                            })
+                                            .Listeners(l => l.Change.Fn = "showFileFish")
+                                    ),
+                                X.Container()
+                                    .Content(@<div id="fi-button-fileFish" style="display:none;"></div>)))
+                ),
+                /*X.Panel()
+                .Border(true)
+                .Height(300)
+                .Width(900)*/
+                X.Panel()
+                        .Border(false)
+                        .Layout(LayoutType.Fit)
+                        .Width(900)
+                        .Height(300)
+                        .AutoScroll(true)
+                        //.Listeners(l => l.AfterRender.Handler = "setSizeGrid()")
+                        .ID("pnlGridVarizi")
+                        .Items(
+                            X.GridPanel()
+                                .ItemID("GridVarizi")
+                                .TopBar(
+                                    Html.X().Toolbar()
+                                        .Items(
+                                            X.Button()
+                                                .Text("ویرایش")
+                                                .Icon(Ext.Net.Icon.Pencil)
+                                                .ToolTip("کلید میانبر F2")
+                                                    .Hidden(!Avarez.Controllers.Users.Permossions.haveAccess(Convert.ToInt32(Session["UserId"]), 293))
+                                                .Listeners(li => li.Click.Handler = "EditSabtVarizi();"),
+                                            X.Button()
+                                                .Text("حذف")
+                                                    .Hidden(!Avarez.Controllers.Users.Permossions.haveAccess(Convert.ToInt32(Session["UserId"]), 292))
+                                                .ToolTip("کلید میانبر F4")
+                                                .Icon(Ext.Net.Icon.Delete)
+                                                .Listeners(l => l.Click.Handler = "DeleteSabtVarizi();")
+                                            )
+                                    )
+                                .BottomBar(X.PagingToolbar())
+                                .Frame(true)
+                                .AutoScroll(true)
+                                .Title("واریزی ها")
+                                .Store(
+                                    X.StoreForModel()
+                                        .Parameters(new { CarId = @ViewBag.CarId })
+                                        .Proxy(
+                                            Html.X().AjaxProxy()
+                                                .Url(Url.Action("Read"))
+                                                .Reader(Html.X().JsonReader().Root("data"))
+                                                )
+                                        .Listeners(l => l.DataChanged.Handler = "App.SabtVarizi.queryById('GridVarizi').selModel.refresh();")
+                                        .PageSize(10)
+                                        .RemoteFilter(true)
+                                        .RemotePaging(true)
+                                )
+                                .View(
+                                    Html.X().GridView().LoadingText("در حال بارگذاری...")
+                                )
+                                .Plugins(X.FilterHeader().Remote(false))
+                                .SelectionModel(
+                                    Html.X().RowSelectionModel()
+                                        .Mode(SelectionMode.Single))
+                                .ColumnModel(
+                                    Html.X().RowNumbererColumn(),
+                                    Html.X().Column().DataIndex(Model, m => m.fldID).Text("کد").Flex(1).Hidden(true).Hideable(false),
+                                    Html.X().Column().DataIndex(Model, m => m.fldCollectionDate).Text("تاریخ واریز").Flex(3),
+                                    Html.X().Column().DataIndex(Model, m => m.fldSettleTypeName).Text("نوع واریز").Flex(4),
+                                    Html.X().Column().DataIndex(Model, m => m.fldPrice).Text("مبلغ").Flex(4).Renderer("seperate"),
+                                    Html.X().Column().DataIndex(Model, m => m.fldSerial_PeacockeryCode).Text("سریال قبض").Flex(4),
+                                    Html.X().Column().DataIndex(Model, m => m.fldSerialBarChasb).Text("سریال برچسب").Flex(4),
+                                    Html.X().Column().DataIndex(Model, m => m.fldDesc).Text("توضیحات").Flex(6).Wrap(true),
+                                    Html.X().Column().DataIndex(Model, m => m.fldFileId).Text("کد عکس").Flex(1).Hidden(true).Hideable(false),
+                                    Html.X().CommandColumn().PrepareToolbar("disable").Flex(2).Listeners(ls => ls.Command.Handler = "ShowPic(record);")
+                                    .Commands(
+                                        Html.X().GridCommand()
+                                            .CommandName("ShowImage")
+                                            .StandOut(true)
+                                            .MinWidth(60)
+                                            .Text("مدرک")
+                                            .ToolTip(tt => tt.Text = "نمایش مدرک")
+                                    )
+        //Html.X().Column().DataIndex(Model, m => m.fldName).Text("نام ذینفعان").Flex(6).Wrap(true)
+
+                                        )
+                        )
+
+            )
+)
+)
+
+<script type="text/javascript">
+    var MojazV = 0;
+    var sizeeV = 0;
+    var EndUploadV = false;
+    var MunId;
+
+    function SetDate() {
+        if (App.SabtVarizi.queryById('fldId').getValue() == 0) {
+            var txtDateVariz = App.SabtVarizi.queryById('txtDateVariz');
+            var date = new Date();
+            txtDateVariz.setMaxValue(date);
+            txtDateVariz.maxText = "تاریخ واریز نمی تواند بعد از امروز باشد.";
+            txtDateVariz.setValue(date);
+        }
+    }
+
+    function ShowPic(record) {
+        Ext.net.Mask.show({ msg: 'در حال بارگذاری...' });
+        Ext.net.DirectMethod.request({
+            url: '/NewVer/PreviewFile/Index',
+            params: {
+                State: "2",
+                Id:record.data.fldID
+            },
+            success: function () {
+                Ext.net.Mask.hide();
+            }
+        });
+    }
+
+
+    var disable = function (grid, toolbar, rowIndex, record) {
+        a = toolbar;
+        var Button = toolbar.items.get(0);
+
+        if (record.data.fldFileId == 0) {
+            Button.setDisabled(true);
+        }
+    };
+
+    var seperate = function (value, metadata, record, rowIndex, colIndex, store) {
+        return value.toLocaleString();
+    };
+
+
+    function setDefaultCbo() {
+        CboNoeVariz = App.SabtVarizi.queryById('CboNoeVariz');
+        CboNoeVariz.setValue(CboNoeVariz.store.getAt(3));
+    }
+
+    function showhideItems() {
+        var cboNoePardakht = App.SabtVarizi.queryById('cboNoePardakht'); 
+        if (cboNoePardakht.getValue() == "1") {
+            App.SabtVarizi.queryById('txtSerial').show();
+            App.SabtVarizi.queryById('txtMun').hide();
+            App.SabtVarizi.queryById('txtSerialFish').hide();
+            App.SabtVarizi.queryById('FieldsetUp').hide();
+            App.SabtVarizi.queryById('baseFieldset').setHeight(185);
+            App.SabtVarizi.queryById('txtPrice').setValue("");
+            App.SabtVarizi.queryById('txtPrice').setReadOnly(true);
+            App.SabtVarizi.queryById('txtMun').setValue("");
+            App.SabtVarizi.queryById('txtSerialFish').setValue("");
+            App.SabtVarizi.queryById('text').show();
+            MunId = 0;
+        }
+        else {
+            App.SabtVarizi.queryById('txtSerial').hide(); 
+            App.SabtVarizi.queryById('txtMun').show();
+            App.SabtVarizi.queryById('txtSerialFish').show();
+            App.SabtVarizi.queryById('baseFieldset').setHeight(210);
+            App.SabtVarizi.queryById('FieldsetUp').show();
+            App.SabtVarizi.queryById('txtPrice').setValue("");
+            App.SabtVarizi.queryById('txtPrice').setReadOnly(false);
+            App.SabtVarizi.queryById('txtSerial').setValue("");
+            App.SabtVarizi.queryById('text').hide();
+            /*App.SabtVarizi.setHeight(750);*/
+        }
+    }
+
+    function setSizeGrid() {
+        App.pnlGridVarizi.setSize(App.SabtVarizi.getWidth() - 10, App.SabtVarizi.getHeight() - 310);
+    }
+
+    var CheckV = setInterval(CheckEndV, 500);
+
+    function CheckEndV() {
+        if (EndUploadV == true) {
+            Ext.MessageBox.hide();
+            Ext.Msg.alert('عملیات موفق', 'فایل با موفقیت آپلود شد.');
+            clearInterval(CheckEndV);
+            EndUploadV = false;
+        }
+    }
+
+    var showFileFish = function (fb, v) {
+        var id = fb.fileInputEl.dom.id;
+        var el = Ext.get('fi-button-fileFish');
+        if (v) {
+            showProgressBarV();
+            if (v.split('.').pop().toLowerCase() == "jpg" || v.split('.').pop().toLowerCase() == "jpeg"){
+                MojazV = 1;
+                if (document.getElementById(id).files[0].size <= 5242880) {
+                    sizeeV = 1;
+                }
+                if (sizeeV == 1) {
+                    el.update('<b>فایل انتخاب شده:</b> ' + v);
+                }
+                else {
+                    el.update("");
+                }
+
+                if (!el.isVisible()) {
+                    el.slideIn('t', {
+                        duration: .2,
+                        easing: 'easeIn',
+                        callback: function () {
+                            el.highlight();
+                        }
+                    });
+                } else {
+                    el.highlight();
+                }
+            }
+            else {
+                el.update("");
+            }
+        }
+    };
+
+    function hideprogressV() {
+        if (MojazV == 1 && sizeeV == 1) {
+            EndUploadV = true;
+        }
+        MojazV = 0;
+        sizeeV = 0;
+    }
+
+    function showProgressBarV() {
+        Ext.MessageBox.show({
+            msg: 'لطفاً منتظر باشید',
+            progressText: 'در حال آپلود فایل...',
+            width: 300,
+            wait: true,
+            waitConfig:
+            {
+                interval: 200,
+                text: 'در حال آپلود فایل...',
+                scope: this
+            }
+        });
+    }
+
+    function showSearchMun() {
+        Ext.net.Mask.show({ msg: 'در حال بارگذاری...' });
+        Ext.net.DirectMethod.request({
+            url: '/NewVer/MunicipalitySearch/Index',
+            params: {
+                State:"2"
+            },
+            success: function () {
+                Ext.net.Mask.hide();
+            }
+        });
+    }
+
+    var setPrice = function (field,key) {
+        if (key.keyCode == 13) {
+            Ext.net.DirectMethod.request({
+                url: '/NewVer/SabtVarizi/GetPrice',
+                params: {
+                    Id: App.SabtVarizi.queryById('txtSerial').getValue()
+                },
+                success: function (Money) {
+                    accounting.formatNumber(App.SabtVarizi.queryById('txtPrice').setValue(Money));
+                    Ext.net.Mask.hide();
+                   
+                },
+                failure: function (data) {
+                    alert(data.data);
+                }
+            });
+        }
+    };
+
+    function Clear() {
+        App.SabtVarizi.queryById('fldId').setValue(0);
+        App.SabtVarizi.queryById('fldFileId').setValue(0);
+        App.SabtVarizi.queryById('txtDateVariz').setValue("");
+        App.SabtVarizi.queryById('txtPrice').setValue("");
+        App.SabtVarizi.queryById('txtDescV').setValue("");
+        App.SabtVarizi.queryById('txtSerial').setValue("");
+        App.SabtVarizi.queryById('txtSerialFish').setValue("");
+        App.SabtVarizi.queryById('txtMun').setValue("");
+        App.SabtVarizi.queryById('txtSerialLable').setValue("");
+        MunId = 0;
+        Ext.get('fi-button-fileFish').update("");
+    }
+
+    function SaveSabtVarizi() {
+        if (App.SearchParvande.activeTab.id == "SabtVarizi") {
+            var er = false;
+            if (App.SabtVarizi.queryById('CboNoeVariz').validate() == false) {
+                er = true;
+            }
+            if (App.SabtVarizi.queryById('txtDateVariz').validate() == false) {
+                er = true;
+            }
+
+            if (App.SabtVarizi.queryById('cboNoePardakht').getValue() == "1") {
+                if (App.SabtVarizi.queryById('txtSerial').validate() == false) {
+                    er = true;
+                }
+            }
+            else {
+                if (App.SabtVarizi.queryById('txtSerialFish').validate() == false) {
+                    er = true;
+                }
+                if (App.SabtVarizi.queryById('txtMun').validate() == false) {
+                    er = true;
+                }
+            }
+            if (App.SabtVarizi.queryById('txtPrice').validate() == false) {
+                er = true;
+            }
+
+            if (er == true)
+                return;
+
+            var data = {
+                fldCarFileID: '@ViewBag.CarFileId',
+                fldCollectionDate: App.SabtVarizi.queryById('txtDateVariz').getRawValue(),
+                fldPrice: parseInt(App.SabtVarizi.queryById('txtPrice').getValue().toString().replace(',', '').replace(',', '').replace(',', '')),
+                fldSettleTypeID: App.SabtVarizi.queryById('CboNoeVariz').getValue(),
+                fldDesc: App.SabtVarizi.queryById('txtDescV').getValue(),
+                fldPeacockeryCode: App.SabtVarizi.queryById('txtSerial').getValue(),
+                fldId: App.SabtVarizi.queryById('fldId').getValue(),
+                fldSerialBarChasb: App.SabtVarizi.queryById('txtSerialLable').getValue(),
+                fldMunId: MunId,
+                fldSerialFish: App.SabtVarizi.queryById('txtSerialFish').getValue(),
+                fldFileId: App.SabtVarizi.queryById('fldFileId').getValue()
+            };
+
+            Ext.net.Mask.show({ msg: 'در حال ذخیره سازی...' });
+            $.ajax({
+                type: "POST",
+                url: '/NewVer/SabtVarizi/Save',
+                contentType: "application/json; charset=utf-8",
+                data: JSON.stringify(data),
+                datatype: "json",
+                success: function (data) {
+                    var ic = Ext.MessageBox.INFO;
+                    if (data.Er == 1)
+                        ic = Ext.MessageBox.ERROR;
+                    Ext.MessageBox.show({
+                        title: data.MsgTitle,
+                        msg: data.Msg,
+                        icon: ic,
+                        buttons: Ext.MessageBox.OK
+                    });
+                    if (data.Er != 1) {
+                        Clear();
+                        App.SabtVarizi.queryById("GridVarizi").store.load();
+                        if (App.SelectParvande != undefined) {
+                            Ext.net.DirectMethod.request({
+                                url: '/NewVer/SelectParvande/ReloadGridVarizi',
+                                params: {
+                                    CarId: '@ViewBag.CarId'
+                                },
+                                success: function (result) {
+                                    App.SelectParvande.queryById('GridVarizi').getStore().loadData(result);
+                                },
+                                failure: function (data) {
+                                    alert(data.data);
+                                }
+                            });
+                        }
+                    }
+                    Ext.net.Mask.hide();
+                },
+                failure: function (data) {
+                    Ext.net.Mask.hide();
+                    alert(data.data);
+                }
+            });
+        }
+        
+    }
+
+    function EditSabtVarizi() {
+        if (App.SearchParvande.activeTab.id == "SabtVarizi") {
+            var SelRow = App.SabtVarizi.queryById("GridVarizi").getSelectionModel().getLastSelected();
+            if (SelRow != null) {
+                App.SabtVarizi.body.mask("در حال بارگذاری...");
+                Ext.net.DirectMethod.request({
+                    url: '/NewVer/SabtVarizi/CheckTaiidPardakhtha',
+                    params: {
+                        id: SelRow.data.fldID
+                    },
+                    success: function (data1) {
+                        if (!data1.HaveTaiid || data1.userId == "1") {
+                            Ext.net.Mask.show({ msg: 'در حال بارگذاری...' });
+                            Ext.net.DirectMethod.request({
+                                url: '/NewVer/SabtVarizi/Details',
+                                params: {
+                                    Id: SelRow.data.fldID
+                                },
+                                success: function (data) {
+                                    if (data.Er != 1) {
+                                        App.SabtVarizi.queryById("cboNoePardakht").setValue(data.fldPayType);
+                                        /*showhideItems();*/
+
+                                        App.SabtVarizi.queryById("fldId").setValue(data.fldId);
+                                        App.SabtVarizi.queryById("txtDateVariz").setValue(data.fldCollectionDate);
+                                        App.SabtVarizi.queryById("txtPrice").setValue(data.fldPrice);
+                                        App.SabtVarizi.queryById("txtSerialLable").setValue(data.fldSerialBarChasb);
+                                        App.SabtVarizi.queryById("txtDescV").setValue(data.fldDesc);
+                                        App.SabtVarizi.queryById("CboNoeVariz").setValue(data.fldSettleTypeID);
+                                        App.SabtVarizi.queryById("fldFileId").setValue(data.fldFileId);
+                                        MunId = data.fldMunId;
+
+                                        var cboNoePardakht = App.SabtVarizi.queryById('cboNoePardakht');
+                                        if (cboNoePardakht.getValue() == "1") {
+                                            App.SabtVarizi.queryById('txtSerial').show();
+                                            App.SabtVarizi.queryById("txtSerial").setValue(data.fldPeacockeryCode);
+
+                                            App.SabtVarizi.queryById('txtMun').hide();
+                                            App.SabtVarizi.queryById('txtSerialFish').hide();
+                                            App.SabtVarizi.queryById('FieldsetUp').hide();
+                                            App.SabtVarizi.queryById('baseFieldset').setHeight(185);
+                                            App.SabtVarizi.queryById('txtPrice').setReadOnly(true);
+                                            App.SabtVarizi.queryById('txtMun').setValue("");
+                                            App.SabtVarizi.queryById('txtSerialFish').setValue("");
+                                            App.SabtVarizi.queryById('text').show();
+                                        }
+                                        else {
+                                            App.SabtVarizi.queryById('txtSerial').hide();
+                                            App.SabtVarizi.queryById('txtMun').show();
+                                            App.SabtVarizi.queryById("txtMun").setValue(data.fldName);
+                                            App.SabtVarizi.queryById('txtSerialFish').show();
+                                            App.SabtVarizi.queryById("txtSerialFish").setValue(data.fldSerialFish);
+                                            App.SabtVarizi.queryById('baseFieldset').setHeight(210);
+                                            App.SabtVarizi.queryById('FieldsetUp').show();
+                                            App.SabtVarizi.queryById('txtPrice').setReadOnly(false);
+                                            App.SabtVarizi.queryById('txtSerial').setValue("");
+                                            App.SabtVarizi.queryById('text').hide();
+                                            /*App.SabtVarizi.setHeight(750);*/
+                                        }
+                                        /*if (data.fldPayType == "1") {*/
+                                        /*}
+                                        else {*/
+                                        /* }*/
+                                    }
+                                    else {
+                                        Ext.MessageBox.show({
+                                            title: data.MsgTitle,
+                                            msg: data.Msg,
+                                            icon: Ext.MessageBox.ERROR,
+                                            buttons: Ext.MessageBox.OK
+                                        });
+                                    }
+                                    Ext.net.Mask.hide();
+                                }
+                            });
+                        }
+                        else {
+                            Ext.MessageBox.show({
+                                Name: "خطا",
+                                msg: "واریزی موردنظر تایید شده و قادر به ویرایش آن نمی باشید.",
+                                icon: Ext.MessageBox.ERROR,
+                                buttons: Ext.MessageBox.OK
+                            });
+                        }
+                        App.SabtVarizi.body.mask().hide();
+
+
+                    }
+                })
+            }
+            else {
+                Ext.MessageBox.show({
+                    title: "خطا",
+                    msg: "لطفا یک سطر را انتخاب نمایید",
+                    icon: Ext.MessageBox.ERROR,
+                    buttons: Ext.MessageBox.OK
+                });
+            }
+        }
+    }
+
+    function DeleteSabtVarizi() {
+        if (App.SearchParvande.activeTab.id == "SabtVarizi") {
+            var SelRow = App.SabtVarizi.queryById('GridVarizi').selModel.getLastSelected();
+            if (SelRow != null) {
+                Ext.MessageBox.show({
+                    title: "هشدار",
+                    msg: "آیا برای حذف مطمئن هستید؟",
+                    icon: Ext.MessageBox.WARNING,
+                    buttons: Ext.MessageBox.YESNO,
+                    fn: function (btn) {
+                        if (btn == 'yes') {
+                            App.SabtVarizi.body.mask("در حال انجام عملیات...");
+                            Ext.net.DirectMethod.request({
+                                url: '/NewVer/SabtVarizi/Delete',
+                                params: {
+                                    id: SelRow.data.fldID
+                                },
+                                success: function (data) {
+                                    var ic = Ext.MessageBox.INFO;
+                                    if (data.Er == 1)
+                                        ic = Ext.MessageBox.ERROR;
+                                    Ext.MessageBox.show({
+                                        title: data.MsgTitle,
+                                        msg: data.Msg,
+                                        icon: ic,
+                                        buttons: Ext.MessageBox.OK
+                                    });
+                                    if (data.Er != 1) {
+                                        App.SabtVarizi.queryById('GridVarizi').store.load();
+                                        if (App.SelectParvande != undefined) {
+                                            Ext.net.DirectMethod.request({
+                                                url: '/NewVer/SelectParvande/ReloadGridVarizi',
+                                                params: {
+                                                    CarId: '@ViewBag.CarId'
+                                                },
+                                                success: function (result) {
+                                                    App.SelectParvande.queryById('GridVarizi').getStore().loadData(result);
+                                                },
+                                                failure: function (data) {
+                                                    alert(data.data);
+                                                }
+                                            });
+                                        }
+                                    }
+                                    Clear();
+                                    App.SabtVarizi.body.mask().hide();
+                                }
+                            });
+                        }
+                    }
+                });
+            }
+            else {
+                Ext.MessageBox.show({
+                    title: "خطا",
+                    msg: "لطفا یک سطر را انتخاب کنید",
+                    icon: Ext.MessageBox.ERROR,
+                    buttons: Ext.MessageBox.OK
+                });
+            }
+        }
+    }
+
+    function EnterNext() {
+       
+        if (App.AvarezTab.activeTab.id == "SearchParvande")
+        {
+            if (App.SearchParvande.activeTab.id == "EnteghalSavabegh")
+            {
+                var nextfld;
+                var keyfield = App.EnteghalSavabegh.queryById(Ext.getCmp((Ext.Element.getActiveElement()).name).itemId);
+                if (keyfield.itemId == "cboState") {
+                    nextfld = App.EnteghalSavabegh.queryById("cboMun");
+                }
+                else if (keyfield.itemId == "btnSearchMun") {
+                    nextfld = App.EnteghalSavabegh.queryById("CboAzSal");
+                }
+                else if (keyfield.itemId == "cboMun") {
+                    nextfld = App.EnteghalSavabegh.queryById("CboAzSal");
+                }
+                else if (keyfield.itemId == "CboAzSal") {
+                    nextfld = App.EnteghalSavabegh.queryById("CboTaSal");
+                }
+                else if (keyfield.itemId == "CboTaSal") {
+                    nextfld = App.EnteghalSavabegh.queryById("txtShName");
+                }
+                else if (keyfield.itemId == "txtShName") {
+
+                    nextfld = App.EnteghalSavabegh.queryById("txtDesc");
+                }
+                else {
+                    nextfld = keyfield.nextSibling();
+                }
+                nextfld.focus();
+                nextfld.selectText();
+                /*var keyfield = App.SabtVarizi.queryById(Ext.getCmp((Ext.Element.getActiveElement()).name).itemId);
+                /*var nextfld = keyfield.nextSibling();
+                if (nextfld != null) {
+                if (keyfield.itemId == "txtSerial" && keyfield.hidden == true)
+                {
+                    nextfld = nextfld.nextSibling();
+                    nextfld.focus();
+                    nextfld.selectText();
+                }
+
+                else if (nextfld.itemId == "txtMun" && nextfld.hidden == true)
+                {
+                    nextfld = nextfld.nextSibling().nextSibling();
+                    nextfld.focus();
+                    nextfld.selectText();
+                }
+                else if{
+                    keyfield.focus();
+                    keyfield.selectText();
+                }
+                }*/
+            }
+            else if (App.SearchParvande.activeTab.id == "SabtVarizi")
+            {
+                var nextfld;
+                var keyfield = App.SabtVarizi.queryById(Ext.getCmp((Ext.Element.getActiveElement()).name).itemId);
+                if (keyfield.itemId == "cboNoePardakht" && App.SabtVarizi.queryById("cboNoePardakht").getValue() == "1")
+                {
+                    nextfld = App.SabtVarizi.queryById("txtSerial");
+                }
+                else if (keyfield.itemId == "cboNoePardakht" && App.SabtVarizi.queryById("cboNoePardakht").getValue() == "2") {
+                    nextfld = App.SabtVarizi.queryById("txtMun");
+                }
+                else if (keyfield.itemId == "txtSerial")
+                {
+                    nextfld = App.SabtVarizi.queryById("CboNoeVariz");
+                }
+                else if (keyfield.itemId == "txtMun") {
+                    nextfld = App.SabtVarizi.queryById("txtSerialFish");
+                }
+                /*else if (keyfield.itemId == "txtDescV") {
+                    return;
+                }*/
+                else {
+                    nextfld = keyfield.nextSibling();
+                }
+                nextfld.focus();
+                nextfld.selectText();
+            }
+
+            else if (App.SearchParvande.activeTab.id == "ListBlack")
+            {
+                var keyfield = App.ListBlack.queryById(Ext.getCmp((Ext.Element.getActiveElement()).name).itemId);
+                var nextfld = keyfield.nextSibling();
+                nextfld.focus();
+                nextfld.selectText();
+            }
+            else if (App.SearchParvande.activeTab.id == "Parvande") {
+                var keyfield = App.SearchParvande.queryById(Ext.getCmp((Ext.Element.getActiveElement()).name).itemId);
+                if (keyfield.itemId == "txtSearch") {
+                    FnSearchParvande();
+                }
+                else {
+                    nextfld = keyfield.nextSibling();
+                    nextfld.focus();
+                }
+            }
+        }
+        else if (App.AvarezTab.activeTab.id == "S_Mohasebat")
+        {
+           /* var keyfield = App.ListBlack.queryById(Ext.getCmp((Ext.Element.getActiveElement()).name).itemId);
+            var nextfld = keyfield.nextSibling();
+            nextfld.focus();
+            nextfld.selectText();*/
+        }
+        else if (App.AvarezTab.activeTab.id == "Fast_Fish")
+        {
+            /*var keyfield = App.S_Mohasebat.queryById(Ext.getCmp((Ext.Element.getActiveElement()).name).itemId);
+
+            nextfld = keyfield.nextSibling();
+            nextfld.focus();*/
+        }
+    }
+    
+    function HelpSabtVarizi() {
+        Ext.net.Mask.show({ msg: 'در حال بارگذاری...' });
+        Ext.net.DirectMethod.request({
+            url: '/NewVer/SabtVarizi/HelpSabtVarizi',
+            params: {
+
+            },
+            success: function (data) {
+                Ext.net.Mask.hide();
+            }
+        });
+    }
+</script>

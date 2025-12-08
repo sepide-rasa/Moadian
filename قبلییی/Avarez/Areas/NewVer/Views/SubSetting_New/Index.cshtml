@@ -1,0 +1,223 @@
+﻿@model IEnumerable<Avarez.Models.sp_SubSettingSelect>
+@using Ext.Net;
+@using Ext.Net.MVC;
+@{
+
+    var X = Html.X();
+}
+
+@(X.Panel()
+        //.Listeners(li => li.AfterRender.Handler = "CityMap();")
+    .ID("SubSetting_New")
+    .Title("تنظیمات فرعی")
+    .Closable(true)
+    .Border(false)
+    .CloseAction(Ext.Net.CloseAction.Destroy)
+    .Layout(Ext.Net.LayoutType.Fit)
+    .Items(
+        X.Panel()
+            .ItemID("PnlGridSubSetting_New")
+            .Border(false)
+            .Layout(Ext.Net.LayoutType.Fit)
+            .Items(
+                X.GridPanel()
+                    .AutoScroll(true)
+                    .TopBar(
+                        Html.X().Toolbar()
+                            .Items(
+                                X.Button()
+                                    .Text("جدید")
+                                    .Icon(Ext.Net.Icon.Add)
+        //.ToolTip("کلید میانبر F8")
+                                    .Listeners(li => li.Click.Handler = "NewSubSetting_New();"),
+                                X.Button()
+                                    .Text("ویرایش")
+                                    .Icon(Ext.Net.Icon.Pencil)
+        //.ToolTip("کلید میانبر F2")
+                                    .Listeners(Li => Li.Click.Handler = "EditSubSetting_New();"),
+                                X.Button()
+                                    .Text("حذف")
+                                    .Icon(Ext.Net.Icon.Delete)
+        //.ToolTip("کلید میانبر F9")
+                                    .Listeners(de => de.Click.Handler = "DeleteSubSetting_New();")
+
+                                                 , X.Button()
+                                            .Text("راهنما")
+                                            .Icon(Ext.Net.Icon.Help)
+                                             .Listeners(de => de.Click.Handler = "HelpSubSetting_New();")
+                                    )
+                                    )
+                    .ItemID("GridSubSetting_New")
+                    .BottomBar(X.PagingToolbar())
+                    .Store(
+                        Html.X().StoreForModel()
+                            .Proxy(Html.X().AjaxProxy()
+                                .Url(Url.Action("Read"))
+                                .Reader(Html.X().JsonReader().Root("data"))
+        )
+                    .PageSize(20)
+                    .RemoteFilter(true)
+                    .RemotePaging(true)
+                    .Listeners(l => l.DataChanged.Handler = "App.SubSetting_New.queryById('GridSubSetting_New').selModel.refresh();")
+    )
+                    .View(
+                        Html.X().GridView().LoadingText("در حال بارگذاری...").RTL(true)
+    )
+                    .Plugins(X.FilterHeader().Remote(true))
+                    .ColumnModel(
+                            Html.X().RowNumbererColumn(),
+                            Html.X().Column().DataIndex(Model, m => m.fldID).Text("کد").Hidden(true).Flex(1),
+                            Html.X().Column().DataIndex(Model, m => m.fldStartCodeBillIdentity).Text("کدشروع شناسه قبض").Flex(3),
+                            Html.X().Column().DataIndex(Model, m => m.fldLastRespitePayment).Text("آخرین مهلت پرداخت").Flex(3),
+                            Html.X().Column().DataIndex(Model, m => m.fldCarSeriesName).Text("سری خودرو").Flex(3),
+                            Html.X().Column().DataIndex(Model, m => m.fldCountryDivisionsName).Text("تقسیمات کشوری").Flex(3),
+                            Html.X().Column().DataIndex(Model, m => m.fldCountryDivisionsTreeApply).Text("اعمال تقسیمات کشوری").Flex(3),
+                            Html.X().Column().DataIndex(Model, m => m.fldCarSeriesTreeApply).Text("اعمال سری خودرو").Flex(3),
+                            Html.X().Column().DataIndex(Model, m => m.fldImplementationDate).Text("تاریخ پیاده سازی").Flex(3),
+                            Html.X().Column().DataIndex(Model, m => m.fldExemptNewProductionType).Text("معاف").Flex(3)
+    )
+                .SelectionModel(
+                    Html.X().RowSelectionModel()
+                        .Mode(Ext.Net.SelectionMode.Single)
+    )
+
+))
+)
+
+<script type="text/javascript">
+    function CityMap() {
+        var k = new Ext.KeyMap(
+            document,
+            [{
+                target: Ext.get('SubSetting_New'),
+                scope: this,
+                key: [119],
+                fn: function (key, event) {
+                    if (App.SubSetting_New && App.NewSubSetting_New) {
+                        if (App.NewSubSetting_New.active == false)
+                            NewSubSetting_New();
+                    }
+                    else if (App.SubSetting_New && !App.NewSubSetting_New)
+                        NewSubSetting_New();
+                }
+            },
+            {
+                target: App.SubSetting_New.getTargetEl(),
+                scope: this,
+                key: [113],
+                fn: function (key, event) {
+                    if (App.SubSetting_New && App.NewSubSetting_New) {
+                        if (App.NewSubSetting_New.active == false)
+                            EditSubSetting_New();
+                    }
+                    else if (App.SubSetting_New && !App.NewSubSetting_New)
+                        EditSubSetting_New();
+                }
+            },
+            {
+                target: App.SubSetting_New.getTargetEl(),
+                scope: this,
+                key: [120],
+                fn: function (key, event) {
+                    if (App.SubSetting_New && App.NewSubSetting_New) {
+                        if (App.NewSubSetting_New.active == false)
+                            DeleteSubSetting_New();
+                    }
+                    else if (App.SubSetting_New && !App.NewSubSetting_New)
+                        DeleteSubSetting_New();
+                }
+            }]
+            )
+    }
+
+    function NewSubSetting_New() {
+        Ext.net.Mask.show({ msg: 'در حال بارگذاری...' });
+        Ext.net.DirectMethod.request({
+            url: '/NewVer/SubSetting_New/New',
+            params: {
+               Id: 0
+            },
+            success: function () {
+                Ext.net.Mask.hide();
+            }
+        });
+    }
+
+    function EditSubSetting_New() {
+        var SelectedRow = App.SubSetting_New.queryById('GridSubSetting_New').selModel.getLastSelected();
+        if (SelectedRow != null) {
+            Ext.net.Mask.show({ msg: 'در حال بارگذاری...' });
+            Ext.net.DirectMethod.request({
+                url: '/NewVer/SubSetting_New/New',
+                params: {
+                    Id: SelectedRow.data.fldID,
+                },
+                success: function () {
+                    Ext.net.Mask.hide();
+                }
+            });
+        }
+        else {
+            Ext.MessageBox.show({
+                title: "خطا",
+                msg: "لطفا یک سطر را انتخاب نمایید.",
+                icon: Ext.MessageBox.ERROR,
+                buttons: Ext.MessageBox.OK
+            });
+        }
+    }
+
+    function DeleteSubSetting_New() {
+        var SelectedRow = App.SubSetting_New.queryById('GridSubSetting_New').selModel.getLastSelected();
+        if (SelectedRow != null) {
+            Ext.MessageBox.show({
+                title: "هشدار",
+                msg: "آیا برای حذف مطمئن هستید؟",
+                icon: Ext.MessageBox.WARNING,
+                buttons: Ext.MessageBox.YESNO,
+                fn: function (btn) {
+                    if (btn == 'yes') {
+                        Ext.net.Mask.show({ msg: 'در حال انجام عملیات...' });
+                        Ext.net.DirectMethod.request({
+                            url: '/NewVer/SubSetting_New/Delete',
+                            params: {
+                                Id: SelectedRow.data.fldID
+                            },
+                            success: function (data) {
+                                var ic = Ext.MessageBox.INFO;
+                                if (data.Er == 1)
+                                    ic = Ext.MessageBox.ERROR;
+                                Ext.MessageBox.show({
+                                    title: data.MsgTitle,
+                                    msg: data.Msg,
+                                    icon: ic,
+                                    buttons: Ext.MessageBox.OK
+                                });
+                                Ext.net.Mask.hide();
+                                App.SubSetting_New.queryById('GridSubSetting_New').store.load();
+                            }
+                        });
+                    }
+                }
+            });
+        }
+        else {
+            Ext.MessageBox.show({
+                title: "خطا",
+                msg: "لطفا یک سطر را انتخاب نمایید.",
+                icon: Ext.MessageBox.ERROR,
+                buttons: Ext.MessageBox.OK
+            });
+        }
+    }
+
+    function HelpSubSetting_New() {
+        Ext.net.Mask.show({ msg: 'در حال بارگذاری...' });
+        Ext.net.DirectMethod.request({
+            url: '/NewVer/SubSetting_New/Help',
+            success: function (data) {
+                Ext.net.Mask.hide();
+            }
+        });
+    }
+</script>

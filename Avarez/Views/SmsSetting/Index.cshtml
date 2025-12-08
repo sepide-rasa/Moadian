@@ -1,0 +1,435 @@
+﻿@using Kendo.Mvc.UI;
+<div class="modal" id="SmsSetting">
+    <script src="@Url.Content("~/Content/Base.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Scripts/jquery.ui.datepicker-cc.all.min.js")" type="text/javascript"></script>
+    <div>
+    <a href="@Url.Content("~/Helps/تنظیمات پنل پیامک.htm")" target="_blank" id="Help" title="راهنما" style="background-image:url('/Content/images/1381415123_help.png');background-repeat: no-repeat;height: 20px;float: left;top: 10px;left: 10px;"></a>    
+        
+        <br />
+        <center>
+            <table>
+                <tr>
+                    @Html.Hidden("fldId")
+                    <td align="left">
+                        <span style="color: Red;">*</span> کد کاربری:
+                    </td>
+                    <td>
+                        @Avarez.Helper.winClass.textbox("txtUserName")
+                        <span id="lblUserNameError" style="color: Red;"></span>
+                    </td>
+                </tr>
+                <tr>
+                    <td align="left">
+                        <span style="color: Red;">*</span> کلمه عبور:
+                    </td>
+                    <td>
+                        @Avarez.Helper.winClass.textbox("txtPass")
+                        <span id="lblPassError" style="color: Red;"></span>
+                    </td>
+                    <td>
+                    </td>
+                </tr>
+                <tr>
+                    <td align="left">
+                        <span style="color: Red;">*</span> شماره خط:
+                    </td>
+                    <td>
+                        @Avarez.Helper.winClass.textbox("txtLine")
+                        <span id="lblLineError" style="color: Red;"></span>
+                    </td>
+                </tr>
+                <tr>
+                    <td align="left">
+                        توضیحات:
+                    </td>
+                    <td>
+                        @Avarez.Helper.winClass.textArea("txtDesc", 4, 30)
+                    </td>
+                    <td>
+                    </td>
+                </tr>
+                <tr>
+                    <td align="left">
+                        موقعیت در تقسیمات کشوری:
+                    </td>
+                    <td colspan="2" dir="rtl" id="countryLocation" align="right">
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="3" align="center" style="height: 30px;">
+                        @Html.Label("مورد انتخاب شده: ", new { @id = "CountryPosition" })
+                    </td>
+                </tr>
+            </table>
+            <p>
+                @Avarez.Helper.winClass.Buttons("AddLink", "ذخیره", "Save")
+                @Avarez.Helper.winClass.Buttons("EditLink", "ویرایش", "Edit")
+                @Avarez.Helper.winClass.Buttons("DelLink", "حذف", "Del")
+                @Avarez.Helper.winClass.Buttons("exit", "خروج", "Exit")
+            </p>
+        </center>
+        @(Html.Kendo().PanelBar()
+        .Name("panelbar-images")
+        .Items(panelbar =>
+        {
+            panelbar.Add().Text("جستجو")
+                .ImageUrl(Url.Content("~/Content/images/search.png"))
+                .Content(@<div>
+                    <table>
+                        <tr>
+                            <td>
+                                فیلد جستجو:@Html.DropDownList("cboSearchFiald", new SelectList(new[] { new { ID = "0", Name = "نام تقسیمات کشوری " } }, "ID", "Name"))
+                            </td>
+                            <td>
+                                نوع جستجو: @Html.DropDownList("cboSearchType", new SelectList(new[] { new { ID = "0", Name = "مشابه عبارت" }, new { ID = "1", Name = "مشابه عبارت از سمت راست" }, new { ID = "2", Name = "عین عبارت" } }, "ID", "Name"))
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                عبارت جستجو: @Avarez.Helper.winClass.textbox("txtSearch")
+                            </td>
+                            <td>
+                                نتیجه رکوردها: @Html.TextBox("txtTop", 30, new { @style = "width:30px;" }) رکورد
+                            </td>
+                        </tr>
+                    </table>
+                    <br />
+                </div>);
+        })
+        )
+        <div class="k-rtl demo-section">
+            @(Html.Kendo().Grid<Avarez.Models.sp_SMSSettingSelect>()
+                .Name("Grid")
+                .Columns(columns =>
+                {
+                    columns.Bound(p => p.fldID).Title("کد").Visible(false);
+                    columns.Bound(p => p.fldCountryDivisionName).Title("تقسیمات کشوری");
+                    columns.Bound(p => p.fldLineNumber).Title("شماره خط");
+                    columns.Bound(p => p.fldDesc).Title("توضیحات");
+                })
+            .Selectable(selectable => selectable.Mode(GridSelectionMode.Single))
+            .Pageable()
+            .Scrollable()
+            .DataSource(data =>
+                data.Ajax()
+                .PageSize(10)
+                .Read("Fill", "SmsSetting")
+            )
+        )
+        </div>
+    </div>
+    <script type="text/javascript">
+        function select(e) {
+            var dataItem = this.dataItem(e.node);
+            countryid = dataItem.id;
+            countrySID = dataItem.fldSid;
+            countryNType = dataItem.fldNodeType;
+            var url = '@Url.Content("~/SmsSetting/CountryPosition")';
+            $.ajax({
+                type: "post",
+                url: url,
+                data: { id: countryid },
+                datatype: "json",
+                success: function (data) {
+                    var m = data;
+                    $('#CountryPosition').html('مورد انتخاب شده: ' + m.Position);
+                    var treeview = $("#treeview").data("kendoTreeView");
+                    treeview.collapse(".k-item");
+                },
+                failure: function (data) {
+                    alert(data.data);
+                }
+            });
+        }
+
+        var countryid;
+        var countrySID;
+        var countryNType;
+
+        $("document").ready(function () {
+
+            $("#txtDate").datepicker({
+                showButtonPanel: true
+            });
+            $('#countryLocation').html($('#LocationDiv').valueOf());
+            $("#AddLink").button();
+            $("#EditLink").button();
+            $("#DelLink").button();
+            $("#exit").button();
+            $("#Help").button();
+
+
+            $("#exit").click(function () {
+                $("#SmsSetting").remove();
+            });
+
+            $('#SmsSetting').on('keyup', 'input', function (event) {
+                if (event.which == 13) {
+                    var inputs = $('#SmsSetting').find(':input:visible');
+                    inputs.eq(inputs.index(this) + 1).focus();
+                }
+            });
+
+            $(document).keyup(function (event) {
+                if (event.which == 119) {
+                    SaveRecord();
+                }
+                else if (event.which == 113) {
+                    EditRecord();
+                }
+                else if (event.which == 115) {
+                    DeleteRecord();
+                }
+            });
+            $('#AddLink').attr('title', 'کلید میانبر (F8)'); //119
+            $('#EditLink').attr('title', 'کلید میانبر (F2)'); //113
+            $('#DelLink').attr('title', 'کلید میانبر (F4)'); //115
+
+            jQuery("#EditLink").click(function () {
+                EditRecord();
+            });
+
+            $('#DelLink').click(function () {
+                DeleteRecord();
+            });
+
+            $("#AddLink").click(function () {
+                SaveRecord();
+            });
+
+            $('#txtSearch').keyup(function () {
+                var url = '@Url.Action("Reload", "SmsSetting")';
+                Reload(url, 'Grid', $("#cboSearchFiald").val(), $("#txtSearch").val(), $("#txtTop").val(), $("#cboSearchType").val());
+            });
+
+
+            $("#txtUserName").keyup(function () {
+                if ($("#txtUserName").val() != '') {
+                    $("#txtUserName").removeClass("input-validation-error");
+                    $("#lblUserNameError").html("");
+                }
+                else {
+                    $("#txtUserName").addClass("input-validation-error");
+                    $('#lblUserNameError').html('لطفا نام کاربری را وارد کنید.');
+                }
+            });
+            $("#txtPass").keyup(function () {
+                if ($("#txtPass").val() != '') {
+                    $("#txtPass").removeClass("input-validation-error");
+                    $("#lblPassError").html("");
+                }
+                else {
+                    $("#txtPass").addClass("input-validation-error");
+                    $('#lblPassError').html('لطفا کلمه عبور را وارد کنید.');
+                }
+            });
+
+            $("#txtLine").keyup(function () {
+                if ($("#txtLine").val() != '') {
+                    $("#txtLine").removeClass("input-validation-error");
+                    $("#lblLineError").html("");
+                }
+                else {
+                    $("#txtLine").addClass("input-validation-error");
+                    $('#lblLineError').html('لطفا شماره خط را انتخاب کنید.');
+                }
+            });
+
+        });
+        function Clear() {
+            $("#txtUserName").val('');
+            $("#txtPass").val('');
+            $('#txtLine').val('');
+            $('#fldId').val('');
+            $('#txtDesc').val('');
+        }
+         function SaveRecord() {
+                var er = false;
+                $("#txtUserName").keyup(function () {
+                    if ($("#txtUserName").val() != '') {
+                        $("#txtUserName").removeClass("input-validation-error");
+                        $("#lblUserNameError").html("");
+                    }
+                    else {
+                        $("#txtUserName").addClass("input-validation-error");
+                        $('#lblUserNameError').html('لطفا نام کاربری را وارد کنید.');
+                        er = true;
+                    }
+                });
+                $("#txtPass").keyup(function () {
+                    if ($("#txtPass").val() != '') {
+                        $("#txtPass").removeClass("input-validation-error");
+                        $("#lblPassError").html("");
+                    }
+                    else {
+                        $("#txtPass").addClass("input-validation-error");
+                        $('#lblPassError').html('لطفا کلمه عبور را وارد کنید.');
+                        er = true;
+                    }
+                });
+
+                $("#txtLine").keyup(function () {
+                    if ($("#txtLine").val() != '') {
+                        $("#txtLine").removeClass("input-validation-error");
+                        $("#lblLineError").html("");
+                    }
+                    else {
+                        $("#txtLine").addClass("input-validation-error");
+                        $('#lblLineError').html('لطفا شماره خط را انتخاب کنید.');
+                        er = true;
+                    }
+                });
+
+                if (er)
+                    return;
+                var data = {
+                    fldUserName: $("#txtUserName").val(),
+                    fldPassword: $("#txtPass").val(),
+                    fldLineNumber: $('#txtLine').val(),
+                    fldCountryType: countryNType,
+                    fldCountryCode: countrySID,
+                    fldId: $("#fldId").val(),
+                    fldDesc: $('#txtDesc').val()
+                };
+                if (data != '') {
+                    PostForm(data, '@Url.Content("~/SmsSetting/Save")', "#win");
+                }
+                Clear();
+            }
+            function EditRecord() {
+                var entityGrid = $("#Grid").data("kendoGrid");
+                var selectedItem = entityGrid.dataItem(entityGrid.select());
+                if (selectedItem) {
+                    var id = selectedItem.fldID;
+                    var URL = '@Url.Content("~/SmsSetting/Details")';
+                    URL = URL + "/" + id;
+                    $.ajax({
+                        type: "GET",
+                        url: URL,
+                        success: function (data) {
+                            $("#txtUserName").val(data.fldUserName);
+                            $("#txtPass").val(data.fldPassword);
+                            $('#txtLine').val(data.fldLineNumber);
+                            $("#fldId").val(data.fldId);
+                            $('#txtDesc').val(data.fldDesc);
+                            countryid = data.countryId;
+                            countrySID = data.fldCountryCode;
+                            countryNType = data.fldCountryType;
+                            var url = '@Url.Content("~/SmsSetting/CountryPosition")';
+                            $.ajax({
+                                type: "post",
+                                url: url,
+                                data: { id: countryid },
+                                datatype: "json",
+                                success: function (data) {
+                                    var m = data;
+                                    $('#CountryPosition').html('مورد انتخاب شده: ' + m.Position);
+                                },
+                                failure: function (data) {
+                                    alert(data.data);
+                                }
+                            });
+                        }
+                    });
+                }
+                else {
+                    alert('لطفا یک سطر را انتخاب کنید.');
+                }
+            }
+        function DeleteRecord() {
+                var entityGrid = $("#Grid").data("kendoGrid");
+                var selectedItem = entityGrid.dataItem(entityGrid.select());
+                if (selectedItem) {
+                    var id = selectedItem.fldID;
+                    var URL = '@Url.Content("~/metro/YesNomsg")';
+                    URL = URL + "/?id=" + id + "&URL=" + '@Url.Content("~/SmsSetting/Delete")';
+                    windowAppend("body", URL);
+                    $("#message").html('آیا مایل به حذف رکورد انتخاب شده هستید؟');
+                }
+                else {
+                    alert('لطفا یک سطر را انتخاب کنید.');
+                }
+                Clear();
+            }
+        function Reload(Url, gridname, field, value, top, searchType) {
+            var grid = $('#' + gridname).data('kendoGrid');
+            $.ajax({
+                url: Url,
+                type: 'get',
+                datatype: 'json',
+                data: { field: field, value: value, top: top, searchtype: searchType },
+                error: function (xhr, status, error) {
+                    alert(xhr + status);
+                },
+                success: function (result) {
+                    $("#" + gridname).data("kendoGrid").dataSource.data(result);
+                }
+
+            });
+        }
+
+        function PostForm(datas, url, id) {
+            var sendInfo = datas;
+            $('#Lock').show();
+            $.ajax({
+                type: "POST",
+                url: url,
+                data: sendInfo,
+                datatype: "json",
+                success: function (data) {
+                    var m = data;
+                    windowAppend("body", "/metro/error");
+                    $("#message").html(m.data);
+                    switch (m.state) {
+                        case 0:
+                            $("#error .wintitle").html("ذخیره موفق");
+                            break;
+                        case 1:
+                            $("#error .wintitle").html("خطا");
+                            break;
+                    }
+                    var url = '@Url.Action("Reload", "SmsSetting")';
+                    Reload(url, 'Grid', '0', '', 30, 1);
+                    $('#Lock').hide();
+                },
+                failure: function (data) {
+                    alert(data.data);
+                }
+            });
+        }
+        
+    </script>
+</div>
+<div class="treeview-back  k-rtl" dir="rtl" id="LocationDiv">
+    @(Html.Kendo().TreeView()
+                        .Name("treeview")
+                        .DataImageUrlField("image")
+
+                        .DataTextField("Name")
+                        .Checkboxes(chkbxs =>
+                        {
+                            chkbxs.Enabled(false).CheckChildren(false);
+                        })
+                        .DataSource(dataSource => dataSource
+                        .Read(read => read
+                                          .Action("_CountryTree", "SmsSetting")
+                        )
+                        )
+                        .Events(events =>
+                        events.Select("select"))
+                        )
+</div>
+<style type="text/css">
+    .treeview-back
+    {
+        width: 400px;
+        margin: 30px;
+        padding: 20px;
+        -moz-box-shadow: 0 1px 2px rgba(0,0,0,0.45), inset 0 0 30px rgba(0,0,0,0.07);
+        -webkit-box-shadow: 0 1px 2px rgba(0,0,0,0.45), inset 0 0 30px rgba(0,0,0,0.07);
+        box-shadow: 0 1px 2px rgba(0,0,0,0.45), inner 0 0 30px rgba(0,0,0,0.07);
+        -webkit-border-radius: 8px;
+        -moz-border-radius: 8px;
+        border-radius: 8px;
+    }
+</style>

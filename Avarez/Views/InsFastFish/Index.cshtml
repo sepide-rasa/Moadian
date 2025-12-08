@@ -1,0 +1,308 @@
+﻿@using Kendo.Mvc.UI;
+<div class="modal" id="InsFastFish">
+    @{
+        Avarez.Models.cartaxEntities car = new Avarez.Models.cartaxEntities();
+        var q = car.sp_StateSelect("", "", 0, 1, "").ToList();
+        var date = MyLib.Shamsi.Miladi2ShamsiString(car.sp_GetDate().FirstOrDefault().CurrentDateTime);
+    }
+    <script src="@Url.Content("~/Content/Base.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Scripts/jquery.ui.datepicker-cc.all.min.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Scripts/accounting.min.js")" type="text/javascript"></script>
+    <div>
+        
+        <br />
+        
+        </a>
+        <center>
+            @Html.Hidden("fldId")
+            <table>
+                <br />
+                <div style="color:red;"><< لطفا پس از وارد کردن سریال قبض، کلید Enter صفحه کلید خود را بفشارید. >></div>
+                <br /><br />
+                <tr>
+                    <td align="left">
+                        <span style="color: Red;">*</span> تاریخ واریز:
+                    </td>
+                    <td>
+                        @Html.TextBox("txtDate", date, new { @style = "width:70px;", @readonly = "true" })
+                        <span id="lblDateError" style="color: Red;"></span>
+                    </td>
+                </tr>
+                <tr>
+                    <td align="left">
+                        <span style="color: Red;">*</span> سریال قبض:
+                    </td>
+                    <td>
+                        @Html.TextBox("txtSerial")
+
+                        <span id="lblSerialError" style="color: Red;"></span>
+                    </td>
+                </tr>
+                <tr>
+                    <td align="left">
+                        <span style="color: Red;">*</span> نوع واریز:
+                    </td>
+                    <td>
+                        @Html.TextBox("cboSettleType", null, new { @style = "width:157px" })
+                        <span id="lblSettleTypeError" style="color: Red;"></span>
+                    </td>
+                </tr>
+                <tr>
+                    <td align="left">
+                        <span style="color: Red;">*</span> مبلغ واریزی:
+                    </td>
+                    <td>
+                        @*@Html.TextBox("txtPrice")*@
+                        @Html.TextBox("txtPrice",0, new { @style = "width:150px;", @readonly = "true" })
+                        <span id="lblPriceError" style="color: Red;"></span>
+                    </td>
+                </tr>
+                <tr>
+                    <td align="left">
+                        سریال برچسب:
+                    </td>
+                    <td>
+                        @Html.TextBox("txtLable")
+                    </td>
+                </tr>
+                <tr>
+                    <td align="left">
+                        توضیحات:
+                    </td>
+                    <td>
+                        @Avarez.Helper.winClass.textArea("txtDesc", 4, 30)
+                    </td>
+                </tr>
+            </table>
+            <p>
+                @Avarez.Helper.winClass.Buttons("AddLink", "ذخیره", "Save")
+                @Avarez.Helper.winClass.Buttons("exit", "خروج", "Exit")
+            </p>
+        </center>
+       
+    </div>
+    <script type="text/javascript">
+        function selectCity() {
+            return {
+                cboState: $("#cboState").val()
+            };
+        }
+        var carfile;
+        $("document").ready(function () {
+            $("#AddLink").button();
+            $("#exit").button();
+            $('#Help').button();
+            $("#txtDate").datepicker({
+                showButtonPanel: true,
+                changeMonth: true,
+                changeYear: true
+            });
+
+            carfile = '@ViewBag.CarfileId';
+
+            $('#txtPrice').keyup(function () {
+                $('#txtPrice').val(accounting.formatNumber($('#txtPrice').val()))
+            });
+
+//            $("#txtSerial").keyup(function () {
+//                $.ajax({
+//                    type: "GET",
+//                    url: '/SaveFish/GetFishPrice/' + $("#txtSerial").val(),
+//                    success: function (data) {
+//                        $('#txtPrice').val(data);
+//                    },
+//                    failure: function (data) {
+//                        alert(data.data);
+//                    }
+//                });
+
+//            });
+
+
+            $("#exit").click(function () {
+                $("#InsFastFish").remove();
+            });
+
+            $('#InsFastFish').on('keyup', 'input', function (event) {
+                if (event.which == 13) {
+                    var inputs = $('#InsFastFish').find(':input:visible');
+                    inputs.eq(inputs.index(this) + 1).focus();
+                    $.ajax({
+                        type: "GET",
+                        url: '/InsFastFish/GetFishPrice/' + $("#txtSerial").val(),
+                        success: function (data) {
+                            if (data == "") {
+                                $('#txtPrice').val(0);
+                                windowAppend("body", "/metro/error");
+                                $("#message").html("فیش با سریال قبض مورد نظر صادر نشده است.");
+                                $("#error .wintitle").html("خطا");
+                            }
+                            else
+                                $('#txtPrice').val(accounting.formatNumber(data));
+                        },
+                        failure: function (data) {
+                            alert(data.data);
+                        }
+                    });
+                }
+            });
+
+            $(document).keyup(function (event) {
+                if (event.which == 119) {
+                    SaveRecord();
+                }
+                else if (event.which == 113) {
+                    EditRecord();
+                }
+                else if (event.which == 115) {
+                    DeleteRecord();
+                }
+            });
+            $('#AddLink').attr('title', 'کلید میانبر (F8)'); //119
+            $('#EditLink').attr('title', 'کلید میانبر (F2)'); //113
+            $('#DelLink').attr('title', 'کلید میانبر (F4)'); //115
+
+            jQuery("#EditLink").click(function () {
+                EditRecord();
+            });
+
+            $('#DelLink').click(function () {
+                DeleteRecord();
+            });
+
+            $("#AddLink").click(function () {
+                SaveRecord();
+            });
+
+            $("#cboSettleType").change(function () {
+                if ($("#cboSettleType").val() != '') {
+                    $("#cboSettleType").removeClass("input-validation-error");
+                    $("#lblSettleTypeError").html("");
+                }
+                else {
+                    $("#cboSettleType").addClass("input-validation-error");
+                    $('#lblSettleTypeError').html('لطفا نوع واریز را انتخاب کنید.');
+                }
+            });
+
+
+        });
+        function Clear() {
+            $('#fldId').val(0);
+            $("#txtPrice").val('');
+            $("#txtPrice").focus();
+            $("#txtDesc").val('');
+            $("#txtSerial").val('');
+            $('#txtLable').val('');
+        }
+        function SaveRecord() {
+            var er = false;
+            if ($("#cboSettleType").val() == '') {
+                $("#cboSettleType").addClass("input-validation-error");
+                $('#lblSettleTypeError').html('لطفا نوع واریز را انتخاب کنید.');
+                er = true;
+            }
+            else
+                $('#lblSettleTypeError').html('');
+
+            if ($("#txtDate").val() == '') {
+                $("#txtDate").addClass("input-validation-error");
+                $('#lblDateError').html('لطفا تاریخ واریز را وارد کنید.');
+                er = true;
+            }
+            else
+                $('#lblDateError').html('');
+
+            if ($("#txtPrice").val() == '') {
+                $("#txtPrice").addClass("input-validation-error");
+                $('#lblPriceError').html('لطفا مبلغ واریز را وارد کنید.');
+                er = true;
+            }
+            else
+                $('#lblPriceError').html('');
+
+            if ($("#txtSerial").val() == '') {
+                $("#txtSerial").addClass("input-validation-error");
+                $('#lblSerialError').html('لطفا سریال قبض را وارد کنید.');
+                er = true;
+            }
+            else
+                $('#lblSerialError').html('');
+
+            if (er)
+                return;
+            var data = { fldCarFileID: carfile, fldCollectionDate: $("#txtDate").val(),
+                fldPrice: parseInt($("#txtPrice").val().toString().replace(',', '').replace(',', '').replace(',', '')),
+                fldSettleTypeID: $("#cboSettleType").val(),
+                fldDesc: $("#txtDesc").val(), fldPeacockeryCode: $("#txtSerial").val(),
+                fldId: $("#fldId").val(), fldSerialBarChasb: $('#txtLable').val()
+            };
+            if (data != '') {
+                PostForm(data, '@Url.Content("~/InsFastFish/Save")', "#win");
+            }
+            Clear();
+        }
+       
+        function Reload(Url, gridname, field, value, top, searchType) {
+            var grid = $('#' + gridname).data('kendoGrid');
+            $.ajax({
+                url: Url,
+                type: 'get',
+                datatype: 'json',
+                data: { field: field, value: value, top: top, searchtype: searchType },
+                error: function (xhr, status, error) {
+                    alert(xhr + status);
+                },
+                success: function (result) {
+                    $("#" + gridname).data("kendoGrid").dataSource.data(result);
+                }
+
+            });
+        }
+
+        function PostForm(datas, url, id) {
+            var sendInfo = datas;
+            $('#Lock').show();
+            $.ajax({
+                type: "POST",
+                url: url,
+                data: sendInfo,
+                datatype: "json",
+                success: function (data) {
+                    var m = data;
+                    windowAppend("body", "/metro/error");
+                    $("#message").html(m.data);
+                    switch (m.state) {
+                        case 0:
+                            $("#error .wintitle").html("ذخیره موفق");
+                            break;
+                        case 1:
+                            $("#error .wintitle").html("خطا");
+                            break;
+                    }
+                    
+                    $('#Lock').hide();
+                },
+                failure: function (data) {
+                    alert(data.data);
+                }
+            });
+        }    
+    </script>
+</div>
+<div class="k-rtl">
+    @(Html.Kendo().DropDownList()
+          .Name("cboSettleType")
+          .OptionLabel("نوع پرداخت...")
+          .DataTextField("fldName")
+          .SelectedIndex(4)
+          .DataValueField("fldID")
+          .DataSource(source =>
+          {
+              source.Read(read =>
+              {
+                  read.Action("GetSettleType", "InsFastFish");
+              });
+          }).HtmlAttributes(new { @style = "display: none;width:95px;" })
+    )
+</div>

@@ -1,0 +1,33 @@
+﻿@using Ext.Net.MVC
+@using Hogaf.ExtNet.UX
+@using Ext.Net;
+@using Ext.Net.Utilities;
+@{
+    var X = Html.X();
+}
+@(Html.X().Window().Title("پیش نمایش").Listeners(l => l.AfterRender.Handler = "LoadImage()")
+    .ID("PreviewFile")
+.Height(450).Width(700)
+.Layout(LayoutType.Border)
+.AutoScroll(true)
+.Closable(true)
+.CloseAction(CloseAction.Destroy)
+        //.Layout(Ext.Net.LayoutType.VBox)
+        //.LayoutConfig(new VBoxLayoutConfig { Align = VBoxAlign.Center })
+  .Items(
+      X.Image().ItemID("Image").Border(true)
+        //.Width(700).Height(400)
+        //.ImageUrl("~/Content/iran.png")
+  )
+)
+<script type="text/javascript">
+    function LoadImage() {
+        var id = '@ViewBag.ReportId';
+        var currentdate = (new Date()).getTime().toString();
+        var url = "";
+        var k = App.PreviewFile.queryById("Image");
+            url = '/NewVer/ReportType_New/showFile';
+            var g = url + '?dc=' + currentdate + '&Id=' + id;
+            k.setImageUrl(g);
+    }
+</script>

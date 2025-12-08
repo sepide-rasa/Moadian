@@ -1,0 +1,362 @@
+﻿@using Ext.Net.MVC
+@using Hogaf.ExtNet.UX
+@using Ext.Net;
+@{
+    var X = Html.X();
+}
+
+
+@(Html.X().Window()
+    .Modal(true)
+                .Listeners(li => li.AfterRender.Handler = "LoadUpdateRate();")
+    .Resizable(false)
+    .Width(610)
+    .Height(230)
+    .Title("دریافت نرخ ها از وب سرویس")
+    .Layout(LayoutType.Fit)
+            .ID("UpdateRate")
+    .Closable(true)
+       .ButtonAlign(Ext.Net.Alignment.Center)
+            .Buttons(
+                X.Button()
+                    .Text("دریافت")
+                    .Icon(Ext.Net.Icon.Disk)
+        //.ToolTip("کلید میانبر F8")
+                            .Listeners(l => l.Click.Handler = "SaveUpdateRate();")
+                            
+                                  , X.Button()
+                                        .Text("راهنما")
+                                        .Icon(Ext.Net.Icon.Help)
+                                                        .Listeners(de => de.Click.Handler = "HelpUpdateRate();"),
+                            
+                X.Button()
+                    .Text("خروج")
+                    .Icon(Ext.Net.Icon.DoorOut)
+                    .OnClientClick("App.UpdateRate.destroy();"))
+    .CloseAction(Ext.Net.CloseAction.Destroy)
+    .Items(
+        X.FormPanel()
+           // .Layout(Ext.Net.LayoutType.VBox)
+                        //.LayoutConfig(new Ext.Net.VBoxLayoutConfig { Align = Ext.Net.VBoxAlign.Center })
+            .Border(false)
+            //.Layout(LayoutType.Fit)
+            .Items(
+                X.Panel()
+                    .Border(false)
+                    .PaddingSpec("15px 0 0 0")
+                          .Layout(LayoutType.VBox)
+                                    .LayoutConfig(new VBoxLayoutConfig { Align = VBoxAlign.Center })
+                    .Items(
+                        X.FieldSet()
+                            .Border(true)
+                            .Defaults(new { Margin = 3 })
+                                .Title("دریافت نرخ ها")
+                            .Layout(LayoutType.Table)
+                            .LayoutConfig(new TableLayoutConfig { Columns = 4 })
+                            .Items(
+                                X.Hidden().ItemID("fldId"),
+                                X.Label("از سال:"),
+                                X.ComboBox()
+                                .ItemID("cboFromYear")
+                                .Editable(false)
+                                .TypeAhead(true)
+                                .QueryMode(DataLoadMode.Local)
+                                .ForceSelection(true)
+                                .TriggerAction(TriggerAction.All)
+                                .DisplayField("fldName")
+                                .ValueField("fldID")
+                                .EmptyText("از سال...")
+                                .Width(190)
+                                            .Listeners(ls => ls.Select.Handler = " App.UpdateRate.queryById('cboToYear').getStore().load();")
+                                    .Store(X.Store()//.AutoLoad(false)
+                                    .Model(X.Model()
+                                    .IDProperty("fldID")
+                                        .Fields(
+                                            new ModelField("fldID", ModelFieldType.String) { Mapping = "fldID" },
+                                            new ModelField("fldName", ModelFieldType.String) { Mapping = "fldName" }
+                                        )
+                                    )
+                                        .Proxy(X.AjaxProxy()
+                                        .Url(Url.Action("GetFromYear"))
+                                        .Reader(X.JsonReader().Root("data"))
+                                        )
+                                             .Parameters(ps => ps.Add(new StoreParameter("value", "1357", ParameterMode.Raw)))
+                                                    //.Listeners(li => li.Load.Handler = "LoadArea();")
+                            )
+                                .MsgTarget(Ext.Net.MessageTarget.Side)
+                                .AllowBlank(false)
+                                .BlankText("لطفا سال مورد نظر را انتخاب کنید."),
+                                X.Label("تا سال:"),
+                                    X.ComboBox()
+                                    .ItemID("cboToYear")
+                                    .EmptyText("تا سال...")
+                                    .TypeAhead(true)
+                                    .Editable(false)
+                                        .MsgTarget(Ext.Net.MessageTarget.Side)
+                                    .AllowBlank(false)
+                                    .BlankText("لطفا سال مورد نظر را انتخاب نمایید.")
+                                    .QueryMode(DataLoadMode.Local)
+                                    .ForceSelection(true)
+                                    .Width(190)
+                                    .TriggerAction(TriggerAction.All)
+                                        .DisplayField("fldName")
+                                        .ValueField("fldID")
+                                            //.Listeners(ls => ls.Select.Handler = " App.NewArea.queryById('cboZone').getStore().load();")
+                                        .Store(X.Store().AutoLoad(false)
+                                        .Model(X.Model()
+                                        .IDProperty("fldID")
+                                            .Fields(
+                                                    new ModelField("fldID", ModelFieldType.String) { Mapping = "fldID" },
+                                                    new ModelField("fldName", ModelFieldType.String) { Mapping = "fldName" })
+                                                )
+                                        .Proxy(X.AjaxProxy()
+                                                    .Url(Url.Action("GetToYear"))
+                                            .Reader(X.JsonReader().Root("data")))
+                                                .Parameters(ps => ps.Add(new StoreParameter("value", "App.UpdateRate.queryById('cboFromYear').getValue()", ParameterMode.Raw)))
+                                                        ),
+                                            X.Label("نوع ساخت:"),
+                                            X.ComboBox()
+                                            .ItemID("cboCarMake")
+                                            .LabelAlign(Ext.Net.LabelAlign.Left)
+                                            .Editable(false)
+                                            .TypeAhead(true)
+                                            .MsgTarget(Ext.Net.MessageTarget.Side)
+                                            .AllowBlank(false)
+                                            .BlankText("لطفا نوع ساخت را انتخاب کنید.")
+                                            .QueryMode(DataLoadMode.Local)
+                                            .ForceSelection(true)
+                                            .TriggerAction(TriggerAction.All)
+                                            .DisplayField("fldName")
+                                            .ValueField("fldID")
+                                            .EmptyText("نوع ساخت خودرو...")
+                                            .Width(190)
+                                                        .Listeners(ls => ls.Select.Handler = " App.UpdateRate.queryById('cboCarAccountTypes').getStore().load();")
+                                                .Store(X.Store()//.AutoLoad(false)
+                                                .Model(X.Model()
+                                                .IDProperty("fldID")
+                                                    .Fields(
+                                                        new ModelField("fldID", ModelFieldType.String) { Mapping = "fldID" },
+                                                        new ModelField("fldName", ModelFieldType.String) { Mapping = "fldName" }
+                                                    )
+                                                )
+                                                    .Proxy(X.AjaxProxy()
+                                                    .Url(Url.Action("GetCascadeMake"))
+                                                    .Reader(X.JsonReader().Root("data"))
+                                                    )
+                                                     //.Listeners(li => li.Load.Handler = "LoadArea();")
+                                        )
+                                       , X.Label("نوع کاربری:"),
+                                            X.ComboBox()
+                                            .ItemID("cboCarAccountTypes")
+                                            .EmptyText("نوع کاربری خودرو...")
+                                            .LabelAlign(Ext.Net.LabelAlign.Left)
+                                            .MsgTarget(Ext.Net.MessageTarget.Side)
+                                            .AllowBlank(false)
+                                            .BlankText("لطفا نوع کاربری را انتخاب کنید.")
+                                            .TypeAhead(true)
+                                            .Editable(false)
+                                            .QueryMode(DataLoadMode.Local)
+                                            .ForceSelection(true)
+                                            .Width(190)
+                                            .TriggerAction(TriggerAction.All)
+                                                .DisplayField("fldName")
+                                                .ValueField("fldID")
+                                                    .Listeners(ls => ls.Select.Handler = " App.UpdateRate.queryById('cboCarCabin').getStore().load();")
+                                                .Store(X.Store().AutoLoad(false)
+                                                .Model(X.Model()
+                                                .IDProperty("fldID")
+                                                    .Fields(
+                                                            new ModelField("fldID", ModelFieldType.String) { Mapping = "fldID" },
+                                                            new ModelField("fldName", ModelFieldType.String) { Mapping = "fldName" })
+                                                        )
+                                                .Proxy(X.AjaxProxy()
+                                                    .Url(Url.Action("GetCascadeAccount"))
+                                                    .Reader(X.JsonReader().Root("data")))
+                                                        .Parameters(ps => ps.Add(new StoreParameter("cboCarMake", "App.UpdateRate.queryById('cboCarMake').getValue()", ParameterMode.Raw)))
+                                                                ),
+                                        X.Label("نوع کابین:"),
+                                            X.ComboBox()
+                                            .ItemID("cboCarCabin")
+                                            .EmptyText("نوع کابین خودرو...")
+                                            .LabelAlign(Ext.Net.LabelAlign.Left)
+                                            .TypeAhead(true)
+                                            .Editable(false)
+                                            .QueryMode(DataLoadMode.Local)
+                                            .ForceSelection(true)
+                                            .Width(190)
+                                            .TriggerAction(TriggerAction.All)
+                                                .DisplayField("fldName")
+                                                .ValueField("fldID")
+                                                .Listeners(ls => ls.Select.Handler = " App.UpdateRate.queryById('cboSystem').getStore().load();App.UpdateRate.queryById('cboSystem').allowBlank = false;App.UpdateRate.queryById('cboSystem').validate();")
+                                                .Store(X.Store().AutoLoad(false)
+                                                .Model(X.Model()
+                                                .IDProperty("fldID")
+                                                    .Fields(
+                                                            new ModelField("fldID", ModelFieldType.String) { Mapping = "fldID" },
+                                                            new ModelField("fldName", ModelFieldType.String) { Mapping = "fldName" })
+                                                        )
+                                                .Proxy(X.AjaxProxy()
+                                                    .Url(Url.Action("GetCascadeCabin"))
+                                                    .Reader(X.JsonReader().Root("data")))
+                                                        .Parameters(ps => ps.Add(new StoreParameter("cboCarAccountTypes", "App.UpdateRate.queryById('cboCarAccountTypes').getValue()", ParameterMode.Raw)))
+                                                                ),
+                                        X.Label("سیستم خودرو:"),
+                                            X.ComboBox()
+                                            .ItemID("cboSystem")
+                                            .EmptyText("سیستم خودرو...")
+                                            .LabelAlign(Ext.Net.LabelAlign.Left)
+                                            .TypeAhead(true)
+                                            .Editable(false)
+                                            .QueryMode(DataLoadMode.Local)
+                                                .MsgTarget(Ext.Net.MessageTarget.Side)
+                                                //.AllowBlank(false)
+                                                .BlankText("لطفا سیستم خودرو را انتخاب کنید.")
+                                            .ForceSelection(true)
+                                            .Width(190)
+                                            .TriggerAction(TriggerAction.All)
+                                                .DisplayField("fldName")
+                                                .ValueField("fldID")
+                                                    .Listeners(ls => ls.Select.Handler = " App.UpdateRate.queryById('cboModel').getStore().load();")
+                                                .Store(X.Store().AutoLoad(false)
+                                                .Model(X.Model()
+                                                .IDProperty("fldID")
+                                                    .Fields(
+                                                            new ModelField("fldID", ModelFieldType.String) { Mapping = "fldID" },
+                                                            new ModelField("fldName", ModelFieldType.String) { Mapping = "fldName" })
+                                                        )
+                                                .Proxy(X.AjaxProxy()
+                                                    .Url(Url.Action("GetCascadeSystem"))
+                                                    .Reader(X.JsonReader().Root("data")))
+                                                        .Parameters(ps => ps.Add(new StoreParameter("cboCarCabin", "App.UpdateRate.queryById('cboCarCabin').getValue()", ParameterMode.Raw)))
+                                                                ),
+                                           X.Label("تیپ خودرو:"),
+                                                X.ComboBox()
+                                                .ItemID("cboModel")
+                                                .EmptyText("تیپ خودرو...")
+                                                .LabelAlign(Ext.Net.LabelAlign.Left)
+                                                .TypeAhead(true)
+                                                .Editable(false)
+                                                .QueryMode(DataLoadMode.Local)
+                                                .ForceSelection(true)
+                                                .Width(190)
+                                                .TriggerAction(TriggerAction.All)
+                                                    .DisplayField("fldName")
+                                                    .ValueField("fldID")
+                                                    .Listeners(ls => ls.Select.Handler = " App.UpdateRate.queryById('cboClass').getStore().load();App.UpdateRate.queryById('cboClass').allowBlank = false;App.UpdateRate.queryById('cboClass').validate();")
+                                                    .Store(X.Store().AutoLoad(false)
+                                                    .Model(X.Model()
+                                                    .IDProperty("fldID")
+                                                        .Fields(
+                                                                new ModelField("fldID", ModelFieldType.String) { Mapping = "fldID" },
+                                                                new ModelField("fldName", ModelFieldType.String) { Mapping = "fldName" })
+                                                            )
+                                                    .Proxy(X.AjaxProxy()
+                                                            .Url(Url.Action("GetCascadeModel"))
+                                                        .Reader(X.JsonReader().Root("data")))
+                                                            .Parameters(ps => ps.Add(new StoreParameter("cboSystem", "App.UpdateRate.queryById('cboSystem').getValue()", ParameterMode.Raw)))
+                                                                    ),                          
+                                    X.Label("کلاس خودرو:"),
+                                    X.ComboBox()
+                                            .ItemID("cboClass")
+                                        .EmptyText("کلاس خودرو...")
+                                        .LabelAlign(Ext.Net.LabelAlign.Top)
+                                        .TypeAhead(true)
+                                        .QueryMode(DataLoadMode.Local)
+                                        .MsgTarget(Ext.Net.MessageTarget.Side)
+                                        //.AllowBlank(false)
+                                        .BlankText("لطفا کلاس خودرو را انتخاب کنید.")
+                                        .MsgTarget(Ext.Net.MessageTarget.Side)
+                                        .ForceSelection(true)
+                                        .Width(190)
+                                        .TriggerAction(TriggerAction.All)
+                                            .DisplayField("fldName")
+                                            .ValueField("fldID")
+                                        .Store(X.Store()
+                                            .AutoLoad(false)
+                                            .Model(X.Model()
+                                            .IDProperty("fldID")
+                                                .Fields(
+                                                    new ModelField("fldID", ModelFieldType.String) { Mapping = "fldID" },
+                                                    new ModelField("fldName", ModelFieldType.String) { Mapping = "fldName" })
+                                                    )
+                                            .Proxy(X.AjaxProxy()
+                                                    .Url(Url.Action("GetCascadeClass"))
+                                                .Reader(X.JsonReader().Root("data")))
+                                                    .Parameters(ps => ps.Add(new StoreParameter("cboModel", "App.UpdateRate.queryById('cboModel').getValue()", ParameterMode.Raw)))
+                                                    )
+                            )
+                )
+            )
+        )
+)
+<script type="text/javascript">
+    function LoadUpdateRate() { 
+        App.UpdateRate.queryById('cboFromYear').validate();
+        App.UpdateRate.queryById('cboToYear').validate();
+        App.UpdateRate.queryById('cboCarMake').validate();
+        App.UpdateRate.queryById('cboCarAccountTypes').validate();
+    }
+    function SaveUpdateRate() {
+        var cboFromYear = App.UpdateRate.queryById('cboFromYear');
+        var cboToYear = App.UpdateRate.queryById('cboToYear');
+        var cboCarMake = App.UpdateRate.queryById('cboCarMake');
+        var cboCarAccountTypes = App.UpdateRate.queryById('cboCarAccountTypes');
+        var cboCarCabin = App.UpdateRate.queryById('cboCarCabin');
+        var cboSystem = App.UpdateRate.queryById('cboSystem');
+        var cboModel = App.UpdateRate.queryById('cboModel');
+        var cboClass = App.UpdateRate.queryById('cboClass');
+        var er = false;
+        if (cboFromYear.validate() == false)
+            er = true;
+        if (cboToYear.validate() == false)
+            er = true;
+        if (cboCarMake.validate() == false)
+            er = true;
+        if (cboCarAccountTypes.validate() == false)
+            er = true;
+        if (cboCarCabin.validate() == false)
+            er = true;
+        if (cboSystem.validate() == false)
+            er = true;
+        if (cboModel.validate() == false)
+            er = true;
+        if (cboClass.validate() == false)
+            er = true;
+        if (er == true)
+            return;
+        App.UpdateRate.body.mask("در حال بارگذاری...");
+        $.getJSON('/NewVer/UpdateRate_New/Update',{
+                FromYear: cboFromYear.getValue(),
+                ToYear: cboToYear.getValue(),
+                CarMakeType: cboCarMake.getDisplayValue(),
+                CarAccountType: cboCarAccountTypes.getDisplayValue(),
+                CarCabin: cboCarCabin.getDisplayValue(),
+                CarSystem: cboSystem.getDisplayValue(),
+                CarTip: cboModel.getDisplayValue(),
+                CarClass: cboClass.getDisplayValue()
+            },
+            function (data) {
+                var ic = Ext.MessageBox.INFO;
+                if (data.Er == 1)
+                    ic = Ext.MessageBox.ERROR;
+                Ext.MessageBox.show({
+                    title: data.MsgTitle,
+                    msg: data.Msg,
+                    icon: ic,
+                    buttons: Ext.MessageBox.OK
+                });
+                App.UpdateRate.body.mask().hide();
+            }
+        );
+    }
+
+    function HelpUpdateRate() {
+        Ext.net.Mask.show({ msg: 'در حال بارگذاری...' });
+        Ext.net.DirectMethod.request({
+            url: '/NewVer/UpdateRate_New/Help',
+            success: function (data) {
+                Ext.net.Mask.hide();
+            }
+        });
+    }
+</script>

@@ -1,0 +1,178 @@
+﻿@using Ext.Net.MVC
+@using Hogaf.ExtNet.UX
+@using Ext.Net;
+@using Avarez.Models;
+
+@{var X = Html.X();
+
+}
+<img src="~/Content/header2.png" style="width:100%;" />
+@*<table style="width:100%;background-color:white;border-spacing:0px;background: rgba(217,222,224,1);
+    background: -moz-linear-gradient(left, rgba(217,222,224,1) 0%, rgba(255,255,255,1) 100%);
+    background: -webkit-gradient(left top, right top, color-stop(0%, rgba(217,222,224,1)), color-stop(100%, rgba(255,255,255,1)));
+    background: -webkit-linear-gradient(left, rgba(217,222,224,1) 0%, rgba(255,255,255,1) 100%);
+    background: -o-linear-gradient(left, rgba(217,222,224,1) 0%, rgba(255,255,255,1) 100%);
+    background: -ms-linear-gradient(left, rgba(217,222,224,1) 0%, rgba(255,255,255,1) 100%);
+    background: linear-gradient(to right, rgba(217,222,224,1) 0%, rgba(255,255,255,1) 100%);
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#d9dee0', endColorstr='#ffffff', GradientType=1 );" border="0px">
+        <tr>
+            <td >
+                <img src="@Url.Content("~/Content/right transpa.png")" />
+            </td>
+            <td style="text-align:center;">
+                <img src="@Url.Content("~/Content/samane.png")" />
+            </td>
+            <td style="text-align: left;">
+                <img src="@Url.Content("~/Content/train.png")" />
+            </td>
+        </tr>
+    </table>*@
+<style>
+    body {
+        background: #628db5;
+    }
+
+    .x-panel-body {
+        background: transparent;
+    }
+
+    #pnllogin-innerCt {
+        background-color: #dfe8f6;
+    }
+
+    #pnlLowS-innerCt {
+        background-color: transparent;
+    }
+
+    td {
+        text-align: right;
+    }
+
+    #pnl1-innerCt {
+        background: rgba(212,228,239,1);
+        background: -moz-linear-gradient(top, rgba(212,228,239,1) 0%, rgba(98,141,181,1) 100%);
+        background: -webkit-gradient(left top, left bottom, color-stop(0%, rgba(212,228,239,1)), color-stop(100%, rgba(98,141,181,1)));
+        background: -webkit-linear-gradient(top, rgba(212,228,239,1) 0%, rgba(98,141,181,1) 100%);
+        background: -o-linear-gradient(top, rgba(212,228,239,1) 0%, rgba(98,141,181,1) 100%);
+        background: -ms-linear-gradient(top, rgba(212,228,239,1) 0%, rgba(98,141,181,1) 100%);
+        background: linear-gradient(to bottom, rgba(212,228,239,1) 0%, rgba(98,141,181,1) 100%);
+        filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#d4e4ef', endColorstr='#628db5', GradientType=0 );
+    }
+</style>
+@(
+
+ X.Panel()
+    .Border(false)
+    .ID("Back_NewP")
+    .AutoScroll(false)
+    .CloseAction(Ext.Net.CloseAction.Destroy)
+    .Layout(LayoutType.Fit)
+    .Items(
+        X.Panel()
+            .Border(false)
+            .Layout(LayoutType.VBox)
+            .LayoutConfig(new VBoxLayoutConfig { Align = VBoxAlign.Center })
+            .Items(
+                X.Panel()
+                    .Center()
+                    .Border(false)
+                    .Width(300)
+                    .Items(
+                        X.Panel()
+                            .Title("مشخصات پرداخت")
+                            .MarginSpec("100px 0 0 0")
+                            .Frame(true)
+                            .Items(
+                                X.FieldSet()
+                                    .Border(false)
+                                    .Layout(LayoutType.VBox)
+                                    .LayoutConfig(new VBoxLayoutConfig { Align = VBoxAlign.Right })
+                                    .Items(
+                                        X.Container()
+                                            .Content(@<center>
+                                                <div align="center" id="fi-button-Dl4" style="text-align:center;width:270px;">
+                                                    <table style="text-align: center; font-weight: bold;">
+                                                        <tr>
+                                                            <td>
+                                                                <div class="tag">
+                                                                    تاریخ: @ViewBag.Date
+                                                                </div>
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>
+                                                                <div class="tag">
+                                                                    کد تراکنش: @ViewBag.ResNum
+                                                                </div>
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>
+                                                                <div class="tag">
+                                                                    کد رهگیری: @ViewBag.RefNum
+                                                                </div>
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>
+                                                                بانک عامل: @ViewBag.Bank
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>
+                                                                مبلغ: @ViewBag.Money
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td align="right">
+                                                                نتیجه پرداخت: @ViewBag.Result
+                                                            </td>
+                                                        </tr>
+                                                    </table>
+                                                </div>
+                                            </center>
+    )),
+                                X.FieldSet()
+                                    .Border(false)
+                                    .Layout(LayoutType.VBox)
+                                    .LayoutConfig(new VBoxLayoutConfig { Align = VBoxAlign.Center })
+                                    .Items(
+                                        X.Container()
+                                            .Content(@<center>
+                                                <div align="center" id="fi-button-Dl4" style="text-align:center;width:150px;">
+                                                    <table style="text-align: center; font-weight: bold;">
+                                                        <tr>
+                                                            <td align="center">
+                                                                <button id="Back" style="font-size: 12px; font-family: Tahoma;">
+                                                                    بازگشت
+                                                                </button>
+                                                                <button id="Report" style="font-size: 12px; font-family:Tahoma;">
+                                                                    دانلود رسید
+                                                                </button>
+                                                            </td>
+                                                        </tr>
+                                                    </table>
+                                                </div>
+                                            </center>)
+    )
+    )
+    )
+    )
+    )
+)
+
+<script type="text/javascript">
+    $(document).ready(function () {
+
+        $('#Back').click(function () {
+            window.location.href = '@Session["ReturnUrl"]';
+        });
+
+        $('#Report').click(function () {
+            if ('@Session["ResidId"]' != "")
+                window.location.href='/NewVer/Facture_New/DownloadReceipt/' + '@Session["ResidId"]';
+            else
+                alert('پرداخت شما نا موفق بوده است.');
+        });
+    });
+</script>

@@ -1,0 +1,13 @@
+﻿@using Ext.Net.MVC;
+
+@(
+ Html.X().Window().Height(560).Width(900)
+        .Title("پیش نمایش")
+        .AutoScroll(true)
+        .Layout(Ext.Net.LayoutType.Fit)
+        .Closable(true)
+        .Border(false)
+        .CloseAction(Ext.Net.CloseAction.Destroy)
+        .Modal(true)
+    .Html("<center><object class='se-pre-con' style='width: 800px;height: 540px;border: 1px solid #ccc;' type='application/pdf' data='/NewVer/SelectParvande/RptResid?id=" + @ViewBag.Id +"&Type=" + @ViewBag.Type + "'></object></center>")
+)

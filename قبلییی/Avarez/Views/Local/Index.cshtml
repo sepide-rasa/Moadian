@@ -1,0 +1,600 @@
+﻿@using Kendo.Mvc.UI;
+<div class="modal" id="Local">
+    @{
+        Avarez.Models.cartaxEntities car = new Avarez.Models.cartaxEntities();
+        var q = car.sp_StateSelect("", "", 0, Convert.ToInt32(Session["UserId"]), Session["UserPass"].ToString()).ToList();
+    }
+    <script src="@Url.Content("~/Content/Base.js")" type="text/javascript"></script>
+    <div>
+    <a href="@Url.Content("~/Helps/منطقه.htm")" target="_blank" id="Help" title="راهنما" style="background-image:url('/Content/images/1381415123_help.png');background-repeat: no-repeat;height: 20px;float: left;top: 10px;left: 10px;"></a>
+        <br />
+        <center>
+            <table>
+                <tr>
+                    <td align="left">
+                        استان:
+                    </td>
+                    <td>
+                        @Html.DropDownList("cboState", new SelectList(q, "", ""))
+                        <span id="lblcboStateError" style="color: Red;"></span>
+                    </td>
+                    <td align="left">
+                        شهرستان:
+                    </td>
+                    <td>
+                        @Html.TextBox("cboCounty")
+                        <span id="lblcboCountyError" style="color: Red;"></span>
+                    </td>
+                </tr>
+                <tr>
+                    <td align="left">
+                        نام بخش:
+                    </td>
+                    <td>
+                        @Html.TextBox("cboZone")
+                        <span id="lblcboZoneError" style="color: Red;"></span>
+                    </td>
+                    <td align="left">
+                        نام شهر:
+                    </td>
+                    <td>
+                        @Html.TextBox("cboCity")
+                        <span id="lblcboCityError" style="color: Red;"></span>
+                    </td>
+                </tr>
+                <tr>
+                    <td align="left">
+                        <span style="color: Red;">*</span>نام شهرداری:
+                    </td>
+                    <td>
+                        @Html.TextBox("cboMunicipality")
+                        <span id="lblcboMunicipalityError" style="color: Red;"></span>
+                    </td>
+                    <td align="left">
+                        @Html.Hidden("fldId")
+                        <span style="color: Red;">*</span> نام منطقه:
+                    </td>
+                    <td>
+                        @Avarez.Helper.winClass.textbox("txtName")
+                        <span id="lblNameError" style="color: Red;"></span>
+                    </td>
+                </tr>
+                <tr>
+                <td align="left">
+                        <span style="color: Red;">*</span> کد انفورماتیک:
+                    </td>
+                    <td>
+                        @Avarez.Helper.winClass.textbox("txtInformaticesCode")
+                        <span id="lblInformaticesCodeError" style="color: Red;"></span>
+                    </td>
+                    <td align="left">
+                        <span style="color: Red;">*</span> کد خدمت:
+                    </td>
+                    <td>
+                        @(Html.Kendo().DropDownList()
+                                .Name("txtServiceCode")
+                                  .DataTextField("Text")
+                                  .DataValueField("Value")
+                                  .BindTo(new List<SelectListItem>() {
+                                      new SelectListItem() {
+                                          Text = "6",
+                                          Value = "6"
+                                      },
+                                     new SelectListItem() {
+                                         Text = "7",
+                                          Value = "7"
+                                      }
+                                  })
+                            )
+                        <span id="lblServiceCodeError" style="color: Red;"></span>
+                    </td>
+                </tr>
+                <tr>
+                    <td align="left">
+                        توضیحات:
+                    </td>
+                    <td>
+                        @Avarez.Helper.winClass.textArea("txtDesc", 4, 30)
+                    </td>
+                </tr>
+            </table>
+            <p>
+                @Avarez.Helper.winClass.Buttons("LoadWebService", "بارگذاری از سرور", "Yes")
+                @Avarez.Helper.winClass.Buttons("AddLink", "ذخیره", "Save")
+                @Avarez.Helper.winClass.Buttons("EditLink", "ویرایش", "Edit")
+                @Avarez.Helper.winClass.Buttons("DelLink", "حذف", "Del")
+                @Avarez.Helper.winClass.Buttons("exit", "خروج", "Exit")
+            </p>
+        </center>
+        @(Html.Kendo().PanelBar()
+        .Name("panelbar-images")
+        .Items(panelbar =>
+        {
+            panelbar.Add().Text("جستجو")
+                .ImageUrl(Url.Content("~/Content/images/search.png"))
+                .Content(@<div>
+                    <table>
+                        <tr>
+                            <td>
+                                فیلد جستجو:@Html.DropDownList("cboSearchFiald", new SelectList(new[] { new { ID = "0", Name = "نام منطقه" }, new { ID = "1", Name = "نام شهرداری" } }, "ID", "Name"))
+                            </td>
+                            <td>
+                                نوع جستجو: @Html.DropDownList("cboSearchType", new SelectList(new[] { new { ID = "0", Name = "مشابه عبارت" }, new { ID = "1", Name = "مشابه عبارت از سمت راست" }, new { ID = "2", Name = "عین عبارت" } }, "ID", "Name"))
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                عبارت جستجو: @Avarez.Helper.winClass.textbox("txtSearch")
+                            </td>
+                            <td>
+                                نتیجه رکوردها: @Html.TextBox("txtTop", 30, new { @style = "width:30px;" }) رکورد
+                            </td>
+                        </tr>
+                    </table>
+                    <br />
+                </div>);
+        })
+        )
+        <div class="k-rtl demo-section">
+            @(Html.Kendo().Grid<Avarez.Models.sp_LocalSelect>()
+                .Name("Grid")
+                .Columns(columns =>
+                {
+                    columns.Bound(p => p.fldID).Title("کد").Visible(false);
+                    columns.Bound(p => p.fldName).Title("منطقه");
+                    columns.Bound(p => p.fldMunicipalityName).Title("شهرداری");
+                    columns.Bound(p => p.fldDesc).Title("توضیحات");
+                })
+            .Selectable(selectable => selectable.Mode(GridSelectionMode.Single))
+            .Pageable()
+            .Scrollable()
+            .DataSource(data =>
+                data.Ajax()
+                .PageSize(10)
+                .Read("Fill", "Local")
+            )
+        )
+        </div>
+    </div>
+    <script type="text/javascript">
+        function selectCounty() {
+
+            return {
+                cboState: $("#cboState").val()
+            };
+        }
+        function selectZone() {
+
+            return {
+                cboCounty: $("#cboCounty").val()
+            };
+        }
+        function selectCity() {
+
+            return {
+                cboZone: $("#cboZone").val()
+            };
+        }
+        function selectMunicipality() {
+
+            return {
+                cboCity: $("#cboCity").val()
+            };
+        }
+        $("document").ready(function () {
+            $("#LoadWebService").button();
+            $("#AddLink").button();
+            $("#EditLink").button();
+            $("#DelLink").button();
+            $("#exit").button();
+            $('#Help').button();
+
+            $("#cboMunicipality").change(function () {
+                var url = '@Url.Action("Reload", "Local")';
+                Reload(url, 'Grid', 2, $("#cboMunicipality").val(), 0, 2);
+            });
+
+            $("#exit").click(function () {
+                $("#Local").remove();
+            });
+
+            $('#Local').on('keyup', 'input', function (event) {
+                if (event.which == 13) {
+                    var inputs = $('#Local').find(':input:visible');
+                    inputs.eq(inputs.index(this) + 1).focus();
+                }
+            });
+
+            $(document).keyup(function (event) {
+                if (event.which == 119) {
+                    SaveRecord();
+                }
+                else if (event.which == 113) {
+                    EditRecord();
+                }
+                else if (event.which == 115) {
+                    DeleteRecord();
+                }
+            });
+            $('#AddLink').attr('title', 'کلید میانبر (F8)'); //119
+            $('#EditLink').attr('title', 'کلید میانبر (F2)'); //113
+            $('#DelLink').attr('title', 'کلید میانبر (F4)'); //115
+
+            jQuery("#LoadWebService").click(function () {
+                var er = false;
+                if ($("#cboState").val() == '') {
+                    $("#cboState").addClass("input-validation-error");
+                    $('#lblcboStateError').html('لطفا استان را انتخاب کنید.');
+                    er = true;
+                }
+                else
+                    $('#lblcboStateError').html('');
+
+                if ($("#cboCounty").val() == '') {
+                    $("#cboCounty").addClass("input-validation-error");
+                    $('#lblcboCountyError').html('لطفا نام شهرستان را انتخاب کنید.');
+                    er = true;
+                }
+                else
+                    $('#lblcboCountyError').html('');
+
+                if ($("#cboZone").val() == '') {
+                    $("#cboZone").addClass("input-validation-error");
+                    $('#lblcboZoneError').html('لطفا نام بخش را انتخاب کنید.');
+                    er = true;
+                }
+                else
+                    $('#lblcboZoneError').html('');
+
+
+                if ($("#cboCity").val() == '') {
+                    $("#cboCity").addClass("input-validation-error");
+                    $('#lblcboCityError').html('لطفا نام شهر را انتخاب کنید.');
+                    er = true;
+                }
+                else
+                    $('#lblcboCityError').html('');
+
+                if ($("#cboMunicipality").val() == '') {
+                    $("#cboMunicipality").addClass("input-validation-error");
+                    $('#lblcboMunicipalityError').html('لطفا نام شهرداری را انتخاب کنید.');
+                    er = true;
+                }
+                else
+                    $('#lblcboMunicipalityError').html('');
+
+
+                if (er == true)
+                    return;
+                var data = {
+                    StateName: $("#cboState").data("kendoDropDownList").text(),
+                    CountyName: $("#cboCounty").data("kendoDropDownList").text(),
+                    ZoneName: $("#cboZone").data("kendoDropDownList").text(),
+                    CityName: $("#cboCity").data("kendoDropDownList").text(),
+                    MunName: $("#cboMunicipality").data("kendoDropDownList").text()
+                };
+                if (data != '') {
+                    PostForm(data, '@Url.Content("~/Municipality/loadFromWebService")', "#win");
+                }
+            });
+
+            jQuery("#EditLink").click(function () {
+                EditRecord();
+            });
+
+            $('#DelLink').click(function () {
+                DeleteRecord();
+            });
+
+            $("#AddLink").click(function () {
+                SaveRecord();
+            });
+
+            $('#txtSearch').keyup(function () {
+                var url = '@Url.Action("Reload", "Local")';
+                Reload(url, 'Grid', $("#cboSearchFiald").val(), $("#txtSearch").val(), $("#txtTop").val(), $("#cboSearchType").val());
+            });
+
+            $("#txtName").keyup(function () {
+                if ($("#txtName").val() != '') {
+                    $("#txtName").removeClass("input-validation-error");
+                    $("#lblNameError").html("");
+                }
+                else {
+                    $("#txtName").addClass("input-validation-error");
+                    $('#lblNameError').html('لطفا نام منطقه را وارد کنید.');
+                }
+            });
+            $("#cboMunicipality").change(function () {
+                if ($("#cboMunicipality").val() != '') {
+                    $("#cboMunicipality").removeClass("input-validation-error");
+                    $("#lblcboMunicipalityError").html("");
+                }
+                else {
+                    $("#cboMunicipality").addClass("input-validation-error");
+                    $('#lblcboMunicipalityError').html('لطفا شهرداری را انتخاب کنید.');
+                }
+            });
+            $("#txtInformaticesCode").keyup(function () {
+                if ($("#txtInformaticesCode").val() != '') {
+                    $("#txtInformaticesCode").removeClass("input-validation-error");
+                    $("#lblInformaticesCodeError").html("");
+                }
+                else {
+                    $("#txtInformaticesCode").addClass("input-validation-error");
+                    $('#lblInformaticesCodeError').html('لطفا کد انفورماتیک را وارد کنید.');
+                }
+            });
+
+            $("#txtServiceCode").keyup(function () {
+                if ($("#txtServiceCode").val() != '') {
+                    $("#txtServiceCode").removeClass("input-validation-error");
+                    $("#lblServiceCodeError").html("");
+                }
+                else {
+                    $("#txtServiceCode").addClass("input-validation-error");
+                    $('#lblServiceCodeError').html('لطفا کد سرویس را وارد کنید.');
+                }
+            });
+   
+        });
+        function Clear() {
+            $('#txtName').val('');
+            $('#fldId').val(0);
+            $('#txtDesc').val('');
+        }
+        function EditRecord() {
+                var entityGrid = $("#Grid").data("kendoGrid");
+                var selectedItem = entityGrid.dataItem(entityGrid.select());
+                if (selectedItem) {
+                    var id = selectedItem.fldID;
+                    var URL = '@Url.Content("~/Local/Details")';
+                    URL = URL + "/" + id;
+                    $.ajax({
+                        type: "GET",
+                        url: URL,
+                        success: function (data) {
+                            $('#txtName').val(data.fldName);
+                            $('#fldId').val(data.fldId);
+                            $('#cboM').val(data.fldMunicipalityID);
+                            $('#txtDesc').val(data.fldDesc);
+
+                            $('#txtInformaticesCode').val(data.fldSourceInformatics);
+                            $('#txtServiceCode').val(data.fldServiceCode);
+                            var State = $("#cboState").data("kendoDropDownList");
+                            var County = $("#cboCounty").data("kendoDropDownList");
+                            var Zone = $("#cboZone").data("kendoDropDownList");
+                            var City = $("#cboCity").data("kendoDropDownList");
+                            var Mun = $("#cboMunicipality").data("kendoDropDownList");
+                            State.value(data.fldStateID);
+
+                            County.enable(true);
+                            Zone.enable(true);
+                            City.enable(true);
+                            Mun.enable(true);
+
+                            County.dataSource.data(data.County);
+                            Zone.dataSource.data(data.Zone);
+                            City.dataSource.data(data.City);
+                            Mun.dataSource.data(data.Municipality);
+
+                            County.value(data.fldCountyID);
+                            Zone.value(data.fldZoneID);
+                            City.value(data.fldCityID);
+                            Mun.value(data.fldMunicipalityID);
+                        },
+                        failure: function (data) {
+                            alert(data.data);
+                        }
+                    });
+                }
+                else {
+                    alert('لطفا یک سطر را انتخاب کنید.');
+                }
+            }
+            function SaveRecord() {
+                var er = false;
+                if ($("#txtName").val() == '') {
+                    $("#txtName").addClass("input-validation-error");
+                    $('#lblNameError').html('لطفا نام منطقه را وارد کنید.');
+                    er = true;
+                }
+                else
+                    $('#lblNameError').html('');
+
+                if ($("#cboMunicipality").val() == '') {
+                    $("#cboMunicipality").addClass("input-validation-error");
+                    $('#lblcboMunicipalityError').html('لطفا شهرداری را انتخاب کنید.');
+                    er = true;
+                }
+                else
+                    $('#lblcboMunicipalityError').html('');
+
+                if (er)
+                    return;
+
+                var data = { fldName: $("#txtName").val(), fldMunicipalityID: $("#cboMunicipality").val(),
+                    fldUserID: 1, fldDesc: $("#txtDesc").val(),
+                    fldSourceInformatics: $("#txtInformaticesCode").val(),
+                    fldServiceCode: $("#txtServiceCode").val(),
+                    fldId: $("#fldId").val()
+                };
+                if (data != '') {
+                    PostForm(data, '@Url.Content("~/Local/Save")', "#win");
+                }
+                Clear();
+            }
+            function DeleteRecord() {
+                var entityGrid = $("#Grid").data("kendoGrid");
+                var selectedItem = entityGrid.dataItem(entityGrid.select());
+                if (selectedItem) {
+                    var id = selectedItem.fldID;
+                    var URL = '@Url.Content("~/metro/YesNomsg")';
+                    URL = URL + "/?id=" + id + "&URL=" + '@Url.Content("~/Local/Delete")';
+                    windowAppend("body", URL);
+                    $("#message").html('آیا مایل به حذف رکورد انتخاب شده هستید؟');
+                }
+                else {
+                    alert('لطفا یک سطر را انتخاب کنید.');
+                }
+                Clear();
+            }
+        function Reload(Url, gridname, field, value, top, searchType) {
+            var grid = $('#' + gridname).data('kendoGrid');
+            $.ajax({
+                url: Url,
+                type: 'get',
+                datatype: 'json',
+                data: { field: field, value: value, top: top, searchtype: searchType },
+                error: function (xhr, status, error) {
+                    alert(xhr + status);
+                },
+                success: function (result) {
+                    $("#" + gridname).data("kendoGrid").dataSource.data(result);
+                }
+
+            });
+        }
+
+        function PostForm(datas, url, id) {
+            var sendInfo = datas;
+            $('#Lock').show();
+            $.ajax({
+                type: "POST",
+                url: url,
+                data: sendInfo,
+                datatype: "json",
+                success: function (data) {
+                    var m = data;
+                    windowAppend("body", "/metro/error");
+                    $("#message").html(m.data);
+                    switch (m.state) {
+                        case 0:
+                            $("#error .wintitle").html("ذخیره موفق");
+                            break;
+                        case 1:
+                            $("#error .wintitle").html("خطا");
+                            break;
+                    }
+                    var url = '@Url.Action("Reload", "Local")';
+                    Reload(url, 'Grid', '0', '', 30, 1);
+                    $('#Lock').hide();
+                },
+                failure: function (data) {
+                    alert(data.data);
+                }
+            });
+        }    
+    </script>
+</div>
+<div class="k-rtl">
+    @(Html.Kendo().DropDownList()
+          .Name("cboState")
+          .OptionLabel("نام استان...")
+          .DataTextField("fldName")
+          .DataValueField("fldID")
+          .DataSource(source =>
+          {
+              source.Read(read =>
+              {
+                  read.Action("GetCascadeState", "Local");
+              });
+          })
+          .HtmlAttributes(new { @style = "display: none;width:105px;" })
+    )
+    @(Html.Kendo().DropDownList()
+          .Name("cboCounty")
+          .OptionLabel("نام شهرستان...")
+                  .DataTextField("fldName")
+                  .DataValueField("fldID")
+          .DataSource(source =>
+          {
+              source.Read(read =>
+              {
+                  read.Action("GetCascadeCounty", "Local")
+                      .Data("selectCounty");
+              })
+              .ServerFiltering(true);
+          })
+          .Enable(true)
+          .AutoBind(false)
+          .CascadeFrom("cboState")
+          .HtmlAttributes(new { @style = "display: none;width:105px;" })
+    )
+    @(Html.Kendo().DropDownList()
+          .Name("cboZone")
+          .OptionLabel("نام بخش...")
+                  .DataTextField("fldName")
+                  .DataValueField("fldID")
+          .DataSource(source =>
+          {
+              source.Read(read =>
+              {
+                  read.Action("GetCascadeZone", "Local")
+                      .Data("selectZone");
+              })
+              .ServerFiltering(true);
+          })
+          .Enable(true)
+          .AutoBind(false)
+          .CascadeFrom("cboCounty")
+          .HtmlAttributes(new { @style = "display: none;width:105px;" })
+    )
+    @(Html.Kendo().DropDownList()
+          .Name("cboCity")
+          .OptionLabel("نام شهر...")
+                  .DataTextField("fldName")
+                  .DataValueField("fldID")
+          .DataSource(source =>
+          {
+              source.Read(read =>
+              {
+                  read.Action("GetCascadeCity", "Local")
+                      .Data("selectCity");
+              })
+              .ServerFiltering(true);
+          })
+          .Enable(true)
+          .AutoBind(false)
+          .CascadeFrom("cboZone")
+          .HtmlAttributes(new { @style = "display: none;width:105px;" })
+    )
+    @(Html.Kendo().DropDownList()
+          .Name("cboCity")
+          .OptionLabel("نام شهر...")
+                  .DataTextField("fldName")
+                  .DataValueField("fldID")
+          .DataSource(source =>
+          {
+              source.Read(read =>
+              {
+                  read.Action("GetCascadeCity", "Local")
+                      .Data("selectCity");
+              })
+              .ServerFiltering(true);
+          })
+          .Enable(true)
+          .AutoBind(false)
+          .CascadeFrom("cboZone")
+          .HtmlAttributes(new { @style = "display: none;width:105px;" })
+    )
+    @(Html.Kendo().DropDownList()
+          .Name("cboMunicipality")
+          .OptionLabel("نام شهرداری...")
+          .DataTextField("fldName")
+          .DataValueField("fldID")
+          .DataSource(source =>
+          {
+              source.Read(read =>
+              {
+                  read.Action("GetCascadeMunicipality", "Local")
+                      .Data("selectMunicipality");
+              })
+              .ServerFiltering(true);
+          })
+          .Enable(true)
+          .AutoBind(false)
+          .CascadeFrom("cboCity")
+          .HtmlAttributes(new { @style = "display: none;width:105px;" })
+    )
+</div>

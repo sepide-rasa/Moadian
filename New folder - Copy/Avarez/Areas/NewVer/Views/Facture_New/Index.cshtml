@@ -1,0 +1,756 @@
+﻿@model Avarez.Models.Facture_Guest
+@using Ext.Net.MVC
+@using Hogaf.ExtNet.UX
+@using Ext.Net;
+@{
+    var X = Html.X();
+    Avarez.Models.cartaxEntities car = new Avarez.Models.cartaxEntities();
+    var picmnu = car.sp_SelectNameBankAndMunForBankInformation(Convert.ToInt32(Session["CountryCode"]), Convert.ToInt32(Session["CountryType"])).ToList();
+    var HaveBank=false;
+    if (picmnu.Count != 0) { 
+        HaveBank = true;
+    }
+}
+<style>
+    .LblStyle {
+        height: auto;
+    }
+.lbl{
+        background-color:rgb(255, 202, 153);
+    }
+.Red {
+        color: red;
+    }
+.boldd{
+    font-weight:bold;
+    font-size:12px;
+}
+.colorr{
+    color:dimgray;
+}
+</style>
+<script src="~/Scripts/accounting.js"></script>
+<script>
+    var template = '<span>{0}</span>';
+    var Rial = function (value) {
+        return Ext.String.format(template, accounting.formatNumber(value));
+    };
+</script>
+
+@(X.Panel()
+    .Title("صورتحساب")
+    .Border(false)
+    .Resizable(false)
+    .Listeners(l => l.AfterRender.Handler = "LoadFacture();/*LoadGrid_LblAvarez();*/")
+    .Layout(LayoutType.Fit)
+    .ID("Facture")
+    .Closable(true)
+    .CloseAction(Ext.Net.CloseAction.Destroy)
+    .Items(
+        X.FormPanel()
+            .AutoScroll(true)
+            .Layout(Ext.Net.LayoutType.VBox)
+            .LayoutConfig(new Ext.Net.VBoxLayoutConfig { Align = Ext.Net.VBoxAlign.Center })
+            .Border(false)
+            .Items(
+                X.Panel()
+                    .Layout(Ext.Net.LayoutType.Fit)
+                    .Height(45)
+                    .Width(270)
+                    .Border(false)
+                    .Items(
+                        X.Image()
+                            .ItemID("ImageFacture")
+                            .ImageUrl("/Content/images/GeustNAV2.png")
+                        ),
+                X.Panel()
+                    //.Layout(Ext.Net.LayoutType.VBox)
+                    //.LayoutConfig(new Ext.Net.VBoxLayoutConfig { Align = Ext.Net.VBoxAlign.Center,DefaultMargins="0px",Pack=BoxPack.Start})
+                    .Border(false)
+                    .Items(
+                        X.FieldSet()
+                            .Border(false)
+                            .Layout(LayoutType.HBox)
+                            .Margins("0")
+                            .Padding(0)
+                            .Defaults(new { Margin = 2 })
+                            .Items(
+                                X.Hidden()
+                                    .ItemID("fldFine")
+                                    .Value(0),
+                                X.Hidden()
+                                    .ItemID("fldValueAddPrice")
+                                    .Value(0),
+                                X.Hidden()
+                                    .ItemID("fldPrice")
+                                    .Value(0),
+                                X.Hidden()
+                                    .ItemID("Bed")
+                                    .Value(0),
+                                X.Hidden()
+                                    .ItemID("Years"),
+                                X.Hidden()
+                                    .ItemID("fldOtherPrice")
+                                    .Value(0),
+                                X.Hidden()
+                                    .ItemID("fldMainDiscount")
+                                    .Value(0),
+                                X.Hidden()
+                                    .ItemID("fldFineDiscount")
+                                    .Value(0),
+                                X.Hidden()
+                                    .ItemID("fldValueAddDiscount")
+                                    .Value(0),
+                                X.Hidden()
+                                    .ItemID("fldOtherDiscount")
+                                    .Value(0),
+                                X.FieldSet()
+                                    .Border(false)
+                                    .Layout(LayoutType.HBox)
+                                    .Width(320)
+                                    .Items(
+                                        X.Label("نام و نام خانوادگی:")
+                                            .Cls("boldd")
+                                            .PaddingSpec("0 0 0 50px"),
+                                        X.Label()
+                                            //.Width(180)
+                                            .Cls("colorr")
+                                            .ItemID("txtMalek")),
+                                X.FieldSet()
+                                    .Border(false)
+                                    .Layout(LayoutType.HBox)
+                                    .Width(300)
+                                    .Items(
+                                        X.Label("شماره پلاک:")
+                                            .Cls("boldd")
+                                            .PaddingSpec("0 0 0 50px"),
+                                        X.Label()
+                                            .Cls("colorr")
+                                            //.Width(180)
+                                            .ItemID("fldPlaqueNum")
+                                            .Cls("lbl")),
+                                X.FieldSet()
+                                    .Border(false)
+                                    .Layout(LayoutType.HBox)
+                                    .Width(300)
+                                    .Items(
+                                        X.Label("نوع ساخت:")
+                                            .Cls("boldd")
+                                            .PaddingSpec("0 0 0 50px"),
+                                        X.Label()
+                                            .Cls("colorr")
+                                            //.Width(180)
+                                            .ItemID("txtCarMake"))),
+                        X.FieldSet()
+                            .Border(false)
+                            .Layout(LayoutType.HBox)
+                            .Margins("0")
+                            .Padding(0)
+                            .Defaults(new { Margin = 2 })
+                            .Items(
+                                X.FieldSet()
+                                    .Border(false)
+                                    .Width(320)
+                                    .Layout(LayoutType.HBox)
+                                    .Items(
+                                        X.Label("نوع کاربری:")
+                                            .Cls("boldd")
+                                            .PaddingSpec("0 0 0 50px"),
+                                        X.Label()
+                                            .Cls("colorr")
+                                            //.Width(180)
+                                            .ItemID("txtCarAccountTypes")),
+                                X.FieldSet()
+                                    .Border(false)
+                                    .Width(300)
+                                    .Layout(LayoutType.HBox)
+                                    .Items(
+                                        X.Label("نوع کابین:")
+                                            .Cls("boldd")
+                                            .PaddingSpec("0 0 0 50px"),
+                                        X.Label()
+                                            .Cls("colorr")
+                                            //.Width(180)
+                                            .ItemID("txtCarCabin")),
+                                X.FieldSet()
+                                    .Border(false)
+                                    .Layout(LayoutType.HBox)
+                                    .Width(300)
+                                    .Items(
+                                        X.Label("سیستم خودرو:")
+                                            .Cls("boldd")
+                                            .PaddingSpec("0 0 0 50px"),
+                                        X.Label()
+                                            .Cls("colorr")
+                                            //.Width(180)
+                                            .ItemID("txtSystem"))),
+                        X.FieldSet()
+                            .Border(false)
+                            .Layout(LayoutType.HBox)
+                            .Margins("0")
+                            .Padding(0)
+                            .Defaults(new { Margin = 2 })
+                            .Items(
+                                X.FieldSet()
+                                    .Border(false)
+                                    .Width(320)
+                                    .Layout(LayoutType.HBox)
+                                    .Items(
+                                        X.Label("تیپ خودرو:")
+                                            .Cls("boldd")
+                                            .PaddingSpec("0 0 0 50px"),
+                                        X.Label()
+                                            .Cls("colorr")
+                                            //.Width(180)
+                                            .ItemID("txtModel")),
+                                X.FieldSet()
+                                    .Border(false)
+                                    .Layout(LayoutType.HBox)
+                                    .Width(300)
+                                    .Items(                                    
+                                        X.Label("کلاس خودرو:")
+                                            .Cls("boldd")
+                                            .PaddingSpec("0 0 0 50px"),
+                                        X.Label()
+                                            .Cls("colorr")
+                                            //.Width(180)
+                                            .ItemID("txtClass")),
+                                X.FieldSet()
+                                    .Border(false)
+                                    .Width(300)
+                                    .Layout(LayoutType.HBox)
+                                    .Items(
+                                        X.Label("شماره موتور:")
+                                            .Cls("boldd")
+                                            .PaddingSpec("0 0 0 50px"),
+                                        X.Label()
+                                            .Cls("colorr")
+                                            //.Width(180)
+                                            .ItemID("txtMotor"))),
+                        X.FieldSet()
+                            .Border(false)
+                            .Layout(LayoutType.HBox)
+                            .Margins("0")
+                            .Padding(0)
+                            .Defaults(new { Margin = 2 })
+                            .Items(
+                                X.FieldSet()
+                                    .Border(false)
+                                    .Width(320)
+                                    .Layout(LayoutType.HBox)
+                                    .Items(
+                                        X.Label("شماره شاسی:")
+                                            .Cls("boldd")
+                                            .PaddingSpec("0 0 0 50px"),
+                                        X.Label()
+                                            .Cls("colorr")
+                                            //.Width(180)
+                                            .ItemID("txtShasi")),
+                                X.FieldSet()
+                                    .Border(false)
+                                    .Layout(LayoutType.HBox)
+                                    .Width(300)
+                                    .Items(
+                                        X.Label("رنگ خودرو:")
+                                            .Cls("boldd")
+                                            .PaddingSpec("0 0 0 50px"),
+                                        X.Label()
+                                            .Cls("colorr")
+                                            //.Width(180)
+                                            .ItemID("txtColor")),
+                                X.FieldSet()
+                                    .Border(false)
+                                    .Layout(LayoutType.HBox)
+                                    .Width(300)
+                                    .Items(
+                                        X.Label("سال تولید:")
+                                            .Cls("boldd")
+                                            .PaddingSpec("0 0 0 50px"),
+                                        X.Label()
+                                            .Cls("colorr")
+                                            //.Width(180)
+                                            .ItemID("txtYear"))),
+                        X.FieldSet()
+                            .Border(false)
+                            .Layout(LayoutType.HBox)
+                            .Margins("0")
+                            .Padding(0)
+                            .Defaults(new { Margin = 2 })
+                            .Items(
+                                X.FieldSet()
+                                    .Border(false)
+                                    .Layout(LayoutType.HBox)
+                                    .Width(320)
+                                    .Items(
+                                        X.Label("تاریخ پلاک گذاری:")
+                                            .Cls("boldd")
+                                            .PaddingSpec("0 0 0 50px"),
+                                        X.Label()
+                                            .Cls("colorr")
+                                            //.Width(180)
+                                            .ItemID("txtDateP")),
+                                X.FieldSet()
+                                    .Border(false)
+                                    .Layout(LayoutType.HBox)
+                                    .Width(300)
+                                    .Items(
+                                        X.Label("تاریخ اولین بیمه:")
+                                            .Cls("boldd")
+                                            .PaddingSpec("0 0 0 50px"),
+                                        X.Label()
+                                            .Cls("colorr")
+                                            //.Width(180)
+                                            .ItemID("txtDate")),
+                                X.FieldSet()
+                                    .Border(false)
+                                    .Width(300)
+                                    .Layout(LayoutType.HBox)
+                                    .Items(
+                                        X.Label("VIN:")
+                                            .Cls("boldd")
+                                            .PaddingSpec("0 0 0 50px"),
+                                        X.Label()
+                                            .Cls("colorr")
+                                            .Cls("lbl")
+                                            //.Width(180)
+                                            .ItemID("VIN")))
+                            ),
+                X.Panel()
+                    .Layout(Ext.Net.LayoutType.VBox)
+                    .LayoutConfig(new Ext.Net.VBoxLayoutConfig { Align = Ext.Net.VBoxAlign.Center })
+                    .Border(false)
+                    .ItemID("pnlMablagh")
+                    .Hidden(true)
+                    .Items(
+                        X.FieldSet()
+                            .Border(false)
+                            .Layout(LayoutType.HBox)
+                            .LayoutConfig(new HBoxLayoutConfig { Align = HBoxAlign.Stretch })
+                            .Items(
+                                X.Label()
+                                    .Text("مبلغ عوارض:")
+                                    .Cls("Red"),
+                                X.Label()
+                                    .ItemID("lblMablagh")
+                                    .Cls("Red")
+                            )
+                            ),
+                X.Panel()
+                    .Layout(Ext.Net.LayoutType.VBox)
+                    .Border(false)
+                    .LayoutConfig(new Ext.Net.VBoxLayoutConfig { Align = Ext.Net.VBoxAlign.Center })
+                    .Items(
+                        X.Container()
+                            .Height(100)
+                            .Hidden(!HaveBank)
+                            .Content(@<div align="center" id="fi-button-Dl4" style="text-align:center;">
+                            <br />
+                            <center>
+                                <table style="width: 150px; ">
+                                    <tr style="align-content: center; text-align: center;">
+                                        @for (var i = 0; i < picmnu.Count; i++)
+                                        {
+                                            <td style="text-align: center; vertical-align: middle; "><img src="@Url.Content("~/content/" + picmnu[i].BankId+".jpg")" title='@picmnu[i].fldBankName' style="height:40px;width:40px;" /></td>
+                                        }
+                                    </tr>
+                                    <tr style="align-content:center;">
+                                        @for (var i = 0; i < picmnu.Count; i++)
+                                        {
+                                            <td style="text-align: center; vertical-align: middle; ">
+                                                @*@Html.RadioButton("Bank", picmnu[i].BankId)*@
+                                                <input id="Bank" name="Bank" type="radio" value='@picmnu[i].BankId' style="height:20px;">
+                                            </td>
+                                        }
+                                    </tr>
+                                </table>
+                            </center>       
+                                </div>)
+                           ),
+                X.FieldSet()
+                    .LayoutConfig(new Ext.Net.TableLayoutConfig { Columns = 4 })
+                    .Border(false)
+                    .Defaults(new { Margin = 2 })
+                    .Items(
+                    X.Button()
+                            .Text("مشاهده صورتحساب")
+                           // .ItemID("btnMafasa")
+                            .Icon(Ext.Net.Icon.Printer)
+                            .Listeners(l => l.Click.Handler = "LoadGrid_LblAvarez()"),
+                        X.Button()
+                            .Text("پرداخت آنلاین")
+                            .Disabled(!HaveBank)
+                            .Listeners(l => l.Click.Handler = "PardakhtOnline()")
+                            .Icon(Ext.Net.Icon.Coins)
+                    , X.Button().Text("پرداخت آنلاین")
+                        .Listeners(l => l.Click.Handler = "PardakhtOnline1()")
+                        .Icon(Ext.Net.Icon.Coins)
+                        .Hidden(true)
+                        ,X.Button()
+                            .Text("مفاصا")
+                            .ItemID("btnMafasa")
+                            .Icon(Ext.Net.Icon.Printer)
+                            //.Disabled(true)
+                            .Listeners(l => l.Click.Handler = "Mafasa_Guest()"),
+                        X.Button().Text("خروج")
+                            .OnClientClick("App.Facture.destroy();")
+                            .Icon(Ext.Net.Icon.DoorOut)
+                            ),
+                X.Panel()
+                    .Border(false)
+                    .Items(
+                        X.GridPanel()
+                            .AutoScroll(true)
+                            .Listeners(l => l.Render.Handler = "Ext.getCmp('Facture').queryById('MoGrid').setWidth(Ext.getBody().getViewSize().width-280);")
+                            .Height(200)
+                            .ItemID("MoGrid")
+                            .Title("صورتحساب")
+                            .Store(
+                                X.StoreFor(Model.jCalcCarFile)
+                                .PageSize(20000)
+                                .RemoteFilter(true)
+                                .RemotePaging(true)
+                                 )
+                            .Plugins(Html.X().CellEditing())
+                            .ColumnModel(
+                                Html.X().RowNumbererColumn().Flex(1),
+                                Html.X().Column().DataIndex(Model.jCalcCarFile, m => m.fldYear).Text("سال").Flex(2),
+                                Html.X().Column().DataIndex(Model.jCalcCarFile, m => m.fldPrice).Text("عوارض").Flex(5).Renderer("Rial"),
+                                Html.X().Column().DataIndex(Model.jCalcCarFile, m => m.fldMablaghMoaser).Text("مبلغ موثر").Flex(5).Renderer("Rial"),
+                                Html.X().Column().DataIndex(Model.jCalcCarFile, m => m.fldValueAdded).Text("تبصره ب ماده43").Flex(5).Renderer("Rial"),
+                                Html.X().Column().DataIndex(Model.jCalcCarFile, m => m.fldFinalPrice).Text("مبلغ نهایی").Flex(5).Renderer("Rial"),
+                                Html.X().Column().DataIndex(Model.jCalcCarFile, m => m.fldNoMashmol).Text("غیر مشمول").Flex(4).Renderer("Rial"),
+                                Html.X().Column().DataIndex(Model.jCalcCarFile, m => m.fldMashmol).Text("مشمول جریمه").Flex(4).Renderer("Rial"),
+                                Html.X().Column().DataIndex(Model.jCalcCarFile, m => m.fldMablaghJarime).Text("جریمه").Flex(5).Renderer("Rial"),
+                                Html.X().Column().DataIndex(Model.jCalcCarFile, m => m.fldTedadJarime).Text("تعداد ماه/روز").Flex(5),
+                                Html.X().Column().DataIndex(Model.jCalcCarFile, m => m.fldDiscount).Text("تخفیف ").Flex(5).Renderer("Rial"),
+                                Html.X().Column().DataIndex(Model.jCalcCarFile, m => m.fldDept).Text("جمع کل").Flex(5).Renderer("Rial")
+                                 )
+                            .SelectionModel(
+                                Html.X().RowSelectionModel()
+                                    .Mode(Ext.Net.SelectionMode.Single)
+                                     )
+                            ),
+                X.GridPanel()
+                    .Listeners(l => l.Render.Handler = "Ext.getCmp('Facture').queryById('SavabeghGrid').setWidth(Ext.getBody().getViewSize().width-280);")                  
+                    .AutoScroll(true)
+                    .Height(200)
+                    .Title("سوابق خودرو")
+                    .ItemID("SavabeghGrid")
+                    .Store(
+                        X.StoreFor(Model.CarExperience)
+                            .Parameters(new { CarID = @ViewBag.Carid })
+                            .Proxy(Html.X().AjaxProxy()
+                            .Url(Url.Action("Read_Savabegh"))
+                            .Reader(Html.X().JsonReader().Root("data"))
+                        )
+                        .PageSize(20)
+                        .RemoteFilter(true)
+                        .RemotePaging(true)
+                                )
+                    .View(
+                        Html.X().GridView().RTL(true).LoadingText("در حال بارگذاری...")
+                            )
+                    .ColumnModel(
+                            Html.X().RowNumbererColumn(),
+                            Html.X().Column().DataIndex(Model.CarExperience, m => m.fldID).Text("کد").Hidden(true).Hideable(true).Flex(1),
+                            Html.X().Column().DataIndex(Model.CarExperience, m => m.fldName).Text("شهرداری").Flex(2),
+                            Html.X().Column().DataIndex(Model.CarExperience, m => m.fldLetterNumber).Text("ش نامه").Flex(2),
+                            Html.X().Column().DataIndex(Model.CarExperience, m => m.fldStartDate).Text("از تاریخ").Flex(2),
+                            Html.X().Column().DataIndex(Model.CarExperience, m => m.fldEndDate).Text("تا تاریخ").Flex(2),
+                            Html.X().Column().DataIndex(Model.CarExperience, m => m.fldPlaqueNumber).Text("شماره پلاک").Flex(2),
+                            Html.X().Column().DataIndex(Model.CarExperience, m => m.fldUserName).Text("کاربر").Flex(2),
+                            Html.X().Column().DataIndex(Model.CarExperience, m => m.fldDesc).Text("توضیحات").Wrap(true).Flex(2)
+                            )
+                    .SelectionModel(
+                        Html.X().RowSelectionModel()
+                            .Mode(Ext.Net.SelectionMode.Single)
+                                ),
+                X.GridPanel()
+                    .Listeners(l => l.Render.Handler = "Ext.getCmp('Facture').queryById('VarizihaGrid').setWidth(Ext.getBody().getViewSize().width-280);")                             
+                    .AutoScroll(true)
+                    .Title("واریزی ها")                            
+                    .Height(200)
+                    .ItemID("VarizihaGrid")
+                    .Store(
+                        X.StoreFor(Model.Receipt)
+                            .Parameters(new { CarID = @ViewBag.Carid })
+                            .Proxy(Html.X().AjaxProxy()
+                                .Url(Url.Action("Read_Varizi"))
+                                .Reader(Html.X().JsonReader().Root("data"))
+                        )
+                        .PageSize(20)
+                        .RemoteFilter(true)
+                        .RemotePaging(true)
+                                    )
+                        .View(
+                            Html.X().GridView().RTL(true).LoadingText("در حال بارگذاری...")
+                                )
+                        .ColumnModel(
+                                Html.X().RowNumbererColumn(),
+                                Html.X().Column().DataIndex(Model.Receipt, m => m.fldID).Text("کد").Hidden(true).Hideable(true).Flex(1),
+                                Html.X().Column().DataIndex(Model.Receipt, m => m.fldCollectionDate).Text("تاریخ").Flex(2),
+                                Html.X().Column().DataIndex(Model.Receipt, m => m.fldPrice).Text("مبلغ").Flex(2).Renderer("Rial"),
+                                Html.X().Column().DataIndex(Model.Receipt, m => m.fldMunName).Text("صاحب حساب").Flex(2),
+                                Html.X().Column().DataIndex(Model.Receipt, m => m.BankName).Text("بانک عامل").Flex(2),
+                                Html.X().Column().DataIndex(Model.Receipt, m => m.UserName).Text("کاربر ثبت کننده").Flex(2),
+                                Html.X().ComponentColumn().ItemID("buttonResid").Text("رسید").Component(Html.X().Button().ItemID("btnbind").Text("رسید").Listeners(l => l.Click.Handler = "PrintResid()")).Filterable(false)
+                                )
+                    .SelectionModel(
+                        Html.X().RowSelectionModel()
+                            .Mode(Ext.Net.SelectionMode.Single)
+                                )
+            )
+        )
+)
+<script type="text/javascript">
+    function LoadFacture() {
+        Ext.net.Mask.show({ msg: 'در حال بارگذاری...' });
+        Ext.net.DirectMethod.request({
+            url: '/NewVer/Facture_New/Fill',
+            params: {
+                carFileId: '@ViewBag.carFileId'
+            },
+            success: function (data) {
+                App.Facture.queryById('fldPlaqueNum').setText(data.plaq);
+                App.Facture.queryById('txtMalek').setText(data.Malek);
+                App.Facture.queryById('txtCarMake').setText(data.make);
+                App.Facture.queryById('txtCarAccountTypes').setText(data.account);
+                App.Facture.queryById('txtCarCabin').setText(data.cabin);
+                App.Facture.queryById('txtSystem').setText(data.syst);
+                App.Facture.queryById('txtModel').setText(data.modell);
+                App.Facture.queryById('txtClass').setText(data.classs);
+                App.Facture.queryById('txtMotor').setText(data.motor);
+                App.Facture.queryById('txtShasi').setText(data.shasi);
+                App.Facture.queryById('txtColor').setText(data.color);
+                App.Facture.queryById('txtYear').setText(data.year);
+                App.Facture.queryById('txtDateP').setText(data.datep);
+                App.Facture.queryById('txtDate').setText(data.date);
+                App.Facture.queryById('VIN').setText(data.vin);
+                Ext.net.Mask.hide();
+            }
+        });
+    }
+
+    function LoadGrid_LblAvarez() {
+        Ext.net.Mask.show({ msg: 'در حال بارگذاری...' });
+        Ext.net.DirectMethod.request({
+            url: '/NewVer/Facture_New/calcBill',
+            params: {
+                CarID: '@ViewBag.Carid'
+            },
+            success: function (data) {
+                if (data.Er == 2) {
+                    Ext.MessageBox.show({
+                        title: "",
+                        msg: data.Msg,
+                        icon: Ext.MessageBox.INFO,
+                        buttons: Ext.MessageBox.OK,
+                        buttonText: {
+                            ok: 'انصراف '
+                        },
+                    });
+                    App.Facture.queryById('btnMafasa').setDisabled(true);
+                    App.Facture.queryById('pnlMablagh').hide();
+                }
+                else if (data.Er == 1) {
+                    Ext.MessageBox.show({
+                        title: "",
+                        msg: data.Msg,
+                        icon: Ext.MessageBox.ERROR,
+                        buttons: Ext.MessageBox.OK,
+                        fn: function (btn) {
+                            if (btn == "ok") {
+                                document.location.href = '/NewVer/Account_New/LogOn/3';
+                            }
+                        },
+                        buttonText: {
+                            ok: 'ورود به سایت '
+                        },
+                    });
+                    App.Facture.queryById('btnMafasa').setDisabled(true);
+                    App.Facture.queryById('pnlMablagh').hide();
+                }
+                else if (data.Er == 3) {
+                        Ext.MessageBox.show({
+                            title: "",
+                            msg: data.Msg,
+                            icon: Ext.MessageBox.ERROR,
+                            buttons: Ext.MessageBox.OK
+                        });
+                        App.Facture.queryById('btnMafasa').setDisabled(true);
+                        App.Facture.queryById('pnlMablagh').hide();
+                } 
+                else {
+                    App.Facture.queryById('MoGrid').getStore().loadData(data.bedehi);
+                    App.Facture.queryById('pnlMablagh').show();
+                    App.Facture.queryById('lblMablagh').setText(accounting.formatNumber(data.mablagh).toString() + ' ریال');
+                    App.Facture.queryById("fldFine").setValue(data.fldFine);
+                    App.Facture.queryById("fldValueAddPrice").setValue(data.fldValueAddPrice);
+                    App.Facture.queryById("fldPrice").setValue(data.fldPrice);
+                    App.Facture.queryById("Bed").setValue(data.Bed);
+                    App.Facture.queryById("Years").setValue(data.Years);
+                    App.Facture.queryById("fldOtherPrice").setValue(data.fldOtherPrice);
+                    App.Facture.queryById("fldMainDiscount").setValue(data.fldMainDiscount);
+                    App.Facture.queryById("fldFineDiscount").setValue(data.fldFineDiscount);
+                    App.Facture.queryById("fldValueAddDiscount").setValue(data.fldValueAddDiscount);
+                    App.Facture.queryById("fldOtherDiscount").setValue(data.fldOtherDiscount);
+                }
+                Ext.net.Mask.hide();
+            }
+        });
+    }
+
+    function PrintResid() {
+        var id = App.Facture.queryById("buttonResid").activeRecord.record.data.fldID;
+        Ext.net.Mask.show({ msg: 'در حال بارگذاری...' });
+        Ext.net.DirectMethod.request({
+            url: '/NewVer/Facture_New/PrintReceipt',
+            params: {
+                id:id
+            },
+            success: function (data) {
+                Ext.net.Mask.hide();
+            }
+        });
+    }
+
+    function Mafasa_Guest() {
+        var Mablagh = App.Facture.queryById('lblMablagh').getDisplayText().replace(" ریال", "").replace(",", "").replace(",", "").replace(",", "").replace(",", "").replace(",", "");
+        if (Mablagh <= 10000) {
+            Ext.net.DirectMethod.request({
+                url: '/NewVer/Facture_New/showMafasa',
+                params: {
+                    id: '@ViewBag.carFileId'
+                },
+                success: function () {
+                    Ext.net.Mask.hide();
+                }
+            });
+        }
+        else {
+            Ext.MessageBox.show({
+                title: "خطا",
+                msg: "خودرو موردنظر بدهکار است و امکان صدور مفاصا وجود ندارد.",
+                icon: Ext.MessageBox.ERROR,
+                buttons: Ext.MessageBox.OK
+            });
+        }
+    }
+    function PardakhtOnline1() {
+        var fldFine = App.Facture.queryById("fldFine").getValue();
+        var fldValueAddPrice = App.Facture.queryById("fldValueAddPrice").getValue();
+        var fldPrice = App.Facture.queryById("fldPrice").getValue();
+        var Bed = App.Facture.queryById("Bed").getValue();
+        var Years = App.Facture.queryById("Years").getValue();
+        var fldOtherPrice = App.Facture.queryById("fldOtherPrice").getValue();
+        var fldMainDiscount = App.Facture.queryById("fldMainDiscount").getValue();
+        var fldFineDiscount = App.Facture.queryById("fldFineDiscount").getValue();
+        var fldValueAddDiscount = App.Facture.queryById("fldValueAddDiscount").getValue();
+        var fldOtherDiscount = App.Facture.queryById("fldOtherDiscount").getValue();
+        var lblMablagh = App.Facture.queryById('lblMablagh').getDisplayText().replace(" ریال", "").replace(",", "").replace(",", "").replace(",", "");
+        if (lblMablagh >= 10000) {
+            var URL = '@Url.Content("~/NewVer/Facture_New/GoToOnlinePay1")';
+            $.ajax({
+                url: URL,
+                type: 'get',
+                datatype: 'json',
+                data: {
+                    Amount: lblMablagh,
+                    CarId: '@ViewBag.Carid',
+                    CarFileId: '@ViewBag.carFileId',
+                    fldFine: fldFine,
+                    fldValueAddPrice: fldValueAddPrice,
+                    fldPrice: fldPrice,
+                    Years: Years,
+                    Bed: Bed,
+                    fldOtherPrice: fldOtherPrice,
+                    fldMainDiscount: fldMainDiscount,
+                    fldFineDiscount: fldFineDiscount,
+                    fldValueAddDiscount: fldValueAddDiscount,
+                    fldOtherDiscount: fldOtherDiscount
+                },
+                error: function (xhr, status, error) {
+                    alert(xhr + status);
+                },
+                success: function (result) {
+                    window.location.href = "http://e1.kashan.ir/payment.aspx?bill=" + result.shGabz + "&pay=" + result.Shpardakht + "&refer=http://car.favakashan.ir/First/Index";
+                }
+            });
+        }
+        else {
+            Ext.MessageBox.show({
+                title: "خطا",
+                msg: "مبلغ پرداخت کمتر از میزان مجاز برای پرداخت اینترنتی است.",
+                icon: Ext.MessageBox.ERROR,
+                buttons: Ext.MessageBox.OK
+            });
+        }
+    }
+    function PardakhtOnline() {
+        var bankid = 0;
+        var Mablagh = App.Facture.queryById('lblMablagh').getDisplayText().replace(" ریال", "").replace(",", "").replace(",", "").replace(",", "");
+        var fldFine=App.Facture.queryById("fldFine").getValue();
+        var fldValueAddPrice = App.Facture.queryById("fldValueAddPrice").getValue();
+        var fldPrice = App.Facture.queryById("fldPrice").getValue();
+        var Bed = App.Facture.queryById("Bed").getValue();
+        var Years = App.Facture.queryById("Years").getValue();
+        var fldOtherPrice = App.Facture.queryById("fldOtherPrice").getValue();
+        var fldMainDiscount = App.Facture.queryById("fldMainDiscount").getValue();
+        var fldFineDiscount = App.Facture.queryById("fldFineDiscount").getValue();
+        var fldValueAddDiscount = App.Facture.queryById("fldValueAddDiscount").getValue();
+        var fldOtherDiscount = App.Facture.queryById("fldOtherDiscount").getValue();
+        var h = document.getElementsByName('Bank');
+        for (var i = 0; i < h.length; i++) {
+            if (h[i].checked == true)
+                bankid = h[i].value;
+        }
+        if (Mablagh >= 10000) {
+            if (bankid == 0) {
+                Ext.MessageBox.show({
+                    title: "خطا",
+                    msg: "ابتدا بانک مورد نظر را انتخاب کنید.",
+                    icon: Ext.MessageBox.ERROR,
+                    buttons: Ext.MessageBox.OK
+                });
+            }
+            else {
+                Ext.net.Mask.show({ msg: 'در حال بارگذاری...' });
+                Ext.net.DirectMethod.request({
+                    url: '/NewVer/Facture_New/GoToOnlinePay',
+                    params: {
+                        Amount: Mablagh,
+                        CarId: '@ViewBag.Carid',
+                        BankId: bankid,
+                        CarFileid: '@ViewBag.carFileId',
+                        fldFine: fldFine,
+                        fldValueAddPrice: fldValueAddPrice,
+                        fldPrice: fldPrice,
+                        Years: Years,
+                        Bed: Bed,
+                        fldOtherPrice: fldOtherPrice,
+                        fldMainDiscount: fldMainDiscount,
+                        fldFineDiscount: fldFineDiscount,
+                        fldValueAddDiscount: fldValueAddDiscount,
+                        fldOtherDiscount: fldOtherDiscount
+                    },
+                    success: function (data1) {                       
+                        Ext.net.DirectMethod.request({
+                            url: data1,
+                            success: function () {
+                                Ext.net.Mask.hide();
+                            }
+                        });
+                    }
+                });
+            }
+        }
+        else {
+            Ext.MessageBox.show({
+                title: "خطا",
+                msg: "مبلغ پرداخت کمتر از میزان مجاز برای پرداخت اینترنتی است.",
+                icon: Ext.MessageBox.ERROR,
+                buttons: Ext.MessageBox.OK
+            });
+        }
+    }
+</script>

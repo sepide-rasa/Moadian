@@ -1,0 +1,10 @@
+﻿@using Ext.Net.MVC;
+
+@(
+ Html.X().Panel().Height(560)
+        .Title("پیش نمایش")
+        .AutoScroll(true)
+        .Closable(true)
+        .CloseAction(Ext.Net.CloseAction.Destroy)
+                .Html("<center><object class='se-pre-con2' style='width: 1200px;height: 550px;border: 1px solid #ccc;' type='application/pdf' data='/NewVer/MgrReport_New/GeneratePDFPersentChart?SDate=" + @ViewBag.SDate + "&EDate=" + @ViewBag.EDate + "'></object></center>")
+)

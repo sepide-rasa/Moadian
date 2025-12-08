@@ -1,0 +1,56 @@
+﻿@model IEnumerable<Avarez.Models.sp_ErrorProgramSelect>
+@using Ext.Net.MVC;
+@{
+
+    var X = Html.X();
+}
+
+@(X.Window()
+.Maximized(true)
+        .Border(false)
+                        .Height(600)
+        //.Listeners(li => li.AfterRender.Handler = "ErrorSetSize();")
+    .Title("خطاهای رخ داده ")
+    .ID("Error")
+    .Closable(true)
+    .CloseAction(Ext.Net.CloseAction.Destroy)
+    .Layout(Ext.Net.LayoutType.Fit)
+    .Items(
+        X.GridPanel()
+            .AutoScroll(true)
+            .ItemID("GridError")
+            .BottomBar(X.PagingToolbar())
+            .Store(
+                X.StoreForModel()
+                    .Proxy(Html.X().AjaxProxy()
+                        .Url(Url.Action("Read"))
+                        .Reader(Html.X().JsonReader().Root("data"))
+                        )
+                    .PageSize(20)
+                    .RemoteFilter(true)
+                    .RemotePaging(true)
+            )
+            .View(
+                Html.X().GridView().LoadingText("در حال بارگذاری...").RTL(true)
+            )
+            .Plugins(X.FilterHeader().Remote(true))
+            .ColumnModel(
+                    Html.X().RowNumbererColumn(),
+                                Html.X().Column().DataIndex(Model, m => m.fldID).Text("کد").Flex(1),
+                                Html.X().Column().DataIndex(Model, m => m.fldText).Text("متن").Flex(10).Wrap(true),
+                                Html.X().Column().DataIndex(Model, m => m.fldDesc).Text("جزئیات").Flex(10).Wrap(true)
+            )
+            .SelectionModel(
+                Html.X().RowSelectionModel()
+                    .Mode(Ext.Net.SelectionMode.Single)
+            )
+        )
+)
+<script type="text/javascript">
+
+    function ErrorSetSize() {
+        App.Error.setWidth(App.BasicInfWin.getWidth());
+        App.Error.queryById('GridError').setHeight(App.BasicInfWin.getHeight() - 83);
+    }
+
+</script>

@@ -1,0 +1,541 @@
+﻿@using Kendo.Mvc.UI;
+<div class="modal" id="Facture">
+    <script src="@Url.Content("~/Content/Base.js")" type="text/javascript"></script>
+    <link href="@Url.Content("~/Content/web/kendo.common.min.css")" rel="stylesheet" type="text/css" />
+    <link href="@Url.Content("~/Content/web/kendo.default.min.css")" rel="stylesheet" type="text/css" />
+    <link href="@Url.Content("~/Content/web/kendo.rtl.min.css")" rel="stylesheet" type="text/css" />
+    <script src="@Url.Content("~/Scripts/console.min.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Scripts/kendo.web.min.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Scripts/prettify.min.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Scripts/kendo.aspnetmvc.min.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Scripts/kendo.splitter.min.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Scripts/cultures/kendo.fa-IR.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Scripts/accounting.js")" type="text/javascript"></script>
+    <div>
+        @{
+            Avarez.Models.cartaxEntities car = new Avarez.Models.cartaxEntities();
+            var picmnu = car.sp_SelectNameBankAndMunForBankInformation(Convert.ToInt32(Session["CountryCode"]), Convert.ToInt32(Session["CountryType"])).ToList();
+        }
+        <img src="@Url.Content("~/Content/images/GeustNAV2.png")" />
+        <br />
+        <div>
+            <div>
+                <table>
+                    <tr>
+                        <td align="left">
+                            نام و خانوادگی مالک:
+                        </td>
+                        <td>
+                            @Html.TextBox("txtMalek", null, new { @readonly = "true" })
+                        </td>
+                        <td align="left">
+                            شماره پلاک:
+                        </td>
+                        <td>
+                            @Html.TextBox("fldPlaqueNum", null, new { @dir = "rtl", @style = "width: 150px;background-color:rgb(255, 202, 153);", @id = "fldPlaqueNum", @readonly = "true" })
+                        </td>
+                    </tr>
+                    <tr>
+                        <td align="left">
+                            نوع ساخت:
+                        </td>
+                        <td>
+                            @Html.TextBox("txtCarMake", null, new { @readonly = "true" })
+                        </td>
+                        <td align="left">
+                            نوع کاربری:
+                        </td>
+                        <td>
+                            @Html.TextBox("txtCarAccountTypes", null, new { @readonly = "true" })
+                        </td>
+                    </tr>
+                    <tr>
+                        <td align="left">
+                            نوع کابین:
+                        </td>
+                        <td>
+                            @Html.TextBox("txtCarCabin", null, new { @readonly = "true" })
+                        </td>
+                        <td align="left">
+                            سیستم خودرو:
+                        </td>
+                        <td>
+                            @Html.TextBox("txtSystem", null, new { @readonly = "true" })
+                        </td>
+                    </tr>
+                    <tr>
+                        <td align="left">
+                            تیپ خودرو:
+                        </td>
+                        <td>
+                            @Html.TextBox("txtModel", null, new { @readonly = "true" })
+                        </td>
+                        <td align="left">
+                            کلاس خودرو:
+                        </td>
+                        <td>
+                            @Html.TextBox("txtClass", null, new { @readonly = "true" })
+                        </td>
+                    </tr>
+                    <tr>
+                        <td align="left">
+                            شماره موتور:
+                        </td>
+                        <td>
+                            @Html.TextBox("txtMotor", null, new { @readonly = "true" })
+                        </td>
+                        <td align="left">
+                            شماره شاسی:
+                        </td>
+                        <td>
+                            @Html.TextBox("txtShasi", null, new { @readonly = "true" })
+                        </td>
+                    </tr>
+                    <tr>
+                        <td align="left">
+                            رنگ خودرو:
+                        </td>
+                        <td>
+                            @Html.TextBox("txtColor", null, new { @readonly = "true" })
+                        </td>
+                        <td align="left">
+                            سال تولید:
+                        </td>
+                        <td>
+                            @Html.TextBox("txtYear", null, new { @dir = "ltr", @style = "width: 30px;", @id = "txtYear", @maxlength = "4", @readonly = "true" })
+                        </td>
+                    </tr>
+                    <tr>
+                        <td align="left">
+                            تاریخ پلاک گذاری:
+                        </td>
+                        <td>
+                            @Html.TextBox("txtDateP", null, new { @dir = "ltr", @style = "width: 70px;", @readonly = "true" })
+                        </td>
+                        <td align="left">
+                            تاریخ اولین بیمه:
+                        </td>
+                        <td colspan="3">
+                            @Html.TextBox("txtDate", null, new { @dir = "ltr", @style = "width: 70px;", @readonly = "true" })
+                        </td>
+                    </tr>
+                    <tr>
+                        <td align="left">
+                            VIN:
+                        </td>
+                        <td colspan="3" dir='rtl'>
+                            @Html.TextBox("VIN", null, new { @dir = "ltr", @style = "width:150px;background-color:rgb(255, 202, 153);", @id = "VIN", @readonly = "true", enable = "false" })
+                        </td>
+                    </tr>
+                </table>
+            </div>
+            <div>
+                <center>
+                    <p>
+                        <br />
+                        مبلغ عوارض: <span id="lblMablagh"></span>
+                        <br />
+                       @* شناسه قبض: <span id="lblshGhabz"></span>شناسه پرداخت: <span id="lblshPardakht"></span>*@
+                        <br />
+                    </p>
+                    <table style="width: 150px;">
+                        <tr align="center">
+                            @for (var i = 0; i < picmnu.Count; i++)
+                            {
+
+                                <td>
+                                    <img src="@Url.Content("~/Facture/image/" + picmnu[i].BankId)" title='@picmnu[i].fldBankName' width="40px" />
+                                </td>
+                            }
+                            @*<td>
+                    <img src="@Url.Content("~/Content/images/CityBank.jpg")" title="بانک شهر" width="40px"/>
+                </td>
+                <td>
+                    <img src="@Url.Content("~/Content/images/MelatBank.jpg")" title="بانک ملت" width="40px"/>
+                </td>
+                <td>
+                    <img src="@Url.Content("~/Content/images/MeliBank.jpg")" title="بانک ملی" width="40px"/>
+                </td>
+                <td>
+                    <img src="@Url.Content("~/Content/images/TejaratBank.jpg")" title="بانک تجارت" width="40px"/>
+                </td>
+                <td>
+                    <img src="@Url.Content("~/Content/images/PECLogo.gif")" title="بانک پارسیان" width="40px"/>
+                </td>*@
+                        </tr>
+                        <tr align="center">
+                            @for (var i = 0; i < picmnu.Count; i++)
+                            {
+                                <td>
+                                    @Html.RadioButton("Bank", picmnu[i].BankId)
+                                </td>
+                            }
+                            @*<td>
+                    @Html.RadioButton("Bank", 1, new { @id = "CityBank" })
+                </td>
+                <td>
+                    @Html.RadioButton("Bank", 2, new { @id = "MelatBank" })
+                </td>
+                <td>
+                    @Html.RadioButton("Bank", 3, new { @id = "MeliBank" })
+                </td>
+                <td>
+                    @Html.RadioButton("Bank", 4, new { @id = "TejaratBank" })
+                </td>
+                <td>
+                    @Html.RadioButton("Bank", 5, true, new { @id = "Parsian" })
+                </td>*@
+                        </tr>
+                    </table>
+                    <br />
+                    @Avarez.Helper.winClass.Buttons("next", "پرداخت آنلاین", "Next")
+                    @*@Avarez.Helper.winClass.Buttons("Pay", "پرداخت آنلاین", "Next")*@
+                    @*@Avarez.Helper.winClass.Buttons("Fish", "فیش", "yes")*@
+                    @Avarez.Helper.winClass.Buttons("area", "مفاصا", "yes")
+                    @Avarez.Helper.winClass.Buttons("exit", "خروج", "exit")
+                </center>
+            </div>
+        </div>
+        <script type="text/javascript">
+            function Resid() {
+                var entityGrid = $("#VarizihaGrid").data("kendoGrid");
+                var selectedItem = entityGrid.dataItem(entityGrid.select());
+                if (selectedItem) {
+                    var id = selectedItem.fldID;
+                    window.open('/Facture/Receipt/' + id);
+                }
+            }
+            function calcstart() {
+                //$('#Lock').show();
+            }
+            //var d;
+            function calcend() {
+                //$('#Lock').hide();
+            }
+            function load() {
+                var f = $('.k-button');
+                f.removeAttr('href');
+            }
+
+            var isWinOpen = false;
+            var carid;
+            var barcode;
+            $("document").ready(function () {
+                $("#next").button();
+                $("#search").button();
+                $("#exit").button();
+                $("#Fish").button();
+                $('#Mafasa').button();
+                $('#Pay').button();
+                $("#exit").click(function () {
+                    $("#Facture").remove();
+                });
+
+                $('#Facture').on('keyup', 'input', function (event) {
+                    if (event.which == 13) {
+                        var inputs = $('#Facture').find(':input:visible');
+                        inputs.eq(inputs.index(this) + 1).focus();
+                    }
+                });
+                var shGabz, Shpardakht;
+                $('#Lock').show();
+                $('#GridLocation').html($('#Grid').html());
+                $.ajax({
+                    type: "post",
+                    url: '/Facture/Fill',
+                    success: function (data) {
+                        var mo = data;
+                        $('#fldPlaqueNum').val(data.plaq);
+                        $('#txtMalek').val(data.Malek);
+                        $('#txtCarMake').val(data.make);
+                        $('#txtCarAccountTypes').val(data.account);
+                        $('#txtCarCabin').val(data.cabin);
+                        $('#txtSystem').val(data.syst);
+                        $('#txtModel').val(data.modell);
+                        $('#txtClass').val(data.classs);
+                        $('#txtMotor').val(data.motor);
+                        $('#txtShasi').val(data.shasi);
+                        $('#txtColor').val(data.color);
+                        $('#txtYear').val(data.year);
+                        $('#txtDateP').val(data.datep);
+                        $('#txtDate').val(data.date);
+                        $('#VIN').val(data.vin);
+                        carid = data.carId;
+                        //$("#CalcGrid").data("kendoGrid").dataSource.data(mo.bedehi);
+
+
+                        $.ajax({
+                            type: "get",
+                            url: '/Facture/calc',
+                            success: function (data) {
+                                $("#MoGrid").data("kendoGrid").dataSource.data(data.bedehi);
+                                $('#lblMablagh').html(accounting.formatNumber(data.mablagh).toString() + ' ریال'); //pardakhti).toString()) + ' ریال');
+                                //$('#lblshGhabz').html(data.shGhabz + " ");
+                                //$('#lblshPardakht').html(data.shPardakht);
+                                //shGabz = data.shGhabz;
+                                //Shpardakht = data.shPardakht;
+                                //barcode = data.barcode;
+                                if (data.msg != '') {
+                                    windowAppend("body", "/metro/error");
+                                    $("#message").html(data.msg);
+                                    $("#error .wintitle").html("هشدار");
+                                }
+                                $('#Lock').hide();
+                            },
+                            failure: function (data) {
+                                alert(data.data);
+                            }
+                        });
+
+
+
+
+                    },
+                    failure: function (data) {
+                        alert(data.data);
+                    }
+                });
+
+                $('#Fish').click(function () {
+
+                });
+
+                $('#Pay').click(function () {
+                    if (parseInt($('#lblMablagh').html().replace(" ریال", "").replace(",", "").replace(",", "").replace(",", "")) >= 1000) {
+                        var URL = '@Url.Content("~/facture/GoToOnlinePay1")';
+                        $.ajax({
+                            url: URL,
+                            type: 'get',
+                            datatype: 'json',
+                            data: { Amount: $('#lblMablagh').html().replace(" ریال", "").replace(",", ""), CarId: carid },
+                            error: function (xhr, status, error) {
+                                alert(xhr + status);
+                            },
+                            success: function (result) {
+                                window.location.href = "http://e1.kashan.ir/payment.aspx?bill=" + result.shGabz + "&pay=" + result.Shpardakht + "&refer=http://car.favakashan.ir/Home/Guest";
+                            }
+                        });
+                    }
+                    else
+                        alert('مبلغ پرداخت کمتر از میزان مجاز برای پرداخت اینترنتی است.');
+                    
+                });
+
+                $('#Mafasa').click(function () {
+                    if ($('#lblMablagh').html().replace(" ریال", "").replace(",", "") <= 10000) {
+                        //window.open('/Facture/Mafasa/' + carid);
+                        if (isWinOpen == false) {
+                            isWinOpen = true;
+                            windowAppend('body', '/Home/PreviewRptPDFBox');
+                            var t = '/Facture/Mafasa/' + carid;
+                            $('#pdf').html("<br/><object style='width: 900px;height: 500px;border: 1px solid #ccc;' id='pdfbox' type='application/pdf' data='" + t + "'></object> ");
+                        }
+                    } 
+                    else {
+                        alert('خودرو انتخاب شده بدهکار است و امکان صدور مفاصا وجود ندارد.');
+                    }
+                });
+
+                $('#search').click(function () {
+                    Reload('/inSearchFile/Reload', 'Grid', $('#cboSearchFiald').val(), $('#txtSearch1').val(), $('#txtSearch2').val());
+                });
+
+                $('#cboSearchFiald').change(function () {
+                    if ($('#cboSearchFiald').val() == 0) {
+                        $('#span2').attr('style', 'display:none;');
+                        $('#span1').html('VIN:');
+                        $('#value2').val('');
+                    }
+                    else {
+                        $('#span2').attr('style', '');
+                        $('#span1').html('شماره موتور:');
+                        $('#value2').val('');
+                    }
+                });
+
+                $('#next').click(function () {
+                    var URL = '@Url.Content("~/facture/GoToOnlinePay")';
+                    URL = URL;
+                    var bankid;
+                    var h = document.getElementsByName('Bank');
+                    for (var i = 0; i < h.length; i++) {
+                        if (h[i].checked == true)
+                            bankid = h[i].value;
+                    }
+                    //if (h[0].checked == true) {
+                    //    bankid = 20;
+                    //} else if (h[1].checked == true) {
+                    //    bankid = 3;
+                    //} else if (h[2].checked == true) {
+                    //    bankid = 1;
+                    //} else if (h[3].checked == true) {
+                    //    bankid = 2;
+                    //} else if (h[4].checked == true) {
+                    //    bankid = 15;
+                    //}
+                    if (parseInt($('#lblMablagh').html().replace(" ریال", "").replace(",", "").replace(",", "").replace(",", "")) >= 1000) {
+                        //if (bankid == 15)
+                            windows("#win", URL + "?Amount=" + $('#lblMablagh').html().replace(" ریال", "").replace(",", "") + '&CarId=' + carid + '&BankId=' + bankid);
+                        //else
+                        //    alert('شما فقط مجاز به انتخاب بانک پارسیان هستید.');
+                    }
+                    else
+                        alert('مبلغ پرداخت کمتر از میزان مجاز برای پرداخت اینترنتی است.');
+                });
+            });
+            function Reload(Url, gridname, field, value1, value2) {
+                var grid = $('#' + gridname).data('kendoGrid');
+                $.ajax({
+                    url: Url,
+                    type: 'get',
+                    datatype: 'json',
+                    data: { field: field, value1: value1, value2: value2 },
+                    error: function (xhr, status, error) {
+                        alert(xhr + status);
+                    },
+                    success: function (result) {
+                        $("#" + gridname).data("kendoGrid").dataSource.data(result);
+                    }
+
+                });
+            }
+
+            function PostForm(datas, url, id) {
+                var sendInfo = datas;
+                $('#Lock').show();
+                $.ajax({
+                    type: "POST",
+                    url: url,
+                    data: sendInfo,
+                    datatype: "json",
+                    success: function (data) {
+                        var m = data;
+                        windowAppend("body", "/metro/error");
+                        $("#message").html(m.data);
+                        $("#fldId").val(m.id);
+                        switch (m.state) {
+                            case 0:
+                                $("#error .wintitle").html("ذخیره موفق");
+                                break;
+                            case 1:
+                                $("#error .wintitle").html("خطا");
+                                break;
+                        }
+                        var url = '@Url.Action("Reload", "Owner")';
+                        Reload(url, 'Grid', '0', '', 30, 1);
+                        $('#Lock').hide();
+
+                    },
+                    failure: function (data) {
+                        alert(data.data);
+                    }
+                });
+            }
+        </script>
+        <div id="dialog" title="فیش">
+            <div id="content">
+            </div>
+        </div>
+    </div>
+    @*<div id="Grid" style="display: none">
+    </div>*@
+    @*@(Html.Kendo().PanelBar()
+        .Name("panelbar3")
+        .Items(panelbar =>
+        {
+            panelbar.Add().Text("ریز محاسبات")
+                .Expanded(true)
+                .Content(@*@
+    <div class="k-rtl demo-section">
+        @(Html.Kendo().Grid<Avarez.Models.sp_jCalcCarFile>()
+                .Name("MoGrid")
+                .Columns(columns =>
+                {
+                    columns.Bound(p => p.fldyear).Title("سال").Width(50);
+                    columns.Bound(p => p.fldFirstPrice).Title("عوارض").Format("{0:#,###0}").Width(100);
+                    columns.Bound(p => p.fldCurectPrice).Title("مبلغ موثر").Format("{0:#,###0}").Width(100);
+                    columns.Bound(p => p.fldValueAdded).Title("تبصره ب ماده43").Format("{0:#,###0}").Width(100);
+                    columns.Bound(p => p.fldFinalPrice).Title("مبلغ نهایی").Format("{0:#,###0}").Width(100);
+                    columns.Bound(p => p.fldFine).Title("جریمه").Format("{0:#,###0}").Width(100);
+                    columns.Bound(p => p.fldCountMonth).Title("تعداد ماه/روز").Width(100);
+                    columns.Bound(p => p.fldDiscount).Title("تخفیف").Format("{0:#,###0}").Width(100);
+                    columns.Bound(p => p.fldDept).Title("جمع کل").Format("{0:#,###0}").Width(100);
+                })
+            .Selectable(selectable => selectable.Mode(GridSelectionMode.Single))
+            .Pageable()
+            .Scrollable()
+            .DataSource(data =>
+                data.Ajax()
+                .PageSize(30)
+                .Model(mo => mo.Field(p => p.fldyear))
+                //.Read("calc", "inFacture").Events(h => { h.RequestStart("calcstart"); h.RequestEnd("calcend");})                
+            )//.Events(h=>h.DataBound("DataBound"))
+        )
+    </div>@*);*@ @*})
+        )*@
+    @(Html.Kendo().PanelBar()
+        .Name("panelbar1")
+        .Items(panelbar =>
+        {
+            panelbar.Add().Text("سوابق خودرو")
+                .Expanded(true)
+                .Content(@<div class="k-rtl demo-section">
+                    @(Html.Kendo().Grid<Avarez.Models.sp_CarExperienceSelect>()
+                .Name("SavabeghGrid")
+                .Columns(columns =>
+                {
+                    columns.Bound(p => p.fldID).Title("کد").Visible(false);
+                    columns.Bound(p => p.fldName).Title("شهرداری").Width(100);
+                    columns.Bound(p => p.fldLetterNumber).Title("ش نامه").Width(100);
+                    columns.Bound(p => p.fldStartDate).Title("از تاریخ").Width(100);
+                    columns.Bound(p => p.fldEndDate).Title("تا تاریخ").Width(100);
+                    columns.Bound(p => p.fldPlaqueNumber).Title("ش پلاک").Width(170);
+                    columns.Bound(p => p.fldUserName).Title("ش پلاک").Width(170);
+                    columns.Bound(p => p.fldDesc).Title("توضیحات").Width(170);
+                })
+            .Selectable(selectable => selectable.Mode(GridSelectionMode.Single))
+            .Pageable()
+            .Scrollable()
+            .DataSource(data =>
+                data.Ajax()
+                .PageSize(10)
+                            .Read("Savabegh", "Facture")
+                            .Events(h => { h.RequestStart("calcstart"); h.RequestEnd("calcend"); })
+            )
+
+        )
+                </div>);
+        })
+        )
+    @(Html.Kendo().PanelBar()
+        .Name("panelbar2")
+        .Items(panelbar =>
+        {
+            panelbar.Add().Text("واریزی ها")
+                .Expanded(true)
+                .Content(@<div class="k-rtl demo-section">
+                    @(Html.Kendo().Grid<Avarez.Models.rpt_Receipt>()
+                .Name("VarizihaGrid")
+                .Columns(columns =>
+                {
+                    columns.Bound(p => p.fldID).Title("کد").Visible(false);
+                    columns.Bound(p => p.fldCollectionDate).Title("تاریخ");
+                    columns.Bound(p => p.fldPrice).Title("مبلغ").Format("{0:#,###0}");
+                    columns.Bound(p => p.fldMunName).Title("صاحب حساب");
+                    columns.Bound(p => p.BankName).Title("بانک عامل");
+                    columns.Bound(p => p.UserName).Title("کاربر ثبت کننده");
+                    columns.Command(c => c.Custom("Resid").Click("Resid").HtmlAttributes(new { @style = "Color:Black;" }).Text("رسید"));
+                })
+            .Selectable(selectable => selectable.Mode(GridSelectionMode.Single))
+            .Pageable()
+            .Scrollable()
+            .DataSource(data =>
+                data.Ajax()
+                .PageSize(10)
+                            .Read("Variziha", "Facture").Events(h => { h.RequestStart("calcstart"); h.RequestEnd("calcend"); })
+            ).Events(h=>h.DataBound("load"))
+        )
+                </div>);
+        })
+        )
+</div>

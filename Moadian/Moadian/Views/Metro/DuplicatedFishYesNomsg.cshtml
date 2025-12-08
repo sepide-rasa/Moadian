@@ -1,0 +1,28 @@
+﻿<div class="modal" id="YesNoMsg">
+    <script src="@Url.Content("~/Content/Base.js")" type="text/javascript"></script>
+    @Avarez.Helper.winClass.windowHeader("", "هشدار", 250, 180)
+    <br />
+    <div id="message">
+    </div>
+    <br />
+    @Avarez.Helper.winClass.Buttons("yes", "بله","yes")
+    @Avarez.Helper.winClass.Buttons("No", "خیر","no")
+    <br />
+    <script type="text/javascript">
+        $("document").ready(function () {
+            $("#yes").button();
+            $("#No").button();
+            $("#yes").click(function () {
+                var url = '@ViewBag.URL';
+                var data = { From: '@ViewBag.From', To: '@ViewBag.To' };
+                PostForm(data, url, "#win");
+                $("#YesNoMsg").remove();
+            });
+
+            $("#No").click(function () {
+                $("#YesNoMsg").remove();
+            });
+        });    
+    </script>
+    @Avarez.Helper.winClass.windowFother()
+</div>

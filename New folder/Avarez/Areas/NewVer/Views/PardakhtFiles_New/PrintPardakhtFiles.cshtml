@@ -1,0 +1,12 @@
+﻿@using Ext.Net.MVC;
+
+@(
+ Html.X().Window().Width(1100)
+        .Title("پیش نمایش")
+        .ID("PrintAllUser")
+        .Modal(true)
+        .AutoScroll(true)
+        .Closable(true)
+        .CloseAction(Ext.Net.CloseAction.Destroy)
+            .Html("<center><object class='se-pre-con2' style='width: 1000px;height: 540px;border: 1px solid #ccc;' type='application/pdf' data='/NewVer/PardakhtFiles_New/GeneratePDFPardakhtFiles?AzTarikh=" + @ViewBag.AzTarikh + "&TaTarikh=" + @ViewBag.TaTarikh + "'></object></center>")
+)

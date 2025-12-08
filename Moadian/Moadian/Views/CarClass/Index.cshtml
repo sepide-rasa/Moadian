@@ -1,0 +1,592 @@
+﻿@using Kendo.Mvc.UI;
+<div class="modal" id="CarClass">
+    @{
+        Avarez.Models.cartaxEntities car = new Avarez.Models.cartaxEntities();
+        var carmodel = car.sp_CarMakeSelect("", "", 0, Convert.ToInt32(Session["UserId"]), Session["UserPass"].ToString()).ToList();
+        var carpattern = car.sp_CarPatternModelSelect("", "", 0, Convert.ToInt32(Session["UserId"]), Session["UserPass"].ToString()).ToList();
+    }
+    <script src="@Url.Content("~/Content/Base.js")" type="text/javascript"></script>
+    <div>
+    <a href="@Url.Content("~/Helps/کلاس%20خودرو.htm")" target="_blank" id="Help" title="راهنما" style="background-image:url('/Content/images/1381415123_help.png');background-repeat: no-repeat;height: 20px;float: left;top: 10px;left: 10px;"></a>
+        <br />
+        <br />
+        <center>
+            <table>
+                <tr>
+                    <td align="left">
+                        نوع ساخت:
+                    </td>
+                    <td>
+                        @Html.DropDownList("cboCarMake", new SelectList(carmodel, "fldId", "fldName"))
+                    </td>
+                    <td align="left">
+                        نوع کاربری:
+                    </td>
+                    <td>
+                        @Html.TextBox("cboCarAccountTypes")
+                    </td>
+                </tr>
+                <tr>
+                    <td align="left">
+                        نوع کابین:
+                    </td>
+                    <td>
+                        @Html.TextBox("cboCarCabin")
+                    </td>
+                    <td align="left">
+                        @Html.Hidden("fldId")
+                        <span style="color: Red;">*</span> سیستم خودرو:
+                    </td>
+                    <td>
+                        @Html.TextBox("cboSystem")
+                        <span id="lblcboSystemError" style="color: Red;"></span>
+                    </td>
+                </tr>
+                <tr>
+                    <tr>
+                        <td align="left">
+                            <span style="color: Red;">*</span> تیپ خودرو:
+                        </td>
+                        <td>
+                            @Html.TextBox("cboModel")
+                            <span id="lblcboModelError" style="color: Red;"></span>
+                        </td>
+                        <td align="left">
+                            <span style="color: Red;">*</span> الگوی تیپ خودرو:
+                        </td>
+                        <td>
+                            @Html.TextBox("cboCarPattern")
+                            <span id="lblcboCarPatternError" style="color: Red;"></span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td align="left">
+                            @Html.Hidden("fldId")
+                            <span style="color: Red;">*</span> کلاس خودرو:
+                        </td>
+                        <td>
+                            @Avarez.Helper.winClass.textbox("txtName")
+                            <span id="lblNameError" style="color: Red;"></span>
+                        </td>
+                        <td>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td align="left">
+                            توضیحات:
+                        </td>
+                        <td>
+                            @Avarez.Helper.winClass.textArea("txtDesc", 4, 30)
+                        </td>
+                        <td>
+                        </td>
+                    </tr>
+            </table>
+            <p>
+                @Avarez.Helper.winClass.Buttons("LoadWebService", "بارگذاری از سرور", "Yes")
+                @Avarez.Helper.winClass.Buttons("AddLink", "ذخیره", "Save")
+                @Avarez.Helper.winClass.Buttons("EditLink", "ویرایش", "Edit")
+                @Avarez.Helper.winClass.Buttons("DelLink", "حذف", "Del")
+                @Avarez.Helper.winClass.Buttons("exit", "خروج", "Exit")
+            </p>
+        </center>
+        @(Html.Kendo().PanelBar()
+        .Name("panelbar-images")
+        .Items(panelbar =>
+        {
+            panelbar.Add().Text("جستجو")
+                .ImageUrl(Url.Content("~/Content/images/search.png"))
+                .Content(@<div>
+                    <table>
+                        <tr>
+                            <td>
+                                فیلد جستجو:@Html.DropDownList("cboSearchFiald", new SelectList(new[] { new { ID = "0", Name = "کلاس خودرو" }, new { ID = "1", Name = " تیپ خودرو" }, new { ID = "2", Name = "الگوی تیپ خودرو" } }, "ID", "Name"))
+                            </td>
+                            <td>
+                                نوع جستجو: @Html.DropDownList("cboSearchType", new SelectList(new[] { new { ID = "0", Name = "مشابه عبارت" }, new { ID = "1", Name = "مشابه عبارت از سمت راست" }, new { ID = "2", Name = "عین عبارت" } }, "ID", "Name"))
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                عبارت جستجو: @Avarez.Helper.winClass.textbox("txtSearch")
+                            </td>
+                            <td>
+                                نتیجه رکوردها: @Html.TextBox("txtTop", 30, new { @style = "width:30px;" }) رکورد
+                            </td>
+                        </tr>
+                    </table>
+                    <br />
+                </div>);
+        })
+        )
+        <div class="k-rtl demo-section">
+            @(Html.Kendo().Grid<Avarez.Models.sp_CarClassSelect>()
+                .Name("Grid")
+                .Columns(columns =>
+                {
+                    columns.Bound(p => p.fldID).Title("کد").Visible(false);
+                    columns.Bound(p => p.fldName).Title("کلاس خودرو");
+                    columns.Bound(p => p.fldCarModelName).Title("تیپ خودرو");
+                    columns.Bound(p => p.fldCarPatternModelName).Title("الگوی تیپ خودرو");
+                    columns.Bound(p => p.fldDesc).Title("توضیحات");
+                })
+            .Selectable(selectable => selectable.Mode(GridSelectionMode.Single))
+            .Pageable()
+            .Scrollable()
+            .DataSource(data =>
+                data.Ajax()
+                .PageSize(10)
+                .Read("Fill", "CarClass")
+            )
+        )
+        </div>
+    </div>
+    <script type="text/javascript">
+        function selectAccount() {
+
+            return {
+                cboCarMake: $("#cboCarMake").val()
+            };
+        }
+        function selectCabin() {
+
+            return {
+                cboCarAccountTypes: $("#cboCarAccountTypes").val()
+            };
+        }
+        function selectSystem() {
+
+            return {
+                cboCarCabin: $("#cboCarCabin").val()
+            };
+        }
+        function selectModel() {
+
+            return {
+                cboSystem: $("#cboSystem").val()
+            };
+        }
+
+        $("document").ready(function () {
+            $("#LoadWebService").button();
+            $("#AddLink").button();
+            $("#EditLink").button();
+            $("#DelLink").button();
+            $("#exit").button();
+            $('#Help').button();
+
+            $("#cboModel").change(function () {
+                var url = '@Url.Action("Reload", "CarClass")';
+                Reload(url, 'Grid', 3, $("#cboModel").val(), 0, 2);
+            });
+
+            $("#cboModel").change(function () {
+                var url = '@Url.Action("Reload", "CarClass")';
+                Reload(url, 'Grid', 3, $("#cboModel").val(), 0, 2);
+            });
+
+            $("#exit").click(function () {
+                $("#CarClass").remove();
+            });
+            $("#LoadWebService").click(function () {
+                LoadWebService();
+            });
+            $('#CarClass').on('keyup', 'input', function (event) {
+                if (event.which == 13) {
+                    var inputs = $('#CarClass').find(':input:visible');
+                    inputs.eq(inputs.index(this) + 1).focus();
+                }
+            });
+
+            $(document).keyup(function (event) {
+                if (event.which == 119) {
+                    SaveRecord();
+                }
+                else if (event.which == 113) {
+                    EditRecord();
+                }
+                else if (event.which == 115) {
+                    DeleteRecord();
+                }
+            });
+            $('#AddLink').attr('title', 'کلید میانبر (F8)'); //119
+            $('#EditLink').attr('title', 'کلید میانبر (F2)'); //113
+            $('#DelLink').attr('title', 'کلید میانبر (F4)'); //115
+
+            jQuery("#EditLink").click(function () {
+                EditRecord();
+            });
+
+            $('#DelLink').click(function () {
+                DeleteRecord();
+            });
+
+            $("#AddLink").click(function () {
+                SaveRecord();
+            });
+
+  
+
+            $('#txtSearch').keyup(function () {
+                var url = '@Url.Action("Reload", "CarClass")';
+                Reload(url, 'Grid', $("#cboSearchFiald").val(), $("#txtSearch").val(), $("#txtTop").val(), $("#cboSearchType").val());
+            });
+
+            
+
+            $("#txtName").keyup(function () {
+                if ($("#txtName").val() != '') {
+                    $("#txtName").removeClass("input-validation-error");
+                    $("#lblNameError").html("");
+                }
+                else {
+                    $("#txtName").addClass("input-validation-error");
+                    $('#lblNameError').html('لطفا کلاس خودرو را وارد کنید.');
+                }
+            });
+            $("#cboSystem").keyup(function () {
+                if ($("#cboSystem").val() != 0) {
+                    $("#cboSystem").removeClass("input-validation-error");
+                    $("#lblcboSystemError").html("");
+                }
+                else {
+                    $("#cboSystem").addClass("input-validation-error");
+                    $('#lblcboSystemError').html('لطفا سیستم خودرو را وارد کنید.');
+                }
+            });
+            $("#cboModel").keyup(function () {
+                if ($("#cboModel").val() != 0) {
+                    $("#cboModel").removeClass("input-validation-error");
+                    $("#lblcboModelError").html("");
+                }
+                else {
+                    $("#cboModel").addClass("input-validation-error");
+                    $('#lblcboModelError').html('لطفا تیپ خودرو را وارد کنید.');
+                }
+            });
+
+            $("#cboCarPattern").keyup(function () {
+                if ($("#cboCarPattern").val() != 0) {
+                    $("#cboCarPattern").removeClass("input-validation-error");
+                    $("#lblcboCarPatternError").html("");
+                }
+                else {
+                    $("#cboCarPattern").addClass("input-validation-error");
+                    $('#lblcboCarPatternError').html('لطفا الگوی تیپ خودرو را وارد کنید.');
+                }
+            });
+
+
+        });
+        function Clear() {
+            $('#txtName').val('');
+            $('#fldId').val(0);
+            $('#txtDesc').val('');
+        }
+                  function EditRecord() {
+                var entityGrid = $("#Grid").data("kendoGrid");
+                var selectedItem = entityGrid.dataItem(entityGrid.select());
+                if (selectedItem) {
+                    var id = selectedItem.fldID;
+                    var URL = '@Url.Content("~/CarClass/Details")';
+                    URL = URL + "/" + id;
+                    $.ajax({
+                        type: "GET",
+                        url: URL,
+                        success: function (data) {
+                            $('#txtName').val(data.fldName);
+                            //$('#cboModel').val(data.fldCarModelID);
+                            //$('#').val(data.fldCarPatternModelID);
+                            $('#fldId').val(data.fldId);
+                            $('#txtDesc').val(data.fldDesc);
+                            var pattern = $("#cboCarPattern").data("kendoDropDownList");
+                            pattern.value(data.fldCarPatternModelID);
+
+                            var Make = $("#cboCarMake").data("kendoDropDownList");
+                            var Account = $("#cboCarAccountTypes").data("kendoDropDownList");
+                            var cabin = $("#cboCarCabin").data("kendoDropDownList");
+                            var system = $("#cboSystem").data("kendoDropDownList");
+                            var model = $("#cboModel").data("kendoDropDownList");
+                            Make.value(data.fldCarMakeID);
+                            Account.enable(true);
+                            cabin.enable(true);
+                            system.enable(true);
+                            model.enable(true);
+
+                            Account.dataSource.data(data.CarAccountType);
+                            cabin.dataSource.data(data.CabinType);
+                            system.dataSource.data(data.CarSystem);
+                            model.dataSource.data(data.CarModel);
+
+                            Account.value(data.fldCarAccountTypeID);
+                            cabin.value(data.fldCabinTypeID);
+                            system.value(data.fldCarSystemID);
+                            model.value(data.fldCarModelID);
+                            if (data.er != "")
+                                alert(data.er);
+
+
+                        },
+                        failure: function (data) {
+                            alert(data.data);
+                        }
+                    });
+                }
+                else {
+                    alert('لطفا یک سطر را انتخاب کنید.');
+                }
+            }
+             function SaveRecord() {
+                var er = false;
+                if ($("#txtName").val() == '') {
+                    $("#txtName").addClass("input-validation-error");
+                    $('#lblNameError').html('لطفا کلاس خودرو را وارد کنید.');
+                    er = true;
+                }
+                else
+                    $('#lblNameError').html('');
+
+                if ($("#cboSystem").val() == 0) {
+                    $("#cboSystem").addClass("input-validation-error");
+                    $('#lblcboSystemError').html('لطفا سیستم خودرو را وارد کنید.');
+                    er = true;
+                }
+                else
+                    $('#lblcboSystemError').html('');
+
+                if ($("#cboModel").val() == 0) {
+                    $("#cboModel").addClass("input-validation-error");
+                    $('#lblcboModelError').html('لطفا تیپ خودرو را وارد کنید.');
+                    er = true;
+                }
+                else
+                    $('#lblcboModelError').html('');
+
+                if ($("#cboCarPattern").val() == 0) {
+                    $("#cboCarPattern").addClass("input-validation-error");
+                    $('#lblcboCarPatternError').html('لطفا الگوی تیپ خودرو را وارد کنید.');
+                    er = true;
+                }
+                else
+                    $('#lblcboCarPatternError').html('');
+
+                if (er)
+                    return;
+
+                var data = {
+                    fldName: $("#txtName").val(),
+                    fldCarModelID: $("#cboModel").val(),
+                    fldCarPatternModelID: $("#cboCarPattern").val(),
+                    fldUserID: 1,
+                    fldDesc: $("#txtDesc").val(),
+                    fldId: $("#fldId").val()
+                };
+                if (data != '') {
+                    PostForm(data, '@Url.Content("~/CarClass/Save")', "#win");
+                }
+                Clear();
+            }
+            function DeleteRecord() {
+                var entityGrid = $("#Grid").data("kendoGrid");
+                var selectedItem = entityGrid.dataItem(entityGrid.select());
+                if (selectedItem) {
+                    var id = selectedItem.fldID;
+                    var URL = '@Url.Content("~/metro/YesNomsg")';
+                    URL = URL + "/?id=" + id + "&URL=" + '@Url.Content("~/CarClass/Delete")';
+                    windowAppend("body", URL);
+                    $("#message").html('آیا مایل به حذف رکورد انتخاب شده هستید؟');
+                }
+                else {
+                    alert('لطفا یک سطر را انتخاب کنید.');
+                }
+                Clear();
+            }
+        function LoadWebService() {
+
+            var er = false;
+
+            if ($("#cboSystem").val() == 0) {
+                $("#cboSystem").addClass("input-validation-error");
+                $('#lblcboSystemError').html('لطفا سیستم خودرو را وارد کنید.');
+                er = true;
+            }
+            else
+                $('#lblcboSystemError').html('');
+
+            if ($("#cboModel").val() == 0) {
+                $("#cboModel").addClass("input-validation-error");
+                $('#lblcboModelError').html('لطفا تیپ خودرو را وارد کنید.');
+                er = true;
+            }
+            else
+                $('#lblcboModelError').html('');
+
+            if (er)
+                return;
+            var data = {
+                CarMakeType: $("#cboCarMake").data("kendoDropDownList").text(),
+                CarAccountType: $("#cboCarAccountTypes").data("kendoDropDownList").text(),
+                CarCabin: $("#cboCarCabin").data("kendoDropDownList").text(),
+                CarSystem: $("#cboSystem").data("kendoDropDownList").text(),
+                CarTip: $("#cboModel").data("kendoDropDownList").text(),
+                CarClass: "",
+
+            };
+            if (data != '') {
+                PostForm(data, '@Url.Content("~/CarSystem/loadFromWebService")', "#win");
+            }
+        }
+        function Reload(Url, gridname, field, value, top, searchType) {
+            var grid = $('#' + gridname).data('kendoGrid');
+            $.ajax({
+                url: Url,
+                type: 'get',
+                datatype: 'json',
+                data: { field: field, value: value, top: top, searchtype: searchType },
+                error: function (xhr, status, error) {
+                    alert(xhr + status);
+                },
+                success: function (result) {
+                    $("#" + gridname).data("kendoGrid").dataSource.data(result);
+                }
+
+            });
+        }
+
+        function PostForm(datas, url, id) {
+            var sendInfo = datas;
+            $('#Lock').show();
+            $.ajax({
+                type: "POST",
+                url: url,
+                data: sendInfo,
+                datatype: "json",
+                success: function (data) {
+                    var m = data;
+                    windowAppend("body", "/metro/error");
+                    $("#message").html(m.data);
+                    switch (m.state) {
+                        case 0:
+                            $("#error .wintitle").html("ذخیره موفق");
+                            break;
+                        case 1:
+                            $("#error .wintitle").html("خطا");
+                            break;
+                    }
+                    var url = '@Url.Action("Reload", "CarClass")';
+                    Reload(url, 'Grid', '0', '', 30, 1);
+                    $('#Lock').hide();
+                },
+                failure: function (data) {
+                    alert(data.data);
+                }
+            });
+        }    
+    </script>
+</div>
+<div class="k-rtl">
+    @(Html.Kendo().DropDownList()
+          .Name("cboCarMake")
+          .OptionLabel("نوع ساخت خودرو...")
+          .DataTextField("fldName")
+          .DataValueField("fldID")
+          .DataSource(source =>
+          {
+              source.Read(read =>
+              {
+                  read.Action("GetCascadeMake", "CarClass");
+              });
+          })
+          .HtmlAttributes(new { @style = "display: none;width:105px;" })
+    )
+    @(Html.Kendo().DropDownList()
+        .Name("cboCarAccountTypes")
+          .OptionLabel("نوع کاربری خودرو...")
+                  .DataTextField("fldName")
+                  .DataValueField("fldID")
+          .DataSource(source =>
+          {
+              source.Read(read =>
+              {
+                  read.Action("GetCascadeAccount", "CarClass")
+                      .Data("selectAccount");
+              })
+              .ServerFiltering(true);
+          })
+          .Enable(true)
+          .AutoBind(false)
+                  .CascadeFrom("cboCarMake")
+          .HtmlAttributes(new { @style = "display: none;width:105px;" })
+    )
+    @(Html.Kendo().DropDownList()
+                .Name("cboCarCabin")
+          .OptionLabel("نوع کابین خودرو...")
+                  .DataTextField("fldName")
+                  .DataValueField("fldID")
+          .DataSource(source =>
+          {
+              source.Read(read =>
+              {
+                  read.Action("GetCascadeCabin", "CarClass")
+                      .Data("selectCabin");
+              })
+              .ServerFiltering(true);
+          })
+          .Enable(true)
+          .AutoBind(false)
+                          .CascadeFrom("cboCarAccountTypes")
+          .HtmlAttributes(new { @style = "display: none;width:105px;" })
+    )
+    @(Html.Kendo().DropDownList()
+          .Name("cboSystem")
+          .OptionLabel("سیستم خودرو...")
+                  .DataTextField("fldName")
+                  .DataValueField("fldID")
+          .DataSource(source =>
+          {
+              source.Read(read =>
+              {
+                  read.Action("GetCascadeSystem", "CarClass")
+                      .Data("selectSystem");
+              })
+              .ServerFiltering(true);
+          })
+          .Enable(true)
+          .AutoBind(false)
+          .CascadeFrom("cboCarCabin")
+          .HtmlAttributes(new { @style = "display: none;width:105px;" })
+    )
+    @(Html.Kendo().DropDownList()
+          .Name("cboModel")
+          .OptionLabel("تیپ خودرو...")
+                  .DataTextField("fldName")
+                  .DataValueField("fldID")
+          .DataSource(source =>
+          {
+              source.Read(read =>
+              {
+                  read.Action("GetCascadeModel", "CarClass")
+                      .Data("selectModel");
+              })
+              .ServerFiltering(true);
+          })
+          .Enable(true)
+          .AutoBind(false)
+            .CascadeFrom("cboSystem")
+          .HtmlAttributes(new { @style = "display: none;width:105px;" })
+    )
+    @(Html.Kendo().DropDownList()
+                  .Name("cboCarPattern")
+          .OptionLabel("الگوی تیپ...")
+          .DataTextField("fldName")
+          .DataValueField("fldID")
+          .DataSource(source =>
+          {
+              source.Read(read =>
+              {
+                  read.Action("GetCascadePattern", "CarClass");
+              });
+          })
+          .HtmlAttributes(new { @style = "display: none;width:105px;" })
+    )
+</div>

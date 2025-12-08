@@ -1,0 +1,399 @@
+﻿@using Kendo.Mvc.UI;
+<div class="modal" id="SearchFile">
+
+    <div>
+         @if ( ViewBag.State == 1)
+         {  
+            <img src="@Url.Content("~/Content/images/GeustNAV1.png")" />
+         }
+         @if (ViewBag.State == 2 || ViewBag.State == 3 || ViewBag.State == 4 || ViewBag.State == 5)
+         {  
+            <img src="@Url.Content("~/Content/images/firstStep.png")" />
+         }
+         <a href="@Url.Content("~/Helps/صدور فیش.htm")" target="_blank" id="Help" title="راهنما" style="background-image:url('/Content/images/1381415123_help.png');background-repeat: no-repeat;height: 20px;float: left;top: 10px;left: 10px;"></a>
+   
+        <br />
+        <div>
+        <center>
+            <table>
+                <tr>
+                    <td align="center">
+                        فیلد جستجو:@Html.DropDownList("cboSearchFiald1", new SelectList(new[] { new { ID = "0", Name = "VIN" }, new { ID = "1", Name = "ش موتور و شاسی" }, new { ID = "2", Name = "ش موتور" }, new { ID = "3", Name = "ش شاسی" }, new { ID = "4", Name = "نام مالک" }, new { ID = "5", Name = "کد ملی" }, new { ID = "6", Name = "پلاک" } }, "ID", "Name", new { @id = "cboSearchFiald1" }))
+                    </td>  <td>
+                                نوع جستجو: @Html.DropDownList("cboSearchType", new SelectList(new[] { new { ID = "0", Name = "مشابه عبارت" }, new { ID = "1", Name = "مشابه عبارت از سمت راست" }, new { ID = "2", Name = "عین عبارت" } }, "ID", "Name"))
+                       </td>  
+                    
+                </tr> 
+                <tr>
+                    <td align="center">
+                        <span id="span1">شماره موتور:</span> @Html.TextBox("txtSearch1")
+                    </td>
+                    <td>
+                        <span id="span2" style="display:none;">شماره شاسی: @Html.TextBox("txtSearch2")</span>
+                    </td>
+                </tr>
+            </table>
+            @Avarez.Helper.winClass.Buttons("search", "جستجو", "search")
+            @Avarez.Helper.winClass.Buttons("details", "جزئیات", "")
+        </center>
+            <br />
+        </div>
+        <center>
+            <div>                
+                
+                @if (ViewBag.State != 5)
+                {
+                    <center>
+                    @Avarez.Helper.winClass.Buttons("next1", "ادامه", "Next")
+                    @Avarez.Helper.winClass.Buttons("New", "جدید", "Save")
+                    @Avarez.Helper.winClass.Buttons("Mafasa", "مفاصا", "yes")
+                    @Avarez.Helper.winClass.Buttons("exit1", "خروج", "exit")
+                     </center>
+                }
+                else
+                {
+                     <center>
+                    @Avarez.Helper.winClass.Buttons("next1", "ادامه", "Next")
+                    @Avarez.Helper.winClass.Buttons("exit1", "خروج", "exit")
+                     </center>
+                }
+               
+            </div>
+        </center>
+        <div class="k-rtl demo-section">
+            @(Html.Kendo().Grid<Avarez.Models.sp_CarUserGuestSelect>()
+                .Name("Grid5")
+                .Columns(columns =>
+                {
+                    columns.Bound(p => p.fldID).Title("کد").Visible(false);
+                    columns.Bound(p => p.fldMotorNumber).Title("ش موتور");
+                    columns.Bound(p => p.fldShasiNumber).Title("ش شاسی");
+                    columns.Bound(p => p.fldVIN).Title("VIN");
+                    columns.Bound(p => p.fldModel).Title("مدل");
+                    columns.Bound(p => p.fldCarModelName).Title("تیپ");
+                    columns.Bound(p => p.fldCarClassName).Title("کلاس");
+                })
+            .Selectable(selectable => selectable.Mode(GridSelectionMode.Single))
+            .Pageable()
+            .Scrollable()
+            .DataSource(data =>
+                data.Ajax()
+                .PageSize(10)
+                .Model(m => m.Id(p => p.fldID))
+            )
+        )
+        </div>
+        
+    </div>
+    <div id="dialog-confirm" title="هشدار" style="display:none;">
+        <p><span class="ui-icon ui-icon-alert" style="float:left; margin:12px 12px 20px 0;"></span>درصورت ادامه از شارژ شمار کسر خواهد شد. آیا مطمئن هستید؟</p>
+    </div>
+    <script type="text/javascript">
+    var State = 0;
+    var isWinOpen = false;
+    $("document").ready(function () {
+        $("#next1").button();
+        $("#details").button();
+        $("#search").button();
+        $("#exit1").button();
+        $("#New").button();
+        $("#Mafasa").button();
+        $("#Help").button();
+        State = '@ViewBag.State';
+        if (State != 1) {
+            $("#details").hide();
+        }
+        if (State == 1 || State == 2 || State == 3) {
+            $("#Mafasa").hide();
+        }
+        else if (State == 4) {
+            $("#next1").hide();
+            $("#New").hide();
+            $("#Mafasa").show();
+        }
+        $("#exit1").click(function () {
+            $("#SearchFile").remove();
+        });
+
+        var URL = '@Url.Content("~/inSearchFile/DetailSubSetting")';
+        $.ajax({
+            type: "GET",
+            url: URL,
+            success: function (data) {
+                var ch = $("#cboSearchFiald1").val(data.fldDefaultSearch);
+            },
+            failure: function (data) {
+                alert(data.data);
+            }
+        });
+
+        $('#SearchFile').on('keyup', 'input', function (event) {
+            if (event.which == 13) {
+                //var inputs = $('#SearchFile').find(':input:visible');
+                //inputs.eq(inputs.index(this) + 1).focus();
+                Reload5('/inSearchFile/Reload', 'Grid5', $('#cboSearchFiald1').val(), $('#txtSearch1').val(), $('#txtSearch2').val(), $('#cboSearchType').val());
+
+            }
+        });
+        $('#search').click(function () {
+            Reload5('/inSearchFile/Reload', 'Grid5', $('#cboSearchFiald1').val(), $('#txtSearch1').val(), $('#txtSearch2').val(), $('#cboSearchType').val());
+        });
+
+        $('#cboSearchFiald1').change(function () {
+            if ($('#cboSearchFiald1').val() == 1) {
+                $('#span2').attr('style', '');
+                $('#span1').html('شماره موتور:');
+                $('#value2').val('');
+            }
+            else {
+                var x = new Array('VIN', 'ش موتور و شاسی', 'ش موتور', 'ش شاسی', 'نام مالک', 'کد ملی', 'پلاک');
+                $('#span2').attr('style', 'display:none;');
+                $('#span1').html(x[$("#cboSearchFiald1").val()] + ':');
+                $('#value2').val('');
+            }
+        });
+        $('#New').click(function () {
+            if (State == 1) {
+                if (Dialog == 0) {
+                    Dialog = 1;
+                    var URL = '@Url.Content("~/Owner/Index/4")';
+                    windowAppend("body", "/CommonWin/index");
+                    windows("#CommonContent", URL);
+                }
+            }
+        });
+        $('#details').click(function () {
+            var entityGrid = $("#Grid5").data("kendoGrid");
+            var selectedItem = entityGrid.dataItem(entityGrid.select());
+            if (selectedItem) {
+                var id = selectedItem.fldID;
+                var CarFileId = selectedItem.fldCarFileId;
+                if (State == 1) {
+                    $.ajax({
+                        url: '/InSearchFile/CheckBlackList',
+                        datatype: 'json',
+                        data: { carid: id },
+                        error: function (xhr, status, error) {
+                            alert(xhr + status);
+                        },
+                        success: function (result) {
+                            if (result.Msg != "") {
+                                windowAppend("body", "/metro/error");
+                                $("#message").html(result.Msg);
+                            }
+                            else if (result.Msg == "") {
+                                var URL = '@Url.Content("~/inSearchFile/ShowDetail")';
+                                URL = URL;
+                                windows("#win", URL + "/" + id);
+
+                            }
+                        }
+                    });
+                }
+            } else {
+                alert('لطفا یک سطر را انتخاب کنید.');
+            }
+        });
+        $('#next1').click(function () {
+            var entityGrid = $("#Grid5").data("kendoGrid");
+            var selectedItem = entityGrid.dataItem(entityGrid.select());
+            if (selectedItem) {
+                var id = selectedItem.fldID;
+                var CarFileId = selectedItem.fldCarFileId;
+                if (State == 1) {
+                    $.ajax({
+                        url: '/InSearchFile/CheckBlackList',
+                        datatype: 'json',
+                        data: { carid: id },
+                        error: function (xhr, status, error) {
+                            alert(xhr + status);
+                        },
+                        success: function (result) {
+                            if (result.Msg != "") {
+                                windowAppend("body", "/metro/error");
+                                $("#message").html(result.Msg);
+                            }
+                            else if (result.Msg == "") {
+                                //$.ajax({
+                                //    url: '/InSearchFile/CheckHaveArchive',
+                                //    datatype: 'json',
+                                //    data: { carid: id },
+                                //    error: function (xhr, status, error) {
+                                //        alert(xhr + status);
+                                //    },
+                                //    success: function (data) {
+                                //        if (data.Msg == "") {
+                                $.ajax({
+                                    url: '/InSearchFile/GetTrnStatus',
+                                    data: { CarId: id },
+                                    success: function (d) {
+                                        if (d == "0") {
+                                            $("#dialog-confirm").dialog({
+                                                resizable: false,
+                                                height: "auto",
+                                                width: 350,
+                                                modal: true,
+                                                buttons: {
+                                                    "بله": function () {
+                                                        var URL = '@Url.Content("~/infacture/Index")';
+                                                        URL = URL;
+                                                        windows("#win", URL + "/" + id);
+                                                        $(this).dialog("close");
+                                                    },
+                                                    "خیر": function () {
+                                                        $(this).dialog("close");
+                                                    }
+                                                }
+                                            });
+                                        }else
+                                        {
+                                            var URL = '@Url.Content("~/infacture/Index")';
+                                            URL = URL;
+                                            windows("#win", URL + "/" + id);
+                                        }
+                                    }
+                                });
+
+                                //        }
+                                //        else {
+                                //            windowAppend("body", "/metro/error");
+                                //            $("#message").html(data.Msg);
+                                //        }
+                                //    }
+                                //});
+
+                            }
+                        }
+                    });
+                }
+                else if (State == 2) {
+                    var URL1 = '@Url.Content("~/BlackList/Index")';
+                    URL1 = URL1;
+                    windows("#win", URL1 + "/" + id);
+                }
+                else if (State == 3) {
+                    var id = selectedItem.fldID;
+                    window.open('/inFacture/Receipt?id=' + id + '&Type=' + 2);
+                }
+                else if (State == 5) {
+                    var id = selectedItem.fldID;
+
+                    $.ajax({
+                        url: '/DeleteDuplicateFish/DeleteByCarFile/',
+                        type: 'post',
+                        data: { id: id },
+                        error: function (xhr, status, error) {
+                            alert(xhr + status);
+                        },
+                        success: function (result) {
+                            var m = result;
+                            windowAppend("body", "/metro/error");
+                            $("#message").html(m.data);
+                            $("#fldId").val(m.id);
+                            switch (m.state) {
+                                case 0:
+                                    $("#error .wintitle").html("ذخیره موفق");
+                                    break;
+                                case 1:
+                                    $("#error .wintitle").html("خطا");
+                                    break;
+                            }
+
+                            $('#Lock').hide();
+                        }
+                    });
+                }
+                else if (State == 6) {
+                    $.ajax({
+                        url: '/InSearchFile/CheckBlackList',
+                        datatype: 'json',
+                        data: { carid: id },
+                        error: function (xhr, status, error) {
+                            alert(xhr + status);
+                        },
+                        success: function (result) {
+                            if (result.Msg != "") {
+                                windowAppend("body", "/metro/error");
+                                $("#message").html(result.Msg);
+                            }
+                            else if (result.Msg == "") {
+                                var URL = '@Url.Content("~/PcPosTransactionList/Index")';
+                                URL = URL;
+                                windows("#win", URL + "/" + id);
+                            }
+                        }
+                    });
+                }
+            } else {
+                alert('لطفا یک سطر را انتخاب کنید.');
+            }
+        });
+
+        $('#Mafasa').click(function () {
+            var entityGrid = $("#Grid5").data("kendoGrid");
+            var selectedItem = entityGrid.dataItem(entityGrid.select());
+            if (selectedItem) {
+                var id = selectedItem.fldID;
+                if (State == 4) {
+                    if (isWinOpen == false) {
+                        isWinOpen = true;
+                        windowAppend('body', '/Home/PreviewRptPDFBox');
+                        var t = '/inFacture/Mafasa/' + id;
+                        $('#pdf').html("<br/><object style='width: 900px;height: 500px;border: 1px solid #ccc;' id='pdfbox' type='application/pdf' data='" + t + "'></object> ");
+                    }
+                }
+            } else {
+                alert('لطفا یک سطر را انتخاب کنید.');
+            }
+        });
+    });
+        function Reload5(Url, gridname, field, value1, value2, searchType) {
+            var grid = $('#' + gridname).data('kendoGrid');
+            $.ajax({
+                url: Url,
+                type: 'get',
+                datatype: 'json',
+                data: { field: field, value1: value1, value2: value2, searchType: searchType },
+                error: function (xhr, status, error) {
+                    alert(xhr + status);
+                },
+                success: function (result) {
+                    $("#" + gridname).data("kendoGrid").dataSource.data(result);
+                }
+
+            });
+        }
+
+        function PostForm5(datas, url, id) {
+            var sendInfo = datas;
+            $('#Lock').show();
+            $.ajax({
+                type: "POST",
+                url: url,
+                data: sendInfo,
+                datatype: "json",
+                success: function (data) {
+                    var m = data;
+                    windowAppend("body", "/metro/error");
+                    $("#message").html(m.data);
+                    $("#fldId").val(m.id);
+                    switch (m.state) {
+                        case 0:
+                            $("#error .wintitle").html("ذخیره موفق");
+                            break;
+                        case 1:
+                            $("#error .wintitle").html("خطا");
+                            break;
+                    }
+                    var url = '@Url.Action("Reload", "Owner")';
+                    Reload5(url, 'Grid5', '0', '', 30, 1);
+                    $('#Lock').hide();
+
+                },
+                failure: function (data) {
+                    alert(data.data);
+                }
+            });
+        }
+    </script>
+</div>

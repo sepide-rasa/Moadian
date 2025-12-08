@@ -1,0 +1,1220 @@
+﻿@using Ext.Net.MVC
+@using Hogaf.ExtNet.UX
+@using Ext.Net;
+@using Avarez.Models;
+
+@{var X = Html.X();
+
+}
+@{
+    Avarez.Models.cartaxEntities car = new Avarez.Models.cartaxEntities();
+    var picmnu = car.sp_PictureMunicipalitySelect("fldMunicipalityID", "", 0, 1, "").ToList();
+    var News = car.sp_NewsSelect("ISNULL", "", 0, 1, "").ToList();
+}
+<link href="~/Content/slider/js-image-slider.css" rel="stylesheet" />
+<link href="~/Content/slider/generic.css" rel="stylesheet" />
+<script src="~/Content/slider/js-image-slider.js"></script>
+<style>
+   body {
+        background: #628db5;
+    }
+
+    .x-panel-body {
+        background: transparent;
+    }
+
+    #pnllogin-innerCt {
+        background-color: #dfe8f6;
+    }
+
+    #pnlLowS-innerCt {
+        background-color: transparent;
+    }
+
+    /*td {
+        text-align: right;
+    }*/
+    #pnl1-innerCt {
+        background: rgba(212,228,239,1);
+        background: -moz-linear-gradient(top, rgba(212,228,239,1) 0%, rgba(98,141,181,1) 100%);
+        background: -webkit-gradient(left top, left bottom, color-stop(0%, rgba(212,228,239,1)), color-stop(100%, rgba(98,141,181,1)));
+        background: -webkit-linear-gradient(top, rgba(212,228,239,1) 0%, rgba(98,141,181,1) 100%);
+        background: -o-linear-gradient(top, rgba(212,228,239,1) 0%, rgba(98,141,181,1) 100%);
+        background: -ms-linear-gradient(top, rgba(212,228,239,1) 0%, rgba(98,141,181,1) 100%);
+        background: linear-gradient(to bottom, rgba(212,228,239,1) 0%, rgba(98,141,181,1) 100%);
+        filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#d4e4ef', endColorstr='#628db5', GradientType=0 );
+    }
+
+    #pnl2-innerCt {
+        background: rgba(212,228,239,1);
+        background: -moz-linear-gradient(top, rgba(212,228,239,1) 0%, rgba(98,141,181,1) 100%);
+        background: -webkit-gradient(left top, left bottom, color-stop(0%, rgba(212,228,239,1)), color-stop(100%, rgba(98,141,181,1)));
+        background: -webkit-linear-gradient(top, rgba(212,228,239,1) 0%, rgba(98,141,181,1) 100%);
+        background: -o-linear-gradient(top, rgba(212,228,239,1) 0%, rgba(98,141,181,1) 100%);
+        background: -ms-linear-gradient(top, rgba(212,228,239,1) 0%, rgba(98,141,181,1) 100%);
+        background: linear-gradient(to bottom, rgba(212,228,239,1) 0%, rgba(98,141,181,1) 100%);
+        filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#d4e4ef', endColorstr='#628db5', GradientType=0 );
+    }
+</style>
+
+@(
+ X.Viewport().Listeners(l => l.AfterRender.Handler = "LoadCapthalogin();UserType3();LoadCapthaloginD();CheckKhabarLogon();GetSetting();")
+   .ID("Account")
+    .Layout(LayoutType.Border)
+    .Margin(0)
+    .Items(X.Panel()
+    .Region(Region.North)
+    .Margin(0)
+    .Border(false)
+        .Items(X.Panel().Height(131)
+    .Html(@<img id="imgHeader" src="~/Content/header2.png" style="width:100%;height:131px" />).Border(false)
+    ,Html.X().Toolbar()
+    .Items(
+               X.Button()
+                    .Text("سازمان شهرداری ها و دهیاری های کشور")
+                    .Icon(Ext.Net.Icon.PageWorld).Width(220)
+                    .Listeners(Li => Li.Click.Handler = " window.location.href = 'http://imo.org.ir';"),
+                    X.Button().ItemID("Help")
+                    .Text("راهنما").Width(70)
+                    .Icon(Icon.Help)//.Listeners(l => l.AfterRender.Handler = "LoadHelps();")
+                     .Menu(X.Menu()
+                                        .Items(
+                                            X.MenuItem()
+                                                .Text("کاربر مهمان")
+                                                .Icon(Ext.Net.Icon.Help)
+                                                
+                                               .Listeners(li => li.Click.Handler = "DownloadHelp(1)"),
+                                            X.MenuItem()
+                                                    .Icon(Ext.Net.Icon.Help)
+                                                .Text("کاربر خود اظهاری")
+                                                   .Listeners(li => li.Click.Handler = "DownloadHelp(2)")
+                                       
+                                    )
+                                        )
+                    , X.Button()
+                    .Text("ارتباط با ما").Width(85)
+                    .Icon(Icon.Telephone)
+                    .Menu(X.Menu()
+                        .Items(
+                            X.MenuItem()
+                            .Text("ارتباط با ما")
+                                .Icon(Icon.UserComment)
+                            .Listeners(l => l.Click.Handler = "About();")
+                        )
+                    )
+                    , X.Button().ItemID("btnPishkhan").Text("ثبت نام دفاتر پیشخوان")
+                        .Icon(Icon.ReportDisk).Listeners(l => l.Click.Handler = "SabtNameDafater()")
+                           , X.FieldSet().ItemID("outField").Border(false)//.PaddingSpec("0 200px 0 0")
+                          
+                                   .Layout(Ext.Net.LayoutType.VBox).Height(25).Listeners(l=>l.Render.Handler="setSizefieldset()")
+                         .LayoutConfig(new Ext.Net.VBoxLayoutConfig { Align = Ext.Net.VBoxAlign.Left })
+                               .Items(
+                               X.FieldSet().Border(false)
+                                   .Layout(Ext.Net.LayoutType.HBox)
+                                    .Defaults(new { Margin = 2 })
+                             .LayoutConfig(new Ext.Net.HBoxLayoutConfig { Align = Ext.Net.HBoxAlign.Stretch })
+                               .Items(
+                               X.Label("نام کاربری:"),
+                                        X.TextField()
+                                        .ItemID("UserNameDafater")
+                                    , X.Label("رمز عبور:")
+                                    , X.TextField()
+                                    .ItemID("PassDafater")
+                                    .InputType(Ext.Net.InputType.Password)
+                                    ,
+                                                X.Container().ID("CapthaD1").Content(@<div><img id="CaptchaloginD" style="width:90px;height:21px" /></div>).ColSpan(3)
+                                                , X.Label("کد امنیتی:").ID("CapthaD2")
+                                            , X.Container().ID("CapthaD3").Content(@<div><input id='txtCapthaloginD' class='text' style='direction:ltr;font-family:sans-serif;width: 100px;height: 22px;' /></div>)
+                                            , X.Button().ID("CapthaD4").Icon(Ext.Net.Icon.ArrowRefresh)
+                                                    .Handler("LoadCapthaD")
+
+                                            , X.Button().Border(true).Text("ورود").Icon(Icon.DoorIn)
+                                        .Listeners(l => l.Click.Handler = "LoginDafaterPishkhan2()")
+                               )
+                            )
+         )
+         )
+    ,
+    X.Panel().Split(true)
+    .Region(Region.East)
+        .Layout(LayoutType.Fit)
+                .ID("pnl2").Width(225)
+                .Border(false)
+        .MinWidth(225)
+        .MaxWidth(400)
+            .Items(
+        X.Panel().ID("pnlAkhbar")
+                        .RTL(true).Collapsible(false)
+                       .Border(false)
+                       .Items(
+                       Html.X().Panel().PaddingSpec("5px 0 0 0")
+                             .Frame(true).Title("تصاویر برگزیده")
+                             .BodyStyle("background-color:White;")
+                .Border(false)
+                        .Layout(LayoutType.VBox).ID("pnlPic")
+                        .LayoutConfig(new VBoxLayoutConfig { Align = VBoxAlign.Right })
+                        .Items(
+                                X.Container().Content(
+                                @<center><div  id="ContentRotator" style="align-content:center;width:223px;height:210px; ">
+            <div id="sliderFrame" dir="rtl">
+                <div id="slider" style="width:223px;height:210px;background-repeat: no-repeat;align-content:center;">
+                    @foreach (var i in picmnu)
+                   {
+                        <img style="border:solid 1px red;" src='@Url.Content("~/Account_New/MunImage?id=" + i.fldID)' alt='@i.fldName' />
+                   }
+                </div>
+            </div>
+        </div></center>
+)
+                                                 )
+                          , X.Panel().PaddingSpec("10px 0 0 0").Border(false).ID("pnlMatnLogon").Title("اخبار و اطلاعیه ها").Frame(true)
+                            .Layout(LayoutType.VBox)
+                            .BodyStyle("background-color:White;")
+                        .LayoutConfig(new VBoxLayoutConfig { Align = VBoxAlign.Right })
+                       .Items(
+                        @*X.Container().Border(false).Content(
+                        @<div style="direction: rtl; text-align: right;">
+                            <table style="font-size:12px;" cellpadding="0" cellspacing="0" class="moduletable">
+                                <tr>
+                                    <td>
+                                        @for (int i = 0; i < News.Count(); i++)
+                                        {
+                                            <span style="font-size:8px;width:60px">></span>@Html.ActionLink(News[i].fldSubject, "")<br />
+                                        }
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>)*@
+                       )
+
+                       )
+    )
+    ,
+        X.Panel().ID("pnl1")
+    .Region(Region.Center).Split(true)
+    .Layout(LayoutType.Fit)
+            .Border(false)
+           .Items(
+               X.Panel().ID("pnlLowS").Border(false).PaddingSpec("40px 0 0 0")
+                 .LayoutConfig(new Ext.Net.VBoxLayoutConfig { Align = Ext.Net.VBoxAlign.Center })
+                .Layout(Ext.Net.LayoutType.VBox)
+               .Items(  
+     X.Panel().LayoutConfig(new Ext.Net.VBoxLayoutConfig { Align = Ext.Net.VBoxAlign.Center })
+            .Layout(Ext.Net.LayoutType.VBox)
+            .ManageHeight(true)
+        .KeyMap(Html.X().KeyMap()
+                .Target("={Ext.isGecko ? Ext.getDoc() : Ext.getBody()}")
+                .Binding(b =>
+                {
+                    b.Add(Html.X().KeyBinding()
+                    .KeysString(((int)Ext.Net.KeyCode.ENTER).ToString())
+                    .Handler("LogOn(); ")
+                    );
+
+                }))
+                        .ID("pnllogin")
+                        .Border(true).Width(390).Frame(true)//.AutoScroll(true)
+                        .Icon(Icon.Lock)
+                        .Title("ورود")
+                        .Border(true)
+                            .Items(
+                    X.FieldSet().Border(false)
+                       // .LayoutConfig(new Ext.Net.TableLayoutConfig { Columns = 1 })
+                       .LayoutConfig(new Ext.Net.VBoxLayoutConfig {Align=VBoxAlign.Right })
+                    .Defaults(new { Margin = 2 })
+                    .Items(
+                        X.Hidden().ItemID("fldId")
+                                        , X.FieldSet().Title("مشخصات کاربری").Width(355).ItemID("FieldUser")
+                                            //.LayoutConfig(new Ext.Net.TableLayoutConfig { Columns = 2 })
+                                .Defaults(new { Margin = 2 })
+                                    .PaddingSpec("0 0 5px 0")
+                                .Items(
+                                     X.FieldSet().Border(false).Width(355)
+                       .Layout(LayoutType.VBox)
+                       .LayoutConfig(new Ext.Net.VBoxLayoutConfig {Align=VBoxAlign.Center })
+                         .Items(
+                                 X.FieldSet().Border(false)
+                                            .LayoutConfig(new Ext.Net.TableLayoutConfig { Columns = 2 })
+                                            .Items(
+                                         X.Label("نوع کاربر:")   
+                                        ,X.RadioGroup()
+                                        //.FieldLabel("نوع کاربر")
+                                        .Layout(LayoutType.Table)
+                                        .ItemID("GroupRequest")
+                                            .Listeners(l => l.Change.Handler = "UserType3()")
+                                        .LayoutConfig(new Ext.Net.TableLayoutConfig { Columns = 3 })
+                                        .LabelStyle("font-weight: bold;font-size:11px;")
+                                        .PaddingSpec("10px 0 0 0")
+                                        //.ColumnsNumber(1)
+                                        .LabelAlign(LabelAlign.Right)
+                                            .Items(
+                                                X.Radio().Name("Type")
+                                                .BoxLabel("کاربر نرم افزار")
+                                                .LabelSeparator("")
+                                                .Checked(true)
+                                                .ItemID("UserType1"),
+                                                X.Radio().Name("Type")
+                                                .BoxLabel("کاربر مهمان")
+                                                //.PaddingSpec("0 25px 0 0")
+                                                .LabelSeparator("")
+                                                //.Listeners(a=>a.Change.Handler="UserType3();")
+                                            .ItemID("UserType2"),
+                                            X.Radio().Name("Type")
+                                            .BoxLabel("خوداظهاری")//.Hidden(true)
+                                            //.PaddingSpec("0 25px 0 0")
+                                            .LabelSeparator("")
+                                            //.Listeners(a => a.Change.Handler = "UserType3();")
+                                            .ItemID("UserType3")
+                                                )
+                                                )
+                                                
+                                                )
+
+                                         , X.FieldSet().Border(false).Width(355)
+                                            .LayoutConfig(new Ext.Net.TableLayoutConfig { Columns = 2 })
+                                //.Defaults(new { Margin = 2 })
+                                //    .PaddingSpec("0 0 5px 0")
+                                .Items(
+                                     X.Label("استان:")
+                                     .ItemID("lblState")
+                                   ,X.ComboBox()
+                                   //.FieldLabel("استان")
+                                .ItemID("cboState")
+                                    .LabelAlign(Ext.Net.LabelAlign.Left)
+                                .Editable(false)
+                                .TypeAhead(true)
+                                .QueryMode(DataLoadMode.Local)
+                                    .MsgTarget(Ext.Net.MessageTarget.Side)
+                                .ForceSelection(true)
+                                .TriggerAction(TriggerAction.All)
+                                .DisplayField("fldName")
+                                .ValueField("fldID")
+                                .EmptyText("استان...")
+                                .Width(190)
+                            //.Listeners(ls =>
+                            //ls.Select.Handler = "App.NewCity.queryById('CboState').clearValue(); App.NewCity.queryById('CboState').getStore().load()"
+                            //    )
+                                            .Listeners(ls => ls.Change.Handler = " App.Account.queryById('CboMnu').getStore().load();CheckKhabarLogon();")
+                                            .Listeners(l=>l.Select.Handler="App.Account.queryById('CboMnu').setValue(document.cookie.split(';')[0].split('=')[1]);")
+                                //.ValueNotFoundText("استان...")
+                                        .Store(X.Store()//.AutoLoad(false)
+                                    .Model(X.Model()
+                                                .IDProperty("fldID")
+                                        .Fields(
+                                            new ModelField("fldID", ModelFieldType.String) { Mapping = "fldID" },
+                                            new ModelField("fldName", ModelFieldType.String) { Mapping = "fldName" }
+                                        )
+                                    )
+                                        .Proxy(X.AjaxProxy()
+                                                .Url(Url.Action("GetCascadeState"))
+                                            .Reader(X.JsonReader().Root("data"))
+                                        )
+                                        .Listeners(li => li.Load.Handler = "LoadState();")
+                            )
+                                .AllowBlank(false)
+                                .BlankText("لطفا استان مورد نظر را انتخاب کنید."),
+                                    X.Label("نام شهرداری:")
+                                    .ItemID("lblMnu"),
+                                    X.ComboBox()
+                                    //.FieldLabel("نام شهرداری")
+                                    .ItemID("CboMnu")
+                                    .EmptyText("نام شهرداری...")
+                                        .LabelAlign(Ext.Net.LabelAlign.Left)
+                                              .Listeners(ls => ls.Select.Handler = "setCookie();CheckKhabarLogon();")
+                                    .TypeAhead(true)
+                                    .Editable(false)
+                                    .AllowBlank(false)
+                                    .BlankText("لطفا نام شهرداری مورد نظر را انتخاب نمایید.")
+                                    .QueryMode(DataLoadMode.Local)
+                                    .ForceSelection(true)
+                                    .Width(190)
+                                        .MsgTarget(Ext.Net.MessageTarget.Side)
+                                    .TriggerAction(TriggerAction.All)
+                                            .DisplayField("fldName")
+                                            .ValueField("fldID")
+                                                .Store(X.Store().AutoLoad(false)
+                                        .Model(X.Model()
+                                                    .IDProperty("fldID")
+                                            .Fields(
+                                                    new ModelField("fldID", ModelFieldType.String) { Mapping = "fldID" },
+                                                    new ModelField("fldName", ModelFieldType.String) { Mapping = "fldName" })
+                                                )
+                                        .Proxy(X.AjaxProxy()
+                                                .Url(Url.Action("GetCascadeCounty"))
+                                            .Reader(X.JsonReader().Root("data")))
+                                                        .Parameters(ps => ps.Add(new StoreParameter("ID", "App.Account.queryById('cboState').getValue()", ParameterMode.Raw)))
+                                                        )
+                                     ,X.Label("شناسه کاربری:")
+                                         .ItemID("lblUserName")
+                                        , X.TextField()
+                                        .ItemID("txtUserName")
+                                    //.FieldLabel("شناسه کاربری")
+                                    .MsgTarget(Ext.Net.MessageTarget.Side)
+                                    .AllowBlank(false)
+                                    .BlankText("لطفا شناسه کاربری را وارد کنید.")
+                                    .LabelAlign(Ext.Net.LabelAlign.Left)
+                                    .AutoFocus(true)
+                                    .Width(190)
+                                    , X.Label("گذر واژه:")
+                                         .ItemID("lblPass")
+                                    , X.TextField()
+                                    .ItemID("txtPass")
+                                    //.FieldLabel("گذر واژه")
+                                    .MsgTarget(Ext.Net.MessageTarget.Side)
+                                        .InputType(Ext.Net.InputType.Password)
+                                    .AllowBlank(false)
+                                    .BlankText("لطفا گذر وازه را وارد کنید.")
+
+                                    .LabelAlign(Ext.Net.LabelAlign.Left)
+                                            .Width(190)
+                                      )
+                                      )
+                                      //)
+                                            , X.FieldSet().ID("Captha").Width(360).Border(false)
+                                            .Layout(LayoutType.HBox)
+                                                .LayoutConfig(new Ext.Net.HBoxLayoutConfig { Align = HBoxAlign.Middle })
+                                        //.LayoutConfig(new Ext.Net.TableLayoutConfig { Columns = 3 })
+                                                .Defaults(new { Margin = 2 })
+                                                .Items(
+                                        X.Container().Content(@<div><img id="Captchalogin" style="width:150px;height:70px" /></div>).ColSpan(3)
+                                        ,X.Label("کد امنیتی:")
+                                        ,X.Container().Content(@<div><input id='txtCapthalogin' class='text' style='direction:ltr;font-family:sans-serif;width: 100px;height: 22px;' /></div>)
+                                        , X.Button().Icon(Ext.Net.Icon.ArrowRefresh)
+                                        .Handler("LoadCaptha")
+                                        ),
+                                        //X.FieldSet().Border(false).Layout(LayoutType.HBox).Items(
+                                        //X.Checkbox()//.FieldLabel("مرا بخاطر بسپار؟")
+                                        //    .ItemID("RememberMe").PaddingSpec("0 0 0 5px")
+                                        //    .LabelAlign(Ext.Net.LabelAlign.Left)
+                                        //    .MsgTarget(Ext.Net.MessageTarget.Side),
+                                        //     X.Label("مرا بخاطر بسپار؟")
+                                        //),
+                                        X.FieldSet().Border(false).Width(365)
+                                                .LayoutConfig(new Ext.Net.VBoxLayoutConfig { Align = VBoxAlign.Left })
+                                            .Items(
+                                               X.Button().Width(70)
+                                              .X(300)
+                                            .Text("ورود")
+                                            .Icon(Icon.DoorIn)
+                                            .Listeners(l => l.Click.Handler = "LogOn();")
+                                            )
+                                         // , X.FieldSet().Border(false)
+                                            //.LayoutConfig(new Ext.Net.TableLayoutConfig { Columns = 3 })
+                                              //  .Defaults(new { Margin = 2 })
+                                        //.Items(
+                                        //X.Label()
+                                        //.Text("برای ثبت نام لطفا")
+                                            //, X.HyperLink()
+                                              //      .NavigateUrl(Url.Content("~/FristRegister")).Target("_self")
+                                            //.Text("اینجا")
+                                            //, X.Label()
+                                               // .Text("کلیک کنید.")
+                                                //)
+                                        , X.FieldSet().Border(false).ColSpan(2).ItemID("Register")
+                                        .Width(290)//.PaddingSpec("0 0 0 7px")
+                                    .Height(20)
+                                    .Layout(LayoutType.HBox)
+        // .LayoutConfig(new Ext.Net.HBoxLayoutConfig { Align = HBoxAlign.Middle })
+                                    .Defaults(new { Margin = 2 })
+                                    .Items(
+                                    X.Label()
+                                    .Text("برای ثبت نام جهت خوداظهاری لطفا ")
+                                            , X.HyperLink()
+                                            .NavigateUrl(Url.Content("/NewVer/Login_Guest/Register")).Target("_self")
+                                .Text(" اینجا ")
+                                    , X.Label()
+                                    .Text("کلیک کنید.")
+                                )
+                                    , X.FieldSet().Border(false).ColSpan(2).Height(20).ItemID("FinalRegis")
+                                             .Layout(LayoutType.HBox)//.PaddingSpec("0 0 0 7px")
+                                              .Width(345)
+        //  .LayoutConfig(new Ext.Net.HBoxLayoutConfig { Align = HBoxAlign.Middle })
+                                        .Defaults(new { Margin = 2 }).Items(
+                                        X.Label()
+                                        .Text("برای تکمیل ثبت نام جهت خوداظهاری ")
+                                        , X.HyperLink()
+                                                    .NavigateUrl(Url.Content("/NewVer/Login_Guest/VerificationCode?Mobile=0&Name=&Gender=")).Target("_self")
+                                        .Text("اینجا")
+                                            , X.Label()
+                                            .Text("کلیک کنید.")
+                                        )
+                                , X.FieldSet().Border(false).ColSpan(2).Height(20).ItemID("ForgetPass1")
+                                         .Layout(LayoutType.HBox)//.PaddingSpec("0 0 0 7px")
+                                          .Width(380)
+        //  .LayoutConfig(new Ext.Net.HBoxLayoutConfig { Align = HBoxAlign.Middle })
+                                    .Defaults(new { Margin = 2 }).Items(
+                                    X.Label()
+                                    .Text("اگر رمز عبور خود را جهت خوداظهاری فراموش کرده اید")
+                                    , X.HyperLink()
+
+                                        .NavigateUrl("/NewVer/Login_Guest/ForgetPass").Target("_self")
+                                    .Text("اینجا")
+                                        , X.Label()
+                                        .Text("کلیک کنید.")
+                                    )
+
+                                                        , X.FieldSet().Border(false).ColSpan(2).Height(30).ItemID("ForgetPass")
+                                            //.LayoutConfig(new Ext.Net.TableLayoutConfig { Columns = 3 })
+                                                .Defaults(new { Margin = 2 })
+                                                .Items(
+                                                X.Label()
+                                            .Text("اگر رمز عبور خود را فراموش کرده اید")
+                                                , X.HyperLink()
+                                                        .NavigateUrl(Url.Content("/NewVer/First/ForgetPass")).Target("_self")
+                                            .Text("اینجا")
+                                                , X.Label()
+                                                .Text("کلیک کنید.")
+                                            )
+        //                                        , X.FieldSet().Border(false).ColSpan(2)
+        ////.LayoutConfig(new Ext.Net.TableLayoutConfig { Columns = 3 })
+        //                                            .Defaults(new { Margin = 2 }).Items(
+        //                                            X.Label()
+        //                                        .Text("برای تکمیل ثبت نام")
+        //                                            , X.HyperLink()
+        //                                                        .NavigateUrl(Url.Content("~/Home/TakmilSabtName"))//.Target("_self")
+        //                                        .Text("اینجا")
+        //                                            , X.Label()
+        //                                            .Text("کلیک کنید.")
+        //                                        )
+                                         ,X.FieldSet().Border(false).Width(365)
+                                                .LayoutConfig(new Ext.Net.VBoxLayoutConfig { Align = VBoxAlign.Left })
+                                            .Items(
+                                            X.Container().ItemID("Design").Content(@<div style="text-align:left;direction:ltr;font-size:10px;">CopyRight © 2016-Design By<a href="http://www.rasa-system.com/" style="text-decoration:none;"> RasaCo</a></div>
+                                        )
+                                )
+
+                        )
+                     )
+)
+      )
+    )
+)
+
+<script type="text/javascript">
+    var captchahave = 0;
+    var flag = 0;
+    var UserType;
+    var ImageSetting = 0;
+    var LoadCaptha = function () {
+        var originalSrc = '@Url.Content("/NewVer/Account_New/generateCaptcha")';
+        var antiCachePart = (new Date()).getTime();
+        var newSrc = originalSrc + '?dc=' + antiCachePart;
+        $("#Captchalogin").attr('src', newSrc);
+    }
+
+    function GetSetting() {
+        var height = Ext.getBody().getViewSize().height;
+        App.pnlMatnLogon.setHeight(height - 380);
+        Ext.net.DirectMethod.request({
+            url: '/NewVer/Account_New/GetSetting',
+            params: {
+
+            },
+            success: function (data) {
+                ImageSetting = data;
+                if (data == 1) {
+                    App.Account.queryById("btnPishkhan").setText("ثبت نام دفاتر پیشخوان استان تهران");
+                    var imgHeader = document.getElementById("imgHeader");
+                    imgHeader.setAttribute("src", "/Content/avarez-headerTehran.png");
+                    var Design = App.Account.queryById("Design");
+                    Design.hide();
+                    App.Account.queryById("pnllogin").setHeight(280);
+                }
+                else if (data == 2) {
+                    App.Account.queryById("btnPishkhan").setText("ثبت نام دفاتر پیشخوان استان قزوین");
+                    var imgHeader = document.getElementById("imgHeader");
+                    imgHeader.setAttribute("src", "/Content/ghazvin4.png");
+                }
+
+            }
+        });
+    }
+
+    function setCookie() {
+        CboMnu = App.Account.queryById('CboMnu').getValue();
+        document.cookie = "muncookie=" + CboMnu + "; expires=Thu, 01 Jan 2035 00:00:00 UTC";
+        /*document.cookie = "muncookie=" + CboMnu;*/
+    }
+
+    function CheckKhabarLogon() {
+        cboState = App.Account.queryById('cboState');
+        CboMnu = App.Account.queryById('CboMnu').getValue();
+
+        if (CboMnu == null)
+            CboMnu = "";
+        if (cboState.getValue() != null) {
+            Ext.net.DirectMethod.request({
+                url: '/NewVer/Account_New/GetNews',
+                params: {
+                    StateId: cboState.getValue(),
+                    MnuId: CboMnu
+                },
+                success: function (data) {
+                    App.pnlMatnLogon.removeAll();
+                    if (data.KhabarText != "") {
+                        h = data.KhabarText;
+                        IDa = data.KhabarID;
+
+                        var k = h.split(';');
+                        var ID = IDa.split(';');
+                        var txt = "";
+                        for (var i = 0; i < k.length - 1; i++) {
+                            var fieldset = Ext.create('Ext.form.FieldSet', {
+                                border: false,
+                                width: 150
+                            });
+
+                            var LinkButton = Ext.define('LinkButton', {
+                                extend: 'Ext.Component',
+                                xtype: 'linkbutton',
+                                autoEl: 'a',
+                                renderTpl: ['<a class="linkButton" href=\"javascript:;\" id="{id}-btnEl">{text}</a>'],
+                                config: {
+                                    text: k[i],
+                                    id: ID[i],
+                                    handler: function () {
+                                        Ext.net.DirectMethod.request({
+                                            url: '/NewVer/Account_New/Akhbar',
+                                            params: {
+                                                id: this.id
+                                            },
+                                            success: function (data) { }
+                                        });
+                                    }
+                                },
+                                initComponent: function () {
+                                    var me = this;
+                                    me.callParent(arguments);
+
+                                    this.renderData = {
+                                        text: this.getText()
+                                    };
+                                },
+                                onRender: function (ct, position) {
+                                    var me = this,
+                                        btn;
+
+                                    me.addChildEls('btnEl');
+
+                                    me.callParent(arguments);
+
+                                    btn = me.btnEl;
+
+                                    me.mon(btn, 'click', me.onClick, me);
+                                },
+                                onClick: function (e) {
+                                    var me = this;
+                                    if (me.preventDefault || (me.disabled && me.getHref()) && e) {
+                                        e.preventDefault();
+                                    }
+                                    if (e.button !== 0) {
+                                        return;
+                                    }
+                                    if (!me.disabled) {
+                                        me.fireHandler(e);
+                                    }
+                                },
+                                fireHandler: function (e) {
+                                    var me = this,
+                                        handler = me.handler;
+
+                                    me.fireEvent('click', me, e);
+                                    if (handler) {
+                                        handler.call(me.scope || me, me, e);
+                                    }
+                                }
+                            });
+                            App.pnlMatnLogon.add(fieldset);
+                            fieldset.add(LinkButton);
+                        }
+                    }
+
+                }
+            });
+        }
+    }
+
+    function LoadState() {
+        if ('@ViewBag.StateId' != "") {
+            App.Account.queryById('cboState').setValue('@ViewBag.StateId');
+            /*App.Account.queryById('CboMnu').setValue(document.cookie.split("=")[1]);*/
+            App.Account.queryById('CboMnu').setValue(document.cookie.split(";")[0].split("=")[1]);
+        }
+        else if ('@ViewBag.StateId' == "" && ImageSetting == 1) {
+            App.Account.queryById('cboState').setValue("11");
+        } 
+        else if ('@ViewBag.StateId' == "" && ImageSetting == 2) {
+            App.Account.queryById('cboState').setValue("3");
+        }
+    }
+    function LoadCapthalogin() {
+        var UserType1 = App.Account.queryById('UserType1');
+        var UserType2 = App.Account.queryById('UserType2');
+        var UserType3 = App.Account.queryById('UserType3');
+        if (parseInt('@ViewBag.captchahave') > 1 || captchahave > 1) {
+            if (UserType1.getValue() == true) {
+                flag = 1;
+                if (ImageSetting == 1)
+                    App.pnllogin.setHeight(365);
+                else
+                    App.pnllogin.setHeight(390);
+            }
+            else if (UserType2.getValue() == true) {
+                flag = 2;
+                App.pnllogin.setHeight(445);
+            }
+            else if (UserType3.getValue() == true) {
+                flag = 3;
+                if (ImageSetting == 1)
+                    App.pnllogin.setHeight(360);
+                else
+                    App.pnllogin.setHeight(375);
+            }
+            App.Account.queryById("Captha").show();
+            /*App.pnllogin.setHeight(450);*/
+            App.pnlLowS.setHeight(420);
+        }
+        else {
+            App.Account.queryById("Captha").hide();
+        }
+        var url = '@Url.Content("/NewVer/Account_New/generateCaptcha")';
+        var currentdate = (new Date()).getTime();
+        var newurl = url + '?dc=' + currentdate;
+        $("#Captchalogin").attr('src', newurl);
+    }
+    function About() {
+        Ext.net.DirectMethod.request({
+            url: '/NewVer/First/About',
+            success: function (data) {
+                Ext.net.Mask.hide();
+            }
+        });
+    }
+    function Tarefe() {
+        Ext.net.DirectMethod.request({
+            url: '/Home/Tarefe',
+            success: function (data) {
+                Ext.net.Mask.hide();
+            }
+        });
+    }
+    function loadMatnHtml() {
+        var lblMatnHtml = App.Account.queryById("lblMatnHtml");
+        Ext.net.DirectMethod.request({
+            url: '/Home/MatnHtml',
+            success: function (data) {
+                lblMatnHtml.setText(data.MatnHTML, false);
+            }
+        });
+    }
+    function LoadHelps() {
+        var t = App.pnl1.queryById("HelpMenu");
+        var Array;
+        var fileId;
+        $.ajax({
+            type: "POST",
+            url: '/Home/AddItemHelp',
+            contentType: "application/json; charset=utf-8",
+            datatype: "json",
+            success: function (data) {
+                Array = data.ArrayItem;
+                fileId = data.fileId;
+                for (var i = 0; i < Array.length; i++) {
+                    t.items.add(Ext.create('Ext.menu.Item', {
+                        text: Array[i], iconCls: 'icon-help', href: '@Url.Content("~/Home/DownloadHelp?fileId=")' + fileId[i]
+                    }));
+                }
+
+            },
+            failure: function (data) {
+                alert(data.data);
+            }
+        });
+    }
+    @* function LoadZavabet() {
+        var t = App.pnl1.queryById("ZavabetMenu");
+        var Array;
+        var fileId;
+        $.ajax({
+            type: "POST",
+            url: '/Home/AddItemZavabet',
+            contentType: "application/json; charset=utf-8",
+            datatype: "json",
+            success: function (data) {
+                Array = data.ArrayItem;
+                fileId = data.fileId;
+                for (var i = 0; i < Array.length; i++) {
+                    t.items.add(Ext.create('Ext.menu.Item', {
+                        text: Array[i], iconCls: 'icon-help', href:'@Url.Content("~/Home/DownloadHelp?fileId=")' + fileId[i]
+                    }));
+                }
+
+            },
+            failure: function (data) {
+                alert(data.data);
+            }
+        });
+    }*@
+    @*function LoadZavabet() {
+        var t = App.pnl1.queryById("ZavabetMenu");
+        var Array;
+        var fileId;
+        $.ajax({
+            type: "POST",
+            url: '/Home/AddItemZavabet',
+            contentType: "application/json; charset=utf-8",
+            datatype: "json",
+            success: function (data) {
+                Array = data.ArrayItem;
+                fileId = data.fileId;
+                for (var i = 0; i < Array.length; i++) {
+                    t.items.add(Ext.create('Ext.menu.Item', {
+                        text: Array[i], iconCls: 'icon-help', href: '@Url.Content("~/Home/DownloadHelp?fileId=")' + fileId[i]
+                    }));
+                }
+            },
+            failure: function (data) {
+                alert(data.data);
+            }
+        });
+   }*@
+    $(document).ready(function () {
+
+        /* Ext.net.Notification.show({
+             showFx: {
+                 fxName: 'slideIn',
+                 args: [
+                 'tl', {
+                     easing: 'bounceOut',
+                     duration: 1000
+                 }
+                 ]
+             },
+
+             autoHide: false,
+             height: 200,
+             html: 'به اطلاع کاربران گرامی می رساند با توجه به اینکه فرآیند ثبت نام آغاز شده است، در صورت وجود هرگونه ابهام یا اشکال می توانید در ساعات اداری (7:40 الی 15) با شماره های 09120970834 و 09120970829 تماس حاصل فرمایید. جهت اطلاع از روند ثبت نام و آیین نامه ها لطفا به منو های بالا مراجعه فرمایید با تشکر',
+             title: 'اطلاعیه'
+         });
+        */
+        var n = "";
+        @*Ext.net.DirectMethod.request({
+            url: '/Home/Notifications',
+            params: {
+
+            },
+            success: function (data) {
+
+                for (var i = 0; i < data.Notific.length ; i++) {
+
+                    Ext.net.Notification.show({
+                        showFx: {
+                            fxName: 'slideIn',
+                            args: [
+                            'tr', {
+                                easing: 'bounceOut',
+                                duration: 1000
+                            }
+                            ]
+                        },
+                        alignToCfg: {
+                            offset: [20, -200*i],
+                            position: 'bl-bl',
+
+                        },
+                        iconCls: 'icon-information',
+                        autoHide: false,
+                        autoScroll:true,
+                        height: 200,
+                        /* html: 'سمیناری جهت آشنایی نظام فنی و اجرایی، نگهداری و تعمیرات واگن های باری و مسافری راس ساعت 8:30 برای پیمانکاران،ناظرین و... و راس ساعت 13 برای مالکین واگن در روز سه شنبه مورخ 95/10/28 در سالن الغدیر واقع در طبقه سوم ساختمان مرکزی راه آهن(عباس آباد) برگزار می گردد، لذا مقتضی است جهت بهره گیری از مطالب ارائه شده حضور به هم رسانید.',*/
+                        html: data.Notific[i],
+                        title: 'اطلاعیه'
+                    });
+                }
+            }
+        });*@
+
+    });
+    function LogOn() {
+
+        var txtUserName = App.Account.queryById("txtUserName").getValue();
+        var txtPass = App.Account.queryById('txtPass').getValue();
+        var cboState = App.Account.queryById('cboState');
+        var CboMnu = App.Account.queryById('CboMnu');
+        var RememberMe = ""/* App.Account.queryById('RememberMe').getValue()*/;
+        var UserType1 = App.Account.queryById('UserType1');
+        var UserType2 = App.Account.queryById('UserType2');
+        var UserType3 = App.Account.queryById('UserType3');
+        var txtCapthalogin = $('#txtCapthalogin').val();
+
+
+        if (UserType1.getValue() == true) {
+            UserType = 1;
+        }
+        else if (UserType2.getValue() == true) {
+            UserType = 2;
+        }
+        else if (UserType3.getValue() == true) {
+            UserType = 3;
+        }
+        if (UserType != 3) {
+            var er = false;
+            if (cboState.validate() == false)
+                er = true;
+            if (CboMnu.validate() == false)
+                er = true;
+            if (er == true)
+                return;
+        }
+        Ext.net.Mask.show({ msg: 'در حال بارگذاری...' });
+        if (UserType != 3) {
+            Ext.net.DirectMethod.request({
+                url: '/NewVer/Account_New/Vorod',
+                params: {
+                    UserName: txtUserName,
+                    Password: txtPass,
+                    cboState: cboState.getValue(),
+                    CboMnu: CboMnu.getValue(),
+                    RememberMe: RememberMe,
+                    Capthalogin: txtCapthalogin,
+                    UserType: UserType
+                },
+                success: function (data) {
+                    var ic = Ext.MessageBox.INFO;
+                    if (data.flag == false) {
+                        ic = Ext.MessageBox.ERROR;
+                        Ext.MessageBox.show({
+                            title: data.MsgTitle,
+                            msg: data.Msg,
+                            icon: ic,
+                            buttons: Ext.MessageBox.OK
+                        });
+
+                        captchahave = data.captchahave;
+                        LoadCapthalogin();
+                    }
+                    else {
+                        window.location.href = "/NewVer/First/index";
+                    }
+                    Ext.net.Mask.hide();
+                }
+            });
+        }
+        else {
+            Ext.net.DirectMethod.request({
+                url: '/NewVer/Login_Guest/Vorod',
+                params: {
+                    UserName: txtUserName,
+                    Password: txtPass,
+                    Capthalogin: txtCapthalogin,
+                    CboMnu: CboMnu.getValue(),
+                    cboState: cboState.getValue()
+                },
+                success: function (data) {
+                    var ic = Ext.MessageBox.INFO;
+                    if (data.ER == 1) {
+                        ic = Ext.MessageBox.ERROR;
+                        Ext.MessageBox.show({
+                            title: data.MsgTitle,
+                            msg: data.Msg,
+                            icon: ic,
+                            buttons: Ext.MessageBox.OK
+                        });
+
+                        captchahave = data.captchahave;
+                        LoadCapthalogin();
+                    }
+                    else {
+                        window.location.href = "/NewVer/First/index";
+                    }
+                    Ext.net.Mask.hide();
+                }
+            });
+        }
+    }
+    function KarbarMehman() {
+        openWindowWithPost("/GuestUser/Index");
+    }
+    function openWindowWithPost(url, data) {
+        var form = document.createElement("form");
+        form.target = "_blank";
+        form.method = "POST";
+        form.action = url;
+        form.style.display = "none";
+
+        for (var key in data) {
+            var input = document.createElement("input");
+            input.type = "hidden";
+            input.name = key;
+            input.value = data[key];
+            form.appendChild(input);
+        }
+
+        document.body.appendChild(form);
+        form.submit();
+        document.body.removeChild(form);
+    }
+
+    /*function UserType() {
+        var UserType2 = App.Account.queryById('UserType2');
+        var pnllogin = App.Account.queryById("pnllogin");
+        var txtCapthalogin = $('#txtCapthalogin').val();
+        if (UserType2.getValue() == true) {
+            App.Account.queryById("txtUserName").hide();
+            App.Account.queryById('txtPass').hide();
+            var ForgetPass = App.Account.queryById("ForgetPass");
+            var ForgetPass1 = App.Account.queryById("ForgetPass1");
+            ForgetPass.hide();
+            /*ForgetPass1.hide();
+            pnllogin.setHeight(210);
+        }
+        else
+        {
+            App.Account.queryById("txtUserName").show();
+            App.Account.queryById('txtPass').show();
+            pnllogin.setHeight(270);
+        }
+    }*/
+
+    function UserType3() {
+        var UserType3 = App.Account.queryById('UserType3');
+
+        var UserType2 = App.Account.queryById('UserType2');
+        var UserType1 = App.Account.queryById('UserType1');
+        var Register = App.Account.queryById("Register");/*برای کاربر خوداظهاری*/
+        var ForgetPass1 = App.Account.queryById("ForgetPass1");/*برای کاربر خوداظهاری*/
+        var ForgetPass = App.Account.queryById("ForgetPass");/*برای کاربر نرم افزار*/
+        var FinalRegis = App.Account.queryById("FinalRegis");/*برای کاربر خوداظهاری*/
+        var pnllogin = App.Account.queryById("pnllogin");
+        var txtCapthalogin = $('#txtCapthalogin').val();
+        captchahave = 0;
+        App.Account.queryById("Captha").hide();
+
+        Ext.net.DirectMethod.request({
+            url: '/NewVer/Account_New/captchahave'
+        });
+        if (UserType3.getValue() == true) {/*کاربر خوداظهاری*/
+            if (flag != 3) {
+                App.Account.queryById("Captha").hide();
+
+                Ext.net.DirectMethod.request({
+                    url: '/NewVer/Account_New/captchahave',
+                    params: {
+                        count: "0"
+                    }
+                });
+                if (ImageSetting == 1)
+                    pnllogin.setHeight(275);
+                else
+                    pnllogin.setHeight(290);
+            }
+            else if (flag == 3) {
+                App.Account.queryById("Captha").show();
+
+                Ext.net.DirectMethod.request({
+                    url: '/NewVer/Account_New/captchahave',
+                    params: {
+                        count: "2"
+                    }
+                });
+                if (ImageSetting == 1)
+                    pnllogin.setHeight(365);
+                else
+                    pnllogin.setHeight(375);
+            }
+            App.Account.queryById("cboState").hide();
+            App.Account.queryById('lblState').hide();
+            App.Account.queryById("lblMnu").hide();
+            App.Account.queryById('CboMnu').hide();
+            App.Account.queryById("txtUserName").show();
+            App.Account.queryById("lblUserName").show();
+            App.Account.queryById("lblUserName").setText("کد ملی/شناسه ملی:");
+            App.Account.queryById('lblPass').show();
+            App.Account.queryById('txtPass').show();
+            UserType = 3;
+
+            Register.show();
+            ForgetPass1.show();
+            FinalRegis.show();
+            ForgetPass.hide();
+        }
+        else if (UserType1.getValue() == true) {/*کاربر نرم افزار*/
+            if (flag != 1) {
+                App.Account.queryById("Captha").hide();
+
+                Ext.net.DirectMethod.request({
+                    url: '/NewVer/Account_New/captchahave',
+                    params: {
+                        count: "0"
+                    }
+                });
+                if (ImageSetting == 1)
+                    pnllogin.setHeight(280);
+                else
+                    pnllogin.setHeight(310);
+            }
+            else if (flag == 1) {
+                App.Account.queryById("Captha").show();
+
+                Ext.net.DirectMethod.request({
+                    url: '/NewVer/Account_New/captchahave',
+                    params: {
+                        count: "2"
+                    }
+                });
+                if (ImageSetting == 1)
+                    pnllogin.setHeight(365);
+                else
+                    pnllogin.setHeight(390);
+            }
+            App.Account.queryById("cboState").show();
+            App.Account.queryById('CboMnu').show();
+            App.Account.queryById("lblState").show();
+            App.Account.queryById('lblMnu').show();
+            App.Account.queryById("lblUserName").show();
+            App.Account.queryById("txtUserName").show();
+            App.Account.queryById("lblUserName").setText("شناسه کاربری:");
+            App.Account.queryById('txtPass').show();
+            App.Account.queryById('lblPass').show();
+
+            Register.hide();
+            ForgetPass1.hide();
+            FinalRegis.hide();
+            ForgetPass.show();
+            UserType = 1;
+        }
+        else {
+            if (flag != 2) {
+                App.Account.queryById("Captha").hide();
+
+                Ext.net.DirectMethod.request({
+                    url: '/NewVer/Account_New/captchahave',
+                    params: {
+                        count: "0"
+                    }
+                });
+                if (ImageSetting == 1)
+                    pnllogin.setHeight(205);
+                else
+                    pnllogin.setHeight(220);
+            }
+            else if (flag == 2) {
+                App.Account.queryById("Captha").show();
+
+                Ext.net.DirectMethod.request({
+                    url: '/NewVer/Account_New/captchahave',
+                    params: {
+                        count: "2"
+                    }
+                });
+                if (ImageSetting == 1)
+                    pnllogin.setHeight(295);
+                else
+                    pnllogin.setHeight(310);
+            }
+
+            App.Account.queryById("cboState").show();/*کاربر مهمان*/
+            App.Account.queryById('CboMnu').show();
+            App.Account.queryById("lblState").show();
+            App.Account.queryById('lblMnu').show();
+            App.Account.queryById("txtUserName").hide();
+            App.Account.queryById("lblUserName").hide();
+            App.Account.queryById('txtPass').hide();
+            App.Account.queryById('lblPass').hide();
+            Register.hide();
+            ForgetPass1.hide();
+            FinalRegis.hide();
+            ForgetPass.hide();
+            UserType = 2;
+        }
+    }
+    /****************************/
+    var LoadCapthaD = function () {
+        var originalSrc = '@Url.Content("/NewVer/Account_New/generateCaptchaD")';
+        var antiCachePart = (new Date()).getTime();
+        var newSrc = originalSrc + '?dc=' + antiCachePart;
+        $("#CaptchaloginD").attr('src', newSrc);
+
+    }
+    function LoadCapthaloginD() {
+        if (parseInt('@ViewBag.captchahaveD') > 1 || captchahave > 1) {
+            App.Account.queryById("CapthaD1").show();
+            App.Account.queryById("CapthaD2").show();
+            App.Account.queryById("CapthaD3").show();
+            App.Account.queryById("CapthaD4").show();
+        }
+        else {
+            App.Account.queryById("CapthaD1").hide();
+            App.Account.queryById("CapthaD2").hide();
+            App.Account.queryById("CapthaD3").hide();
+            App.Account.queryById("CapthaD4").hide();
+        }
+        var url = '@Url.Content("/NewVer/Account_New/generateCaptchaD")';
+        var currentdate = (new Date()).getTime();
+        var newurl = url + '?dc=' + currentdate;
+        $("#CaptchaloginD").attr('src', newurl);
+    }
+    function SabtNameDafater() {
+        Ext.net.Mask.show({ msg: 'در حال بارگذاری...' });
+        Ext.net.DirectMethod.request({
+            url: '/NewVer/Register_New',
+            params: { ImageSetting: ImageSetting },
+            success: function (data) {
+                Ext.net.Mask.hide();
+            }
+        });
+    }
+    function setSizefieldset() {
+        var width = Ext.getBody().getViewSize().width;
+        /* App.Account.queryById('outField').setWidth(width - 640);*/
+        App.Account.queryById('outField').setWidth(width - 500);
+
+    }
+    function LoginDafaterPishkhan2() {
+        var UserNameDafater = App.Account.queryById('UserNameDafater');
+        var PassDafater = App.Account.queryById('PassDafater');
+        var txtCapthaloginD = $('#txtCapthaloginD').val();
+        Ext.net.DirectMethod.request({
+            url: '/NewVer/Account_New/LogOnDafater',
+            params: {
+                UserName: UserNameDafater.getValue(),
+                Password: PassDafater.getValue(),
+                Captcha: txtCapthaloginD
+            },
+            success: function (data) {
+                if (data.Msg != "") {
+                    Ext.MessageBox.show({
+                        title: data.MsgTitle,
+                        msg: data.Msg,
+                        icon: Ext.MessageBox.ERROR,
+                        buttons: Ext.MessageBox.OK
+                    });
+                    if (data.HaveCaptcha2 > 1) {
+                        App.Account.queryById("CapthaD1").show();
+                        App.Account.queryById("CapthaD2").show();
+                        App.Account.queryById("CapthaD3").show();
+                        App.Account.queryById("CapthaD4").show();
+                    }
+                }
+                else {
+                    if (data.state == "0")
+                        window.location.href = "/NewVer/First/index";
+                    else {
+                        Ext.MessageBox.show({
+                            title: "خطا",
+                            msg: "انتخاب شهرداری ضروری می باشد",
+                            icon: Ext.MessageBox.ERROR,
+                            buttons: Ext.MessageBox.OK
+                        });
+                    }
+
+                }
+            }
+        });
+    }
+    function DownloadHelp(state) {
+
+        window.location.href = '@Url.Content("~/NewVer/Account_New/DownloadHelp?state=")' + state;
+
+    }
+</script>

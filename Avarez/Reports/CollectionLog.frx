@@ -1,0 +1,152 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Report ScriptLanguage="CSharp" ReferencedAssemblies="System.dll&#13;&#10;System.Drawing.dll&#13;&#10;System.Windows.Forms.dll&#13;&#10;System.Data.dll&#13;&#10;System.Xml.dll&#13;&#10;MyLib.dll" ReportInfo.Created="08/22/2013 12:59:48" ReportInfo.Modified="12/20/2017 09:00:48" ReportInfo.CreatorVersion="2016.1.0.0">
+  <ScriptText>using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Windows.Forms;
+using System.Drawing;
+using System.Data;
+using FastReport;
+using FastReport.Data;
+using FastReport.Dialog;
+using FastReport.Barcode;
+using FastReport.Table;
+using FastReport.Utils;
+ 
+namespace FastReport
+{
+  public class ReportScript
+  {
+      
+     
+    private void Cell90_AfterData(object sender, EventArgs e)
+    {
+       Cell89.Text=MyLib.Shamsi.Miladi2ShamsiString(((DateTime)Report.GetColumnValue(&quot;sp_Collection_LogSelect.تاریخ وصول&quot;)));
+    }
+  } 
+}
+</ScriptText>
+  <Styles>
+    <Style Name="Style1" Fill.Color="Gainsboro"/>
+    <Style Name="Style2" Fill.Color="232, 244, 255"/>
+  </Styles>
+  <Dictionary>
+    <TableDataSource Name="sp_PictureSelect" ReferenceName="CarTaxDataSet.sp_PictureSelect" DataType="System.Int32" Enabled="true">
+      <Column Name="fldID" DataType="System.Int32"/>
+      <Column Name="fldPic" DataType="System.Byte[]" BindableControl="Picture"/>
+      <Column Name="fldMunicipalityPic" DataType="System.String"/>
+      <Column Name="fldMunicipalityPicID" DataType="System.Int32"/>
+      <Column Name="fldBankPic" DataType="System.String"/>
+      <Column Name="fldBankPicID" DataType="System.Int32"/>
+      <Column Name="fldUserPic" DataType="System.String"/>
+      <Column Name="fldUserPicID" DataType="System.Int64"/>
+      <Column Name="fldUserName" DataType="System.String"/>
+      <Column Name="fldUserID" DataType="System.Int64"/>
+      <Column Name="fldDesc" DataType="System.String"/>
+      <Column Name="fldDate" DataType="System.String"/>
+    </TableDataSource>
+    <TableDataSource Name="sp_Collection_LogSelect" ReferenceName="CarTaxDataSet.sp_Collection_LogSelect" DataType="System.Int32" Enabled="true">
+      <Column Name="fldID" DataType="System.Int64"/>
+      <Column Name="تاریخ وصول" DataType="System.DateTime"/>
+      <Column Name="مبلغ" DataType="System.Int32"/>
+      <Column Name="کد فیش" DataType="System.String"/>
+      <Column Name="کد رهگیری" DataType="System.String"/>
+      <Column Name="سریال برچسب" DataType="System.String"/>
+      <Column Name="کد رهگیری پیشخوان" DataType="System.String"/>
+      <Column Name="تاریخ شروع" DataType="System.String"/>
+      <Column Name="تاریخ پایان" DataType="System.String"/>
+      <Column Name="توضیحات" DataType="System.String"/>
+      <Column Name="تاریخ ایجاد" DataType="System.String"/>
+      <Column Name="نوع پرداخت" DataType="System.String"/>
+      <Column Name="کاربرایجادکننده" DataType="System.String"/>
+      <Column Name="نوع تغییرات" DataType="System.String"/>
+      <Column Name="ساعت تغییرات" DataType="System.TimeSpan"/>
+      <Column Name="موقعیت کاربر ایجاد کننده" DataType="System.String"/>
+    </TableDataSource>
+    <Parameter Name="date" DataType="System.String"/>
+    <Parameter Name="time" DataType="System.String"/>
+    <Parameter Name="StateName" DataType="System.String"/>
+    <Parameter Name="MunicipalityName" DataType="System.String"/>
+    <Parameter Name="AreaName" DataType="System.String"/>
+    <Parameter Name="OfficeName" DataType="System.String"/>
+    <Parameter Name="MyTablighat" DataType="System.String"/>
+  </Dictionary>
+  <ReportPage Name="Page1" Landscape="true" PaperWidth="297" PaperHeight="210" RawPaperSize="9">
+    <ReportTitleBand Name="ReportTitle1" Width="1047.06"/>
+    <PageHeaderBand Name="PageHeader1" Top="4" Width="1047.06" Height="180.51">
+      <TableObject Name="Table3" Width="1043.61" Height="94.14">
+        <TableColumn Name="Column59" Width="271.2"/>
+        <TableColumn Name="Column60" Width="490.55"/>
+        <TableColumn Name="Column61" Width="281.86"/>
+        <TableRow Name="Row3" Height="94.14">
+          <TableCell Name="Cell59" HorzAlign="Center" VertAlign="Center" Font="Microsoft Sans Serif, 10pt">
+            <TextObject Name="Text5" Left="18.9" Top="18.9" Width="226.8" Height="18.9" Text="تاریخ چاپ :[date]" RightToLeft="true" Font="RasaFont, 11pt"/>
+            <TextObject Name="Text6" Left="18.9" Top="37.8" Width="226.8" Height="18.9" Text="ساعت چاپ:[time]" RightToLeft="true" Font="RasaFont, 11pt"/>
+            <TextObject Name="Text7" Left="18.9" Top="56.7" Width="226.8" Height="18.9" Text="صفحه:[Page#] از [TotalPages#]" RightToLeft="true" Font="RasaFont, 11pt"/>
+          </TableCell>
+          <TableCell Name="Cell60" Text="[StateName]&#13;&#10;[MunicipalityName]&#13;&#10;[AreaName]&#13;&#10;[OfficeName]" HorzAlign="Center" VertAlign="Center" Font="RasaFont, 11pt"/>
+          <TableCell Name="Cell61" HorzAlign="Right" VertAlign="Center" Font="Microsoft Sans Serif, 10pt">
+            <PictureObject Name="Picture1" Left="136.2" Top="18.72" Width="75.6" Height="75.6" DataColumn="sp_PictureSelect.fldPic"/>
+          </TableCell>
+        </TableRow>
+      </TableObject>
+      <TableObject Name="Table1" Left="1.45" Top="153.12" Width="1044.16" Height="27.39">
+        <TableColumn Name="Column62" Width="70.88"/>
+        <TableColumn Name="Column63" Width="349.62"/>
+        <TableColumn Name="Column64" Width="72.76"/>
+        <TableColumn Name="Column65" Width="79.38"/>
+        <TableColumn Name="Column66" Width="100.15"/>
+        <TableColumn Name="Column67" Width="74.65"/>
+        <TableColumn Name="Column68" Width="80.32"/>
+        <TableColumn Name="Column69" Width="90.71"/>
+        <TableColumn Name="Column70" Width="86.93"/>
+        <TableColumn Name="Column71" Width="38.76"/>
+        <TableRow Name="Row4" Height="27.39">
+          <TableCell Name="Cell72" Border.Lines="All" Fill="Glass" Fill.Color="SkyBlue" Fill.Blend="0.2" Fill.Hatch="true" Text="نوع تغییرات" HorzAlign="Center" VertAlign="Center" Font="RasaFont, 10pt, style=Bold"/>
+          <TableCell Name="Cell73" Border.Lines="All" Fill="Glass" Fill.Color="SkyBlue" Fill.Blend="0.2" Fill.Hatch="true" Text="توضیحات" HorzAlign="Center" VertAlign="Center" Font="RasaFont, 10pt, style=Bold"/>
+          <TableCell Name="Cell74" Border.Lines="All" Fill="Glass" Fill.Color="SkyBlue" Fill.Blend="0.2" Fill.Hatch="true" Text="تاریخ ایجاد" HorzAlign="Center" VertAlign="Center" Font="RasaFont, 10pt, style=Bold"/>
+          <TableCell Name="Cell75" Border.Lines="All" Fill="Glass" Fill.Color="SkyBlue" Fill.Blend="0.2" Fill.Hatch="true" Text="نوع پرداخت" HorzAlign="Center" VertAlign="Center" Font="RasaFont, 10pt, style=Bold"/>
+          <TableCell Name="Cell76" Border.Lines="All" Fill="Glass" Fill.Color="SkyBlue" Fill.Blend="0.2" Fill.Hatch="true" Text="کاربر" HorzAlign="Center" VertAlign="Center" Font="RasaFont, 10pt, style=Bold"/>
+          <TableCell Name="Cell77" Border.Lines="All" Fill="Glass" Fill.Color="SkyBlue" Fill.Blend="0.2" Fill.Hatch="true" Text="سریال برچسب" HorzAlign="Center" VertAlign="Center" Font="RasaFont, 10pt, style=Bold"/>
+          <TableCell Name="Cell78" Border.Lines="All" Fill="Glass" Fill.Color="SkyBlue" Fill.Blend="0.2" Fill.Hatch="true" Text="کد فیش" HorzAlign="Center" VertAlign="Center" Font="RasaFont, 10pt, style=Bold"/>
+          <TableCell Name="Cell79" Border.Lines="All" Fill="Glass" Fill.Color="SkyBlue" Fill.Blend="0.2" Fill.Hatch="true" Text="تاریخ وصول" HorzAlign="Center" VertAlign="Center" Font="RasaFont, 10pt, style=Bold"/>
+          <TableCell Name="Cell80" Border.Lines="All" Fill="Glass" Fill.Color="SkyBlue" Fill.Blend="0.2" Fill.Hatch="true" Text="مبلغ" HorzAlign="Center" VertAlign="Center" Font="RasaFont, 10pt, style=Bold"/>
+          <TableCell Name="Cell81" Border.Lines="All" Fill="Glass" Fill.Color="SkyBlue" Fill.Blend="0.2" Fill.Hatch="true" Text="ردیف" HorzAlign="Center" VertAlign="Center" Font="RasaFont, 10pt, style=Bold"/>
+        </TableRow>
+      </TableObject>
+      <TextObject Name="Text2" Left="394.44" Top="99.22" Width="258.18" Height="21.73" Text="لیست تاریخچه پرداخت ها" HorzAlign="Center" VertAlign="Center" Font="RasaFont, 12pt, style=Bold"/>
+      <TextObject Name="Text3" Left="851.43" Top="121.9" Width="188.2" Height="26.44" Text="از تاریخ: [AzTarikh]" VertAlign="Center" RightToLeft="true" Font="RasaFont, 12pt, style=Bold"/>
+      <TextObject Name="Text4" Left="659.61" Top="121.89" Width="188.2" Height="26.44" Text="تا تاریخ: [TaTarikh]" VertAlign="Center" RightToLeft="true" Font="RasaFont, 12pt, style=Bold"/>
+    </PageHeaderBand>
+    <DataBand Name="Data1" Top="188.51" Width="1047.06" Height="27.39" DataSource="sp_Collection_LogSelect" Columns.Count="1" Columns.Layout="DownThenAcross">
+      <TableObject Name="Table4" Left="1.45" Width="1044.16" Height="27.39" EvenStyle="Style2">
+        <TableColumn Name="Column72" Width="70.88"/>
+        <TableColumn Name="Column73" Width="349.62"/>
+        <TableColumn Name="Column74" Width="72.76"/>
+        <TableColumn Name="Column75" Width="79.38"/>
+        <TableColumn Name="Column76" Width="100.15"/>
+        <TableColumn Name="Column77" Width="74.65"/>
+        <TableColumn Name="Column78" Width="80.32"/>
+        <TableColumn Name="Column79" Width="90.71"/>
+        <TableColumn Name="Column80" Width="86.93"/>
+        <TableColumn Name="Column81" Width="38.76"/>
+        <TableRow Name="Row5" Height="27.39">
+          <TableCell Name="Cell82" Border.Lines="All" Text="[sp_Collection_LogSelect.نوع تغییرات]" AutoShrink="FontSize" HorzAlign="Center" VertAlign="Center" RightToLeft="true" Font="RasaFont, 10pt, style=Bold"/>
+          <TableCell Name="Cell83" Border.Lines="All" Text="[sp_Collection_LogSelect.توضیحات]" AutoShrink="FontSize" HorzAlign="Center" VertAlign="Center" RightToLeft="true" Font="RasaFont, 10pt, style=Bold"/>
+          <TableCell Name="Cell84" Border.Lines="All" Text="[sp_Collection_LogSelect.تاریخ ایجاد]" AutoShrink="FontSize" HorzAlign="Center" VertAlign="Center" RightToLeft="true" Font="RasaFont, 10pt, style=Bold"/>
+          <TableCell Name="Cell85" Border.Lines="All" Text="[sp_Collection_LogSelect.نوع پرداخت]" AutoShrink="FontSize" HorzAlign="Center" VertAlign="Center" RightToLeft="true" Font="RasaFont, 10pt, style=Bold"/>
+          <TableCell Name="Cell86" Border.Lines="All" Text="[sp_Collection_LogSelect.کاربرایجادکننده]" AutoShrink="FontSize" HorzAlign="Center" VertAlign="Center" RightToLeft="true" Font="RasaFont, 10pt, style=Bold"/>
+          <TableCell Name="Cell87" Border.Lines="All" Text="[sp_Collection_LogSelect.سریال برچسب]" AutoShrink="FontSize" HorzAlign="Center" VertAlign="Center" RightToLeft="true" Font="RasaFont, 10pt, style=Bold"/>
+          <TableCell Name="Cell88" Border.Lines="All" Text="[sp_Collection_LogSelect.کد فیش]" AutoShrink="FontSize" HorzAlign="Center" VertAlign="Center" RightToLeft="true" Font="RasaFont, 10pt, style=Bold"/>
+          <TableCell Name="Cell89" Border.Lines="All" Text="تاریخ وصول" AutoShrink="FontSize" HorzAlign="Center" VertAlign="Center" RightToLeft="true" Font="RasaFont, 10pt, style=Bold"/>
+          <TableCell Name="Cell90" Border.Lines="All" AfterDataEvent="Cell90_AfterData" Text="[sp_Collection_LogSelect.مبلغ]" Format="Number" Format.UseLocale="false" Format.DecimalDigits="0" Format.DecimalSeparator="." Format.GroupSeparator="," Format.NegativePattern="1" AutoShrink="FontSize" HorzAlign="Center" VertAlign="Center" RightToLeft="true" Font="RasaFont, 10pt, style=Bold"/>
+          <TableCell Name="Cell91" Border.Lines="All" Text="[Row#]" AutoShrink="FontSize" HorzAlign="Center" VertAlign="Center" RightToLeft="true" Font="RasaFont, 10pt, style=Bold"/>
+        </TableRow>
+      </TableObject>
+    </DataBand>
+    <PageFooterBand Name="PageFooter1" Top="219.9" Width="1047.06" Height="48.18" CanGrow="true">
+      <TextObject Name="Text1" Left="10.48" Top="8.51" Width="1031.94" Height="39.67" CanGrow="true" GrowToBottom="true" Text="[MyTablighat]" HorzAlign="Center" RightToLeft="true" Font="RasaFont, 11pt, style=Bold"/>
+    </PageFooterBand>
+  </ReportPage>
+</Report>

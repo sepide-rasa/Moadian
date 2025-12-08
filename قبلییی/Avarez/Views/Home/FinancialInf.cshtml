@@ -1,0 +1,221 @@
+﻿@using Avarez.Controllers.Users;
+<div id="FinancialInf">
+    @using Kendo.Mvc.UI;
+    <link href="@Url.Content("~/Content/web/kendo.common.min.css")" rel="stylesheet" type="text/css" />
+    <link href="@Url.Content("~/Content/web/kendo.default.min.css")" rel="stylesheet" type="text/css" />
+    <link href="@Url.Content("~/Content/web/kendo.rtl.min.css")" rel="stylesheet" type="text/css" />
+    <script src="@Url.Content("~/Scripts/console.min.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Scripts/kendo.web.min.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Scripts/prettify.min.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Scripts/kendo.aspnetmvc.min.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Scripts/kendo.splitter.min.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Scripts/cultures/kendo.fa-IR.js")" type="text/javascript"></script>
+    <script type="text/javascript">
+        $("document").ready(function () {
+            $('#ChangeLocation').button();
+            $('#Exit').button();
+            $('#HomePage').button();
+            $('#HomePage').click(function () {
+                window.location.href = '/Home/Home';
+            });
+            $('#Exit').click(function () {
+                window.location.href = '/Account/LogOff';
+            });
+
+            $('#ChangeLocation').click(function () {
+                window.location.href = '/Home/ChangeLocation';
+            });
+            $("#SendLetter").click(function () {
+                windows("#win", "/SendLetter/Index");
+            });
+            $("#SettleType").click(function () {
+                windows("#win", "/SettleType/Index");
+            });
+            $("#Post").click(function () {
+                windows("#win", "/Post/Index");
+            });
+            $("#FinesRule").click(function () {
+                windows("#win", "/FinesRule/Index");
+            });
+            $("#Cost").click(function () {
+                windows("#win", "/Cost/Index");
+            });
+            $("#Signer").click(function () {
+                windows("#win", "/Signer/Index");
+            });
+            $("#ComplicationRate").click(function () {
+                windows("#win", "/ComplicationRate/Index");
+            });
+            $("#AmountCost").click(function () {
+                windows("#win", "/AmountCost/Index");
+            });
+            $("#ImpFine").click(function () {
+                windows("#win", "/ImpFine/index");
+            });
+            $("#Discount").click(function () {
+                windows("#win", "/Discount/Index");
+            });
+            $("#AccountBank").click(function () {
+                windows("#win", "/AccountBank/Index");
+            });
+            $("#BankInf").click(function () {
+                windows("#win", "/BankInf/Index");
+            }); 
+            $("#UpdateRate").click(function () {
+                windows("#win", "/UpdateRate/Index");
+            });
+        });
+    </script>
+    @{Avarez.Models.cartaxEntities p = new Avarez.Models.cartaxEntities();
+      var state = p.sp_StateSelect("fldId", Session["UserState"].ToString(), 1, Convert.ToInt32(Session["UserId"]), Session["UserPass"].ToString()).FirstOrDefault();
+      var Mnu = p.sp_MunicipalitySelect("fldId", Session["UserMnu"].ToString(), 1, Convert.ToInt32(Session["UserId"]), Session["UserPass"].ToString()).FirstOrDefault();
+      var Location = state.fldName + " --> " + Mnu.fldName + Session["Location"];}
+    @(Html.Kendo().Splitter()
+      .Name("vertical")
+      .Orientation(SplitterOrientation.Vertical)
+          .HtmlAttributes(new { style = "height: 750px;" })
+      .Panes(verticalPanes =>
+      {
+          verticalPanes.Add()
+            .Size("30px")
+            .Collapsible(false)
+            .Resizable(false)
+            .Content(@<div dir="rtl" style="text-align: center;">
+                <span style="font-weight: bold; color: #127AA3; font-size: 11px;">موقعیت فعلی شما: @Location
+                </span>
+                <button id="ChangeLocation" title="برای تغییر موقعیت از این گزینه استفاده کنید."
+                    style="font-size: 11px;">
+                    ...</button>
+                <button id="Exit" style="font-size: 11px; float: left; text-align: left; background-image: url('/Content/images/1377957633_exit.png');
+                        background-repeat: no-repeat; background-position: right; width: 70px; background-size: 14px;
+                        background-position-x: 50px;">
+                        خروج</button>
+                <button id="HomePage" style="float: right; font-size: 11px; text-align: left; background-image: url('/Content/images/1377958371_Home.png');
+                    background-repeat: no-repeat; background-position: right; width: 100px; background-size: 16px;
+                    background-position-x: 80px;">
+                    صفحه اصلی</button></div>);
+          verticalPanes.Add()
+              .HtmlAttributes(new { id = "top-pane" })
+              .Scrollable(false)
+              .Collapsible(false)
+              .Content(
+                Html.Kendo().Splitter()
+                    .Name("horizontal")
+                    .HtmlAttributes(new { style = "height: 100%;" })
+                    .Panes(horizontalPanes =>
+                    {
+                        horizontalPanes.Add()
+                            .HtmlAttributes(new { id = "left-pane" })
+                            .Size("688px")
+                            .Content(@<div id="win" class="pane-content">
+                            </div>);
+
+
+
+                        horizontalPanes.Add()
+                            .HtmlAttributes(new { id = "right-pane" })
+                            .Size("210px")
+                            .Content(@<div class="pane-content">
+                                @(Html.Kendo().PanelBar()
+        .Name("panelbar-images")
+        .Items(panelbar =>
+        {
+            panelbar.Add().Text("نرخ عوارض سالیانه")
+                .Expanded(true)
+                        .Visible(Permossions.haveAccess(Convert.ToInt32(Session["UserId"]), 115))
+                .ImageUrl(Url.Content("~/Content/images/1376571382_US-dollar.png"))
+                .Items(Tax =>
+                {
+                    Tax.Add().Text("ورود نرخ عوارض سالیانه")
+                        .HtmlAttributes(new { id = "ComplicationRate" })
+                        .Visible(Permossions.haveAccess(Convert.ToInt32(Session["UserId"]), 116))
+                        .ImageUrl(Url.Content("~/Content/images/1376571366_table_money.png"));
+                    Tax.Add().Text("دریافت نرخ ها از وب سرویس")
+                        .HtmlAttributes(new { id = "UpdateRate" })
+                        .Visible(Permossions.haveAccess(Convert.ToInt32(Session["UserId"]), 119))
+                        .ImageUrl(Url.Content("~/Content/images/1376571199_Emblem-Money-64.png"));
+                });
+
+            panelbar.Add().Text("هزینه ها")
+                .Expanded(true)
+                        .Visible(Permossions.haveAccess(Convert.ToInt32(Session["UserId"]), 121))
+                .ImageUrl(Url.Content("~/Content/images/1376573510_cost.png"))
+                .Items(Cost =>
+                {
+                    Cost.Add().Text("تعریف هزینه")
+                        .HtmlAttributes(new { id = "Cost" })
+                        .Visible(Permossions.haveAccess(Convert.ToInt32(Session["UserId"]), 122))
+                        .ImageUrl(Url.Content("~/Content/images/1376573580_cost.png"));
+                    Cost.Add().Text("تعیین مقدار هزینه")
+                        .HtmlAttributes(new { id = "AmountCost" })
+                        .Visible(Permossions.haveAccess(Convert.ToInt32(Session["UserId"]), 126))
+                        .ImageUrl(Url.Content("~/Content/images/1376573664_total_plan_cost.png"));
+                });
+
+            panelbar.Add().Text("جریمه")
+                .Expanded(true)
+                        .Visible(Permossions.haveAccess(Convert.ToInt32(Session["UserId"]), 130))
+                .ImageUrl(Url.Content("~/Content/images/1376573808_money_bag.png"))
+                .Items(Fine =>
+                {
+                    Fine.Add().Text("تعریف قانون جریمه")
+                    .HtmlAttributes(new { id = "FinesRule" })
+                        .Visible(Permossions.haveAccess(Convert.ToInt32(Session["UserId"]), 131))
+                    .ImageUrl(Url.Content("~/Content/images/1376573901_Advertising.png"));
+                    Fine.Add().Text("اعمال قانون جریمه")
+                        .HtmlAttributes(new { id = "ImpFine" })
+                        .Visible(Permossions.haveAccess(Convert.ToInt32(Session["UserId"]), 135))
+                    .ImageUrl(Url.Content("~/Content/images/1376571211_Purse.png"));
+                });
+            panelbar.Add().Text("پرداخت")
+            .Expanded(true)
+                        .Visible(Permossions.haveAccess(Convert.ToInt32(Session["UserId"]), 139))
+            .ImageUrl(Url.Content("~/Content/images/1376574017_credit_card.png"))
+            .Items(Pay =>
+            {
+                Pay.Add().Text("تعریف نوع پرداخت")
+                    .HtmlAttributes(new { id = "SettleType" })
+                        .Visible(Permossions.haveAccess(Convert.ToInt32(Session["UserId"]), 140))
+                    .ImageUrl(Url.Content("~/Content/images/1376571605_card.png"));
+                Pay.Add().Text("تعریف تخفیف")
+                    .HtmlAttributes(new { id = "Discount" })
+                        .Visible(Permossions.haveAccess(Convert.ToInt32(Session["UserId"]), 144))
+                    .ImageUrl(Url.Content("~/Content/images/1376574140_discount.png"));
+                Pay.Add().Text("تعریف نوع مرسوله پستی")
+                   .HtmlAttributes(new { id = "SendLetter" })
+                        .Visible(Permossions.haveAccess(Convert.ToInt32(Session["UserId"]), 148))
+                   .ImageUrl(Url.Content("~/Content/images/1376571696_mail.png"));
+            });
+            panelbar.Add().Text("حسابها و امضا")
+                .Expanded(true)
+                        .Visible(Permossions.haveAccess(Convert.ToInt32(Session["UserId"]), 152))
+                .ImageUrl(Url.Content("~/Content/images/1376574493_history.png"))
+                .Items(Account =>
+                {
+                    Account.Add().Text("تعریف شماره حساب")
+                        .HtmlAttributes(new { id = "AccountBank" })
+                        .Visible(Permossions.haveAccess(Convert.ToInt32(Session["UserId"]), 153))
+                        .ImageUrl(Url.Content("~/Content/images/96.png"));
+                    Account.Add().Text("تعریف سمت ها")
+                        .HtmlAttributes(new { id = "Post" })
+                        .Visible(Permossions.haveAccess(Convert.ToInt32(Session["UserId"]), 157))
+                        .ImageUrl(Url.Content("~/Content/images/account.png"));
+                    Account.Add().Text("تعریف اشخاص صاحب امضا")
+                        .HtmlAttributes(new { id = "Signer" })
+                        .Visible(Permossions.haveAccess(Convert.ToInt32(Session["UserId"]), 161))
+                        .ImageUrl(Url.Content("~/Content/images/تعریف اشخاص صاحب امضا.png"));
+                    Account.Add().Text("تعریف اطلاعات پرداخت آنلاین")
+                        .HtmlAttributes(new { id = "BankInf" })
+                        .Visible(Permossions.haveAccess(Convert.ToInt32(Session["UserId"]), 165))
+                        .ImageUrl(Url.Content("~/Content/images/1376574913_wallet.png"));
+                });
+        })
+    )
+                            </div>);
+                    }).ToHtmlString()
+              );
+
+
+      })
+)
+</div>

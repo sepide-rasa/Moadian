@@ -1,0 +1,172 @@
+﻿@using Ext.Net.MVC
+@using Hogaf.ExtNet.UX
+@using Ext.Net;
+@{
+    var X = Html.X();
+}
+<style>
+    .redd{
+        color:red;
+    }
+</style>
+@(Html.X().Window()
+    .Modal(true)
+    .Resizable(false)
+    .Listeners(l => l.AfterRender.Handler = "setOwnerInfo()")
+    .Width(350)
+    .Title("ویرایش مالک پلاک")
+    .Layout(LayoutType.Fit)
+    .ID("ChangeOwnerP")
+    .Closable(true)
+    .ButtonAlign(Ext.Net.Alignment.Center)
+    .Buttons(
+        X.Button()
+            .Text("ذخیره")
+            .ItemID("btnSaveee")
+            .Icon(Ext.Net.Icon.Disk)
+            .Listeners(l => l.Click.Handler = "SaveChangeOwnerP();"),
+        X.Button()
+            .Text("خروج")
+            .Icon(Ext.Net.Icon.DoorOut)
+            .OnClientClick("App.ChangeOwnerP.destroy();"))
+    .CloseAction(Ext.Net.CloseAction.Destroy)
+    .Items(
+        X.FormPanel()
+            .Border(false)
+            .Layout(LayoutType.VBox)
+            .LayoutConfig(new VBoxLayoutConfig { Align = VBoxAlign.Center })
+            .Items(
+                X.Label("پرونده مورد نظر تأیید شده و شما قادر به ویرایش پلاک نمی باشید.")
+                    .ItemID("lblinf")
+                    .Cls("redd"),
+                X.FieldSet()
+                    .Border(true)
+                    .Padding(5)
+                    .ItemID("oldOwner")
+                    .Title("مشخصات مالک قبلی")
+                    .Width(250)
+                    .Layout(LayoutType.VBox)
+                    .LayoutConfig(new VBoxLayoutConfig { Align=VBoxAlign.Right})
+                    .Items(
+                        X.FieldSet()
+                            .Border(false)
+                            .LayoutConfig(new TableLayoutConfig{Columns=2})
+                            .Items(
+                                X.Label("نام و نام خانوادگی:"),
+                                X.Label()
+                                    .ItemID("lblName")
+                                    .Width(150)),
+                        X.FieldSet()
+                            .Border(false)
+                            .LayoutConfig(new TableLayoutConfig{Columns=2})
+                            .Items(
+                                X.Label("کد ملی:"),
+                                X.Label()
+                                    .ItemID("lblCode")
+                                    .Width(150)),
+                        X.FieldSet()
+                            .Border(false)
+                            .LayoutConfig(new TableLayoutConfig{Columns=2})
+                            .Items(
+                                X.Label("موبایل:"),
+                                X.Label()
+                                    .ItemID("lblMobile")
+                                    .Width(150))
+                                    ),
+                X.FieldSet()
+                    .Border(true)
+                    .ItemID("newOwner")
+                    .Title("مشخصات مالک جدید")
+                    .Width(250)
+                    .Layout(LayoutType.VBox)
+                    .LayoutConfig(new VBoxLayoutConfig { Align = VBoxAlign.Right })
+                    .Items(
+                        X.FieldSet()
+                            .Border(false)
+                            .LayoutConfig(new TableLayoutConfig{Columns=2})
+                            .Items(
+                                X.Label("نام و نام خانوادگی:"),
+                                X.Label()
+                                    .ItemID("lblNameNew")
+                                    .Width(150)),
+                        X.FieldSet()
+                            .Border(false)
+                            .LayoutConfig(new TableLayoutConfig{Columns=2})
+                            .Items(
+                                X.Label("کد ملی:"),
+                                X.Label()
+                                    .ItemID("lblCodeNew")
+                                    .Width(150)),
+                        X.FieldSet()
+                            .Border(false)
+                            .LayoutConfig(new TableLayoutConfig{Columns=2})
+                            .Items(
+                                X.Label("موبایل:"),
+                                X.Label()
+                                    .ItemID("lblMobileNew")
+                                    .Width(150))
+                                    )
+                        )
+                    )
+            )
+
+<script type="text/javascript">
+
+    function setOwnerInfo() {
+        lblName = App.ChangeOwnerP.queryById("lblName");
+        lblCode = App.ChangeOwnerP.queryById("lblCode");
+        lblMobile = App.ChangeOwnerP.queryById("lblMobile");
+        lblNameNew = App.ChangeOwnerP.queryById("lblNameNew");
+        lblCodeNew = App.ChangeOwnerP.queryById("lblCodeNew");
+        lblMobileNew = App.ChangeOwnerP.queryById("lblMobileNew");
+
+        if ('@ViewBag.Accept' == "True") {
+            App.ChangeOwnerP.queryById("lblinf").show();
+            App.ChangeOwnerP.queryById("oldOwner").setTitle("مشخصات مالک");
+            App.ChangeOwnerP.queryById("newOwner").hide();
+            App.ChangeOwnerP.queryById("btnSaveee").hide();
+            lblName.setText('@ViewBag.NameFamily');
+            lblMobile.setText('@ViewBag.Mobile');
+            lblCode.setText('@ViewBag.CodeMeli');
+        }
+        else {
+            App.ChangeOwnerP.queryById("lblinf").hide();
+            App.ChangeOwnerP.queryById("newOwner").show();
+            App.ChangeOwnerP.queryById("btnSaveee").show();
+            lblName.setText('@ViewBag.NameFamily');
+            lblMobile.setText('@ViewBag.Mobile');
+            lblCode.setText('@ViewBag.CodeMeli');
+            lblNameNew.setText('@ViewBag.NameFamilyNew');
+            lblMobileNew.setText('@ViewBag.MobileNew');
+            lblCodeNew.setText('@ViewBag.CodeMeliNew');
+        }        
+    }
+
+
+    function SaveChangeOwnerP() {
+        App.ChangeOwnerP.body.mask("در حال ذخیره سازی...");
+        Ext.net.DirectMethod.request({
+            url: '/NewVer/Parvande/SaveNewOwnerP',
+            params: {
+                NewOwnerId: '@ViewBag.NewOwnerId',
+                PlaqueId: '@ViewBag.PlaqueId'
+            },
+            success: function (data) {
+                var ic = Ext.MessageBox.INFO;
+                if (data.Er == 1)
+                    ic = Ext.MessageBox.ERROR;
+                Ext.MessageBox.show({
+                    title: data.MsgTitle,
+                    msg: data.Msg,
+                    icon: ic,
+                    buttons: Ext.MessageBox.OK
+                });
+                if (data.Er != 1) {
+                    ReloadGridPelak();
+                }
+                App.ChangeOwnerP.body.mask().hide();
+            }
+        });
+    }
+
+</script>

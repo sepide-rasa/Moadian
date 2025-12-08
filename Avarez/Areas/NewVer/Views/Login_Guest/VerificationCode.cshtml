@@ -1,0 +1,281 @@
+﻿@using Ext.Net.MVC
+@using Hogaf.ExtNet.UX
+@using Ext.Net;
+@{
+    var X = Html.X();
+}
+<style>
+    .lbl{
+        color:black;
+    }
+</style>
+
+@(Html.X().Window().Modal(true).Listeners(li => li.AfterRender.Handler = "LoadVerification();")
+.Width(440).Height(170).Resizable(true)
+    .Title("کد تائید")
+               .ID("VerificationCode")
+    .Closable(true)
+    .CloseAction(Ext.Net.CloseAction.Destroy)
+    .Items(
+        X.FormPanel().Border(false)
+        .Border(false).ButtonAlign(Ext.Net.Alignment.Center)
+
+            .DefaultButton("btn")
+        .TitleAlign(Ext.Net.TitleAlign.Center)
+               .Buttons(
+               X.Button().Text("فعالسازی").Icon(Ext.Net.Icon.Add)
+                                            .Listeners(l => l.Click.Handler = "SaveVerificationCode()")
+                            , X.Button().Text("خروج").Icon(Ext.Net.Icon.DoorOut).ToolTip("کلید میانبر Esc")
+                                        .OnClientClick("destroy();"))
+                .Items(
+                X.Panel().Border(false)
+
+            .Items(
+                //X.FieldSet().Border(false)
+                //.Center()
+                //.LayoutConfig(new Ext.Net.TableLayoutConfig { Columns = 3 })
+                //.Defaults(new { Margin = 2 })
+                //.Items(
+                           X.FieldSet().Border(false)
+            .Layout(LayoutType.VBox)
+            .LayoutConfig(new Ext.Net.VBoxLayoutConfig { Align = VBoxAlign.Right })
+            .Items(
+                 X.Label().RTL(true).Cls("lbl")
+            .Text("پیامک حاوی کد تایید برای شما ارسال می گردد. در صورت خروج از این صفحه، "),
+                    X.Label().RTL(true).Cls("lbl")
+                .Text("ادامه فرایند را می توانید از لینک تکمیل ثبت نام در صفحه اصلی انجام دهید.")
+                ),
+        X.FieldSet().Border(false)
+            .LayoutConfig(new Ext.Net.TableLayoutConfig { Columns = 2 })
+                //.Defaults(new { Margin = 2 })
+        .Items(
+                     X.Label("شماره موبایل:").ItemID("lblMobile1"),
+                                    X.TextField()
+                                    .ItemID("txtMobile1")
+                                    .MsgTarget(Ext.Net.MessageTarget.Side)
+                                    .AllowBlank(false)
+                                    .Width(190)
+                                    .BlankText("لطفا شماره موبایل را وارد کنید.")
+                                 ,
+                 X.Label("شماره موبایل:").ItemID("lblMobile"),
+                                X.TextField()
+                                .ItemID("txtMobile")
+                                .MsgTarget(Ext.Net.MessageTarget.Side)
+                                .AllowBlank(false)
+                                .Width(190)
+                                .BlankText("لطفا شماره موبایل را وارد کنید.")
+                                .EmptyText("09111111111")
+                                    .Plugins(X.InputMask()
+                                        .Mask("09AAAAAAAAA")
+                                        .ClearWhenInvalid(true)
+                                        .MaskSymbols(ls =>
+                                        {
+                                            ls.Add(new MaskSymbol { Name = "A", Regex = "[0-9]", Placeholder = "_".ToCharArray()[0] });
+                                        })
+                                    ),
+                                X.Label("کد تائید(حساس به حروف کوچک و بزرگ):"),
+                                X.TextField()
+                                .ItemID("txtCodeTaaid")
+                                .MsgTarget(Ext.Net.MessageTarget.Side)
+                                .AllowBlank(false)
+                                .Width(190)
+                                .BlankText("لطفا کد تائید را وارد کنید.")
+                                                 
+          //X.Container().ColSpan(2).Content(
+//        <div id="strength" style="width:350px;height:60px;direction:rtl;">پیامک حاوی کد تایید برای شما ارسال می گردد. در صورت خروج از این صفحه، ادامه فرایند را می توانید از لینک تکمیل ثبت نام در صفحه اصلی انجام دهید.</div>)
+//,
+//                     X.Label("کد تائید(حساس به حروف کوچک و بزرگ):")
+//                     , X.Container().Content(<div><input id='txtCodeTaaid' class='text' style='direction:ltr;font-family:sans-serif;width: 130px;height: 22px;' /></div>)
+                     //, X.TextField()
+                           //     .ItemID("txtCodeTaaid")
+                           //     .MsgTarget(Ext.Net.MessageTarget.Side)
+                           //     .AllowBlank(false)
+                           //     .AutoFocus(true)
+                           //     .BlankText("لطفا کد تائید را وارد کنید.")
+                             )
+
+                       // )
+
+                )
+                    .Layout(Ext.Net.LayoutType.VBox)
+                    .LayoutConfig(new Ext.Net.VBoxLayoutConfig { Align = Ext.Net.VBoxAlign.Center })
+            )
+        )
+)
+<script type="text/javascript">
+    var Mobile = "";
+    var Name = "";
+    var Gender="";
+    function LoadVerification() {
+        Mobile = '@ViewBag.Mobile';
+        Name = '@ViewBag.Name';
+        Gender = '@ViewBag.Gender';
+        App.VerificationCode.queryById('txtCodeTaaid').validate();
+        var txtMobile = App.VerificationCode.queryById('txtMobile');
+        var txtMobile1 = App.VerificationCode.queryById('txtMobile1');
+        var lblMobile = App.VerificationCode.queryById('lblMobile');
+        var lblMobile1 = App.VerificationCode.queryById('lblMobile1');
+        if (Mobile != "0")
+        {
+            txtMobile1.setValue(Mobile);
+            txtMobile1.setReadOnly(true);
+            txtMobile1.show();
+            lblMobile1.show();
+            lblMobile.hide();
+            txtMobile.hide();
+        }
+        else {
+            txtMobile.validate();
+            txtMobile1.hide();
+            txtMobile.show();
+            lblMobile1.hide();
+            lblMobile.show();
+        }
+       /* var url = 'Url.Content("~/VerificationCode/generateVerification")';*/
+    }
+    function SaveVerificationCode() {
+        var er= false;
+         var txtCodeTaaid = App.VerificationCode.queryById('txtCodeTaaid');
+         var txtMobile = App.VerificationCode.queryById('txtMobile');
+         var txtMobile1 = App.VerificationCode.queryById('txtMobile1');
+        /*var txtCodeTaaid = $('#txtCodeTaaid').val();*/
+        if (txtCodeTaaid.validate() == false)
+        {
+            er = true;
+            
+        }
+        if (Mobile == "0") {
+            if (txtMobile.validate() == false) {
+                er = true;
+
+            }
+        }
+        if (er == true)
+            return;
+        if (Mobile == "0") {
+            m = txtMobile.getValue();
+        }
+        else
+        {
+            m = txtMobile1.getValue();
+        }
+            if (m.substring(0, 2) != "09") {
+                Ext.net.Mask.hide();
+                Ext.MessageBox.show({
+                    title: 'خطا',
+                    msg: 'موبایل وارد شده نامعتبر است.',
+                    icon: Ext.MessageBox.ERROR,
+                    buttons: Ext.MessageBox.OK
+                });
+                er = true;
+                return;
+            }
+            else {
+               
+                if ('@ViewBag.Mobile' == "0") {
+                    var code = "";
+                    var Tarikh = "";
+                    Ext.net.Mask.show({ msg: 'در حال بررسی ...' });
+                    Ext.net.DirectMethod.request({
+                        url: '/NewVer/Login_Guest/GetNationalCode',
+                        params: {
+                            Mobile: m
+                        },
+                        success: function (data) {
+
+                            code = data.CodeMeli;
+                            Tarikh = data.TarikhTavalod;
+
+                            /*Ext.net.DirectMethod.request({
+                                url: '/NewVer/Parvande/EstelamSabt',
+                                params: {
+                                    CodeMeli: code,
+                                    Tarikhtavalod: Tarikh
+                                },
+                                success: function (data) {
+                                    if (data.Error == "")
+                                        Name = data.Name;
+                                    Gender = data.gender;*/
+                                    Ext.net.DirectMethod.request({
+                                        url: '/NewVer/Login_Guest/CheckCodeTaaid',
+                                        params: {
+                                            CodeTaaid: txtCodeTaaid.getValue(),
+                                            Mobail: m,
+                                            Name: Name,
+                                            Gender: Gender
+                                        },
+                                        success: function (data) {
+                                            var ic = icon = Ext.MessageBox.INFO;
+                                            if (data.Er == 1)
+                                                ic = icon = Ext.MessageBox.ERROR;
+                                            Ext.MessageBox.show({
+                                                title: data.MsgTitle,
+                                                msg: data.Msg,
+                                                icon: ic,
+                                                buttons: Ext.MessageBox.OK
+                                            });
+                                            Ext.net.Mask.hide();
+                                            
+                                        }
+                                        /*if (data.Er != 1) {
+                                            App.VerificationCode.destroy();
+                                           
+                                            Ext.net.DirectMethod.request({
+                                                url: '/NewVer/Login_Guest/Destroy'
+                                            });
+                                            Ext.net.Mask.hide();
+                                        }*/
+                                    });
+                        /*}
+                            });*/
+                        }
+                    });
+                }
+                else {
+                    App.VerificationCode.body.mask('در حال بررسی ...');
+                    Ext.net.DirectMethod.request({
+                        url: '/NewVer/Login_Guest/CheckCodeTaaid',
+                        params: {
+                            CodeTaaid: txtCodeTaaid.getValue(),
+                            Mobail: m,
+                            Name: Name,
+                            Gender: Gender
+                        },
+                        success: function (data) {
+                            var ic = icon = Ext.MessageBox.INFO;
+                            if (data.Er == 1)
+                                ic = icon = Ext.MessageBox.ERROR;
+                            Ext.MessageBox.show({
+                                title: data.MsgTitle,
+                                msg: data.Msg,
+                                icon: ic,
+                                buttons: Ext.MessageBox.OK
+                            });
+                            App.VerificationCode.body.mask().hide();
+                            }
+                            /*if (data.Er != 1) {
+                                App.VerificationCode.destroy();
+                               
+                                Ext.net.DirectMethod.request({
+                                    url: '/NewVer/Login_Guest/Destroy'
+                                });
+                                Ext.net.Mask.hide();
+                            }*/
+                    });
+                }
+        }
+    }
+
+    function destroy() {
+        Ext.net.DirectMethod.request({
+            url: '/NewVer/Login_Guest/Destroy'
+        });
+    }
+    function loadcap() {
+            var originalSrc2 = 'Url.Content("~/VerificationCode/generateCaptcha")';
+            var antiCachePart2 = (new Date()).getTime();
+            var newSrc2 = originalSrc2 + '?dc=' + antiCachePart2;
+            $("#m_imgCaptcha").attr('src', newSrc2);
+    }
+
+</script>

@@ -1,0 +1,406 @@
+﻿@using Ext.Net.MVC;
+@using Ext.Net.Utilities;
+<script src="~/Scripts/jquery-ajax-native.js"></script>
+@{
+
+    var X = Html.X();
+}
+
+@(X.Window()
+        //  .Height(145)
+    .Width(400)
+    .Layout(Ext.Net.LayoutType.Fit)
+    .Listeners(li =>
+    {
+        li.AfterRender.Handler = "LoadTarafGharardad();";
+    })
+    .ID("TarafGharardad")
+    .Modal(true)
+    .Title("اطلاعات طرف قرارداد")
+    .Resizable(false)
+    .Icon(Ext.Net.Icon.ImageAdd)
+    .Closable(true)
+    .Border(false)
+    .CloseAction(Ext.Net.CloseAction.Destroy)
+    .ButtonAlign(Ext.Net.Alignment.Center)
+    .Buttons(
+                X.Button()
+                .Text("ذخیره")
+                .ItemID("btnsavePro")
+                .Icon(Ext.Net.Icon.Disk)
+                .Listeners(l => l.Click.Handler = "SaveFilePro();"),
+        X.Button()
+            .Text("خروج")
+            .Icon(Ext.Net.Icon.BulletCross)
+            .OnClientClick("App.TarafGharardad.destroy()")
+    )
+    .Items(
+        X.FormPanel()
+            .Defaults(new { Margin = 10 })
+            .Border(false)
+            .Layout(Ext.Net.LayoutType.VBox)
+            .LayoutConfig(new Ext.Net.VBoxLayoutConfig { Align = Ext.Net.VBoxAlign.Center })
+                .Items(
+                     X.AntiForgeryField().ItemID("AntiForgeryField"),
+
+                     X.FieldSet()
+                    .Border(false)
+                    .Layout(Ext.Net.LayoutType.Table)
+                    .Defaults(new { Margin = 5 })
+                    .LayoutConfig(new Ext.Net.TableLayoutConfig { Columns = 2 })
+                    .Items(
+                         X.Label("کد یکتا مالیاتی:")
+                            , X.TextField()
+                                .ItemID("txtCode")
+                                .MsgTarget(Ext.Net.MessageTarget.Side)
+                                .AllowBlank(false)
+                                .BlankText("لطفا کد یکتا مالیاتی را وارد کنید.")
+                                .Focus(true)
+                                .Width(160)
+                                )
+                                ,
+                X.FieldSet()
+                    .Border(false)
+                    .Layout(Ext.Net.LayoutType.Table)
+                    .Defaults(new { Margin = 5 })
+                    .LayoutConfig(new Ext.Net.TableLayoutConfig { Columns = 2 })
+                    .Items(
+        //X.Hidden().ItemID("fldId"),
+                        X.FileUploadField()
+                            .ID("FileUploadFieldPro")
+                            .ButtonOnly(true)
+                            .ButtonText("کلید خصوصی(.pem)")
+                            .DirectEvents(l =>
+                            {
+                                l.Change.Action = "UploadFileKey";
+                                l.Change.Success = "hideprogressPreviousPro();";
+                            })
+                            .Listeners(l => l.Change.Fn = "showFilePro")
+                            .Icon(Ext.Net.Icon.DiskUpload),
+        //X.Button()
+        //    .Text("ذخیره")
+        //    .ItemID("btnsavePro")
+        //    .Icon(Ext.Net.Icon.Disk)
+        //    .Listeners(l => l.Click.Handler = "SaveFilePro();"),
+                        X.Button()
+                            .Text("دانلود")
+                            .ItemID("btnDownloadPro")
+                            .Icon(Ext.Net.Icon.DiskDownload)
+                            .Listeners(l => l.Click.Handler = "DownloadFilePro();")),
+                X.FieldSet()
+                    .Border(false)
+                    .Items(
+                        X.Panel()
+                            .Border(false)
+                            .ItemID("PanelNameFilePro")
+                            .BodyStyle("background:transparent;")
+                            .Height(30).Width(300)
+                            .Html(@<center><div id="fi-button-msg" style="display: none;border:2px;"></div></center>))
+                    ,
+                    X.FieldSet()
+                    .Border(false)
+                    .Layout(Ext.Net.LayoutType.Table)
+                    .Defaults(new { Margin = 5 })
+                    .LayoutConfig(new Ext.Net.TableLayoutConfig { Columns = 2 })
+                    .Items(
+        //X.Hidden().ItemID("fldId"),
+                        X.FileUploadField()
+                            .ID("FileUploadFieldProD")
+                            .ButtonOnly(true)
+                            .ButtonText("گواهی امضا(.crt)")
+                            .DirectEvents(l =>
+                            {
+                                l.Change.Action = "UploadFileSign";
+                                l.Change.Success = "hideprogressPreviousProD();";
+                            })
+                            .Listeners(l => l.Change.Fn = "showFileProD")
+                            .Icon(Ext.Net.Icon.DiskUpload),
+                        //X.Button()
+                        //    .Text("ذخیره")
+                        //    .ItemID("btnsaveProD")
+                        //    .Icon(Ext.Net.Icon.Disk)
+                        //    .Listeners(l => l.Click.Handler = "SaveFilePro();"),
+                        X.Button()
+                            .Text("دانلود")
+                            .ItemID("btnDownloadProD")
+                            .Icon(Ext.Net.Icon.DiskDownload)
+                            .Listeners(l => l.Click.Handler = "DownloadFileProD();")),
+                X.FieldSet()
+                    .Border(false)
+                    .Items(
+                        X.Panel()
+                            .Border(false)
+                            .ItemID("PanelNameFileProD")
+                            .BodyStyle("background:transparent;")
+                                .Height(30).Width(300)
+                            .Html(@<center><div id="fi-button-msgD" style="display: none;border:2px;"></div></center>))
+                        )
+                )
+)
+
+
+<script type="text/javascript">
+    var gharardadId = '@ViewBag.gharardadId';
+    var FileIdDaftarche = 0;
+
+    var MojazPreviousPro = 0;
+    var sizeePreviousPro = 0;
+    var EndUploadPreviousPro = false;
+
+    var MojazPreviousProD = 0;
+    var sizeePreviousProD = 0;
+    var EndUploadPreviousProD = false;
+
+    var CheckPreviousPro = setInterval(CheckEndPreviousPro, 500);
+    var CheckPreviousProD = setInterval(CheckEndPreviousProD, 500);
+
+    function CheckEndPreviousPro() {
+        if (EndUploadPreviousPro == true) {
+            Ext.MessageBox.hide();
+            Ext.Msg.alert('عملیات موفق', 'فایل با موفقیت آپلود شد.');
+            clearInterval(CheckEndPreviousPro);
+            EndUploadPreviousPro = false;
+        }
+    }
+    function CheckEndPreviousProD() {
+        if (EndUploadPreviousProD == true) {
+            Ext.MessageBox.hide();
+            Ext.Msg.alert('عملیات موفق', 'فایل با موفقیت آپلود شد.');
+            clearInterval(CheckEndPreviousProD);
+            EndUploadPreviousProD = false;
+        }
+    }
+    var ss;
+    var showFilePro = function (fb, v) {
+        var id = fb.fileInputEl.dom.id;
+        var el = Ext.get('fi-button-msg');
+        if (v) {
+            ss = document.getElementById(id).files[0].size;
+            showProgressBarPreviousPro();
+            if (v.split('.').pop().toLowerCase() == "pem") {
+                MojazPreviousPro = 1;
+                if (document.getElementById(id).files[0].size <= 5242880) {
+                    sizeePreviousPro = 1;
+                }
+                if (sizeePreviousPro == 1) {
+                    el.update('<b>فایل انتخاب شده:</b> ' + v);
+                }
+                else {
+                    el.update("");
+                }
+
+                if (!el.isVisible()) {
+                    el.slideIn('t', {
+                        duration: .2,
+                        easing: 'easeIn',
+                        callback: function () {
+                            el.highlight();
+                        }
+                    });
+                } else {
+                    el.highlight();
+                }
+            }
+            else {
+                el.update("");
+            }
+        }
+    };
+    var showFileProD = function (fb, v) {
+        var id = fb.fileInputEl.dom.id;
+        var el = Ext.get('fi-button-msgD');
+        if (v) {
+            showProgressBarPreviousProD();
+            if (v.split('.').pop().toLowerCase() == "crt") {
+                MojazPreviousProD = 1;
+                if (document.getElementById(id).files[0].size <= 5242880) {
+                    sizeePreviousProD = 1;
+                }
+                if (sizeePreviousProD == 1) {
+                    el.update('<b>فایل انتخاب شده:</b> ' + v);
+                }
+                else {
+                    el.update("");
+                }
+
+                if (!el.isVisible()) {
+                    el.slideIn('t', {
+                        duration: .2,
+                        easing: 'easeIn',
+                        callback: function () {
+                            el.highlight();
+                        }
+                    });
+                } else {
+                    el.highlight();
+                }
+            }
+            else {
+                el.update("");
+            }
+        }
+    };
+
+    function hideprogressPreviousPro() {
+        if (MojazPreviousPro == 1 && sizeePreviousPro == 1) {
+            EndUploadPreviousPro = true;
+        }
+        MojazPreviousPro = 0;
+        sizeePreviousPro = 0;
+    }
+    function hideprogressPreviousProD() {
+        if (MojazPreviousProD == 1 && sizeePreviousProD == 1) {
+            EndUploadPreviousProD = true;
+        }
+        MojazPreviousProD = 0;
+        sizeePreviousProD = 0;
+    }
+
+    function showProgressBarPreviousPro() {
+        Ext.MessageBox.show({
+            msg: 'لطفاً منتظر باشید',
+            progressText: 'در حال آپلود فایل...',
+            width: 300,
+            wait: true,
+            waitConfig:
+            {
+                interval: 200,
+                text: 'در حال آپلود فایل...',
+                scope: this
+            }
+        });
+    }
+    function showProgressBarPreviousProD() {
+        Ext.MessageBox.show({
+            msg: 'لطفاً منتظر باشید',
+            progressText: 'در حال آپلود فایل...',
+            width: 300,
+            wait: true,
+            waitConfig:
+            {
+                interval: 200,
+                text: 'در حال آپلود فایل...',
+                scope: this
+            }
+        });
+    }
+
+    function SaveFilePro() {
+        App.TarafGharardad.queryById('btnsavePro').disable();
+        Ext.net.DirectMethod.request({
+            url: '/Tax/Shakhs/SaveTarafGharardad',
+            params: {
+                Id: '@ViewBag.Id',
+                gharardadId: gharardadId,
+                code: App.TarafGharardad.queryById('txtCode').getValue()
+            },
+            success: function (data) {
+                var ic = Ext.MessageBox.INFO;
+                if (data.Er == 1)
+                    ic = Ext.MessageBox.ERROR;
+                Ext.MessageBox.show({
+                    title: data.MsgTitle,
+                    msg: data.Msg,
+                    icon: ic,
+                    buttons: Ext.MessageBox.OK
+                });
+                if (data.Er != 1) {
+                    App.TarafGharardad.queryById('btnDownloadPro').setDisabled(false);
+                    App.TarafGharardad.queryById('btnDownloadProD').setDisabled(false);
+                    gharardadId = data.gharardadId;
+                }
+                App.TarafGharardad.queryById('btnsavePro').enable();
+                var el = Ext.get('fi-button-msg');
+                el.update("");
+            },
+            failure: function (data) {
+                App.TarafGharardad.queryById('btnsavePro').enable();
+            }
+        });
+    }
+
+    function DownloadFilePro() {
+        if (gharardadId != 0) {
+            /*window.location.href = 'Url.Content("~/PreviousProjectsQuality/DownloadFilePro?FileId=")' + CodeFileId;*/
+            $.ajax({
+                type: "POST",
+                dataType: 'native',
+                url: "/Tax/Shakhs/DownloadFile",
+                xhrFields: {
+                    responseType: 'blob'
+                },
+                data: {
+                    state: 1,
+                    gharardadId: gharardadId
+                },
+                success: function (blob) {
+                    x = blob;
+                    var link = document.createElement('a');
+                    link.href = window.URL.createObjectURL(blob);
+                    link.download = "DownloadFileKey";
+                    link.click();
+                }
+            });
+        }
+        else {
+            Ext.MessageBox.show({
+                title: "خطا",
+                msg: "فایل مورد نظر انتخاب نشده است.",
+                icon: Ext.MessageBox.ERROR,
+                buttons: Ext.MessageBox.OK
+            });
+        }
+    }
+    function DownloadFileProD() {
+        if (gharardadId != 0) {
+            /*window.location.href = 'Url.Content("~/PreviousProjectsQuality/DownloadFilePro?FileId=")' + CodeFileId;*/
+            $.ajax({
+                type: "POST",
+                dataType: 'native',
+                url: "/Tax/Shakhs/DownloadFile",
+                xhrFields: {
+                    responseType: 'blob'
+                },
+                data: {
+                    state: 2,
+                    gharardadId: gharardadId
+                },
+                success: function (blob) {
+                    x = blob;
+                    var link = document.createElement('a');
+                    link.href = window.URL.createObjectURL(blob);
+                    link.download = "DownloadFileSign";
+                    link.click();
+                }
+            });
+        }
+        else {
+            Ext.MessageBox.show({
+                title: "خطا",
+                msg: "فایل مورد نظر انتخاب نشده است.",
+                icon: Ext.MessageBox.ERROR,
+                buttons: Ext.MessageBox.OK
+            });
+        }
+    }
+
+    function LoadTarafGharardad() {
+        var withBody = Ext.getBody().getViewSize().width;
+        /* App.TarafGharardad.setWidth(withBody - 1000);
+         App.TarafGharardad.queryById('PanelNameFilePro').setWidth(withBody - 1100);*/
+
+        if (gharardadId != 0) {
+            App.TarafGharardad.queryById('btnDownloadPro').setDisabled(false);
+            App.TarafGharardad.queryById('btnDownloadProD').setDisabled(false);
+            App.TarafGharardad.queryById('txtCode').setValue('@ViewBag.code');
+        }
+        else {
+            App.TarafGharardad.queryById('btnDownloadPro').setDisabled(true);
+            App.TarafGharardad.queryById('btnDownloadProD').setDisabled(true);
+        }
+
+
+
+    }
+
+</script>

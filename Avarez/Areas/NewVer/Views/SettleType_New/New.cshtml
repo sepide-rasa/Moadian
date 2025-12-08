@@ -1,0 +1,198 @@
+﻿@using Ext.Net.MVC
+@using Hogaf.ExtNet.UX
+@using Ext.Net;
+@{
+    var X = Html.X();
+}
+
+@(Html.X().Window()
+    .Modal(true)
+         .Resizable(false)
+                .Listeners(l => l.AfterRender.Handler = "LoadSettleType()")
+    .Width(330)
+    .Height(230)
+    .Title("نوع پرداخت")
+    .Layout(LayoutType.Fit)
+        .ID("NewSettleType")
+    .Closable(true)
+    .ButtonAlign(Ext.Net.Alignment.Center)
+    .Buttons(
+        X.Button()
+            .Text("ذخیره")
+            .Icon(Ext.Net.Icon.Disk)
+        //.ToolTip("کلید میانبر F8")
+                .Listeners(l => l.Click.Handler = "SaveSettleType();"),
+        X.Button()
+            .Text("خروج")
+            .Icon(Ext.Net.Icon.DoorOut)
+        //.ToolTip("کلید میانبر Esc")
+                .OnClientClick("App.NewSettleType.destroy();"))
+    .CloseAction(Ext.Net.CloseAction.Destroy)
+    .Items(
+        X.FormPanel()
+            .Border(false)
+            .Layout(LayoutType.Fit)
+            .Items(
+                X.Panel()
+                    .Border(false)
+                    .PaddingSpec("15px 0 0 0")
+                    .Layout(LayoutType.VBox)
+                    .LayoutConfig(new VBoxLayoutConfig { Align = VBoxAlign.Center })
+                    .Items(
+                        X.FieldSet()
+                            .Border(true)
+                                .Title("نوع پرداخت")
+                            //.Height(145)
+                            .Defaults(new { Margin = 2 })
+                            .Layout(LayoutType.Table)
+        //.Title("رنگ خودرو")
+                            .LayoutConfig(new TableLayoutConfig { Columns = 2 })
+                            .Items(
+                                X.Hidden()
+                                    .ItemID("fldId"),
+
+                                X.Label("نوع پرداخت:"),
+                                X.TextField()
+                                        .ItemID("txtName")
+                                    .Width(190)
+                                    .AllowBlank(false)
+                                        .EnforceMaxLength(true)
+                                            .MaxLength(50)
+                                    .BlankText("لطفا نوع پرداخت را وارد نمایید.")
+                                    .MsgTarget(Ext.Net.MessageTarget.Side),
+                                    X.Label("کد پرداخت:"),
+                                    X.TextField()
+                                                .ItemID("txtCode").Listeners( l => l.Change.Handler = "ChangeSettleType()")
+                                        .Width(190)
+                                        .EnforceMaxLength(true)
+                                        .MaxLength(3)
+                                        .AllowBlank(false)
+                                        .BlankText("لطفا کد پرداخت را وارد نمایید.")
+                                        .MaskRe("/[0-9]/")
+                                        
+                                        .MsgTarget(Ext.Net.MessageTarget.Side),
+                                X.Label("توضیحات:"),
+                                X.TextArea()
+                                    .ItemID("txtDesc")
+                                    .Width(190)
+                            )
+
+
+                )
+            )
+        )
+)
+
+<script type="text/javascript">
+    function ChangeSettleType() {
+        var txtCode = App.NewSettleType.queryById("txtCode").getValue();
+        if(txtCode >256)
+        {
+                 Ext.MessageBox.show({
+                    title:"خطا",
+                    msg:"کد وارد شده بیشتر از حد مجاز می باشد.",
+                    icon: Ext.MessageBox.ERROR,
+                    buttons: Ext.MessageBox.OK
+          });
+         }
+    }
+
+
+
+    function LoadSettleType() {
+        if ('@ViewBag.Id' != '0') {
+            App.NewSettleType.body.mask("در حال بارگذاری...");
+            Ext.net.DirectMethod.request({
+                url: '/NewVer/SettleType_New/Details',
+                params: {
+                    Id: '@ViewBag.Id'
+                },
+                success: function (data) {
+                    if (data.Er == 0) {
+                        var txtName = App.NewSettleType.queryById('txtName');
+                        txtName.setValue(data.fldName);
+                        var txtCode = App.NewSettleType.queryById('txtCode');
+                        txtCode.setValue(data.fldCode);
+                        var txtDesc = App.NewSettleType.queryById('txtDesc');
+                        txtDesc.setValue(data.fldDesc);
+                        var Id = App.NewSettleType.queryById('fldId');
+                        Id.setValue(data.fldId);
+                    }
+                    else if (data.Er == 1) {
+                        Ext.MessageBox.show({
+                            title: data.MsgTitle,
+                            msg: data.Msg,
+                            icon: Ext.MessageBox.ERROR,
+                            buttons: Ext.MessageBox.OK
+                        });
+                    }
+                    App.NewSettleType.body.mask().hide();
+                }
+            });
+        }
+        else {
+            App.NewSettleType.queryById('txtName').validate();
+            App.NewSettleType.queryById('txtCode').validate();
+        }
+    }
+
+
+    function SaveSettleType() {
+        var txtName = App.NewSettleType.queryById('txtName');
+        var txtCode = App.NewSettleType.queryById('txtCode');
+        var Id = App.NewSettleType.queryById('fldId');
+        var txtDesc = App.NewSettleType.queryById('txtDesc');
+
+        var er = false;
+
+        if (txtName.validate() == false) {
+            er = true;
+        }
+        if (txtCode.validate() == false) {
+            er = true;
+        }
+        if (er == true)
+            return;
+        App.NewSettleType.body.mask("در حال ذخیره سازی...");
+        Ext.net.DirectMethod.request({
+            url: '/NewVer/SettleType_New/Save',
+            params: {
+                fldID: Id.getValue(),
+                fldName: txtName.getValue(),
+                fldCode: txtCode.getValue(),
+                fldDesc: txtDesc.getValue()
+            },
+            success: function (data) {
+                var ic = Ext.MessageBox.INFO;
+                if (data.Er == 1)
+                    ic = Ext.MessageBox.ERROR;
+                Ext.MessageBox.show({
+                    title: data.MsgTitle,
+                    msg: data.Msg,
+                    icon: ic,
+                    buttons: Ext.MessageBox.OK
+                });
+                if (data.Er != 1) {
+                    ClearSettleType();
+                }
+                App.NewSettleType.body.mask().hide();
+                App.SettleType.queryById('GridSettleType').store.load();
+            }
+        });
+    }
+
+    function ClearSettleType() {
+        App.NewSettleType.queryById('txtDesc').setValue("");
+        App.NewSettleType.queryById('txtName').setValue("");
+        App.NewSettleType.queryById('txtCode').setValue("");
+        App.NewSettleType.queryById('fldId').setValue(0);
+    }
+
+   /* function EnterNext() {
+        var keyfield = App.NewCustomer.queryById(Ext.getCmp((Ext.Element.getActiveElement()).name).itemId);
+        var nextfld = keyfield.nextSibling();
+        nextfld.focus();
+        nextfld.selectText();
+    }*/
+
+</script>

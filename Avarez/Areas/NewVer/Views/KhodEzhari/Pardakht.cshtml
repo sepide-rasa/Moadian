@@ -1,0 +1,237 @@
+﻿@using Ext.Net.MVC
+@using Hogaf.ExtNet.UX
+@using Ext.Net;
+@{
+    var X = Html.X();
+    Avarez.Models.cartaxEntities car = new Avarez.Models.cartaxEntities();
+    var u = car.sp_GuestUserSelect("fldId", Session["UserGeust"].ToString(), "", 0).FirstOrDefault();
+    var picmnu = car.sp_SelectNameBankAndMunForBankInformation(u.fldMunId, 5).ToList();
+    var HaveBank = false;
+    if (picmnu.Count != 0)
+    {
+        HaveBank = true;
+    }
+}
+<script src="@Url.Content("~/Scripts/accounting.js")" type="text/javascript"></script>
+@(Html.X().Window().Listeners(l=>l.AfterRender.Handler="LoadFormPardakht()")
+    .Modal(true)
+    .Resizable(false)
+    .Width(410)
+       .Height(250)
+    .Title("پرداخت آنلاین")
+        // .Layout(LayoutType.Fit)
+        .ID("Pardakht")
+    .Closable(true)
+    .ButtonAlign(Ext.Net.Alignment.Center)
+    .Buttons(
+        X.Button()
+            .Text("پرداخت")
+            .Icon(Ext.Net.Icon.Coins)
+        //.ToolTip("کلید میانبر F8")
+            .Listeners(l => l.Click.Handler = "PardakhtOnline();"),
+                // X.Button()
+                //.Text("پرداخت")
+                //.Icon(Ext.Net.Icon.Coins)
+                //.Listeners(l => l.Click.Handler = "PardakhtOnline1();"),
+        X.Button()
+            .Text("خروج")
+            .Icon(Ext.Net.Icon.DoorOut)
+            .ToolTip("کلید میانبر Esc")
+                .OnClientClick("App.Pardakht.destroy();"))
+    .CloseAction(Ext.Net.CloseAction.Destroy)
+    .Items(
+    X.Hidden().ItemID("Years"),
+        X.FormPanel()
+            .Border(false)
+        //.Layout(LayoutType.Fit)
+            .Items(
+                X.Panel()
+                    .Border(false)
+                    .PaddingSpec("15px 0 0 0")
+                        .Layout(LayoutType.VBox)
+                            .LayoutConfig(new VBoxLayoutConfig { Align = VBoxAlign.Center })
+                    .Items(
+                        X.FieldSet()
+            .Title("")
+            //.MarginSpec("20px 0 0 0")
+            //.PaddingSpec("10px 0 0 0")
+            .AutoScroll(true)
+            .Border(true)
+            //.Width(600)
+            .Height(65)
+            .ItemID("EditFieldset")
+            .Title("محاسبه عوارض")
+            .Defaults(new { Margin = 10 })
+            .Layout(LayoutType.HBox)
+           // .LayoutConfig(new TableLayoutConfig { Columns = 3 })
+            .Items(
+                X.Button()
+                    .Text("محاسبه مجدد")
+                    .Icon(Ext.Net.Icon.Calculator)
+                    .Listeners(l =>
+                    {
+                        l.Click.Handler = "LoadFormPardakht();";
+                    }),
+                X.Label("مبلغ عوارض:"),
+                X.Label()
+                        .ItemID("lblMablaghAvarez")
+                    .Width(115)
+                    ),
+                         X.Container().Height(90).Hidden(!HaveBank).Content(@<center>
+                        <div align="center" id="fi-button-Dl4" style="text-align:center;">
+                            <br />
+                            <table style="width: 150px;">
+                                <tr style="align-content:center;text-align:center;">
+                                    @for (var i = 0; i < picmnu.Count; i++)
+                                        {
+                                        <td style="text-align: center; vertical-align: middle; "><img src="@Url.Content("~/KhodEzhari/ImageBank/" + picmnu[i].BankId)" title='@picmnu[i].fldBankName' style="height:40px;width:40px;" /></td>
+                                        }
+                                </tr>
+                                <tr style="align-content:center">
+                                    @for (var i = 0; i < picmnu.Count; i++)
+                                        {
+                                        <td style="text-align: center; vertical-align: middle; ">
+                                            @*@Html.RadioButton("Bank", picmnu[i].BankId)*@
+                                            <input id="Bank" name="Bank" type="radio" value='@picmnu[i].BankId' style="height:20px;">
+                                        </td>
+                                        }
+                                </tr>
+                            </table>
+                        </div>
+                    </center>)
+                )
+            )
+        )
+)
+
+<script type="text/javascript">
+    var Mablagh1 = 0;
+    var fldFine1;
+    var fldValueAddPrice1;
+    var fldPrice1;    
+    var Bed1;
+    var fldOtherPrice1;
+    var fldMainDiscount1;
+    var fldFineDiscount1;
+    var fldValueAddDiscount1;
+    var fldOtherDiscount1;
+
+    
+    function LoadFormPardakht() {
+        /*Ext.net.Mask.show({ msg: 'در حال بارگذاری...' });*/
+        App.Pardakht.body.mask("در حال بارگذاری...");
+        Ext.net.DirectMethod.request({
+            url: '/NewVer/KhodEzhari_OnlinePay/calc',
+            params: {
+                carid: '@ViewBag.CarID'
+            },
+            success: function (data) {
+                if (data.Msg !="") {
+                    Ext.MessageBox.show({
+                        title: "خطا",
+                        msg: data.Msg,
+                        icon: Ext.MessageBox.ERROR,
+                        buttons: Ext.MessageBox.OK
+                    });
+                }
+                else {
+                    App.Pardakht.queryById('lblMablaghAvarez').setText(accounting.formatNumber(data.mablagh).toString() + ' ریال');
+                    Mablagh1 = data.mablagh;
+                    fldFine1 = data.fldFine;
+                    fldValueAddPrice1 = data.fldValueAddPrice;
+                    fldPrice1 = data.fldPrice;
+                    App.Pardakht.queryById("Years").setValue(data.Years);
+                    Bed1 = data.Bed;
+                    fldOtherPrice1 = data.fldOtherPrice;
+                    fldMainDiscount1 = data.fldMainDiscount;
+                    fldFineDiscount1 = data.fldFineDiscount;
+                    fldValueAddDiscount1 = data.fldValueAddDiscount;
+                    fldOtherDiscount1 = data.fldOtherDiscount;
+                }
+                App.Pardakht.body.mask().hide();
+            }
+        });
+    }
+
+    function PardakhtOnline1() {
+        var lblMablaghAvarez = App.Pardakht.queryById('lblMablaghAvarez').getDisplayText().replace(" ریال", "").replace(",", "").replace(",", "").replace(",", "");
+        if (lblMablaghAvarez >= 1000) {
+            var URL = '@Url.Content("~/NewVer/KhodEzhari/GoToOnlinePay1")';
+            $.ajax({
+                url: URL,
+                type: 'get',
+                datatype: 'json',
+                data: { Amount: lblMablaghAvarez, CarId: '@ViewBag.CarID' },
+                error: function (xhr, status, error) {
+                    alert(xhr + status);
+                },
+                success: function (result) {
+                    window.location.href = "http://e1.kashan.ir/payment.aspx?bill=" + result.shGabz + "&pay=" + result.Shpardakht + "&refer=http://car.favakashan.ir/Home/Guest";
+                }
+            });
+        }
+        else {
+            Ext.MessageBox.show({
+                title: "خطا",
+                msg: "مبلغ پرداخت کمتر از میزان مجاز برای پرداخت اینترنتی است.",
+                icon: Ext.MessageBox.ERROR,
+                buttons: Ext.MessageBox.OK
+            });
+        }
+    }
+    function PardakhtOnline() {
+        var bankid = 0;
+        var Mablagh = App.Pardakht.queryById('lblMablaghAvarez').getDisplayText().replace(" ریال", "").replace(",", "").replace(",", "").replace(",", "");
+        var h = document.getElementsByName('Bank');
+        for (var i = 0; i < h.length; i++) {
+            if (h[i].checked == true)
+                bankid = h[i].value;
+        }
+        if (Mablagh >= 1000) {
+            if (bankid == 0) {
+                Ext.MessageBox.show({
+                    title: "خطا",
+                    msg: "ابتدا بانک مورد نظر را انتخاب کنید.",
+                    icon: Ext.MessageBox.ERROR,
+                    buttons: Ext.MessageBox.OK
+                });
+            }
+            else {
+                Ext.net.Mask.show({ msg: 'در حال بارگذاری...' });
+                Ext.net.DirectMethod.request({
+                    url: '/NewVer/KhodEzhari_OnlinePay/GoToOnlinePay',
+                    params: {
+                        Amount: Mablagh,
+                        CarId: '@ViewBag.CarID',
+                        BankId: bankid,
+                        CarFileid: '@ViewBag.CarFileID',
+                        fldFine: fldFine1,
+                        fldValueAddPrice: fldValueAddPrice1,
+                        fldPrice: fldPrice1,
+                        Years: App.Pardakht.queryById("Years").getValue(),
+                        Bed: Bed1,
+                        fldOtherPrice: fldOtherPrice1,
+                        fldMainDiscount: fldMainDiscount1,
+                        fldFineDiscount: fldFineDiscount1,
+                        fldValueAddDiscount: fldValueAddDiscount1,
+                        fldOtherDiscount: fldOtherDiscount1
+                    },
+                    success: function (data1) {
+                        Ext.net.Mask.hide();
+                        Ext.net.DirectMethod.request({
+                            url: data1
+                        });                        
+                    }
+                });
+            }
+        }
+        else {
+            Ext.MessageBox.show({
+                title: "خطا",
+                msg: "مبلغ پرداخت کمتر از میزان مجاز برای پرداخت اینترنتی است.",
+                icon: Ext.MessageBox.ERROR,
+                buttons: Ext.MessageBox.OK
+            });
+        }
+    }
+</script>

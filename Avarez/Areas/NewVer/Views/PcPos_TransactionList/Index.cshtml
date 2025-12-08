@@ -1,0 +1,153 @@
+﻿@model IEnumerable<Avarez.Models.sp_PcPosTransactionSelect>
+@using Ext.Net.MVC
+@using Hogaf.ExtNet.UX
+@using Ext.Net;
+@using Ext.Net.Utilities;
+@{
+    var X = Html.X();
+}
+
+<script src="@Url.Content("~/Scripts/accounting.min.js")" type="text/javascript"></script>
+
+@(Html.X().Panel()
+    .Border(false)
+    .ID("TransactionList")
+    .Title("لیست تراکنش های PcPose")
+    .AutoScroll(true)
+    .Closable(true)
+    .CloseAction(CloseAction.Destroy)
+    .Height(550)
+    .Width(950)
+    .Layout(Ext.Net.LayoutType.Fit)
+    .ButtonAlign(Alignment.Center)
+    .KeyMap(
+        Html.X().KeyMap()
+            .ID("TransactionListMap")
+            .Target("={Ext.isGecko ? Ext.getDoc() : Ext.getBody()}")
+            .Binding(b =>
+            {
+                b.Add(Html.X().KeyBinding()
+                    .KeysString(((int)Ext.Net.KeyCode.F8).ToString())
+                    .Handler("SaveTransaction(); ")
+                );
+            }))
+    .Buttons(
+        //X.Button()
+        //    .Text("تأیید پرداخت")
+        //    .Icon(Ext.Net.Icon.Disk)
+        //    .ToolTip("کلید میانبر F8")
+        //    .Listeners(l =>
+        //    {
+        //        l.Click.Handler = "SaveTransaction();";
+        //    })
+        //    .ItemID("btnSave"),
+        ////X.Button()
+        ////    .Text("خروج")
+        ////    .Icon(Ext.Net.Icon.DoorOut)
+        ////    .ToolTip("کلید میانبر Esc")
+        ////    .OnClientClick("App.TransactionList.destroy();")
+        )  
+    .Items(
+        X.GridPanel()
+            .ItemID("GridTransaction")
+            .BottomBar(X.PagingToolbar())
+            .Frame(true)
+            .AutoScroll(true)
+            //.Title("تراکنش ها")
+            .TopBar(
+                Html.X().Toolbar()
+                    .Items(
+                        X.Button()
+                            .Text("تأیید پرداخت")
+                            .Icon(Ext.Net.Icon.Disk)
+                                .Hidden(!Avarez.Controllers.Users.Permossions.haveAccess(Convert.ToInt32(Session["UserId"]), 343))
+                            .ToolTip("کلید میانبر F8")
+                            .Listeners(li => li.Click.Handler = "SaveTransaction();")
+                ))
+            .Store(
+                X.StoreForModel()
+                    .Parameters(new { CarFileId = @ViewBag.CarFileId })
+                    .Listeners(l => l.DataChanged.Handler = "App.TransactionList.queryById('GridTransaction').selModel.refresh();")
+                    .Proxy(
+                        Html.X().AjaxProxy()
+                            .Url(Url.Action("Read"))
+                            .Reader(Html.X().JsonReader().Root("data"))
+                            )
+                    .PageSize(25)
+                    .RemoteFilter(true)
+                    .RemotePaging(true)
+            )
+            .View(
+                Html.X().GridView().LoadingText("در حال بارگذاری...")
+            )
+            .Plugins(X.FilterHeader().Remote(false))
+            .SelectionModel(
+                Html.X().RowSelectionModel()
+                    .Mode(SelectionMode.Single))
+            .ColumnModel(
+                Html.X().RowNumbererColumn(),
+                Html.X().Column().DataIndex(Model, m => m.fldId).Text("کد").Flex(1).Hidden(true).Hideable(false),
+                Html.X().Column().DataIndex(Model, m => m.fldStatus).Text("وضعیت").Flex(1).Hidden(true).Hideable(false),
+                Html.X().Column().DataIndex(Model, m => m.fldPrice).Text("مبلغ").Flex(4).Renderer("seperate"),
+                Html.X().Column().DataIndex(Model, m => m.fldTrackingCode).Text("کد تراکنش").Flex(4),
+                Html.X().Column().DataIndex(Model, m => m.fldStatusName).Text("وضعیت").Flex(4),
+                Html.X().Column().DataIndex(Model, m => m.fldDesc).Text("توضیحات").Flex(6).Wrap(true)
+                )
+            )
+            )
+
+<script type="text/javascript">
+
+    var seperate = function (value, metadata, record, rowIndex, colIndex, store) {
+        return value.toLocaleString();
+    };
+
+    function SaveTransaction() {
+        if (App.SearchParvande.activeTab.id == "TransactionList") {
+            var SelRow = App.TransactionList.queryById('GridTransaction').getSelectionModel().getLastSelected();
+            if (SelRow != null) {
+                if (SelRow.data.fldStatus == 0) {
+                    Ext.net.Mask.show({ msg: 'در حال بارگذاری...' });
+                    Ext.net.DirectMethod.request({
+                        url: '/NewVer/PcPos_TransactionList/Save',
+                        params: {
+                            TransactionId: SelRow.data.fldId,
+                            CarFileId: '@ViewBag.CarFileId'
+                        },
+                        success: function (data) {
+                            var ic = Ext.MessageBox.INFO;
+                            if (data.Er == 1)
+                                ic = Ext.MessageBox.ERROR;
+                            Ext.MessageBox.show({
+                                title: data.MsgTitle,
+                                msg: data.Msg,
+                                icon: ic,
+                                buttons: Ext.MessageBox.OK
+                            });
+                            if (data.Er != 1) {
+                                App.TransactionList.queryById('GridTransaction').getStore().load();
+                            }
+                            Ext.net.Mask.hide();
+                        }
+                    });
+                }
+                else {
+                    Ext.MessageBox.show({
+                        title: "خطا",
+                        msg: "وضعیت این تراکنش قابل تغییر نمی باشد.",
+                        icon: Ext.MessageBox.ERROR,
+                        buttons: Ext.MessageBox.OK
+                    });
+                }
+            }
+            else {
+                Ext.MessageBox.show({
+                    title: "خطا",
+                    msg: "لطفا یک سطر را انتخاب نمایید",
+                    icon: Ext.MessageBox.ERROR,
+                    buttons: Ext.MessageBox.OK
+                });
+            }
+        }
+    }
+</script>

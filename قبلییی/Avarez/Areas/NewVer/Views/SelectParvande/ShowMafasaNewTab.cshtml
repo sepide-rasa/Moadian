@@ -1,0 +1,25 @@
+﻿@using Ext.Net;
+@using Ext.Net.MVC;
+@using Ext.Net.Utilities;
+@{
+    var X = Html.X();
+}
+@(
+ Html.X().Panel().Height(560)
+ .Listeners(l=>l.AfterRender.Handler="SetSize()")
+        //.Title("پیش نمایش")
+            .ID("PrintMafasa")
+        .AutoScroll(true)
+        .Closable(false)
+        .CloseAction(Ext.Net.CloseAction.Destroy)
+                .Html("<center><object class='se-pre-con' id='PrintTab' style='width: 1000px;height: 550px;border: 1px solid #ccc;' type='application/pdf' data='/NewVer/SelectParvande/ShowMafasaPdf?id=" + @ViewBag.IdMafasa + "'></object></center>")
+)
+
+
+<script type="text/javascript">
+    function SetSize() {
+        App.PrintMafasa.setHeight(Ext.getBody().getViewSize().height);
+        $('#PrintTab').height(Ext.getBody().getViewSize().height-10);
+    }
+
+</script>

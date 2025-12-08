@@ -1,0 +1,199 @@
+﻿@model Avarez.Models.LogOnModel
+
+<link rel="icon" type="image/png" href="~/Content/imageslogin/icons/favicon.ico" />
+
+<link href="~/Content/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+<link href="~/Content/fonts/font-awesome-4.7.0/css/font-awesome.min.css" rel="stylesheet" />
+<link href="~/Content/fonts/Linearicons-Free-v1.0.0/icon-font.min.css" rel="stylesheet" />
+<link href="~/Content/fonts/iconic/css/material-design-iconic-font.min.css" rel="stylesheet" />
+<link href="~/Content/vendor/animate/animate.css" rel="stylesheet" />
+<link href="~/Content/vendor/css-hamburgers/hamburgers.min.css" rel="stylesheet" />
+<link href="~/Content/vendor/animsition/css/animsition.min.css" rel="stylesheet" />
+<link href="~/Content/vendor/select2/select2.min.css" rel="stylesheet" />
+<link href="~/Content/vendor/daterangepicker/daterangepicker.css" rel="stylesheet" />
+<link href="~/Content/css/util.css" rel="stylesheet" />
+<link href="~/Content/css/main.css" rel="stylesheet" />
+
+<div class="limiter" dir="ltr">
+    <div class="container-login100">
+        <div class="login100-more" style="background-image: url('/Content/imageslogin/bg-02.jpg');"></div>
+
+        <div class="wrap-login100 p-l-50 p-r-50 p-b-50" style="margin-top:30px;">
+
+            <div dir="rtl" style="width:100%; color:red;text-align:right;margin-bottom:10px;">
+                @Html.ValidationSummary(true, "ورود ناموفق", new { @style = "font-weight:bold;" })
+            </div>
+            @*<form novalidate onsubmit="gotoaction()" class="login100-form validate-form">*@
+           @using (Html.BeginForm("LogOn", "account_new", FormMethod.Post, new { @class = "login100-form validate-form"}))
+           {
+            <span style="text-align:center;font-family:RasaFont;text-shadow:5px 2px 2px #dbd0d0;padding-bottom:30px;" class="login100-form-title">
+                سامانه تشخیص و وصول عوارض خودرو
+            </span>
+
+            @*<div dir="rtl" class="wrap-input100">
+                    <span style="font-family:RasaFont;" class="label-input100">استان</span>
+                    <input style="font-family:RasaFont;" readonly class="input100" type="text" value="استان تهران" name="State" placeholder="استان...">
+                    <span class="focus-input100"></span>
+                </div>*@
+
+            <div dir="rtl" class="wrap-input100 validate-input" style="margin-bottom:30px;" data-validate="لطفا شهرداری را انتخاب نمایید.">
+                <span style="font-family:RasaFont;" class="label-input100">شهرداری</span>
+                <select style="font-family:RasaFont;" class="input100" name="Mun" id="dropdown">
+                    <option value="" selected disabled hidden>شهرداری...</option>
+                </select>
+                <span class="focus-input100"></span>
+            </div>
+
+            <div dir="rtl" class="wrap-input100 validate-input" style="margin-bottom:30px;" data-validate=" لطفا نام کاربری را وارد نمایید.">
+                <span style="font-family:RasaFont;" class="label-input100">شناسه کاربری</span>
+                @Html.TextBoxFor(m => m.UserName, new { @style = "font-family:RasaFont;", @id = "username", @class = "input100", @placeholder = "نام کاربری..." })
+                @*@Html.ValidationMessageFor(m => m.UserName)*@
+                @*<input style="font-family:RasaFont;" class="input100" type="text" id="username" placeholder="نام کاربری...">*@
+                <span class="focus-input100"></span>
+            </div>
+
+            <div dir="rtl" class="wrap-input100 validate-input" style="margin-bottom:30px;" data-validate="لطفا گذر واژه را وارد نمایید.">
+                <span style="font-family:RasaFont;" class="label-input100">گذر واژه</span>
+                @Html.PasswordFor(m => m.Password, new { @style = "font-family:RasaFont;", @class = "input100", @placeholder = "*************" })
+                @*@Html.ValidationMessageFor(m => m.Password)*@
+                @*<input style="font-family:RasaFont;" class="input100" type="password" id="pass" placeholder="*************">*@
+                <span class="focus-input100"></span>
+            </div>
+
+            <div dir="rtl" id="capt" class="wrap-input100" style="margin-bottom:5px;visibility:hidden;">
+                <span style="font-family:RasaFont;" class="label-input100">کد امنیتی</span>
+                <input style="font-family:RasaFont;" class="input100" name="Capthalogin" type="text" id="captcha" placeholder="کد امنیتی...">
+                <span class="focus-input100"></span>
+            </div>
+
+            <table style="margin-bottom:15px;">
+                @*<div class="container-login100-form-btn">
+                        <div style="font-family:RasaFont" class="login100-form-bgbtn"></div>
+                        <button class="login100-form-btn" value="" name="btn" style="background-image: url('../../../../Content/refresh1.png');background-repeat: no-repeat;"></button>
+                    </div>*@
+                <tr>
+                    <td>
+                        <img id="m_imgCaptcha" />
+                    </td>
+                    <td>
+                        <span id="BtnRefresh" style="font-size: 11px;
+                                font-family: tornado tahoma;
+                                width: 25px;
+                                height:25px;
+                                text-align: right;
+                                align-content:center;
+                                background-image: url('../../../../Content/refresh1.png');
+                                display:inline-block;
+                                margin-top:5px;
+                                background-repeat: no-repeat;">
+                        </span>
+                    </td>
+                </tr>
+            </table>
+
+
+
+    <div class="container-login100-form-btn" style="margin-bottom:30px;">
+        <div class="wrap-login100-form-btn">
+            <div style="font-family:RasaFont" class="login100-form-bgbtn"></div>
+            <button onclick="" value="log" name="btn" class="login100-form-btn" style="font-family:RasaFont;font-size:18px;font-weight:bold;">
+                ورود
+            </button>
+        </div>
+        <div class="wrap-login100-form-btn">
+            <div style="font-family:RasaFont" class="login100-form-bgbtn"></div>
+            <button class="login100-form-btn" value="register" name="btn" style="font-family:RasaFont;font-size:18px;font-weight:bold;">
+                ثبت نام دفاتر پیشخوان
+            </button>
+        </div>
+    </div>
+
+            <div dir="rtl" style="width:100%;text-align:right;margin-bottom:10px;">
+                اگر رمز عبور خود را فراموش کرده اید <a  href='@Url.Action("ForgetPass", "First")' style="font-family:Tahoma;color:blue;">اینجا</a> کلیک کنید.
+            </div>
+           }
+            @*</form>*@
+        </div>
+    </div>
+</div>
+
+
+<script src="~/Content/vendor/animsition/js/animsition.min.js"></script>
+<script src="~/Content/vendor/bootstrap/js/popper.js"></script>
+<script src="~/Content/vendor/bootstrap/js/bootstrap.min.js"></script>
+<script src="~/Content/vendor/select2/select2.min.js"></script>
+<script src="~/Content/vendor/daterangepicker/moment.min.js"></script>
+<script src="~/Content/vendor/daterangepicker/daterangepicker.js"></script>
+<script src="~/Content/vendor/countdowntime/countdowntime.js"></script>
+<script src="~/Content/js/main.js"></script>
+
+<script>
+    function loadCaptcha() {
+        var url = '@Url.Content("~/Account_New/generateCaptcha")';
+        $("#m_imgCaptcha").attr('src', url);
+    }
+
+    $(document).ready(function () {
+        var option = document.createElement("option");
+        var data1 = {
+            ID: 11
+        };
+        $.ajax({
+            type: "POST",
+            url: '/NewVer/Account_New/GetCascadeCounty2',
+            contentType: "application/json; charset=utf-8",
+            data: JSON.stringify(data1),
+            datatype: "json",
+            success: function (data) {
+                for (var i = 0; i < data.CountyName.length; i++) {
+                    var opt = new Option(data.CountyName[i], data.CountyId[i]);
+                    $("#dropdown").append(opt);
+                }
+            },
+            failure: function (data) {
+                alert(data.data);
+            }
+        });
+
+        loadCaptcha();
+        $("#BtnRefresh").button();
+        jQuery("#BtnRefresh").click(function () {
+            location.reload();
+        });
+
+        /*document.getElementById("registerbtn").disableValidation = true;*/
+        $("#m_imgCaptcha").hide();
+        $("#BtnRefresh").hide();
+        if ('@Session["captchahave"]' > 1) {
+            $("#m_imgCaptcha").show();
+            $("#BtnRefresh").show();
+            document.getElementById("capt").style.visibility = "visible";
+        }
+    });
+    
+
+    @*function gotoaction() {
+        var URL = '@Url.Action("vorod","Account_New")';
+        var data = {
+            UserName: $("#username").val(),
+            Password: $("#pass").val(),
+            cboState: "11",
+            CboMnu: $("#dropdown").val(),
+            Capthalogin: "",
+            UserType: 1
+        };
+
+        $.ajax({
+            type: "POST",
+            url: URL,
+            data:data,
+            success: function (data) {
+                window.location.href = data.redirectToUrl;
+            },
+            failure: function (data) {
+                alert(data.data);
+            }
+        });
+    }*@
+
+</script>

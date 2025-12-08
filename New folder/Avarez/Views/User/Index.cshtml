@@ -1,0 +1,604 @@
+﻿@using Kendo.Mvc.UI;
+<div class="modal" id="User">
+    <script src="@Url.Content("~/Content/Base.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Scripts/jquery.ui.datepicker-cc.all.min.js")" type="text/javascript"></script>
+    @{
+        Avarez.Models.cartaxEntities car = new Avarez.Models.cartaxEntities();
+        var q = car.sp_UserGroupSelect("", "", 0, Convert.ToInt32(Session["UserId"]), Session["UserPass"].ToString()).ToList();        
+    }
+    <div>
+    <a href="@Url.Content("~/Helps/کاربران نرم افزار.htm")" target="_blank" id="Help" title="راهنما" style="background-image:url('/Content/images/1381415123_help.png');background-repeat: no-repeat;height: 20px;float: left;top: 10px;left: 10px;"></a>
+        <br />
+        <center>
+            <table>
+                <tr>
+                    <td align="left">
+                        موقعیت کاربر:
+                    </td>
+                    <td colspan="3" dir="rtl" id="Location" align="right">
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="4" align="center" style="height: 30px;">
+                        @Html.Label("موقعیت انتخاب شده: ", new { @id = "Position" })
+                    </td>
+                </tr>
+                <tr>
+                    <td align="left" colspan="2">                    
+                        گروه ها:
+                    </td>
+                    <td colspan="2"><br />
+                        @foreach (var item in q)
+                        {
+                            <input class="checkbox" type="checkbox" value="@item.fldID" />
+                            <label>@item.fldTitle</label><br />
+                        }
+                        <br />
+                    </td>
+                </tr>
+                <tr>
+                    @Html.Hidden("fldId")
+                    <td align="left">
+                        <span style="color: Red;">*</span> نام:
+                    </td>
+                    <td>
+                        @Avarez.Helper.winClass.textbox("txtName")
+                        <span id="lblNameError" style="color: Red;"></span>
+                    </td>
+                    <td align="left">
+                        <span style="color: Red;">*</span> نام خانوادگی:
+                    </td>
+                    <td>
+                        @Avarez.Helper.winClass.textbox("txtFamily")
+                        <span id="lblFamilyError" style="color: Red;"></span>
+                    </td>
+                </tr>
+                <tr>
+                    <td align="left">
+                        <span style="color: Red;">*</span> نام کاربری:
+                    </td>
+                    <td>
+                        @Avarez.Helper.winClass.textbox("txtUser")
+                        <span id="lblUserError" style="color: Red;"></span>
+                    </td>
+                    <td align="left">
+                        <span style="color: Red;">*</span> کلمه عبور:
+                    </td>
+                    <td>
+                        @Html.Password("txtPass", null, new { @style = "height:23px;width: 162px;" })
+                        <span id="lblPassError" style="color: Red;"></span>
+                    </td>
+                </tr>
+                <tr>
+                    <td align="left">
+                        <span style="color: Red;">*</span> کد ملی:
+                    </td>
+                    <td>
+                        @Html.TextBox("txtMeliCode", null, new { @dir = "ltr", @style = "width: 162px;" })
+                        <span id="lblMeliCodeError" style="color: Red;"></span>
+                    </td>
+                    <td align="left">
+                        وضعیت:
+                    </td>
+                    <td>
+                        @Html.DropDownList("cboStatus", new SelectList(new[] { new { ID = "0", Name = "فعال " }, new { ID = "1", Name = "غیر فعال " } }, "ID", "Name"), new { @style = "height:23px;width: 164px;" })
+                    </td>
+                </tr>
+                <tr>
+                    <td align="left">
+                        <span style="color: Red;">*</span> ایمیل:
+                    </td>
+                    <td>
+                        @Html.TextBox("txtMail", null, new { @dir = "ltr", @style = "width: 162px;" })
+                        <span id="lblMailError" style="color: Red;"></span>
+                    </td>
+                    <td align="left">
+                        <span style="color: Red;">*</span> تاریخ شروع:
+                    </td>
+                    <td>
+                        @Html.TextBox("txtSDate", null, new { @dir = "ltr", @style = "width: 162px;" })
+                        <span id="lblSDateError" style="color: Red;"></span>
+                    </td>
+                </tr>
+                <tr>
+                    <td align="left">
+                        <span style="color: Red;">*</span> پیش شماره:
+                    </td>
+                    <td>
+                        @Html.TextBox("txtCodeT", null, new { @dir = "ltr", @style = "width: 162px;" })
+                        <span id="lblNumberAgoTelError" style="color: Red;"></span>
+                    </td>
+                    <td align="left">
+                        <span style="color: Red;">*</span> شماره تلفن:
+                    </td>
+                    <td>
+                        @Html.TextBox("txtTel", null, new { @dir = "ltr", @style = "width: 162px;" })
+                        <span id="lblTelError" style="color: Red;"></span>
+                    </td>
+                </tr>
+                <tr>
+                    <td align="left">
+                        <span style="color: Red;">*</span> شماره همراه:
+                    </td>
+                    <td>
+                        @Html.TextBox("txtCell", null, new { @dir = "ltr", @style = "width: 162px;" })
+                        <span id="lblCellError" style="color: Red;"></span>
+                    </td>
+                    <td align="left">
+                        توضیحات:
+                    </td>
+                    <td>
+                        @Avarez.Helper.winClass.textArea("txtDesc", 4, 30)
+                    </td>
+                </tr>
+                <tr>
+                    <td align="left">
+                        تصویر:
+                    </td>
+                    <td colspan="2">
+                        <img id="PreviewImage" src="@Url.Content("~/Content/images/Blank.jpg")" alt="" style="width: 94px; height: 124px; border: 2px;" />
+                        @Avarez.Helper.winClass.Buttons("btnBrowse", "انتخاب عکس", "search")
+                        @Avarez.Helper.winClass.Buttons("btnRemove", "برچیدن عکس", "del")
+                        <input style="display: none;" type="file" accept=".jpg" id="image" name="image" onchange="readURL(this)" />
+                    </td>
+                    <td>
+                    </td>
+                </tr>
+            </table>
+            <p>
+                @Avarez.Helper.winClass.Buttons("AddLink", "ذخیره", "Save")
+                @Avarez.Helper.winClass.Buttons("EditLink", "ویرایش", "Edit")
+                @Avarez.Helper.winClass.Buttons("ResetPass", "ریست پسورد", "Edit")
+                @Avarez.Helper.winClass.Buttons("exit", "خروج", "Exit")
+            </p>
+        </center>
+        @(Html.Kendo().PanelBar()
+        .Name("panelbar-images")
+        .Items(panelbar =>
+        {
+            panelbar.Add().Text("جستجو")
+                .ImageUrl(Url.Content("~/Content/images/search.png"))
+                .Content(@<div>
+                    <table>
+                        <tr>
+                            <td>
+                                فیلد جستجو:@Html.DropDownList("cboSearchFiald", new SelectList(new[] { new { ID = "0", Name = "نام " }, new { ID = "1", Name = "نام خانوادگی " }, new { ID = "2", Name = "موقعیت کاربر" }, new { ID = "3", Name = "نام کاربری" } }, "ID", "Name"))
+                            </td>
+                            <td>
+                                نوع جستجو: @Html.DropDownList("cboSearchType", new SelectList(new[] { new { ID = "0", Name = "مشابه عبارت" }, new { ID = "1", Name = "مشابه عبارت از سمت راست" }, new { ID = "2", Name = "عین عبارت" } }, "ID", "Name"))
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                عبارت جستجو: @Avarez.Helper.winClass.textbox("txtSearch")
+                            </td>
+                            <td>
+                                نتیجه رکوردها: @Html.TextBox("txtTop", 30, new { @style = "width:30px;" }) رکورد
+                            </td>
+                        </tr>
+                    </table>
+                    <br />
+                </div>);
+        })
+        )
+        <div class="k-rtl demo-section">
+            @(Html.Kendo().Grid<Avarez.Models.sp_UserSelect>()
+                .Name("Grid")
+                .Columns(columns =>
+                {
+                    columns.Bound(p => p.fldID).Title("کد").Visible(false);
+                    columns.Bound(p => p.fldName).Title("نام");
+                    columns.Bound(p => p.fldFamily).Title("نام خانوادگی");
+                    columns.Bound(p => p.fldMelliCode).Title("کد ملی");
+                    columns.Bound(p => p.fldUserName).Title("نام کاربری");
+                    columns.Bound(p => p.fldCountryDivisionsName).Title("موقعیت کاربر");
+                    columns.Bound(p => p.fldDesc).Title("توضیحات");
+
+                })
+            .Selectable(selectable => selectable.Mode(GridSelectionMode.Single))
+            .Pageable()
+            .Scrollable()
+            .DataSource(data =>
+                data.Ajax()
+                .PageSize(10)
+                .Read("Fill", "User")
+            )
+        )
+        </div>
+    </div>
+    <script type="text/javascript">
+    function select(e) {
+        var dataItem = this.dataItem(e.node);
+        id = dataItem.id;
+        SID = dataItem.fldSid;
+        NType = dataItem.fldNodeType;
+        if (NType == 9) {
+            $('#Position').html('شما مجاز به انتخاب کاربر نمی باشید.');
+            NType = 0;
+            SID = 0;
+            id = 0;
+            return;
+        }
+        var url = '@Url.Content("~/user/Position")';
+        $.ajax({
+            type: "post",
+            url: url,
+            data: { id: id },
+            datatype: "json",
+            success: function (data) {
+                var m = data;
+                $('#Position').html('موقعیت انتخاب شده: ' + m.Position);
+                var treeview = $("#treeview").data("kendoTreeView");
+                treeview.collapse(".k-item");
+            },
+            failure: function (data) {
+                alert(data.data);
+            }
+        });
+    }
+    var id;
+    var SID;
+    var NType;
+    $("document").ready(function () {
+
+        $("#txtSDate").datepicker({
+            showButtonPanel: true
+        });
+        $('#Location').html($('#LocationDiv').valueOf());
+        $("#AddLink").button();
+        $("#EditLink").button();
+        $("#exit").button();
+        $("#ResetPass").button();
+        $("#btnBrowse").button();
+        $("#btnRemove").button();
+        $('#Help').button();
+
+        $("#exit").click(function () {
+            $("#User").remove();
+        });
+        $("#btnRemove").click(function () {
+            $('#PreviewImage').attr('src', '@Url.Content("~/Content/images/Blank.jpg")');
+        });
+
+        jQuery("#EditLink").click(function () {
+            var entityGrid = $("#Grid").data("kendoGrid");
+            var selectedItem = entityGrid.dataItem(entityGrid.select());
+            if (selectedItem) {
+                var id = selectedItem.fldID;
+                var URL = '@Url.Content("~/User/Details")';
+                URL = URL + "/" + id;
+                $.ajax({
+                    type: "GET",
+                    url: URL,
+                    success: function (data) {
+                        $('#txtName').val(data.fldName);
+                        $('#fldId').val(data.fldID);
+                        $('#txtFamily').val(data.fldFamily);
+                        //$('#txtUser').val(data.fldInfinitiveBank);
+                        //$('#txtPass').val(data.fldCentralBankCode);
+                        $('#txtMeliCode').val(data.fldMelliCode);
+                        $('#cboStatus').val(data.fldStatus);
+                        $('#txtMail').val(data.fldEmail);
+                        $('#txtSDate').val(data.fldSDate);
+                        $('#txtCodeT').val(data.fldNumberAgoTel);
+                        $('#txtTel').val(data.fldTel);
+                        $('#txtCell').val(data.fldMobile);
+                        $('#txtDesc').val(data.fldDesc);
+                        var g = '@Url.Content("~/User/Image/")' + $('#fldId').val();
+                        $('#PreviewImage').attr('src', g);
+                        SID = data.fldCode;
+                        NType = data.fldType;
+                        id = data.fldCountryId;
+
+                        var checked = $('input[type=checkbox]');
+                        for (var i = 0; i < checked.length; i++) {
+                            var f = checked.valueOf()[i];
+                            f.checked = false;
+                            for (var k = 0; k < data.checkedNodes.length; k++) {
+                                if (f.value == data.checkedNodes[k])
+                                    f.checked = true;
+                            }
+                        }
+                        var url = '@Url.Content("~/user/Position")';
+                            $.ajax({
+                                type: "post",
+                                url: url,
+                                data: { id: id },
+                                datatype: "json",
+                                success: function (data) {
+                                    var m = data;
+                                    $('#Position').html('موقعیت انتخاب شده: ' + m.Position);
+                                },
+                                failure: function (data) {
+                                    alert(data.data);
+                                }
+                            });
+                        },
+                        failure: function (data) {
+                            alert(data.data);
+                        }
+                    });
+                }
+                else {
+                    alert('لطفا یک سطر را انتخاب کنید.');
+                }
+            });
+
+            jQuery("#ResetPass").click(function () {
+                var entityGrid = $("#Grid").data("kendoGrid");
+                var selectedItem = entityGrid.dataItem(entityGrid.select());
+                if (selectedItem) {
+                    var id = selectedItem.fldID;
+                    var URL = '@Url.Content("~/User/ResetPass")';
+                    URL = URL + "/" + id;
+                    $.ajax({
+                        type: "GET",
+                        url: URL,
+                        success: function (m) {
+                            windowAppend("body", "/metro/error");
+                            $("#message").html(m.data);                     
+                            $("#error .wintitle").html("ویرایش موفق");
+                        },
+                        failure: function (data) {
+                            alert(data.data);
+                        }
+                    });
+                }
+                else {
+                    alert('لطفا یک سطر را انتخاب کنید.');
+                }
+            });
+
+            $('#txtSearch').keyup(function () {
+                var url = '@Url.Action("Reload", "User")';
+            Reload(url, 'Grid', $("#cboSearchFiald").val(), $("#txtSearch").val(), $("#txtTop").val(), $("#cboSearchType").val());
+        });
+
+        //            $('#DelLink').click(function () {
+        //                var entityGrid = $("#Grid").data("kendoGrid");
+        //                var selectedItem = entityGrid.dataItem(entityGrid.select());
+        //                if (selectedItem) {
+        //                    var id = selectedItem.fldID;
+        //                    var URL = '@Url.Content("~/metro/YesNomsg")';
+        //                    URL = URL + "/?id=" + id + "&URL=" + '@Url.Content("~/User/Delete")';
+        //                    windowAppend("body", URL);
+        //                    $("#message").html('آیا مایل به حذف رکورد انتخاب شده هستید؟');
+        //                }
+        //                else {
+        //                    alert('لطفا یک سطر را انتخاب کنید.');
+        //                }
+        //                Clear();
+        //            });
+
+        $("#btnBrowse").click(function () {
+            performClick(document.getElementById('image'));
+        });
+
+        function performClick(node) {
+            var evt = document.createEvent("MouseEvents");
+            evt.initEvent("click", true, false);
+            node.dispatchEvent(evt);
+        }
+
+        $("#txtName").keyup(function () {
+            if ($("#txtName").val() != '') {
+                $("#txtName").removeClass("input-validation-error");
+                $("#lblNameError").html("");
+            }
+            else {
+                $("#txtName").addClass("input-validation-error");
+                $('#lblNameError').html('لطفا نام کاربر را وارد کنید.');
+            }
+        });
+
+        $("#txtFamily").keyup(function () {
+            if ($("#txtFamily").val() != '') {
+                $("#txtFamily").removeClass("input-validation-error");
+                $("#lblFamilyError").html("");
+            }
+            else {
+                $("#txtFamily").addClass("input-validation-error");
+                $('#lblFamilyError').html('لطفا نام خانوادگی را وارد کنید.');
+            }
+        });
+
+        $("#txtStatus").keyup(function () {
+            if ($("#txtStatus").val() != '') {
+                $("#txtStatus").removeClass("input-validation-error");
+                $("#lblStatusError").html("");
+            }
+            else {
+                $("#txtStatus").addClass("input-validation-error");
+                $('#lblStatusError').html('لطفا شناسه بانک را وارد کنید.');
+            }
+        });
+
+        $("#AddLink").click(function () {
+            var er = false;
+            if ($("#txtName").val() == '') {
+                $("#txtName").addClass("input-validation-error");
+                $('#lblNameError').html('لطفا نام بانک را وارد کنید.');
+                er = true;
+            }
+            else
+                $('#lblNameError').html('');
+
+            if ($("#txtFamily").val() == '') {
+                $("#txtFamily").addClass("input-validation-error");
+                $('#lblFamilyError').html('لطفا کد بانک مرکزی را وارد کنید.');
+                er = true;
+            }
+            else
+                $('#lblFamilyError').html('');
+
+            if ($("#txtStatus").val() == '') {
+                $("#txtStatus").addClass("input-validation-error");
+                $('#lblStatusError').html('لطفا شناسه بانک را وارد کنید.');
+                er = true;
+            }
+            else
+                $('#lblStatusError').html('');
+
+            if (er)
+                return;
+            var image = document.getElementById('PreviewImage');
+            var c = image.attributes[1];
+            var imgData = "";
+            if (c.value != "")
+                imgData = getBase64Image(image);
+            var _checked = new Array();
+            var c = document.getElementsByClassName('checkbox');
+            for (var i = 0; i < c.length; i++) {
+                var b = c[i];
+                if (b.checked)
+                    _checked.push(b.value);
+            }
+            var status = true;
+            if ($("#cboStatus").val() == '1')
+                status = false;
+            var data = {
+                fldName: $("#txtName").val(), fldFamily: $("#txtFamily").val(), fldStatus: status,
+                fldPassword: $("#txtPass").val(), fldUserName: $("#txtUser").val(), fldMelliCode: $("#txtMeliCode").val(),
+                fldEmail: $("#txtMail").val(), fldNumberAgoTel: $("#txtCodeT").val(), fldTel: $("#txtTel").val(),
+                fldMobile: $("#txtCell").val(), fldStartDate: $("#txtSDate").val(),
+                fldUserID: 1, fldDesc: $("#txtDesc").val(), fldImage: imgData,
+                fldId: $("#fldId").val(), fldCode: SID, fldType: NType,
+                _checked: _checked
+            };
+            if (data != '') {
+                PostForm(data, '@Url.Content("~/User/Save")', "#win");
+            }
+            Clear();
+        });
+
+    });
+    function Clear() {
+        $('#txtName').val('');
+        $('#fldId').val(0);
+        $("#txtCell").val('');
+        $("#txtSDate").val('');
+        $("#txtFamily").val('');
+        $("#txtStatus").val('');
+        $("#txtMeliCode").val('');
+        $("#txtTel").val('');
+        $('#txtDesc').val('');
+        $("#txtPass").val('');
+        $("#txtUser").val('');
+        $("#txtMail").val('');
+        $("#txtCodeT").val('');
+        $('#PreviewImage').attr('src', '@Url.Content("~/Content/images/Blank.jpg")');
+        var checked = $('input[type=checkbox]');
+        for (var i = 0; i < checked.length; i++) {
+            var f = checked.valueOf()[i];
+            f.checked = false;
+        }
+    }
+    function readURL(input) {
+        if (input.files && input.files[0]) {//Check if input has files.
+            if (input.files[0].size > 25600) {
+                alert('حجم فایل بزرگتر از 25 کیلو بایت است.');
+            }
+            else {
+                var reader = new FileReader(); //Initialize FileReader.
+
+                reader.onload = function (e) {
+                    $('#PreviewImage').attr('src', e.target.result);
+                };
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+    }
+
+    function getBase64Image(imgElem) {
+        // imgElem must be on the same server otherwise a cross-origin error will be thrown "SECURITY_ERR: DOM Exception 18"
+        var canvas = document.createElement("canvas");
+        canvas.width = imgElem.clientWidth;
+        canvas.height = imgElem.clientHeight;
+        var ctx = canvas.getContext("2d");
+        ctx.drawImage(imgElem, 0, 0, 94, 124);
+        var dataURL = canvas.toDataURL("image/jpg");
+        return dataURL.replace(/^data:image\/(png|jpg);base64,/, "");
+    }
+
+    function Reload(Url, gridname, field, value, top, searchType) {
+        var grid = $('#' + gridname).data('kendoGrid');
+        $.ajax({
+            url: Url,
+            type: 'get',
+            datatype: 'json',
+            data: { field: field, value: value, top: top, searchtype: searchType },
+            error: function (xhr, status, error) {
+                alert(xhr + status);
+            },
+            success: function (result) {
+                $("#" + gridname).data("kendoGrid").dataSource.data(result);
+            }
+
+        });
+    }
+
+    function PostForm(datas, url, id) {
+        var sendInfo = datas;
+        $('#Lock').show();
+        $.ajax({
+            type: "POST",
+            url: url,
+            data: JSON.stringify(sendInfo),
+            contentType: 'application/json',
+            success: function (data) {
+                var m = data;
+                windowAppend("body", "/metro/error");
+                $("#message").html(m.data);
+                switch (m.state) {
+                    case 0:
+                        $("#error .wintitle").html("ذخیره موفق");
+                        break;
+                    case 1:
+                        $("#error .wintitle").html("خطا");
+                        break;
+                }
+                var url = '@Url.Action("Reload", "User")';
+                Reload(url, 'Grid', '0', '', 30, 1);
+                $('#Lock').hide();
+            },
+            failure: function (data) {
+                alert(data.data);
+            }
+        });
+    }
+
+    </script>
+</div>
+<div class="treeview-back  k-rtl" dir="rtl" id="LocationDiv">
+    @(Html.Kendo().TreeView()
+                        .Name("treeview")
+                        .DataImageUrlField("image")
+
+                        .DataTextField("Name")
+                        .Checkboxes(chkbxs =>
+                        {
+                            chkbxs.Enabled(false).CheckChildren(false);
+                        })
+                        .DataSource(dataSource => dataSource
+                        .Read(read => read
+                        .Action("_Tree", "User")
+                        )
+                        )
+                        .Events(events =>
+                        events.Select("select"))
+                        )
+</div>
+<style type="text/css">
+    .treeview-back
+    {
+        width: 400px;
+        margin: 30px;
+        padding: 20px;
+        -moz-box-shadow: 0 1px 2px rgba(0,0,0,0.45), inset 0 0 30px rgba(0,0,0,0.07);
+        -webkit-box-shadow: 0 1px 2px rgba(0,0,0,0.45), inset 0 0 30px rgba(0,0,0,0.07);
+        box-shadow: 0 1px 2px rgba(0,0,0,0.45), inner 0 0 30px rgba(0,0,0,0.07);
+        -webkit-border-radius: 8px;
+        -moz-border-radius: 8px;
+        border-radius: 8px;
+    }
+</style>

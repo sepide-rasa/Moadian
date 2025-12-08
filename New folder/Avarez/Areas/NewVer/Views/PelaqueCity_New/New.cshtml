@@ -1,0 +1,157 @@
+﻿@using Ext.Net.MVC
+@using Hogaf.ExtNet.UX
+@using Ext.Net;
+@{
+    var X = Html.X();
+}
+
+
+@(Html.X().Window()
+    .Modal(true)
+                .Listeners(li => li.AfterRender.Handler = "LoadPelaqueCity();")
+    .Resizable(false)
+    .Width(310)
+   // .Height(183)
+    .Title("تعریف شهر پلاک")
+    .Layout(LayoutType.Fit)
+    .ID("NewPelaqueCity")
+    .Closable(true)
+    .ButtonAlign(Ext.Net.Alignment.Center)
+    .Buttons(
+        X.Button()
+            .Text("ذخیره")
+            .Icon(Ext.Net.Icon.Disk)
+        //.ToolTip("کلید میانبر F8")
+            .Listeners(l => l.Click.Handler = "SavePelaqueCity();"),
+        X.Button()
+            .Text("خروج")
+            .Icon(Ext.Net.Icon.DoorOut)
+        //.ToolTip("کلید میانبر Esc")
+            .OnClientClick("App.NewPelaqueCity.destroy();"))
+    .CloseAction(Ext.Net.CloseAction.Destroy)
+    .Items(
+        X.FormPanel()
+            .Border(false)
+            .Layout(LayoutType.Fit)
+            .Items(
+                X.Panel()
+                    .Border(false)
+                    .PaddingSpec("15px 0 0 0")
+                         .Layout(LayoutType.VBox)
+                                        .LayoutConfig(new VBoxLayoutConfig { Align = VBoxAlign.Center })
+                    .Items(
+                        X.FieldSet().Height(120)
+                            .Border(true)
+                            .Title("شهر پلاک")
+                            .Defaults(new { Margin = 2 })
+                            .Layout(LayoutType.Table)
+                            .LayoutConfig(new TableLayoutConfig { Columns = 2 })
+                            .Items(
+                                X.Hidden().ItemID("fldId"),
+                                X.Label("شهر پلاک:"),
+                                X.TextField()
+                                    .ItemID("txtPelaqueCity")
+                                    .Width(190)
+                                    .EnforceMaxLength(true)
+                                    .MaxLength(50)
+                                    .AllowBlank(false)
+                                    .BlankText("لطفا شهر پلاک را وارد نمایید.")
+                                    .MsgTarget(Ext.Net.MessageTarget.Side),
+                                X.Label("توضیحات:"),
+                                X.TextArea()
+                                    .ItemID("txtDesc")
+                                    .Width(190)
+                            )
+                )
+            )
+        )
+)
+
+<script type="text/javascript">
+    function LoadPelaqueCity() {
+        if ('@ViewBag.Id' != '0') {
+            App.NewPelaqueCity.body.mask("در حال بارگذاری...");
+            Ext.net.DirectMethod.request({
+                url: '/NewVer/PelaqueCity_New/Details',
+                params: {
+                    Id: '@ViewBag.Id'
+                },
+                success: function (data) {
+                    if (data.Er == 0) {
+                        var txtPelaqueCity = App.NewPelaqueCity.queryById('txtPelaqueCity');
+                        txtPelaqueCity.setValue(data.fldName);
+                        var txtDesc = App.NewPelaqueCity.queryById('txtDesc');
+                        txtDesc.setValue(data.fldDesc);
+                        var Id = App.NewPelaqueCity.queryById('fldId');
+                        Id.setValue(data.fldId);
+                    }
+                    else if (data.Er == 1) {
+                        Ext.MessageBox.show({
+                            title: data.MsgTitle,
+                            msg: data.Msg,
+                            icon: Ext.MessageBox.ERROR,
+                            buttons: Ext.MessageBox.OK
+                        });
+                    }
+                    App.NewPelaqueCity.body.mask().hide();
+                }
+            });
+        }
+        else {
+            App.NewPelaqueCity.queryById('txtPelaqueCity').validate();
+        }
+    }
+
+    function SavePelaqueCity() {
+        var txtPelaqueCity = App.NewPelaqueCity.queryById('txtPelaqueCity');
+        var Id = App.NewPelaqueCity.queryById('fldId');
+        var txtDesc = App.NewPelaqueCity.queryById('txtDesc');
+
+        var er = false;
+
+        if (txtPelaqueCity.validate() == false) {
+            er = true;
+        }
+        if (er == true)
+            return;
+        App.NewPelaqueCity.body.mask("در حال ذخیره سازی...");
+        Ext.net.DirectMethod.request({
+            url: '/NewVer/PelaqueCity_New/Save',
+            params: {
+                fldID: Id.getValue(),
+                fldName: txtPelaqueCity.getValue(),
+                fldDesc: txtDesc.getValue()
+            },
+            success: function (data) {
+                var ic = Ext.MessageBox.INFO;
+                if (data.Er == 1)
+                    ic = Ext.MessageBox.ERROR;
+                Ext.MessageBox.show({
+                    title: data.MsgTitle,
+                    msg: data.Msg,
+                    icon: ic,
+                    buttons: Ext.MessageBox.OK
+                });
+                App.PelaqueCity.queryById('GridPelaqueCity').store.load();
+                if (data.Er != 1) {
+                    ClearPelaqueCity();
+                }
+                App.NewPelaqueCity.body.mask().hide();
+            }
+        });
+    }
+
+    function ClearPelaqueCity() {
+        App.NewPelaqueCity.queryById('txtDesc').setValue("");
+        App.NewPelaqueCity.queryById('txtPelaqueCity').setValue("");
+        App.NewPelaqueCity.queryById('fldId').setValue(0);
+    }
+
+   /* function EnterNext() {
+        var keyfield = App.NewPelaqueCity.queryById(Ext.getCmp((Ext.Element.getActiveElement()).name).itemId);
+        var nextfld = keyfield.nextSibling();
+        nextfld.focus();
+        nextfld.selectText();
+    }*/
+
+</script>

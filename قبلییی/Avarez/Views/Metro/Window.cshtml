@@ -1,0 +1,26 @@
+﻿<div class="modal" id="error">
+ <link href="@Url.Content("~/Content/Site.css")" rel="stylesheet" type="text/css" />
+    <script src="@Url.Content("~/Content/Base.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Scripts/jquery-1.7.1.min.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Scripts/jquery-ui-1.8.20.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Scripts/jquery-ui-1.8.20.min.js")" type="text/javascript"></script>
+    @*    <link href="@Url.Content("~/Content/themes/base/jquery-ui.css")" rel="stylesheet" type="text/css" />*@
+    <link href="@Url.Content("~/Content/themes/base/ui.css")" rel="stylesheet" type="text/css" />
+    @Avarez.Helper.winClass.windowHeader("window", "فیش", 800, 500)
+    <br />
+    @Avarez.Helper.winClass.Buttons("exit", "خروج", "exit")
+    <br />
+    <div id="Content">
+    </div>
+    <br/>
+    <script type="text/javascript">
+        $("document").ready(function () {
+            $("#exit").button();
+            $("#exit").click(function () {
+                $("#error").remove();
+            });
+        });
+    
+    </script>
+    @Avarez.Helper.winClass.windowFother()
+</div>

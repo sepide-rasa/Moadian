@@ -1,0 +1,224 @@
+﻿@using Ext.Net.MVC
+@using Hogaf.ExtNet.UX
+@using Ext.Net;
+@{
+    var X = Html.X();
+}
+
+
+@(Html.X().Window()
+    .Modal(true)    
+    .Resizable(false)
+    .Width(570)
+   // .Height(260)
+    .Title("تعریف شعبه")
+    .Layout(LayoutType.Fit)
+    .ID("NewBankBranch")
+    .Closable(true)
+    .ButtonAlign(Ext.Net.Alignment.Center)
+    .Buttons(
+        X.Button()
+            .Text("ذخیره")
+            .Icon(Ext.Net.Icon.Disk)
+        //.ToolTip("کلید میانبر F8")
+            .Listeners(l => l.Click.Handler = "SaveBankBranch();"),
+        X.Button()
+            .Text("خروج")
+            .Icon(Ext.Net.Icon.DoorOut)
+        //.ToolTip("کلید میانبر Esc")
+            .OnClientClick("App.NewBankBranch.destroy();"))
+    .CloseAction(Ext.Net.CloseAction.Destroy)
+    .Items(
+        X.FormPanel()
+            .Border(false)
+           // .Layout(LayoutType.Fit)
+            .Items(
+                X.Panel()
+                    .Border(false)
+                    .PaddingSpec("15px 0 0 0")
+                          .Layout(LayoutType.VBox)
+                                .LayoutConfig(new VBoxLayoutConfig { Align = VBoxAlign.Center })
+                    .Items(
+                        X.FieldSet()
+                            .Border(true).Height(155)
+                            .Defaults(new { Margin = 4 })
+                            .Title("شعبه")
+                            .Layout(LayoutType.Table)
+                            .LayoutConfig(new TableLayoutConfig { Columns = 4 })
+                            .Items(
+                                X.Hidden()
+                                    .ItemID("fldId"),
+                                X.Label("نام بانک:"),
+                                X.ComboBox()
+                                    .ItemID("cboBankName")
+                                    .EmptyText("نام بانک...")
+                                    .TypeAhead(true)
+                                    .AllowBlank(false)
+                                    .BlankText("لطفا نام بانک را انتخاب نمایید.")
+                                    .MsgTarget(Ext.Net.MessageTarget.Side)
+                                    .QueryMode(DataLoadMode.Local)
+                                    .ForceSelection(true)
+                                    .Editable(false)
+                                    .Width(190)
+                                    .TriggerAction(TriggerAction.All)
+                                    .DisplayField("fldTitle")
+                                    .ValueField("fldId")
+                                    .Store(X.Store()
+                                        .Model(X.Model()
+                                            .IDProperty("fldId")
+                                            .Fields(
+                                                new ModelField("fldId", ModelFieldType.String) { Mapping = "fldId" },
+                                                new ModelField("fldTitle", ModelFieldType.String) { Mapping = "fldTitle" })
+                                                )
+                                        .Proxy(X.AjaxProxy()
+                                            .Url(Url.Action("GetBankName"))
+                                            .Reader(X.JsonReader().Root("data")))
+                                        .Listeners(li => li.Load.Handler = "LoadBankBranch();")
+                                            ),
+                                X.Label("نام شعبه:"),
+                                X.TextField()
+                                    .ItemID("txtBankBranchName")
+                                    .Width(190)
+                                    .AllowBlank(false)
+                                    .EnforceMaxLength(true)
+                                    .MaxLength(50)
+                                    .BlankText("لطفا نام شعبه را وارد نمایید.")
+                                    .MsgTarget(Ext.Net.MessageTarget.Side),
+                                X.Label("کد شعبه:"),
+                                X.TextField()
+                                    .ItemID("txtBankBranchCode")
+                                    .ColSpan(3)
+                                    .MaskRe("/[0-9]/")
+                                    .MaxLength(20)
+                                    .EnforceMaxLength(true)
+                                    .Width(190)
+                                    .AllowBlank(false)
+                                    .BlankText("لطفا کد شعبه را وارد نمایید.")
+                                    .MsgTarget(Ext.Net.MessageTarget.Side),
+                                X.Label("آدرس:"),
+                                X.TextArea()
+                                    .ItemID("txtAddress")
+                                    .Width(190),
+                                X.Label("توضیحات:"),                                
+                                X.TextArea()
+                                    .ItemID("txtDesc")
+                                    .Width(190)
+                            )
+                )
+            )
+        )
+)
+
+<script type="text/javascript">
+    function LoadBankBranch() {
+        if ('@ViewBag.Id' != '0') {
+            App.NewBankBranch.body.mask("در حال بارگذاری...");
+            Ext.net.DirectMethod.request({
+                url: '/NewVer/BankBranch_New/Details',
+                params: {
+                    Id: '@ViewBag.Id'
+                },
+                success: function (data) {
+                    if (data.Er == 1) {
+                        Ext.MessageBox.show({
+                            title: data.MsgTitle,
+                            msg: data.Msg,
+                            icon: Ext.MessageBox.ERROR,
+                            buttons: Ext.MessageBox.OK
+                        });
+                    }
+                    else {
+                        var cboBankName = App.NewBankBranch.queryById('cboBankName');
+                        cboBankName.setValue(String(data.fldBankID));
+                        var txtBankBranchName = App.NewBankBranch.queryById('txtBankBranchName');
+                        txtBankBranchName.setValue(data.fldName);
+                        var txtBankBranchCode = App.NewBankBranch.queryById('txtBankBranchCode');
+                        txtBankBranchCode.setValue(data.fldBranchCode);
+                        var txtAddress = App.NewBankBranch.queryById('txtAddress');
+                        txtAddress.setValue(data.fldAddress);
+                        var txtDesc = App.NewBankBranch.queryById('txtDesc');
+                        txtDesc.setValue(data.fldDesc);
+                        var Id = App.NewBankBranch.queryById('fldId');
+                        Id.setValue(data.fldId);
+                    }
+                    App.NewBankBranch.body.mask().hide();
+                }
+            });
+        }
+        else {
+            App.NewBankBranch.queryById('cboBankName').validate();
+            App.NewBankBranch.queryById('txtBankBranchName').validate();
+            App.NewBankBranch.queryById('txtBankBranchCode').validate();
+        }
+    }
+
+    function SaveBankBranch() {
+        var cboBankName = App.NewBankBranch.queryById('cboBankName');
+        var Id = App.NewBankBranch.queryById('fldId');
+        var txtBankBranchName = App.NewBankBranch.queryById('txtBankBranchName');
+        var txtBankBranchCode = App.NewBankBranch.queryById('txtBankBranchCode');
+        var txtAddress = App.NewBankBranch.queryById('txtAddress');
+        var txtDesc = App.NewBankBranch.queryById('txtDesc');
+
+        var er = false;
+
+        if (cboBankName.validate() == false) {
+            er = true;
+        }
+        if (txtBankBranchName.validate() == false) {
+            er = true;
+        }
+        if (txtBankBranchCode.validate() == false) {
+            er = true;
+        }
+
+        if (er == true)
+            return;
+
+        App.NewBankBranch.body.mask("در حال ذخیره سازی...");
+        Ext.net.DirectMethod.request({
+            url: '/NewVer/BankBranch_New/Save',
+            params: {
+                fldID: Id.getValue(),
+                fldName: txtBankBranchName.getValue(),
+                fldBranchCode: txtBankBranchCode.getValue(),
+                fldBankID: cboBankName.getValue(),
+                fldAddress: txtAddress.getValue(),
+                fldDesc: txtDesc.getValue()
+            },
+            success: function (data) {
+                var ic = Ext.MessageBox.INFO;
+                if (data.Er == 1)
+                    ic = Ext.MessageBox.ERROR;
+                Ext.MessageBox.show({
+                    title: data.MsgTitle,
+                    msg: data.Msg,
+                    icon: ic,
+                    buttons: Ext.MessageBox.OK
+                });
+                App.BankBranch.queryById('GridBankBranch').store.load();
+                if (data.Er == 0) {
+                    ClearBankBranch();
+                }
+                App.NewBankBranch.body.mask().hide();
+            }
+        });
+    }
+
+    function ClearBankBranch() {
+        App.NewBankBranch.queryById('cboBankName').setValue("");
+        App.NewBankBranch.queryById('txtBankBranchName').setValue("");
+        App.NewBankBranch.queryById('txtBankBranchCode').setValue("");
+        App.NewBankBranch.queryById('txtAddress').setValue("");
+        App.NewBankBranch.queryById('txtDesc').setValue("");
+        App.NewBankBranch.queryById('fldId').setValue(0);
+    }
+
+  /*  function EnterNext() {
+        var keyfield = App.NewCustomer.queryById(Ext.getCmp((Ext.Element.getActiveElement()).name).itemId);
+        var nextfld = keyfield.nextSibling();
+        nextfld.focus();
+        nextfld.selectText();
+    }*/
+
+</script>

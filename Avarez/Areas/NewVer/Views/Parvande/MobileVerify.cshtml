@@ -1,0 +1,137 @@
+﻿@using Ext.Net.MVC
+@using Hogaf.ExtNet.UX
+@using Ext.Net;
+@{
+    var X = Html.X();
+}
+<style>
+    .lblF {
+        color: red;
+    }
+</style>
+@(Html.X().Window().Modal(true)
+    .Width(320).Height(170)
+    .Title("فعال سازی پرونده")
+    .Closable(true)
+        .ID("Verifymbl")
+        .ButtonAlign(Ext.Net.Alignment.Center)
+        .Buttons(
+            X.Button()
+                .Text("تایید")
+                .Icon(Ext.Net.Icon.Disk)
+        //.ToolTip("کلید میانبر F8")
+                .Listeners(l => l.Click.Handler = "VerifyMobile();"),
+                    X.Button()
+                    .Text("ارسال مجدد")
+                    .Icon(Ext.Net.Icon.Disk)
+        //.ToolTip("کلید میانبر F8")
+                    .Listeners(l => l.Click.Handler = "SendAgain();"),
+            X.Button()
+                .Text("خروج")
+                .Icon(Ext.Net.Icon.DoorOut)
+        //.ToolTip("کلید میانبر Esc")
+                        .OnClientClick("App.Verifymbl.destroy();"))
+    .CloseAction(Ext.Net.CloseAction.Destroy)
+        .Items(X.FormPanel()
+            .Border(false)
+            .Layout(LayoutType.Fit)
+            .Items(
+                X.Panel()
+                    .Border(false)
+                    .PaddingSpec("8px 0 0 0")
+                         .Layout(LayoutType.VBox)
+                        .LayoutConfig(new VBoxLayoutConfig { Align = VBoxAlign.Center })
+            .Items(
+                X.FieldSet()
+                .Border(false)
+                .Defaults(new { Margin = 2 })
+                .Layout(LayoutType.Table)
+                .LayoutConfig(new TableLayoutConfig { Columns = 1 })
+                .Items(X.Label().Text("لطفا کد فعال سازی ارسال شده برای مودی را وارد کنید.")
+                    .Cls("lblF"),
+                    X.Label(),
+                    X.TextField().FieldLabel("کد فعال سازی:")
+                    .ItemID("txtCode")
+                    .AllowBlank(false)
+                    .BlankText("لطفا کد فعالسازی را وارد نمایید.")
+                )
+            )
+        )
+    )
+)
+
+<script type="text/javascript">
+    function SendAgain() {
+        Ext.net.Mask.show({ msg: 'در حال انجام عملیات...' });
+        Ext.net.DirectMethod.request({
+            url: '/NewVer/Parvande/SendSms',
+            params: {
+                CarFileId: '@ViewBag.carfileid'
+            },
+            success: function (data) {
+                var ic = Ext.MessageBox.INFO;
+                if (data.Err == 1)
+                    ic = Ext.MessageBox.ERROR;
+                Ext.MessageBox.show({
+                    title: data.MsgTitle,
+                    msg: data.Msg,
+                    icon: ic,
+                    buttons: Ext.MessageBox.OK
+                });
+                Ext.net.Mask.hide();
+            }
+        });
+    }
+    
+
+    function VerifyMobile() {
+        var ownerId = '@ViewBag.OwnerId';
+        var txtCode = App.Verifymbl.queryById('txtCode');
+
+        var er = false;
+        if (txtCode.validate() == false) {
+            er = true;
+        }
+
+        if (er == true)
+            return;
+        if (ownerId != txtCode.getValue()) {
+            var ic = Ext.MessageBox.ERROR;
+            Ext.MessageBox.show({
+                title: 'خطا',
+                msg: 'کد وارد شده صحیح نمی باشد',
+                icon: ic,
+                buttons: Ext.MessageBox.OK
+            });
+            return;
+        }
+        App.Verifymbl.body.mask("در حال بارگذاری...");
+        Ext.net.DirectMethod.request({
+            url: '/NewVer/Parvande/MobileVerification',
+            params: {
+                OwnerId: txtCode.getValue()
+            },
+            success: function (data) {
+                var ic = Ext.MessageBox.INFO;
+                if (data.Er == 1)
+                    ic = Ext.MessageBox.ERROR;
+                Ext.MessageBox.show({
+                    title: data.MsgTitle,
+                    msg: data.Msg,
+                    icon: ic,
+                    buttons: Ext.MessageBox.OK,
+                    fn: function (btn) {
+                        if (btn == 'ok') {                            
+                            ShowPnlBill(0);
+                            App.Verifymbl.body.mask().hide();
+                            App.Verifymbl.destroy();
+                            App.FastParvande.destroy();                            
+                        }
+                    }
+                });
+                
+
+            }
+        });
+    }
+</script>

@@ -1,0 +1,250 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+@{
+    Random x = new Random();
+    int imageIndex = x.Next(1, 3);
+}
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>سامانه جامع تشخیص و وصول عوارض خودرو - استان زنجان</title>
+    <!-- CSS -->
+    <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Roboto:400,100,300,500">
+    <link rel="stylesheet" href="@Url.Content("~/Scripts/bootstarapLogin/assets/bootstrap/css/bootstrap.min.css")">
+    <link rel="stylesheet" href="@Url.Content("~/Scripts/bootstarapLogin/assets/font-awesome/css/font-awesome.min.css")">
+    <link rel="stylesheet" href="@Url.Content("~/Scripts/bootstarapLogin/assets/css/form-elements.css")">
+    <link rel="stylesheet" href="@Url.Content("~/Scripts/bootstarapLogin/assets/css/style.css")">
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    <!-- Favicon and touch icons -->
+    <link rel="shortcut icon" href="@Url.Content("~/Scripts/bootstarapLogin/assets/ico/favicon.ico")">
+    
+</head>
+<body dir="rtl" style="font-family:'B Zar'">
+    <center>
+        <!-- Top content -->
+        <div class="top-content">
+
+            <div class="inner-bg">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-sm-6 col-sm-offset-3 form-box">
+                            <div class="form-top">
+                                <div class="form-top-left">
+                                    <h3>سامانه جامع تشخیص و وصول عوارض خودرو - استان زنجان</h3>
+                                </div>
+                                <div class="form-top-right">
+                                    <i class="fa fa-lock"></i>
+                                </div>
+                            </div>
+                            <div class="form-bottom">
+                                <form role="form" action="/newver/account_new/LogOn" method="post" class="login-form">
+                                    <div class="form-group">
+                                        <input type="hidden" name="UserType" value=@ViewBag.TypeUser />
+                                    </div>
+                                        <div class="form-group">
+                                            <select class="form-control" id="Mun" name="Mun">
+                                                <option value="" disabled selected>شهرداری...</option>
+                                            </select>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="sr-only" for="form-username">نام کاربری</label>
+                                            <input type="text" style="font-family:'B Zar'" name="username" id="username" placeholder="نام کاربری..." class="form-username form-control" id="form-username">
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="sr-only" for="form-password">رمز عبور</label>
+                                            <input type="password" style="font-family:'B Zar'" name="password" id="password" placeholder="رمز عبور..." class="form-password form-control" id="form-password">
+                                        </div>
+                                        <div dir="rtl" id="capt" style="margin-bottom:5px;">
+                                            <table style="margin-bottom:15px;">
+                                                <tr>
+                                                    <td>
+                                                        <input style="font-family:RasaFont;" class="input100" name="Capthalogin" type="text" id="captcha" placeholder="کد امنیتی...">
+                                                        <span class="focus-input100"></span>
+                                                    </td>
+                                                    <td>
+                                                        <img id="m_imgCaptcha" />
+                                                    </td>
+                                                    <td>
+                                                        <span id="BtnRefresh" style="font-size: 11px;
+                                                        font-family: tornado tahoma;
+                                                        width: 25px;
+                                                        height:25px;
+                                                        text-align: right;
+                                                        align-content:center;
+                                                        background-image: url('../../../../Content/refresh1.png');
+                                                        display:inline-block;
+                                                        margin-top:5px;
+                                                        background-repeat: no-repeat;">
+                                                        </span>
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                        </div>
+                                        <button type="submit" class="btn" style="font-family:'B Zar'">ورود</button>
+                                        <br />
+                                        <span id="err"></span>
+                                        <div dir="rtl" style="width:100%; color:red;text-align:right;margin-bottom:10px;">
+                                            @Html.ValidationSummary(true, "ورود ناموفق", new { @style = "font-weight:bold;" })
+                                        </div>
+</form>
+
+                            </div>
+                            <div class="form-top1">
+                                <center>
+                                    <span style="text-align:center;color:white;">اگر رمز عبور خود را فراموش کرده اید<a id="forget" href="#"> اینجا </a> کلیک کنید.</span>
+                                </center>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="landing-footer">
+            <ul class="navbar navbar-nav">
+                <li>
+                    <span class="latin-font hidden-xs ng-scope" style="font-size: medium;" translate="copyrighten"><a href="http://www.rasa-system.com">Rasa System Alborz</a> - Copyright ©</span>
+                    <span class="latin-font hidden-xs ng-binding" style="font-size: medium;" ng-bind="copyrightyear">2016</span>
+                </li>
+            </ul>
+            <ul style="margin-right: -40px;" class="navbar navbar-nav pull-left hidden-xs">
+                <li translate="helpDeskTel" style="font-size: medium;" class="ng-scope">تلفن پشتیبانی : 32347992-023</li>
+            </ul>
+        </div>
+    </center>
+    <!-- Javascript -->
+    <script src="@Url.Content("~/Scripts/bootstarapLogin/assets/js/jquery-1.11.1.min.js")"></script>
+    <script src="@Url.Content("~/Scripts/bootstarapLogin/assets/bootstrap/js/bootstrap.min.js")"></script>
+    <script src="@Url.Content("~/Scripts/bootstarapLogin/assets/js/jquery.backstretch.min.js")"></script>
+    <script type="text/javascript">
+        function openWindowWithPost(url, data) {
+            var form = document.createElement("form");
+            form.target = "_blank";
+            form.method = "POST";
+            form.action = url;
+            form.style.display = "none";
+
+            for (var key in data) {
+                var input = document.createElement("input");
+                input.type = "hidden";
+                input.name = key;
+                input.value = data[key];
+                form.appendChild(input);
+            }
+            document.body.appendChild(form);
+            form.submit();
+            document.body.removeChild(form);
+        }
+    jQuery(document).ready(function () {
+        $('#forget').click(function (e) {
+            openWindowWithPost("/NewVer/First/ForgetPass", {
+                UserType: '@ViewBag.TypeUser'
+            });
+        });
+        var option = document.createElement("option");
+        var data1 = {
+            ID: 17
+        };
+        $.ajax({
+            type: "POST",
+            url: '/NewVer/Account_New/GetCascadeCounty2',
+            contentType: "application/json; charset=utf-8",
+            data: JSON.stringify(data1),
+            datatype: "json",
+            success: function (data) {
+                if ('@ViewBag.TypeUser' != "3") {
+                    for (var i = 0; i < data.CountyName.length; i++) {                    
+                        var opt = new Option(data.CountyName[i], data.CountyId[i]);
+                        $("#Mun").append(opt);
+                    }
+                }
+                else {
+                    var index=data.CountyId.findIndex(l=>l==548);
+                    data.CountyId=data.CountyId.filter(l=>l==548);
+                    for (var i = 0; i < data.CountyId.length; i++) {
+                        var opt = new Option(data.CountyName[index], data.CountyId[i]);
+                        $("#Mun").append(opt);
+                    }
+                }
+            },
+            failure: function (data) {
+                alert(data.data);
+            }
+        });
+        /*
+        Fullscreen background
+        */
+
+        $.backstretch("@Url.Content("~/Scripts/bootstarapLogin/assets/img/backgrounds/1.jpg")");
+
+        /*
+        Form validation
+        */
+        $('.login-form input[type="text"], .login-form input[type="password"], .login-form textarea').on('focus', function () {
+            $(this).removeClass('input-error');
+        });
+
+
+
+    });
+    loadCaptcha();
+    jQuery("#BtnRefresh").click(function () {
+        var antiCachePart = (new Date()).getTime();
+        var url = "/Account_New/generateCaptchaD";
+        var newSrc = url + '?dc=' + antiCachePart;
+        $("#m_imgCaptcha").attr('src', newSrc);
+    });
+    if (parseInt('@Session["captchahave"]') > 1) {
+        $('#capt').show();
+    }
+    function loadCaptcha() {
+        var url = "/Account_New/generateCaptchaD";
+        $("#m_imgCaptcha").attr('src', url);
+    }
+    $('#capt').hide();
+    $('#login').click(function () {
+
+        $(this).removeClass('input-error');
+        var UserNameDafater = $('#username').val();
+        var PassDafater = $('#password').val();
+        var txtCapthaloginD = $('#captcha').val();
+        $.ajax({
+            url: '/NewVer/Account_New/LogOn',
+            method: 'post',
+            data: {
+                UserName: UserNameDafater,
+                Password: PassDafater,
+                Captcha: txtCapthaloginD,
+                Mun: $('#Mun').val(),
+                UserType: '@ViewBag.TypeUser'
+            },
+            success: function (data) {
+                if (data.Msg != "") {
+                    $("#err").html(data.Msg);
+                    if (data.HaveCaptcha2 > 1) {
+                        $("#capt").show();
+                    }
+                }
+                else {
+                    if (data.state == "0")
+                        window.location.href = "/NewVer/First/index";
+                    else {
+                        $("#err").html("انتخاب شهرداری ضروری می باشد");
+                    }
+
+                }
+            }
+        });
+    });
+
+    </script>
+    <!--[if lt IE 10]>
+        <script src="assets/js/placeholder.js"></script>
+    <![endif]-->
+</body>
+</html>

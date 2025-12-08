@@ -1,0 +1,227 @@
+﻿@using Kendo.Mvc.UI;
+<div class="modal" id="ShowDigitalArchive">
+    <script src="@Url.Content("~/Content/Base.js")" type="text/javascript"></script>
+    <script src="../../Scripts/jquery.ui.datepicker-cc.all.min.js" type="text/javascript"></script>
+    <div>
+
+
+        <br />
+        <div>
+            <table>
+
+                <tr>
+                    <td align="left">
+                        از تاریخ:
+                    </td>
+                    <td>
+                        @Avarez.Helper.winClass.textbox("txtStart")
+                    </td>
+
+                    <td align="left">
+                        تا تاریخ:
+                    </td>
+                    <td>
+                        @Avarez.Helper.winClass.textbox("txtEnd")
+                    </td>
+                </tr>
+            </table>
+            <table>
+                <tr>
+                    <td align="left">
+                        ساختار درختی بایگانی دیجیتال:
+                    </td>
+                    <td colspan="2" dir="rtl" id="P_Tree" align="right"></td>
+
+                </tr>
+                <tr>
+                    <td></td>
+                    <td dir="rtl" id="Location" style="color: red;" align="center"></td>
+                </tr>
+            </table>
+            <br />
+        </div>
+        <center>
+            <div>
+                @Avarez.Helper.winClass.Buttons("BtnSearch", "جستجو", "search")
+            </div>
+        </center>
+        <br />
+        <div class="k-rtl demo-section">
+            @(Html.Kendo().Grid<Avarez.Models.sp_ShowDigitalArchive>()
+                .Name("Grid")
+                .Columns(columns =>
+                {
+                    columns.Bound(p => p.fldID).Title("کد").Visible(false);
+                    columns.Bound(p => p.fldCarFileId).Visible(false);
+                    columns.Bound(p => p.fldModel).Title("مدل");
+                    columns.Bound(p => p.fldShasiNumber).Title("شماره شاسی");
+                    columns.Bound(p => p.fldMotorNumber).Title("شماره موتور");
+                    columns.Bound(p => p.fldVIN).Title("VIN");
+                    columns.Bound(p => p.fldUserName).Title("کاربر ثبت کننده");
+                })
+            .Selectable(selectable => selectable.Mode(GridSelectionMode.Single))
+            .Pageable()
+            .Scrollable()
+            .DataSource(data =>
+                data.Ajax()
+                .PageSize(10)
+                    // .Read("Fill", "ShowTempArchive")
+            )
+            )
+        </div>
+
+    </div>
+    <script type="text/javascript">
+        var dataItem = '';
+        var Pid = null;
+        var Pid2 = null;
+        function select(e) {
+            dataItem = this.dataItem(e.node);
+            Pid = dataItem.id;
+            Pid2 = Pid;
+        }
+        function expand() {
+            var treeview = $("#treeview").data("kendoTreeView");
+            treeview.expand(".k-item");
+        }
+        $("document").ready(function () {
+            $('#Help').button();
+            $("#exit").button();
+            $("#BtnSearch").button();
+            $('#P_Tree').html($('#LocationDiv').valueOf());
+
+            $('#txtStart').datepicker({
+                onSelect: function (dateText, inst) {
+                    $('#txtEnd').datepicker('option', 'minDate', new JalaliDate(inst['selectedYear'], inst['selectedMonth'], inst['selectedDay']));
+                },
+                showButtonPanel: true,
+                changeMonth: true,
+                changeYear: true
+            });
+
+            $('#txtEnd').datepicker({
+                showButtonPanel: true,
+                changeMonth: true,
+                changeYear: true
+            });
+            $("#exit").click(function () {
+                $("#ShowTempArchive").remove();
+                Dialog = 0;
+            });
+            $('#ShowTempArchive #btnClose').click(function () {
+                $("#ShowTempArchive").remove();
+                Dialog = 0;
+            });
+            $('#ShowTempArchive').on('keyup', 'input', function (event) {
+                if (event.which == 13) {
+                    var inputs = $('#ShowTempArchive').find(':input:visible');
+                    inputs.eq(inputs.index(this) + 1).focus();
+                }
+            });
+
+            $(document).keyup(function (event) {
+                if (event.which == 119) {
+                    SaveRecord();
+                }
+                else if (event.which == 113) {
+                    EditRecord();
+                }
+                else if (event.which == 115) {
+                    DeleteRecord();
+                }
+            });
+
+
+
+
+
+            $('#BtnSearch').click(function () {
+                var url = '@Url.Action("Reload", "ShowDigitalArchive")';
+                Reload(url, 'Grid', $("#txtStart").val(), $("#txtEnd").val(),Pid);
+            });
+
+
+
+        });
+
+        function Reload(Url, gridname, value1, value2,Pid) {
+            var grid = $('#' + gridname).data('kendoGrid');
+            $.ajax({
+                url: Url,
+                type: 'get',
+                datatype: 'json',
+                data: { value1: value1, value2: value2,Pid:Pid },
+                error: function (xhr, status, error) {
+                    alert(xhr + status);
+                },
+                success: function (result) {
+                    $("#" + gridname).data("kendoGrid").dataSource.data(result);
+                }
+
+            });
+        }
+
+        function PostForm(datas, url, id) {
+            var sendInfo = datas;
+            $('#Lock').show();
+            $.ajax({
+                type: "POST",
+                url: url,
+                data: sendInfo,
+                datatype: "json",
+                success: function (data) {
+                    var m = data;
+                    windowAppend("body", "/metro/error");
+                    $("#message").html(m.data);
+                    $("#fldId").val(m.id);
+                    switch (m.state) {
+                        case 0:
+                            $("#error .wintitle").html("ذخیره موفق");
+                            break;
+                        case 1:
+                            $("#error .wintitle").html("خطا");
+                            break;
+                    }
+                    var url = '@Url.Action("Reload", "ShowDigitalArchive")';
+                    Reload(url, 'Grid', '0', '', 30, 1);
+                    $('#Lock').hide();
+
+                },
+                failure: function (data) {
+                    alert(data.data);
+                }
+            });
+        }
+    </script>
+    <div class="treeview-back  k-rtl" dir="rtl" id="LocationDiv">
+        @(Html.Kendo().TreeView()
+                        .Name("treeview")
+                        .DataTextField("Name")
+
+                        .DataSource(dataSource => dataSource
+                        .Read(read => read
+                                         .Action("_ProductTree", "ShowDigitalArchive")
+                        )
+                        )
+                        .Events(events =>
+                        {
+                            events.Select("select");
+                            events.DataBound("expand");
+                        })
+        )
+    </div>
+    <style type="text/css">
+        .treeview-back {
+            width: 400px;
+            margin: 30px;
+            padding: 20px;
+            -moz-box-shadow: 0 1px 2px rgba(0,0,0,0.45), inset 0 0 30px rgba(0,0,0,0.07);
+            -webkit-box-shadow: 0 1px 2px rgba(0,0,0,0.45), inset 0 0 30px rgba(0,0,0,0.07);
+            box-shadow: 0 1px 2px rgba(0,0,0,0.45), inner 0 0 30px rgba(0,0,0,0.07);
+            -webkit-border-radius: 8px;
+            -moz-border-radius: 8px;
+            border-radius: 8px;
+        }
+    </style>
+</div>
+

@@ -1,0 +1,519 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:tm="http://microsoft.com/wsdl/mime/textMatching/" xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" xmlns:tns="http://tempuri.org/" xmlns:http="http://schemas.xmlsoap.org/wsdl/http/" xmlns:s="http://www.w3.org/2001/XMLSchema" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" targetNamespace="http://tempuri.org/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:types>
+    <s:schema elementFormDefault="qualified" targetNamespace="http://tempuri.org/">
+      <s:element name="CheckAccountCharge">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="_User" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="_Pass" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="MunName" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="CheckAccountChargeResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="CheckAccountChargeResult" type="s:boolean" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetRate">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="_User" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="_Pass" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="MunName" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="FromYear" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="ToYear" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="CarMakeType" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="CarAccountType" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="CarCabin" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="CarSystem" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="CarTip" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="CarClass" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetRateResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetRateResult" type="tns:ArrayOfGetRateForWebService" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="ArrayOfGetRateForWebService">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="GetRateForWebService" nillable="true" type="tns:GetRateForWebService" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="GetRateForWebService">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="fldName" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="fldYear" nillable="true" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="fldFromModel" nillable="true" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="fldToModel" nillable="true" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="fldPrice" nillable="true" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="fldFromCylinder" nillable="true" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="fldToCylinder" nillable="true" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="fldFromWheel" nillable="true" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="fldToWheel" nillable="true" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="fldFromContentMotor" nillable="true" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="fldToContentMotor" nillable="true" type="s:int" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="GetClass">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="_User" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="_Pass" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="MunName" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="CarMakeType" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="CarAccountType" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="CarCabin" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="CarSystem" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="CarTip" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="CarClass" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetClassResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetClassResult" type="tns:ArrayOfGetClassForWebService" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="ArrayOfGetClassForWebService">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="GetClassForWebService" nillable="true" type="tns:GetClassForWebService" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="GetClassForWebService">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="className" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="GetCountry">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="_User" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="_Pass" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="MunName" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="State" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="County" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="zone" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="city" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="Mun" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetCountryResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetCountryResult" type="tns:ArrayOfGetCountryDivForWebService" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="ArrayOfGetCountryDivForWebService">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="GetCountryDivForWebService" nillable="true" type="tns:GetCountryDivForWebService" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="GetCountryDivForWebService">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="fldID" nillable="true" type="s:int" />
+          <s:element minOccurs="0" maxOccurs="1" name="fldNodeName" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="fldNodeType" nillable="true" type="s:unsignedByte" />
+          <s:element minOccurs="1" maxOccurs="1" name="fldPID" nillable="true" type="s:int" />
+          <s:element minOccurs="0" maxOccurs="1" name="fldPath" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="GetOfficeInf">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="_User" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="_Pass" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="MunName" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="Mun" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="Office" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetOfficeInfResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetOfficeInfResult" type="tns:OfficesSelect" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="OfficesSelect">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="fldID" type="s:long" />
+          <s:element minOccurs="0" maxOccurs="1" name="fldName" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="fldAddress" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="fldOfficesType" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="fldOfficesTypeID" type="s:unsignedByte" />
+          <s:element minOccurs="0" maxOccurs="1" name="fldMunicipalityName" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="fldMunicipalityID" nillable="true" type="s:int" />
+          <s:element minOccurs="0" maxOccurs="1" name="fldLocalName" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="fldLocalID" nillable="true" type="s:long" />
+          <s:element minOccurs="0" maxOccurs="1" name="fldAreaName" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="fldAreaID" nillable="true" type="s:long" />
+          <s:element minOccurs="1" maxOccurs="1" name="fldUserID" type="s:long" />
+          <s:element minOccurs="0" maxOccurs="1" name="fldDesc" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="fldDate" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="fldTel" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="fldUserName" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="GetMunInf">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="_User" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="_Pass" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="MunName" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="Mun" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetMunInfResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetMunInfResult" type="tns:MunicipalitySelect" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="MunicipalitySelect">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="fldID" type="s:int" />
+          <s:element minOccurs="0" maxOccurs="1" name="fldName" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="fldCityName" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="fldCityID" type="s:int" />
+          <s:element minOccurs="0" maxOccurs="1" name="fldInformaticesCode" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="fldServiceCode" type="s:unsignedByte" />
+          <s:element minOccurs="0" maxOccurs="1" name="fldRWUserName" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="fldRWPass" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="fldUserID" type="s:long" />
+          <s:element minOccurs="0" maxOccurs="1" name="fldDesc" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="fldDate" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="fldUserName" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="GetLocalInf">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="_User" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="_Pass" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="MunName" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="Mun" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="Local" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetLocalInfResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetLocalInfResult" type="tns:LocalSelect" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="LocalSelect">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="fldID" type="s:long" />
+          <s:element minOccurs="0" maxOccurs="1" name="fldName" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="fldMunicipalityName" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="fldMunicipalityID" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="fldUserID" type="s:long" />
+          <s:element minOccurs="0" maxOccurs="1" name="fldDesc" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="fldDate" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="fldUserName" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="fldServiceCode" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="fldSourceInformatics" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="GetCarClassInf">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="_User" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="_Pass" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="MunName" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="CarMakeType" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="CarAccountType" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="CarCabin" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="CarSystem" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="CarTip" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="CarClass" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetCarClassInfResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetCarClassInfResult" type="tns:CarClassSelect" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="CarClassSelect">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="fldID" type="s:int" />
+          <s:element minOccurs="0" maxOccurs="1" name="fldName" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="fldCarModelName" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="fldCarModelID" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="fldUserID" type="s:long" />
+          <s:element minOccurs="0" maxOccurs="1" name="fldDesc" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="fldDate" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="fldUserName" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="fldCarPatternModelID" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="fldCylinderNumber" nillable="true" type="s:unsignedByte" />
+          <s:element minOccurs="1" maxOccurs="1" name="fldWheelNumber" nillable="true" type="s:unsignedByte" />
+          <s:element minOccurs="1" maxOccurs="1" name="fldPivotNumber" nillable="true" type="s:unsignedByte" />
+          <s:element minOccurs="1" maxOccurs="1" name="fldContentMotor" nillable="true" type="s:int" />
+          <s:element minOccurs="0" maxOccurs="1" name="fldFuelTypeName" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="fldFuelTypeID" nillable="true" type="s:int" />
+          <s:element minOccurs="0" maxOccurs="1" name="fldCarPatternModelName" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+    </s:schema>
+  </wsdl:types>
+  <wsdl:message name="CheckAccountChargeSoapIn">
+    <wsdl:part name="parameters" element="tns:CheckAccountCharge" />
+  </wsdl:message>
+  <wsdl:message name="CheckAccountChargeSoapOut">
+    <wsdl:part name="parameters" element="tns:CheckAccountChargeResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetRateSoapIn">
+    <wsdl:part name="parameters" element="tns:GetRate" />
+  </wsdl:message>
+  <wsdl:message name="GetRateSoapOut">
+    <wsdl:part name="parameters" element="tns:GetRateResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetClassSoapIn">
+    <wsdl:part name="parameters" element="tns:GetClass" />
+  </wsdl:message>
+  <wsdl:message name="GetClassSoapOut">
+    <wsdl:part name="parameters" element="tns:GetClassResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetCountrySoapIn">
+    <wsdl:part name="parameters" element="tns:GetCountry" />
+  </wsdl:message>
+  <wsdl:message name="GetCountrySoapOut">
+    <wsdl:part name="parameters" element="tns:GetCountryResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetOfficeInfSoapIn">
+    <wsdl:part name="parameters" element="tns:GetOfficeInf" />
+  </wsdl:message>
+  <wsdl:message name="GetOfficeInfSoapOut">
+    <wsdl:part name="parameters" element="tns:GetOfficeInfResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetMunInfSoapIn">
+    <wsdl:part name="parameters" element="tns:GetMunInf" />
+  </wsdl:message>
+  <wsdl:message name="GetMunInfSoapOut">
+    <wsdl:part name="parameters" element="tns:GetMunInfResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetLocalInfSoapIn">
+    <wsdl:part name="parameters" element="tns:GetLocalInf" />
+  </wsdl:message>
+  <wsdl:message name="GetLocalInfSoapOut">
+    <wsdl:part name="parameters" element="tns:GetLocalInfResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetCarClassInfSoapIn">
+    <wsdl:part name="parameters" element="tns:GetCarClassInf" />
+  </wsdl:message>
+  <wsdl:message name="GetCarClassInfSoapOut">
+    <wsdl:part name="parameters" element="tns:GetCarClassInfResponse" />
+  </wsdl:message>
+  <wsdl:portType name="RateSoap">
+    <wsdl:operation name="CheckAccountCharge">
+      <wsdl:input message="tns:CheckAccountChargeSoapIn" />
+      <wsdl:output message="tns:CheckAccountChargeSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetRate">
+      <wsdl:input message="tns:GetRateSoapIn" />
+      <wsdl:output message="tns:GetRateSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetClass">
+      <wsdl:input message="tns:GetClassSoapIn" />
+      <wsdl:output message="tns:GetClassSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetCountry">
+      <wsdl:input message="tns:GetCountrySoapIn" />
+      <wsdl:output message="tns:GetCountrySoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetOfficeInf">
+      <wsdl:input message="tns:GetOfficeInfSoapIn" />
+      <wsdl:output message="tns:GetOfficeInfSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetMunInf">
+      <wsdl:input message="tns:GetMunInfSoapIn" />
+      <wsdl:output message="tns:GetMunInfSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetLocalInf">
+      <wsdl:input message="tns:GetLocalInfSoapIn" />
+      <wsdl:output message="tns:GetLocalInfSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetCarClassInf">
+      <wsdl:input message="tns:GetCarClassInfSoapIn" />
+      <wsdl:output message="tns:GetCarClassInfSoapOut" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="RateSoap" type="tns:RateSoap">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="CheckAccountCharge">
+      <soap:operation soapAction="http://tempuri.org/CheckAccountCharge" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetRate">
+      <soap:operation soapAction="http://tempuri.org/GetRate" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetClass">
+      <soap:operation soapAction="http://tempuri.org/GetClass" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetCountry">
+      <soap:operation soapAction="http://tempuri.org/GetCountry" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetOfficeInf">
+      <soap:operation soapAction="http://tempuri.org/GetOfficeInf" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetMunInf">
+      <soap:operation soapAction="http://tempuri.org/GetMunInf" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetLocalInf">
+      <soap:operation soapAction="http://tempuri.org/GetLocalInf" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetCarClassInf">
+      <soap:operation soapAction="http://tempuri.org/GetCarClassInf" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:binding name="RateSoap12" type="tns:RateSoap">
+    <soap12:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="CheckAccountCharge">
+      <soap12:operation soapAction="http://tempuri.org/CheckAccountCharge" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetRate">
+      <soap12:operation soapAction="http://tempuri.org/GetRate" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetClass">
+      <soap12:operation soapAction="http://tempuri.org/GetClass" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetCountry">
+      <soap12:operation soapAction="http://tempuri.org/GetCountry" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetOfficeInf">
+      <soap12:operation soapAction="http://tempuri.org/GetOfficeInf" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetMunInf">
+      <soap12:operation soapAction="http://tempuri.org/GetMunInf" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetLocalInf">
+      <soap12:operation soapAction="http://tempuri.org/GetLocalInf" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetCarClassInf">
+      <soap12:operation soapAction="http://tempuri.org/GetCarClassInf" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="Rate">
+    <wsdl:port name="RateSoap" binding="tns:RateSoap">
+      <soap:address location="http://192.168.1.33:7011/AvarezRate.asmx" />
+    </wsdl:port>
+    <wsdl:port name="RateSoap12" binding="tns:RateSoap12">
+      <soap12:address location="http://192.168.1.33:7011/AvarezRate.asmx" />
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

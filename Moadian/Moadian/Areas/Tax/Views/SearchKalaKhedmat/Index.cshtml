@@ -1,0 +1,100 @@
+﻿@model IEnumerable<Avarez.Areas.Tax.Models.prs_tblKala_KhedmatSelect>
+@using Ext.Net.MVC;
+
+@using Hogaf.ExtNet.UX
+@using Ext.Net;
+@{
+
+    var X = Html.X();
+}
+@(Html.X().Window()
+    .Modal(true)
+    .Width(850)
+    .Height(350)
+    .Title("لیست کالا/خدمات")
+    .ID("SearchKalaKhedmat")
+    .Closable(true)
+    .CloseAction(Ext.Net.CloseAction.Destroy)
+        // .Listeners(l => { l.Destroy.Handler = "if(state==2){App.NewAnvaMaharat_Ashkhas.queryById('txtName').focus();}else if(state==3){App.NewGroupMaharat.queryById('txtName').focus();}"; l.AfterRender.Handler = "LoadSearchAshkhas()"; })
+    .Layout(LayoutType.Fit)
+    .Items(
+        X.AntiForgeryField()
+            .ItemID("antiForgeryToken")
+            .Hidden(true),
+        X.Panel()
+            .Border(false)
+            .AutoScroll(true)
+            .Layout(LayoutType.Fit)
+            .Items(
+                X.GridPanel()
+                    .AutoScroll(true)
+                    .Border(false)
+                        .ItemID("GridSearchKalaKhedmat")
+                              .Listeners(a => a.CellDblClick.Handler = "NextSearchKalaKhedmat();")
+
+                    .BottomBar(X.PagingToolbar())
+
+                    .Store(
+                        X.StoreForModel()
+        //  .Listeners(l => l.BeforeLoad.Handler = "App.SearchKalaKhedmat.queryById('GridSearchKalaKhedmat').getStore().getProxy().setExtraParam('__RequestVerificationToken', App.SearchKalaKhedmat.queryById('antiForgeryToken').getValue());")
+                            .Proxy(Html.X().AjaxProxy()
+        //   .ActionMethods(l => l.Read = Ext.Net.HttpMethod.POST)
+                                .Url(Url.Action("Read"))
+                                .Reader(Html.X().JsonReader().Root("data"))
+                                        .ExtraParams(x => x.Add(new { state = @ViewBag.state }))
+                        )
+                        .PageSize(10)
+                        .RemoteFilter(true)
+                        .RemotePaging(true)
+                    )
+                    .View(
+                        Html.X().GridView().LoadingText("در حال بارگذاری...").RTL(true)
+                    )
+                    .Plugins(X.FilterHeader().Remote(true))
+                    .ColumnModel(
+                        Html.X().RowNumbererColumn(),
+                             Html.X().Column().DataIndex(Model, m => m.fldId).Text("کد").Flex(1).Hidden(true),
+                                    Html.X().Column().DataIndex(Model, m => m.fldCode).Text("کد").Flex(2),
+                                Html.X().Column().DataIndex(Model, m => m.fldDescriptionOfID).Text("شرح").Flex(10).Wrap(true)
+                    )
+
+                    //.Listeners(a => a.CellDblClick.Handler = "NextSearchKalaKhedmat();")
+                    .SelectionModel(
+                        Html.X().RowSelectionModel()
+                            .Mode(Ext.Net.SelectionMode.Single)
+                    )
+            )
+        )
+)
+
+<script type="text/javascript">
+    var state = '@ViewBag.state';
+
+
+
+    function NextSearchKalaKhedmat() {
+        var SelectedRow = App.SearchKalaKhedmat.queryById('GridSearchKalaKhedmat').selModel.getLastSelected();
+        if (SelectedRow != null) {
+            if (state == 1) {
+                var recordd = App.NewForush1.queryById("NewForush1Grid").store.getAt('@ViewBag.rowIdx');
+                App.Colssttid.getComponent(parseInt('@ViewBag.rowIdx')).setValue(SelectedRow.data.fldCode);
+                /*recordd.data.fldSourceId = SelectedRow.data.fldId; */
+            }
+            else if (state == 2) {
+                var recordd = App.NewForush2.queryById("NewForush2Grid").store.getAt('@ViewBag.rowIdx');
+                App.Colssttid.getComponent(parseInt('@ViewBag.rowIdx')).setValue(SelectedRow.data.fldCode);
+                /*recordd.data.fldSourceId = SelectedRow.data.fldId; */
+            }
+            App.SearchKalaKhedmat.destroy();
+        }
+        else {
+            Ext.MessageBox.show({
+                title: "خطا",
+                msg: "لطفا یک کد را انتخاب کنید",
+                icon: Ext.MessageBox.ERROR,
+                buttons: Ext.MessageBox.OK
+            });
+        }
+    }
+
+</script>

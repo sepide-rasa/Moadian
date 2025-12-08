@@ -1,0 +1,54 @@
+﻿@using Kendo.Mvc.UI;
+<div id="ComplicationsRate" dir="rtl">
+    <script src="@Url.Content(" ~ />Content/Base.js")" type="text/javascript"></script>
+    @{
+        List<SelectListItem> Year = new List<SelectListItem>();
+        for (int i = 1390; i < 1399; i++)
+        {
+            SelectListItem item = new SelectListItem();
+            item.Text = i.ToString();
+            item.Value = i.ToString();
+            Year.Add(item);
+        }
+    }
+    <center>
+        <br />
+        <br />
+        <br />
+        <table>
+            <tr>
+                در سال :
+
+                @(Html.Kendo().DropDownList()
+                        .Name("cboYear1")
+                        .DataTextField("Text")
+                        .DataValueField("Value")
+                        .BindTo(Year)
+                        .Value(MyLib.Shamsi.Miladi2ShamsiString(DateTime.Now).Substring(0, 4))
+                        .HtmlAttributes(new { @style = "width:80px;" })
+                )
+            </tr>
+            <tr>
+                <td colspan="2" align="center">
+                    <br />
+                    @Avarez.Helper.winClass.Buttons("Preview1", "نمایش", "yes")
+                </td>
+            </tr>
+        </table>
+
+    </center>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#Preview1').button();
+            $('#Preview1').click(function () {
+                //  window.open('@Url.Content("~/AppReports/rptComplicationsRate")' + '?Sal=' + $('#cboYear1').val());
+                if (isWinOpen == false) {
+                    isWinOpen = true;
+                    windowAppend('body', '/Home/PreviewRptPDFBox');
+                    var t = '@Url.Content("~/AppReports/rptComplicationsRate")' + '?Sal=' + $('#cboYear1').val();
+                    $('#pdf').html("<br/><object style='width: 900px;height: 500px;border: 1px solid #ccc;' id='pdfbox' type='application/pdf' data='" + t + "'></object> ");
+                }
+            });
+        });
+    </script>
+</div>

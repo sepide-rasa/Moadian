@@ -1,0 +1,934 @@
+﻿@model Avarez.Models.SelectFullCar
+@using Ext.Net.MVC
+@using Hogaf.ExtNet.UX
+@using Ext.Net;
+@{
+    var X = Html.X();
+}
+<style>
+    .LblStyle {
+        height: auto;
+    }
+
+    .LblRed {
+        color: red;
+    }
+</style>
+<script src="~/Scripts/accounting.js"></script>
+<script>
+    var template = '<span>{0}</span>';
+    var Rial = function (value) {
+        if (value != "") {
+            return Ext.String.format(template, accounting.formatNumber(value));
+        }
+    };
+</script>
+
+@(Html.X().Panel()
+    .Border(false)
+    .PaddingSpec("0 0 10px 0")
+    .Title("ورود نرخ عوارض سالیانه")
+    .Layout(LayoutType.Fit)
+    .ID("ComplicationRate")
+    .Closable(true)
+    //.ButtonAlign(Ext.Net.Alignment.Center)
+    //.Buttons(
+    //  X.Button()
+    //      .Text("دریافت")
+    //      .Icon(Ext.Net.Icon.Disk)
+    //      .ToolTip("کلید میانبر F8")
+    //      .Listeners(l => l.Click.Handler = "SaveUpdateRate();"),
+    //  X.Button()
+    //      .Text("خروج")
+    //      .Icon(Ext.Net.Icon.DoorOut)
+    //      .OnClientClick("App.ComplicationRate.destroy();"))
+    .CloseAction(Ext.Net.CloseAction.Destroy)
+    .Items(
+        X.FormPanel()
+            .AutoScroll(true)
+            .Layout(Ext.Net.LayoutType.VBox)
+            .LayoutConfig(new Ext.Net.VBoxLayoutConfig { Align = Ext.Net.VBoxAlign.Center })
+            .Border(false)
+            .Items(
+                X.Panel()
+                    .Layout(Ext.Net.LayoutType.VBox)
+                    .LayoutConfig(new Ext.Net.VBoxLayoutConfig { Align = Ext.Net.VBoxAlign.Center })
+                    .Border(false)
+                    .Items(
+                        X.FieldSet()
+                            .Border(false)
+                            .Items(
+                                X.Label("از سال:"),
+                                X.ComboBox()
+                                    .ItemID("cboFromYear")
+                                    .Editable(false)
+                                    .TypeAhead(true)
+                                    .QueryMode(DataLoadMode.Local)
+                                    .ForceSelection(true)
+                                    .TriggerAction(TriggerAction.All)
+                                    .DisplayField("fldName")
+                                    .ValueField("fldID")
+                                    .EmptyText("از سال...")
+                                    .Width(140)
+                                    .Store(X.Store()
+                                        .Model(X.Model()
+                                            .IDProperty("fldID")
+                                            .Fields(
+                                                new ModelField("fldID", ModelFieldType.String) { Mapping = "fldID" },
+                                                new ModelField("fldName", ModelFieldType.String) { Mapping = "fldName" }
+                                                )   
+                                            )
+                                        .Proxy(X.AjaxProxy()
+                                        .Url(Url.Action("GetFromYear"))
+                                        .Reader(X.JsonReader().Root("data"))
+                                            )
+                                        .Parameters(ps => ps.Add(new StoreParameter("value", "1350", ParameterMode.Raw)))
+                                        .Listeners(li => li.Load.Handler = "LoadYear();")
+                                        )
+                                    .MsgTarget(Ext.Net.MessageTarget.Side)
+                                    .AllowBlank(false)
+                                    .BlankText("لطفا سال مورد نظر را انتخاب کنید.")
+                            )),
+                X.Panel()
+                    .Border(false)
+                    .LayoutConfig(new Ext.Net.HBoxLayoutConfig { Align = HBoxAlign.Stretch })
+                    .Defaults(new { Margin = 10 })
+                    .Items(
+                        X.FieldSet()
+                            .Title("موقعیت در تقسیمات کشوری")
+                            .ItemID("fieldsetTree")
+                            .Listeners(l => l.Render.Handler = "App.ComplicationRate.queryById('fieldsetTree').setWidth(Ext.getBody().getViewSize().width-860)")
+                            .Center()
+                            .Height(400)
+                            .Items(
+                                X.TreePanel()
+                                    .ID("TreeStructure")
+                                    .AutoScroll(true)
+                                    //.Width(300)
+                                    .Expand(true)
+                                    .Height(300)
+                                    .UseArrows(true)
+                                    .Border(false)
+                                    .Listeners(a =>
+                                    {
+                                        a.ItemClick.Handler = "GetTreeStructureId(record);";
+                                        a.AfterRender.Handler = "this.getRootNode().expand();";
+                                        a.BeforeLoad.Fn = "nodeLoadTreeStructure";
+                                    })
+                                    .Root(Html.X().Node().NodeID("1").Cls("0").DataPath("0").Text("جمهوری اسلامی ایران").IconFile("/Content/images/0.png")),
+                                X.Label()
+                                    .Cls("LblRed")
+                                    .Text("مورد انتخاب شده: "),
+                                X.Label()
+                                    .Cls("LblStyle")
+                                    .ItemID("lblTitle")
+                            ),
+                        X.FieldSet()
+                            .Title("سلسله مراتب خودرو")
+                            .ItemID("fieldsetTree2")
+                            .Center()
+                            .Height(400)
+                            .Listeners(l => l.Render.Handler = "App.ComplicationRate.queryById('fieldsetTree2').setWidth(Ext.getBody().getViewSize().width-860)")
+                            .LayoutConfig(new Ext.Net.VBoxLayoutConfig { Align = VBoxAlign.Stretch })
+                            .Items(
+                                X.TreePanel()
+                                    .ID("TreecarLocation")
+                                    .AutoScroll(true)
+                                    .Height(300)
+                                    .UseArrows(true)
+                                    .Border(false)
+                                    .Listeners(a =>
+                                    {
+                                        a.ItemClick.Handler = "GetTreecarLocationId(record);";
+                                        a.AfterRender.Handler = "this.getRootNode().expand();";
+                                        a.BeforeLoad.Fn = "nodeLoadcarLocation";                                            
+                                    })
+                                    .Root(Html.X().Node().NodeID("1").Cls("0").DataPath("0").Text("وسیله نقلیه").IconFile("/Content/images/c0.png")),
+                                X.Label()
+                                    .Cls("LblRed")
+                                    .Text("مورد انتخاب شده: "),
+                                X.Label()
+                                    .Cls("LblStyle")
+                                    .ItemID("lblTitleCar")
+                                ) 
+                            ),
+                X.FieldSet()
+                    .LayoutConfig(new Ext.Net.TableLayoutConfig { Columns = 4 })
+                    .Border(false)
+                    .Defaults(new { Margin = 2 })
+                    .Items(
+                        X.Checkbox()
+                            .ItemID("Checked"),
+                        X.Label("نمایش زیر شاخه ها"),
+                        X.Button()
+                            .Text("بارگذاری اطلاعات")
+                            .Icon(Ext.Net.Icon.ArrowLeft)
+                            .Listeners(l=>l.Click.Handler="LoadGrid()"),
+                        X.Button()
+                            .Text("راهنما")
+                            .Icon(Ext.Net.Icon.Help)
+                            .Listeners(de => de.Click.Handler = "HelpComplicationRate();")
+                            ),
+                X.Panel()
+                    .Border(false)
+                    .Items(
+                        X.GridPanel()//.Width(1400)
+                            .Listeners(l => l.Render.Handler = "App.ComplicationRate.queryById('Grid').setWidth(Ext.getBody().getViewSize().width-200)")
+                            .TopBar(
+                                Html.X().Toolbar()
+                                    .Items(
+                                        X.Button()
+                                            .Text("ذخیره")
+                                            .Icon(Ext.Net.Icon.Disk)
+                                            .Listeners(li => li.Click.Handler = "SaveComplication()")
+                                        )
+                                    ) 
+                            .AutoScroll(true)
+                            .Height(200)
+                            .ItemID("Grid")
+                            .BottomBar(X.PagingToolbar())
+                            .Store(
+                                Html.X().StoreFor(Model.SetMony)
+                                    .PageSize(10)
+                                    .RemoteFilter(true)
+                                    .RemotePaging(true)
+                                 )
+                            .Plugins(Html.X().CellEditing())
+                                .ColumnModel(
+                                    Html.X().RowNumbererColumn(),
+                                    Html.X().Column().DataIndex(Model.SetMony, m => m.fldCarAccountName).Text("نوع کاربری").Wrap(true).Flex(2),
+                                    Html.X().Column().DataIndex(Model.SetMony, m => m.fldCarAccountID).Text("").Hidden(true).Hideable(true).Flex(1),
+                                    Html.X().Column().DataIndex(Model.SetMony, m => m.fldCarCabinName).Text("نوع کابین").Wrap(true).Flex(2),
+                                    Html.X().Column().DataIndex(Model.SetMony, m => m.fldCarCabinID).Text("").Hidden(true).Hideable(true).Flex(1),
+                                    Html.X().Column().DataIndex(Model.SetMony, m => m.fldCarSystemName).Text("سیستم").Flex(2),
+                                    Html.X().Column().DataIndex(Model.SetMony, m => m.fldCarSystemID).Text("").Hidden(true).Hideable(true).Flex(1),
+                                    Html.X().Column().DataIndex(Model.SetMony, m => m.fldCarModelName).Text("تیپ").Wrap(true).Flex(2),
+                                    Html.X().Column().DataIndex(Model.SetMony, m => m.fldCarModelID).Text("").Hidden(true).Hideable(true).Flex(1),
+                                    Html.X().Column().DataIndex(Model.SetMony, m => m.fldCarClassName).Text("کلاس").Wrap(true).Flex(2),
+                                    Html.X().Column().DataIndex(Model.SetMony, m => m.fldCarClassID).Text("").Hidden(true).Hideable(true).Flex(1),
+                                    Html.X().Column().DataIndex(Model.SetMony, m => m.fldPrice_S).Text("مبلغ").Editor(X.TextField()).Flex(2).Renderer("Rial"),
+                                    Html.X().ComponentColumn().ItemID("buttonAdd").Text("اضافه").Component(Html.X().Button().ItemID("btnbind").Text("اضافه").Listeners(l => l.Click.Handler = "ADD()")).Filterable(false)
+                                 )
+                                .SelectionModel(
+                                Html.X().RowSelectionModel()
+                                    .Mode(Ext.Net.SelectionMode.Single)
+                             )
+                            ),
+                X.Panel()
+                    .Border(true)
+                    .Title("نرخ ها")
+                    .ItemID("pnlNerkh")//.Width(1400)
+                    .Listeners(l => l.Render.Handler = "App.ComplicationRate.queryById('pnlNerkh').setWidth(Ext.getBody().getViewSize().width-200)")
+                    .Collapsible(true)
+                    .Collapsed(true)
+                    .Layout(Ext.Net.LayoutType.VBox)
+                    .LayoutConfig(new Ext.Net.VBoxLayoutConfig { Align = Ext.Net.VBoxAlign.Center })
+                    .Items(
+                        X.FieldSet()
+                            .Border(false)
+                            .LayoutConfig(new Ext.Net.TableLayoutConfig { Columns = 2 })
+                            .Defaults(new { Margin = 2 })
+                            .Items(
+                                X.Label("سلسله مراتب خودرو انتخاب شده:"),
+                                X.Label().ItemID("selectedRowCar")
+                            ),
+                        X.FieldSet()
+                            .Title("تعریف نرخ ها")//.Width(555)
+                            .LayoutConfig(new Ext.Net.TableLayoutConfig { Columns = 4 })
+                            .Defaults(new { Margin = 2 })
+                            .Listeners(l => l.AfterRender.Fn = "addKeyMapComplicationRate")
+                            .Items(
+                                X.Hidden().ItemID("fldId"),
+                                X.Label("از سیلندر:"),
+                                X.TextField()
+                                    .Width(190)
+                                    .MaskRe("[0-9]")
+                                    .EnforceMaxLength(true)
+                                    .MaxLength(1)
+                                    .ItemID("txtFromSilandr"),
+                                X.Label("تا سیلندر:"),
+                                X.TextField()
+                                    .Width(190)
+                                    .MaskRe("[0-9]")
+                                    .EnforceMaxLength(true)
+                                    .MaxLength(1)
+                                    .ItemID("txtToSilandr"),
+                                X.Label("از چرخ:"),
+                                X.TextField()
+                                    .Width(190)
+                                    .MaskRe("[0-9]")
+                                    .EnforceMaxLength(true)
+                                    .MaxLength(2)
+                                    .ItemID("txtFromWhele"),
+                                X.Label("تا چرخ:"),
+                                X.TextField()
+                                    .Width(190)
+                                    .MaskRe("[0-9]")
+                                    .EnforceMaxLength(true)
+                                    .MaxLength(2)
+                                    .ItemID("txtToWhele"),
+                                X.Label("از مدل:"),
+                                X.TextField()
+                                    .Width(190)
+                                    .MaskRe("[0-9]")
+                                    .AutoFocus(true)
+                                    .ItemID("txtFromModel"),
+                                X.Label("تا مدل:"),
+                                X.TextField()
+                                    .Width(190)
+                                    .MaskRe("[0-9]")
+                                    .ItemID("txtToModel"),
+                                X.Label("از حجم موتور:"),
+                                X.TextField()
+                                    .Width(190)
+                                    .MaskRe("[0-9]")
+                                    .ItemID("txtFromMotor"),
+                                X.Label("تا حجم موتور:"),
+                                X.TextField()
+                                    .Width(190)
+                                    .MaskRe("[0-9]")
+                                    .ItemID("txtToMotor"),
+                                X.Label("مبلغ:"),
+                                X.TextField()
+                                    .Width(190)
+                                    .ItemID("txtPrice")
+                                    .MaskRe("/[0-9]/")
+                                    .Listeners(l => { l.Change.Handler = "App.ComplicationRate.queryById('txtPrice').setValue(accounting.formatNumber(App.ComplicationRate.queryById('txtPrice').getValue()))"; })
+                                    .AllowBlank(false)
+                                    .BlankText("لطفا مبلغ را وارد نمایید.")
+                                    .MsgTarget(Ext.Net.MessageTarget.Side),
+                                X.Label("توضیحات:"),
+                                X.TextArea()
+                                    .Width(190)
+                                    .ItemID("txtDesc")
+                            ),
+                        X.Button()
+                            .Text("ذخیره")
+                            .Icon(Ext.Net.Icon.Disk)
+                            .Listeners(l=>l.Click.Handler="SaveNerkh()"),
+                        X.GridPanel()
+                            .PaddingSpec("5px 0 0 0")
+                            .Listeners(l => l.Render.Handler = "App.ComplicationRate.queryById('NutNullGrid').setWidth(Ext.getBody().getViewSize().width-200)")
+                            //.Width(1395)
+                            .AutoScroll(true)
+                            .Height(200)
+                            .ItemID("NutNullGrid")
+                            .BottomBar(X.PagingToolbar())
+                            .Store(
+                                Html.X().StoreFor(Model.SetMonyFullNotNull)
+                                    .PageSize(20)
+                                    .RemoteFilter(true)
+                                    .RemotePaging(true)
+                                     )
+                            .Plugins(Html.X().CellEditing())
+            .ColumnModel(
+                Html.X().RowNumbererColumn(),
+                Html.X().Column().DataIndex(Model.SetMonyFullNotNull, m => m.fldID).Text("کد").Hidden(true).Hideable(true).Flex(1),
+                Html.X().Column().DataIndex(Model.SetMonyFullNotNull, m => m.fldCarAccountID).Text("کد نوع کاربری").Hidden(true).Hideable(true).Flex(1),
+                Html.X().Column().DataIndex(Model.SetMonyFullNotNull, m => m.fldCarCabinID).Text("کد کابین").Hidden(true).Hideable(true).Flex(1),
+                Html.X().Column().DataIndex(Model.SetMonyFullNotNull, m => m.fldCarSystemID).Text("کد سیستم").Hidden(true).Hideable(true).Flex(1),
+                Html.X().Column().DataIndex(Model.SetMonyFullNotNull, m => m.fldCarModelID).Text("کد مدل").Hidden(true).Hideable(true).Flex(1),
+                Html.X().Column().DataIndex(Model.SetMonyFullNotNull, m => m.fldCarClassID).Text("کد کلاس").Hidden(true).Hideable(true).Flex(1),
+                Html.X().Column().DataIndex(Model.SetMonyFullNotNull, m => m.fldFromCylinder_S).Text("از سیلندر").Wrap(true).Flex(3),
+                Html.X().Column().DataIndex(Model.SetMonyFullNotNull, m => m.fldToCylinder_S).Text("تا سیلندر").Wrap(true).Flex(3),
+                Html.X().Column().DataIndex(Model.SetMonyFullNotNull, m => m.fldFromWheel_S).Text("از چرخ").Wrap(true).Flex(3),
+                Html.X().Column().DataIndex(Model.SetMonyFullNotNull, m => m.fldToWheel_S).Text("تا چرخ").Wrap(true).Flex(3),
+                Html.X().Column().DataIndex(Model.SetMonyFullNotNull, m => m.fldFromModel_S).Text("از مدل").Wrap(true).Flex(3),
+                Html.X().Column().DataIndex(Model.SetMonyFullNotNull, m => m.fldToModel_S).Text("تا مدل").Wrap(true).Flex(3),
+                Html.X().Column().DataIndex(Model.SetMonyFullNotNull, m => m.fldFromContentMotor_S).Text("از حجم موتور").Wrap(true).Flex(3),
+                Html.X().Column().DataIndex(Model.SetMonyFullNotNull, m => m.fldToContentMotor_S).Text("تا حجم موتور").Wrap(true).Flex(3),
+                Html.X().Column().DataIndex(Model.SetMonyFullNotNull, m => m.fldPrice_S).Text("مبلغ").Wrap(true).Flex(3).Renderer("Rial"),
+                Html.X().ComponentColumn().ItemID("buttonUpdate").Text("ویرایش").Component(Html.X().Button().ItemID("btnupdate").Text("ویرایش").Listeners(l => l.Click.Handler = "EditNerkh()")).Filterable(false),
+                Html.X().ComponentColumn().ItemID("buttonDelete").Text("حذف").Component(Html.X().Button().ItemID("btndelete").Text("حذف").Listeners(l => l.Click.Handler = "DeleteNerkh()")).Filterable(false)
+                 )
+                            .SelectionModel(
+                                Html.X().RowSelectionModel()
+                                    .Mode(Ext.Net.SelectionMode.Single)
+                                 ) 
+                                 )  
+            )
+        )
+)
+<script type="text/javascript">
+
+    var countryid_C;
+    var countrySID_C;
+    var countryNType_C = -1;
+
+    var carid_C;
+    var carSID_C;
+    var carNType_C = -1;
+    var /*Account, Cabin, System, Tip, Class,*/ type_C, code_C, /*selectedrow,*/ ComplicationRateID_C;
+
+
+    function LoadYear() {
+        Ext.net.DirectMethod.request({
+            url: '/NewVer/ComplicationRate_New/GetYear',
+            success: function (data) {
+                App.ComplicationRate.queryById('cboFromYear').setValue(data.Sal);
+            }
+        });
+    }
+
+    function SaveComplication() {
+        var cboFromYear = App.ComplicationRate.queryById('cboFromYear');
+        var er = false;
+        if (cboFromYear.validate() == false)
+            er = true;
+        if (er == true)
+            return;
+        if (countryNType_C < 0) {
+            Ext.MessageBox.show({
+                title: "خطا",
+                msg: "لطفا یک موقعیت را از تقسیمات کشوری انتخاب کنید.",
+                icon: Ext.MessageBox.ERROR,
+                buttons: Ext.MessageBox.OK
+            });
+            return;
+        }
+        if (carNType_C < 2) {
+            Ext.MessageBox.show({
+                title: "خطا",
+                msg: "لطفا یک مورد را از سلسله مراتب خودرو انتخاب کنید.",
+                icon: Ext.MessageBox.ERROR,
+                buttons: Ext.MessageBox.OK
+            });
+            return;
+        }
+        var ArrayL = new Array();
+        var Account, Cabin, System, Tip, Class, type, code, Price;
+        var Grid = App.ComplicationRate.queryById('Grid');
+        for (var i = 0; i < Grid.selModel.store.count() ; i++) {
+            row = Grid.selModel.store.data.items[i];
+            Account = row.data.fldCarAccountID;
+            Cabin = row.data.fldCarCabinID;
+            System = row.data.fldCarSystemID;
+            Tip = row.data.fldCarModelID;
+            Class = row.data.fldCarClassID;
+            Price = row.data.fldPrice_S;
+
+            if (Class != 0) {
+                type = 6;
+                code = Class;
+            }
+            else if (Tip != 0) {
+                type = 5;
+                code = Tip;
+            }
+            else if (System != 0) {
+                type = 4;
+                code = System;
+            }
+            else if (Cabin != 0) {
+                type = 3;
+                code = Cabin;
+            }
+            else if (Account != 0) {
+                type = 2;
+                code = Account;
+            }
+            if (Price != "") {
+                ArrayL.push({
+                    "fldTypeCar": type,
+                    "fldCodeCar": code,
+                    "fldPrice": Price,
+                    "fldTypeCountryDivisions": countryNType_C,
+                    "fldCodeCountryDivisions": countrySID_C,
+                    "fldYear": cboFromYear.getValue()
+                });
+            }
+        }
+        var data1 = {
+            ArrayL: ArrayL
+        };
+        App.ComplicationRate.body.mask("در حال ذخیره سازی...");
+        $.ajax({
+            type: "POST",
+            url: '/NewVer/ComplicationRate_New/Grid_Save',
+            contentType: "application/json; charset=utf-8",
+            data: JSON.stringify(data1),
+            datatype: "json",
+            success: function (data) {
+                var ic = Ext.MessageBox.INFO;
+                if (data.Er == 1)
+                    ic = Ext.MessageBox.ERROR;
+                Ext.MessageBox.show({
+                    title: data.MsgTitle,
+                    msg: data.Msg,
+                    icon: ic,
+                    buttons: Ext.MessageBox.OK
+                });
+                if (data.Er != 1) {
+                    LoadGrid();
+                }
+                App.ComplicationRate.body.mask().hide();
+            },
+            failure: function (data) {
+                alert(data.data);
+            }
+        });
+    }
+
+    function SaveNerkh() {
+        var cboFromYear = App.ComplicationRate.queryById('cboFromYear');
+        var txtFromSilandr = App.ComplicationRate.queryById('txtFromSilandr');
+        var txtToSilandr = App.ComplicationRate.queryById('txtToSilandr');
+        var txtFromWhele = App.ComplicationRate.queryById('txtFromWhele');
+        var txtToWhele = App.ComplicationRate.queryById('txtToWhele');
+        var txtFromModel = App.ComplicationRate.queryById('txtFromModel');
+        var txtToModel = App.ComplicationRate.queryById('txtToModel');
+        var txtFromMotor = App.ComplicationRate.queryById('txtFromMotor');
+        var txtToMotor = App.ComplicationRate.queryById('txtToMotor');
+        var txtPrice = App.ComplicationRate.queryById('txtPrice');
+        var txtDesc = App.ComplicationRate.queryById('txtDesc');
+        var er = false;
+        if (App.ComplicationRate.queryById('selectedRowCar').getText() == "") {
+            Ext.MessageBox.show({
+                title: "خطا",
+                msg: "لطفا وسیله نقلیه مورد نظر را اضافه نمایید.",
+                icon: Ext.MessageBox.ERROR,
+                buttons: Ext.MessageBox.OK
+            });
+            return;
+        }
+        if (txtPrice.validate() == false)
+            er = true;
+        if (cboFromYear.validate() == false)
+            er = true;
+        if (txtFromSilandr.getValue() == "" && txtToSilandr.getValue() == "" && txtFromWhele.getValue() == "" && txtToWhele.getValue() == "" && txtFromModel.getValue() == "" && txtFromModel.getValue() == "" && txtFromMotor.getValue() == "" && txtToMotor.getValue() == "") {
+            er = true;
+            Ext.MessageBox.show({
+                title: "خطا",
+                msg: "لطفا فیلدهای مورد نظر را انتخاب نمایید.",
+                icon: Ext.MessageBox.ERROR,
+                buttons: Ext.MessageBox.OK
+            });
+
+        }
+        if (er == true)
+            return;
+        App.ComplicationRate.body.mask("در حال ذخیره سازی...");
+        Ext.net.DirectMethod.request({
+            url: '/NewVer/ComplicationRate_New/Save',
+            params: {
+                fldId: ComplicationRateID_C,
+                fldTypeCar: type_C,
+                fldCodeCar: code_C,
+                fldTypeCountryDivisions: countryNType_C,
+                fldCodeCountryDivisions: countrySID_C,
+                fldYear: cboFromYear.getValue(),
+                fldFromCylinder: txtFromSilandr.getValue(),
+                fldToCylinder: txtToSilandr.getValue(),
+                fldFromWheel: txtFromWhele.getValue(),
+                fldToWheel: txtToWhele.getValue(),
+                fldFromModel: txtFromModel.getValue(),
+                fldToModel: txtToModel.getValue(),
+                fldFromContentMotor: txtFromMotor.getValue(),
+                fldToContentMotor: txtToMotor.getValue(),
+                fldPrice: txtPrice.getValue().replace(',', '').replace(',', '').replace(',', '').replace(',', '').replace(',', ''),
+                fldDesc: txtDesc.getValue()
+            },
+            success: function (data) {
+                var ic = Ext.MessageBox.INFO;
+                if (data.Er == 1)
+                    ic = Ext.MessageBox.ERROR;
+                Ext.MessageBox.show({
+                    title: data.MsgTitle,
+                    msg: data.Msg,
+                    icon: ic,
+                    buttons: Ext.MessageBox.OK
+                });
+                ClearNerkh();
+                Ext.net.DirectMethod.request({
+                    url: '/NewVer/ComplicationRate_New/NotNullReload',
+                    params: {
+                        type: type_C,
+                        value: code_C,
+                        year: cboFromYear.getValue(),
+                        CountryCode: countrySID_C,
+                        CountryType: countryNType_C
+                    },
+                    success: function (data) {
+                        App.ComplicationRate.queryById('NutNullGrid').getStore().loadData(data);
+                        App.ComplicationRate.body.mask().hide();
+                    }
+                });
+                
+                App.ComplicationRate.body.mask().hide();
+            }
+        });
+
+    }
+
+
+    function ClearNerkh() {
+        App.ComplicationRate.queryById('fldId').setValue(0);
+        App.ComplicationRate.queryById('txtFromSilandr').setValue("");
+        App.ComplicationRate.queryById('txtToSilandr').setValue("");
+        App.ComplicationRate.queryById('txtFromWhele').setValue("");
+        App.ComplicationRate.queryById('txtToWhele').setValue("");
+        App.ComplicationRate.queryById('txtFromModel').setValue("");
+        App.ComplicationRate.queryById('txtToModel').setValue("");
+        App.ComplicationRate.queryById('txtFromMotor').setValue("");
+        App.ComplicationRate.queryById('txtToMotor').setValue("");
+        App.ComplicationRate.queryById('txtPrice').setValue("");
+        App.ComplicationRate.queryById('txtDesc').setValue("");
+        ComplicationRateID_C = 0;
+    }
+
+
+    function EditNerkh() {
+        var id = App.ComplicationRate.queryById("buttonUpdate").activeRecord.record.data.fldID;
+        App.ComplicationRate.body.mask("در حال بارگذاری...");
+        Ext.net.DirectMethod.request({
+            url: '/NewVer/ComplicationRate_New/Details',
+            params: {
+                id: id
+            },
+            success: function (data) {
+                if (data.Er == 0) {
+                    var fldId = App.ComplicationRate.queryById('fldId');
+                    fldId.setValue(data.fldId);
+                    var txtFromSilandr = App.ComplicationRate.queryById('txtFromSilandr');
+                    txtFromSilandr.setValue(data.fldFromCylinder);
+                    var txtToSilandr = App.ComplicationRate.queryById('txtToSilandr');
+                    txtToSilandr.setValue(data.fldToCylinder);
+                    var txtFromWhele = App.ComplicationRate.queryById('txtFromWhele');
+                    txtFromWhele.setValue(data.fldFromWheel);
+                    var txtToWhele = App.ComplicationRate.queryById('txtToWhele');
+                    txtToWhele.setValue(data.fldToWheel);
+                    var txtFromModel = App.ComplicationRate.queryById('txtFromModel');
+                    txtFromModel.setValue(data.fldFromModel);
+                    var txtToModel = App.ComplicationRate.queryById('txtToModel');
+                    txtToModel.setValue(data.fldToModel);
+                    var txtFromMotor = App.ComplicationRate.queryById('txtFromMotor');
+                    txtFromMotor.setValue(data.fldFromContentMotor);
+                    var txtToMotor = App.ComplicationRate.queryById('txtToMotor');
+                    txtToMotor.setValue(data.fldToContentMotor);
+                    var txtPrice = App.ComplicationRate.queryById('txtPrice');
+                    txtPrice.setValue(data.fldPrice);
+                    var txtDesc = App.ComplicationRate.queryById('txtDesc');
+                    txtDesc.setValue(data.fldDesc);
+                    ComplicationRateID_C = data.fldId;
+                }
+                else if (data.Er == 1) {
+                    Ext.MessageBox.show({
+                        title: data.MsgTitle,
+                        msg: data.Msg,
+                        icon: Ext.MessageBox.ERROR,
+                        buttons: Ext.MessageBox.OK
+                    });
+                }
+                App.ComplicationRate.body.mask().hide();
+            }
+        });
+    }
+
+
+    function DeleteNerkh() {
+        var cboFromYear = App.ComplicationRate.queryById('cboFromYear');
+        var id = App.ComplicationRate.queryById("buttonDelete").activeRecord.record.data.fldID;
+        Ext.MessageBox.show({
+            title: "هشدار",
+            msg: "آیا برای حذف مطمئن هستید؟",
+            icon: Ext.MessageBox.WARNING,
+            buttons: Ext.MessageBox.YESNO,
+            fn: function (btn) {
+                if (btn == 'yes') {
+                    Ext.net.Mask.show({ msg: 'در حال انجام عملیات...' });
+                    Ext.net.DirectMethod.request({
+                        url: '/NewVer/ComplicationRate_New/Delete',
+                        params: {
+                            id: id
+                        },
+                        success: function (data) {
+                            var ic = Ext.MessageBox.INFO;
+                            if (data.Er == 1)
+                                ic = Ext.MessageBox.ERROR;
+                            Ext.MessageBox.show({
+                                title: data.MsgTitle,
+                                msg: data.Msg,
+                                icon: ic,
+                                buttons: Ext.MessageBox.OK
+                            });
+                            Ext.net.DirectMethod.request({
+                                url: '/NewVer/ComplicationRate_New/NotNullReload',
+                                params: {
+                                    type: type_C,
+                                    value: code_C,
+                                    year: cboFromYear.getValue(),
+                                    CountryCode: countrySID_C,
+                                    CountryType: countryNType_C
+                                },
+                                success: function (data) {
+                                    App.ComplicationRate.queryById('NutNullGrid').getStore().loadData(data);
+                                    App.ComplicationRate.body.mask().hide();
+                                }
+                            });
+                            Ext.net.Mask.hide();
+                        }
+                    });
+                }
+            }
+        });
+    }
+    var addKeyMapComplicationRate = function (cmp) {
+        this.keyMap = new Ext.util.KeyMap({
+            target: cmp.getEl(),
+            binding: [{
+                key: [13, 9], /*Ext.EventObject.ENTER,*/
+                fn: function (key, e) {
+                    if (e.getKey() == 9) {
+                        e.stopEvent();
+                    }
+                    var keyfield = App.ComplicationRate.queryById(Ext.getCmp((Ext.Element.getActiveElement()).name).itemId);
+                    if (keyfield.itemId == "txtFromModel") {
+                        nextfld = App.ComplicationRate.queryById("txtToModel");
+                        nextfld.focus();
+                    }
+                    else if (keyfield.itemId == "txtToModel") {
+                        nextfld = App.ComplicationRate.queryById("txtPrice");
+                        nextfld.focus();
+                    }
+                }
+            }]
+        });
+    };
+
+    function ADD() {
+        ClearNerkh();
+        App.ComplicationRate.queryById("pnlNerkh").expand();
+        App.ComplicationRate.queryById('txtFromModel').focus();
+        var cboFromYear = App.ComplicationRate.queryById('cboFromYear');
+        var er = false; var selectedrow;
+        if (cboFromYear.validate() == false)
+            er = true;
+        if (er == true)
+            return;
+        var Account = App.ComplicationRate.queryById("buttonAdd").activeRecord.record.data.fldCarAccountID;
+        var Cabin = App.ComplicationRate.queryById("buttonAdd").activeRecord.record.data.fldCarCabinID;
+        var System = App.ComplicationRate.queryById("buttonAdd").activeRecord.record.data.fldCarSystemID;
+        var Tip = App.ComplicationRate.queryById("buttonAdd").activeRecord.record.data.fldCarModelID;
+        var Class = App.ComplicationRate.queryById("buttonAdd").activeRecord.record.data.fldCarClassID;
+        if (Class != 0) {
+            type_C = 6;
+            code_C = Class;
+            selectedrow = App.ComplicationRate.queryById("buttonAdd").activeRecord.record.data.fldCarAccountName + '-->' + App.ComplicationRate.queryById("buttonAdd").activeRecord.record.data.fldCarCabinName
+                + '-->' + App.ComplicationRate.queryById("buttonAdd").activeRecord.record.data.fldCarSystemName
+                + '-->' + App.ComplicationRate.queryById("buttonAdd").activeRecord.record.data.fldCarModelName + '-->' + App.ComplicationRate.queryById("buttonAdd").activeRecord.record.data.fldCarClassName;
+        }
+        else if (Tip != 0) {
+            type_C = 5;
+            code_C = Tip;
+            selectedrow = App.ComplicationRate.queryById("buttonAdd").activeRecord.record.data.fldCarAccountName + '-->' + App.ComplicationRate.queryById("buttonAdd").activeRecord.record.data.fldCarCabinName
+                + '-->' + App.ComplicationRate.queryById("buttonAdd").activeRecord.record.data.fldCarSystemName + '-->' + App.ComplicationRate.queryById("buttonAdd").activeRecord.record.data.fldCarModelName;
+        }
+        else if (System != 0) {
+            type_C = 4;
+            code_C = System;
+            selectedrow = App.ComplicationRate.queryById("buttonAdd").activeRecord.record.data.fldCarAccountName + '-->' + App.ComplicationRate.queryById("buttonAdd").activeRecord.record.data.fldCarCabinName
+                + '-->' + App.ComplicationRate.queryById("buttonAdd").activeRecord.record.data.fldCarSystemName;
+        }
+        else if (Cabin != 0) {
+            type_C = 3;
+            code_C = Cabin;
+            selectedrow = App.ComplicationRate.queryById("buttonAdd").activeRecord.record.data.fldCarAccountName + '-->' + App.ComplicationRate.queryById("buttonAdd").activeRecord.record.data.fldCarCabinName;
+        }
+        else if (Account != 0) {
+            type_C = 2;
+            code_C = Account;
+            selectedrow = App.ComplicationRate.queryById("buttonAdd").activeRecord.record.data.fldCarAccountName;
+        }
+        App.ComplicationRate.queryById('selectedRowCar').setText(selectedrow);
+        App.ComplicationRate.body.mask("در حال بارگذاری...");
+        Ext.net.DirectMethod.request({
+            url: '/NewVer/ComplicationRate_New/NotNullReload',
+            params: {
+                type: type_C,
+                value: code_C,
+                year: cboFromYear.getValue(),
+                CountryCode: countrySID_C,
+                CountryType: countryNType_C
+            },
+            success: function (data) {
+                App.ComplicationRate.queryById('NutNullGrid').getStore().loadData(data);
+                App.ComplicationRate.body.mask().hide();
+            }
+        });
+    }
+
+    function LoadGrid() {
+        var Checked = App.ComplicationRate.queryById('Checked');
+        var cboFromYear = App.ComplicationRate.queryById('cboFromYear');
+        var er = false;
+        if (cboFromYear.validate() == false)
+            er = true;
+        if (er == true)
+            return;
+        if (countryNType_C < 0) {
+           Ext.MessageBox.show({
+               title: "خطا",
+               msg: "لطفا یک موقعیت را از تقسیمات کشوری انتخاب کنید.",
+               icon: Ext.MessageBox.ERROR,
+               buttons: Ext.MessageBox.OK
+           });
+           return;
+       }
+        if (carNType_C < 2) {
+           Ext.MessageBox.show({
+               title: "خطا",
+               msg: "لطفا یک مورد را از سلسله مراتب خودرو انتخاب کنید.",
+               icon: Ext.MessageBox.ERROR,
+               buttons: Ext.MessageBox.OK
+           });
+           return;
+       }
+       App.ComplicationRate.body.mask("در حال بارگذاری...");
+       Ext.net.DirectMethod.request({
+           url: '/NewVer/ComplicationRate_New/Reload',
+           params: {
+               type: carNType_C,
+               value: carSID_C,
+               year: cboFromYear.getValue(),
+               check: Checked.getValue(),
+               CountryCode: countrySID_C,
+               CountryType: countryNType_C
+           },
+           success: function (data) {
+               App.ComplicationRate.queryById('Grid').getStore().loadData(data);
+               App.ComplicationRate.body.mask().hide();
+           }
+       });
+    }
+    var nodeLoadTreeStructure = function (store, operation, options) {
+        var node = operation.node;
+        Ext.net.DirectMethod.request({
+            url: '/NewVer/ComplicationRate_New/NodeLoadTreeStructure',
+            params: {
+                nod: node.getId()
+            },
+            success: function (result) {
+                node.set('loading', false);
+                node.set('loaded', true);
+                node.appendChild(result);
+                node.expand();
+            },
+
+            failure: function (errorMsg) {
+                Ext.Msg.alert('Failure', errorMsg);
+            }
+        });
+
+        return false;
+    };
+    function GetTreeStructureId(record) {
+        var path = record.getPath("text");
+        var Text = path.split('/').splice(1).join("-->");
+        countryid_C = record.getId();
+        countrySID_C = record.data.cls;
+        countryNType_C = record.data.dataPath;
+        App.ComplicationRate.queryById('lblTitle').setText(Text);
+
+      /*  countryid = App.TreeStructure.getSelectionModel().getLastSelected().data.id;
+        countrySID_C = App.TreeStructure.getSelectionModel().getLastSelected().data.cls;
+        countryNType_C = App.TreeStructure.getSelectionModel().getLastSelected().data.dataPath;
+
+        NodeId = record.getId();
+        Ext.net.DirectMethod.request({
+            url: '/NewVer/ComplicationRate_New/CountryPosition',
+            params: {
+                id: record.getId()
+            },
+            success: function (data) {
+                App.ComplicationRate.queryById('lblTitle').setText(data.Position);
+                Ext.net.Mask.hide();
+
+            }
+
+        });*/
+        /*countryNType_C = record.data.dataPath;
+        if (countryNType_C < 5) {
+            countryNType_C = -1;
+            $('#CountryPosition').html('شما مجاز به انتخاب موقعیت انتخاب شده نیستید.');
+            return;
+        }*/
+    };
+    var nodeLoadcarLocation = function (store, operation, options) {
+        var node = operation.node;
+        Ext.net.DirectMethod.request({
+            url: '/NewVer/ComplicationRate_New/nodeLoadcarLocation',
+            params: {
+                nod: node.getId()
+            },
+            success: function (result) {
+                node.set('loading', false);
+                node.set('loaded', true);
+                node.appendChild(result);
+                node.expand();
+            },
+
+            failure: function (errorMsg) {
+                Ext.Msg.alert('Failure', errorMsg);
+            }
+        });
+
+        return false;
+    };
+    function GetTreecarLocationId(record) {
+        var path = record.getPath("text");
+        var Text = path.split('/').splice(1).join("-->");
+        carid_C = record.getId();
+        carSID_C = record.data.cls;
+        carNType_C = record.data.dataPath;
+        if (carNType_C < 2) {
+            carid_C = 0;
+            carSID_C = 0;
+            carNType_C = -1;
+            App.ComplicationRate.queryById('lblTitleCar').setText("شما مجاز به انتخاب این گزینه نمی باشید.");
+            return;
+        }
+        else {
+            App.ComplicationRate.queryById('lblTitleCar').setText(Text);
+        }
+
+        /*  carid_C = App.TreecarLocation.getSelectionModel().getLastSelected().data.id;
+        carSID = App.TreecarLocation.getSelectionModel().getLastSelected().data.cls;
+        carNType_C = App.TreecarLocation.getSelectionModel().getLastSelected().data.dataPath;
+        NodeId = record.getId();
+        Ext.net.DirectMethod.request({
+            url: '/NewVer/ComplicationRate_New/CarPosition',
+            params: {
+                id: record.getId()
+            },
+            success: function (data) {
+                if (carNType_C < 2) {
+                    carid_C = 0;
+                    carSID = 0;
+                    carNType_C = -1;
+                    App.ComplicationRate.queryById('lblTitleCar').setText("شما مجاز به انتخاب این گزینه نمی باشید.");
+                    return;
+                }
+                else {
+                    App.ComplicationRate.queryById('lblTitleCar').setText(data.Position);
+                }
+                Ext.net.Mask.hide();
+            }
+
+        });*/
+        /* countryNType_C = record.data.dataPath;
+        if (countryNType_C < 5) {
+            countryNType_C = -1;
+            $('#CountryPosition').html('شما مجاز به انتخاب موقعیت انتخاب شده نیستید.');
+            return;
+        }*/
+    };
+    function HelpComplicationRate() {
+        Ext.net.Mask.show({ msg: 'در حال بارگذاری...' });
+        Ext.net.DirectMethod.request({
+            url: '/NewVer/ComplicationRate_New/Help',
+            success: function (data) {
+                Ext.net.Mask.hide();
+            }
+        });
+    }
+</script>

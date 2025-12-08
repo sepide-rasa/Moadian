@@ -1,0 +1,213 @@
+﻿@using Ext.Net.MVC
+@using Hogaf.ExtNet.UX
+@using Ext.Net;
+@{
+    var X = Html.X();
+}
+
+@(Html.X().Window()
+    .Modal(true)
+         .Resizable(false)
+                .Listeners(l => l.AfterLayout.Handler = "LoadFinesRule()")
+    .Width(600)
+    //.Height(180)
+    .Title("تعریف قانون جریمه ")
+    .Layout(LayoutType.Fit)
+        .ID("NewFinesRule")
+    .Closable(true)
+    .ButtonAlign(Ext.Net.Alignment.Center)
+    .Buttons(
+        X.Button()
+            .Text("ذخیره")
+            .Icon(Ext.Net.Icon.Disk)
+        //.ToolTip("کلید میانبر F8")
+                .Listeners(l => l.Click.Handler = "SaveFinesRule();"),
+        X.Button()
+            .Text("خروج")
+            .Icon(Ext.Net.Icon.DoorOut)
+        //.ToolTip("کلید میانبر Esc")
+                .OnClientClick("App.NewFinesRule.destroy();"))
+    .CloseAction(Ext.Net.CloseAction.Destroy)
+    .Items(
+        X.FormPanel()
+            .Border(false)
+            .Layout(LayoutType.Fit)
+            .Items(
+                X.Panel()
+                    .Border(false)
+                    .PaddingSpec("15px 0 0 0")
+                    .Layout(LayoutType.VBox)
+                    .LayoutConfig(new VBoxLayoutConfig { Align = VBoxAlign.Center })
+                    .Items(
+                        X.FieldSet()
+                            .Border(true)
+                                .Title("قانون جریمه")
+                            //.Height(145)
+                            .Defaults(new { Margin = 2 })
+                            .Layout(LayoutType.Table)
+        //.Title("رنگ خودرو")
+                            .LayoutConfig(new TableLayoutConfig { Columns = 4 })
+                            .Items(
+                                X.Hidden()
+                                    .ItemID("fldId"),
+
+                                X.Label("نام قانون جریمه:"),
+                                X.TextField()
+                                                .ItemID("txtName")
+                                    .Width(190)
+                                    .AllowBlank(false)
+                                    .EnforceMaxLength(true)
+                                    .MaxLength(50)
+                                        //.MaskRe("/[ا-ی,ئ,آ, ]/")
+                                    .BlankText("لطفا نام قانون جریمه را وارد نمایید.")
+                                    .MsgTarget(Ext.Net.MessageTarget.Side),
+                                    X.Label("درصد جریمه:"),
+                                    X.TextField()
+                                                    .ItemID("txtPercentFine")//.Listeners(k => k.Change.Handler = "ChangeFinesRule()")
+                                        .Width(190)
+                                        .AllowBlank(false)
+                                       
+                                        .BlankText("لطفا درصد جریمه را وارد نمایید.")
+                                        .MsgTarget(Ext.Net.MessageTarget.Side)
+                                            .MaskRe("/[0-9./]/"),
+
+                                     X.Label("تاریخ پیاده سازی:"),
+                                        X.PDateField()
+                                                        .ItemID("txtImplementationDate")
+                                            .Width(190)
+                                            .AllowBlank(false)
+                                            .BlankText("لطفا تاریخ پیاده سازی را وارد نمایید.")
+                                            .MsgTarget(Ext.Net.MessageTarget.Side),
+
+                                X.Label("توضیحات:"),
+                                X.TextArea()
+                                    .ItemID("txtDesc")
+                                    .Width(190)
+                            )
+
+
+                )
+            )
+        )
+)
+
+<script type="text/javascript">
+
+    function ChangeFinesRule() {
+        var txtPercentFine = App.NewFinesRule.queryById("txtPercentFine").getValue();
+        if (txtPercentFine > 100) {
+            Ext.MessageBox.show({
+                title: "خطا",
+                msg: "درصد وارد شده بیشتر از حد مجاز می باشد.",
+                icon: Ext.MessageBox.ERROR,
+                buttons: Ext.MessageBox.OK
+            });
+        }
+    }
+
+    function LoadFinesRule() {
+        if ('@ViewBag.Id' != '0') {
+            App.NewFinesRule.body.mask("در حال بارگذاری...");
+            Ext.net.DirectMethod.request({
+                url: '/NewVer/FinesRule_New/Details',
+                params: {
+                    Id: '@ViewBag.Id'
+                },
+                success: function (data) {
+                    if (data.Er == 0) {
+                        var txtName = App.NewFinesRule.queryById('txtName');
+                        txtName.setValue(data.fldName);
+                        var txtPercentFine = App.NewFinesRule.queryById('txtPercentFine');
+                        txtPercentFine.setValue(data.fldPercentFine);
+                        var txtImplementationDate = App.NewFinesRule.queryById('txtImplementationDate');
+                        txtImplementationDate.setValue(data.fldImplementationDate);
+                        var txtDesc = App.NewFinesRule.queryById('txtDesc');
+                        txtDesc.setValue(data.fldDesc);
+                        var Id = App.NewFinesRule.queryById('fldId');
+                        Id.setValue(data.fldId);
+                    }
+                    else if (data.Er == 1) {
+                        Ext.MessageBox.show({
+                            title: data.MsgTitle,
+                            msg: data.Msg,
+                            icon: Ext.MessageBox.ERROR,
+                            buttons: Ext.MessageBox.OK
+                        });
+                    }
+                    App.NewFinesRule.body.mask().hide();
+                }
+            });
+        }
+        else {
+            App.NewFinesRule.queryById('txtName').validate();
+            App.NewFinesRule.queryById('txtPercentFine').validate();
+            App.NewFinesRule.queryById('txtImplementationDate').validate();
+        }
+    }
+
+
+    function SaveFinesRule() {
+        var txtName = App.NewFinesRule.queryById('txtName');
+        var txtPercentFine = App.NewFinesRule.queryById('txtPercentFine');
+        var txtImplementationDate = App.NewFinesRule.queryById('txtImplementationDate');
+        var Id = App.NewFinesRule.queryById('fldId');
+        var txtDesc = App.NewFinesRule.queryById('txtDesc');
+
+        var er = false;
+
+        if (txtName.validate() == false) {
+            er = true;
+        }
+        if (txtPercentFine.validate() == false) {
+            er = true;
+        }
+        if (txtImplementationDate.validate() == false) {
+            er = true;
+        }
+        if (er == true)
+            return;
+        App.NewFinesRule.body.mask("در حال ذخیره سازی...");
+        Ext.net.DirectMethod.request({
+            url: '/NewVer/FinesRule_New/Save',
+            params: {
+                fldID: Id.getValue(),
+                fldName: txtName.getValue(),
+                fldPercentFine: txtPercentFine.getValue(),
+                fldImplementationDate: txtImplementationDate.rawValue,
+                fldDesc: txtDesc.getValue()
+            },
+            success: function (data) {
+                var ic = Ext.MessageBox.INFO;
+                if (data.Er == 1)
+                    ic = Ext.MessageBox.ERROR;
+                Ext.MessageBox.show({
+                    title: data.MsgTitle,
+                    msg: data.Msg,
+                    icon: ic,
+                    buttons: Ext.MessageBox.OK
+                });
+                if (data.Er != 1) {
+                    ClearFinesRule();
+                }
+                App.NewFinesRule.body.mask().hide();
+                App.FinesRule.queryById('GridFinesRule').store.load();
+            }
+        });
+    }
+
+    function ClearFinesRule() {
+        App.NewFinesRule.queryById('txtDesc').setValue("");
+        App.NewFinesRule.queryById('txtName').setValue("");
+        App.NewFinesRule.queryById('txtPercentFine').setValue("");
+        App.NewFinesRule.queryById('txtImplementationDate').setValue("");
+        App.NewFinesRule.queryById('fldId').setValue(0);
+    }
+
+   /* function EnterNext() {
+        var keyfield = App.NewCustomer.queryById(Ext.getCmp((Ext.Element.getActiveElement()).name).itemId);
+        var nextfld = keyfield.nextSibling();
+        nextfld.focus();
+        nextfld.selectText();
+    }*/
+
+</script>

@@ -1,0 +1,375 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:tm="http://microsoft.com/wsdl/mime/textMatching/" xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" xmlns:tns="http://tempuri.org/" xmlns:http="http://schemas.xmlsoap.org/wsdl/http/" xmlns:s="http://www.w3.org/2001/XMLSchema" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" targetNamespace="http://tempuri.org/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:types>
+    <s:schema elementFormDefault="qualified" targetNamespace="http://tempuri.org/">
+      <s:element name="GetResNum">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="MunName" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="Amount" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetResNumResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="GetResNumResult" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GotoPaymentGateway">
+        <s:complexType />
+      </s:element>
+      <s:element name="GotoPaymentGatewayResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GotoPaymentGatewayResult" type="tns:ActionResult" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="ActionResult" abstract="true" />
+      <s:element name="CheckAccountCharge">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="_User" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="_Pass" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="CheckAccountChargeResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="CheckAccountChargeResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="SendMessage">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="_User" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="_Pass" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="Contact" type="tns:ArrayOfString" />
+            <s:element minOccurs="0" maxOccurs="1" name="Text" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="Type" type="s:unsignedByte" />
+            <s:element minOccurs="0" maxOccurs="1" name="DedicateNum" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="ArrayOfString">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="string" nillable="true" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="SendMessageResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="SendMessageResult" type="tns:ArrayOfString" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetMessageStatus">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="_User" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="_Pass" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="SMSId" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetMessageStatusResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetMessageStatusResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetMessagesStatus">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="_User" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="_Pass" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="SMSId" type="tns:ArrayOfString" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetMessagesStatusResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetMessagesStatusResult" type="tns:ArrayOfString" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="UpdateMessageStatus">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="_User" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="_Pass" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="SMSId" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="UpdateMessageStatusResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="UpdateMessageStatusResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetFaError">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="EnError" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetFaErrorResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetFaErrorResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+    </s:schema>
+  </wsdl:types>
+  <wsdl:message name="GetResNumSoapIn">
+    <wsdl:part name="parameters" element="tns:GetResNum" />
+  </wsdl:message>
+  <wsdl:message name="GetResNumSoapOut">
+    <wsdl:part name="parameters" element="tns:GetResNumResponse" />
+  </wsdl:message>
+  <wsdl:message name="GotoPaymentGatewaySoapIn">
+    <wsdl:part name="parameters" element="tns:GotoPaymentGateway" />
+  </wsdl:message>
+  <wsdl:message name="GotoPaymentGatewaySoapOut">
+    <wsdl:part name="parameters" element="tns:GotoPaymentGatewayResponse" />
+  </wsdl:message>
+  <wsdl:message name="CheckAccountChargeSoapIn">
+    <wsdl:part name="parameters" element="tns:CheckAccountCharge" />
+  </wsdl:message>
+  <wsdl:message name="CheckAccountChargeSoapOut">
+    <wsdl:part name="parameters" element="tns:CheckAccountChargeResponse" />
+  </wsdl:message>
+  <wsdl:message name="SendMessageSoapIn">
+    <wsdl:part name="parameters" element="tns:SendMessage" />
+  </wsdl:message>
+  <wsdl:message name="SendMessageSoapOut">
+    <wsdl:part name="parameters" element="tns:SendMessageResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetMessageStatusSoapIn">
+    <wsdl:part name="parameters" element="tns:GetMessageStatus" />
+  </wsdl:message>
+  <wsdl:message name="GetMessageStatusSoapOut">
+    <wsdl:part name="parameters" element="tns:GetMessageStatusResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetMessagesStatusSoapIn">
+    <wsdl:part name="parameters" element="tns:GetMessagesStatus" />
+  </wsdl:message>
+  <wsdl:message name="GetMessagesStatusSoapOut">
+    <wsdl:part name="parameters" element="tns:GetMessagesStatusResponse" />
+  </wsdl:message>
+  <wsdl:message name="UpdateMessageStatusSoapIn">
+    <wsdl:part name="parameters" element="tns:UpdateMessageStatus" />
+  </wsdl:message>
+  <wsdl:message name="UpdateMessageStatusSoapOut">
+    <wsdl:part name="parameters" element="tns:UpdateMessageStatusResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetFaErrorSoapIn">
+    <wsdl:part name="parameters" element="tns:GetFaError" />
+  </wsdl:message>
+  <wsdl:message name="GetFaErrorSoapOut">
+    <wsdl:part name="parameters" element="tns:GetFaErrorResponse" />
+  </wsdl:message>
+  <wsdl:portType name="RasaSMSPanel_SendSoap">
+    <wsdl:operation name="GetResNum">
+      <wsdl:input message="tns:GetResNumSoapIn" />
+      <wsdl:output message="tns:GetResNumSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GotoPaymentGateway">
+      <wsdl:input message="tns:GotoPaymentGatewaySoapIn" />
+      <wsdl:output message="tns:GotoPaymentGatewaySoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="CheckAccountCharge">
+      <wsdl:input message="tns:CheckAccountChargeSoapIn" />
+      <wsdl:output message="tns:CheckAccountChargeSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="SendMessage">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">webusername, webpassword, arrya of contact, message text, save type(send 1 to save message on phone),costomer dedicate number(if 0, then the initial number will be choosen)</wsdl:documentation>
+      <wsdl:input message="tns:SendMessageSoapIn" />
+      <wsdl:output message="tns:SendMessageSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetMessageStatus">
+      <wsdl:input message="tns:GetMessageStatusSoapIn" />
+      <wsdl:output message="tns:GetMessageStatusSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetMessagesStatus">
+      <wsdl:input message="tns:GetMessagesStatusSoapIn" />
+      <wsdl:output message="tns:GetMessagesStatusSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="UpdateMessageStatus">
+      <wsdl:input message="tns:UpdateMessageStatusSoapIn" />
+      <wsdl:output message="tns:UpdateMessageStatusSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetFaError">
+      <wsdl:input message="tns:GetFaErrorSoapIn" />
+      <wsdl:output message="tns:GetFaErrorSoapOut" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="RasaSMSPanel_SendSoap" type="tns:RasaSMSPanel_SendSoap">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="GetResNum">
+      <soap:operation soapAction="http://tempuri.org/GetResNum" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GotoPaymentGateway">
+      <soap:operation soapAction="http://tempuri.org/GotoPaymentGateway" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="CheckAccountCharge">
+      <soap:operation soapAction="http://tempuri.org/CheckAccountCharge" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SendMessage">
+      <soap:operation soapAction="http://tempuri.org/SendMessage" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetMessageStatus">
+      <soap:operation soapAction="http://tempuri.org/GetMessageStatus" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetMessagesStatus">
+      <soap:operation soapAction="http://tempuri.org/GetMessagesStatus" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="UpdateMessageStatus">
+      <soap:operation soapAction="http://tempuri.org/UpdateMessageStatus" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetFaError">
+      <soap:operation soapAction="http://tempuri.org/GetFaError" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:binding name="RasaSMSPanel_SendSoap12" type="tns:RasaSMSPanel_SendSoap">
+    <soap12:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="GetResNum">
+      <soap12:operation soapAction="http://tempuri.org/GetResNum" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GotoPaymentGateway">
+      <soap12:operation soapAction="http://tempuri.org/GotoPaymentGateway" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="CheckAccountCharge">
+      <soap12:operation soapAction="http://tempuri.org/CheckAccountCharge" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SendMessage">
+      <soap12:operation soapAction="http://tempuri.org/SendMessage" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetMessageStatus">
+      <soap12:operation soapAction="http://tempuri.org/GetMessageStatus" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetMessagesStatus">
+      <soap12:operation soapAction="http://tempuri.org/GetMessagesStatus" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="UpdateMessageStatus">
+      <soap12:operation soapAction="http://tempuri.org/UpdateMessageStatus" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetFaError">
+      <soap12:operation soapAction="http://tempuri.org/GetFaError" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="RasaSMSPanel_Send">
+    <wsdl:port name="RasaSMSPanel_SendSoap" binding="tns:RasaSMSPanel_SendSoap">
+      <soap:address location="http://sms.ecartax.ir/RasaSmsPanel_send.asmx" />
+    </wsdl:port>
+    <wsdl:port name="RasaSMSPanel_SendSoap12" binding="tns:RasaSMSPanel_SendSoap12">
+      <soap12:address location="http://sms.ecartax.ir/RasaSmsPanel_send.asmx" />
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

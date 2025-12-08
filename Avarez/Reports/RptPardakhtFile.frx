@@ -1,0 +1,124 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Report ScriptLanguage="CSharp" ReportInfo.Created="11/16/2014 10:15:08" ReportInfo.Modified="07/09/2016 10:46:11" ReportInfo.CreatorVersion="2015.3.1.0">
+  <Styles>
+    <Style Name="Style1" Fill.Color="Gainsboro"/>
+    <Style Name="Style2" Fill.Color="Gainsboro"/>
+  </Styles>
+  <Dictionary>
+    <TableDataSource Name="sp_PictureSelect" ReferenceName="CarTaxDataSet.sp_PictureSelect" DataType="System.Int32" Enabled="true">
+      <Column Name="fldID" DataType="System.Int32"/>
+      <Column Name="fldPic" DataType="System.Byte[]" BindableControl="Picture"/>
+      <Column Name="fldMunicipalityPic" DataType="System.String"/>
+      <Column Name="fldMunicipalityPicID" DataType="System.Int32"/>
+      <Column Name="fldBankPic" DataType="System.String"/>
+      <Column Name="fldBankPicID" DataType="System.Int32"/>
+      <Column Name="fldUserPic" DataType="System.String"/>
+      <Column Name="fldUserPicID" DataType="System.Int64"/>
+      <Column Name="fldUserName" DataType="System.String"/>
+      <Column Name="fldUserID" DataType="System.Int64"/>
+      <Column Name="fldDesc" DataType="System.String"/>
+      <Column Name="fldDate" DataType="System.String"/>
+    </TableDataSource>
+    <TableDataSource Name="sp_PardakhtFiles_DetailSelect" ReferenceName="CarTaxDataSet.sp_PardakhtFiles_DetailSelect" DataType="System.Int32" Enabled="true">
+      <Column Name="fldId" DataType="System.Int32"/>
+      <Column Name="fldShenaseGhabz" DataType="System.String"/>
+      <Column Name="fldShomarePardakht" DataType="System.String"/>
+      <Column Name="fldTarikhPardakht" DataType="System.String"/>
+      <Column Name="fldCodeRahgiry" DataType="System.String"/>
+      <Column Name="fldNahvePardakhtId" DataType="System.Int32"/>
+      <Column Name="fldPardakhtFileId" DataType="System.Int32"/>
+      <Column Name="fldUserId" DataType="System.Int64"/>
+      <Column Name="fldDesc" DataType="System.String"/>
+      <Column Name="fldDate" DataType="System.DateTime"/>
+      <Column Name="fldNahvePardakhtName" DataType="System.String"/>
+      <Column Name="fldBankName" DataType="System.String"/>
+      <Column Name="fldBankId" DataType="System.Int32"/>
+      <Column Name="fldCountryDivisionId" DataType="System.Int32"/>
+      <Column Name="fldGhabzNumber" DataType="System.Int64"/>
+    </TableDataSource>
+    <TableDataSource Name="sp_PardakhtFileSelect" ReferenceName="CarTaxDataSet.sp_PardakhtFileSelect" DataType="System.Int32" Enabled="true">
+      <Column Name="fldId" DataType="System.Int32"/>
+      <Column Name="fldBankId" DataType="System.Int32"/>
+      <Column Name="fldFileName" DataType="System.String"/>
+      <Column Name="fldDateSendFile" DataType="System.String"/>
+      <Column Name="fldUserId" DataType="System.Int64"/>
+      <Column Name="fldDesc" DataType="System.String"/>
+      <Column Name="fldDate" DataType="System.DateTime"/>
+    </TableDataSource>
+    <Parameter Name="date" DataType="System.String"/>
+    <Parameter Name="time" DataType="System.String"/>
+    <Parameter Name="Parameter" DataType="System.String"/>
+    <Parameter Name="StateName" DataType="System.String"/>
+    <Parameter Name="MunicipalityName" DataType="System.String"/>
+    <Parameter Name="AreaName" DataType="System.String"/>
+    <Parameter Name="OfficeName" DataType="System.String"/>
+    <Parameter Name="MyTablighat" DataType="System.String"/>
+    <Parameter Name="SearchFilter" DataType="System.String"/>
+    <Total Name="Total" Expression="[sp_jCalcCarFile.fldDept]" Evaluator="Data1" PrintOn="ReportSummary1"/>
+  </Dictionary>
+  <ReportPage Name="Page1">
+    <ReportTitleBand Name="ReportTitle1" Width="718.2"/>
+    <PageHeaderBand Name="PageHeader1" Top="4.71" Width="718.2" Height="176.79">
+      <TableObject Name="Table1" Left="1.59" Top="149.46" Width="715.02" Height="26.43" Border.Lines="All">
+        <TableColumn Name="Column1" Width="96.11"/>
+        <TableColumn Name="Column2" Width="93.28"/>
+        <TableColumn Name="Column3" Width="96.11"/>
+        <TableColumn Name="Column4" Width="94.22"/>
+        <TableColumn Name="Column5" Width="97.06"/>
+        <TableColumn Name="Column6" Width="90.44"/>
+        <TableColumn Name="Column7" Width="97.04"/>
+        <TableColumn Name="Column8" Width="50.76"/>
+        <TableRow Name="Row1" Height="26.43">
+          <TableCell Name="Cell1" Border.Lines="All" Fill.Color="Silver" Text="تاریخ پرداخت" HorzAlign="Center" VertAlign="Center" RightToLeft="true" Font="RasaFont, 11pt, style=Bold"/>
+          <TableCell Name="Cell2" Border.Lines="All" Fill.Color="Silver" Text="نام بانک" HorzAlign="Center" VertAlign="Center" RightToLeft="true" Font="RasaFont, 11pt, style=Bold"/>
+          <TableCell Name="Cell3" Border.Lines="All" Fill.Color="Silver" Text="کد رهگیری" HorzAlign="Center" VertAlign="Center" RightToLeft="true" Font="RasaFont, 11pt, style=Bold"/>
+          <TableCell Name="Cell4" Border.Lines="All" Fill.Color="Silver" Text="نحوه پرداخت" HorzAlign="Center" VertAlign="Center" RightToLeft="true" Font="RasaFont, 11pt, style=Bold"/>
+          <TableCell Name="Cell5" Border.Lines="All" Fill.Color="Silver" Text="شناسه پرداخت" HorzAlign="Center" VertAlign="Center" RightToLeft="true" Font="RasaFont, 11pt, style=Bold"/>
+          <TableCell Name="Cell26" Border.Lines="All" Fill.Color="Silver" Text="شماره قبض" HorzAlign="Center" VertAlign="Center" RightToLeft="true" Font="RasaFont, 11pt, style=Bold"/>
+          <TableCell Name="Cell27" Border.Lines="All" Fill.Color="Silver" Text="شناسه قبض" HorzAlign="Center" VertAlign="Center" RightToLeft="true" Font="RasaFont, 11pt, style=Bold"/>
+          <TableCell Name="Cell28" Border.Lines="All" Fill.Color="Silver" Text="ردیف" HorzAlign="Center" VertAlign="Center" RightToLeft="true" Font="RasaFont, 11pt, style=Bold"/>
+        </TableRow>
+      </TableObject>
+      <TableObject Name="Table3" Left="2.06" Top="0.95" Width="714.35" Height="70.53">
+        <TableColumn Name="Column59" Width="167.64"/>
+        <TableColumn Name="Column60" Width="387.11"/>
+        <TableColumn Name="Column61" Width="159.6"/>
+        <TableRow Name="Row4" Height="70.53">
+          <TableCell Name="Cell59" Text="تاریخ چاپ :[date]&#13;&#10;ساعت چاپ:[time]&#13;&#10;صفحه:[Page#] از [TotalPages#]" VertAlign="Center" RightToLeft="true" Font="RasaFont, 9pt"/>
+          <TableCell Name="Cell60" Text="[StateName]&#13;&#10;[MunicipalityName]&#13;&#10;[AreaName]&#13;&#10;[OfficeName]" HorzAlign="Center" VertAlign="Center" RightToLeft="true" Font="RasaFont, 9pt, style=Bold"/>
+          <TableCell Name="Cell61" HorzAlign="Right" VertAlign="Center" Font="RasaFont, 9pt">
+            <PictureObject Name="Picture1" Left="51.44" Top="6.92" Width="56.72" Height="56.7" DataColumn="sp_PictureSelect.fldPic"/>
+          </TableCell>
+        </TableRow>
+      </TableObject>
+      <TextObject Name="Text2" Left="251.95" Top="73.75" Width="214.3" Height="17.01" Text="گزارش فایل های پرداخت الکترونیک" HorzAlign="Right" VertAlign="Center" RightToLeft="true" Font="RasaFont, 12pt, style=Bold"/>
+      <TextObject Name="Text5" Left="196.46" Top="114.33" Width="513.97" Height="17.01" Text="[SearchFilter]" VertAlign="Center" RightToLeft="true" Font="RasaFont, 12pt, style=Bold"/>
+    </PageHeaderBand>
+    <DataBand Name="Data1" Top="186.2" Width="718.2" Height="22.71" DataSource="sp_PardakhtFiles_DetailSelect">
+      <TableObject Name="Table5" Left="1.59" Top="-3.72" Width="715.02" Height="26.43" Fill.Color="Gainsboro" Style="Style2">
+        <TableColumn Name="Column71" Width="96.11"/>
+        <TableColumn Name="Column72" Width="93.28"/>
+        <TableColumn Name="Column73" Width="96.11"/>
+        <TableColumn Name="Column74" Width="94.22"/>
+        <TableColumn Name="Column75" Width="97.06"/>
+        <TableColumn Name="Column76" Width="90.44"/>
+        <TableColumn Name="Column77" Width="97.04"/>
+        <TableColumn Name="Column78" Width="50.76"/>
+        <TableRow Name="Row6" Height="26.43">
+          <TableCell Name="Cell71" Border.Lines="All" Fill.Color="White" Text="[sp_PardakhtFiles_DetailSelect.fldTarikhPardakht]" AutoShrink="FontSize" HorzAlign="Center" VertAlign="Center" RightToLeft="true" Font="RasaFont, 11pt"/>
+          <TableCell Name="Cell72" Border.Lines="All" Fill.Color="White" Text="[sp_PardakhtFiles_DetailSelect.fldBankName]" AutoShrink="FontSize" HorzAlign="Center" VertAlign="Center" RightToLeft="true" Font="RasaFont, 11pt"/>
+          <TableCell Name="Cell73" Border.Lines="All" Fill.Color="White" Text="[sp_PardakhtFiles_DetailSelect.fldCodeRahgiry]" AutoShrink="FontSize" HorzAlign="Center" VertAlign="Center" RightToLeft="true" Font="RasaFont, 11pt"/>
+          <TableCell Name="Cell74" Border.Lines="All" Fill.Color="White" Text="[sp_PardakhtFiles_DetailSelect.fldNahvePardakhtName]" AutoShrink="FontSize" HorzAlign="Center" VertAlign="Center" RightToLeft="true" Font="RasaFont, 11pt"/>
+          <TableCell Name="Cell75" Border.Lines="All" Fill.Color="White" Text="[sp_PardakhtFiles_DetailSelect.fldShomarePardakht]" AutoShrink="FontSize" HorzAlign="Center" VertAlign="Center" RightToLeft="true" Font="RasaFont, 11pt"/>
+          <TableCell Name="Cell76" Border.Lines="All" Fill.Color="White" Text="[sp_PardakhtFiles_DetailSelect.fldGhabzNumber]" AutoShrink="FontSize" HorzAlign="Center" VertAlign="Center" RightToLeft="true" Font="RasaFont, 11pt"/>
+          <TableCell Name="Cell77" Border.Lines="All" Fill.Color="White" Text="[sp_PardakhtFiles_DetailSelect.fldShenaseGhabz]" AutoShrink="FontSize" HorzAlign="Center" VertAlign="Center" RightToLeft="true" Font="RasaFont, 11pt"/>
+          <TableCell Name="Cell78" Border.Lines="All" Fill.Color="White" Text="[Row#]" AutoShrink="FontSize" HorzAlign="Center" VertAlign="Center" RightToLeft="true" Font="RasaFont, 11pt"/>
+        </TableRow>
+      </TableObject>
+    </DataBand>
+    <ReportSummaryBand Name="ReportSummary1" Top="213.62" Width="718.2"/>
+    <PageFooterBand Name="PageFooter1" Top="218.32" Width="718.2" Height="32.12" CanGrow="true">
+      <TextObject Name="Text4" Left="19.86" Top="2.84" Width="687.97" Height="27.39" CanGrow="true" GrowToBottom="true" Text="[MyTablighat]" VertAlign="Center" RightToLeft="true" Font="RasaFont, 11pt, style=Bold"/>
+    </PageFooterBand>
+  </ReportPage>
+</Report>

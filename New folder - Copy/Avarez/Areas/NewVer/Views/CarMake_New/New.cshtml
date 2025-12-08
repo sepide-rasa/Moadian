@@ -1,0 +1,157 @@
+﻿@using Ext.Net.MVC
+@using Hogaf.ExtNet.UX
+@using Ext.Net;
+@{
+    var X = Html.X();
+}
+
+
+@(Html.X().Window()
+    .Modal(true)
+            .Listeners(li => li.AfterRender.Handler = "LoadCarMake();")
+    .Resizable(false)
+    .Width(305)
+   // .Height(185)
+    .Title("تعریف نوع ساخت")
+    .Layout(LayoutType.Fit)
+        .ID("NewCarMake")
+    .Closable(true)
+    .ButtonAlign(Ext.Net.Alignment.Center)
+    .Buttons(
+        X.Button()
+            .Text("ذخیره")
+            .Icon(Ext.Net.Icon.Disk)
+        //.ToolTip("کلید میانبر F8")
+                .Listeners(l => l.Click.Handler = "SaveCarMake();"),
+        X.Button()
+            .Text("خروج")
+            .Icon(Ext.Net.Icon.DoorOut)
+        //.ToolTip("کلید میانبر Esc")
+                .OnClientClick("App.NewCarMake.destroy();"))
+    .CloseAction(Ext.Net.CloseAction.Destroy)
+    .Items(
+        X.FormPanel()
+            .Border(false)
+            .Layout(LayoutType.Fit)
+            .Items(
+                X.Panel()
+                    .Border(false)
+                    .PaddingSpec("15px 0 0 0")
+                          .Layout(LayoutType.VBox)
+                        .LayoutConfig(new VBoxLayoutConfig { Align = VBoxAlign.Center })
+                    .Items(
+                        X.FieldSet()
+                            .Border(true).Height(120)
+                            .Title("نوع ساخت")
+                            .Defaults(new { Margin = 2 })
+                            .Layout(LayoutType.Table)
+                            .LayoutConfig(new TableLayoutConfig { Columns = 2 })
+                            .Items(
+                                X.Hidden().ItemID("fldId"),
+                                X.Label("نوع ساخت:"),
+                                X.TextField()
+                                        .ItemID("txtCarMake")
+                                        .MaxLength(50)
+                                        .EnforceMaxLength(true)
+                                    .Width(180)
+                                    .AllowBlank(false)
+                                    .BlankText("لطفا نوع ساخت را وارد نمایید.")
+                                    .MsgTarget(Ext.Net.MessageTarget.Side),
+                                X.Label("توضیحات:"),
+                                X.TextArea()
+                                    .ItemID("txtDesc")
+                                    .Width(180)
+                            )
+                )
+            )
+        )
+)
+
+<script type="text/javascript">
+    function LoadCarMake() {
+        if ('@ViewBag.Id' != '0') {
+            App.NewCarMake.body.mask("در حال بارگذاری...");
+            Ext.net.DirectMethod.request({
+                url: '/NewVer/CarMake_New/Details',
+                params: {
+                    Id: '@ViewBag.Id'
+                },
+                success: function (data) {
+                    if (data.Er == 0) {
+                        var txtCarMake = App.NewCarMake.queryById('txtCarMake');
+                        txtCarMake.setValue(data.fldName);
+                        var txtDesc = App.NewCarMake.queryById('txtDesc');
+                        txtDesc.setValue(data.fldDesc);
+                        var Id = App.NewCarMake.queryById('fldId');
+                        Id.setValue(data.fldId);
+                    }
+                    else if (data.Er == 1) {
+                        Ext.MessageBox.show({
+                            title: data.MsgTitle,
+                            msg: data.Msg,
+                            icon: Ext.MessageBox.ERROR,
+                            buttons: Ext.MessageBox.OK
+                        });
+                    }
+                    App.NewCarMake.body.mask().hide();
+                }
+            });
+        }
+        else {
+            App.NewCarMake.queryById('txtCarMake').validate();
+        }
+    }
+
+    function SaveCarMake() {
+        var txtCarMake = App.NewCarMake.queryById('txtCarMake');
+        var Id = App.NewCarMake.queryById('fldId');
+        var txtDesc = App.NewCarMake.queryById('txtDesc');
+
+        var er = false;
+
+        if (txtCarMake.validate() == false) {
+            er = true;
+        }
+        if (er == true)
+            return;
+        App.NewCarMake.body.mask("در حال ذخیره سازی...");
+        Ext.net.DirectMethod.request({
+            url: '/NewVer/CarMake_New/Save',
+            params: {
+                fldID: Id.getValue(),
+                fldName: txtCarMake.getValue(),
+                fldDesc: txtDesc.getValue()
+            },
+            success: function (data) {
+                var ic = Ext.MessageBox.INFO;
+                if (data.Er == 1)
+                    ic = Ext.MessageBox.ERROR;
+                Ext.MessageBox.show({
+                    title: data.MsgTitle,
+                    msg: data.Msg,
+                    icon: ic,
+                    buttons: Ext.MessageBox.OK
+                });
+                App.CarMake.queryById('GridCarMake').store.load();
+                if (data.Er != 1) {
+                    ClearCarMake();
+                }
+                App.NewCarMake.body.mask().hide();
+            }
+        });
+    }
+
+    function ClearCarMake() {
+        App.NewCarMake.queryById('txtDesc').setValue("");
+        App.NewCarMake.queryById('txtCarMake').setValue("");
+        App.NewCarMake.queryById('fldId').setValue(0);
+    }
+
+   /* function EnterNext() {
+        var keyfield = App.NewCarMake.queryById(Ext.getCmp((Ext.Element.getActiveElement()).name).itemId);
+        var nextfld = keyfield.nextSibling();
+        nextfld.focus();
+        nextfld.selectText();
+    }*/
+
+</script>

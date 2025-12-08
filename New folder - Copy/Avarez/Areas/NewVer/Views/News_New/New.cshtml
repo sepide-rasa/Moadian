@@ -1,0 +1,304 @@
+﻿@using Ext.Net.MVC
+@using Hogaf.ExtNet.UX
+@using Ext.Net;
+@{
+    var X = Html.X();
+}
+
+@(Html.X().Window()
+    .Modal(true)
+        // .Listeners(li => li.AfterRender.Handler = "LoadNews();")
+    .Resizable(false)
+    .Width(365)
+    .Height(375)
+        .Title(" تعیین اخبار")
+    .Layout(LayoutType.Fit)
+        .ID("NewNews")
+    .Closable(true)
+    .ButtonAlign(Ext.Net.Alignment.Center)
+    .Buttons(
+        X.Button()
+            .Text("ذخیره")
+            .Icon(Ext.Net.Icon.Disk)
+        //.ToolTip("کلید میانبر F8")
+                .Listeners(l => l.Click.Handler = "SaveNews();"),
+        X.Button()
+            .Text("خروج")
+            .Icon(Ext.Net.Icon.DoorOut)
+        //.ToolTip("کلید میانبر Esc")
+                .OnClientClick("App.NewNews.destroy();"))
+    .CloseAction(Ext.Net.CloseAction.Destroy)
+    .Items(
+        X.FormPanel()
+            .Border(false)
+        // .Layout(LayoutType.Fit)
+            .Items(
+                X.Panel()
+                    .Border(false)
+                    .PaddingSpec("10px 0 0 0")
+                         .Layout(LayoutType.VBox)
+                                    .LayoutConfig(new VBoxLayoutConfig { Align = VBoxAlign.Center })
+                    .Items(
+                        X.FieldSet()
+                           .Border(true)
+                               .Width(320)
+                                    .Height(285)
+                                        .Defaults(new { Margin = 4 })
+                            .Layout(LayoutType.Table)
+                                .Title("مشخصات اخبار ")
+                            .LayoutConfig(new TableLayoutConfig { Columns = 2 })
+
+                            .Items(
+                                X.Hidden()
+                                    .ItemID("fldId"),
+                            X.Label("استان:"),
+                                     X.ComboBox()
+                                        .ItemID("CboState")
+                                    .LabelAlign(Ext.Net.LabelAlign.Top)
+                                    .Editable(false)
+                                    .TypeAhead(true)
+                                    .QueryMode(DataLoadMode.Local)
+                                    .ForceSelection(true)
+                                    .TriggerAction(TriggerAction.All)
+                                        .DisplayField("Name")
+                                        .ValueField("ID")
+                                    .EmptyText("استان")
+                                    .Width(190)
+                                    .Listeners(ls =>
+                                                        ls.Select.Handler = " App.NewNews.queryById('CboMunicipality').getStore().load();"
+                                                            )
+        //.ValueNotFoundText("استان...")
+                                            .Store(X.Store()//.AutoLoad(false)
+                                        .Model(X.Model()
+                                                    .IDProperty("fldState")
+                                            .Fields(
+                                                        new ModelField("ID", ModelFieldType.String) { Mapping = "fldID" },
+                                                        new ModelField("Name", ModelFieldType.String) { Mapping = "fldName" }
+                                            )
+                                        )
+                                        .Proxy(X.AjaxProxy()
+                                                .Url(Url.Action("GetCascadeState"))
+                                            .Reader(X.JsonReader().Root("data"))
+                                        )
+                                                .Listeners(li => li.Load.Handler = "LoadNews();")
+                                )
+                                //    .AllowBlank(false)
+                                        .MsgTarget(Ext.Net.MessageTarget.Side)
+                                    .BlankText("لطفا استان را انتخاب نمایید."),
+                            X.Label("شهرداری:"),
+                                    X.ComboBox()
+                                    
+                                            .ItemID("CboMunicipality")
+                                    .EmptyText("شهرداری...")
+                                    .LabelAlign(Ext.Net.LabelAlign.Top)
+                                    .TypeAhead(true)
+                                    .Editable(false)
+                                //    .AllowBlank(false)
+                                    .MsgTarget(Ext.Net.MessageTarget.Side)
+                                    .BlankText("لطفا شهرداری مورد نظر را انتخاب نمایید.")
+                                    .QueryMode(DataLoadMode.Local)
+                                    .ForceSelection(true)
+                                    .Width(190)
+                                    .TriggerAction(TriggerAction.All)
+                                        .DisplayField("Name")
+                                        .ValueField("ID")
+                                                .Store(X.Store().AutoLoad(false)
+                                        .Model(X.Model()
+                                                            .IDProperty("fldMunicipalityID")
+                                            .Fields(
+                                                new ModelField("ID", ModelFieldType.String) { Mapping = "fldID" },
+                                                new ModelField("Name", ModelFieldType.String) { Mapping = "fldName" })
+                                                )
+                                        .Proxy(X.AjaxProxy()
+                                                                .Url(Url.Action("GetCascadeMun"))
+                                            .Reader(X.JsonReader().Root("data")))
+                                                                .Parameters(ps => ps.Add(new StoreParameter("ID", "App.NewNews.queryById('CboState').getValue()", ParameterMode.Raw)))
+                                                        ),
+                                   X.Label("عنوان :"),
+
+                                X.TextField()
+                                                .ItemID("txtSubject")
+                                                //  .MaskRe("/[0-9]/")
+                                            .EnforceMaxLength(true)
+
+                                        .MaxLength(50)
+                                    .Width(190)
+
+                                    .AllowBlank(false)
+                                    .BlankText("لطفا عنوان را وارد نمایید.")
+                                    .MsgTarget(Ext.Net.MessageTarget.Side),
+
+                                        
+                                                
+                                                 X.Label("وضعیت:"), 
+                                      X.ComboBox()
+                                        .ItemID("cboStatus")
+                                    .LabelAlign(Ext.Net.LabelAlign.Top)
+                                    .Editable(false)
+                                    .TypeAhead(true)
+                                    .QueryMode(DataLoadMode.Local)
+                                    .ForceSelection(true)
+                                    .TriggerAction(TriggerAction.All)
+                                    .DisplayField("Name")
+                                    .ValueField("ID")
+                                    .EmptyText("وضعیت...")
+                                    .Width(190)
+                                    .Items(
+                                                new ListItem("فعال", "1"),
+                                                new ListItem("غیر فعال", "0")
+                                    )
+                                            .SelectedItems(new { Value = "1" })
+                                    //.AllowBlank(false)
+                                    .MsgTarget(Ext.Net.MessageTarget.Side),
+                                     X.Label("متن :"),
+
+                                        X.TextArea()
+                                                    .ItemID("txtMemo")
+                                                .Width(190)
+                                              //  .AllowBlank(true)
+                                                .BlankText("لطفا متن را وارد نمایید.")
+                                                .MsgTarget(Ext.Net.MessageTarget.Side),
+                                X.Label("توضیحات:"),
+                                X.TextArea()
+                                .Width(190)
+                                    .ItemID("txtDesc")
+
+                            )
+                )
+            )
+        )
+)
+
+@(Html.X().KeyMap()
+                 .ID("NewNewsMap")
+                 .Target("={App.NewNews.getTargetEl()}")
+            .Binding(b =>
+            {
+                b.Add(Html.X().KeyBinding()
+                .KeysString(((int)Ext.Net.KeyCode.F8).ToString())
+                .Handler("SaveNews(); ")
+                );
+
+            }))
+<script type="text/javascript">
+    function LoadNews() {
+        if ('@ViewBag.Id' != '0') {
+            App.NewNews.body.mask("در حال بارگذاری...");
+            Ext.net.DirectMethod.request({
+                url: '/NewVer/News_New/Details',
+                params: {
+                    Id: '@ViewBag.Id'
+                },
+                success: function (data) {
+                    if (data.Er == 0) {
+                        var CboState = App.NewNews.queryById('CboState');
+                        CboState.setValue(data.fldState);
+                        App.NewNews.queryById('CboMunicipality').clearValue();
+                        App.NewNews.queryById('CboMunicipality').getStore().load();
+                        var CboMunicipality = App.NewNews.queryById('CboMunicipality');
+                        CboMunicipality.setValue(data.fldMunicipalityID);
+                        var cboStatus = App.NewNews.queryById('cboStatus');
+                        cboStatus.setValue(data.fldShowStatus);
+                        var txtSubject = App.NewNews.queryById('txtSubject');
+                        txtSubject.setValue(data.fldSubject);
+                        var txtMemo = App.NewNews.queryById('txtMemo');
+                        txtMemo.setValue(data.fldMemo);
+                        var txtDesc = App.NewNews.queryById('txtDesc');
+                        txtDesc.setValue(data.fldDesc);
+                        var Id = App.NewNews.queryById('fldId');
+                        Id.setValue(data.fldId);
+                    }
+                    else if (data.Er == 1) {
+                        Ext.MessageBox.show({
+                            title: data.MsgTitle,
+                            msg: data.Msg,
+                            icon: Ext.MessageBox.ERROR,
+                            buttons: Ext.MessageBox.OK
+                        });
+                    }
+                    App.NewNews.body.mask().hide();
+                }
+            });
+        }
+        else {
+            App.NewNews.queryById('txtSubject').validate();
+            App.NewNews.queryById('CboState').validate();
+           /* App.NewNews.queryById('CboMunicipality').validate();*/
+            App.NewNews.queryById('cboStatus').validate();
+
+        }
+
+    }
+
+    function SaveNews() {
+        var txtSubject = App.NewNews.queryById('txtSubject');
+        var CboMunicipality = App.NewNews.queryById('CboMunicipality');
+        var CboState = App.NewNews.queryById('CboState');
+        var cboStatus = App.NewNews.queryById('cboStatus');
+        var txtMemo = App.NewNews.queryById('txtMemo');
+        var txtDesc = App.NewNews.queryById('txtDesc');
+        var Id = App.NewNews.queryById('fldId');
+            var er = false;
+
+            if (txtSubject.validate() == false) {
+                er = true;
+            }
+         /*   if (CboMunicipality.validate() == false) {
+                er = true;
+            }*/
+            if (CboState.validate() == false) {
+                er = true;
+            }
+       
+            var ShowStatus = false;
+            if (cboStatus.getValue() == "1")
+                ShowStatus = true;
+            if (er == true)
+                return;
+            App.NewNews.body.mask("در حال ذخیره سازی...");
+            Ext.net.DirectMethod.request({
+                url: '/NewVer/News_New/Save',
+                params: {
+                    fldID: Id.getValue(),
+                    fldSubject: txtSubject.getValue(),
+                    fldMunicipalityID: CboMunicipality.getValue(),
+                    fldShowStatus: ShowStatus,
+                    fldMemo: txtMemo.getValue(),
+                    fldDesc: txtDesc.getValue()
+                },
+                success: function (data) {
+                    var ic = Ext.MessageBox.INFO;
+                    if (data.Er == 1)
+                        ic = Ext.MessageBox.ERROR;
+                    Ext.MessageBox.show({
+                        title: data.MsgTitle,
+                        msg: data.Msg,
+                        icon: ic,
+                        buttons: Ext.MessageBox.OK
+                    });
+                    App.NewNews.body.mask().hide();
+                    App.News.queryById('GridNews').store.load();
+                    if (data.Er != 1)
+                        ClearNews();
+
+                }
+
+            });
+        }
+    function ClearNews() {
+        App.NewNews.queryById('txtSubject').setValue("");
+        App.NewNews.queryById('CboMunicipality').setValue("");
+        App.NewNews.queryById('cboStatus').setValue("");
+        App.NewNews.queryById('CboState').setValue("");
+        App.NewNews.queryById('txtMemo').setValue("");
+        App.NewNews.queryById('txtDesc').setValue("");
+        App.NewNews.queryById('fldId').setValue(0);
+    }
+   /* function EnterNext() {
+        var keyfield = App.NewNews.queryById(Ext.getCmp((Ext.Element.getActiveElement()).name).itemId);
+        var nextfld = keyfield.nextSibling();
+        nextfld.focus();
+        nextfld.selectText();
+    }*/
+
+</script>

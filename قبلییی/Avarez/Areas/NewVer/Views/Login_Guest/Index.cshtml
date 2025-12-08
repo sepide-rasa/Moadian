@@ -1,0 +1,192 @@
+﻿@using Ext.Net.MVC
+@using Hogaf.ExtNet.UX
+@using Ext.Net;
+@using Ext.Net.Utilities;
+@{
+    var X = Html.X();
+}
+<script src="~/Scripts/accounting.js"></script>
+
+@(Html.X().Window()
+    .Modal(true)
+        .Listeners(li => li.AfterRender.Handler = "LoadUserName();")
+    .Resizable(false)
+    .Width(310)
+    .Height(185)
+    .Title("ورود")
+       .Icon(Icon.Lock)
+    .Layout(LayoutType.Fit)
+    .ID("Login_Guest")
+    .Closable(true)
+    .ButtonAlign(Ext.Net.Alignment.Center)
+    .Buttons(
+        X.Button()
+            .Text("ورود")
+            .Icon(Ext.Net.Icon.DoorIn)
+        //.ToolTip("کلید میانبر F8")
+                .Listeners(l => l.Click.Handler = "SaveLogin_Guest();"),
+        X.Button()
+            .Text("خروج")
+            .Icon(Ext.Net.Icon.DoorOut)
+        //.ToolTip("کلید میانبر Esc")
+                .OnClientClick("App.Login_Guest.destroy();"))
+    .CloseAction(Ext.Net.CloseAction.Destroy)
+    .Items(
+        X.FormPanel()
+            .Border(false)
+            .Layout(LayoutType.Fit)
+            .Items(
+                X.Panel()
+                    .Border(false)
+                    .PaddingSpec("15px 0 0 0")
+                    .Items(
+                        X.FieldSet()
+                            .Border(false)
+                            .Defaults(new { Margin = 2 })
+                            .Layout(LayoutType.Table)
+                            .LayoutConfig(new TableLayoutConfig { Columns = 2 })
+                            .Items(
+                                X.Hidden().ItemID("fldId"),
+                                X.Label("نام کاربری:"),
+                                X.TextField()
+                                .ItemID("txtUserName")
+                                .Width(190)
+                                .MsgTarget(Ext.Net.MessageTarget.Side)
+                                .AllowBlank(false)
+                                .BlankText("لطفا نام کاربری را وارد کنید.")
+                                .Focus(true)
+                                , X.Label("کلمه عبور:"),
+                                X.TextField()
+                                .ItemID("txtPass")
+                                .MsgTarget(Ext.Net.MessageTarget.Side)
+                                .AllowBlank(false)
+                                .Width(190)
+                                .InputType(Ext.Net.InputType.Password)
+                                .BlankText("لطفا کلمه عبور را وارد کنید.")
+                                , X.FieldSet().Border(false).ColSpan(2)
+                                    .Width(250).PaddingSpec("0 0 0 7px")
+                                .Height(20)
+                                .Layout(LayoutType.HBox)
+                                           // .LayoutConfig(new Ext.Net.HBoxLayoutConfig { Align = HBoxAlign.Middle })
+                                .Defaults(new { Margin = 2 })
+                                .Items(
+                                X.Label()
+                                .Text("برای ثبت نام لطفا ")
+                                        , X.HyperLink()
+                                        .NavigateUrl(Url.Content("/NewVer/Login_Guest/Register")).Target("_self")
+                            .Text(" اینجا ")
+                                , X.Label()
+                                .Text("کلیک کنید.")
+                            )
+                            , X.FieldSet().Border(false).ColSpan(2).Height(20)
+                                     .Layout(LayoutType.HBox).PaddingSpec("0 0 0 7px")
+                                      .Width(285)
+                                          //  .LayoutConfig(new Ext.Net.HBoxLayoutConfig { Align = HBoxAlign.Middle })
+                                .Defaults(new { Margin = 2 }).Items(
+                                X.Label()
+                                .Text("اگر رمز عبور خود را فراموش کرده اید")
+                                , X.HyperLink()
+                                
+                                    .NavigateUrl(" Ext.net.DirectMethod.request({url: '/NewVer/Login_Guest/Vorod'})").Target("_self")
+                                .Text("اینجا")
+                                    , X.Label()
+                                    .Text("کلیک کنید.")
+                                )
+                            )
+                )
+            )
+        )
+)
+
+
+<script type="text/javascript">
+    var colour = "";
+
+    function LoadUserName() {
+        var txtUserName = App.Login_Guest.queryById('txtUserName');
+        var txtPass = App.Login_Guest.queryById('txtPass');
+        txtPass.validate();
+        txtUserName.validate();
+
+        @*if ('@ViewBag.fldFirstLogin' == 'True')
+            App.Login_Guest.queryById('btnExit').hide();
+        else
+            App.Login_Guest.queryById('btnExit').show();
+
+        Ext.net.DirectMethod.request({
+            url: '/Login_Guest/Details',
+            success: function (data) {
+                App.Login_Guest.queryById('txtUserName').setValue(data.fldUserName);
+            }
+        });*@
+    }
+
+    function SaveLogin_Guest() {
+        var txtUserName = App.Login_Guest.queryById('txtUserName');
+        var txtPass = App.Login_Guest.queryById('txtPass');
+        var er = false;
+
+        if (txtUserName.validate() == false) {
+            er = true;
+        }
+        if (txtPass.validate() == false) {
+            er = true;
+        }
+       
+        /* if (colour != "green") {
+             alert("رمز عبور جدید پیچیدگی لازم را ندارد. ");
+             er = true;
+         }*/
+
+       
+        if (er == true)
+            return;
+
+        Ext.net.DirectMethod.request({
+            url: '/NewVer/Login_Guest/Vorod',
+            params: {
+                OldPassword: txtUserName.getValue(),
+                NewPassword: txtPass.getValue()
+            },
+            success: function (data) {
+                if (data.ER == 1) {
+                    ic = Ext.MessageBox.ERROR;
+                    Ext.MessageBox.show({
+                        title: data.MsgTitle,
+                        msg: data.Msg,
+                        icon: Ext.MessageBox.ERROR,
+                        buttons: Ext.MessageBox.OK
+                    });
+                }
+                @*if ('@ViewBag.fldFirstLogin' == 'True')
+                    App.Login_Guest.destroy();*@
+            }
+
+        });
+    }
+
+    function ClearLogin_Guest() {
+        App.Login_Guest.queryById('txtUserName').setValue("");
+        App.Login_Guest.queryById('txtPass').setValue("");
+    }
+    function EnterNext() {
+        var keyfield = App.Login_Guest.queryById(Ext.getCmp((Ext.Element.getActiveElement()).name).itemId);
+        var nextfld = keyfield.nextSibling();
+        nextfld.focus();
+        nextfld.selectText();
+
+    }
+
+    function HelpLogin_Guest() {
+        Ext.net.Mask.show({ msg: 'در حال بارگذاری...' });
+        Ext.net.DirectMethod.request({
+            url: '/Login_Guest/Help',
+            params: {
+
+            },
+            success: function (data) {
+                Ext.net.Mask.hide();
+            }
+        });
+    }
+</script>

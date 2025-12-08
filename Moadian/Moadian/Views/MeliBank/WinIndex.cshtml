@@ -1,0 +1,152 @@
+﻿@using Ext.Net.MVC
+@using Hogaf.ExtNet.UX
+@using Ext.Net;
+@{
+    var X = Html.X();
+
+    Avarez.Models.cartaxEntities car = new Avarez.Models.cartaxEntities();
+    var q = car.sp_BankParameterSelect("fldBankID", "1", 0, 1, "", Convert.ToInt32(Session["CountryCode"]), Convert.ToInt32(Session["CountryType"])).ToList();
+    var id = 0;
+    var id_url = 0;
+    var id_line = 0;
+    var id_TerminalId = 0;
+    foreach (var item in q)
+    {
+        if (item.fldPropertyNameEN == "MerchantId")
+        {
+            id = item.fldID;
+        }
+        else if (item.fldPropertyNameEN == "BackURL")
+        {
+            id_url = item.fldID;
+        }
+        else if (item.fldPropertyNameEN == "Line")
+        {
+            id_line = item.fldID;
+        }
+        else if (item.fldPropertyNameEN == "TerminalId")
+        {
+            id_TerminalId = item.fldID;
+        }
+    }
+    var info = car.sp_SelectNameBankAndMunForBankInformation(Convert.ToInt32(Session["CountryCode"]),
+        Convert.ToInt32(Session["CountryType"])).Where(k => k.BankId == 1).FirstOrDefault();
+    var q1 = car.sp_BankInformationSelect("fldCountryDiv", info.fldCountryDiv.ToString(), 0, 1, "").Where(h => h.fldParametrID == id).FirstOrDefault();
+    var q2 = car.sp_BankInformationSelect("fldCountryDiv", info.fldCountryDiv.ToString(), 0, 1, "").Where(h => h.fldParametrID == id_url).FirstOrDefault();
+    var q3 = car.sp_BankInformationSelect("fldCountryDiv", info.fldCountryDiv.ToString(), 0, 1, "").Where(h => h.fldParametrID == id_line).FirstOrDefault();
+    var q4 = car.sp_BankInformationSelect("fldCountryDiv", info.fldCountryDiv.ToString(), 0, 1, "").Where(h => h.fldParametrID == id_TerminalId).FirstOrDefault();
+    var url = "http://" + q2.fldValue + "/MeliBank/Back";
+    var Line = "https://" + "epayment" + q3.fldValue + ".bmi.ir/epayment/paymentform.aspx";
+}
+
+<style>
+    .fontlbl {
+        font-size: 11px;
+    }
+</style>
+
+@(Html.X().Window()
+    .Modal(true)
+    .Width(500)//.Height(300)
+    .Title("پرداخت")
+    .Resizable(false)
+    .ID("NewWinIndex")
+    .Closable(true)
+    .CloseAction(Ext.Net.CloseAction.Destroy)
+    .Layout(LayoutType.Fit)
+    .ButtonAlign(Ext.Net.Alignment.Center)
+    //.Buttons(
+            //X.Button()
+            //        .Text("پرداخت").Handler("window.open('Https://Sadad.Shaparak.Ir/Purchase')")
+            //    .Icon(Ext.Net.Icon.Disk)
+   //,
+        //X.Button()
+        //    .Text("خروج")
+        //    .Icon(Ext.Net.Icon.BulletCross)
+        //    .ToolTip("کلید میانبر Esc")
+        //    .OnClientClick("App.NewWinIndex.destroy()"))
+    .Items(
+        X.FormPanel()
+            .Border(false)
+            .PaddingSpec("10px 0 10px 0")
+            .Layout(LayoutType.VBox)
+            .LayoutConfig(new VBoxLayoutConfig { Align = VBoxAlign.Center })
+            .Items(
+                    X.FieldSet()
+                    .Border(false)
+                    .Layout(LayoutType.Table)
+                    .LayoutConfig(new Ext.Net.TableLayoutConfig { Columns = 2 })
+                    .Defaults(new { Margin = 2 })
+                    .Items(
+                  X.Container().Height(120).Content(@<div align="center" id="fi-button-Dl4" style="text-align:center;">
+    <br />
+                <form action="Https://Sadad.Shaparak.Ir/Purchase" method="post">
+                    <table>
+                        <tr>
+                            <td>
+                                <div class="tag">
+                                    کد تراکنش
+                                </div>
+                            </td>
+                            <td>
+                                <div class="tag">
+                                    @Session["Tax"].ToString()
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div class="tag">
+                                    مبلغ پرداخت
+                                </div>
+                            </td>
+                            <td>
+                                <div class="tag">
+                                    @Convert.ToDouble(Session["Amount"]).ToString("#,###")
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="2">
+                                لطفا کد تراکنش را جهت پیگیری های بعدی یادداشت فرمائید.
+                                <br />
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="4" align="center">
+                                <input type="hidden" id="CardAcqID" name="CardAcqID" value="@q1.fldValue" />
+                                <input type="hidden" id="AmountTrans" name="AmountTrans" value="@Convert.ToDouble(Session["Amount"])" />
+                                <input type="hidden" id="ORDERID" name="ORDERID" value="@Session["Tax"]" />
+                                <input type="hidden" id="TerminalID" name="TerminalID" value="@q4.fldValue" />
+                                <input type="hidden" id="TimeStamp" name="TimeStamp" value="@ViewBag.TimeStamp" />
+                                <input type="hidden" id="FP" name="FP" value="@ViewBag.FP" />
+                                <input type="hidden" id="Version" name="Version" value="3.22" />
+                                <input type="hidden" id="RedirectURL" name="RedirectURL" value="@url" />
+                                <input type="submit" id="Run" name="Run" value="پرداخت" class="run" />
+
+                            </td>
+                        </tr>
+                    </table>
+                </form>
+
+</div>)
+//,
+//                               X.Label().Text("کد تراکنش:"),
+//                                X.Label().Text(@Session["Tax"].ToString())
+//                                ,
+//                                        X.Label().Text("مبلغ پرداخت:"),
+//                                        X.Label().Text(@Session["Amount"].ToString())
+//                                            ,
+//                                                X.Label().Text("لطفا کد تراکنش را جهت پیگیری های بعدی یادداشت فرمائید.")
+                                )
+
+                )
+                )
+)
+
+<script type="text/javascript">
+    function Pay() {
+        var u = "Https://Sadad.Shaparak.Ir/Purchase";
+    }
+
+</script>

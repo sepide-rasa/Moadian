@@ -1,0 +1,898 @@
+﻿@model IEnumerable<Avarez.Models.sp_CarUserGuestSelect>
+@using Ext.Net.MVC
+@using Hogaf.ExtNet.UX
+@using Ext.Net;
+@using Ext.Net.Utilities;
+@using Avarez.Controllers.Users;
+@{
+
+    var X = Html.X();
+    var delCached = false;
+    if (Permossions.haveAccess(Convert.ToInt32(Session["UserId"]), 431))
+    {
+        delCached = true;
+    }
+    var BlackList = false;
+    if (Permossions.haveAccess(Convert.ToInt32(Session["UserId"]), 311))
+    {
+        BlackList = true;
+    }
+    var sendSms = false;
+    if (Permossions.haveAccess(Convert.ToInt32(Session["UserId"]), 436))
+    {
+        sendSms = true;
+    }
+    var Verify = false;
+    if (Permossions.haveAccess(Convert.ToInt32(Session["UserId"]), 437))
+    {
+        Verify = true;
+    }
+    var PerFast = "0";
+    if (Permossions.haveAccess(Convert.ToInt32(Session["UserId"]), 349))
+    {
+        PerFast = "1";
+    }
+    var PerVin = "0";
+    if (Permossions.haveAccess(Convert.ToInt32(Session["UserId"]), 397))
+    {
+        PerVin = "1";
+    }
+    var PerMotor = "0";
+    if ( Permossions.haveAccess(Convert.ToInt32(Session["UserId"]), 398))
+    {
+        PerMotor = "1";
+    }
+    var PerShasi = "0";
+    if ( Permossions.haveAccess(Convert.ToInt32(Session["UserId"]), 399))
+    {
+        PerShasi = "1";
+    }
+    var PerShasiMotor = "0";
+    if ( Permossions.haveAccess(Convert.ToInt32(Session["UserId"]), 400))
+    {
+        PerShasiMotor = "1";
+    }
+    var PerMalek = "0";
+    if ( Permossions.haveAccess(Convert.ToInt32(Session["UserId"]), 401))
+    {
+        PerMalek = "1";
+    }
+    var PerMeli = "0";
+    if ( Permossions.haveAccess(Convert.ToInt32(Session["UserId"]), 402))
+    {
+        PerMeli = "1";
+    }
+    var PerPelak = "0";
+    if ( Permossions.haveAccess(Convert.ToInt32(Session["UserId"]), 403))
+    {
+        PerPelak = "1";
+    }
+
+}
+<style>
+    .Color{
+        color:green;
+    }
+    .row-imagecommand {
+        margin: 1px 1px 0 10px !important;
+    }
+    .backtooltip {
+        background-color: #f8f8d6;
+    }
+</style>
+<script>
+    /*var templateFlag = '<span>{1} </span><img src={0} alt="" style="width: 15px;border-width:0px;"/>';
+    var Flag = function (value, record) {
+        var txt = record.record.data.fldVIN;
+        var C = txt.substring(0, 2);
+        var pic=null;
+        if(C!=""){
+            Pic = 'Url.Content("/NewVer/Parvande/CountryImage?symbol=")' + C;
+        }
+        var ToolTip = "";
+        return Ext.String.format(templateFlag, Pic, txt);
+        };*/
+        var templateFlag = '<span>{1} </span><img src={0} alt="" style="width: 15px;border:none;border-width:0px;"/>';
+        var Flag = function (value, record) {
+            var txt = record.record.data.fldVIN;
+            var C = txt.substring(0, 2);
+            var Pic = '@Url.Content("/NewVer/Parvande/CountryImage?symbol=")' + C;
+            var ToolTip = "";
+            return Ext.String.format(templateFlag, Pic, txt);
+        };
+
+    var templateBlackList = '<img src={0} alt="" title={1}/>';
+    var BlackList = function (value, record) {
+        var Pic = "@Url.Content("/Content/icon/mini/ListBlak(2).png")";
+        var B = record.record.data.fldIsBalckList;
+        var ToolTip = "لیست" + '&nbsp;' + "سیاه";
+        if (B == 0) {
+            ToolTip = "";
+            Pic = "@Url.Content("/Content/icon/mini/ListBlak(3).png")";
+        }
+       else if (B == 1) {
+            ToolTip = "";
+            Pic = "@Url.Content("/Content/icon/mini/ListBlak(1).png")";
+        }
+        return Ext.String.format(templateBlackList, Pic,ToolTip);
+    };
+
+    var templateIsAccept = '<img src={0} alt="" title={1}/>';
+    var IsAccept = function (value, record) {
+        var Pic = "@Url.Content("/Content/icon/mini/miniخوداظهاری.png")";
+        var B = record.record.data.fldAccept;
+        var ToolTip = "خوداظهاری";
+        if (B == 0) {
+            ToolTip = "تایید" + '&nbsp;' + "نشده";
+            Pic = "@Url.Content("/Content/icon/mini/تاییدنشده.png")";
+        }
+        if (B == 1) {
+            ToolTip = "تایید" + '&nbsp;' + "شده";
+            Pic = "@Url.Content("/Content/icon/mini/تاییدشده.png")";
+        }
+        return Ext.String.format(templateIsAccept, Pic, ToolTip);
+    };
+
+    var templateGoToNext = '<img src={0} alt="" onmouseover="cursor: pointer;" onclick={2} title={1}/>';
+    var GoToNext = function (value, record) {
+        var Pic = Ext.Net.Icon.ArrowOutLonger;
+        var ToolTip = "جزئیات پرونده";
+        var s = "FnNextInRow(" + record.record + ");";
+        return Ext.String.format(templateGoToNext, Pic, ToolTip,s);
+    };
+    
+    var templateAccountType = '<img src={0} alt="" title={1}/>';
+    var AccountType = function (value, record) {
+        var Pic = "@Url.Content("/Content/icon/mini/car.png")";
+        var B = record.record.data.fldAccountTypeId;
+        var ToolTip = record.record.data.fldCarAccountName;
+        if (B == 19 || B == 20) {
+            Pic = "@Url.Content("/Content/icon/mini/وانت-دوکابین.png")";
+        }
+        else if (B == 14 || B==15) {
+            Pic = "@Url.Content("/Content/icon/mini/وانت-تک-کابین.png")";
+        }
+        else if (B == 17 || B==18) {
+            Pic = "@Url.Content("/Content/icon/mini/taxi.png")";
+        }
+        else if (B == 12 || B == 13) {
+            Pic = "@Url.Content("/Content/icon/mini/minibus.png")";
+        }
+        else if (B == 10 || B == 11) {
+            Pic = "@Url.Content("/Content/icon/mini/موتور-سیکلت.png")";
+        }
+        else if (B == 9 || B == 8) {
+            Pic = "@Url.Content("/Content/icon/mini/ماشین-آلات.png")";
+        }
+        else if (B == 7 || B == 6) {
+            Pic = "@Url.Content("/Content/icon/mini/bus.png")";
+        }
+        else if (B == 5 || B == 4) {
+            Pic = "@Url.Content("/Content/icon/mini/ambulance.png")";
+        }
+        else if (B == 1 || B == 2) {
+            Pic = "@Url.Content("/Content/icon/mini/truck.png")";
+        }
+        return Ext.String.format(templateAccountType, Pic, ToolTip);
+    };
+    
+</script>
+@(X.TabPanel().Title("جستجو پرونده").Border(false).Height(500).Listeners(l => l.AfterRender.Handler = "FormLoad();")
+            .ID("SearchParvande")
+                .AutoScroll(true).Closable(false)
+                .Layout(LayoutType.Fit)
+                .Items(
+        X.Panel().Title("پرونده ها")
+                     .Layout(Ext.Net.LayoutType.VBox)
+                                    .LayoutConfig(new Ext.Net.VBoxLayoutConfig { Align = Ext.Net.VBoxAlign.Center })
+        .Border(false).ButtonAlign(Ext.Net.Alignment.Center)
+          .ID("Parvande")
+
+        .Items(
+
+        //        X.FieldSet().Border(true)
+        //            .Listeners(l => l.AfterRender.Handler = "App.Parvande.setWidth(Ext.getBody().getViewSize().width);")     
+        //        .Layout(Ext.Net.LayoutType.VBox)
+        //    .LayoutConfig(new VBoxLayoutConfig { Align = VBoxAlign.Stretch })
+        //.Items(
+                    X.Panel().Border(false)
+                            .Listeners(l => l.Render.Fn = "addKeyMapSearchParvande")
+                    .Margins("20px 0px 0px 0px")
+                    .ButtonAlign(Ext.Net.Alignment.Center)
+                    .Buttons(X.Button().Text("جستجو").Icon(Ext.Net.Icon.Magnifier).Margin(10)
+                               .Listeners(l =>
+                               {
+                                   l.Click.Handler = "FnSearchParvande();";
+
+                               })
+                               .ItemID("btnSave")
+                                ,
+                                X.Button().Text("ادامه").Icon(Ext.Net.Icon.ArrowLeft).Margin(10)
+                                .Listeners(l =>
+                                {
+                                    l.Click.Handler = "FnNext();";
+
+                                })
+                                ,
+                                    X.Button().Text("ثبت پرونده سریع").Icon(Ext.Net.Icon.Add).Margin(10)
+                                    .Listeners(l =>
+                                    {
+                                        l.Click.Handler = "FnFastParvande();";
+
+                                    }),
+                                X.Button().Text("پرونده جدید").Icon(Ext.Net.Icon.Add).Margin(10)
+                                .Listeners(l =>
+                                {
+                                    l.Click.Handler = "FnNewParvande();";
+
+                                }),                                
+                                X.Button().Text("راهنما").Icon(Ext.Net.Icon.Help).Margin(10)
+                                .Listeners(l =>
+                                {
+                                    l.Click.Handler = "HelpParvande();";
+
+                                }),
+                                X.Button().Text("خروج").Icon(Ext.Net.Icon.DoorOut).ToolTip("کلید میانبر Esc")
+                                            .OnClientClick("App.AvarezWin.destroy();"))
+                .Center()
+                    .Layout(Ext.Net.LayoutType.HBox)
+                    .LayoutConfig(new HBoxLayoutConfig { Align = HBoxAlign.Middle })
+                .Defaults(new { Margin = 2 })
+                .Items(
+                    X.ComboBox()
+                        .ItemID("cboSearchField")
+                    .FieldLabel("فیلد جستجو")
+                    .Editable(false)
+        //.TypeAhead(true)
+                    .Width(300)
+                    .QueryMode(DataLoadMode.Local)
+                    .DisplayField("Name")
+                    .ValueField("ID")
+                    .TriggerAction(TriggerAction.All)
+                  //  .SelectedItems(new { Value = "0" })
+        //.Items(
+        //    new ListItem("VIN", "0"),
+        //    new ListItem("شماره موتور و شاسی", "1"),
+        //    new ListItem("شماره موتور", "2"),
+        //    new ListItem("شماره شاسی", "3"),
+        //    new ListItem("نام مالک", "4"),
+        //    new ListItem("کد ملی", "5"),
+        //    new ListItem("پلاک", "6")
+        //    )
+                        .Listeners(l => { l.Select.Handler = "ChangeCbo();"; 
+                                            l.AfterRender.Handler="AddItems();";
+                        })
+                    ,
+                    X.ComboBox()
+                        .ItemID("cboSearchType")
+                    .FieldLabel("نوع جستجو")
+                    .Width(300)
+                    .Editable(false)
+                    .TypeAhead(true)
+                    .QueryMode(DataLoadMode.Local)
+                    .TriggerAction(TriggerAction.All)
+                    .SelectedItems(new { Value = "0" })
+                    .Items(
+                        new ListItem("مشابه عبارت", "0"),
+                        new ListItem("مشابه عبارت از ابتدا", "1"),
+                        new ListItem("عین عبارت", "2")
+                        )
+                        ,
+                    X.TextField()
+                    .FieldLabel("VIN")
+                    .ItemID("txtSearch")
+                        .Width(300)
+                    .MsgTarget(Ext.Net.MessageTarget.Side)
+                    .AllowBlank(false)
+                    .BlankText("لطفا متن جستجو را وارد کنید.")
+                        ,
+                    X.TextField()
+                    .FieldLabel("شماره شاسی")
+                    .ItemID("txtSearch2")
+                        .Width(300)
+                    .MsgTarget(Ext.Net.MessageTarget.Side)
+                    .AllowBlank(false)
+                    .BlankText("لطفا شماره شاسی را وارد کنید.")
+                                )
+
+            ,
+                        X.Panel()
+                                .ItemID("GridPanelSearch")
+                        .Margins("20px 0px 0px 0px")
+                .Height(400)
+                .Width(900)
+                            .Border(false)
+                            .AutoScroll(true)
+                            .ID("PnlGridPanel")
+                            .Layout(Ext.Net.LayoutType.Fit)
+                    .Items(
+                        X.GridPanel()
+                            .AutoScroll(true)
+                            .ID("GridSearch")
+                            .Listeners(l => l.AfterRender.Handler = "AddToolTip();")
+          .BottomBar(X.PagingToolbar())
+                            .Store(
+                                            X.StoreForModel().Listeners(l => l.DataChanged.Handler = "App.SearchParvande.queryById('GridSearch').selModel.refresh();")
+        // .AutoLoad(false)
+                    .Proxy(Html.X().AjaxProxy()
+                        .Url(Url.Action("Read"))
+                        .Reader(Html.X().JsonReader().Root("data"))
+                    )
+                        .PageSize(20000)
+                        .RemoteFilter(false)
+                        .RemotePaging(false)
+                            )
+                            .View(
+                                Html.X().GridView().LoadingText("در حال بارگذاری...").RTL(true)
+                            )
+        // .Plugins(X.FilterHeader().Remote(true))
+                            .ColumnModel(
+                                 Html.X().RowNumbererColumn().Flex(1),
+                                    Html.X().Column().DataIndex(Model, m => m.fldID).Text("کد").Flex(2).Hidden(true),
+                                    Html.X().Column().DataIndex(Model, m => m.fldAcceptName).Text("وضعیت").Flex(2).Hidden(true),//.Renderer("GoToNext"),
+                                    Html.X().Column().DataIndex(Model, m => m.fldAccountTypeId).Text("نوع کاربری").Flex(2).Renderer("AccountType"),
+                                    Html.X().Column().DataIndex(Model, m => m.fldAccept).Text("وضعیت").Flex(2).Renderer("IsAccept"),
+                                    Html.X().Column().DataIndex(Model, m => m.fldIsBalckList).Text("لیست سیاه").Flex(3).Renderer("BlackList"),
+                                    Html.X().Column().DataIndex(Model, m => m.fldName).Text("مالک ").Flex(5),//.Hidden(true),
+                                    Html.X().Column().DataIndex(Model, m => m.fldPlaqueNumber).Text("پلاک ").Flex(3),//.Hidden(true),
+                                    Html.X().Column().DataIndex(Model, m => m.fldMotorNumber).Text("ش موتور").Flex(5),
+                                    Html.X().Column().DataIndex(Model, m => m.fldShasiNumber).Text("ش شاسی").Flex(5),
+                                    Html.X().Column().DataIndex(Model, m => m.fldVIN).Text("VIN").TdCls("Color").Renderer("Flag").Flex(6),
+                                    Html.X().Column().DataIndex(Model, m => m.fldModel).Text("مدل").Flex(2),
+                                    Html.X().Column().DataIndex(Model, m => m.fldCarModelName).Text("تیپ").Flex(5),
+                                    Html.X().Column().DataIndex(Model, m => m.fldCarClassName).Text("کلاس").Flex(5),
+                                    Html.X().Column().DataIndex(Model, m => m.fldCarFileId).Text("کد ").Flex(5).Hidden(true),
+                                    Html.X().Column().DataIndex(Model, m => m.fldMelli_EconomicCode).Text("کدملی ").Flex(5).Hidden(true),
+                                    Html.X().Column().DataIndex(Model, m => m.fldColor).Text("رنگ ").Flex(5).Hidden(true),
+                                    Html.X().Column().DataIndex(Model, m => m.fldCarAccountName).Text("نوع ").Flex(5).Hidden(true),
+                                    Html.X().Column().DataIndex(Model, m => m.fldCarsystemName).Text("سیستم ").Flex(5).Hidden(true),
+                                    Html.X().Column().DataIndex(Model, m => m.fldFuleTypeName).Text("نوع سوخت").Flex(5).Hidden(true),
+                                    Html.X().Column().DataIndex(Model, m => m.fldAccountTypeId).Text("نوع کاربری").Flex(5).Hidden(true),
+                                    /*Html.X().ImageCommandColumn().Listeners(l => l.Command.Fn = "FnVerifyInRow")
+                                        .Flex(1).Commands(Html.X().ImageCommand().Icon(Ext.Net.Icon.Mail).Hidden(!sendSms).CommandName("sendSms").ToolTip(tt => tt.Text = "ارسال مجدد کد فعالسازی"),
+                                        Html.X().ImageCommand().Icon(Ext.Net.Icon.Tick).Hidden(!Verify).CommandName("mobileVerify").ToolTip(tt => tt.Text = "تایید شماره موبایل")),*/
+                                    Html.X().ImageCommandColumn().Listeners(l => l.Command.Fn = "FnNextInRow")
+                                        .Flex(2).Commands(Html.X().ImageCommand().Icon(Ext.Net.Icon.ArrowOutLonger).CommandName("NextInRow").ToolTip(tt => tt.Text = "ورود به پرونده"),
+                                        Html.X().ImageCommand().Icon(Ext.Net.Icon.Delete).Hidden(!delCached).CommandName("DelRow").ToolTip(tt => tt.Text = "حذف")),
+                                    Html.X().ImageCommandColumn().PrepareCommand("CheckBlackList").Listeners(l => l.Command.Fn = "FnDelBlackList").Flex(1).Commands(
+                                        Html.X().ImageCommand().Icon(Ext.Net.Icon.BulletCross).Hidden(!BlackList).CommandName("DelBlackList").ToolTip(tt => tt.Text = "خروج از لیست سیاه")
+                                    )
+
+                                        )
+                                                .Listeners(a => a.CellDblClick.Handler = "FnNext();")
+                            )
+                            )
+
+                       // )
+                            )
+
+)
+<script type="text/javascript">
+    function AddItems() {
+        if('@PerVin'=="1")
+            App.SearchParvande.queryById('cboSearchField').store.add({ 'field1': '0', 'field2': 'VIN' });
+        if('@PerShasiMotor'=="1")
+            App.SearchParvande.queryById('cboSearchField').store.add({ 'field1': '1', 'field2': 'شماره موتور و شاسی' });
+        if('@PerMotor'=="1")
+            App.SearchParvande.queryById('cboSearchField').store.add({ 'field1': '2', 'field2': 'شماره موتور' });
+        if('@PerShasi'=="1")
+            App.SearchParvande.queryById('cboSearchField').store.add({ 'field1': '3', 'field2': 'شماره شاسی' });
+        if('@PerMalek'=="1")
+            App.SearchParvande.queryById('cboSearchField').store.add({ 'field1': '4', 'field2': 'نام مالک' });
+        if('@PerMeli'=="1")
+            App.SearchParvande.queryById('cboSearchField').store.add({ 'field1': '5', 'field2': 'کد ملی' });
+        if('@PerPelak'=="1")
+            App.SearchParvande.queryById('cboSearchField').store.add({ 'field1': '6', 'field2': 'پلاک' });
+    }
+    function AddToolTip() {
+        App.SearchParvande.queryById('GridPanelSearch').setHeight(Ext.getBody().getViewSize().height-225);
+        App.SearchParvande.queryById('GridPanelSearch').setWidth(Ext.getBody().getViewSize().width-15);
+        var tip = Ext.create('Ext.tip.ToolTip', {
+            target: App.GridSearch.getView().el,
+            delegate: App.GridSearch.getView().itemSelector,
+            trackMouse: true,
+            renderTo: Ext.getBody(),
+            bodyCls: "backtooltip",
+            listeners: {
+                beforeshow: function updateTipBody(tip) {
+                    store = App.GridSearch.getStore();
+                    rowIndex = App.GridSearch.getView().findItemByChild(tip.triggerElement).sectionRowIndex;
+                    record = store.getAt(rowIndex);
+                    tip.update("مالک: " + record.data.fldName + "</br>کدملی: " +
+                    record.data.fldMelli_EconomicCode + "</br>VIN: " + record.data.fldVIN + 
+                    "</br>پلاک: " + record.data.fldPlaqueNumber + "</br>نوع: " +
+                    record.data.fldCarAccountName + "</br>سیستم: " +
+                    record.data.fldCarsystemName + "</br>تیپ: " +
+                    record.data.fldCarModelName + "</br>رنگ: " +
+                    record.data.fldColor + "</br>مدل: " +
+                    record.data.fldModel + "</br>نوع سوخت: " +
+                    record.data.fldFuleTypeName + "</br>شماره موتور: " +
+                    record.data.fldMotorNumber + "</br>شماره شاسی: " +
+                    record.data.fldShasiNumber + "</br>شماره موبایل: " + record.data.fldMobile);
+                }
+            }
+        });
+
+    }
+    function FormLoad() {
+        /* App.SearchParvande.queryById('GridPanelSearch').setHeight(App.Parvande.getHeight());*/
+
+        var txtSearch2 = App.SearchParvande.queryById('txtSearch2');
+        txtSearch2.hide(true);
+        Ext.net.Mask.show({ msg: 'در حال جستجو...' });
+        Ext.net.DirectMethod.request({
+            url: '/NewVer/Parvande/DetailSearchSetting',
+            success: function (data) {
+                Ext.net.Mask.hide();
+                var cboSearchField = App.SearchParvande.queryById('cboSearchField');
+                cboSearchField.setValue(data.fldDefaultSearch);
+                ChangeCbo();
+            }
+        });
+        Ext.net.Mask.show({ msg: 'در حال بارگذاری...' });
+        Ext.net.DirectMethod.request({
+            url: '/NewVer/S_Mohasebat/Index',
+            params: {
+                containerId: "AvarezTab"
+            },
+            success: function () {
+                Ext.net.Mask.hide();
+            }
+        });
+        if('@PerFast'=="1"){
+            Ext.net.Mask.show({ msg: 'در حال بارگذاری...' });
+            Ext.net.DirectMethod.request({
+                url: '/NewVer/Fast_Fish/Index',
+                params: {
+                    containerId: "AvarezTab"
+                },
+                success: function () {
+                    Ext.net.Mask.hide();
+                }
+            });
+        }
+    }
+    function FnSearchParvande() {
+        var cboSearchField = App.SearchParvande.queryById('cboSearchField');
+        var cboSearchType = App.SearchParvande.queryById('cboSearchType');
+        var txtSearch = App.SearchParvande.queryById('txtSearch');
+        var txtSearch2 = App.SearchParvande.queryById('txtSearch2');
+        if (txtSearch.hidden == false && txtSearch.getValue()=="") {
+            Ext.MessageBox.show({
+                title: "خطا",
+                msg: "لطفا " + txtSearch.getFieldLabel() + " را وارد کنید.",
+                icon: Ext.MessageBox.ERROR,
+                buttons: Ext.MessageBox.OK
+            });
+            return;
+        }
+        else if (txtSearch2.hidden == false && txtSearch2.getValue() == "") {
+            Ext.MessageBox.show({
+                title: "خطا",
+                msg: "لطفا " + txtSearch2.getFieldLabel() + " را وارد کنید.",
+                icon: Ext.MessageBox.ERROR,
+                buttons: Ext.MessageBox.OK
+            });
+            return;
+        }
+        Ext.net.Mask.show({ msg: 'در حال جستجو...' });
+        Ext.net.DirectMethod.request({
+            url: '/NewVer/Parvande/Search',
+            params: {
+                SearchField: cboSearchField.getValue(),
+                SearchType: cboSearchType.getValue(),
+                Value1: txtSearch.getValue(),
+                Value2: txtSearch2.getValue()
+            },
+            success: function (data) {
+                Ext.net.Mask.hide();
+                App.SearchParvande.queryById('GridSearch').getStore().loadData(data);
+            }
+        });
+    }
+    function ChangeCbo() {
+        var cboSearchField = App.SearchParvande.queryById('cboSearchField');
+        var txtSearch = App.SearchParvande.queryById('txtSearch');
+        var txtSearch2 = App.SearchParvande.queryById('txtSearch2');
+
+        if (cboSearchField.getValue() == "0") {
+            txtSearch2.hide(true);
+            txtSearch.setFieldLabel("VIN");
+        }
+        else if (cboSearchField.getValue() == "1") {
+            txtSearch2.show(true);
+            txtSearch.setFieldLabel("شماره موتور");
+        }
+        else if (cboSearchField.getValue() == "0") {
+            txtSearch.setFieldLabel("شماره موتور");
+            txtSearch2.hide(true);
+        }
+        else if (cboSearchField.getValue() == "2") {
+            txtSearch.setFieldLabel("شماره موتور");
+            txtSearch2.hide(true);
+        }
+        else if (cboSearchField.getValue() == "3") {
+            txtSearch.setFieldLabel("شماره شاسی");
+            txtSearch2.hide(true);
+        }
+        else if (cboSearchField.getValue() == "4") {
+            txtSearch.setFieldLabel("نام مالک");
+            txtSearch2.hide(true);
+        }
+        else if (cboSearchField.getValue() == "5") {
+            txtSearch.setFieldLabel("کدملی");
+            txtSearch2.hide(true);
+        }
+        else if (cboSearchField.getValue() == "6") {
+            txtSearch.setFieldLabel("پلاک");
+            txtSearch2.hide(true);
+        }
+    }
+    function FnNewParvande() {
+        Ext.net.Mask.show({ msg: 'در حال بارگذاری...' });
+        Ext.net.DirectMethod.request({
+            url: '/NewVer/Parvande/NewParvande',
+            params: {
+                containerId: "AvarezTab"
+            },
+            success: function () {
+                Ext.net.Mask.hide();
+            }
+        });
+    }
+    function FnFastParvande() {
+        Ext.net.Mask.show({ msg: 'در حال بارگذاری...' });
+        Ext.net.DirectMethod.request({
+            url: '/NewVer/Parvande/FastParvande',
+            params: {
+                containerId: "AvarezTab"
+            },
+            success: function () {
+                Ext.net.Mask.hide();
+            }
+        });
+    }
+    function HelpParvande() {
+        Ext.net.Mask.show({ msg: 'در حال بارگذاری...' });
+        Ext.net.DirectMethod.request({
+            url: '/NewVer/Parvande/HelpParvande',
+            params: {
+
+            },
+            success: function (data) {
+                Ext.net.Mask.hide();
+            }
+        });
+    }
+
+    function FnNext() {
+        var SelectedRow = App.SearchParvande.queryById('GridSearch').selModel.getLastSelected();
+        if (SelectedRow != null) {
+            if (SelectedRow.data.fldIsBalckList != 1){
+                Ext.net.Mask.show({ msg: 'در حال بارگذاری...' });
+                
+                /*Ext.net.DirectMethod.request({
+                    url: '/NewVer/Parvande/ShouldMobileVerify',
+                    params: {
+                        CarFileId: SelectedRow.data.fldCarFileId
+                    },
+                    success: function (data) {                        
+                        if (data.Verifyed == 0) {
+                            Ext.net.DirectMethod.request({
+                                url: '/NewVer/Parvande/MobileVerify',
+                                params: {
+                                    CarFileId: SelectedRow.data.fldCarFileId
+                                },
+                                success: function () {
+                                    Ext.net.Mask.hide();
+                                }
+                            });
+                        } else {*/
+                            Ext.net.DirectMethod.request({
+                                url: '/NewVer/Parvande/SaveSearch',
+                                params: {
+                                    fldID: SelectedRow.data.fldID,
+                                    fldMotorNumber: SelectedRow.data.fldMotorNumber,
+                                    fldShasiNumber: SelectedRow.data.fldShasiNumber,
+                                    fldVIN: SelectedRow.data.fldVIN,
+                                    fldModel: SelectedRow.data.fldModel,
+                                    fldCarModelName: SelectedRow.data.fldCarModelName,
+                                    fldCarClassName: SelectedRow.data.fldCarClassName,
+                                    fldCarFileId: SelectedRow.data.fldCarFileId,
+                                    fldName: SelectedRow.data.fldName,
+                                    fldMelli_EconomicCode: SelectedRow.data.fldMelli_EconomicCode,
+                                    fldPlaqueNumber: SelectedRow.data.fldPlaqueNumber,
+                                    fldCarAccountName: SelectedRow.data.fldCarAccountName,
+                                    fldCarsystemName: SelectedRow.data.fldCarsystemName,
+                                    fldColor: SelectedRow.data.fldColor,
+                                    fldFuleTypeName: SelectedRow.data.fldFuleTypeName,
+                                    fldAccept: SelectedRow.data.fldAccept,
+                                    fldAcceptName: SelectedRow.data.fldAcceptName,
+                                    fldIsBalckList: SelectedRow.data.fldIsBalckList,
+                                    fldAccountTypeId: SelectedRow.data.fldAccountTypeId
+                                },
+                                success: function () {
+                                    Ext.net.Mask.hide();
+                                    Ext.net.Mask.show({ msg: 'در حال بارگذاری...' });
+                                    Ext.net.DirectMethod.request({
+                                        url: '/NewVer/SelectParvande',
+                                        params: {
+                                            containerId: "SearchParvande",
+                                            CarId: SelectedRow.data.fldID,
+                                            CarFileId: SelectedRow.data.fldCarFileId
+                                        },
+                                        success: function () {
+                                            /*Ext.net.Mask.hide();*/
+                                        }
+                                    });
+                                }
+                            });
+                        /*}
+                    }
+                });*/
+                
+            }
+            else {
+                Ext.MessageBox.show({
+                    title: "خطا",
+                    msg: "پرونده مورد نظر در لیست سیاه است.",
+                    icon: Ext.MessageBox.ERROR,
+                    buttons: Ext.MessageBox.OK
+                });
+            }
+        }
+        else {
+            Ext.MessageBox.show({
+                title: "خطا",
+                msg: "لطفا یک سطر را انتخاب نمایید.",
+                icon: Ext.MessageBox.ERROR,
+                buttons: Ext.MessageBox.OK
+            });
+        }
+    }
+    function FnVerifyInRow(grid, command, record, row) {
+        if (record.data.fldIsBalckList != 1){
+            if (command == 'mobileVerify'){
+                Ext.net.Mask.show({ msg: 'در حال بارگذاری...' });
+                
+                Ext.net.DirectMethod.request({
+                    url: '/NewVer/Parvande/MobileVerify',
+                    params: {                        
+                        CarFileId: record.data.fldCarFileId
+                    },
+                    success: function () {
+                        Ext.net.Mask.hide();
+                    }
+                });                   
+            }
+            else{
+                Ext.net.Mask.show({ msg: 'در حال انجام عملیات...' });
+                Ext.net.DirectMethod.request({
+                    url: '/NewVer/Parvande/SendSms',
+                    params: {
+                        CarFileId: record.data.fldCarFileId
+                    },
+                    success: function (data) {
+                        var ic = Ext.MessageBox.INFO;
+                        if (data.Err == 1)
+                            ic = Ext.MessageBox.ERROR;
+                        Ext.MessageBox.show({
+                            title: data.MsgTitle,
+                            msg: data.Msg,
+                            icon: ic,
+                            buttons: Ext.MessageBox.OK
+                        });
+                        Ext.net.Mask.hide();
+                    }
+                });
+            }
+        }
+        else {
+            Ext.MessageBox.show({
+                title: "خطا",
+                msg: "پرونده مورد نظر در لیست سیاه است.",
+                icon: Ext.MessageBox.ERROR,
+                buttons: Ext.MessageBox.OK
+            });
+        }
+    }
+
+    var CheckBlackList = function (Tree, Command, record, row) {
+        if (record.data.fldIsBalckList != 1) {
+            Command.hidden = true;
+            Command.hideMode = 'visibility';
+        }
+    };
+
+    function FnDelBlackList() {
+        if (record.data.fldIsBalckList == 1) {
+            Ext.MessageBox.show({
+                title: "هشدار",
+                msg: "آیا برای خروج از لیست سیاه مطمئن هستید؟",
+                icon: Ext.MessageBox.WARNING,
+                buttons: Ext.MessageBox.YESNO,
+                fn: function (btn) {
+                    if (btn == 'yes') {
+                        Ext.net.Mask.show({ msg: 'در حال انجام عملیات...' });
+                        Ext.net.DirectMethod.request({
+                            url: '/NewVer/Parvande/DeleteListSiyah',
+                            params: {
+                                CarId: record.data.fldID
+                            },
+                            success: function (data) {
+                                var ic = Ext.MessageBox.INFO;
+                                if (data.Err == 1)
+                                    ic = Ext.MessageBox.ERROR;
+                                Ext.MessageBox.show({
+                                    title: data.MsgTitle,
+                                    msg: data.Msg,
+                                    icon: ic,
+                                    buttons: Ext.MessageBox.OK
+                                });
+                                App.SearchParvande.queryById('GridSearch').store.load();
+                                Ext.net.Mask.hide();
+                            }
+                        });
+                    }
+                }
+            });
+        }
+    }
+
+    function FnNextInRow(grid, command, record, row) {
+        if (record.data.fldIsBalckList != 1){
+            if (command == 'NextInRow'){
+                Ext.net.Mask.show({ msg: 'در حال بارگذاری...' });
+
+                /*Ext.net.DirectMethod.request({
+                    url: '/NewVer/Parvande/ShouldMobileVerify',
+                    params: {
+                        CarFileId: record.data.fldCarFileId
+                    },
+                    success: function (data) {
+                        if (data.Verifyed == 0) {
+                            Ext.net.DirectMethod.request({
+                                url: '/NewVer/Parvande/MobileVerify',
+                                params: {
+                                    CarFileId: record.data.fldCarFileId
+                                },
+                                success: function () {
+                                    Ext.net.Mask.hide();
+                                }
+                            });
+                        } else {*/
+                            Ext.net.DirectMethod.request({
+                                url: '/NewVer/Parvande/SaveSearch',
+                                params: {
+                                    fldID: record.data.fldID,
+                                    fldMotorNumber: record.data.fldMotorNumber,
+                                    fldShasiNumber: record.data.fldShasiNumber,
+                                    fldVIN: record.data.fldVIN,
+                                    fldModel: record.data.fldModel,
+                                    fldCarModelName: record.data.fldCarModelName,
+                                    fldCarClassName: record.data.fldCarClassName,
+                                    fldCarFileId: record.data.fldCarFileId,
+                                    fldName: record.data.fldName,
+                                    fldMelli_EconomicCode: record.data.fldMelli_EconomicCode,
+                                    fldPlaqueNumber: record.data.fldPlaqueNumber,
+                                    fldCarAccountName: record.data.fldCarAccountName,
+                                    fldCarsystemName: record.data.fldCarsystemName,
+                                    fldColor: record.data.fldColor,
+                                    fldFuleTypeName: record.data.fldFuleTypeName
+                                },
+                                success: function () {
+                                    Ext.net.Mask.hide();
+                                    Ext.net.Mask.show({ msg: 'در حال بارگذاری...' });
+                                    Ext.net.DirectMethod.request({
+                                        url: '/NewVer/SelectParvande',
+                                        params: {
+                                            containerId: "SearchParvande",
+                                            CarId: record.data.fldID,
+                                            CarFileId: record.data.fldCarFileId
+                                        },
+                                        success: function () {
+                                            Ext.net.Mask.hide();
+                                        }
+                                    });
+                                }
+                            });
+                        /*}
+                    }
+                });*/           
+            }
+            else{
+                Ext.MessageBox.show({
+                    title: "هشدار",
+                    msg: "آیا برای حذف مطمئن هستید؟",
+                    icon: Ext.MessageBox.WARNING,
+                    buttons: Ext.MessageBox.YESNO,
+                    fn: function (btn) {
+                        if (btn == 'yes') {
+                            Ext.net.Mask.show({ msg: 'در حال انجام عملیات...' });
+                            Ext.net.DirectMethod.request({
+                                url: '/NewVer/Parvande/DeleteCached',
+                                params: {
+                                    CarFileId: record.data.fldCarFileId
+                                },
+                                success: function (data) {
+                                    var ic= Ext.MessageBox.INFO;
+                                    if(data.Err==1)
+                                        ic=Ext.MessageBox.ERROR;
+                                    Ext.MessageBox.show({
+                                        title:data.MsgTitle,
+                                        msg: data.Msg,
+                                        icon: ic,
+                                        buttons: Ext.MessageBox.OK
+                                    });
+                                    App.SearchParvande.queryById('GridSearch').store.load();
+                                    Ext.net.Mask.hide();
+                                }
+                            });
+                        }
+                    }
+                });
+            }
+        }
+        else {
+            Ext.MessageBox.show({
+                title: "خطا",
+                msg: "پرونده مورد نظر در لیست سیاه است.",
+                icon: Ext.MessageBox.ERROR,
+                buttons: Ext.MessageBox.OK
+            });
+        }
+    }
+
+  /*  function EnterNext() {
+        var nextfld;
+        if (App.AvarezTab.activeTab.id == "SearchParvande" && App.SearchParvande.activeTab.id == "Parvande") {
+            var keyfield = App.SearchParvande.queryById(Ext.getCmp((Ext.Element.getActiveElement()).name).itemId);
+            if (keyfield.itemId == "txtSearch") {
+                FnSearchParvande();
+            }
+            else {
+                nextfld = keyfield.nextSibling();
+                nextfld.focus();
+            }
+        }
+        else if (App.AvarezTab.activeTab.id == "S_Mohasebat") {
+            var keyfield = App.S_Mohasebat.queryById(Ext.getCmp((Ext.Element.getActiveElement()).name).itemId);
+
+            nextfld = keyfield.nextSibling();
+            nextfld.focus();
+        }
+        else if (App.AvarezTab.activeTab.id == "SearchParvande" && App.SearchParvande.activeTab.id == "SabtVarizi") {
+            var keyfield = App.SabtVarizi.queryById(Ext.getCmp((Ext.Element.getActiveElement()).name).itemId);
+            var nextfld = keyfield.nextSibling();
+            if (nextfld != null) {
+                if (nextfld.hidden == true && nextfld.itemId == "txtSerial")
+                    nextfld = nextfld.nextSibling();
+
+                if (nextfld.hidden == true && nextfld.itemId == "txtMun")
+                    nextfld = nextfld.nextSibling().nextSibling();
+
+                nextfld.focus();
+                nextfld.selectText();
+            }
+        }
+    }*/
+    var addKeyMapSearchParvande = function (cmp) {
+        this.keyMap = new Ext.util.KeyMap({
+            target: cmp.getEl(),
+            binding: [{
+                key: Ext.EventObject.ENTER,
+                fn: function () {
+                    var keyfield = App.SearchParvande.queryById(Ext.getCmp((Ext.Element.getActiveElement()).name).itemId);
+                    if (keyfield.itemId == "txtSearch") {
+                        FnSearchParvande();
+                    }
+                    else {
+                        nextfld = keyfield.nextSibling();
+                        nextfld.focus();
+                    }
+
+                }
+            }]
+        });
+    };
+</script>

@@ -1,0 +1,103 @@
+﻿@*<div id="pdf"><center style="color:red;">لطفا تا دانلود کامل فایل مربوط به مفاصا حساب منتظر بمانید. با تشکر</center></div>
+<script type="text/javascript">
+    $(document).ready(function () {
+        var t = '@Url.Content("~/QR_Mafasa/print/")' + '@ViewBag.id';
+        window.location.href = t;
+    });
+</script>*@
+
+@using Ext.Net.MVC
+@using Hogaf.ExtNet.UX
+@using Ext.Net;
+@using Avarez.Models;
+@Html.X().ResourceManager().RTL(true).Locale("fa-ir").Theme((Ext.Net.Theme).3)
+@{
+    Layout = null;
+}
+@{var X = Html.X();
+
+}
+<img src="~/Content/header2.png" style="width:100%;" />
+@*<table style="width:100%;background-color:white;border-spacing:0px;background: rgba(217,222,224,1);
+    background: -moz-linear-gradient(left, rgba(217,222,224,1) 0%, rgba(255,255,255,1) 100%);
+    background: -webkit-gradient(left top, right top, color-stop(0%, rgba(217,222,224,1)), color-stop(100%, rgba(255,255,255,1)));
+    background: -webkit-linear-gradient(left, rgba(217,222,224,1) 0%, rgba(255,255,255,1) 100%);
+    background: -o-linear-gradient(left, rgba(217,222,224,1) 0%, rgba(255,255,255,1) 100%);
+    background: -ms-linear-gradient(left, rgba(217,222,224,1) 0%, rgba(255,255,255,1) 100%);
+    background: linear-gradient(to right, rgba(217,222,224,1) 0%, rgba(255,255,255,1) 100%);
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#d9dee0', endColorstr='#ffffff', GradientType=1 );" border="0px">
+        <tr>
+            <td >
+                <img src="@Url.Content("~/Content/right transpa.png")" />
+            </td>
+            <td style="text-align:center;">
+                <img src="@Url.Content("~/Content/samane.png")" />
+            </td>
+            <td style="text-align: left;">
+                <img src="@Url.Content("~/Content/train.png")" />
+            </td>
+        </tr>
+    </table>*@
+<style>
+    body {
+        background: #628db5;
+    }
+
+    .x-panel-body {
+        background: transparent;
+    }
+
+    #pnllogin-innerCt {
+        background-color: #dfe8f6;
+    }
+
+    #pnlLowS-innerCt {
+        background-color: transparent;
+    }
+
+    td {
+        text-align: right;
+    }
+    .reddd{
+        color:white;
+        font-size:14px;
+    }
+
+    #pnl1-innerCt {
+        background: rgba(212,228,239,1);
+        background: -moz-linear-gradient(top, rgba(212,228,239,1) 0%, rgba(98,141,181,1) 100%);
+        background: -webkit-gradient(left top, left bottom, color-stop(0%, rgba(212,228,239,1)), color-stop(100%, rgba(98,141,181,1)));
+        background: -webkit-linear-gradient(top, rgba(212,228,239,1) 0%, rgba(98,141,181,1) 100%);
+        background: -o-linear-gradient(top, rgba(212,228,239,1) 0%, rgba(98,141,181,1) 100%);
+        background: -ms-linear-gradient(top, rgba(212,228,239,1) 0%, rgba(98,141,181,1) 100%);
+        background: linear-gradient(to bottom, rgba(212,228,239,1) 0%, rgba(98,141,181,1) 100%);
+        filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#d4e4ef', endColorstr='#628db5', GradientType=0 );
+    }
+</style>
+@(
+
+ X.Panel()
+    .Border(false).Listeners(l=>l.AfterRender.Handler="downloadMafasaaa()")
+    .ID("get")
+    .AutoScroll(false)
+    .CloseAction(Ext.Net.CloseAction.Destroy)
+    .Layout(LayoutType.VBox)
+    .LayoutConfig(new VBoxLayoutConfig { Align=VBoxAlign.Center})
+    .Items
+    (
+        X.Panel()
+            .Border(false)
+            .ItemID("pnlget")
+            .Listeners(l=>l.Render.Handler="App.get.queryById('pnlget').setHeight(Ext.getBody().getViewSize().height-200);")
+            .Layout(LayoutType.HBox)
+    .LayoutConfig(new HBoxLayoutConfig { Align=HBoxAlign.Middle}).Items(
+        X.Label("لطفا تا دانلود کامل فایل مربوط به مفاصا حساب منتظر بمانید. با تشکر")
+        
+        .Cls("reddd"))
+    )
+)
+<script type="text/javascript">
+    function downloadMafasaaa () {
+        window.location.href='/QR_Mafasa/print/' + '@ViewBag.id';
+    }
+</script>

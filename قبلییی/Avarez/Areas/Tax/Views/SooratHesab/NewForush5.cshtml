@@ -1,0 +1,1175 @@
+﻿@model IEnumerable<Avarez.Areas.Tax.Models.prs_SelectDetailSooratHesab>
+@using Ext.Net.MVC
+@using Hogaf.ExtNet.UX
+@using Ext.Net;
+
+@{ var X = Html.X();}
+
+<script src="~/Scripts/accounting.min.js"></script>
+<style>
+    .legend {
+        list-style: none;
+        direction: rtl;
+        text-align: right;
+        padding-right: 0px;
+        margin-top: 7px;
+    }
+
+        .legend li {
+            float: right;
+            margin-right: 10px;
+        }
+
+        .legend span {
+            border: none;
+            float: right;
+            width: 12px;
+            height: 14px;
+            margin: 2px;
+        }
+
+    .custom-NewForush5icon {
+        margin-right: 243px !important;
+    }
+
+    .custom-NewForush5icon2 {
+        margin-right: 258px !important;
+    }
+
+    .custom-NewForush5icon3 {
+        margin-right: 445px !important;
+    }
+
+    .custom-NewForush5icon4 {
+        margin-right: 121px !important;
+    }
+
+    .custom-NewForush5icon5 {
+        margin-right: 138px !important;
+    }
+</style>
+
+
+
+@(Html.X().Window()
+    .Modal(true)
+           .Listeners(l =>
+        {
+            l.Render.Fn = "addKeyMapNewForush5";
+            l.AfterRender.Handler = "App.NewForush5.setWidth(Ext.getBody().getViewSize().width - 20);LoadDefults();";
+        })
+        .Width(530)//.Height(300)
+        .ID("NewForush5")
+        .Title("ثبت صورت حساب قبوض خدماتی")
+    .Resizable(false)
+    .Closable(true)
+    .CloseAction(Ext.Net.CloseAction.Destroy)
+    .ButtonAlign(Alignment.Center)
+    .Layout(LayoutType.Fit)
+    .Buttons(
+        X.Button()
+            .Text("ذخیره")
+            .Icon(Ext.Net.Icon.Disk)
+            .Listeners(l =>
+            {
+                l.Click.Handler = "SaveSooratHesab();";
+            })
+            .ItemID("btnSave"),
+        X.Button()
+            .Text("خروج")
+            .Icon(Ext.Net.Icon.BulletCross)
+            .ToolTip("کلید میانبر Esc")
+                    .OnClientClick("App.NewForush5.destroy()"))
+    .Items(
+
+            X.Panel()
+                .Border(false)
+                .Layout(LayoutType.VBox)
+                .LayoutConfig(new VBoxLayoutConfig { Align = VBoxAlign.Center })
+                .Items(
+                 X.Hidden()
+                                    .ItemID("fldId"),
+                 X.FieldSet()
+                        .Title("صورتحساب الکترونیکی نوع اول")
+                        .Border(true)
+                        .Defaults(new { Margin = 2 })
+                        .Layout(LayoutType.Table)
+                        .LayoutConfig(new TableLayoutConfig { Columns = 2 })
+                        .Items(
+                            X.FieldSet().Border(false)
+                                    .Layout(LayoutType.HBox)
+                        .LayoutConfig(new HBoxLayoutConfig { Align = HBoxAlign.Middle })
+                        .Items(
+                              X.Label("زمان صدور صورتحساب:"),
+                                X.PDateField()
+                                    .ItemID("txtDateSabt")
+                                    .AutoFocus(true)
+                                    .AllowBlank(false)
+                                    .Width(100)
+                                    .Editable(true)
+                                    .MaskRe("/[0-9 /]/")
+        //.Listeners(l =>
+        //{
+        //    l.AfterRender.Handler = "SetDefaulttxtDocDate()";
+        //    l.Change.Handler = "SetValidateDocDate()";
+        //})
+                                        .BlankText("لطفا تاریخ صدور صورتحساب را وارد کنید.")
+                                    .MaxLength(10)
+                                    .EnforceMaxLength(true)
+                                    ,
+                                        X.TextField()
+                                            .AllowBlank(false)
+                                                .BlankText("لطفا ساعت صدور صورتحساب را وارد کنید.")
+                                            .Listeners(l =>
+                                            {
+                                                l.Change.Handler = "CheckValidTime(App.NewForush5.queryById('txtSaatSabt'))";
+                                            })
+                                            .Width(44)
+                                            .ItemID("txtSaatSabt")
+                                            .Plugins(X.InputMask()
+                                                .Mask("AA:AA")
+                                                .MaskSymbols(ls =>
+                                                {
+                                                    ls.Add(new MaskSymbol { Name = "A", Regex = "[0-9]", Placeholder = "_".ToCharArray()[0] });
+                                                }))
+                                                )
+                                           /*    ,
+
+                                            X.FieldSet().Border(false)
+                                        .Layout(LayoutType.HBox)
+                            .LayoutConfig(new HBoxLayoutConfig { Align = HBoxAlign.Middle })
+                            .Items(
+                                X.Label("زمان ایجاد صورت حساب:"),
+                                    X.PDateField()
+                                        .ItemID("txtDateIjad")
+                                        .AllowBlank(false)
+                                        .Width(100)
+                                        .Editable(true)
+                                        .MaskRe("/[0-9 /]/")
+      
+                                            .BlankText("لطفا تاریخ ایجاد صورت حساب را وارد کنید.")
+                                        .MaxLength(10)
+                                        .EnforceMaxLength(true)
+                                        ,
+                                            X.TextField()
+                                                .AllowBlank(false)
+                                                    .BlankText("لطفا ساعت ایجاد صورت حساب را وارد کنید.")
+                                                .Listeners(l =>
+                                                {
+                                                    l.Change.Handler = "CheckValidTime(App.NewForush5.queryById('txtSaatIjad'))";
+                                                })
+                                                .Width(44)
+                                                .ItemID("txtSaatIjad")
+                                                .Plugins(X.InputMask()
+                                                    .Mask("AA:AA")
+                                                    .MaskSymbols(ls =>
+                                                    {
+                                                        ls.Add(new MaskSymbol { Name = "A", Regex = "[0-9]", Placeholder = "_".ToCharArray()[0] });
+                                                    }))
+                                                    )*/
+                        )
+                        ,
+                X.FieldSet()
+              //  .Width(1200)
+                        .Title("مشخصات اصلی")
+                        .Border(true)
+                        .Defaults(new { Margin = 2 })
+                        .Layout(LayoutType.Table)
+                        .LayoutConfig(new TableLayoutConfig { Columns = 8 })
+                        .Items(
+                         X.Label("شماره منحصر به فرد مالیاتی:"),
+                                X.TextField()
+                                    .ItemID("txttaxid")
+                                    .AllowBlank(false)
+                                    .Width(100)
+                                    .ReadOnly(true)
+                                    .Value(ViewBag.taxId)
+                                    ,
+                                        X.Label("سریال صورتحصاب داخلی حافظه مالیاتی:"),
+                                    X.TextField()
+                                        .ItemID("txtinno")
+                                        .AllowBlank(false)
+                                        .Width(100)
+                                    .ReadOnly(true)
+                                    .Value(ViewBag.inno)
+                                            ,
+                                        X.Label("موضوع صورت حساب:"),
+                                            X.ComboBox()
+                                    .ItemID("CboIns")
+                                        .Editable(false).Width(100)
+                                    .TypeAhead(true)
+                                    .BlankText("لطفا یک مورد را انتخاب کنید.")
+                                    .QueryMode(DataLoadMode.Local)
+                                    .TriggerAction(TriggerAction.All)
+                                    .AllowBlank(false)
+                                    .Listeners(l=>l.Change.Handler="checkIrtax()")
+                                    .Items(
+                                        new ListItem("اصلی", "1"),
+                                        new ListItem("اصلاحی", "2"),
+                                        new ListItem("ابطالی", "3"),
+                                        new ListItem("برگشت از فروش", "4")
+                                        )
+                                    ,
+                             X.Label("شماره منحصر به فرد مالیاتی صورتحصاب مرجع:").ItemID("lblirtaxid"),
+                                    X.TextField()
+                                        .ItemID("txtirtaxid")
+                                        .AllowBlank(false)
+                                        .Width(100)
+                                        
+                                        
+                          
+                                    
+                        ),
+                    X.FieldSet()
+                        .Title("مشخصات فروشنده")
+                        .Border(true)
+                        .Defaults(new { Margin = 2 })
+                        .Layout(LayoutType.Table)
+                        .LayoutConfig(new TableLayoutConfig { Columns = 10 })
+                        .Items(
+                            X.Hidden()
+                                .ItemID("fldForushandeId"),
+
+                            X.Label("فروشنده:"),
+                            X.TextField()
+                                    .ItemID("txtNameF")
+                                    .Icon(Icon.UserAdd)
+                                .AllowBlank(false)
+                                .AllowOnlyWhitespace(false)
+                                .EnableKeyEvents(true)
+                                .ReadOnly(true)
+                                .BlankText("لطفا فروشنده را انتخاب کنید.")
+        //.ColSpan(5)
+                                .Width(390)
+                                .FieldStyle("padding-right:20px;")
+                                .Listeners(l =>
+                                {
+                                    //l.KeyDown.Fn = "SelectDescDoc";
+                                    //l.Focus.Handler = "App.NewForush5.queryById('txtDescDoc').setFieldStyle('background-color:yellow;');";
+                                    //l.Blur.Handler = "App.NewForush5.queryById('txtDescDoc').setFieldStyle('background-color:white;');";
+                                    l.IconClick.Handler = "GotoSearchShakhs(2)";
+                                    //l.AfterRender.Handler = "App.NewForush5.queryById('txtDescDoc').icon.dom.classList.add('custom-NewForush5icon3');";
+                                }),
+                            X.Label("شماره اقتصادی:"),
+                            X.TextField()
+                                .ItemID("txtShEghtesadiF")
+                                .AllowBlank(false)
+                                .Width(100)
+                                    .ReadOnly(true),
+                                X.Label("شناسه ملی:"),
+                                X.TextField()
+                                    .ItemID("txtShenaseF")
+                                    .AllowBlank(false)
+                                    .Width(100)
+                                    .ReadOnly(true),
+                            X.Label("کد شعبه:"),
+                            X.TextField()
+                                .ItemID("txtShobeF")
+                                .AllowBlank(false)
+                                .Width(100)
+                                .ReadOnly(true),
+
+            X.Label("کد پستی:"),
+                                X.TextField()
+                                    .ItemID("txtPostiF")
+                                    .AllowBlank(false)
+                                    .Width(100)
+                                    .ReadOnly(true)
+
+                        ),
+                            X.FieldSet()
+                            .Title("مشخصات خریدار")
+                            .Border(true)
+                            .Defaults(new { Margin = 2 })
+                            .Layout(LayoutType.Table)
+                            .LayoutConfig(new TableLayoutConfig { Columns = 10 })
+                            .Items(
+                                X.Hidden()
+                                    .ItemID("fldKharidarId"),
+
+                                X.Label("خریدار:"),
+                                X.TextField()
+                                        .ItemID("txtNameK")
+                                        .Icon(Icon.UserAdd)
+                                    .AllowBlank(false)
+                                    .AllowOnlyWhitespace(false)
+                                    .EnableKeyEvents(true)
+                                    .ReadOnly(true)
+                                    .BlankText("لطفا خریدار را انتخاب کنید.")
+        // .ColSpan(5)
+                                    .Width(395)
+                                    .FieldStyle("padding-right:20px;")
+                                    .Listeners(l =>
+                                    {
+                                        //l.KeyDown.Fn = "SelectDescDoc";
+                                        //l.Focus.Handler = "App.NewForush5.queryById('txtDescDoc').setFieldStyle('background-color:yellow;');";
+                                        //l.Blur.Handler = "App.NewForush5.queryById('txtDescDoc').setFieldStyle('background-color:white;');";
+                                        l.IconClick.Handler = "GotoSearchShakhs(3)";
+                                        //l.AfterRender.Handler = "App.NewForush5.queryById('txtDescDoc').icon.dom.classList.add('custom-NewForush5icon3');";
+                                    }),
+                                X.Label("شماره اقتصادی:"),
+                                X.TextField()
+                                    .ItemID("txtShEghtesadiK")
+                                    .AllowBlank(false)
+                                    .Width(100)
+                                        .ReadOnly(true),
+                                    X.Label("شناسه ملی:"),
+                                    X.TextField()
+                                        .ItemID("txtShenaseK")
+                                        .AllowBlank(false)
+                                        .Width(100)
+                                        .ReadOnly(true),
+                                X.Label("کد شعبه:"),
+                                X.TextField()
+                                    .ItemID("txtShobeK")
+                                    .AllowBlank(false)
+                                    .Width(100)
+                                    .ReadOnly(true),
+
+                X.Label("کد پستی:"),
+                                    X.TextField()
+                                        .ItemID("txtPostiK")
+                                        .AllowBlank(false)
+                                        .Width(100)
+                                        .ReadOnly(true)
+
+                            )
+                          
+                            ,
+                                     X.FieldSet().AutoScroll(true).Border(false)
+                                     .ItemID("fls1").Listeners(l =>
+                            {
+                                l.AfterRender.Handler = "App.NewForush5.queryById('fls1').setSize(Ext.getBody().getViewSize().width -40,Ext.getBody().getViewSize().height - 450);";
+                            })
+                             .Items(
+                    X.GridPanel().AutoScroll(true)
+                            .Width(2000)
+                                .Listeners(l =>
+                                {
+                                    l.AfterRender.Handler = "App.NewForush5.queryById('NewForush5Grid').setHeight(Ext.getBody().getViewSize().height - 470);";
+                                })
+                        .ItemID("NewForush5Grid")
+                            .TopBar(
+                            Html.X().Toolbar()
+                                .Items(
+                                    X.Button()
+                                        .Text("افزودن سطر جدید")
+                                        .Icon(Ext.Net.Icon.BulletPlus)
+                                            .Listeners(l => l.Click.Handler = "AddRowForush1();")
+                                )
+                        )
+                        .Frame(true)
+                        .Title("آیتم های سند")
+                         .Store(
+                            X.StoreForModel().AutoLoad(false)
+                            .Proxy(Html.X().AjaxProxy()
+                                .Url(Url.Action("ReadDetail"))
+                                .Reader(Html.X().JsonReader().Root("data"))
+
+                            )
+                            .PageSize(20)
+                                .RemoteFilter(false)
+                                .RemotePaging(false)
+
+                        )
+                         .Features(Html.X().Summary().ID("summaryDocuments").Dock(SummaryDock.Bottom))
+                        .View(
+                            Html.X().GridView().LoadingText("در حال بارگذاری...").RTL(true)
+                        )
+                            .Plugins(
+                                    Html.X().CellEditing().ClicksToEdit(1)
+                                )
+                       // .Plugins(X.FilterHeader().Remote(false))
+                        .ColumnModel(
+                          //  Html.X().Column().DataIndex(Model, m => m.fldId).Text("کد").Flex(1).Hidden(true),
+                                        Html.X().ComponentColumn().ID("Colssttid").DataIndex(Model, m => m.fldsstid).Text("شناسه کالا/خدمت").Flex(1)
+                                           .Editor(false).Sortable(false).Component(
+                                                Html.X().TextField().Icon(Icon.Add)
+                                    .ItemID("txtKalaKhedmat").EnableKeyEvents(true)//.ReadOnly(true)
+                                    .Listeners(l =>
+                                    {
+                                        //l.SpecialKey.Fn = "SelectFile";
+                                        l.IconClick.Fn = "GotoSerchKalaKhedmat";
+                                        //l.KeyDown.Fn = "GotoNextField5";
+                                        //l.Focus.Handler = "this.selectText();";
+                                    })
+                                           ),
+                                        Html.X().ComponentColumn().ID("Colsstt").DataIndex(Model, m => m.fldsstt).Text("شرح کالا/ خدمت").Flex(5).Wrap(true).Editor(true).Sortable(false)
+                                             .Component(
+                                                Html.X().TextField().ItemID("txtsstt")
+                                                )
+                                ,
+                                                Html.X().ComponentColumn().ID("Colbsrn").DataIndex(Model, m => m.fldbsrn).Text("شناسه یکتای ثبت قرارداد").Flex(1).Wrap(true)
+                                                                .Editor(true).Sortable(false).Component(
+                                                                    Html.X().TextField().ItemID("txtbsrn")//.MaskRe("[0-9,*,/]").EnableKeyEvents(true)
+                                                        ),
+                                            Html.X().ComponentColumn().ID("Colmu").DataIndex(Model, m => m.fldmu).Text("واحد اندازگیری").Flex(1).Wrap(true)
+                                                .Editor(true).Sortable(false).Component(
+                                         X.ComboBox()
+                                        .ItemID("Cbomu")
+                                        .Width(100)
+                                            .TypeAhead(true)
+                                        .Editable(true)
+                                        .QueryMode(DataLoadMode.Local)
+                                        .AllowBlank(false)
+                                        .BlankText("لطفا واحد را انتخاب کنید.")
+                                        .TriggerAction(TriggerAction.All)
+                                        .DisplayField("fldName")
+                                        .ValueField("fldId")
+                                        .EnableKeyEvents(true)
+                                        .ForceSelection(true)
+                                        .FieldStyle("padding-right:20px;")
+                                        .Listeners(l =>
+                                        {
+                                            l.BeforeQuery.Fn = "SearchMatch";
+                                            // l.Change.Fn = "EnableCboCostCenter";
+                                        })
+                                        .EmptyText("...")
+                                        .Store(X.Store()
+                                            .Model(X.Model()
+                                                .IDProperty("fldId")
+                                                .Fields(
+                                                    new ModelField("fldId", ModelFieldType.Int) { Mapping = "fldId" },
+                                                    new ModelField("fldName", ModelFieldType.String) { Mapping = "fldName" }
+                                                )
+                                            )
+                                            .Proxy(X.AjaxProxy()
+                                                .Timeout(200000000)
+                                                .Url(Url.Action("GetUnits"))
+                                                .Reader(X.JsonReader().Root("data"))
+                                            )
+                                    )
+                                    ),
+                                        Html.X().ComponentColumn().ID("Colam").DataIndex(Model, m => m.fldam).Text("تعداد/مقدار").Flex(1).Wrap(true)
+                                            .Editor(true).Sortable(false)
+                                         .Component(
+                                            Html.X().TextField().ItemID("txtAm").MaskRe("[0-9,.]").EnableKeyEvents(true)
+                                    .Listeners(l =>
+                                    {
+                                        l.Change.Fn = "SetWithAm";
+                                       // l.Change.Fn = "setSeperate";
+                                       // l.KeyDown.Fn = "GotoNextField3";
+                                             l.Blur.Fn = "refreshFeature";
+                                       // l.Focus.Handler = "this.selectText();";
+                                    })
+                                ),
+                                            Html.X().ComponentColumn().ID("Colfee").DataIndex(Model, m => m.fldfee).Text("مبلغ واحد").Flex(1).Wrap(true)
+                                            .SummaryType(SummaryType.Sum).SummaryRenderer(new Renderer { Handler = "sumColfee" })
+                                             .Editor(true).Sortable(false)
+                                             .Component(
+                                                Html.X().TextField().ItemID("txtfee").MaskRe("[0-9]").EnableKeyEvents(true)
+                                        .Listeners(l =>
+                                        {
+                                            l.Change.Fn = "SetWithFee";
+                                             l.Blur.Fn = "refreshFeature";
+                                        })
+                                    ),
+                                          
+                                                   
+                                                        Html.X().ComponentColumn().ID("Coldis").DataIndex(Model, m => m.flddis).Text("مبلغ تخفیف").Flex(1).Wrap(true)
+                                                           .SummaryType(SummaryType.Sum).SummaryRenderer(new Renderer { Handler = "sumColdis" })
+                                                      .Editor(true).Sortable(false)
+                                                 .Component(
+                                                    Html.X().TextField().ItemID("txtdis").MaskRe("[0-9]").EnableKeyEvents(true)
+                                            .Listeners(l =>
+                                            {
+                                                l.Change.Fn = "SetWithDis";
+                                             l.Blur.Fn = "refreshFeature";
+                                            })
+                                        ),
+                                                       
+                                                            Html.X().ComponentColumn().ID("Colprdis").DataIndex(Model, m => m.fldprdis).Text("مبلغ قبل از تخفیف").Flex(1).Wrap(true)
+                                                               .SummaryType(SummaryType.Sum).SummaryRenderer(new Renderer { Handler = "sumColprdis" })
+                                                            .Editor(true).Sortable(false).Component(
+                                                        Html.X().TextField().ItemID("txtprdis").MaskRe("[0-9]").EnableKeyEvents(true).ReadOnly(true)
+                                                    ),
+                                                            Html.X().ComponentColumn().ID("Coladis").DataIndex(Model, m => m.fldadis).Text("مبلغ بعد از تخفیف").Flex(1).Wrap(true)
+                                                               .SummaryType(SummaryType.Sum).SummaryRenderer(new Renderer { Handler = "sumColadis" })
+                                                            .Editor(true).Sortable(false).Component(
+                                                            Html.X().TextField().ItemID("txtadis").MaskRe("[0-9]").EnableKeyEvents(true).ReadOnly(true)
+                                                    ),
+                                                        Html.X().ComponentColumn().ID("Colvra").DataIndex(Model, m => m.fldvra).Text("نرخ مالیات").Flex(1).Wrap(true)
+                                                       .Editor(true).Sortable(false)
+                                                 .Component(
+                                                    Html.X().TextField().ItemID("txtVra").MaskRe("[0-9]").EnableKeyEvents(true)
+                                            .Listeners(l =>
+                                            {
+                                                l.Change.Fn = "SetWithVra";
+                                             l.Blur.Fn = "refreshFeature";
+                                            })
+                                        ),
+                                                        Html.X().ComponentColumn().ID("Colvam").DataIndex(Model, m => m.fldvam).Text("مبلغ مالیات").Flex(1).Wrap(true)
+                                                           .SummaryType(SummaryType.Sum).SummaryRenderer(new Renderer { Handler = "sumColvam" })
+                                                                .Editor(true).Sortable(false).Component(
+                                                                    Html.X().TextField().ItemID("txtvam").MaskRe("[0-9]").EnableKeyEvents(true).ReadOnly(true)
+                                                        ),
+                                                            Html.X().ComponentColumn().ID("Colodt").DataIndex(Model, m => m.fldodt).Text("موضوع سایر مالیات").Flex(1).Wrap(true)
+                                                                    .Editor(true).Sortable(false).Component(
+                                                                            Html.X().TextField().ItemID("txtodt")//.MaskRe("[0-9,*,/]").EnableKeyEvents(true)
+                                                            ),
+                                                        Html.X().ComponentColumn().ID("Colodr").DataIndex(Model, m => m.fldodr).Text("نرخ سایر مالیات").Flex(1).Wrap(true)
+                                                                    .Editor(true).Sortable(false).Component(
+                                                                                Html.X().TextField().ItemID("txtodr").MaskRe("[0-9]").EnableKeyEvents(true)
+                                                .Listeners(l =>
+                                                {
+                                                    l.Change.Fn = "SetWithodr";
+                                             l.Blur.Fn = "refreshFeature";
+                                                })
+                                                            ),
+                                                        Html.X().ComponentColumn().ID("Colodam").DataIndex(Model, m => m.fldodam).Text("مبلغ سایر مالیات").Flex(1).Wrap(true)
+                                                           .SummaryType(SummaryType.Sum).SummaryRenderer(new Renderer { Handler = "sumColodam" })
+                                                                    .Editor(true).Sortable(false).Component(
+                                                                            Html.X().TextField().ItemID("txtodam").MaskRe("[0-9]").EnableKeyEvents(true)
+                                                                                  .Listeners(l =>
+                                                    {
+                                                        l.Change.Fn = "SetWithodam";
+                                             l.Blur.Fn = "refreshFeature";
+                                                    })
+                                                            ), 
+                                                                Html.X().ComponentColumn().ID("Coltsstam").DataIndex(Model, m => m.fldtsstam).Text("مبلغ کل").Flex(1).Wrap(true)
+                                                                   .SummaryType(SummaryType.Sum).SummaryRenderer(new Renderer { Handler = "sumColtsstam" })
+                                                                .Editor(true).Sortable(false).Component(
+                                                                    Html.X().TextField().ItemID("txttsstam").MaskRe("[0-9]").EnableKeyEvents(true).ReadOnly(true)
+                                                        )
+                            )
+                        .SelectionModel(
+                            X.RowSelectionModel()
+                                .Mode(Ext.Net.SelectionMode.Single)
+                        )
+                        )
+                             ,
+                    X.FieldSet()
+                            .Title("")
+                            .Border(true)
+                            .Defaults(new { Margin = 2 })
+                            .Layout(LayoutType.Table)
+                            .LayoutConfig(new TableLayoutConfig { Columns = 8 })
+                            .Items(
+                                     X.Label("مالیات موضوع ماده 17:"),
+                                            X.TextField()
+                                                .ItemID("txtTax17")
+                                                .AllowBlank(false)
+                                                .Width(100)
+                                            
+                                            
+
+
+
+                            )
+                )
+        )
+)
+<script type="text/javascript">
+    /*var HintEnterNewForush5 = 0;
+
+    function checkhintkeyDR_D(e) {
+        if (e == 13) {
+            HintEnterNewForush5 = 1;
+        }
+    };*/
+    function checkIrtax() {
+           var txtirtaxid = App.NewForush5.queryById('txtirtaxid');
+           var lblirtaxid = App.NewForush5.queryById('lblirtaxid');
+        var CboIns = App.NewForush5.queryById('CboIns');
+        if (CboIns.getValue() != "1") {
+            txtirtaxid.show();
+            lblirtaxid.show();
+        }
+        else {
+               txtirtaxid.hide();
+            lblirtaxid.hide();
+        }
+    }
+    function LoadDefults() {
+          if ('@ViewBag.id' == 0) {
+            App.NewForush5.queryById('txtDateSabt').setValue('@ViewBag.TarikhShamsi');
+            App.NewForush5.queryById('txtSaatSabt').setValue('@ViewBag.saat');
+            /* App.NewForush5.queryById('txtDateIjad').setValue('ViewBag.TarikhShamsi');
+             App.NewForush5.queryById('txtSaatIjad').setValue('ViewBag.saat');*/
+            App.NewForush5.queryById('CboIns').setValue("1");
+        }
+        else {
+            /*Edit*/
+            Ext.net.DirectMethod.request({
+                url: '/Tax/SooratHesab/Details',
+                params: {
+                    id: '@ViewBag.Id'
+                },
+                success: function (data) {
+                    var fldId = App.NewForush5.queryById('fldId');
+                    fldId.setValue(data.fldId);
+           var txtDateSabt = App.NewForush5.queryById('txtDateSabt');
+                    txtDateSabt.setValue(data.fldSh_Indatim);
+           var txtSaatSabt = App.NewForush5.queryById('txtSaatSabt');
+                    txtSaatSabt.setValue(data.fldIndatim_Zaman);
+           /*var txtDateIjad = App.NewForush5.queryById('txtDateIjad');
+           var txtSaatIjad = App.NewForush5.queryById('txtSaatIjad');*/
+           var txttaxid = App.NewForush5.queryById('txttaxid');
+                    txttaxid.setValue(data.fldTaxId);
+           var txtinno = App.NewForush5.queryById('txtinno');
+                    txtinno.setValue(data.fldInno);
+           var txtirtaxid = App.NewForush5.queryById('txtirtaxid');
+                    txtirtaxid.setValue(data.fldIrtaxId);
+           var CboIns = App.NewForush5.queryById('CboIns');
+                    CboIns.setValue(data.fldins);
+           var fldForushandeId = App.NewForush5.queryById('fldForushandeId');
+                    fldForushandeId.setValue(data.fldForushandeId);
+           var fldKharidarId = App.NewForush5.queryById('fldKharidarId');
+                    fldKharidarId.setValue(data.fldKharidarId);
+        var txtTax17 = App.NewForush5.queryById('txtTax17');
+                    txtTax17.setValue(data.fldtax17);
+
+                        
+        var txtNameF = App.NewForush5.queryById('txtNameF');
+                    txtNameF.setValue(data.fldf_name);
+        var txtShEghtesadiF = App.NewForush5.queryById('txtShEghtesadiF');
+                    txtShEghtesadiF.setValue(data.fldf_name);
+        var txtShenaseF = App.NewForush5.queryById('txtShenaseF');
+                    txtShenaseF.setValue(data.fldf_name);
+        var txtShobeF = App.NewForush5.queryById('txtShobeF');
+                    txtShobeF.setValue(data.fldf_name);
+        var txtNameK = App.NewForush5.queryById('txtNameK');
+                    txtNameK.setValue(data.fldkh_Name);
+        var txtShEghtesadiK = App.NewForush5.queryById('txtShEghtesadiK');
+                    txtShEghtesadiK.setValue(data.fldkh_Name);
+        var txtShenaseK = App.NewForush5.queryById('txtShenaseK');
+                    txtShenaseK.setValue(data.fldkh_Name);
+        var txtShobeK = App.NewForush5.queryById('txtShobeK');
+                    txtShobeK.setValue(data.fldkh_Name);
+
+                    App.NewForush5.queryById("NewForush5Grid").getStore().getProxy().setExtraParam("HeaderId",'@ViewBag.Id');
+                                   App.NewForush5.queryById("NewForush5Grid").getStore().load();
+                }
+            });
+        }
+    }
+    }
+    function sumColfee() {
+        var store = App.NewForush5.queryById("NewForush5Grid").store;
+        var summaryRec = App.NewForush5.queryById("NewForush5Grid").getView().getFeature("summaryDocuments").summaryRecord;
+        var sum = 0;
+        store.each(function (rec) {
+            if (rec.get('fldfee') != '')
+                sum += parseInt(rec.get('fldfee'));
+        });
+            return  sum.toLocaleString() ;
+    }  
+    function sumColdis() {
+        var store = App.NewForush5.queryById("NewForush5Grid").store;
+        var summaryRec = App.NewForush5.queryById("NewForush5Grid").getView().getFeature("summaryDocuments").summaryRecord;
+        var sum = 0;
+        store.each(function (rec) {
+            if (rec.get('flddis') != '')
+                sum += parseInt(rec.get('flddis'));
+        });
+            return  sum.toLocaleString() ;
+    }
+    function sumColprdis() {
+        var store = App.NewForush5.queryById("NewForush5Grid").store;
+        var summaryRec = App.NewForush5.queryById("NewForush5Grid").getView().getFeature("summaryDocuments").summaryRecord;
+        var sum = 0;
+        store.each(function (rec) {
+            if (rec.get('fldprdis') != '')
+                sum += parseInt(rec.get('fldprdis'));
+        });
+            return  sum.toLocaleString() ;
+    }
+    function sumColadis() {
+        var store = App.NewForush5.queryById("NewForush5Grid").store;
+        var summaryRec = App.NewForush5.queryById("NewForush5Grid").getView().getFeature("summaryDocuments").summaryRecord;
+        var sum = 0;
+        store.each(function (rec) {
+            if (rec.get('fldadis') != '')
+                sum += parseInt(rec.get('fldadis'));
+        });
+            return  sum.toLocaleString() ;
+    }
+    function sumColvam() {
+        var store = App.NewForush5.queryById("NewForush5Grid").store;
+        var summaryRec = App.NewForush5.queryById("NewForush5Grid").getView().getFeature("summaryDocuments").summaryRecord;
+        var sum = 0;
+        store.each(function (rec) {
+            if (rec.get('fldvam') != '')
+                sum += parseInt(rec.get('fldvam'));
+        });
+            return  sum.toLocaleString() ;
+    }
+    function sumColodam() {
+        var store = App.NewForush5.queryById("NewForush5Grid").store;
+        var summaryRec = App.NewForush5.queryById("NewForush5Grid").getView().getFeature("summaryDocuments").summaryRecord;
+        var sum = 0;
+        store.each(function (rec) {
+            if (rec.get('fldodam') != '')
+                sum += parseInt(rec.get('fldodam'));
+        });
+            return  sum.toLocaleString() ;
+    }
+    function sumColtsstam() {
+        var store = App.NewForush5.queryById("NewForush5Grid").store;
+        var summaryRec = App.NewForush5.queryById("NewForush5Grid").getView().getFeature("summaryDocuments").summaryRecord;
+        var sum = 0;
+        store.each(function (rec) {
+            if (rec.get('fldtsstam') != '')
+                sum += parseInt(rec.get('fldtsstam'));
+        });
+            return  sum.toLocaleString() ;
+    }
+    function sumColvop() {
+        var store = App.NewForush5.queryById("NewForush5Grid").store;
+        var summaryRec = App.NewForush5.queryById("NewForush5Grid").getView().getFeature("summaryDocuments").summaryRecord;
+        var sum = 0;
+        store.each(function (rec) {
+            if (rec.get('fldvop') != '')
+                sum += parseInt(rec.get('fldvop'));
+        });
+            return  sum.toLocaleString() ;
+    }
+
+
+    function refreshFeature() {
+        App.NewForush5.queryById("NewForush5Grid").getView().getFeature("summaryDocuments").onStoreUpdate();
+    }
+    var FirstLoadNewForush5Grid = 0;
+    var FirstLoadCboHeadLine = 0;
+    var SelectTexttt = function () {
+        this.selectText();
+    };
+    var SearchMatch = function (record) {
+        return record.query = new RegExp(record.query.replace("(", "[(]").replace(")", "[)]"), 'i');
+    };
+
+    function CheckValidTime(Fieldd) {
+        var t = Fieldd.getValue();
+        if (t.substring(0, 2) > 23 || t.substring(3, 5) > 59) {
+            Ext.MessageBox.show({
+                title: "خطا",
+                msg: "زمان وارد شده نامعتبر است",
+                icon: Ext.MessageBox.ERROR,
+                buttons: Ext.MessageBox.OK,
+                fn: function (btn) {
+                    if (btn == "ok") {
+                        Fieldd.focus();
+                    }
+                }
+            });
+            Fieldd.setValue("");
+        }
+
+    }
+    var GotoSerchKalaKhedmat = function (Fieldd, Event, html) {
+        App.NewForush5.body.mask("در حال بارگذاری");
+        Ext.net.DirectMethod.request({
+            url: '/Tax/SearchKalaKhedmat/Index',
+            params: {
+                rowIdx: App.NewForush5.queryById("NewForush5Grid").store.indexOf(Fieldd.record),/*Fieldd.record.index*/
+                State: 1
+            },
+            success: function () {
+                App.NewForush5.body.mask().hide();
+            }
+        });
+    };
+    var ss;
+    var SetWithAm = function (Fieldd, value, rec) {
+        /*  Colam    Colfee   ColDis  ColVra
+        am=value
+        Ext.getCmp("ColMablaghKol").getComponent(App.NewForush5.queryById("NewForush5Grid").store.indexOf(Fieldd.record)).setValue(0);
+        */
+        ss = Fieldd;
+        var a = value;
+        if (value != 0) {
+            var f = 0;
+            if (Ext.getCmp("Colfee").getComponent(App.NewForush5.queryById("NewForush5Grid").store.indexOf(Fieldd.record)).getValue() != 0)
+                f = Ext.getCmp("Colfee").getComponent(App.NewForush5.queryById("NewForush5Grid").store.indexOf(Fieldd.record)).getValue();
+             var d = 0;
+             if (Ext.getCmp("Coldis").getComponent(App.NewForush5.queryById("NewForush5Grid").store.indexOf(Fieldd.record)).getValue() != '0')
+                 d = Ext.getCmp("Coldis").getComponent(App.NewForush5.queryById("NewForush5Grid").store.indexOf(Fieldd.record)).getValue();
+             Ext.getCmp("Colprdis").getComponent(App.NewForush5.queryById("NewForush5Grid").store.indexOf(Fieldd.record)).setValue(parseInt(f) * parseFloat(a));
+             Ext.getCmp("Coladis").getComponent(App.NewForush5.queryById("NewForush5Grid").store.indexOf(Fieldd.record)).setValue((parseInt(f) * parseFloat(a)) - parseInt(d));
+     
+             var v = 0;
+             if (Ext.getCmp("Colvra").getComponent(App.NewForush5.queryById("NewForush5Grid").store.indexOf(Fieldd.record)).getValue() != '0')
+                 v = Ext.getCmp("Colvra").getComponent(App.NewForush5.queryById("NewForush5Grid").store.indexOf(Fieldd.record)).getValue();
+             Ext.getCmp("Colvam").getComponent(App.NewForush5.queryById("NewForush5Grid").store.indexOf(Fieldd.record)).setValue(parseFloat(v) * parseInt((parseInt(f) * parseFloat(a)) - parseInt(d)) / 100);
+     
+             var o = 0;
+             if (Ext.getCmp("Colodr").getComponent(App.NewForush5.queryById("NewForush5Grid").store.indexOf(Fieldd.record)).getValue() != '0')
+                 o = Ext.getCmp("Colodr").getComponent(App.NewForush5.queryById("NewForush5Grid").store.indexOf(Fieldd.record)).getValue();
+             Ext.getCmp("Colodam").getComponent(App.NewForush5.queryById("NewForush5Grid").store.indexOf(Fieldd.record)).setValue(parseFloat(o) * parseInt((parseInt(f) * parseFloat(a)) - parseInt(d)) / 100);
+             var oo = parseFloat(o) * parseInt((parseInt(f) * parseFloat(a)) - parseInt(d)) / 100;
+     
+             var va = 0;
+             if (Ext.getCmp("Colvam").getComponent(App.NewForush5.queryById("NewForush5Grid").store.indexOf(Fieldd.record)).getValue() != '0')
+                 va = Ext.getCmp("Colvam").getComponent(App.NewForush5.queryById("NewForush5Grid").store.indexOf(Fieldd.record)).getValue();
+             Ext.getCmp("Coltsstam").getComponent(App.NewForush5.queryById("NewForush5Grid").store.indexOf(Fieldd.record)).setValue(parseInt(va) + parseInt(oo) + parseInt((parseInt(f) * parseFloat(a)) - parseInt(d)));
+             
+        }
+    };
+    var SetWithFee = function (Fieldd, value, c) {
+        if (value != 0) {
+            var a = 0;
+            if (Ext.getCmp("Colam").getComponent(App.NewForush5.queryById("NewForush5Grid").store.indexOf(Fieldd.record)).getValue() != '')
+                a = Ext.getCmp("Colam").getComponent(App.NewForush5.queryById("NewForush5Grid").store.indexOf(Fieldd.record)).getValue();
+            var f = value;
+            var d = 0;
+            if (Ext.getCmp("Coldis").getComponent(App.NewForush5.queryById("NewForush5Grid").store.indexOf(Fieldd.record)).getValue() != '')
+                d = Ext.getCmp("Coldis").getComponent(App.NewForush5.queryById("NewForush5Grid").store.indexOf(Fieldd.record)).getValue();
+            Ext.getCmp("Colprdis").getComponent(App.NewForush5.queryById("NewForush5Grid").store.indexOf(Fieldd.record)).setValue(parseInt(f) * parseFloat(a));
+            Ext.getCmp("Coladis").getComponent(App.NewForush5.queryById("NewForush5Grid").store.indexOf(Fieldd.record)).setValue((parseInt(f) * parseFloat(a)) - parseInt(d));
+
+            var v = 0;
+            if (Ext.getCmp("Colvra").getComponent(App.NewForush5.queryById("NewForush5Grid").store.indexOf(Fieldd.record)).getValue() != '')
+                v = Ext.getCmp("Colvra").getComponent(App.NewForush5.queryById("NewForush5Grid").store.indexOf(Fieldd.record)).getValue();
+            Ext.getCmp("Colvam").getComponent(App.NewForush5.queryById("NewForush5Grid").store.indexOf(Fieldd.record)).setValue(parseFloat(v) * parseInt((parseInt(f) * parseFloat(a)) - parseInt(d)) / 100);
+
+            var o = 0;
+            if (Ext.getCmp("Colodr").getComponent(App.NewForush5.queryById("NewForush5Grid").store.indexOf(Fieldd.record)).getValue() != '')
+                o = Ext.getCmp("Colodr").getComponent(App.NewForush5.queryById("NewForush5Grid").store.indexOf(Fieldd.record)).getValue();
+            Ext.getCmp("Colodam").getComponent(App.NewForush5.queryById("NewForush5Grid").store.indexOf(Fieldd.record)).setValue(parseFloat(o) * parseInt((parseInt(f) * parseFloat(a)) - parseInt(d)) / 100);
+            var oo = parseFloat(o) * parseInt((parseInt(f) * parseFloat(a)) - parseInt(d)) / 100;
+
+            var va = 0;
+            if (Ext.getCmp("Colvam").getComponent(App.NewForush5.queryById("NewForush5Grid").store.indexOf(Fieldd.record)).getValue() != '')
+                va = Ext.getCmp("Colvam").getComponent(App.NewForush5.queryById("NewForush5Grid").store.indexOf(Fieldd.record)).getValue();
+            Ext.getCmp("Coltsstam").getComponent(App.NewForush5.queryById("NewForush5Grid").store.indexOf(Fieldd.record)).setValue(parseInt(va) + parseInt(oo) + parseInt((parseInt(f) * parseFloat(a)) - parseInt(d)));
+        }
+    };
+    var SetWithDis = function (Fieldd, value, c) {
+        if (value != 0) {
+            var a = 0;
+            if (Ext.getCmp("Colam").getComponent(App.NewForush5.queryById("NewForush5Grid").store.indexOf(Fieldd.record)).getValue() != '')
+                a = Ext.getCmp("Colam").getComponent(App.NewForush5.queryById("NewForush5Grid").store.indexOf(Fieldd.record)).getValue();
+            var f = 0;
+            if (Ext.getCmp("Colfee").getComponent(App.NewForush5.queryById("NewForush5Grid").store.indexOf(Fieldd.record)).getValue() != '')
+                f = Ext.getCmp("Colfee").getComponent(App.NewForush5.queryById("NewForush5Grid").store.indexOf(Fieldd.record)).getValue();
+            var d = value;
+            Ext.getCmp("Colprdis").getComponent(App.NewForush5.queryById("NewForush5Grid").store.indexOf(Fieldd.record)).setValue(parseInt(f) * parseFloat(a));
+            Ext.getCmp("Coladis").getComponent(App.NewForush5.queryById("NewForush5Grid").store.indexOf(Fieldd.record)).setValue((parseInt(f) * parseFloat(a)) - parseInt(d));
+
+            var v = 0;
+            if (Ext.getCmp("Colvra").getComponent(App.NewForush5.queryById("NewForush5Grid").store.indexOf(Fieldd.record)).getValue() != '')
+                v = Ext.getCmp("Colvra").getComponent(App.NewForush5.queryById("NewForush5Grid").store.indexOf(Fieldd.record)).getValue();
+            Ext.getCmp("Colvam").getComponent(App.NewForush5.queryById("NewForush5Grid").store.indexOf(Fieldd.record)).setValue(parseFloat(v) * parseInt((parseInt(f) * parseFloat(a)) - parseInt(d)) / 100);
+
+            var o = 0;
+            if (Ext.getCmp("Colodr").getComponent(App.NewForush5.queryById("NewForush5Grid").store.indexOf(Fieldd.record)).getValue() != '')
+                o = Ext.getCmp("Colodr").getComponent(App.NewForush5.queryById("NewForush5Grid").store.indexOf(Fieldd.record)).getValue();
+            Ext.getCmp("Colodam").getComponent(App.NewForush5.queryById("NewForush5Grid").store.indexOf(Fieldd.record)).setValue(parseFloat(o) * parseInt((parseInt(f) * parseFloat(a)) - parseInt(d)) / 100);
+            var oo = parseFloat(o) * parseInt((parseInt(f) * parseFloat(a)) - parseInt(d)) / 100;
+
+            var va = 0;
+            if (Ext.getCmp("Colvam").getComponent(App.NewForush5.queryById("NewForush5Grid").store.indexOf(Fieldd.record)).getValue() != '')
+                va = Ext.getCmp("Colvam").getComponent(App.NewForush5.queryById("NewForush5Grid").store.indexOf(Fieldd.record)).getValue();
+            Ext.getCmp("Coltsstam").getComponent(App.NewForush5.queryById("NewForush5Grid").store.indexOf(Fieldd.record)).setValue(parseInt(va) + parseInt(oo) + parseInt((parseInt(f) * parseFloat(a)) - parseInt(d)));
+        }
+    };
+    var SetWithVra = function (Fieldd, value, c) {
+        var v = value;
+        if (value != 0) {
+            var a = 0;
+            if (Ext.getCmp("Coladis").getComponent(App.NewForush5.queryById("NewForush5Grid").store.indexOf(Fieldd.record)).getValue() != '')
+                a = Ext.getCmp("Coladis").getComponent(App.NewForush5.queryById("NewForush5Grid").store.indexOf(Fieldd.record)).getValue();
+
+            Ext.getCmp("Colvam").getComponent(App.NewForush5.queryById("NewForush5Grid").store.indexOf(Fieldd.record)).setValue(parseFloat(v) * parseInt(a) / 100);
+            var vv = parseFloat(v) * parseInt(a) / 100;
+
+            var o = 0;
+            if (Ext.getCmp("Colodam").getComponent(App.NewForush5.queryById("NewForush5Grid").store.indexOf(Fieldd.record)).getValue() != '')
+                o = Ext.getCmp("Colodam").getComponent(App.NewForush5.queryById("NewForush5Grid").store.indexOf(Fieldd.record)).getValue();
+
+            Ext.getCmp("Coltsstam").getComponent(App.NewForush5.queryById("NewForush5Grid").store.indexOf(Fieldd.record)).setValue(parseInt(vv) + parseInt(o) + parseInt(a));
+        }
+    };
+    var SetWithexr = function (Fieldd, value, c) {
+        if (value != 0) {
+            var e = value;
+            var f = 0;
+            if (Ext.getCmp("Colfee").getComponent(App.NewForush5.queryById("NewForush5Grid").store.indexOf(Fieldd.record)).getValue() != '')
+                f = Ext.getCmp("Colfee").getComponent(App.NewForush5.queryById("NewForush5Grid").store.indexOf(Fieldd.record)).getValue();
+
+        }
+    };
+
+    var SetWithodr = function (Fieldd, value, c) {
+
+        var v = value;
+        if (value != 0) {
+            var a = 0;
+            if (Ext.getCmp("Coladis").getComponent(App.NewForush5.queryById("NewForush5Grid").store.indexOf(Fieldd.record)).getValue() != '')
+                a = Ext.getCmp("Coladis").getComponent(App.NewForush5.queryById("NewForush5Grid").store.indexOf(Fieldd.record)).getValue();
+
+            Ext.getCmp("Colodam").getComponent(App.NewForush5.queryById("NewForush5Grid").store.indexOf(Fieldd.record)).setValue(parseFloat(v) * parseInt(a) / 100);
+
+            var va = 0;
+            if (Ext.getCmp("Colvam").getComponent(App.NewForush5.queryById("NewForush5Grid").store.indexOf(Fieldd.record)).getValue() != '')
+                va = Ext.getCmp("Colvam").getComponent(App.NewForush5.queryById("NewForush5Grid").store.indexOf(Fieldd.record)).getValue();
+
+            Ext.getCmp("Coltsstam").getComponent(App.NewForush5.queryById("NewForush5Grid").store.indexOf(Fieldd.record)).setValue(parseInt(va) + parseInt(parseFloat(v) * parseInt(a) / 100) + parseInt(a));
+        }
+    };
+
+    var SetWithodam = function (Fieldd, value, c) {
+
+        var o = value;
+        if (value != 0) {
+            var v = 0;
+            if (Ext.getCmp("Colodr").getComponent(App.NewForush5.queryById("NewForush5Grid").store.indexOf(Fieldd.record)).getValue() != '')
+                v = Ext.getCmp("Colodr").getComponent(App.NewForush5.queryById("NewForush5Grid").store.indexOf(Fieldd.record)).getValue();
+
+            var a = 0;
+            if (Ext.getCmp("Coladis").getComponent(App.NewForush5.queryById("NewForush5Grid").store.indexOf(Fieldd.record)).getValue() != '')
+                a = Ext.getCmp("Coladis").getComponent(App.NewForush5.queryById("NewForush5Grid").store.indexOf(Fieldd.record)).getValue();
+
+            Ext.getCmp("Colodam").getComponent(App.NewForush5.queryById("NewForush5Grid").store.indexOf(Fieldd.record)).setValue(parseFloat(v) * parseInt(a) / 100);
+
+            var va = 0;
+            if (Ext.getCmp("Colvam").getComponent(App.NewForush5.queryById("NewForush5Grid").store.indexOf(Fieldd.record)).getValue() != '')
+                va = Ext.getCmp("Colvam").getComponent(App.NewForush5.queryById("NewForush5Grid").store.indexOf(Fieldd.record)).getValue();
+
+            Ext.getCmp("Coltsstam").getComponent(App.NewForush5.queryById("NewForush5Grid").store.indexOf(Fieldd.record)).setValue(parseInt(va) + parseInt(o) + parseInt(a));
+        }
+    };
+    function AddRowForush1() {
+        var grid = App.NewForush5.queryById('NewForush5Grid');
+        var index = grid.store.count();
+            var LastRec = grid.store.getAt(index - 1);
+            grid.store.insert(index, {
+                fldadis: 0,
+                fldam:0,
+                fldbros: 0,
+
+                fldbsrn: "",
+
+            fldcfee: 0,
+            fldconsfee:0,
+                fldcop: 0,
+
+                fldcut: "",
+
+            flddis:0,
+            fldexr: 0,
+                fldfee: 0,
+
+                fldmu: "",
+
+            fldnw:0,
+            fldodam: 0,
+                fldodr: 0,
+
+                fldodt: "",
+
+            fldolam: 0,
+                fldolr: 0,
+
+                fldolt: "",
+
+            fldprdis:0,
+            fldspro: 0,
+            fldsscv:0,
+                fldssrv:0,
+
+            fldsstt:"",
+                fldssttid: "",
+
+            fldtcpbs: 0,
+            fldtsstam :0,
+            fldvam:0,
+            fldvop: 0,
+            fldvra:0
+            });
+
+          if(index==0){
+grid.getView().refresh();
+            }
+
+        /*grid.editingPlugin.startEdit(index, 2);
+        grid.editingPlugin.getActiveEditor().field.selectText();*/
+    }
+    function GotoSearchShakhs(st) {
+        App.NewForush5.body.mask("در حال بارگذاری");
+        Ext.net.DirectMethod.request({
+            url: '/Tax/SearchShakhs/Index',
+            params: {
+                State: st,
+                UserType: 1
+            },
+            success: function () {
+                App.NewForush5.body.mask().hide();
+            }
+        });
+    }
+
+
+    function SaveSooratHesab() {
+        var NewForush5Grid = App.NewForush5.queryById('NewForush5Grid');
+        var fldId = App.NewForush5.queryById('fldId');
+
+
+           var txtDateSabt = App.NewForush5.queryById('txtDateSabt');
+           var txtSaatSabt = App.NewForush5.queryById('txtSaatSabt');
+           /*var txtDateIjad = App.NewForush5.queryById('txtDateIjad');
+           var txtSaatIjad = App.NewForush5.queryById('txtSaatIjad');*/
+           var txttaxid = App.NewForush5.queryById('txttaxid');
+           var txtinno = App.NewForush5.queryById('txtinno');
+           var txtirtaxid = App.NewForush5.queryById('txtirtaxid');
+           var CboIns = App.NewForush5.queryById('CboIns');
+           var fldForushandeId = App.NewForush5.queryById('fldForushandeId');
+           var fldKharidarId = App.NewForush5.queryById('fldKharidarId');
+        var txtTax17 = App.NewForush5.queryById('txtTax17');
+
+        var er = false;
+
+        if (CboIns.getValue() != "1") {
+if (txtirtaxid.validate() == false) {
+            er = true;
+        }
+        }
+
+       /* var summaryRec = App.NewForush5.queryById("NewForush5Grid").getView().getFeature("summaryDocuments").summaryRecord;*/
+        var Forush1Grid_DetailsArray = new Array();
+
+        /*var summaryBestankar = parseFloat(summaryRec.data.fldBestankar);*/
+
+        for (var i = 0; i < NewForush5Grid.getStore().count() ; i++) {
+
+
+            Forush1Grid_DetailsArray.push({
+                fldadis: App.Coladis.getComponent(i).getValue(),
+                fldam: App.Colam.getComponent(i).getValue(),
+                fldbsrn: App.Colbsrn.getComponent(i).getValue(),
+                fldcop: App.Colcop.getComponent(i).getValue(),
+                flddis: App.Coldis.getComponent(i).getValue(),
+                fldfee: App.Colfee.getComponent(i).getValue(),
+                fldmu: App.Colmu.getComponent(i).getValue(),
+                fldodam: App.Colodam.getComponent(i).getValue(),
+                fldodr: App.Colodr.getComponent(i).getValue(),
+                fldodt: App.Colodt.getComponent(i).getValue(),
+                fldprdis: App.Colprdis.getComponent(i).getValue(),
+                fldsstt: App.Colsstt.getComponent(i).getValue(),
+                fldsstid: App.Colssttid.getComponent(i).getValue(),
+                fldtsstam: App.Coltsstam.getComponent(i).getValue(),
+                fldvam: App.Colvam.getComponent(i).getValue(),
+                fldvop: App.Colvop.getComponent(i).getValue(),
+                fldvra: App.Colvra.getComponent(i).getValue()
+            });
+        }
+
+        if (NewForush5Grid.getStore().count() == 0)
+            er = true;
+
+        if (er == true)
+            return;
+                                    
+        var data = {
+            fldId: fldId.getValue(),
+            fldInty:1,
+            fldinp:1,
+            fldSh_Indatim: txtDateSabt.getRawValue(),
+            fldIndatim_Zaman: txtSaatSabt.getValue(),
+            fldSh_Indati2m: "",/*txtDateIjad.getRawValue(),
+            fldIndati2m_Zaman: txtSaatIjad.getValue(),*/
+            fldForushandeId:fldForushandeId.getValue(),
+            fldKharidarId:fldKharidarId.getValue(),
+
+            fldTaxId: txttaxid.getValue(),
+            fldInno: txtinno.getValue(),
+            fldIrtaxId: txtirtaxid.getValue(),
+            fldIns: CboIns.getValue(),
+            fldTax17: txtTax17.getValue(),
+
+            Forush1Grid_DetailsArray: Forush1Grid_DetailsArray,
+            serial:'@ViewBag.serial'
+        };
+        Ext.net.Mask.show({ msg: 'در حال ذخیره سازی...' });
+        $.ajax({
+            type: "POST",
+            url: '/Tax/SooratHesab/Savee',
+            datatype: "json",
+            data: JSON.stringify(data),
+            contentType: 'application/json',
+            success: function (result) {
+                var ic = Ext.MessageBox.INFO;
+                if (result.Er == 1)
+                    ic = Ext.MessageBox.ERROR;
+                Ext.MessageBox.show({
+                    title: result.MsgTitle,
+                    msg: result.Msg,
+                    icon: ic,
+                    closable: false,
+                    buttons: Ext.MessageBox.OK
+                });
+                Ext.net.Mask.hide();
+                if (result.Er != 1) {
+                    App.SooratHesab.queryById('Grid').store.load();
+                    clearNewForush5();
+                }
+            },
+            failure: function () {
+                Ext.net.Mask.hide();
+            }
+        });
+    }
+
+    function clearNewForush5() {
+
+    }
+
+
+
+
+
+
+
+
+        var addKeyMapNewForush5 = function (cmp) {
+            this.keyMap = new Ext.util.KeyMap({
+                target: cmp.getEl(),
+                binding: [{
+                    key: [13, 9, 120], /*Ext.EventObject.ENTER,*/
+                    fn: function (key, e) {
+                        if (e.getKey() == 9 || e.getKey() == 120) {
+                            e.stopEvent();
+                        }
+                        if (e.getKey() == 120) {
+                            SaveNewForush5();
+                        }
+                        else {
+                            var keyfield = App.NewForush5.queryById(Ext.getCmp((Ext.Element.getActiveElement()).name).itemId);
+                            var nextfld;
+                            if (keyfield.itemId == "txtNameK") {
+                                /*nextfld = App.ColHeadLine.getComponent(0);*/
+                                /*var grid = App.NewForush5.queryById('NewForush5Grid');
+                                grid.editingPlugin.startEdit(0, 2);*/
+                                App.Colssttid.getComponent(0).focus();
+                                return;
+                            }
+                            else if (keyfield.itemId == "txtDateSabt") {
+                                nextfld = App.NewForush5.queryById("txtSaatSabt");
+
+                            }
+                            else if (keyfield.itemId == "txtSaatSabt") {
+                                nextfld = App.NewForush5.queryById("txtDateIjad");
+
+                            }
+                            else if (keyfield.itemId == "txtDateIjad") {
+                                nextfld = App.NewForush5.queryById("txtSaatIjad");
+
+                            }
+                            else if (keyfield.itemId == "txtSaatIjad") {
+                                nextfld = App.NewForush5.queryById("txtNameF");
+
+                            }
+                            else {
+                                nextfld = keyfield.nextSibling().nextSibling();
+                                /*if (nextfld.itemId == "txtDescDoc") {
+                                    nextfld.el.swallowEvent(['keypress', 'keydown']);
+                                }*/
+                            }
+                            nextfld.focus();
+                            nextfld.selectText();
+                        }
+                    }
+                }]
+            });
+        };
+</script>

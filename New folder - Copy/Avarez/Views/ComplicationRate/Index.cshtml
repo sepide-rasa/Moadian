@@ -1,0 +1,736 @@
+﻿@using Kendo.Mvc.UI;
+<div class="modal" id="ComplicationRate">
+    <script src="@Url.Content("~/Content/Base.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Scripts/accounting.js")" type="text/javascript"></script>
+    @{
+        List<SelectListItem> sal = new List<SelectListItem>();
+        for (int i = 1360; i < 1420; i++)
+        {
+            SelectListItem item = new SelectListItem();
+            item.Text = i.ToString();
+            item.Value = i.ToString();
+            sal.Add(item);
+        }        
+    }
+    <div>
+     <a href="@Url.Content("~/Helps/ورود نرخ عوارض سالیانه.htm")" target="_blank" id="Help" title="راهنما" style="background-image:url('/Content/images/1381415123_help.png');background-repeat: no-repeat;height: 20px;float: left;top: 10px;left: 10px;"></a>
+        <br />
+        <center>
+            <table>
+                <tr>
+                    <td align="left">
+                        سال:
+                    </td>
+                    <td dir="rtl" align="right" colspan="2">
+                        @(Html.Kendo().DropDownList()
+                                  .Name("cboYear")
+                                  .DataTextField("Text")
+                                  .DataValueField("Value")
+                                  .BindTo(sal)
+                                  .Value(MyLib.Shamsi.Miladi2ShamsiString(DateTime.Now).Substring(0, 4))
+                                  .HtmlAttributes(new { @style = "width:80px;" })
+                            )
+                    </td>
+                </tr>
+                <tr>
+                    <td align="left">
+                        موقعیت در تقسیمات کشوری:
+                    </td>
+                    <td colspan="2" dir="rtl" id="countryLocation" align="right">
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="3" align="center" style="height: 30px;">
+                        @Html.Label("مورد انتخاب شده: ", new { @id = "CountryPosition" })
+                    </td>
+                </tr>
+                <tr>
+                    <td align="left">
+                        سلسله مراتب خودرو:
+                    </td>
+                    <td colspan="2" dir="rtl" id="carLocation" align="right">
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="3" align="center" style="height: 30px;">
+                        @Html.Label("مورد انتخاب شده: ", new { @id = "carPosition" })
+                    </td>
+                </tr>
+                <tr>
+                    @Html.Hidden("fldId")
+                    <td align="left">
+                        @Html.CheckBox("SubNodes")
+                    </td>
+                    <td>
+                        نمایش زیرشاخه ها
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="3">
+                        <center>
+                            @Avarez.Helper.winClass.Buttons("Next", "ادامه", "Next")
+                        </center>
+                    </td>
+                </tr>
+            </table>
+        </center>
+    </div>
+    <script type="text/javascript">
+        var Account, Cabin, System, Tip, Class, type, code, selectedrow, ComplicationRateID;
+        function Add() {
+            var entityGrid = $("#Grid").data("kendoGrid");
+            var selectedItem = entityGrid.dataItem(entityGrid.select());            
+            if (selectedItem) {                
+                var drop = $("#cboYear").data("kendoDropDownList");
+                Account = selectedItem.fldCarAccountID;
+                Cabin = selectedItem.fldCarCabinID;
+                System = selectedItem.fldCarSystemID;
+                Tip = selectedItem.fldCarModelID;
+                Class = selectedItem.fldCarClassID;
+                
+                if (Class != 0) {
+                    type = 6;
+                    code = Class;
+                    selectedrow = selectedItem.fldCarAccountName + '-->' + selectedItem.fldCarCabinName + '-->' + selectedItem.fldCarSystemName + '-->' + selectedItem.fldCarModelName + '-->' + selectedItem.fldCarClassName;
+                }
+                else if (Tip != 0) {
+                    type = 5;
+                    code = Tip;
+                    selectedrow = selectedItem.fldCarAccountName + '-->' + selectedItem.fldCarCabinName + '-->' + selectedItem.fldCarSystemName + '-->' + selectedItem.fldCarModelName;
+                }
+                else if (System != 0) {
+                    type = 4;
+                    code = System;
+                    selectedrow = selectedItem.fldCarAccountName + '-->' + selectedItem.fldCarCabinName + '-->' + selectedItem.fldCarSystemName;
+                }
+                else if (Cabin != 0) {
+                    type = 3;
+                    code = Cabin;
+                    selectedrow = selectedItem.fldCarAccountName + '-->' + selectedItem.fldCarCabinName;
+                }
+                else if (Account != 0) {
+                    type = 2;
+                    code = Account;
+                    selectedrow = selectedItem.fldCarAccountName;
+                }
+                $('#selectedRow').html('سلسله مراتب خودرو انتخاب شده: ' + selectedrow);
+                var grid = $('#NutNullGrid').data('kendoGrid');
+                $.ajax({
+                    url: '@Url.Action("NotNullReload", "ComplicationRate")',
+                    type: 'get',
+                    datatype: 'json',
+                    data: { type: type, value: code, year: drop.text().toString(), CountryCode: countrySID, CountryType: countryNType },
+                    error: function (xhr, status, error) {
+                        alert(xhr + status);
+                    },
+                    success: function (result) {
+                        $("#NotNullGrid").data("kendoGrid").dataSource.data(result);
+                        var f = $('.k-button');
+                        f.removeAttr('href');
+                    }
+                });
+            }
+        }
+        function Edit() {
+        
+            var entityGrid = $("#NotNullGrid").data("kendoGrid");
+            var selectedItem = entityGrid.dataItem(entityGrid.select());
+            if (selectedItem) {
+                var id = selectedItem.fldID;
+                var URL = '@Url.Content("~/ComplicationRate/Details")';
+                URL = URL + "/" + id;
+                $.ajax({
+                    type: "GET",
+                    url: URL,
+                    success: function (data) {
+                        $('#fldId').val(data.fldId);
+                        $("#txtFromSilandr").val(data.fldFromCylinder);
+                        $("#txtToSilandr").val(data.fldToCylinder);
+                        $('#txtFromWhele').val(data.fldFromWheel);
+                        $('#txtToWhele').val(data.fldToWheel);
+                        $("#txtFromModel").val(data.fldFromModel);
+                        $("#txtToModel").val(data.fldToModel);
+                        $('#txtFromMotor').val(data.fldFromContentMotor);
+                        $('#txtToMotor').val(data.fldToContentMotor);
+                        $('#txtPrice').val(data.fldPrice);
+                        $('#txtDesc').val(data.fldDesc);
+                        ComplicationRateID=data.fldId
+                     
+                    },
+                    failure: function (data) {
+                        alert(data.data);
+                    }
+                });
+            }
+            else {
+                alert('لطفا یک سطر را انتخاب کنید.');
+            }
+        }
+        function Delete() {
+            var entityGrid = $("#NotNullGrid").data("kendoGrid");
+            var selectedItem = entityGrid.dataItem(entityGrid.select());
+            if (selectedItem) {
+                var id = selectedItem.fldID;
+                var URL = '@Url.Content("~/metro/YesNomsg")';
+                URL = URL + "/?id=" + id + "&URL=" + '@Url.Content("~/ComplicationRate/Delete")';
+                windowAppend("body", URL);
+                $("#message").html('آیا مایل به حذف رکورد انتخاب شده هستید؟');
+                @*var grid = $('#NutNullGrid').data('kendoGrid');
+                $.ajax({
+                    url: '@Url.Action("NotNullReload", "ComplicationRate")',
+                    type: 'get',
+                    datatype: 'json',
+                    data: { type: type, value: code, year: drop.text().toString(), CountryCode: countrySID, CountryType: countryNType },
+                    error: function (xhr, status, error) {
+                        alert(xhr + status);
+                    },
+                    success: function (result) {
+                        $("#NotNullGrid").data("kendoGrid").dataSource.data(result);
+                        var f = $('.k-button');
+                        f.removeAttr('href');
+                    }
+                });*@
+               
+            }
+            else {
+                alert('لطفا یک سطر را انتخاب کنید.');
+            }
+            Clear();
+            
+        }
+        function select(e) {
+            var dataItem = this.dataItem(e.node);
+            countryid = dataItem.id;
+            countrySID = dataItem.fldSid;
+            countryNType = dataItem.fldNodeType;
+            var url = '@Url.Content("~/ComplicationRate/CountryPosition")';
+            $.ajax({
+                type: "post",
+                url: url,
+                data: { id: countryid },
+                datatype: "json",
+                success: function (data) {
+                    var m = data;
+                    $('#CountryPosition').html('مورد انتخاب شده: ' + m.Position);
+                    var treeview = $("#treeview").data("kendoTreeView");
+                    treeview.collapse(".k-item");
+                },
+                failure: function (data) {
+                    alert(data.data);
+                }
+            });
+        }
+
+        var countryid;
+        var countrySID;
+        var countryNType = -1;
+        var error = false;
+        function carselect(e) {
+            var dataItem = this.dataItem(e.node);
+            carid = dataItem.id;
+            carSID = dataItem.fldSid;
+            carNType = dataItem.fldNodeType;
+            if (carNType < 2) {
+                carid = 0;
+                carSID = 0;
+                carNType = -1;
+                $('#carPosition').html('شما مجاز به انتخاب این گزینه نمی باشید.');
+                return;
+            }
+            var url = '@Url.Content("~/ComplicationRate/CarPosition")';
+            $.ajax({
+                type: "post",
+                url: url,
+                data: { id: carid },
+                datatype: "json",
+                success: function (data) {
+                    var m = data;
+                    $('#carPosition').html('مورد انتخاب شده: ' + m.Position);
+                    var treeview = $("#cartreeview").data("kendoTreeView");
+                    treeview.collapse(".k-item");
+                    error = data.error;
+                },
+                failure: function (data) {
+                    alert(data.data);
+                }
+            });
+        }
+
+        var carid;
+        var carSID;
+        var carNType = -1;
+        var data;
+        $("document").ready(function () {
+
+            var f = $('.k-button');
+            f.removeAttr('href');
+
+            $('#countryLocation').html($('#LocationDiv').valueOf());
+            $('#carLocation').html($('#carLocationDiv').valueOf());
+            $("#AddLink").button();
+            $("#Next").button();
+            $("#exit").button();
+            $("#btnSave").button();
+            $("#Help").button();
+
+            $("#exit").click(function () {
+                $("#ComplicationRate").remove();
+            });
+
+            $('#ComplicationRate').on('keyup', 'input', function (event) {
+                if (event.which == 13) {
+                    var inputs = $('#ComplicationRate').find(':input:visible');
+                    inputs.eq(inputs.index(this) + 1).focus();
+                }
+            });
+
+            $('#btnSave').click(function () {
+                var drop = $("#cboYear").data("kendoDropDownList");
+                var sendInfo = { fldId:ComplicationRateID, fldTypeCar: type, fldCodeCar: code, fldTypeCountryDivisions: countryNType,
+                    fldCodeCountryDivisions: countrySID, fldYear: drop.text(),
+                    fldFromCylinder: $('#txtFromSilandr').val(), fldToCylinder: $('#txtToSilandr').val(),
+                    fldFromWheel: $('#txtFromWhele').val(), fldToWheel: $('#txtToWhele').val(),
+                    fldFromModel: $('#txtFromModel').val(), fldToModel: $('#txtToModel').val(),
+                    fldFromContentMotor: $('#txtFromMotor').val(), fldToContentMotor: $('#txtToMotor').val(),
+                    fldPrice: $('#txtPrice').val().replace(',', '').replace(",", "").replace(",", ""), fldDesc: $('#txtDesc').val()
+                }
+
+                $('#Lock').show();
+                $.ajax({
+                    type: "POST",
+                    url: '/ComplicationRate/save',
+                    datatype: "json",
+                    data: sendInfo,
+                    success: function (data) {
+                        var m = data;
+                        windowAppend("body", "/metro/error");
+                        $("#message").html(m.data);
+                        switch (m.state) {
+                            case 0:
+                                $("#error .wintitle").html("ذخیره موفق");
+                                break;
+                            case 1:
+                                $("#error .wintitle").html("خطا");
+                                break;
+                        }
+                        var grid = $('#NutNullGrid').data('kendoGrid');
+                        $.ajax({
+                            url: '@Url.Action("NotNullReload", "ComplicationRate")',
+                            type: 'get',
+                            datatype: 'json',
+                            data: { type: type, value: code, year: drop.text().toString(), CountryCode: countrySID, CountryType: countryNType },
+                            error: function (xhr, status, error) {
+                                alert(xhr + status);
+                            },
+                            success: function (result) {
+                                $("#NotNullGrid").data("kendoGrid").dataSource.data(result);
+                                var f = $('.k-button');
+                                f.removeAttr('href');
+                            }
+                        });
+                        $('#Lock').hide();
+                    },
+                    failure: function (data) {
+                        alert(data.data);
+                    }
+                });
+                Clear();
+            });
+
+            $('#Next').click(function () {
+                if (countryNType < 0) {
+                    alert('لطفا یک موقعیت را از تقسیمات کشوری انتخاب کنید.');
+                    return;
+                }
+                if (carNType < 2) {
+                    alert('لطفا یک مورد را از سلسله مراتب خودرو انتخاب کنید.');
+                    return;
+                }
+                if (error == true) {
+                    alert('شما مجاز به انتخاب این گزینه از سلسله مراتب خودرو نمی باشید.');
+                    return;
+                }
+                var url = '@Url.Action("Reload", "ComplicationRate")';
+                var drop = $("#cboYear").data("kendoDropDownList");
+                Reload(url, 'Grid', carNType, carSID, document.getElementById('SubNodes').checked, drop.text().toString(), countrySID, countryNType);
+            });
+
+
+
+            $("#btnBrowse").click(function () {
+                performClick(document.getElementById('image'));
+            });
+
+            function performClick(node) {
+                var evt = document.createEvent("MouseEvents");
+                evt.initEvent("click", true, false);
+                node.dispatchEvent(evt);
+            }
+            $('#txtPrice').keyup(function () {
+                $('#txtPrice').val(accounting.formatNumber($('#txtPrice').val()))
+            });
+            $("#AddLink").click(function () {
+                if (countryNType < 0) {
+                    alert('لطفا یک موقعیت را از تقسیمات کشوری انتخاب کنید.');
+                    return;
+                }
+                if (carNType < 2) {
+                    alert('لطفا یک مورد را از سلسله مراتب خودرو انتخاب کنید.');
+                    return;
+                }
+                var Rate = new Array();
+                var entityGrid = $("#Grid").data("kendoGrid");
+                var row = entityGrid.items();
+                var Account, Cabin, System, Tip, Class, type, code, Price;
+                var drop = $("#cboYear").data("kendoDropDownList");
+                for (var i = 0; i < row.length; i++) {
+                    Account = row[i].cells[1].textContent;
+                    Cabin = row[i].cells[3].textContent;
+                    System = row[i].cells[5].textContent;
+                    Tip = row[i].cells[7].textContent;
+                    Class = row[i].cells[9].textContent;
+                    Price = row[i].cells[10].textContent.toString().replace(",", "").replace(",", "").replace(",", "");
+                    if (Price == "")
+                        Price = 0;
+                    if (Class != 0) {
+                        type = 6;
+                        code = Class;
+                    }
+                    else if (Tip != 0) {
+                        type = 5;
+                        code = Tip;
+                    }
+                    else if (System != 0) {
+                        type = 4;
+                        code = System;
+                    }
+                    else if (Cabin != 0) {
+                        type = 3;
+                        code = Cabin;
+                    }
+                    else if (Account != 0) {
+                        type = 2;
+                        code = Account;
+                    }
+
+                    Rate.push({
+                        "fldTypeCar": type,
+                        "fldCodeCar": code,
+                        "fldPrice": Price,
+                        "fldTypeCountryDivisions": countryNType,
+                        "fldCodeCountryDivisions": countrySID,
+                        "fldYear": drop.text().toString()
+                    });
+
+                }
+
+                PostForm(Rate, '@Url.Content("~/ComplicationRate/Grid_Save")', "#win");
+                var url = '@Url.Action("Reload", "ComplicationRate")';
+
+                Reload(url, 'Grid', carNType, carSID, document.getElementById('SubNodes').checked, drop.text().toString(), countrySID, countryNType);
+            });
+
+        });
+        function Clear() {
+            $('#txtName').val('');
+            $('#fldId').val(0);
+            $("#txtCell").val('');
+            $("#txtSDate").val('');
+            $("#txtFamily").val('');
+            $("#txtStatus").val('');
+            $("#txtMeliCode").val('');
+            $("#txtTel").val('');
+            $('#txtDesc').val('');
+            $("#txtPass").val('');
+            $("#txtUser").val('');
+            $("#txtMail").val('');
+            $("#txtCodeT").val('');
+            $('#txtName').val('');
+            $('#txtFromSilandr').val('');
+            $("#txtToSilandr").val('');
+            $("#txtFromWhele").val('');
+            $("#txtToWhele").val('');
+            $("#txtFromModel").val('');
+            $("#txtToModel").val('');
+            $("#txtFromMotor").val('');
+            $('#txtToMotor').val('');
+            $("#txtPrice").val('');
+            ComplicationRateID = 0;
+            
+        }
+
+        function Reload(Url, gridname, type, value, check, year, CountryCode, CountryType) {
+            var grid = $('#' + gridname).data('kendoGrid');
+            $.ajax({
+                url: Url,
+                type: 'get',
+                datatype: 'json',
+                data: { type: type, value: value, check: check, year: year, CountryCode: CountryCode, CountryType: CountryType },
+                error: function (xhr, status, error) {
+                    alert(xhr + status);
+                },
+                success: function (result) {
+                    $("#" + gridname).data("kendoGrid").dataSource.data(result);
+                    var f = $('.k-button');
+                    f.removeAttr('href');
+                }
+            });
+        }
+
+        function PostForm(datas, url, id) {
+            var sendInfo = datas;
+            $('#Lock').show();
+            $.ajax({
+                type: "POST",
+                url: url,
+                datatype: "json",
+                data: JSON.stringify(sendInfo),
+                contentType: 'application/json',
+                success: function (data) {
+                    var m = data;
+                    windowAppend("body", "/metro/error");
+                    $("#message").html(m.data);
+                    switch (m.state) {
+                        case 0:
+                            $("#error .wintitle").html("ذخیره موفق");
+                            break;
+                        case 1:
+                            $("#error .wintitle").html("خطا");
+                            break;
+                    }
+                    Add();
+                    $('#Lock').hide();
+                },
+                failure: function (data) {
+                    alert(data.data);
+                }
+            });
+        }
+        
+    </script>
+    <div class="treeview-back  k-rtl" dir="rtl" id="LocationDiv">
+        @(Html.Kendo().TreeView()
+                        .Name("treeview")
+                        .DataImageUrlField("image")
+
+                        .DataTextField("Name")
+                        .Checkboxes(chkbxs =>
+                        {
+                            chkbxs.Enabled(false).CheckChildren(false);
+                        })
+                        .DataSource(dataSource => dataSource
+                        .Read(read => read
+                          .Action("_CountryTree", "ComplicationRate")
+                        )
+                        )
+                        .Events(events =>
+                        events.Select("select"))
+                        )
+    </div>
+    <div class="treeview-back  k-rtl" dir="rtl" id="carLocationDiv">
+        @(Html.Kendo().TreeView()
+                        .Name("cartreeview")
+                        .DataImageUrlField("image")
+
+                        .DataTextField("Name")
+                        .Checkboxes(chkbxs =>
+                        {
+                            chkbxs.Enabled(false).CheckChildren(false);
+                        })
+                        .DataSource(dataSource => dataSource
+                        .Read(read => read
+                          .Action("_CarTree", "ComplicationRate")
+                        )
+                        )
+                        .Events(events =>
+                        events.Select("carselect"))
+                        )
+    </div>
+    <style type="text/css">
+        .treeview-back
+        {
+            width: 400px;
+            margin: 30px;
+            padding: 20px;
+            -moz-box-shadow: 0 1px 2px rgba(0,0,0,0.45), inset 0 0 30px rgba(0,0,0,0.07);
+            -webkit-box-shadow: 0 1px 2px rgba(0,0,0,0.45), inset 0 0 30px rgba(0,0,0,0.07);
+            box-shadow: 0 1px 2px rgba(0,0,0,0.45), inner 0 0 30px rgba(0,0,0,0.07);
+            -webkit-border-radius: 8px;
+            -moz-border-radius: 8px;
+            border-radius: 8px;
+        }
+    </style>
+    <div class="k-rtl demo-section">
+        @(Html.Kendo().Grid<Avarez.Models.sp_SelectFullCarForSetMony>()
+                .Name("Grid")
+                .Columns(columns =>
+                {
+                    columns.Bound(p => p.fldCarAccountName).Title("نوع کاربری");
+                    columns.Bound(p => p.fldCarAccountID).Hidden(true);
+                    columns.Bound(p => p.fldCarCabinName).Title("نوع کابین");
+                    columns.Bound(p => p.fldCarCabinID).Hidden(true);
+                    columns.Bound(p => p.fldCarSystemName).Title("سیستم");
+                    columns.Bound(p => p.fldCarSystemID).Hidden(true);
+                    columns.Bound(p => p.fldCarModelName).Title("تیپ");
+                    columns.Bound(p => p.fldCarModelID).Hidden(true);
+                    columns.Bound(p => p.fldCarClassName).Title("کلاس");
+                    columns.Bound(p => p.fldCarClassID).Hidden(true);
+                    columns.Bound(p => p.fldPrice).Title("مبلغ").Format("{0:#,###0}");
+                    columns.Command(c => c.Custom("Add").Click("Add").Text("اضافه").HtmlAttributes(new { @class = "AssButton" }));
+                })
+            .Editable(editable => editable.Mode(GridEditMode.InCell))
+            .Selectable(selectable => selectable.Mode(GridSelectionMode.Single))
+            .Scrollable(m => m.Virtual(true))
+            .Navigatable()
+            .DataSource(data =>
+                data.Ajax()
+                .PageSize(100000)
+                .Model(m =>
+                    {
+                        m.Id(p => p.fldCarClassID);
+                        m.Field(p => p.fldCarAccountName).Editable(false);
+                        m.Field(p => p.fldCarCabinName).Editable(false);
+                        m.Field(p => p.fldCarSystemName).Editable(false);
+                        m.Field(p => p.fldCarModelName).Editable(false);
+                        m.Field(p => p.fldCarClassName).Editable(false);
+                    }
+                )
+            )
+        )
+    </div>
+    <center>
+        <p>
+            @Avarez.Helper.winClass.Buttons("AddLink", "ذخیره", "Save")
+            @*@Avarez.Helper.winClass.Buttons("EditLink", "ویرایش", "Edit")*@
+            @Avarez.Helper.winClass.Buttons("exit", "خروج", "Exit")
+        </p>
+    </center>
+    @(Html.Kendo().PanelBar()
+        .Name("panelbar-images")
+        .Items(panelbar =>
+        {
+            panelbar.Add().Text("نرخ ها")
+                .Content(@<div>
+                    <table>
+                        <tr>
+                            <td colspan="4">
+                                <center>
+                                    <span id="selectedRow">سلسله مراتب خودرو انتخاب شده:</span><br />
+                                </center>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td align="left">
+                                از سیلندر:
+                            </td>
+                            <td>
+                                @Html.TextBox("txtFromSilandr")
+                            </td>
+                            <td align="left">
+                                تا سیلندر:
+                            </td>
+                            <td>
+                                @Html.TextBox("txtToSilandr")
+                            </td>
+                        </tr>
+                        <tr>
+                            <td align="left">
+                                از چرخ:
+                            </td>
+                            <td>
+                                @Html.TextBox("txtFromWhele")
+                            </td>
+                            <td align="left">
+                                تا چرخ:
+                            </td>
+                            <td>
+                                @Html.TextBox("txtToWhele")
+                            </td>
+                        </tr>
+                        <tr>
+                            <td align="left">
+                                از مدل:
+                            </td>
+                            <td>
+                                @Html.TextBox("txtFromModel")
+                            </td>
+                            <td align="left">
+                                تا مدل:
+                            </td>
+                            <td>
+                                @Html.TextBox("txtToModel")
+                            </td>
+                        </tr>
+                        <tr>
+                            <td align="left">
+                                از حجم موتور:
+                            </td>
+                            <td>
+                                @Html.TextBox("txtFromMotor")
+                            </td>
+                            <td align="left">
+                                تا حجم موتور:
+                            </td>
+                            <td>
+                                @Html.TextBox("txtToMotor")
+                            </td>
+                        </tr>
+                        <tr>
+                            <td align="left">
+                                مبلغ:
+                            </td>
+                            <td>
+                                @Html.TextBox("txtPrice")
+                            </td>
+                            <td align="left">
+                                توضیحات:
+                            </td>
+                            <td>
+                                @Avarez.Helper.winClass.textArea("txtDesc", 4, 30)
+                            </td>
+                        </tr>
+                    </table>
+                    <center>
+                    @Avarez.Helper.winClass.Buttons("btnSave", "ذخیره", "save")
+                    </center>
+                    <div class="k-rtl demo-section">
+                        @(Html.Kendo().Grid<Avarez.Models.sp_SelectFullCarForSetMonyFullNotNull>()
+                .Name("NotNullGrid")
+                .Columns(columns =>
+                {
+                    columns.Bound(p => p.fldID).Hidden(true);
+                    columns.Bound(p => p.fldCarAccountID).Hidden(true);
+                    columns.Bound(p => p.fldCarCabinID).Hidden(true);
+                    columns.Bound(p => p.fldCarSystemID).Hidden(true);
+                    columns.Bound(p => p.fldCarModelID).Hidden(true);
+                    columns.Bound(p => p.fldCarClassID).Hidden(true);
+                    columns.Bound(p => p.fldFromCylinder).Title("از سیلندر");
+                    columns.Bound(p => p.fldToCylinder).Title("تا سیلندر");
+                    columns.Bound(p => p.fldFromWheel).Title("از چرخ");
+                    columns.Bound(p => p.fldToWheel).Title("تا چرخ");
+                    columns.Bound(p => p.fldFromModel).Title("از مدل");
+                    columns.Bound(p => p.fldToModel).Title("تا مدل");
+                    columns.Bound(p => p.fldFromContentMotor).Title("از حجم موتور");
+                    columns.Bound(p => p.fldToContentMotor).Title("تا حجم موتور");
+                    columns.Bound(p => p.fldPrice).Title("مبلغ").Format("{0:#,###0}").Width(100);
+                    columns.Command(c => c.Custom("Edit").Click("Edit").Text("ویرایش").HtmlAttributes(new { @class = "AssButton" }));
+                    columns.Command(c => c.Custom("Delete").Click("Delete").Text("حذف").HtmlAttributes(new { @class = "AssButton" }));
+                })
+            .Selectable(selectable => selectable.Mode(GridSelectionMode.Single))
+                    .Scrollable(m => m.Virtual(true))
+            .DataSource(data =>
+                data.Ajax()
+                .PageSize(100000)
+                .Model(m =>
+                    {
+                        m.Id(p => p.fldID);
+                    })
+                )
+            )
+                        
+                    </div>
+                    <br />
+                </div>);
+        })
+        )
+</div>

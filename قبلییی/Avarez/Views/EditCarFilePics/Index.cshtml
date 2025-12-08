@@ -1,0 +1,190 @@
+﻿@using Kendo.Mvc.UI;
+<div class="modal" id="EditCarFilePic">
+    <script src="@Url.Content("~/Content/Base.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Scripts/jquery.ui.datepicker-cc.all.min.js")" type="text/javascript"></script>
+    <div>
+        @Avarez.Helper.winClass.windowHeader("", "ویرایش تصاویر", 600, 630)
+        @Html.Hidden("fldid")
+        <center>
+            <table>
+                <tr>
+                    <td align="left">
+                        تصویر برگ سبز:(حداکثر 5MB)
+                    </td>
+                    <td>
+                        @(Html.Kendo().Upload()
+                            .Name("UptContent")
+                            .Multiple(true)
+                            .Async(a => a
+                                .Save("UploadContent", "CarFile")
+                                .Remove("RemoveContent", "CarFile")
+                                .AutoUpload(true)
+                                )
+                                //.Events(ev => ev.Complete("upload"))
+                        )
+                    </td>@Html.Hidden("fileid")
+                    <td><div id="_image"></div></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td align="left">
+                        تصویر کارت خودرو:(حداکثر 5MB)
+                    </td>
+                    <td>
+                        @(Html.Kendo().Upload()
+                            .Name("UptContent1")
+                            .Multiple(true)
+                            .Async(a => a
+                                .Save("UploadContent1", "CarFile")
+                                .Remove("RemoveContent1", "CarFile")
+                                .AutoUpload(true)
+                                )
+                                //.Events(ev => ev.Complete("upload"))
+                        )
+                    </td>@Html.Hidden("fileid1")
+                    <td><div id="_image1"></div></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td align="left">
+                        تصویر صفحه2 کارت خودرو:(حداکثر 5MB)
+                    </td>
+                    <td>
+                        @(Html.Kendo().Upload()
+                            .Name("UptContent3")
+                            .Multiple(true)
+                            .Async(a => a
+                                .Save("UploadContent3", "CarFile")
+                                .Remove("RemoveContent3", "CarFile")
+                                .AutoUpload(true)
+                                )
+                                //.Events(ev => ev.Complete("upload"))
+                        )
+                    </td>@Html.Hidden("fileid3")
+                    <td><div id="_image3"></div></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td align="left">
+                        تصویر سند کارخانه:(حداکثر 5MB)
+                    </td>
+                    <td>
+                        @(Html.Kendo().Upload()
+                            .Name("UptContent2")
+                            .Multiple(true)
+                            .Async(a => a
+                                .Save("UploadContent2", "CarFile")
+                                .Remove("RemoveContent2", "CarFile")
+                                .AutoUpload(true)
+                                )
+                                //.Events(ev => ev.Complete("upload"))
+                        )
+                    </td>@Html.Hidden("fileid2")
+                    <td><div id="_image2"></div></td>
+                    <td></td>
+                </tr>
+            </table>
+            <p style="color:red">ورود یکی از تصاویر فوق(تصویر برگ سبز، تصویر کارت خودرو، تصویر سند کارخانه) الزامی است</p>
+            <p>
+                @Avarez.Helper.winClass.Buttons("AddLink1", "ذخیره", "Save")
+                @Avarez.Helper.winClass.Buttons("exit1", "خروج", "Exit")
+            </p>
+        </center>
+
+
+    </div>
+    <script type="text/javascript">
+        var isWinOpen = false;
+        $("document").ready(function () {
+            $("#AddLink1").button();
+            $("#exit1").button();
+            var URL = '@Url.Content("~/EditCarFilePics/Details")';
+            URL = URL + "/@ViewBag.carid";
+            $.ajax({
+                type: "GET",
+                url: URL,
+                success: function (data) {
+                    $('#fldid').val(data.fldId);
+                    $('#fileid').val(data.fldBargSabzFileId);
+                    $('#fileid1').val(data.fldCartFileId);
+                    $('#fileid2').val(data.fldSanadForoshFileId);
+                    $('#fileid2').val(data.fldCartBackFileId);
+                    $('#_image').html("<br/><img src='/CarFile/showFile/" + data.fldBargSabzFileId + "' width='100px'/> ");
+                    $('#_image1').html("<br/><img src='/CarFile/showFile/" + data.fldCartFileId + "' width='100px'/> ");
+                    $('#_image2').html("<br/><img src='/CarFile/showFile/" + data.fldSanadForoshFileId + "' width='100px'/> ");
+                    $('#_image3').html("<br/><img src='/CarFile/showFile/" + data.fldCartBackFileId + "' width='100px'/> ");
+                },
+                failure: function (data) {
+                    alert(data.data);
+                }
+            });
+            $('#EditCar #btnClose').click(function () {
+                $("#EditCar").remove();
+                isWinOpen = false;
+            });
+
+            $("#AddLink1").click(function () {
+                SaveRecord();
+            });
+            $("#exit1").click(function () {
+                $("#EditCarFilePic").remove();
+                isWinOpen = false;
+            });
+        });
+        function Clear() {
+
+        }
+        function SaveRecord() {
+            var er = false;
+
+            if (er)
+                return;
+
+            var data = {
+
+                fldID: $("#fldid").val(),
+                fldBargSabzFileId: $('#fileid').val(),
+                fldCartFileId: $('#fileid1').val(),
+                fldSanadForoshFileId: $('#fileid2').val(),
+                fldCartBackFileId: $('#fileid3').val()
+            };
+            if (data != '') {
+                PostForm(data, '@Url.Content("~/EditCarFilePics/Save")', "#win");
+            }
+            //Clear();
+        }
+
+
+
+        function PostForm(datas, url, id) {
+            var sendInfo = datas;
+            $('#Lock').show();
+            $.ajax({
+                type: "POST",
+                url: url,
+                data: sendInfo,
+                datatype: "json",
+                success: function (data) {
+                    var m = data;
+                    windowAppend("body", "/metro/error");
+                    $("#message").html(m.data);
+                    switch (m.state) {
+                        case 0:
+                            $("#error .wintitle").html("ذخیره موفق");
+                            break;
+                        case 1:
+                            $("#error .wintitle").html("خطا");
+                            break;
+                    }
+                    $('#Lock').hide();
+                },
+                failure: function (data) {
+                    alert(data.data);
+                }
+            });
+        }
+    </script>
+    @Avarez.Helper.winClass.windowFother()
+</div>
+
+

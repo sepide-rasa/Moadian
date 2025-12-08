@@ -1,0 +1,174 @@
+﻿@model IEnumerable<Avarez.Models.prs_tblPishkhanServiceSelect>
+@using Ext.Net.MVC;
+@{
+
+    var X = Html.X();
+}
+
+@(X.Panel()
+    .ID("PishkhanService")
+    .Title("سرویس پیشخوان")
+    .Closable(true)
+    .Border(false)
+    .CloseAction(Ext.Net.CloseAction.Destroy)
+    .Layout(Ext.Net.LayoutType.Fit)
+    .Items(
+        X.Panel()
+            .ItemID("PnlPishkhanService")
+            .Border(false)
+            .Layout(Ext.Net.LayoutType.Fit)
+            .Items(
+                X.GridPanel()
+                    .AutoScroll(true)
+                    .TopBar(
+                        Html.X().Toolbar()
+                            .Items(
+                                X.Button()
+                                    .Text("جدید")
+                                    .Icon(Ext.Net.Icon.Add)
+                                    .Listeners(li => li.Click.Handler = "NewPishkhanService();"),
+                                X.Button()
+                                    .Text("ویرایش")
+                                    .Icon(Ext.Net.Icon.Pencil)
+                                    .Listeners(Li => Li.Click.Handler = "EditPishkhanService();"),
+                                X.Button()
+                                    .Text("حذف")
+                                    .Icon(Ext.Net.Icon.Delete)
+                                    .Listeners(de => de.Click.Handler = "DeletePishkhanService();")
+                                //,X.Button()
+                                //.Text("راهنما")
+                                //.Icon(Ext.Net.Icon.Help)
+                                //.Listeners(de =>
+                                //    {
+                                //        de.Click.Handler = "HelpDegreeMun();";
+                                //    })
+                                    )
+                                    )
+                            .ItemID("GridPishkhanService")
+                            .BottomBar(X.PagingToolbar())
+                            .Plugins(X.FilterHeader().Remote(true))
+                            .Store(
+                                Html.X().StoreForModel()
+                                    .Proxy(Html.X().AjaxProxy()
+                                        .Url(Url.Action("Read"))
+                                        .Reader(Html.X().JsonReader().Root("data"))     
+        )
+                                    .PageSize(20)
+                                    .RemoteFilter(true)
+                                    .RemotePaging(true)
+                                    .Listeners(l => l.DataChanged.Handler = "App.PishkhanService.queryById('GridPishkhanService').selModel.refresh();")
+    )
+                            .View(
+                                Html.X().GridView().LoadingText("در حال بارگذاری...").RTL(true)
+            )
+                            .ColumnModel(
+                                Html.X().RowNumbererColumn(),
+                                Html.X().Column().DataIndex(Model, m => m.fldId).Text("کد").Hidden(true).Flex(1),
+                                Html.X().Column().DataIndex(Model, m => m.fldServiceId).Text("کد سرویس").Flex(3),
+                                Html.X().Column().DataIndex(Model, m => m.fldCountryDivisionsName).Text("موقعیت").Flex(3),
+                                Html.X().Column().DataIndex(Model, m => m.fldDesc).Text("توضیحات").Flex(3)
+    )
+                .SelectionModel(
+                    Html.X().RowSelectionModel()
+                        .Mode(Ext.Net.SelectionMode.Single)
+    )
+
+))
+)
+
+
+<script type="text/javascript">
+
+    function NewPishkhanService() {
+        Ext.net.Mask.show({ msg: 'در حال بارگذاری...' });
+        Ext.net.DirectMethod.request({
+            url: '/NewVer/PishkhanService/New',
+            params: {
+                id: 0
+            },
+            success: function () {
+                Ext.net.Mask.hide();
+            }
+        });
+    }
+
+    function EditPishkhanService() {
+        var SelectedRow = App.PishkhanService.queryById('GridPishkhanService').selModel.getLastSelected();
+        if (SelectedRow != null) {
+            Ext.net.Mask.show({ msg: 'در حال بارگذاری...' });
+            Ext.net.DirectMethod.request({
+                url: '/NewVer/PishkhanService/New',
+                params: {
+                    id: SelectedRow.data.fldId
+                },
+                success: function () {
+                    Ext.net.Mask.hide();
+                }
+            });
+        }
+        else {
+            Ext.MessageBox.show({
+                title: "خطا",
+                msg: "لطفا یک سطر را انتخاب نمایید.",
+                icon: Ext.MessageBox.ERROR,
+                buttons: Ext.MessageBox.OK
+            });
+        }
+    }
+
+    function DeletePishkhanService() {
+        var SelectedHeaderRow = App.PishkhanService.queryById('GridPishkhanService').selModel.getLastSelected();
+        if (SelectedHeaderRow != null) {
+            Ext.MessageBox.show({
+                title: "هشدار",
+                msg: "آیا برای حذف مطمئن هستید؟",
+                icon: Ext.MessageBox.WARNING,
+                buttons: Ext.MessageBox.YESNO,
+                fn: function (btn) {
+                    if (btn == 'yes') {
+                        Ext.net.Mask.show({ msg: 'در حال انجام عملیات...' });
+                        Ext.net.DirectMethod.request({
+                            url: '/NewVer/PishkhanService/Delete',
+                            params: {
+                                id: SelectedHeaderRow.data.fldId
+                            },
+                            success: function (data) {
+                                Ext.net.Mask.hide();
+                                var ic = Ext.MessageBox.INFO;
+                                if (data.Er == 1)
+                                    ic = Ext.MessageBox.ERROR;
+                                Ext.MessageBox.show({
+                                    title: data.MsgTitle,
+                                    msg: data.Msg,
+                                    icon: ic,
+                                    buttons: Ext.MessageBox.OK
+                                });
+                                App.PishkhanService.queryById('GridPishkhanService').store.load();
+                                Ext.net.Mask.hide();
+                            }
+                        });
+                    }
+                }
+            });
+        }
+        else {
+            Ext.MessageBox.show({
+                title: "خطا",
+                msg: "لطفا یک سطر را انتخاب نمایید.",
+                icon: Ext.MessageBox.ERROR,
+                buttons: Ext.MessageBox.OK
+            });
+        }
+    }
+    /*function HelpDegreeMun() {
+        Ext.net.Mask.show({ msg: 'در حال بارگذاری...' });
+        Ext.net.DirectMethod.request({
+            url: '/NewVer/PishkhanService/Help',
+            success: function (data) {
+                Ext.net.Mask.hide();
+            }
+        });
+    }*/
+</script>
+
+

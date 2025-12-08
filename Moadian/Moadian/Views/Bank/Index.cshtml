@@ -1,0 +1,431 @@
+﻿@using Kendo.Mvc.UI;
+<div class="modal" id="Bank">
+    <script src="@Url.Content("~/Content/Base.js")" type="text/javascript"></script>
+    @{
+        Avarez.Models.cartaxEntities car = new Avarez.Models.cartaxEntities();
+        var type = car.sp_BankTypeSelect("", "", 0, Convert.ToInt32(Session["UserId"]), Session["UserPass"].ToString()).ToList();
+    }
+    <div>
+    <a href="@Url.Content("~/Helps/تعریف بانک.htm")" target="_blank" id="Help" title="راهنما" style="background-image:url('/Content/images/1381415123_help.png');background-repeat: no-repeat;height: 20px;float: left;top: 10px;left: 10px;"></a>
+        <br />
+        <center>
+            <table>
+                <tr>
+                    <td align="left">
+                        نوع بانک:
+                    </td>
+                    <td>
+
+                            @(Html.Kendo().DropDownList()
+                                .Name("cboBankType")
+                                  .OptionLabel("نوع بانک...")
+                                  .DataTextField("fldName")
+                                  .DataValueField("fldID")
+                                  .DataSource(source =>
+                                  {
+                                      source.Read(read =>
+                                      {
+                                          read.Action("GetCascadeState", "Bank");
+                                      });
+                                  }).HtmlAttributes(new { @style = "display: none;width:169px;" })
+                            )
+                    </td>
+                    <td>
+                    </td>
+                </tr>
+                <tr>
+                    <td align="left">
+                        @Html.Hidden("fldId")
+                        <span style="color: Red;">*</span> نام بانک:
+                    </td>
+                    <td>
+                        @Avarez.Helper.winClass.textbox("txtName")
+                        <span id="lblNameError" style="color: Red;"></span>
+                    </td>
+                    <td>
+                    </td>
+                </tr>                
+                <tr>
+                    <td align="left">
+                        <span style="color: Red;">*</span> شناسه بانک:
+                    </td>
+                    <td>
+                        @Avarez.Helper.winClass.textbox("txtInfinitiveBank")
+                        <span id="lblInfinitiveBankError" style="color: Red;"></span>
+                    </td>
+                    <td>
+                    </td>
+                </tr>
+                <tr>
+                    <td align="left">
+                        <span style="color: Red;">*</span> کد بانک مرکزی:
+                    </td>
+                    <td>
+                        @Avarez.Helper.winClass.textbox("txtCentralBankCode")
+                        <span id="lblCentralBankCodeError" style="color: Red;"></span>
+                    </td>
+                    <td>
+                    </td>
+                </tr>
+                <tr>
+                    <td align="left">
+                        توضیحات:
+                    </td>
+                    <td>
+                        @Avarez.Helper.winClass.textArea("txtDesc", 4, 30)
+                    </td>
+                    <td>
+                    </td>
+                </tr>
+                <tr>
+                    <td align="left">
+                        آرم بانک:
+                    </td>
+                    <td>
+                        <img id="PreviewImage" src="@Url.Content("~/Content/images/Blank.jpg")" alt="" style="width: 80px; height: 80px; border: 2px;" />
+                        @Avarez.Helper.winClass.Buttons("btnBrowse", "انتخاب عکس", "search")
+                        @Avarez.Helper.winClass.Buttons("btnRemove", "برچیدن عکس", "del")
+                        <input style="display: none;" type="file" accept=".jpg" id="image" name="image" onchange="readURL(this)" />
+                    </td>
+                    <td>
+                    </td>
+                </tr>
+            </table>
+            <p>
+                @Avarez.Helper.winClass.Buttons("AddLink", "ذخیره", "Save")
+                @Avarez.Helper.winClass.Buttons("EditLink", "ویرایش", "Edit")
+                @Avarez.Helper.winClass.Buttons("DelLink", "حذف", "Del")
+                @Avarez.Helper.winClass.Buttons("exit", "خروج", "Exit")
+            </p>
+        </center>
+        @(Html.Kendo().PanelBar()
+        .Name("panelbar-images")
+        .Items(panelbar =>
+        {
+            panelbar.Add().Text("جستجو")
+                .ImageUrl(Url.Content("~/Content/images/search.png"))
+                .Content(@<div>
+                    <table>
+                        <tr>
+                            <td>
+                                فیلد جستجو:@Html.DropDownList("cboSearchFiald", new SelectList(new[] { new { ID = "0", Name = "نام بانک" } }, "ID", "Name"))
+                            </td>
+                            <td>
+                                نوع جستجو: @Html.DropDownList("cboSearchType", new SelectList(new[] { new { ID = "0", Name = "مشابه عبارت" }, new { ID = "1", Name = "مشابه عبارت از سمت راست" }, new { ID = "2", Name = "عین عبارت" } }, "ID", "Name"))
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                عبارت جستجو: @Avarez.Helper.winClass.textbox("txtSearch")
+                            </td>
+                            <td>
+                                نتیجه رکوردها: @Html.TextBox("txtTop", 30, new { @style = "width:30px;" }) رکورد
+                            </td>
+                        </tr>
+                    </table>
+                    <br />
+                </div>);
+        })
+        )
+        <div class="k-rtl demo-section">
+            @(Html.Kendo().Grid<Avarez.Models.sp_BankSelect>()
+                .Name("Grid")
+                .Columns(columns =>
+                {
+                    columns.Bound(p => p.fldID).Title("کد").Visible(false);
+                    columns.Bound(p => p.fldName).Title("نام بانک");
+                    columns.Bound(p => p.fldType).Title("نوع بانک");
+                    columns.Bound(p => p.fldInfinitiveBank).Title("شناسه بانک");
+                    columns.Bound(p => p.fldCentralBankCode).Title("کد بانک مرکزی");
+                    columns.Bound(p => p.fldDesc).Title("توضیحات");
+                })
+            .Selectable(selectable => selectable.Mode(GridSelectionMode.Single))
+            .Pageable()
+            .Scrollable()
+            .DataSource(data =>
+                data.Ajax()
+                .PageSize(10)
+                .Read("Fill", "Bank")
+            )
+        )
+        </div>
+    </div>
+    <script type="text/javascript">
+        $("document").ready(function () {
+            $("#AddLink").button();
+            $("#Detail").button();
+            $('#Help').button();
+            $("#EditLink").button();
+            $("#DelLink").button();
+            $("#exit").button();
+            $("#btnBrowse").button();
+            $("#btnRemove").button();
+
+            $('#Bank').on('keyup', 'input', function (event) {
+                if (event.which == 13) {
+                    var inputs = $('#Bank').find(':input:visible');
+                    inputs.eq(inputs.index(this) + 1).focus();
+                }
+            });
+
+            $("#exit").click(function () {
+                $("#Bank").remove();
+            });
+
+         
+            $(document).keyup(function (event) {
+                if (event.which == 119) {
+                    SaveRecord();
+                }
+                else if (event.which == 113) {
+                    EditRecord();
+                }
+                else if (event.which == 115) {
+                    DeleteRecord();
+                }
+            });
+            $('#AddLink').attr('title', 'کلید میانبر (F8)'); //119
+            $('#EditLink').attr('title', 'کلید میانبر (F2)'); //113
+            $('#DelLink').attr('title', 'کلید میانبر (F4)'); //115
+
+            $("#btnRemove").click(function () {
+                $('#PreviewImage').attr('src', '@Url.Content("~/Content/images/Blank.jpg")');
+            });
+
+            jQuery("#EditLink").click(function () {
+                EditRecord();
+            });
+
+            $('#txtSearch').keyup(function () {
+                var url = '@Url.Action("Reload", "Bank")';
+                Reload(url, 'Grid', $("#cboSearchFiald").val(), $("#txtSearch").val(), $("#txtTop").val(), $("#cboSearchType").val());
+            });
+
+            $('#DelLink').click(function () {
+                DeleteRecord();                
+            });
+
+            $("#btnBrowse").click(function () {
+                performClick(document.getElementById('image'));
+            });
+
+            function performClick(node) {
+                var evt = document.createEvent("MouseEvents");
+                evt.initEvent("click", true, false);
+                node.dispatchEvent(evt);
+            }
+
+            $("#txtName").keyup(function () {
+                if ($("#txtName").val() != '') {
+                    $("#txtName").removeClass("input-validation-error");
+                    $("#lblNameError").html("");
+                }
+                else {
+                    $("#txtName").addClass("input-validation-error");
+                    $('#lblNameError').html('لطفا نام بانک را وارد کنید.');
+                }
+            });
+
+            $("#txtCentralBankCode").keyup(function () {
+                if ($("#txtCentralBankCode").val() != '') {
+                    $("#txtCentralBankCode").removeClass("input-validation-error");
+                    $("#lblCentralBankCodeError").html("");
+                }
+                else {
+                    $("#txtCentralBankCode").addClass("input-validation-error");
+                    $('#lblCentralBankCodeError').html('لطفا کد بانک مرکزی را وارد کنید.');
+                }
+            });
+
+            $("#txtInfinitiveBank").keyup(function () {
+                if ($("#txtInfinitiveBank").val() != '') {
+                    $("#txtInfinitiveBank").removeClass("input-validation-error");
+                    $("#lblInfinitiveBankError").html("");
+                }
+                else {
+                    $("#txtInfinitiveBank").addClass("input-validation-error");
+                    $('#lblInfinitiveBankError').html('لطفا شناسه بانک را وارد کنید.');
+                }
+            });
+
+            $("#AddLink").click(function () {
+                SaveRecord();                
+            });
+
+        });
+
+        function SaveRecord() {
+            var er = false;
+            if ($("#txtName").val() == '') {
+                $("#txtName").addClass("input-validation-error");
+                $('#lblNameError').html('لطفا نام بانک را وارد کنید.');
+                er = true;
+            }
+            else
+                $('#lblNameError').html('');
+
+            if ($("#txtCentralBankCode").val() == '') {
+                $("#txtCentralBankCode").addClass("input-validation-error");
+                $('#lblCentralBankCodeError').html('لطفا کد بانک مرکزی را وارد کنید.');
+                er = true;
+            }
+            else
+                $('#lblCentralBankCodeError').html('');
+
+            if ($("#txtInfinitiveBank").val() == '') {
+                $("#txtInfinitiveBank").addClass("input-validation-error");
+                $('#lblInfinitiveBankError').html('لطفا شناسه بانک را وارد کنید.');
+                er = true;
+            }
+            else
+                $('#lblInfinitiveBankError').html('');
+
+            if (er)
+                return;
+            var image = document.getElementById('PreviewImage');
+            var c = image.attributes[1];
+            var imgData = "";
+            if (c.value != "")
+                imgData = getBase64Image(image);
+            var data = { fldName: $("#txtName").val(), fldBankTypeID: $("#cboBankType").val(),
+                fldCentralBankCode: $("#txtCentralBankCode").val(),
+                fldInfinitiveBank: $("#txtInfinitiveBank").val(),
+                fldUserID: 1, fldDesc: $("#txtDesc").val(), fldImage: imgData,
+                fldId: $("#fldId").val()
+            };
+            if (data != '') {
+                PostForm(data, '@Url.Content("~/Bank/Save")', "#win");
+            }
+            Clear();
+        }
+
+        function EditRecord() {
+            var entityGrid = $("#Grid").data("kendoGrid");
+            var selectedItem = entityGrid.dataItem(entityGrid.select());
+            if (selectedItem) {
+                var id = selectedItem.fldID;
+                var URL = '@Url.Content("~/Bank/Details")';
+                URL = URL + "/" + id;
+                $.ajax({
+                    type: "GET",
+                    url: URL,
+                    success: function (data) {
+                        $('#txtName').val(data.fldName);
+                        $('#fldId').val(data.fldId);
+                        var v = $("#cboBankType").data("kendoDropDownList");
+                        v.value(data.fldBankType);
+                        $('#txtInfinitiveBank').val(data.fldInfinitiveBank);
+                        $('#txtCentralBankCode').val(data.fldCentralBankCode);
+                        $('#txtDesc').val(data.fldDesc);
+                        var g = '@Url.Content("~/bank/Image/")' + $('#fldId').val();
+                        $('#PreviewImage').attr('src', g);
+                    },
+                    failure: function (data) {
+                        alert(data.data);
+                    }
+                });
+            }
+            else {
+                alert('لطفا یک سطر را انتخاب کنید.');
+            }
+        }
+
+        function DeleteRecord() {
+            var entityGrid = $("#Grid").data("kendoGrid");
+            var selectedItem = entityGrid.dataItem(entityGrid.select());
+            if (selectedItem) {
+                var id = selectedItem.fldID;
+                var URL = '@Url.Content("~/metro/YesNomsg")';
+                URL = URL + "/?id=" + id + "&URL=" + '@Url.Content("~/Bank/Delete")';
+                windowAppend("body", URL);
+                $("#message").html('آیا مایل به حذف رکورد انتخاب شده هستید؟');
+            }
+            else {
+                alert('لطفا یک سطر را انتخاب کنید.');
+            }
+            Clear();
+        }
+        function Clear()
+        {
+                $('#txtName').val('');
+                $('#fldId').val(0);
+                $('#txtInfinitiveBank').val('');
+                $('#txtCentralBankCode').val('');
+                $('#txtDesc').val('');
+                $('#PreviewImage').attr('src', '@Url.Content("~/Content/images/Blank.jpg")');
+        }
+        function readURL(input) {
+            if (input.files && input.files[0]) {//Check if input has files.
+                if (input.files[0].size > 25600) {
+                    alert('حجم فایل بزرگتر از 25 کیلو بایت است.');
+                }
+                else {
+                    var reader = new FileReader(); //Initialize FileReader.
+
+                    reader.onload = function (e) {
+                        $('#PreviewImage').attr('src', e.target.result);
+                    };
+                    reader.readAsDataURL(input.files[0]);
+                }
+            }
+        }
+
+        function getBase64Image(imgElem) {
+            // imgElem must be on the same server otherwise a cross-origin error will be thrown "SECURITY_ERR: DOM Exception 18"
+            var canvas = document.createElement("canvas");
+            canvas.width = imgElem.clientWidth;
+            canvas.height = imgElem.clientHeight;
+            var ctx = canvas.getContext("2d");
+            ctx.drawImage(imgElem, 0, 0, 80, 80);
+            var dataURL = canvas.toDataURL("image/jpg");
+            return dataURL.replace(/^data:image\/(png|jpg);base64,/, "");
+        }
+
+        function Reload(Url, gridname, field, value, top, searchType) {
+            var grid = $('#' + gridname).data('kendoGrid');
+            $.ajax({
+                url: Url,
+                type: 'get',
+                datatype: 'json',
+                data: { field: field, value: value, top: top, searchtype: searchType },
+                error: function (xhr, status, error) {
+                    alert(xhr + status);
+                },
+                success: function (result) {
+                    $("#" + gridname).data("kendoGrid").dataSource.data(result);
+                }
+
+            });
+        }
+
+        function PostForm(datas, url, id) {
+            var sendInfo = datas;
+            $('#Lock').show();
+            $.ajax({
+                type: "POST",
+                url: url,
+                data: sendInfo,
+                datatype: "json",
+                success: function (data) {
+                    var m = data;
+                    windowAppend("body", "/metro/error");
+                    $("#message").html(m.data);
+                    switch (m.state) {
+                        case 0:
+                            $("#error .wintitle").html("ذخیره موفق");
+                            break;
+                        case 1:
+                            $("#error .wintitle").html("خطا");
+                            break;
+                    }
+                    var url = '@Url.Action("Reload", "Bank")';
+                    Reload(url, 'Grid', '0', '', 30, 1);
+                    $('#Lock').hide();
+                },
+                failure: function (data) {
+                    alert(data.data);
+                }
+            });
+        }    
+    </script>
+</div>

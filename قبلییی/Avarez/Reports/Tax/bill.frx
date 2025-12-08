@@ -1,0 +1,599 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Report ScriptLanguage="CSharp" ReportInfo.Created="02/27/2024 11:52:13" ReportInfo.Modified="05/28/2024 11:02:54" ReportInfo.CreatorVersion="2023.2.17.0">
+  <Dictionary>
+    <MsSqlDataConnection Name="Connection" ConnectionStringExpression="[connectionStr]">
+      <TableDataSource Name="Table7" Alias="prs_rptSooratHesab_Header" DataType="System.Int32" Enabled="true" SelectCommand="Exec Movadi.prs_rptSooratHesab_Header @fldIdSooratHesab">
+        <Column Name="fldsh_Maliyati" DataType="System.String"/>
+        <Column Name="fldTarikhSoodor" DataType="System.String"/>
+        <Column Name="fldTarikhEijad" DataType="System.String"/>
+        <Column Name="fldSerial" DataType="System.String"/>
+        <Column Name="fldSh_Marja" DataType="System.String"/>
+        <Column Name="fldTypeSooratHesab" DataType="System.String"/>
+        <Column Name="fldNamePettern" DataType="System.String"/>
+        <Column Name="fldkh_Eghtesadi" DataType="System.String"/>
+        <Column Name="fldkh_CodePosti" DataType="System.String"/>
+        <Column Name="fldkh_CodeShobe" DataType="System.String"/>
+        <Column Name="fldkh_NationalCode" DataType="System.String"/>
+        <Column Name="fldf_CodeEghtesadi" DataType="System.String"/>
+        <Column Name="fldf_CodePosti" DataType="System.String"/>
+        <Column Name="fldf_CodeShobe" DataType="System.String"/>
+        <Column Name="fldf_NationalCode" DataType="System.String"/>
+        <Column Name="fldSubject" DataType="System.String"/>
+        <Column Name="fldFlyType" DataType="System.String"/>
+        <Column Name="fldPas_No" DataType="System.String"/>
+        <Column Name="fldParvane_No" DataType="System.String"/>
+        <Column Name="fldCodeEzhar" DataType="System.String"/>
+        <Column Name="fldCotazh_No" DataType="System.String"/>
+        <Column Name="fldCotazh_Date" DataType="System.String"/>
+        <Column Name="fldEshterak_No" DataType="System.String"/>
+        <Column Name="fldSumMablagh" DataType="System.String"/>
+        <Column Name="fldSumTakhfif" DataType="System.String"/>
+        <Column Name="fldSumMablagh_Takhfif" DataType="System.String"/>
+        <Column Name="fldSumMaliyat" DataType="System.String"/>
+        <Column Name="fldSumMablaghSayer" DataType="System.String"/>
+        <Column Name="fldSumSooratheasb" DataType="System.String"/>
+        <Column Name="fldSumVaznKhales" DataType="System.String"/>
+        <Column Name="fldArzeshReyali" DataType="System.String"/>
+        <Column Name="fldArzeshArzi" DataType="System.String"/>
+        <Column Name="fldRaveshTasviye" DataType="System.String"/>
+        <Column Name="fldMablaghNaghdi" DataType="System.Int32"/>
+        <Column Name="fldMablaghNesiye" DataType="System.Int32"/>
+        <Column Name="fldSumSahmMaliyat" DataType="System.String"/>
+        <Column Name="fldMaliyat17" DataType="System.Int32"/>
+        <Column Name="fldUniqCode" DataType="System.String"/>
+        <CommandParameter Name="fldIdSooratHesab" DataType="8" Expression="[fldIdSooratHesab]"/>
+      </TableDataSource>
+      <TableDataSource Name="Table9" Alias="rptSooratHesabDetail" DataType="System.Int32" Enabled="true" SelectCommand="Exec Movadi.prs_rptSooratHesabDetail @fldidHeaderId">
+        <Column Name="fldShenaseKala" DataType="System.String"/>
+        <Column Name="fldsharhkala" DataType="System.String"/>
+        <Column Name="fldTedad_meghdar" DataType="System.Decimal"/>
+        <Column Name="fldMesureUnit" DataType="System.String"/>
+        <Column Name="fldVaznKhales" DataType="System.Decimal"/>
+        <Column Name="fldMablaghVahed" DataType="System.Decimal"/>
+        <Column Name="fldMizanArz" DataType="System.Decimal"/>
+        <Column Name="fldArzType" DataType="System.String"/>
+        <Column Name="fldNerkhBarabari" DataType="System.Int64"/>
+        <Column Name="fldArzeshReyali" DataType="System.Int64"/>
+        <Column Name="fldArzeshArzi" DataType="System.Int64"/>
+        <Column Name="fldMablaghAsli" DataType="System.Int64"/>
+        <Column Name="fldMablaghTakhfif" DataType="System.Int64"/>
+        <Column Name="fldMablagh_Takhfif" DataType="System.Int64"/>
+        <Column Name="fldNerkhMaliyat" DataType="System.Decimal"/>
+        <Column Name="fldMablaghMaliyat" DataType="System.Int64"/>
+        <Column Name="fldOtherSubject" DataType="System.String"/>
+        <Column Name="fldNerkhSayer" DataType="System.Decimal"/>
+        <Column Name="fldMablaghSayer" DataType="System.Int64"/>
+        <Column Name="fldSubjectGhanoni" DataType="System.Int64"/>
+        <Column Name="fldNarkhGhanoni" DataType="System.Decimal"/>
+        <Column Name="fldMablaghGhanoni" DataType="System.Int64"/>
+        <Column Name="fldOjratSakht" DataType="System.Int64"/>
+        <Column Name="fldSoodFrooshande" DataType="System.Int64"/>
+        <Column Name="fldhaghAmal" DataType="System.Int64"/>
+        <Column Name="fldSumKol" DataType="System.Int64"/>
+        <Column Name="fldSahmNaghdi" DataType="System.Int64"/>
+        <Column Name="fldSahmMaliyat" DataType="System.Int64"/>
+        <Column Name="fldUniqCodeContract" DataType="System.String"/>
+        <Column Name="fldSumMablaghKala" DataType="System.Int64"/>
+        <Column Name="fldTafavotNerkh_karmozd" DataType="System.Decimal"/>
+        <Column Name="fldAyar" DataType="System.Decimal"/>
+        <CommandParameter Name="fldidHeaderId" DataType="8" Expression="[fldidHeaderId]"/>
+      </TableDataSource>
+    </MsSqlDataConnection>
+    <Parameter Name="fldidHeaderId" DataType="System.Int32" Expression="8"/>
+    <Parameter Name="connectionStr" DataType="System.String" Expression="@&quot;Data Source=192.168.1.33\\sql2008;Initial Catalog=CartaxMoadiyan;User ID=r;Password=123&quot;"/>
+    <Parameter Name="fldIdSooratHesab" DataType="System.Int32" Expression="8"/>
+    <Total Name="VaznKhales" Expression="[rptSooratHesabDetail.fldVaznKhales]" Evaluator="Data1"/>
+    <Total Name="ArzeshReyali" Expression="[rptSooratHesabDetail.fldArzeshReyali]" Evaluator="Data1"/>
+    <Total Name="ArzeshArzi" Expression="[rptSooratHesabDetail.fldArzeshArzi]" Evaluator="Data1"/>
+    <Total Name="MablaghTakhfif" Expression="[rptSooratHesabDetail.fldMablaghTakhfif]" Evaluator="Data1"/>
+    <Total Name="Mablagh_Takhfif" Expression="[rptSooratHesabDetail.fldMablagh_Takhfif]" Evaluator="Data1"/>
+    <Total Name="MablaghAsli" Expression="[rptSooratHesabDetail.fldMablaghAsli]" Evaluator="Data1"/>
+    <Total Name="MablaghMaliyat" Expression="[rptSooratHesabDetail.fldMablaghMaliyat]" Evaluator="Data1"/>
+    <Total Name="MablaghGhanoni" Expression="[rptSooratHesabDetail.fldMablaghGhanoni]" Evaluator="Data1"/>
+    <Total Name="SahmNaghdi" Expression="[rptSooratHesabDetail.fldSahmNaghdi]" Evaluator="Data1"/>
+    <Total Name="SahmMaliyat" Expression="[rptSooratHesabDetail.fldSahmMaliyat]" Evaluator="Data1"/>
+  </Dictionary>
+  <ReportPage Name="Page1" Landscape="true" PaperWidth="310" PaperHeight="210" Watermark.Font="Arial, 60pt">
+    <DataBand Name="Data1" Top="261.42" Width="1096.2" Height="18.9" Guides="75.6" DataSource="Table9">
+      <TableObject Name="Table2" Width="1091.89" Height="18.9" Border.Lines="All">
+        <TableColumn Name="Column7" Width="45.36"/>
+        <TableColumn Name="Column8" Width="45.36"/>
+        <TableColumn Name="Column9" Width="45.36"/>
+        <TableColumn Name="Column10" Width="41.58"/>
+        <TableColumn Name="Column11" Width="41.58"/>
+        <TableColumn Name="Column12" Width="45.36"/>
+        <TableColumn Name="Column13" Width="37.89"/>
+        <TableColumn Name="Column14" Width="35.06"/>
+        <TableColumn Name="Column15" Width="34.02"/>
+        <TableColumn Name="Column16" Width="34.02"/>
+        <TableColumn Name="Column17" Width="38.56"/>
+        <TableColumn Name="Column18" Width="18.99"/>
+        <TableColumn Name="Column19" Width="37.89"/>
+        <TableColumn Name="Column20" Width="26.55"/>
+        <TableColumn Name="Column21" Width="34.02"/>
+        <TableColumn Name="Column22" Width="26.55"/>
+        <TableColumn Name="Column23" Width="35.06"/>
+        <TableColumn Name="Column24" Width="35.06"/>
+        <TableColumn Name="Column25" Width="30.33"/>
+        <TableColumn Name="Column26" Width="30.33"/>
+        <TableColumn Name="Column27" Width="30.33"/>
+        <TableColumn Name="Column28" Width="30.33"/>
+        <TableColumn Name="Column29" Width="41.67"/>
+        <TableColumn Name="Column30" Width="30.24"/>
+        <TableColumn Name="Column31" Width="34.02"/>
+        <TableColumn Name="Column32" Width="34.02"/>
+        <TableColumn Name="Column33" Width="49.23"/>
+        <TableColumn Name="Column36" Width="66.24"/>
+        <TableColumn Name="Column34" Width="45.45"/>
+        <TableColumn Name="Column35" Width="11.43"/>
+        <TableRow Name="Row14">
+          <TableCell Name="Cell172" Border.Lines="All" Text="[rptSooratHesabDetail.fldSahmMaliyat]" Format="Number" Format.UseLocale="false" Format.DecimalDigits="0" Format.DecimalSeparator="." Format.GroupSeparator="," Format.NegativePattern="1" AutoShrink="FontSize" AutoShrinkMinSize="4" HorzAlign="Center" VertAlign="Center" Font="RasaFont, 6pt"/>
+          <TableCell Name="Cell173" Border.Lines="All" Text="[rptSooratHesabDetail.fldSahmNaghdi]" Format="Number" Format.UseLocale="false" Format.DecimalDigits="0" Format.DecimalSeparator="." Format.GroupSeparator="," Format.NegativePattern="1" AutoShrink="FontSize" AutoShrinkMinSize="4" HorzAlign="Center" VertAlign="Center" Font="RasaFont, 6pt"/>
+          <TableCell Name="Cell174" Border.Lines="All" Text="[rptSooratHesabDetail.fldMablaghAsli]" Format="Number" Format.UseLocale="false" Format.DecimalDigits="0" Format.DecimalSeparator="." Format.GroupSeparator="," Format.NegativePattern="1" AutoShrink="FontSize" AutoShrinkMinSize="4" HorzAlign="Center" VertAlign="Center" Font="RasaFont, 6pt"/>
+          <TableCell Name="Cell175" Border.Lines="All" Text="[rptSooratHesabDetail.fldMablaghGhanoni]" Format="Number" Format.UseLocale="false" Format.DecimalDigits="0" Format.DecimalSeparator="." Format.GroupSeparator="," Format.NegativePattern="1" AutoShrink="FontSize" AutoShrinkMinSize="4" HorzAlign="Center" VertAlign="Center" Font="RasaFont, 6pt"/>
+          <TableCell Name="Cell176" Border.Lines="All" Text="[rptSooratHesabDetail.fldNarkhGhanoni]" Format="Number" Format.UseLocale="false" Format.DecimalDigits="0" Format.DecimalSeparator="." Format.GroupSeparator="," Format.NegativePattern="1" AutoShrink="FontSize" AutoShrinkMinSize="4" HorzAlign="Center" VertAlign="Center" Font="RasaFont, 6pt"/>
+          <TableCell Name="Cell177" Border.Lines="All" Text="[rptSooratHesabDetail.fldSubjectGhanoni]" Format="Number" Format.UseLocale="false" Format.DecimalDigits="0" Format.DecimalSeparator="." Format.GroupSeparator="," Format.NegativePattern="1" AutoShrink="FontSize" AutoShrinkMinSize="4" HorzAlign="Center" VertAlign="Center" Font="RasaFont, 6pt"/>
+          <TableCell Name="Cell178" Border.Lines="All" Text="[rptSooratHesabDetail.fldMablaghMaliyat]" Format="Number" Format.UseLocale="false" Format.DecimalDigits="0" Format.DecimalSeparator="." Format.GroupSeparator="," Format.NegativePattern="1" AutoShrink="FontSize" AutoShrinkMinSize="4" HorzAlign="Center" VertAlign="Center" Font="RasaFont, 6pt"/>
+          <TableCell Name="Cell179" Border.Lines="All" Text="[rptSooratHesabDetail.fldNerkhMaliyat]" Format="Number" Format.UseLocale="false" Format.DecimalDigits="0" Format.DecimalSeparator="." Format.GroupSeparator="," Format.NegativePattern="1" AutoShrink="FontSize" AutoShrinkMinSize="4" HorzAlign="Center" VertAlign="Center" Font="RasaFont, 6pt"/>
+          <TableCell Name="Cell180" Border.Lines="All" Text="[rptSooratHesabDetail.fldMablagh_Takhfif]" Format="Number" Format.UseLocale="false" Format.DecimalDigits="0" Format.DecimalSeparator="." Format.GroupSeparator="," Format.NegativePattern="1" AutoShrink="FontSize" AutoShrinkMinSize="4" HorzAlign="Center" VertAlign="Center" Font="RasaFont, 6pt"/>
+          <TableCell Name="Cell181" Border.Lines="All" Text="[rptSooratHesabDetail.fldMablaghAsli]" Format="Number" Format.UseLocale="false" Format.DecimalDigits="0" Format.DecimalSeparator="." Format.GroupSeparator="," Format.NegativePattern="1" AutoShrink="FontSize" AutoShrinkMinSize="4" HorzAlign="Center" VertAlign="Center" Font="RasaFont, 6pt"/>
+          <TableCell Name="Cell182" Border.Lines="All" Text="[rptSooratHesabDetail.fldMablaghTakhfif]" Format="Number" Format.UseLocale="false" Format.DecimalDigits="0" Format.DecimalSeparator="." Format.GroupSeparator="," Format.NegativePattern="1" AutoShrink="FontSize" AutoShrinkMinSize="4" HorzAlign="Center" VertAlign="Center" Font="RasaFont, 6pt"/>
+          <TableCell Name="Cell183" Border.Lines="All" Text="[rptSooratHesabDetail.fldAyar]" Format="Number" Format.UseLocale="false" Format.DecimalDigits="0" Format.DecimalSeparator="." Format.GroupSeparator="," Format.NegativePattern="1" AutoShrink="FontSize" AutoShrinkMinSize="4" HorzAlign="Center" VertAlign="Center" Font="RasaFont, 6pt"/>
+          <TableCell Name="Cell184" Border.Lines="All" Text="[rptSooratHesabDetail.fldSumKol]" Format="Number" Format.UseLocale="false" Format.DecimalDigits="0" Format.DecimalSeparator="." Format.GroupSeparator="," Format.NegativePattern="1" AutoShrink="FontSize" AutoShrinkMinSize="4" HorzAlign="Center" VertAlign="Center" Font="RasaFont, 6pt"/>
+          <TableCell Name="Cell185" Border.Lines="All" Text="[rptSooratHesabDetail.fldhaghAmal]" Format="Number" Format.UseLocale="false" Format.DecimalDigits="0" Format.DecimalSeparator="." Format.GroupSeparator="," Format.NegativePattern="1" AutoShrink="FontSize" AutoShrinkMinSize="4" HorzAlign="Center" VertAlign="Center" Font="RasaFont, 6pt"/>
+          <TableCell Name="Cell186" Border.Lines="All" Text="[rptSooratHesabDetail.fldSoodFrooshande]" Format="Number" Format.UseLocale="false" Format.DecimalDigits="0" Format.DecimalSeparator="." Format.GroupSeparator="," Format.NegativePattern="1" AutoShrink="FontSize" AutoShrinkMinSize="4" HorzAlign="Center" VertAlign="Center" Font="RasaFont, 6pt"/>
+          <TableCell Name="Cell187" Border.Lines="All" Text="[rptSooratHesabDetail.fldOjratSakht]" Format="Number" Format.UseLocale="false" Format.DecimalDigits="0" Format.DecimalSeparator="." Format.GroupSeparator="," Format.NegativePattern="1" AutoShrink="FontSize" AutoShrinkMinSize="4" HorzAlign="Center" VertAlign="Center" Font="RasaFont, 6pt"/>
+          <TableCell Name="Cell188" Border.Lines="All" Text="[rptSooratHesabDetail.fldArzeshArzi]" Format="Number" Format.UseLocale="false" Format.DecimalDigits="0" Format.DecimalSeparator="." Format.GroupSeparator="," Format.NegativePattern="1" AutoShrink="FontSize" AutoShrinkMinSize="4" HorzAlign="Center" VertAlign="Center" Font="RasaFont, 6pt"/>
+          <TableCell Name="Cell189" Border.Lines="All" Text="[rptSooratHesabDetail.fldArzeshReyali]" Format="Number" Format.UseLocale="false" Format.DecimalDigits="0" Format.DecimalSeparator="." Format.GroupSeparator="," Format.NegativePattern="1" AutoShrink="FontSize" AutoShrinkMinSize="4" HorzAlign="Center" VertAlign="Center" Font="RasaFont, 6pt"/>
+          <TableCell Name="Cell190" Border.Lines="All" Text="[rptSooratHesabDetail.fldTafavotNerkh_karmozd]" Format="Number" Format.UseLocale="false" Format.DecimalDigits="0" Format.DecimalSeparator="." Format.GroupSeparator="," Format.NegativePattern="1" AutoShrink="FontSize" AutoShrinkMinSize="4" HorzAlign="Center" VertAlign="Center" Font="RasaFont, 6pt"/>
+          <TableCell Name="Cell191" Border.Lines="All" Text="[rptSooratHesabDetail.fldNerkhBarabari]" Format="Number" Format.UseLocale="false" Format.DecimalDigits="0" Format.DecimalSeparator="." Format.GroupSeparator="," Format.NegativePattern="1" AutoShrink="FontSize" AutoShrinkMinSize="4" HorzAlign="Center" VertAlign="Center" Font="RasaFont, 6pt"/>
+          <TableCell Name="Cell192" Border.Lines="All" Text="[rptSooratHesabDetail.fldArzType]" Format="Number" Format.UseLocale="false" Format.DecimalDigits="0" Format.DecimalSeparator="." Format.GroupSeparator="," Format.NegativePattern="1" AutoShrink="FontSize" AutoShrinkMinSize="4" HorzAlign="Center" VertAlign="Center" Font="RasaFont, 6pt"/>
+          <TableCell Name="Cell193" Border.Lines="All" Text="[rptSooratHesabDetail.fldMizanArz]" Format="Number" Format.UseLocale="false" Format.DecimalDigits="0" Format.DecimalSeparator="." Format.GroupSeparator="," Format.NegativePattern="1" AutoShrink="FontSize" AutoShrinkMinSize="4" HorzAlign="Center" VertAlign="Center" Font="RasaFont, 6pt"/>
+          <TableCell Name="Cell194" Border.Lines="All" Text="[rptSooratHesabDetail.fldMablaghVahed]" Format="Number" Format.UseLocale="false" Format.DecimalDigits="0" Format.DecimalSeparator="." Format.GroupSeparator="," Format.NegativePattern="1" AutoShrink="FontSize" AutoShrinkMinSize="4" HorzAlign="Center" VertAlign="Center" Font="RasaFont, 6pt"/>
+          <TableCell Name="Cell195" Border.Lines="All" Text="[rptSooratHesabDetail.fldTedad_meghdar]" Format="Number" Format.UseLocale="false" Format.DecimalDigits="0" Format.DecimalSeparator="." Format.GroupSeparator="," Format.NegativePattern="1" AutoShrink="FontSize" AutoShrinkMinSize="4" HorzAlign="Center" VertAlign="Center" Font="RasaFont, 6pt"/>
+          <TableCell Name="Cell196" Border.Lines="All" Text="[rptSooratHesabDetail.fldVaznKhales]" Format="Number" Format.UseLocale="false" Format.DecimalDigits="0" Format.DecimalSeparator="." Format.GroupSeparator="," Format.NegativePattern="1" AutoShrink="FontSize" AutoShrinkMinSize="4" HorzAlign="Center" VertAlign="Center" Font="RasaFont, 6pt"/>
+          <TableCell Name="Cell197" Border.Lines="All" Text="[rptSooratHesabDetail.fldMesureUnit]" Format="Number" Format.UseLocale="false" Format.DecimalDigits="0" Format.DecimalSeparator="." Format.GroupSeparator="," Format.NegativePattern="1" AutoShrink="FontSize" AutoShrinkMinSize="4" HorzAlign="Center" VertAlign="Center" Font="RasaFont, 6pt"/>
+          <TableCell Name="Cell198" Border.Lines="All" Text="[rptSooratHesabDetail.fldUniqCodeContract]" Format="Number" Format.UseLocale="false" Format.DecimalDigits="0" Format.DecimalSeparator="." Format.GroupSeparator="," Format.NegativePattern="1" AutoShrink="FontSize" AutoShrinkMinSize="4" HorzAlign="Center" VertAlign="Center" Font="RasaFont, 6pt"/>
+          <TableCell Name="Cell199" Border.Lines="All" Text="[rptSooratHesabDetail.fldsharhkala]" Format="Number" Format.UseLocale="false" Format.DecimalDigits="0" Format.DecimalSeparator="." Format.GroupSeparator="," Format.NegativePattern="1" AutoShrink="FontSize" AutoShrinkMinSize="4" HorzAlign="Center" VertAlign="Center" Font="RasaFont, 6pt"/>
+          <TableCell Name="Cell200" Border.Lines="All" Text="[rptSooratHesabDetail.fldShenaseKala]" Format="Number" Format.UseLocale="false" Format.DecimalDigits="0" Format.DecimalSeparator="." Format.GroupSeparator="," Format.NegativePattern="1" AutoShrink="FontSize" AutoShrinkMinSize="4" HorzAlign="Center" VertAlign="Center" Font="RasaFont, 6pt"/>
+          <TableCell Name="Cell201" Border.Lines="All" Text="[Row#]" HorzAlign="Center" VertAlign="Center" Font="RasaFont, 7pt"/>
+        </TableRow>
+      </TableObject>
+      <DataHeaderBand Name="DataHeader1" Width="1096.2" Height="257.42">
+        <TableObject Name="Table1" Width="1092.05" Height="162.54">
+          <TableColumn Name="Column1" Width="218.41"/>
+          <TableColumn Name="Column2" Width="180.61"/>
+          <TableColumn Name="Column3" Width="294.01"/>
+          <TableColumn Name="Column4" Width="180.61"/>
+          <TableColumn Name="Column5" Width="218.41"/>
+          <TableRow Name="Row1" Height="22.68">
+            <TableCell Name="Cell1" Border.Lines="Left, Top" Text="تاریخ و زمان صدور صورتحساب الکترونیکی: [prs_rptSooratHesab_Header.fldTarikhSoodor]" VertAlign="Center" RightToLeft="true" Font="RasaFont, 6pt, style=Bold"/>
+            <TableCell Name="Cell2" Border.Lines="Top" HorzAlign="Center" VertAlign="Center" RightToLeft="true" Font="RasaFont, 10pt"/>
+            <TableCell Name="Cell3" Border.Lines="Top, Bottom" Text="صورت حساب الکترونیکی نوع اول" HorzAlign="Center" VertAlign="Bottom" RightToLeft="true" Font="RasaFont, 13pt, style=Bold" RowSpan="2"/>
+            <TableCell Name="Cell4" Border.Lines="Top" Text="سریال صورت حساب داخلی حافظه مالیاتی: [prs_rptSooratHesab_Header.fldSerial]" VertAlign="Center" RightToLeft="true" Font="RasaFont, 6pt, style=Bold"/>
+            <TableCell Name="Cell5" Border.Lines="Right, Top" Text="شماره منحصر به فرد مالیاتی: [prs_rptSooratHesab_Header.fldsh_Maliyati]" VertAlign="Center" RightToLeft="true" Font="RasaFont, 6pt, style=Bold"/>
+          </TableRow>
+          <TableRow Name="Row2" Height="22.68">
+            <TableCell Name="Cell6" Border.Lines="Left, Bottom" Text="تاریخ و زمان ایجاد صورتحساب الکترونیکی: [prs_rptSooratHesab_Header.fldTarikhEijad]" VertAlign="Center" RightToLeft="true" Font="RasaFont, 6pt, style=Bold"/>
+            <TableCell Name="Cell7" Border.Lines="Bottom" HorzAlign="Center" VertAlign="Center" RightToLeft="true" Font="RasaFont, 10pt"/>
+            <TableCell Name="Cell8" Border.Lines="All" HorzAlign="Center" VertAlign="Center" RightToLeft="true" Font="RasaFont, 12pt, style=Bold"/>
+            <TableCell Name="Cell9" Border.Lines="Bottom" HorzAlign="Center" VertAlign="Center" RightToLeft="true" Font="RasaFont, 6pt, style=Bold"/>
+            <TableCell Name="Cell10" Border.Lines="Right, Bottom" Text="شماره منحصر به فرد مالیاتی صورتحساب مرجع: [prs_rptSooratHesab_Header.fldSh_Marja]" VertAlign="Center" RightToLeft="true" Font="RasaFont, 6pt, style=Bold"/>
+          </TableRow>
+          <TableRow Name="Row3" Height="3.78">
+            <TableCell Name="Cell11" Border.Lines="All" Font="Arial, 10pt" ColSpan="5"/>
+            <TableCell Name="Cell12" Font="Arial, 10pt"/>
+            <TableCell Name="Cell13" Font="Arial, 10pt"/>
+            <TableCell Name="Cell14" Font="Arial, 10pt"/>
+            <TableCell Name="Cell15" Font="Arial, 10pt"/>
+          </TableRow>
+          <TableRow Name="Row4">
+            <TableCell Name="Cell16" Border.Lines="All" Fill.Color="Gainsboro" Text="مشخصات فروشنده" HorzAlign="Center" VertAlign="Center" Font="RasaFont, 10pt, style=Bold" ColSpan="5"/>
+            <TableCell Name="Cell17" Font="Arial, 10pt"/>
+            <TableCell Name="Cell18" Font="Arial, 10pt"/>
+            <TableCell Name="Cell19" Font="Arial, 10pt"/>
+            <TableCell Name="Cell20" Font="Arial, 10pt"/>
+          </TableRow>
+          <TableRow Name="Row5">
+            <TableCell Name="Cell21" Border.Lines="Left, Top" Text="کد شعبه: [prs_rptSooratHesab_Header.fldf_CodeShobe]" RightToLeft="true" Font="RasaFont, 7pt"/>
+            <TableCell Name="Cell22" Border.Lines="Top" Text="تاریخ کوتاژ اظهارنامه گمرکی: [prs_rptSooratHesab_Header.fldCotazh_Date]" RightToLeft="true" Font="RasaFont, 7pt"/>
+            <TableCell Name="Cell23" Border.Lines="Top, Bottom" Text="شناسه ملی(حقوقی)/شماره ملی(حقیقی)/شناسه مشارکت مدنی/کد فراگیر اتباع غیرایرانی: [prs_rptSooratHesab_Header.fldf_NationalCode]" RightToLeft="true" Font="RasaFont, 7pt" RowSpan="2"/>
+            <TableCell Name="Cell24" Border.Lines="Top" Text="شماره پروانه گمرکی: [prs_rptSooratHesab_Header.fldParvane_No]" RightToLeft="true" Font="RasaFont, 7pt"/>
+            <TableCell Name="Cell25" Border.Lines="Right, Top" Text="شماره اقتصادی: [prs_rptSooratHesab_Header.fldf_CodeEghtesadi]" RightToLeft="true" Font="RasaFont, 7pt"/>
+          </TableRow>
+          <TableRow Name="Row6">
+            <TableCell Name="Cell26" Border.Lines="Left, Bottom" Text="کد پستی: [prs_rptSooratHesab_Header.fldf_CodePosti]" RightToLeft="true" Font="RasaFont, 7pt"/>
+            <TableCell Name="Cell27" Border.Lines="Bottom" Text="شماره کوتاژ اظهارنامه گمرکی: [prs_rptSooratHesab_Header.fldCotazh_No]" RightToLeft="true" Font="RasaFont, 7pt"/>
+            <TableCell Name="Cell28" Border.Lines="All" RightToLeft="true" Font="RasaFont, 7pt"/>
+            <TableCell Name="Cell29" Border.Lines="Bottom" Text="کد گمرک محل اظهار: [prs_rptSooratHesab_Header.fldCodeEzhar]" RightToLeft="true" Font="RasaFont, 7pt"/>
+            <TableCell Name="Cell30" Border.Lines="Right, Bottom" Text="شناسه یکتا ثبت قرارداد: [prs_rptSooratHesab_Header.fldUniqCode]" RightToLeft="true" Font="RasaFont, 7pt"/>
+          </TableRow>
+          <TableRow Name="Row7">
+            <TableCell Name="Cell31" Border.Lines="All" Fill.Color="Gainsboro" Text="مشخصات خریدار" HorzAlign="Center" VertAlign="Center" Font="RasaFont, 10pt, style=Bold" ColSpan="5"/>
+            <TableCell Name="Cell32" Font="Arial, 10pt"/>
+            <TableCell Name="Cell33" Font="Arial, 10pt"/>
+            <TableCell Name="Cell34" Font="Arial, 10pt"/>
+            <TableCell Name="Cell35" Font="Arial, 10pt"/>
+          </TableRow>
+          <TableRow Name="Row8">
+            <TableCell Name="Cell46" Border.Lines="Left, Top" Border.BottomLine.Width="2" Text="کد شعبه: [prs_rptSooratHesab_Header.fldf_CodeShobe]" RightToLeft="true" Font="RasaFont, 7pt"/>
+            <TableCell Name="Cell37" Border.Lines="Top" Border.BottomLine.Width="2" Text="شناسه ملی(حقوقی)/شماره ملی(حقیقی)/شناسه مشارکت مدنی/کد فراگیر اتباع غیرایرانی: [prs_rptSooratHesab_Header.fldkh_NationalCode]" RightToLeft="true" Font="RasaFont, 7pt" ColSpan="2"/>
+            <TableCell Name="Cell38" Border.Lines="Top, Bottom" RightToLeft="true" Font="RasaFont, 7pt"/>
+            <TableCell Name="Cell39" Border.Lines="Top" Border.BottomLine.Width="2" Text="نوع پرواز: [prs_rptSooratHesab_Header.fldFlyType]" RightToLeft="true" Font="RasaFont, 7pt"/>
+            <TableCell Name="Cell40" Border.Lines="Right, Top" Border.BottomLine.Width="2" Text="شماره اقتصادی: [prs_rptSooratHesab_Header.fldkh_Eghtesadi]" RightToLeft="true" Font="RasaFont, 7pt"/>
+          </TableRow>
+          <TableRow Name="Row9">
+            <TableCell Name="Cell47" Border.Lines="Left, Bottom" Text="کد پستی: [prs_rptSooratHesab_Header.fldkh_CodePosti]" RightToLeft="true" Font="RasaFont, 7pt"/>
+            <TableCell Name="Cell42" Border.Lines="Bottom" RightToLeft="true" Font="RasaFont, 7pt"/>
+            <TableCell Name="Cell43" Border.Lines="Bottom" RightToLeft="true" Font="RasaFont, 7pt"/>
+            <TableCell Name="Cell44" Border.Lines="Bottom" Text="شماره گذرنامه: [prs_rptSooratHesab_Header.fldPas_No]" RightToLeft="true" Font="RasaFont, 7pt"/>
+            <TableCell Name="Cell45" Border.Lines="Right, Bottom" Text="شماره اشتراک/شناسه قبض بهره بردار: [prs_rptSooratHesab_Header.fldEshterak_No]" RightToLeft="true" Font="RasaFont, 7pt"/>
+          </TableRow>
+        </TableObject>
+        <TableObject Name="Table8" Top="162.92" Width="1091.89" Height="94.5" Border.Lines="All" PrintOnParent="true">
+          <TableColumn Name="Column73" Width="45.36"/>
+          <TableColumn Name="Column74" Width="45.36"/>
+          <TableColumn Name="Column75" Width="45.36"/>
+          <TableColumn Name="Column76" Width="41.58"/>
+          <TableColumn Name="Column77" Width="41.58"/>
+          <TableColumn Name="Column78" Width="45.36"/>
+          <TableColumn Name="Column79" Width="37.89"/>
+          <TableColumn Name="Column80" Width="35.06"/>
+          <TableColumn Name="Column81" Width="34.02"/>
+          <TableColumn Name="Column82" Width="34.02"/>
+          <TableColumn Name="Column83" Width="38.56"/>
+          <TableColumn Name="Column84" Width="18.99"/>
+          <TableColumn Name="Column85" Width="37.89"/>
+          <TableColumn Name="Column86" Width="26.55"/>
+          <TableColumn Name="Column87" Width="34.02"/>
+          <TableColumn Name="Column88" Width="26.55"/>
+          <TableColumn Name="Column89" Width="35.06"/>
+          <TableColumn Name="Column90" Width="35.06"/>
+          <TableColumn Name="Column91" Width="30.33"/>
+          <TableColumn Name="Column92" Width="30.33"/>
+          <TableColumn Name="Column93" Width="30.33"/>
+          <TableColumn Name="Column94" Width="30.33"/>
+          <TableColumn Name="Column95" Width="41.67"/>
+          <TableColumn Name="Column96" Width="30.24"/>
+          <TableColumn Name="Column97" Width="34.02"/>
+          <TableColumn Name="Column98" Width="34.02"/>
+          <TableColumn Name="Column99" Width="49.23"/>
+          <TableColumn Name="Column100" Width="66.24"/>
+          <TableColumn Name="Column101" Width="45.45"/>
+          <TableColumn Name="Column102" Width="11.43"/>
+          <TableRow Name="Row26">
+            <TableCell Name="Cell342" Border.Lines="All" Fill.Color="Gainsboro" Text="مشخصات کالا یا خدمات مورد معامله" HorzAlign="Center" VertAlign="Center" Font="RasaFont, 10pt, style=Bold" ColSpan="30"/>
+            <TableCell Name="Cell343" Font="Arial, 10pt"/>
+            <TableCell Name="Cell344" Font="Arial, 10pt"/>
+            <TableCell Name="Cell345" Font="Arial, 10pt"/>
+            <TableCell Name="Cell346" Font="Arial, 10pt"/>
+            <TableCell Name="Cell347" Font="Arial, 10pt"/>
+            <TableCell Name="Cell348" Font="Arial, 10pt"/>
+            <TableCell Name="Cell349" Font="Arial, 10pt"/>
+            <TableCell Name="Cell350" Font="Arial, 10pt"/>
+            <TableCell Name="Cell351" Font="Arial, 10pt"/>
+            <TableCell Name="Cell352" Font="Arial, 10pt"/>
+            <TableCell Name="Cell353" Font="Arial, 10pt"/>
+            <TableCell Name="Cell354" Font="Arial, 10pt"/>
+            <TableCell Name="Cell355" Font="Arial, 10pt"/>
+            <TableCell Name="Cell356" Font="Arial, 10pt"/>
+            <TableCell Name="Cell357" Font="Arial, 10pt"/>
+            <TableCell Name="Cell358" Font="Arial, 10pt"/>
+            <TableCell Name="Cell359" Font="Arial, 10pt"/>
+            <TableCell Name="Cell360" Font="Arial, 10pt"/>
+            <TableCell Name="Cell361" Font="Arial, 10pt"/>
+            <TableCell Name="Cell362" Font="Arial, 10pt"/>
+            <TableCell Name="Cell363" Font="Arial, 10pt"/>
+            <TableCell Name="Cell364" Font="Arial, 10pt"/>
+            <TableCell Name="Cell365" Font="Arial, 10pt"/>
+            <TableCell Name="Cell366" Font="Arial, 10pt"/>
+            <TableCell Name="Cell367" Font="Arial, 10pt"/>
+            <TableCell Name="Cell368" Font="Arial, 10pt"/>
+            <TableCell Name="Cell369" Font="Arial, 10pt"/>
+            <TableCell Name="Cell370" Font="Arial, 10pt"/>
+            <TableCell Name="Cell371" Font="Arial, 10pt"/>
+          </TableRow>
+          <TableRow Name="Row27">
+            <TableCell Name="Cell372" Border.Lines="All" Text="سهم مالیات بر ارزش افزوده از پرداخت" HorzAlign="Center" VertAlign="Center" RightToLeft="true" Font="RasaFont, 7pt" RowSpan="4"/>
+            <TableCell Name="Cell373" Border.Lines="All" Text="سهم نقدی از پرداخت" HorzAlign="Center" VertAlign="Center" RightToLeft="true" Font="RasaFont, 7pt" RowSpan="4"/>
+            <TableCell Name="Cell374" Border.Lines="All" Text="مبلغ کل کالا/خدمات" HorzAlign="Center" VertAlign="Center" RightToLeft="true" Font="RasaFont, 7pt" RowSpan="4"/>
+            <TableCell Name="Cell375" Border.Lines="All" Text="مبلغ سایر مالیات،&#13;&#10;عوارض و وجوه قانونی" HorzAlign="Center" VertAlign="Center" RightToLeft="true" Font="RasaFont, 7pt" RowSpan="4"/>
+            <TableCell Name="Cell376" Border.Lines="All" Text="نرخ سایر مالیات،&#13;&#10;عوارض و وجوه قانونی" HorzAlign="Center" VertAlign="Center" RightToLeft="true" Font="RasaFont, 7pt" RowSpan="4"/>
+            <TableCell Name="Cell377" Border.Lines="All" Text="موضوع سایر مالیات،&#13;&#10;عوارض و وجوه قانونی " HorzAlign="Center" VertAlign="Center" RightToLeft="true" Font="RasaFont, 7pt" RowSpan="4"/>
+            <TableCell Name="Cell378" Border.Lines="All" Text="مبلغ مالیات بر ارزش افزوده" HorzAlign="Center" VertAlign="Center" RightToLeft="true" Font="RasaFont, 7pt" RowSpan="4"/>
+            <TableCell Name="Cell379" Border.Lines="All" Text="نرخ مالیات بر ارزش افزوده" HorzAlign="Center" VertAlign="Center" RightToLeft="true" Font="RasaFont, 7pt" RowSpan="4"/>
+            <TableCell Name="Cell380" Border.Lines="All" Text="مبلغ پس از تخفیف" HorzAlign="Center" VertAlign="Center" RightToLeft="true" Font="RasaFont, 7pt" RowSpan="4"/>
+            <TableCell Name="Cell381" Border.Lines="All" Text="مبلغ قبل از تخفیف" HorzAlign="Center" VertAlign="Center" RightToLeft="true" Font="RasaFont, 7pt" RowSpan="4"/>
+            <TableCell Name="Cell382" Border.Lines="All" Text="مبلغ تخفیف" HorzAlign="Center" VertAlign="Center" RightToLeft="true" Font="RasaFont, 7pt" RowSpan="4"/>
+            <TableCell Name="Cell383" Border.Lines="All" Text="عیار" HorzAlign="Center" VertAlign="Center" RightToLeft="true" Font="RasaFont, 7pt" RowSpan="4"/>
+            <TableCell Name="Cell384" Border.Lines="All" Text="مجموع اجرت،&#13;&#10;سود و حق العمل" HorzAlign="Center" VertAlign="Center" RightToLeft="true" Font="RasaFont, 7pt" RowSpan="4"/>
+            <TableCell Name="Cell385" Border.Lines="All" Text="حق العمل" HorzAlign="Center" VertAlign="Center" RightToLeft="true" Font="RasaFont, 7pt" RowSpan="4"/>
+            <TableCell Name="Cell386" Border.Lines="All" Text="سود فروشنده" HorzAlign="Center" VertAlign="Center" RightToLeft="true" Font="RasaFont, 7pt" RowSpan="4"/>
+            <TableCell Name="Cell387" Border.Lines="All" Text="اجرت ساخت" HorzAlign="Center" VertAlign="Center" RightToLeft="true" Font="RasaFont, 7pt" RowSpan="4"/>
+            <TableCell Name="Cell388" Border.Lines="All" Text="ارزش ارزی کالا" HorzAlign="Center" VertAlign="Center" RightToLeft="true" Font="RasaFont, 7pt" RowSpan="4"/>
+            <TableCell Name="Cell389" Border.Lines="All" Text="ارزش ریالی کالا" HorzAlign="Center" VertAlign="Center" RightToLeft="true" Font="RasaFont, 7pt" RowSpan="4"/>
+            <TableCell Name="Cell390" Border.Lines="All" Text="تفاوت نرخ خرید و فروش ارز" HorzAlign="Center" VertAlign="Center" RightToLeft="true" Font="RasaFont, 7pt" RowSpan="4"/>
+            <TableCell Name="Cell391" Border.Lines="All" Text="نرخ برابری ارز با ریال" HorzAlign="Center" VertAlign="Center" RightToLeft="true" Font="RasaFont, 7pt" RowSpan="4"/>
+            <TableCell Name="Cell392" Border.Lines="All" Text="نوع ارز" HorzAlign="Center" VertAlign="Center" RightToLeft="true" Font="RasaFont, 7pt" RowSpan="4"/>
+            <TableCell Name="Cell393" Border.Lines="All" Text="مبلغ ارز" HorzAlign="Center" VertAlign="Center" RightToLeft="true" Font="RasaFont, 7pt" RowSpan="4"/>
+            <TableCell Name="Cell394" Border.Lines="All" Text="مبلغ واحد&#13;&#10;(ریال/ارز)" HorzAlign="Center" VertAlign="Center" RightToLeft="true" Font="RasaFont, 7pt" RowSpan="4"/>
+            <TableCell Name="Cell395" Border.Lines="All" Text="تعداد/مقدار" HorzAlign="Center" VertAlign="Center" Angle="270" RightToLeft="true" Font="RasaFont, 7pt" RowSpan="4"/>
+            <TableCell Name="Cell396" Border.Lines="All" Text="وزن&#13;&#10;خالص" HorzAlign="Center" VertAlign="Center" RightToLeft="true" Font="RasaFont, 7pt" RowSpan="4"/>
+            <TableCell Name="Cell397" Border.Lines="All" Text="واحد اندازه گیری" HorzAlign="Center" VertAlign="Center" RightToLeft="true" Font="RasaFont, 7pt" RowSpan="4"/>
+            <TableCell Name="Cell398" Border.Lines="All" Text="شناسه یکتا ثبت قرارداد حق العمل کاری" HorzAlign="Center" VertAlign="Center" RightToLeft="true" Font="RasaFont, 7pt" RowSpan="4"/>
+            <TableCell Name="Cell399" Border.Lines="All" Text="شرح کالا/خدمت" HorzAlign="Center" VertAlign="Center" Font="RasaFont, 7pt" RowSpan="4"/>
+            <TableCell Name="Cell400" Border.Lines="All" Text="شناسه کالا/خدمت" HorzAlign="Center" VertAlign="Center" RightToLeft="true" Font="RasaFont, 7pt" RowSpan="4"/>
+            <TableCell Name="Cell401" Border.Lines="All" Text="ردیف" HorzAlign="Center" VertAlign="Center" Angle="270" RightToLeft="true" Font="RasaFont, 7pt" RowSpan="4"/>
+          </TableRow>
+          <TableRow Name="Row28">
+            <TableCell Name="Cell402" Border.Lines="All" HorzAlign="Center" VertAlign="Center" RightToLeft="true" Font="RasaFont, 7pt"/>
+            <TableCell Name="Cell403" Border.Lines="All" HorzAlign="Center" VertAlign="Center" RightToLeft="true" Font="RasaFont, 7pt"/>
+            <TableCell Name="Cell404" Border.Lines="All" HorzAlign="Center" VertAlign="Center" RightToLeft="true" Font="RasaFont, 7pt"/>
+            <TableCell Name="Cell405" Border.Lines="All" HorzAlign="Center" VertAlign="Center" RightToLeft="true" Font="RasaFont, 7pt"/>
+            <TableCell Name="Cell406" Border.Lines="All" HorzAlign="Center" VertAlign="Center" RightToLeft="true" Font="RasaFont, 7pt"/>
+            <TableCell Name="Cell407" Border.Lines="All" HorzAlign="Center" VertAlign="Center" RightToLeft="true" Font="RasaFont, 7pt"/>
+            <TableCell Name="Cell408" Border.Lines="All" HorzAlign="Center" VertAlign="Center" RightToLeft="true" Font="RasaFont, 7pt"/>
+            <TableCell Name="Cell409" Border.Lines="All" HorzAlign="Center" VertAlign="Center" RightToLeft="true" Font="RasaFont, 7pt"/>
+            <TableCell Name="Cell410" Border.Lines="All" HorzAlign="Center" VertAlign="Center" RightToLeft="true" Font="RasaFont, 7pt"/>
+            <TableCell Name="Cell411" Border.Lines="All" HorzAlign="Center" VertAlign="Center" RightToLeft="true" Font="RasaFont, 7pt"/>
+            <TableCell Name="Cell412" Border.Lines="All" HorzAlign="Center" VertAlign="Center" RightToLeft="true" Font="RasaFont, 7pt"/>
+            <TableCell Name="Cell413" Border.Lines="All" HorzAlign="Center" VertAlign="Center" RightToLeft="true" Font="RasaFont, 7pt"/>
+            <TableCell Name="Cell414" Border.Lines="All" HorzAlign="Center" VertAlign="Center" RightToLeft="true" Font="RasaFont, 7pt"/>
+            <TableCell Name="Cell415" Border.Lines="All" HorzAlign="Center" VertAlign="Center" RightToLeft="true" Font="RasaFont, 7pt"/>
+            <TableCell Name="Cell416" Border.Lines="All" HorzAlign="Center" VertAlign="Center" RightToLeft="true" Font="RasaFont, 7pt"/>
+            <TableCell Name="Cell417" Border.Lines="All" HorzAlign="Center" VertAlign="Center" RightToLeft="true" Font="RasaFont, 7pt"/>
+            <TableCell Name="Cell418" Border.Lines="All" HorzAlign="Center" VertAlign="Center" RightToLeft="true" Font="RasaFont, 7pt"/>
+            <TableCell Name="Cell419" Border.Lines="All" HorzAlign="Center" VertAlign="Center" RightToLeft="true" Font="RasaFont, 7pt"/>
+            <TableCell Name="Cell420" Border.Lines="All" HorzAlign="Center" VertAlign="Center" RightToLeft="true" Font="RasaFont, 7pt"/>
+            <TableCell Name="Cell421" Border.Lines="All" HorzAlign="Center" VertAlign="Center" RightToLeft="true" Font="RasaFont, 7pt"/>
+            <TableCell Name="Cell422" Border.Lines="All" HorzAlign="Center" VertAlign="Center" RightToLeft="true" Font="RasaFont, 7pt"/>
+            <TableCell Name="Cell423" Border.Lines="All" HorzAlign="Center" VertAlign="Center" RightToLeft="true" Font="RasaFont, 7pt"/>
+            <TableCell Name="Cell424" Border.Lines="All" HorzAlign="Center" VertAlign="Center" RightToLeft="true" Font="RasaFont, 7pt"/>
+            <TableCell Name="Cell425" Border.Lines="All" HorzAlign="Center" VertAlign="Center" RightToLeft="true" Font="RasaFont, 7pt"/>
+            <TableCell Name="Cell426" Border.Lines="All" HorzAlign="Center" VertAlign="Center" RightToLeft="true" Font="RasaFont, 7pt"/>
+            <TableCell Name="Cell427" Border.Lines="All" HorzAlign="Center" VertAlign="Center" RightToLeft="true" Font="RasaFont, 7pt"/>
+            <TableCell Name="Cell428" Border.Lines="All" HorzAlign="Center" VertAlign="Center" RightToLeft="true" Font="RasaFont, 7pt"/>
+            <TableCell Name="Cell429" Border.Lines="All" Font="Arial, 10pt"/>
+            <TableCell Name="Cell430" Border.Lines="All" HorzAlign="Center" VertAlign="Center" RightToLeft="true" Font="RasaFont, 7pt"/>
+            <TableCell Name="Cell431" Border.Lines="All" HorzAlign="Center" VertAlign="Center" RightToLeft="true" Font="RasaFont, 7pt"/>
+          </TableRow>
+          <TableRow Name="Row29">
+            <TableCell Name="Cell432" Border.Lines="All" HorzAlign="Center" VertAlign="Center" RightToLeft="true" Font="RasaFont, 7pt"/>
+            <TableCell Name="Cell433" Border.Lines="All" HorzAlign="Center" VertAlign="Center" RightToLeft="true" Font="RasaFont, 7pt"/>
+            <TableCell Name="Cell434" Border.Lines="All" HorzAlign="Center" VertAlign="Center" RightToLeft="true" Font="RasaFont, 7pt"/>
+            <TableCell Name="Cell435" Border.Lines="All" HorzAlign="Center" VertAlign="Center" RightToLeft="true" Font="RasaFont, 7pt"/>
+            <TableCell Name="Cell436" Border.Lines="All" HorzAlign="Center" VertAlign="Center" RightToLeft="true" Font="RasaFont, 7pt"/>
+            <TableCell Name="Cell437" Border.Lines="All" HorzAlign="Center" VertAlign="Center" RightToLeft="true" Font="RasaFont, 7pt"/>
+            <TableCell Name="Cell438" Border.Lines="All" HorzAlign="Center" VertAlign="Center" RightToLeft="true" Font="RasaFont, 7pt"/>
+            <TableCell Name="Cell439" Border.Lines="All" HorzAlign="Center" VertAlign="Center" RightToLeft="true" Font="RasaFont, 7pt"/>
+            <TableCell Name="Cell440" Border.Lines="All" HorzAlign="Center" VertAlign="Center" RightToLeft="true" Font="RasaFont, 7pt"/>
+            <TableCell Name="Cell441" Border.Lines="All" HorzAlign="Center" VertAlign="Center" RightToLeft="true" Font="RasaFont, 7pt"/>
+            <TableCell Name="Cell442" Border.Lines="All" HorzAlign="Center" VertAlign="Center" RightToLeft="true" Font="RasaFont, 7pt"/>
+            <TableCell Name="Cell443" Border.Lines="All" HorzAlign="Center" VertAlign="Center" RightToLeft="true" Font="RasaFont, 7pt"/>
+            <TableCell Name="Cell444" Border.Lines="All" HorzAlign="Center" VertAlign="Center" RightToLeft="true" Font="RasaFont, 7pt"/>
+            <TableCell Name="Cell445" Border.Lines="All" HorzAlign="Center" VertAlign="Center" RightToLeft="true" Font="RasaFont, 7pt"/>
+            <TableCell Name="Cell446" Border.Lines="All" HorzAlign="Center" VertAlign="Center" RightToLeft="true" Font="RasaFont, 7pt"/>
+            <TableCell Name="Cell447" Border.Lines="All" HorzAlign="Center" VertAlign="Center" RightToLeft="true" Font="RasaFont, 7pt"/>
+            <TableCell Name="Cell448" Border.Lines="All" HorzAlign="Center" VertAlign="Center" RightToLeft="true" Font="RasaFont, 7pt"/>
+            <TableCell Name="Cell449" Border.Lines="All" HorzAlign="Center" VertAlign="Center" RightToLeft="true" Font="RasaFont, 7pt"/>
+            <TableCell Name="Cell450" Border.Lines="All" HorzAlign="Center" VertAlign="Center" RightToLeft="true" Font="RasaFont, 7pt"/>
+            <TableCell Name="Cell451" Border.Lines="All" HorzAlign="Center" VertAlign="Center" RightToLeft="true" Font="RasaFont, 7pt"/>
+            <TableCell Name="Cell452" Border.Lines="All" HorzAlign="Center" VertAlign="Center" RightToLeft="true" Font="RasaFont, 7pt"/>
+            <TableCell Name="Cell453" Border.Lines="All" HorzAlign="Center" VertAlign="Center" RightToLeft="true" Font="RasaFont, 7pt"/>
+            <TableCell Name="Cell454" Border.Lines="All" HorzAlign="Center" VertAlign="Center" RightToLeft="true" Font="RasaFont, 7pt"/>
+            <TableCell Name="Cell455" Border.Lines="All" HorzAlign="Center" VertAlign="Center" RightToLeft="true" Font="RasaFont, 7pt"/>
+            <TableCell Name="Cell456" Border.Lines="All" HorzAlign="Center" VertAlign="Center" RightToLeft="true" Font="RasaFont, 7pt"/>
+            <TableCell Name="Cell457" Border.Lines="All" HorzAlign="Center" VertAlign="Center" RightToLeft="true" Font="RasaFont, 7pt"/>
+            <TableCell Name="Cell458" Border.Lines="All" HorzAlign="Center" VertAlign="Center" RightToLeft="true" Font="RasaFont, 7pt"/>
+            <TableCell Name="Cell459" Border.Lines="All" Font="Arial, 10pt"/>
+            <TableCell Name="Cell460" Border.Lines="All" HorzAlign="Center" VertAlign="Center" RightToLeft="true" Font="RasaFont, 7pt"/>
+            <TableCell Name="Cell461" Border.Lines="All" HorzAlign="Center" VertAlign="Center" RightToLeft="true" Font="RasaFont, 7pt"/>
+          </TableRow>
+          <TableRow Name="Row30">
+            <TableCell Name="Cell462" Border.Lines="All" RightToLeft="true" Font="RasaFont, 10pt"/>
+            <TableCell Name="Cell463" Border.Lines="All" RightToLeft="true" Font="RasaFont, 10pt"/>
+            <TableCell Name="Cell464" Border.Lines="All" RightToLeft="true" Font="RasaFont, 10pt"/>
+            <TableCell Name="Cell465" Border.Lines="All" RightToLeft="true" Font="RasaFont, 10pt"/>
+            <TableCell Name="Cell466" Border.Lines="All" RightToLeft="true" Font="RasaFont, 10pt"/>
+            <TableCell Name="Cell467" Border.Lines="All" RightToLeft="true" Font="RasaFont, 10pt"/>
+            <TableCell Name="Cell468" Border.Lines="All" RightToLeft="true" Font="RasaFont, 10pt"/>
+            <TableCell Name="Cell469" Border.Lines="All" RightToLeft="true" Font="RasaFont, 10pt"/>
+            <TableCell Name="Cell470" Border.Lines="All" RightToLeft="true" Font="RasaFont, 10pt"/>
+            <TableCell Name="Cell471" Border.Lines="All" RightToLeft="true" Font="RasaFont, 10pt"/>
+            <TableCell Name="Cell472" Border.Lines="All" RightToLeft="true" Font="RasaFont, 10pt"/>
+            <TableCell Name="Cell473" Border.Lines="All" RightToLeft="true" Font="RasaFont, 10pt"/>
+            <TableCell Name="Cell474" Border.Lines="All" RightToLeft="true" Font="RasaFont, 10pt"/>
+            <TableCell Name="Cell475" Border.Lines="All" RightToLeft="true" Font="RasaFont, 10pt"/>
+            <TableCell Name="Cell476" Border.Lines="All" RightToLeft="true" Font="RasaFont, 10pt"/>
+            <TableCell Name="Cell477" Border.Lines="All" RightToLeft="true" Font="RasaFont, 10pt"/>
+            <TableCell Name="Cell478" Border.Lines="All" RightToLeft="true" Font="RasaFont, 10pt"/>
+            <TableCell Name="Cell479" Border.Lines="All" RightToLeft="true" Font="RasaFont, 10pt"/>
+            <TableCell Name="Cell480" Border.Lines="All" RightToLeft="true" Font="RasaFont, 10pt"/>
+            <TableCell Name="Cell481" Border.Lines="All" RightToLeft="true" Font="RasaFont, 10pt"/>
+            <TableCell Name="Cell482" Border.Lines="All" RightToLeft="true" Font="RasaFont, 10pt"/>
+            <TableCell Name="Cell483" Border.Lines="All" RightToLeft="true" Font="RasaFont, 10pt"/>
+            <TableCell Name="Cell484" Border.Lines="All" RightToLeft="true" Font="RasaFont, 10pt"/>
+            <TableCell Name="Cell485" Border.Lines="All" RightToLeft="true" Font="RasaFont, 10pt"/>
+            <TableCell Name="Cell486" Border.Lines="All" RightToLeft="true" Font="RasaFont, 10pt"/>
+            <TableCell Name="Cell487" Border.Lines="All" RightToLeft="true" Font="RasaFont, 10pt"/>
+            <TableCell Name="Cell488" Border.Lines="All" RightToLeft="true" Font="RasaFont, 10pt"/>
+            <TableCell Name="Cell489" Border.Lines="All" Font="Arial, 10pt"/>
+            <TableCell Name="Cell490" Border.Lines="All" RightToLeft="true" Font="RasaFont, 10pt"/>
+            <TableCell Name="Cell491" Border.Lines="All" RightToLeft="true" Font="RasaFont, 10pt"/>
+          </TableRow>
+        </TableObject>
+      </DataHeaderBand>
+      <DataFooterBand Name="DataFooter1" Top="284.32" Width="1096.2" Height="139.86">
+        <TableObject Name="Table3" Width="1091.89" Height="41.58">
+          <TableColumn Name="Column37" Width="45.36"/>
+          <TableColumn Name="Column38" Width="45.36"/>
+          <TableColumn Name="Column39" Width="45.36"/>
+          <TableColumn Name="Column40" Width="41.58"/>
+          <TableColumn Name="Column41" Width="41.58"/>
+          <TableColumn Name="Column42" Width="45.36"/>
+          <TableColumn Name="Column43" Width="37.89"/>
+          <TableColumn Name="Column44" Width="35.06"/>
+          <TableColumn Name="Column45" Width="34.02"/>
+          <TableColumn Name="Column46" Width="34.02"/>
+          <TableColumn Name="Column47" Width="38.56"/>
+          <TableColumn Name="Column48" Width="18.99"/>
+          <TableColumn Name="Column49" Width="37.89"/>
+          <TableColumn Name="Column50" Width="26.55"/>
+          <TableColumn Name="Column51" Width="34.02"/>
+          <TableColumn Name="Column52" Width="26.55"/>
+          <TableColumn Name="Column53" Width="35.06"/>
+          <TableColumn Name="Column54" Width="35.06"/>
+          <TableColumn Name="Column55" Width="30.33"/>
+          <TableColumn Name="Column56" Width="30.33"/>
+          <TableColumn Name="Column57" Width="30.33"/>
+          <TableColumn Name="Column58" Width="30.33"/>
+          <TableColumn Name="Column59" Width="41.67"/>
+          <TableColumn Name="Column60" Width="30.24"/>
+          <TableColumn Name="Column61" Width="34.02"/>
+          <TableColumn Name="Column62" Width="34.02"/>
+          <TableColumn Name="Column63" Width="49.23"/>
+          <TableColumn Name="Column64" Width="66.24"/>
+          <TableColumn Name="Column65" Width="45.45"/>
+          <TableColumn Name="Column66" Width="11.43"/>
+          <TableRow Name="Row15">
+            <TableCell Name="Cell202" Border.Lines="All" Border.TopLine.Width="2" Text="[SahmMaliyat]" Format="Number" Format.UseLocale="false" Format.DecimalDigits="0" Format.DecimalSeparator="." Format.GroupSeparator="," Format.NegativePattern="1" AutoShrink="FontSize" AutoShrinkMinSize="4" HorzAlign="Center" VertAlign="Center" RightToLeft="true" Font="RasaFont, 7pt"/>
+            <TableCell Name="Cell203" Border.Lines="All" Border.TopLine.Width="2" Text="[SahmNaghdi]" Format="Number" Format.UseLocale="false" Format.DecimalDigits="0" Format.DecimalSeparator="." Format.GroupSeparator="," Format.NegativePattern="1" AutoShrink="FontSize" AutoShrinkMinSize="4" HorzAlign="Center" VertAlign="Center" RightToLeft="true" Font="RasaFont, 7pt"/>
+            <TableCell Name="Cell204" Border.Lines="All" Border.TopLine.Width="2" Text="[MablaghAsli]" Format="Number" Format.UseLocale="false" Format.DecimalDigits="0" Format.DecimalSeparator="." Format.GroupSeparator="," Format.NegativePattern="1" AutoShrink="FontSize" AutoShrinkMinSize="4" HorzAlign="Center" VertAlign="Center" RightToLeft="true" Font="RasaFont, 7pt"/>
+            <TableCell Name="Cell205" Border.Lines="All" Border.TopLine.Width="2" Text="[MablaghGhanoni]" Format="Number" Format.UseLocale="false" Format.DecimalDigits="0" Format.DecimalSeparator="." Format.GroupSeparator="," Format.NegativePattern="1" AutoShrink="FontSize" AutoShrinkMinSize="4" HorzAlign="Center" VertAlign="Center" RightToLeft="true" Font="RasaFont, 7pt"/>
+            <TableCell Name="Cell206" Border.Lines="Top" Border.TopLine.Width="2" Fill.Color="Gainsboro" AutoShrink="FontSize" AutoShrinkMinSize="4" HorzAlign="Center" VertAlign="Center" RightToLeft="true" Font="RasaFont, 7pt"/>
+            <TableCell Name="Cell207" Border.Lines="Top" Border.TopLine.Width="2" Fill.Color="Gainsboro" AutoShrink="FontSize" AutoShrinkMinSize="4" HorzAlign="Center" VertAlign="Center" RightToLeft="true" Font="RasaFont, 7pt"/>
+            <TableCell Name="Cell208" Border.Lines="All" Border.TopLine.Width="2" Text="[MablaghMaliyat]" Format="Number" Format.UseLocale="false" Format.DecimalDigits="0" Format.DecimalSeparator="." Format.GroupSeparator="," Format.NegativePattern="1" AutoShrink="FontSize" AutoShrinkMinSize="4" HorzAlign="Center" VertAlign="Center" RightToLeft="true" Font="RasaFont, 7pt"/>
+            <TableCell Name="Cell209" Border.Lines="Top" Border.TopLine.Width="2" Fill.Color="Gainsboro" AutoShrink="FontSize" AutoShrinkMinSize="4" HorzAlign="Center" VertAlign="Center" RightToLeft="true" Font="RasaFont, 7pt"/>
+            <TableCell Name="Cell210" Border.Lines="All" Border.TopLine.Width="2" Text="[Mablagh_Takhfif]" Format="Number" Format.UseLocale="false" Format.DecimalDigits="0" Format.DecimalSeparator="." Format.GroupSeparator="," Format.NegativePattern="1" AutoShrink="FontSize" AutoShrinkMinSize="4" HorzAlign="Center" VertAlign="Center" RightToLeft="true" Font="RasaFont, 7pt"/>
+            <TableCell Name="Cell211" Border.Lines="All" Border.TopLine.Width="2" Text="[MablaghAsli]" Format="Number" Format.UseLocale="false" Format.DecimalDigits="0" Format.DecimalSeparator="." Format.GroupSeparator="," Format.NegativePattern="1" AutoShrink="FontSize" AutoShrinkMinSize="4" HorzAlign="Center" VertAlign="Center" RightToLeft="true" Font="RasaFont, 7pt"/>
+            <TableCell Name="Cell212" Border.Lines="All" Border.TopLine.Width="2" Text="[MablaghTakhfif]" Format="Number" Format.UseLocale="false" Format.DecimalDigits="0" Format.DecimalSeparator="." Format.GroupSeparator="," Format.NegativePattern="1" AutoShrink="FontSize" AutoShrinkMinSize="4" HorzAlign="Center" VertAlign="Center" RightToLeft="true" Font="RasaFont, 7pt"/>
+            <TableCell Name="Cell213" Border.Lines="Top" Border.TopLine.Width="2" Fill.Color="Gainsboro" AutoShrink="FontSize" AutoShrinkMinSize="4" HorzAlign="Center" VertAlign="Center" RightToLeft="true" Font="RasaFont, 7pt"/>
+            <TableCell Name="Cell214" Border.Lines="Top" Border.TopLine.Width="2" Fill.Color="Gainsboro" AutoShrink="FontSize" AutoShrinkMinSize="4" HorzAlign="Center" VertAlign="Center" RightToLeft="true" Font="RasaFont, 7pt"/>
+            <TableCell Name="Cell215" Border.Lines="Top" Border.TopLine.Width="2" Fill.Color="Gainsboro" AutoShrink="FontSize" AutoShrinkMinSize="4" HorzAlign="Center" VertAlign="Center" RightToLeft="true" Font="RasaFont, 7pt"/>
+            <TableCell Name="Cell216" Border.Lines="Top" Border.TopLine.Width="2" Fill.Color="Gainsboro" AutoShrink="FontSize" AutoShrinkMinSize="4" HorzAlign="Center" VertAlign="Center" RightToLeft="true" Font="RasaFont, 7pt"/>
+            <TableCell Name="Cell217" Border.Lines="Top" Border.TopLine.Width="2" Fill.Color="Gainsboro" AutoShrink="FontSize" AutoShrinkMinSize="4" HorzAlign="Center" VertAlign="Center" RightToLeft="true" Font="RasaFont, 7pt"/>
+            <TableCell Name="Cell218" Border.Lines="All" Border.TopLine.Width="2" Text="[ArzeshArzi]" Format="Number" Format.UseLocale="false" Format.DecimalDigits="0" Format.DecimalSeparator="." Format.GroupSeparator="," Format.NegativePattern="1" AutoShrink="FontSize" AutoShrinkMinSize="4" HorzAlign="Center" VertAlign="Center" RightToLeft="true" Font="RasaFont, 7pt"/>
+            <TableCell Name="Cell219" Border.Lines="All" Border.TopLine.Width="2" Text="[ArzeshReyali]" Format="Number" Format.UseLocale="false" Format.DecimalDigits="0" Format.DecimalSeparator="." Format.GroupSeparator="," Format.NegativePattern="1" AutoShrink="FontSize" AutoShrinkMinSize="4" HorzAlign="Center" VertAlign="Center" RightToLeft="true" Font="RasaFont, 7pt"/>
+            <TableCell Name="Cell220" Border.Lines="Top" Border.TopLine.Width="2" Fill.Color="Gainsboro" AutoShrink="FontSize" AutoShrinkMinSize="4" HorzAlign="Center" VertAlign="Center" RightToLeft="true" Font="RasaFont, 7pt"/>
+            <TableCell Name="Cell221" Border.Lines="Top" Border.TopLine.Width="2" Fill.Color="Gainsboro" AutoShrink="FontSize" AutoShrinkMinSize="4" HorzAlign="Center" VertAlign="Center" RightToLeft="true" Font="RasaFont, 7pt"/>
+            <TableCell Name="Cell222" Border.Lines="Top" Border.TopLine.Width="2" Fill.Color="Gainsboro" AutoShrink="FontSize" AutoShrinkMinSize="4" HorzAlign="Center" VertAlign="Center" RightToLeft="true" Font="RasaFont, 7pt"/>
+            <TableCell Name="Cell223" Border.Lines="Top" Border.TopLine.Width="2" Fill.Color="Gainsboro" AutoShrink="FontSize" AutoShrinkMinSize="4" HorzAlign="Center" VertAlign="Center" RightToLeft="true" Font="RasaFont, 7pt"/>
+            <TableCell Name="Cell224" Border.Lines="Top" Border.TopLine.Width="2" Fill.Color="Gainsboro" AutoShrink="FontSize" AutoShrinkMinSize="4" HorzAlign="Center" VertAlign="Center" RightToLeft="true" Font="RasaFont, 7pt"/>
+            <TableCell Name="Cell225" Border.Lines="Top" Border.TopLine.Width="2" Fill.Color="Gainsboro" AutoShrink="FontSize" AutoShrinkMinSize="4" HorzAlign="Center" VertAlign="Center" RightToLeft="true" Font="RasaFont, 7pt"/>
+            <TableCell Name="Cell226" Border.Lines="All" Border.TopLine.Width="2" Text="[VaznKhales]" Format="Number" Format.UseLocale="false" Format.DecimalDigits="0" Format.DecimalSeparator="." Format.GroupSeparator="," Format.NegativePattern="1" AutoShrink="FontSize" AutoShrinkMinSize="4" HorzAlign="Center" VertAlign="Center" RightToLeft="true" Font="RasaFont, 7pt"/>
+            <TableCell Name="Cell227" Border.Lines="Top" Border.TopLine.Width="2" Fill.Color="Gainsboro" AutoShrink="FontSize" AutoShrinkMinSize="4" HorzAlign="Center" VertAlign="Center" RightToLeft="true" Font="RasaFont, 7pt"/>
+            <TableCell Name="Cell228" Border.Lines="Top" Border.TopLine.Width="2" Fill.Color="Gainsboro" AutoShrink="FontSize" AutoShrinkMinSize="4" HorzAlign="Center" VertAlign="Center" RightToLeft="true" Font="RasaFont, 7pt"/>
+            <TableCell Name="Cell229" Border.Lines="Top" Border.TopLine.Width="2" Fill.Color="Gainsboro" AutoShrink="FontSize" AutoShrinkMinSize="4" HorzAlign="Center" VertAlign="Center" Font="RasaFont, 7pt"/>
+            <TableCell Name="Cell230" Border.Lines="Top" Border.TopLine.Width="2" Text="جمع کل:" HorzAlign="Center" VertAlign="Center" RightToLeft="true" Font="RasaFont, 7pt, style=Bold" ColSpan="2"/>
+            <TableCell Name="Cell231" HorzAlign="Center" VertAlign="Center" Angle="270" RightToLeft="true" Font="RasaFont, 7pt"/>
+          </TableRow>
+          <TableRow Name="Row17">
+            <TableCell Name="Cell262" Font="Arial, 10pt" ColSpan="30"/>
+            <TableCell Name="Cell263" Font="Arial, 10pt"/>
+            <TableCell Name="Cell264" Font="Arial, 10pt"/>
+            <TableCell Name="Cell265" Font="Arial, 10pt"/>
+            <TableCell Name="Cell266" Font="Arial, 10pt"/>
+            <TableCell Name="Cell267" Font="Arial, 10pt"/>
+            <TableCell Name="Cell268" Font="Arial, 10pt"/>
+            <TableCell Name="Cell269" Font="Arial, 10pt"/>
+            <TableCell Name="Cell270" Font="Arial, 10pt"/>
+            <TableCell Name="Cell271" Font="Arial, 10pt"/>
+            <TableCell Name="Cell272" Font="Arial, 10pt"/>
+            <TableCell Name="Cell273" Font="Arial, 10pt"/>
+            <TableCell Name="Cell274" Font="Arial, 10pt"/>
+            <TableCell Name="Cell275" Font="Arial, 10pt"/>
+            <TableCell Name="Cell276" Font="Arial, 10pt"/>
+            <TableCell Name="Cell277" Font="Arial, 10pt"/>
+            <TableCell Name="Cell278" Font="Arial, 10pt"/>
+            <TableCell Name="Cell279" Font="Arial, 10pt"/>
+            <TableCell Name="Cell280" Font="Arial, 10pt"/>
+            <TableCell Name="Cell281" Font="Arial, 10pt"/>
+            <TableCell Name="Cell282" Font="Arial, 10pt"/>
+            <TableCell Name="Cell283" Font="Arial, 10pt"/>
+            <TableCell Name="Cell284" Font="Arial, 10pt"/>
+            <TableCell Name="Cell285" Font="Arial, 10pt"/>
+            <TableCell Name="Cell286" Font="Arial, 10pt"/>
+            <TableCell Name="Cell287" Font="Arial, 10pt"/>
+            <TableCell Name="Cell288" Font="Arial, 10pt"/>
+            <TableCell Name="Cell289" Font="Arial, 10pt"/>
+            <TableCell Name="Cell290" Font="Arial, 10pt"/>
+            <TableCell Name="Cell291" Font="Arial, 10pt"/>
+          </TableRow>
+          <TableRow Name="Row18" MinHeight="3.78" Height="3.78">
+            <TableCell Name="Cell292" Border.Lines="All" Font="Arial, 10pt" ColSpan="30"/>
+            <TableCell Name="Cell293" Border.Lines="All" Font="Arial, 10pt"/>
+            <TableCell Name="Cell294" Border.Lines="All" Font="Arial, 10pt"/>
+            <TableCell Name="Cell295" Border.Lines="All" Font="Arial, 10pt"/>
+            <TableCell Name="Cell296" Border.Lines="All" Font="Arial, 10pt"/>
+            <TableCell Name="Cell297" Border.Lines="All" Font="Arial, 10pt"/>
+            <TableCell Name="Cell298" Border.Lines="All" Font="Arial, 10pt"/>
+            <TableCell Name="Cell299" Border.Lines="All" Font="Arial, 10pt"/>
+            <TableCell Name="Cell300" Border.Lines="All" Font="Arial, 10pt"/>
+            <TableCell Name="Cell301" Border.Lines="All" Font="Arial, 10pt"/>
+            <TableCell Name="Cell302" Border.Lines="All" Font="Arial, 10pt"/>
+            <TableCell Name="Cell303" Border.Lines="All" Font="Arial, 10pt"/>
+            <TableCell Name="Cell304" Border.Lines="All" Font="Arial, 10pt"/>
+            <TableCell Name="Cell305" Border.Lines="All" Font="Arial, 10pt"/>
+            <TableCell Name="Cell306" Border.Lines="All" Font="Arial, 10pt"/>
+            <TableCell Name="Cell307" Border.Lines="All" Font="Arial, 10pt"/>
+            <TableCell Name="Cell308" Border.Lines="All" Font="Arial, 10pt"/>
+            <TableCell Name="Cell309" Border.Lines="All" Font="Arial, 10pt"/>
+            <TableCell Name="Cell310" Border.Lines="All" Font="Arial, 10pt"/>
+            <TableCell Name="Cell311" Border.Lines="All" Font="Arial, 10pt"/>
+            <TableCell Name="Cell312" Border.Lines="All" Font="Arial, 10pt"/>
+            <TableCell Name="Cell313" Border.Lines="All" Font="Arial, 10pt"/>
+            <TableCell Name="Cell314" Border.Lines="All" Font="Arial, 10pt"/>
+            <TableCell Name="Cell315" Border.Lines="All" Font="Arial, 10pt"/>
+            <TableCell Name="Cell316" Border.Lines="All" Font="Arial, 10pt"/>
+            <TableCell Name="Cell317" Border.Lines="All" Font="Arial, 10pt"/>
+            <TableCell Name="Cell318" Border.Lines="All" Font="Arial, 10pt"/>
+            <TableCell Name="Cell319" Border.Lines="All" Font="Arial, 10pt"/>
+            <TableCell Name="Cell320" Border.Lines="All" Font="Arial, 10pt"/>
+            <TableCell Name="Cell321" Border.Lines="All" Font="Arial, 10pt"/>
+          </TableRow>
+        </TableObject>
+        <TableObject Name="Table4" Left="822.15" Top="60.48" Width="269.51" Height="79.38" Border.Lines="All" PrintOnParent="true">
+          <TableColumn Name="Column67" Width="203.17"/>
+          <TableColumn Name="Column68" Width="66.34"/>
+          <TableRow Name="Row19" Height="26.46">
+            <TableCell Name="Cell322" Border.Lines="All" Text="[prs_rptSooratHesab_Header.fldRaveshTasviye]" HorzAlign="Right" VertAlign="Center" Font="RasaFont, 7pt, style=Bold"/>
+            <TableCell Name="Cell323" Border.Lines="All" Text="روش تسویه" HorzAlign="Right" VertAlign="Center" Font="RasaFont, 7pt, style=Bold"/>
+          </TableRow>
+          <TableRow Name="Row20" Height="26.46">
+            <TableCell Name="Cell327" Border.Lines="All" Text="[prs_rptSooratHesab_Header.fldMablaghNaghdi]" Format="Number" Format.UseLocale="false" Format.DecimalDigits="0" Format.DecimalSeparator="." Format.GroupSeparator="," Format.NegativePattern="1" HorzAlign="Right" VertAlign="Center" Font="RasaFont, 7pt, style=Bold"/>
+            <TableCell Name="Cell328" Border.Lines="All" Text="مبلغ پرداختی نقدی" HorzAlign="Right" VertAlign="Center" Font="RasaFont, 7pt, style=Bold"/>
+          </TableRow>
+          <TableRow Name="Row21" Height="26.46">
+            <TableCell Name="Cell332" Border.Lines="All" Text="[prs_rptSooratHesab_Header.fldMablaghNesiye]" Format="Number" Format.UseLocale="false" Format.DecimalDigits="0" Format.DecimalSeparator="." Format.GroupSeparator="," Format.NegativePattern="1" HorzAlign="Right" VertAlign="Center" Font="RasaFont, 7pt, style=Bold"/>
+            <TableCell Name="Cell333" Border.Lines="All" Text="مبلغ نسیه" HorzAlign="Right" VertAlign="Center" Font="RasaFont, 7pt, style=Bold"/>
+          </TableRow>
+        </TableObject>
+        <TableObject Name="Table5" Left="567" Top="60.48" Width="222.28" Height="79.38" Border.Lines="All" PrintOnParent="true">
+          <TableColumn Name="Column69" Width="108.68"/>
+          <TableColumn Name="Column70" Width="113.6"/>
+          <TableRow Name="Row22" Height="26.46">
+            <TableCell Name="Cell334" Border.Lines="Left, Top, Bottom" Text="مبلغ پرداختی:" VertAlign="Center" RightToLeft="true" Font="RasaFont, 7pt, style=Bold"/>
+            <TableCell Name="Cell335" Border.Lines="Right, Top, Bottom" Text="روش پرداخت: " VertAlign="Center" RightToLeft="true" Font="RasaFont, 7pt, style=Bold"/>
+          </TableRow>
+          <TableRow Name="Row23" Height="26.46">
+            <TableCell Name="Cell336" Border.Lines="All" Text="شماره پیگیری/شماره مرجع:" VertAlign="Center" RightToLeft="true" Font="RasaFont, 7pt, style=Bold" ColSpan="2"/>
+            <TableCell Name="Cell337" Border.Lines="All" VertAlign="Center" RightToLeft="true" Font="RasaFont, 7pt, style=Bold"/>
+          </TableRow>
+          <TableRow Name="Row24" Height="26.46">
+            <TableCell Name="Cell338" Border.Lines="All" Text="تاریخ و زمان پرداخت:" VertAlign="Center" RightToLeft="true" Font="RasaFont, 7pt, style=Bold" ColSpan="2"/>
+            <TableCell Name="Cell339" Border.Lines="All" VertAlign="Center" RightToLeft="true" Font="RasaFont, 7pt, style=Bold"/>
+          </TableRow>
+        </TableObject>
+        <TableObject Name="Table6" Top="60.48" Width="222.27" Height="26.46" Border.Lines="All" PrintOnParent="true">
+          <TableColumn Name="Column71" Width="137.02"/>
+          <TableColumn Name="Column72" Width="85.25"/>
+          <TableRow Name="Row25" Height="26.46">
+            <TableCell Name="Cell340" Border.Lines="All" Text="[prs_rptSooratHesab_Header.fldMaliyat17]" Format="Number" Format.UseLocale="false" Format.DecimalDigits="0" Format.DecimalSeparator="." Format.GroupSeparator="," Format.NegativePattern="1" VertAlign="Center" RightToLeft="true" Font="RasaFont, 7pt, style=Bold"/>
+            <TableCell Name="Cell341" Border.Lines="All" Text="مالیات موضوع ماده 17" VertAlign="Center" RightToLeft="true" Font="RasaFont, 7pt, style=Bold"/>
+          </TableRow>
+        </TableObject>
+      </DataFooterBand>
+    </DataBand>
+    <PageFooterBand Name="PageFooter1" Top="428.18" Width="1096.2"/>
+  </ReportPage>
+</Report>

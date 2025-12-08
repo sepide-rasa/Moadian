@@ -1,0 +1,241 @@
+﻿@using Kendo.Mvc.UI;
+<div class="modal" id="Rols">
+    <script src="@Url.Content("~/Content/Base.js")" type="text/javascript"></script>
+    <link href="@Url.Content("~/Content/web/kendo.common.min.css")" rel="stylesheet" type="text/css" />
+    <link href="@Url.Content("~/Content/web/kendo.default.min.css")" rel="stylesheet" type="text/css" />
+    <link href="@Url.Content("~/Content/web/kendo.rtl.min.css")" rel="stylesheet" type="text/css" />
+    <script src="@Url.Content("~/Scripts/console.min.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Scripts/kendo.web.min.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Scripts/prettify.min.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Scripts/kendo.aspnetmvc.min.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Scripts/kendo.splitter.min.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Scripts/cultures/kendo.fa-IR.js")" type="text/javascript"></script>
+    <div>
+        <br />
+        <center>
+            <table>
+                <tr>
+                    <td align="left">
+                        دسترسی ها:
+                    </td>
+                    <td colspan="2" dir="rtl" id="countryLocation" align="right">
+                    </td>
+                </tr>
+                <tr>
+                    <td align="left">
+                        عنوان:
+                    </td>
+                    <td>
+                        @Html.TextBox("txtTitle")
+                    </td>
+                </tr>
+            </table>
+            <p>
+                @Avarez.Helper.winClass.Buttons("AddLink", "ذخیره", "Save")
+                @Avarez.Helper.winClass.Buttons("EditLink", "ویرایش", "Edit")
+                @Avarez.Helper.winClass.Buttons("DelLink", "حذف", "Del")
+                @Avarez.Helper.winClass.Buttons("exit", "خروج", "Exit")
+            </p>
+        </center>
+        <script type="text/javascript">
+            var dataItem;
+            function select(e) {
+                dataItem = this.dataItem(e.node);
+                Rolid = dataItem.id;
+            }
+
+            var Rolid;
+            $("document").ready(function () {
+
+                $('#countryLocation').html($('#LocationDiv').valueOf());
+                $("#AddLink").button();
+                $("#EditLink").button();
+                $("#DelLink").button();
+                $("#exit").button();
+
+
+                $("#exit").click(function () {
+                    $("#SubSetting").remove();
+                });
+
+
+                $('#SubSetting').on('keyup', 'input', function (event) {
+                    if (event.which == 13) {
+                        var inputs = $('#SubSetting').find(':input:visible');
+                        inputs.eq(inputs.index(this) + 1).focus();
+                    }
+                });
+
+                //                
+                //                $('#DelLink').click(function () {
+                //                    var entityGrid = $("#Grid").data("kendoGrid");
+                //                    var selectedItem = entityGrid.dataItem(entityGrid.select());
+                //                    if (selectedItem) {
+                //                        var id = selectedItem.fldID;
+                //                        var URL = '@Url.Content("~/metro/YesNomsg")';
+                //                        URL = URL + "/?id=" + id + "&URL=" + '@Url.Content("~/SubSetting/Delete")';
+                //                        windowAppend("body", URL);
+                //                        $("#message").html('آیا مایل به حذف رکورد انتخاب شده هستید؟');
+                //                    }
+                //                    else {
+                //                        alert('لطفا یک سطر را انتخاب کنید.');
+                //                    }
+                //                    Clear();
+                //                });
+
+//                jQuery("#EditLink").click(function () {
+//                    var entityGrid = $("#Grid").data("kendoGrid");
+//                    var selectedItem = entityGrid.dataItem(entityGrid.select());
+//                    if (selectedItem) {
+//                        var id = selectedItem.fldID;
+//                        var URL = '@Url.Content("~/SubSetting/Details")';
+//                        URL = URL + "/" + id;
+//                        $.ajax({
+//                            type: "GET",
+//                            url: URL,
+//                            success: function (data) {
+//                                document.getElementById('chExempt').checked = data.fldExemptNewProduction;
+//                                $('#txtLast').val(data.fldLastRespitePayment);
+//                                document.getElementById('chPrint').checked = data.fldPrintBill_Payment;
+
+//                                $('#txtStart').val(data.fldStartCodeBillIdentity);
+//                                $('#txtTitle').val(data.fldTitleUserReport);
+
+
+//                                document.getElementById('chApply').checked = data.fldCountryDivisionsTreeApply;
+//                                document.getElementById('chSeri').checked = data.fldCarSeriesTreeApply;
+
+//                                $('#txtDate').val(data.fldImplementationDate);
+//                                $('#fldId').val(data.fldId);
+//                                $('#txtDesc').val(data.fldDesc);
+//                                var round = $("#cboRound").data("kendoDropDownList");
+//                                round.value(data.fldRoundID);
+
+//                                Rolid = data.Id;
+
+
+//                            },
+//                            failure: function (data) {
+//                                alert(data.data);
+//                            }
+//                        });
+//                    }
+//                    else {
+//                        alert('لطفا یک سطر را انتخاب کنید.');
+//                    }
+//                });
+
+                $("#AddLink").click(function () {
+
+                    var data = {
+                        fldTitle: $("#txtTitle").val(),
+                        fldPID: Rolid,
+                        fldId: $("#fldId").val()
+                    };
+                    if (data != '') {
+                        PostForm(data, '@Url.Content("~/Rols/Save")', "#win");
+                    }
+                    Clear();
+                });
+
+            });
+            function Clear() {
+//                document.getElementById('chExempt').checked = false;
+//                $('#txtLast').val('');
+//                document.getElementById('chPrint').checked = false;
+
+//                $('#txtStart').val('');
+//                $('#txtTitle').val('');
+
+
+//                document.getElementById('chApply').checked = false;
+//                document.getElementById('chSeri').checked = false;
+
+//                $('#txtDate').val('');
+//                $('#fldId').val('');
+//                $('#txtDesc').val('');
+//                var round = $("#cboRound").data("kendoDropDownList");
+//                round.value(0);
+            }
+
+            function Reload(Url, gridname, field, value, top, searchType) {
+                var grid = $('#' + gridname).data('kendoTreeView');
+                $.ajax({
+                    url: Url,
+                    type: 'get',
+                    datatype: 'json',
+                    data: {id:1 },
+                    error: function (xhr, status, error) {
+                        alert(xhr + status);
+                    },
+                    success: function (result) {
+                        $("#" + gridname).data("kendoTreeView").dataSource.data(result);
+                    }
+
+                });
+            }
+
+            function PostForm(datas, url, id) {
+                var sendInfo = datas;
+                $('#Lock').show();
+                $.ajax({
+                    type: "POST",
+                    url: url,
+                    data: sendInfo,
+                    datatype: "json",
+                    success: function (data) {
+                        var m = data;
+                        windowAppend("body", "/metro/error");
+                        $("#message").html(m.data);
+                        switch (m.state) {
+                            case 0:
+                                $("#error .wintitle").html("ذخیره موفق");
+                                break;
+                            case 1:
+                                $("#error .wintitle").html("خطا");
+                                break;
+                        }
+                        var url = '@Url.Action("_RolsTree", "Rols")';
+                        Reload(url, 'TreeView', '0', '', 30, 1);
+                        $('#Lock').hide();
+                    },
+                    failure: function (data) {
+                        alert(data.data);
+                    }
+                });
+            }
+        
+        </script>
+    </div>
+    <div class="treeview-back  k-rtl" dir="rtl" id="LocationDiv">
+        @(Html.Kendo().TreeView()
+                        .Name("treeview")
+                        .DataTextField("Name")
+                        .Checkboxes(chkbxs =>
+                        {
+                            chkbxs.Enabled(false).CheckChildren(false);
+                        })
+                        .DataSource(dataSource => dataSource
+                        .Read(read => read
+                                          .Action("_RolsTree", "Rols")
+                        )
+                        )
+                        .Events(events =>
+                        events.Select("select"))
+                        )
+    </div>
+</div>
+<style type="text/css">
+    .treeview-back
+    {
+        width: 400px;
+        margin: 30px;
+        padding: 20px;
+        -moz-box-shadow: 0 1px 2px rgba(0,0,0,0.45), inset 0 0 30px rgba(0,0,0,0.07);
+        -webkit-box-shadow: 0 1px 2px rgba(0,0,0,0.45), inset 0 0 30px rgba(0,0,0,0.07);
+        box-shadow: 0 1px 2px rgba(0,0,0,0.45), inner 0 0 30px rgba(0,0,0,0.07);
+        -webkit-border-radius: 8px;
+        -moz-border-radius: 8px;
+        border-radius: 8px;
+    }
+</style>

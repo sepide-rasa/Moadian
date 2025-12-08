@@ -1,0 +1,422 @@
+﻿@model IEnumerable<Avarez.Areas.Tax.Models.prs_tblSooratHesab_HeaderSelect>
+@using Ext.Net.MVC;
+@{
+
+    var X = Html.X();
+}
+
+    <script>
+    var template = '<img src={0} alt="" onclick={2} onmouseover="" style="{3}" title={1} />';
+
+    var ColorRating = function (value,record) {
+        var Pic = "@Url.Content("~/Content/bullet_gray.png")";
+        var ToolTip = "ارسال"+'&nbsp;'+"نشده";
+        if (value == 1) {
+            var Pic = "@Url.Content("~/Content/bullet_green1.png")";
+            var ToolTip = "ارسال"+'&nbsp;'+"موفق";
+            var m = "cursor: pointer;";
+            var f = "Showstatus(" + String(record.record.data.fldId) + ");";
+
+            return Ext.String.format(template, Pic, ToolTip,f,m);
+        }
+        if (value == 2) {
+            var Pic = "@Url.Content("~/Content/bullet_yellow.png")";
+            var ToolTip = "هشدار";
+            var m = "cursor: pointer;";
+            var f = "Showstatus(" + String(record.record.data.fldId) + ");";
+
+            return Ext.String.format(template, Pic, ToolTip,f,m);
+        }
+        else if(value == 3) {
+            var Pic = "@Url.Content("~/Content/bullet_red1.png")";
+            var ToolTip = "خطا";
+            var m = "cursor: pointer;";
+            var f = "Showstatus(" + String(record.record.data.fldId) + ");";
+
+            return Ext.String.format(template, Pic, ToolTip,f,m);
+        }
+        else if(value == 4) {
+            var Pic = "@Url.Content("~/Content/bullet_yellow.png")";
+            var ToolTip = "عدم دریافت پاسخ";
+            var m = "cursor: pointer;";
+            var f = "Showstatus(" + String(record.record.data.fldId) + ");";
+
+            return Ext.String.format(template, Pic, ToolTip,f,m);
+        }
+        else
+        return Ext.String.format(template, Pic, ToolTip);
+    };
+    </script>
+@(X.Window().Maximized(true)
+        .ID("SooratHesab")
+            .AutoScroll(true)
+            .Items(
+                X.Panel().Border(false)
+                .Border(false)
+                .AutoScroll(true).Layout(Ext.Net.LayoutType.Table)
+                .LayoutConfig(new Ext.Net.TableLayoutConfig { Columns = 2 })
+                .Items(
+                    X.TabPanel().ID("SooratHesabTab")
+                    .AutoScroll(true).Height(630).Items(
+                    X.Panel().ItemID("GridPanel")
+                        .Title(" صورتحساب ها")
+                        .Items(
+                    X.GridPanel().AutoScroll(true)
+                        .TopBar(
+                        Html.X().Toolbar()
+                        .Items(
+                            X.Button().Text("جدید").Icon(Ext.Net.Icon.Add)//.ToolTip("کلید میانبر F8")
+
+                                     .Menu(X.Menu()
+                                    .Items(
+                                        X.MenuItem()
+                                            .Text("الگوی اول(فروش)")
+                                            .Icon(Ext.Net.Icon.Add)
+                                                .Listeners(li => li.Click.Handler = "NewSooratHesab(1);")
+                                                ,
+                                        
+                                        X.MenuItem()
+                                            .Text("الگوی دوم(فروش ارز)")
+                                            .Icon(Ext.Net.Icon.Add).Disabled(true)
+                                                .Listeners(li => li.Click.Handler = "NewSooratHesab(2);")
+                                                ,
+                                        
+                                        X.MenuItem()
+                                            .Text("الگوی سوم(صورتحساب طلا، جواهر و پلاتین)")
+                                            .Icon(Ext.Net.Icon.Add).Disabled(true)
+                                                .Listeners(li => li.Click.Handler = "NewSooratHesab(3);")
+                                                ,
+                                        
+                                        X.MenuItem()
+                                            .Text("الگوی چهارم(قرارداد پیمانکاری)")
+                                            .Icon(Ext.Net.Icon.Add).Disabled(true)
+                                                .Listeners(li => li.Click.Handler = "NewSooratHesab(4);")
+                                                ,
+                                        
+                                        X.MenuItem()
+                                            .Text("الگوی پنجم(قبوض خدماتی)")
+                                            .Icon(Ext.Net.Icon.Add).Disabled(true)
+                                                .Listeners(li => li.Click.Handler = "NewSooratHesab(5);")
+                                                ,
+                                        
+                                        X.MenuItem()
+                                            .Text("الگوی ششم(بلیط هواپیما)")
+                                            .Icon(Ext.Net.Icon.Add).Disabled(true)
+                                                .Listeners(li => li.Click.Handler = "NewSooratHesab(6);")
+                                                ,
+                                        
+                                        X.MenuItem()
+                                            .Text("الگوی هفتم(صادرات)")
+                                            .Icon(Ext.Net.Icon.Add).Disabled(true)
+                                                .Listeners(li => li.Click.Handler = "NewSooratHesab(7);")
+
+                                )
+                                    ),
+                            X.Button().Text("ویرایش").Icon(Ext.Net.Icon.Pencil)//.ToolTip("کلید میانبر F2")
+                                    .Listeners(Li => Li.Click.Handler = "EditSooratHesab();"),
+                            X.Button().Text("ارسال").Icon(Ext.Net.Icon.ArrowLeft)//.ToolTip("کلید میانبر F2")
+                                    .Listeners(Li => Li.Click.Handler = "SendSooratHesab();"),
+                            X.Button().Text("استعلام پاسخ").Icon(Ext.Net.Icon.Reload)//.ToolTip("کلید میانبر F2")
+                                    .Listeners(Li => Li.Click.Handler = "EstelamSooratHesab();")
+        ,X.Button().Text("حذف").Icon(Ext.Net.Icon.UserDelete)//.ToolTip("کلید میانبر F9")
+            .Listeners(de =>
+            {
+                de.Click.Handler = "if (App.SooratHesab.queryById('Grid').selModel.getLastSelected() == null) {Ext.MessageBox.show({ title: 'خطا', msg: 'لطفا یک سطر را انتخاب کنید',icon: Ext.MessageBox.ERROR,buttons: Ext.MessageBox.OK});return false;}else DeleteSooratHesab();";
+            }),
+                            X.Button().Text("چاپ").Icon(Ext.Net.Icon.Printer)//.ToolTip("کلید میانبر F2")
+                                    .Listeners(Li => Li.Click.Handler = "PrintSooratHesab();")
+                        //       .Hidden(!VacationTaxi.Models.Permissions.haveAccess(Convert.ToInt32(Session["UserId"]), 24)),
+                        //, X.Button().Text("راهنما").Icon(Ext.Net.Icon.Help)
+                        //.Listeners(l => l.Click.Handler = "HelpUser()")
+                        )
+                    )
+                    .ItemID("Grid").Flex(2)
+                    .BottomBar(X.PagingToolbar())
+                    .Height(600)
+                    .ColumnWidth(0.6)
+                    .Layout(Ext.Net.LayoutType.Column)
+                    .Store(
+                        X.StoreForModel()//.AutoLoad(false)
+                        .Proxy(Html.X().AjaxProxy()
+                            .Url(Url.Action("Read"))
+                            .Reader(Html.X().JsonReader().Root("data"))
+
+                        )
+                        .PageSize(20)
+                        .RemoteFilter(true)
+                        .RemotePaging(true)
+
+                    )
+                    .View(
+                        Html.X().GridView().LoadingText("در حال بارگذاری...").RTL(true)
+                    )
+
+                    .Plugins(X.FilterHeader().Remote(true))
+                    .ColumnModel(
+                        Html.X().RowNumbererColumn(),
+                        Html.X().Column().DataIndex(Model, m => m.fldId).Text("کد").Flex(1).Hidden(true),
+                            Html.X().Column().DataIndex(Model, m => m.fldStatus).Text("وضعیت ارسال").Flex(1).Renderer("ColorRating").Filterable(false),
+                            Html.X().Column().DataIndex(Model, m => m.fldIndatim).Text("تاریخ").Flex(3),
+                            Html.X().Column().DataIndex(Model, m => m.fldTypeSooratHesab).Text("نوع").Flex(3),
+                            Html.X().Column().DataIndex(Model, m => m.fldSubject).Text("موضوع").Flex(3),
+                            Html.X().Column().DataIndex(Model, m => m.fldf_Name).Text("فروشنده").Flex(3),
+                            Html.X().Column().DataIndex(Model, m => m.fldf_NationalCode).Text("شناسه ملی فروشنده").Flex(3),
+                        Html.X().Column().DataIndex(Model, m => m.fldkh_name).Text("خریدار").Flex(3),
+                        Html.X().Column().DataIndex(Model, m => m.fldkh_fldNationalCode).Text("شناسه ملی خریدار").Flex(3),
+                        Html.X().Column().DataIndex(Model, m => m.SumSooratHesab).Text("مجموع صورتحساب").Flex(3),
+                        Html.X().Column().DataIndex(Model, m => m.fldShomareFish).Text("شماره فیش").Flex(3)
+                        )
+
+                ))
+            )
+        )
+)
+
+<script type="text/javascript">
+    function PrintSooratHesab() {
+        var SelectedRow = App.SooratHesab.queryById('Grid').selModel.getLastSelected();
+    
+        if (SelectedRow != null) {
+            
+                Ext.net.Mask.show({ msg: 'در حال بارگذاری...' });
+                Ext.net.DirectMethod.request({
+                    url: '/Tax/SooratHesab/PrintBill',
+                    params: {
+                        id: SelectedRow.data.fldId,
+                    },
+                    success: function () {
+                        Ext.net.Mask.hide();
+                    }
+                });
+        }
+        else {
+            Ext.MessageBox.show({
+                title: "خطا",
+                msg: "لطفا یک سطر را انتخاب کنید",
+                icon: Ext.MessageBox.ERROR,
+                buttons: Ext.MessageBox.OK
+            });
+        }
+    }
+       function Showstatus(HeaderId) {
+         Ext.net.Mask.show({ msg: 'در حال بارگذاری...' });
+            Ext.net.DirectMethod.request({
+                url: '/Tax/SooratHesab/ShowstatusWin',
+                params: {
+                    HeaderId: HeaderId
+                },
+                success: function (data) {
+        
+                    Ext.net.Mask.hide();
+                }
+            });
+    }
+    function EditSooratHesab() {
+        var SelectedRow = App.SooratHesab.queryById('Grid').selModel.getLastSelected();
+    
+        if (SelectedRow != null) {
+            if (SelectedRow.data.fldStatus == 1) {
+                 Ext.MessageBox.show({
+                title: "خطا",
+                msg: "صورتحساب موردنظر ارسال شده و قابل ویرایش نمی باشد.",
+                icon: Ext.MessageBox.ERROR,
+                buttons: Ext.MessageBox.OK
+            });
+            }
+            else {
+                Ext.net.Mask.show({ msg: 'در حال بارگذاری...' });
+                Ext.net.DirectMethod.request({
+                    url: '/Tax/SooratHesab/NewForush1',
+                    params: {
+                        id: SelectedRow.data.fldId,
+                    },
+                    success: function () {
+                        Ext.net.Mask.hide();
+                    }
+                });
+            }
+        }
+        else {
+            Ext.MessageBox.show({
+                title: "خطا",
+                msg: "لطفا یک سطر را انتخاب کنید",
+                icon: Ext.MessageBox.ERROR,
+                buttons: Ext.MessageBox.OK
+            });
+        }
+    }
+    function NewSooratHesab(st) {
+        var url = '/Tax/SooratHesab/NewForush1';
+        if(st == 2)
+            url = '/Tax/SooratHesab/NewForush2';
+        if(st == 3)
+            url = '/Tax/SooratHesab/NewForush3';
+        if(st == 4)
+            url = '/Tax/SooratHesab/NewForush4';
+        if(st == 5)
+            url = '/Tax/SooratHesab/NewForush5';
+        if(st == 6)
+            url = '/Tax/SooratHesab/NewForush6';
+        if(st == 7)
+            url = '/Tax/SooratHesab/NewForush7';
+        Ext.net.Mask.show({ msg: 'در حال بارگذاری...' });
+        Ext.net.DirectMethod.request({
+            url: url,
+            params: {
+                id: 0
+            },
+            success: function () {
+                Ext.net.Mask.hide();
+            }
+        });
+    }
+
+
+    function DeleteSooratHesab() {
+        var SelectedHeaderRow = App.SooratHesab.queryById('Grid').selModel.getLastSelected();
+        if (SelectedHeaderRow != null) {
+            if (SelectedHeaderRow.data.fldStatus == 1) {
+                Ext.MessageBox.show({
+                    title: "خطا",
+                    msg: "صورتحساب موردنظر ارسال شده و قابل حذف نمی باشد.",
+                    icon: Ext.MessageBox.ERROR,
+                    buttons: Ext.MessageBox.OK
+                });
+            }
+            else {
+                Ext.MessageBox.show({
+                    title: "هشدار",
+                    msg: "آیا برای حذف مطمئن هستید؟",
+                    icon: Ext.MessageBox.WARNING,
+                    buttons: Ext.MessageBox.YESNO,
+                    fn: function (btn) {
+                        if (btn == 'yes') {
+                             Ext.net.Mask.show({ msg: 'در حال بررسی...' });
+                            Ext.net.DirectMethod.request({
+                                url: '/Tax/SooratHesab/Delete',
+                                params: {
+                                    id: SelectedHeaderRow.data.fldId
+                                },
+                                success: function (data) {
+                Ext.net.Mask.hide();
+                                    Ext.MessageBox.show({
+                                        title: data.MsgTitle,
+                                        msg: data.Msg,
+                                        icon: Ext.MessageBox.INFO,
+                                        buttons: Ext.MessageBox.OK
+                                    });
+                                    App.SooratHesab.queryById('Grid').store.load()
+                                }
+                            });
+                        }
+                    }
+                });
+            }
+        }
+        else {
+            Ext.MessageBox.show({
+                title: "خطا",
+                msg: "لطفا یک سطر را انتخاب کنید",
+                icon: Ext.MessageBox.ERROR,
+                buttons: Ext.MessageBox.OK
+            });
+        }
+    }
+    function SendSooratHesab() {
+         var SelectedHeaderRow = App.SooratHesab.queryById('Grid').selModel.getLastSelected();
+        if (SelectedHeaderRow != null) {
+            Ext.MessageBox.show({
+                title: "هشدار",
+                msg: "آیا برای ارسال مطمئن هستید؟",
+                icon: Ext.MessageBox.WARNING,
+                buttons: Ext.MessageBox.YESNO,
+                fn: function (btn) {
+                    if (btn == 'yes') {
+                             Ext.net.Mask.show({ msg: 'در حال بررسی...' });
+                        Ext.net.DirectMethod.request({
+                            url: '/Tax/SooratHesab/SamaneMoadian',
+                            params: {
+                                HeaderId: SelectedHeaderRow.data.fldId
+                            },
+                            success: function (data) {
+                Ext.net.Mask.hide();
+                               var ic = Ext.MessageBox.INFO;
+                                if (data.Er == 1)
+                                    ic = Ext.MessageBox.ERROR;
+                                Ext.MessageBox.show({
+                                    title: data.MsgTitle,
+                                    msg: data.Msg,
+                                    icon: ic,
+                                    buttons: Ext.MessageBox.OK
+                                });
+                                App.SooratHesab.queryById('Grid').store.load()
+                            }
+                        });
+                    }
+                }
+            });
+        }
+        else {
+            Ext.MessageBox.show({
+                title: "خطا",
+                msg: "لطفا یک سطر را انتخاب کنید",
+                icon: Ext.MessageBox.ERROR,
+                buttons: Ext.MessageBox.OK
+            });
+        }
+    }
+    function EstelamSooratHesab() {
+         var SelectedHeaderRow = App.SooratHesab.queryById('Grid').selModel.getLastSelected();
+        if (SelectedHeaderRow != null) {
+            Ext.MessageBox.show({
+                title: "هشدار",
+                msg: "آیا برای استعلام پاسخ مطمئن هستید؟",
+                icon: Ext.MessageBox.WARNING,
+                buttons: Ext.MessageBox.YESNO,
+                fn: function (btn) {
+                    if (btn == 'yes') {
+                             Ext.net.Mask.show({ msg: 'در حال بررسی...' });
+                        Ext.net.DirectMethod.request({
+                            url: '/Tax/SooratHesab/EstelamSamaneMoadian',
+                            params: {
+                                HeaderId: SelectedHeaderRow.data.fldId
+                            },
+                            success: function (data) {
+                Ext.net.Mask.hide();
+                               var ic = Ext.MessageBox.INFO;
+                                if (data.Er == 1)
+                                    ic = Ext.MessageBox.ERROR;
+                                Ext.MessageBox.show({
+                                    title: data.MsgTitle,
+                                    msg: data.Msg,
+                                    icon: ic,
+                                    buttons: Ext.MessageBox.OK
+                                });
+                                App.SooratHesab.queryById('Grid').store.load()
+                            }
+                        });
+                    }
+                }
+            });
+        }
+        else {
+            Ext.MessageBox.show({
+                title: "خطا",
+                msg: "لطفا یک سطر را انتخاب کنید",
+                icon: Ext.MessageBox.ERROR,
+                buttons: Ext.MessageBox.OK
+            });
+        }
+    }
+
+    function HelpUser() {
+        Ext.net.Mask.show({ msg: 'در حال بارگذاری...' });
+        Ext.net.DirectMethod.request({
+            url: '/Tax/SooratHesab/Help',
+            success: function (data) {
+                Ext.net.Mask.hide();
+            }
+        });
+    }
+
+</script>

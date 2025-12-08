@@ -1,0 +1,113 @@
+﻿@model IEnumerable<Avarez.Areas.Tax.Models.prs_tblSooratHesabStatus_DetailSelect>
+@using Ext.Net.MVC
+@using Hogaf.ExtNet.UX
+@using Ext.Net;
+@using Ext.Net.Utilities
+@{
+
+    var X = Html.X();
+}
+
+@(X.Window()
+    .Height(350)
+    .Width(865)
+    .Modal(true)
+    .ID("MsgDi")
+    .Title("نمایش وضعیت")
+    .Icon(Ext.Net.Icon.UserComment2)
+    .Closable(true)
+    .Border(false)
+    .CloseAction(Ext.Net.CloseAction.Destroy)
+    .Layout(Ext.Net.LayoutType.Fit)
+        .Items(
+ 
+            X.Panel()
+            .Title("")
+            .ItemID("PnlNavaghes")
+            .Border(false)
+            .Layout(Ext.Net.LayoutType.Fit)
+                .Items(
+                         X.AntiForgeryField().ItemID("AntiForgeryField"),
+                    X.GridPanel().Listeners(l=>l.AfterRender.Handler="LoadGrid()")
+                    .AutoScroll(true)
+           
+                    .ItemID("GridDetailStatus")
+        //    .BottomBar(X.PagingToolbar())
+                    .Store(
+                            X.StoreForModel()
+                            
+                            .AutoLoad(false)
+                                  //   .Listeners(l => l.BeforeLoad.Handler = "App.Navaghes.queryById('GridNavaghes').getStore().getProxy().setExtraParam('__RequestVerificationToken', App.Navaghes.queryById('AntiForgeryField').getValue());")
+                                    .Proxy(Html.X().AjaxProxy()
+                                  //  .ActionMethods(l => l.Read = Ext.Net.HttpMethod.POST)
+                                .Url(Url.Action("ReadDetailStatus"))
+                                .Reader(Html.X().JsonReader().Root("data"))
+        )
+                    .PageSize(1000)
+                    .RemoteFilter(true)
+                    .RemotePaging(true)
+    )
+                    .View(
+                        Html.X().GridView().LoadingText("در حال بارگذاری...").RTL(true)
+    )
+                    .ColumnModel(
+                        Html.X().RowNumbererColumn(),
+                           Html.X().Column().DataIndex(Model, m => m.fldId).Text("کد").Hidden(true).Hideable(false).Flex(1),
+                                               Html.X().Column().DataIndex(Model, m => m.fldStatusErrorName).Text("عنوان").Flex(2),
+                                       Html.X().Column().DataIndex(Model, m => m.fldCode).Text("کد").Flex(2),
+                                       Html.X().Column().DataIndex(Model, m => m.fldMatn).Text("متن خطا").Flex(10).Wrap(true)
+    )
+                .SelectionModel(
+                    Html.X().RowSelectionModel()
+                        .Mode(Ext.Net.SelectionMode.Single)
+    )
+)
+
+)
+)
+<script>
+    var letterDi = function (value, metadata, record, rowIndex, colIndex, store) {
+        if (record.data.fldSeen == 0) {
+            return '<img height="20" width="20" src="/Content/letter.png"/>';
+        }
+        else {
+            return '<img height="20" width="20" src="/Content/letter2.png"/>';
+        }
+    };
+    function setDefaultProj() {
+        var cboProject = App.MsgDi.queryById('cboProject');
+        cboProject.select(cboProject.store.getAt(0));
+    }
+ 
+    function LoadGrid() {
+        App.MsgDi.queryById('PnlNavaghes').setTitle('@ViewBag.Message');
+        App.MsgDi.queryById('GridDetailStatus').getStore().getProxy().setExtraParam("HeaderId", @ViewBag.HeaderId);
+        App.MsgDi.queryById('GridDetailStatus').getStore().load();
+    }
+
+
+   
+    function showBargozary() {
+        Ext.MessageBox.show({
+            msg: 'لطفاً منتظر باشید',
+            progressText: 'در حال بارگذاری...',
+            width: 300,
+            wait: true,
+            waitConfig:
+            {
+                /*duration: 10000,*/
+                interval: 200,
+                /*increment: 15,*/
+                text: 'در حال بارگذاری...',
+                scope: this
+                /*fn: function () {
+                    Ext.MessageBox.hide();
+                    Ext.Msg.alert('Status', 'Saved successfully!');
+                }*/
+            }
+        });
+
+    }
+    
+
+</script>

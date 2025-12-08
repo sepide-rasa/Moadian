@@ -1,0 +1,220 @@
+﻿@model IEnumerable<Avarez.Models.sp_SearchClass>
+@using Ext.Net.MVC;
+@{
+
+    var X = Html.X();
+}
+@(Html.X().Window().Modal(true)
+            .Width(600).Height(350)
+                .Title("جستجو کلاس خودرو")
+                        .ID("SearchClass")
+            .Closable(true)
+            .CloseAction(Ext.Net.CloseAction.Destroy)
+            .Items(
+                X.Panel().Border(false)
+                .Border(false)
+                .AutoScroll(true)
+                .Items(
+
+                    X.GridPanel().AutoScroll(true).Border(false)
+                        .TopBar(
+                            Html.X().Toolbar()
+                            .Items(
+                                    X.Button().Text("انتخاب").Icon(Ext.Net.Icon.ArrowRedo)
+                                                        .Listeners(li => li.Click.Handler = "NextSearchClass();")
+
+                            )
+                        )
+                                    .ItemID("GridSearchClass").Flex(2)
+                    .BottomBar(X.PagingToolbar())
+                    .Height(320)
+                    .ColumnWidth(0.6)
+                    .Layout(Ext.Net.LayoutType.Column)
+                    .Store(
+                        X.StoreForModel()
+                        .Proxy(Html.X().AjaxProxy()
+                            .Url(Url.Action("Read"))
+                            .Reader(Html.X().JsonReader().Root("data"))
+                        )
+                        .PageSize(10)
+                        .RemoteFilter(true)
+                        .RemotePaging(true)
+
+                    )
+                    .View(
+                        Html.X().GridView().LoadingText("در حال بارگذاری...").RTL(true)
+                    )
+                    .Plugins(X.FilterHeader().Remote(true))
+                    .ColumnModel(
+                            Html.X().RowNumbererColumn().Flex(1),
+                            Html.X().Column().DataIndex(Model, m => m.fldID).Text("کد").Hidden(true).Flex(1),
+                            Html.X().Column().DataIndex(Model, m => m.ClassName).Text("نام کلاس").Flex(10),
+                            Html.X().Column().DataIndex(Model, m => m.fldCylinderNumber).Text("تعداد سیلندر").Flex(2),
+                            Html.X().Column().DataIndex(Model, m => m.fldWheelNumber).Text("تعداد چرخ").Flex(2)
+                    )
+                                .Listeners(a => a.CellDblClick.Handler = "NextSearchClass();")
+                    .SelectionModel(
+                        Html.X().RowSelectionModel()
+                            .Mode(Ext.Net.SelectionMode.Single)
+                    )
+
+            )
+        )
+)
+
+<script type="text/javascript">
+    var State = '@ViewBag.State';
+    function NextSearchClass() {
+        var SelectedRow = App.SearchClass.queryById('GridSearchClass').selModel.getLastSelected();
+        
+        if (SelectedRow != null) {
+            if (State == 1) {
+                /*App.SearchClass.body.mask('در حال جستجو...');*/
+                /*Ext.net.Mask.show({ msg: 'در حال جستجو...' });*/
+                Ext.net.DirectMethod.request({
+                    url: '/NewVer/_SearchClass/GetClassInf',
+                    params: {
+                        id: SelectedRow.data.fldID
+                    },
+                    success: function (result) {
+                        /*Ext.net.Mask.hide();*/
+                        var cboCarMake = App.NewParvandeKhodro.queryById('cboCarMake');
+                        cboCarMake.setValue(result.CarMake);
+                        var Account = App.NewParvandeKhodro.queryById('cboCarAccountTypes');
+                        Account.clearValue(); Account.getStore().load();
+                        Account.setValue(result.CarAccountId);
+                        var cboCarCabin = App.NewParvandeKhodro.queryById('cboCarCabin');
+                        cboCarCabin.clearValue(); cboCarCabin.getStore().load();
+                        cboCarCabin.setValue(result.CabinTypeId);
+                        var cboSystem = App.NewParvandeKhodro.queryById('cboSystem');
+                        cboSystem.clearValue(); cboSystem.getStore().load();
+                        cboSystem.setValue(result.CarSystemId);
+                        var cboModel = App.NewParvandeKhodro.queryById('cboModel');
+                        cboModel.clearValue(); cboModel.getStore().load();
+                        cboModel.setValue(result.CarModelId);
+                        var cboClass = App.NewParvandeKhodro.queryById('cboClass');
+                        cboClass.clearValue(); cboClass.getStore().load();
+                        cboClass.setValue(result.CarClassId);
+
+                        var cboShort = App.NewParvandeKhodro.queryById('cboShort');
+                        cboShort.clearValue(); cboShort.getStore().load();
+                        var cboYear = App.NewParvandeKhodro.queryById('cboYear');
+                        cboYear.clearValue(); cboYear.getStore().load();
+
+                        if (result.CarMake == "1") {/*داخلی*/
+                            App.NewParvandeKhodro.queryById("cboFillYear").hide();
+                            App.NewParvandeKhodro.queryById("txtDateP").show();
+                            var cboShort = App.NewParvandeKhodro.queryById('cboShort');
+                            /*cboShort.clearValue(); cboShort.getStore().load();*/
+                            cboShort.setValue("101");
+                        }
+                        else {
+                            App.NewParvandeKhodro.queryById("txtDateP").hide();
+                            App.NewParvandeKhodro.queryById("cboFillYear").show();
+                            var k = App.NewParvandeKhodro.queryById('Image');
+                            k.setImageUrl("/Content/images/Blank.jpg");
+                        }
+                        /*App.SearchClass.body.mask().hide();*/
+                    }
+                });
+                
+            }
+            else if (State == 2) {
+                /*Ext.net.Mask.show({ msg: 'در حال جستجو...' });*/
+               /* App.SearchClass.body.mask('در حال جستجو...');*/
+                Ext.net.DirectMethod.request({
+                    url: '/NewVer/_SearchClass/GetClassInf',
+                    params: {
+                        id: SelectedRow.data.fldID
+                    },
+                    success: function (result) {
+                        /*Ext.net.Mask.hide();*/
+                        var cboCarMake = App.S_Mohasebat.queryById('cboCarMake1');
+                        cboCarMake.setValue(result.CarMake);
+                        var Account = App.S_Mohasebat.queryById('cboCarAccountTypes1');
+                        Account.clearValue(); Account.getStore().load();
+                        Account.setValue(result.CarAccountId);
+                        var cboCarCabin = App.S_Mohasebat.queryById('cboCarCabin1');
+                        cboCarCabin.clearValue(); cboCarCabin.getStore().load();
+                        cboCarCabin.setValue(result.CabinTypeId);
+                        var cboSystem = App.S_Mohasebat.queryById('cboSystem1');
+                        cboSystem.clearValue(); cboSystem.getStore().load();
+                        cboSystem.setValue(result.CarSystemId);
+                        var cboModel = App.S_Mohasebat.queryById('cboModel1');
+                        cboModel.clearValue(); cboModel.getStore().load();
+                        cboModel.setValue(result.CarModelId);
+                        var cboClass = App.S_Mohasebat.queryById('cboClass1');
+                        cboClass.clearValue(); cboClass.getStore().load();
+                        cboClass.setValue(result.CarClassId);
+
+                        var cboYear = App.S_Mohasebat.queryById('cboYear1');
+                        cboYear.clearValue(); cboYear.getStore().load();
+                        /*App.SearchClass.body.mask().hide();*/
+                    }
+                });
+            }
+            else if (State == 3) {
+                /*App.SearchClass.body.mask('در حال جستجو...');
+                Ext.net.Mask.show({ msg: 'در حال جستجو...' });*/
+                Ext.net.DirectMethod.request({
+                    url: '/NewVer/_SearchClass/GetClassInf',
+                    params: {
+                        id: SelectedRow.data.fldID
+                    },
+                    success: function (result) {
+                        /*Ext.net.Mask.hide();*/
+                        var cboCarMake = App.FastParvande.queryById('cboCarMake');
+                        cboCarMake.setValue(result.CarMake);
+                        var Account = App.FastParvande.queryById('cboCarAccountTypes');
+                        Account.clearValue(); Account.getStore().load();
+                        Account.setValue(result.CarAccountId);
+                        var cboCarCabin = App.FastParvande.queryById('cboCarCabin');
+                        cboCarCabin.clearValue(); cboCarCabin.getStore().load();
+                        cboCarCabin.setValue(result.CabinTypeId);
+                        var cboSystem = App.FastParvande.queryById('cboSystem');
+                        cboSystem.clearValue(); cboSystem.getStore().load();
+                        cboSystem.setValue(result.CarSystemId);
+                        var cboModel = App.FastParvande.queryById('cboModel');
+                        cboModel.clearValue(); cboModel.getStore().load();
+                        cboModel.setValue(result.CarModelId);
+                        var cboClass = App.FastParvande.queryById('cboClass');
+                        cboClass.clearValue(); cboClass.getStore().load();
+                        cboClass.setValue(result.CarClassId);
+
+                        var cboShort = App.FastParvande.queryById('cboShort');
+                        cboShort.clearValue(); cboShort.getStore().load();
+                        var cboYear = App.FastParvande.queryById('cboYear');
+                        cboYear.clearValue(); cboYear.getStore().load();
+
+                        if (result.CarMake == "1") {/*داخلی*/
+                            App.FastParvande.queryById("cboFillYear").hide();
+                            App.FastParvande.queryById("txtDateP").show();
+                            var cboShort = App.FastParvande.queryById('cboShort');
+                            /*cboShort.clearValue(); cboShort.getStore().load();*/
+                            cboShort.setValue("101");
+                        }
+                        else {
+                            App.FastParvande.queryById("txtDateP").hide();
+                            App.FastParvande.queryById("cboFillYear").show();
+                            var k = App.FastParvande.queryById('Image');
+                            k.setImageUrl("/Content/images/Blank.jpg");
+                        }
+                        /*App.SearchClass.body.mask().hide();*/
+
+                    }
+                });
+            }
+            App.SearchClass.destroy();
+        }
+        else {
+            Ext.MessageBox.show({
+                title: "خطا",
+                msg: "لطفا یک سطر را انتخاب کنید",
+                icon: Ext.MessageBox.ERROR,
+                buttons: Ext.MessageBox.OK
+            });
+        }
+    }
+
+
+</script>

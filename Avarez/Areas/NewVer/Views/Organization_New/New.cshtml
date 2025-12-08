@@ -1,0 +1,205 @@
+﻿@using Ext.Net.MVC
+@using Hogaf.ExtNet.UX
+@using Ext.Net;
+@{
+    var X = Html.X();
+}
+
+@(Html.X().Window()
+    .Modal(true)
+         .Resizable(false)
+                .Listeners(l => l.AfterLayout.Handler = "LoadOrganization()")
+    .Width(320)
+    .Height(260)
+    .Title("تعریف سازمان")
+    .Layout(LayoutType.Fit)
+            .ID("NewOrganization")
+    .Closable(true)
+    .ButtonAlign(Ext.Net.Alignment.Center)
+    .Buttons(
+        X.Button()
+            .Text("ذخیره")
+            .Icon(Ext.Net.Icon.Disk)
+        //.ToolTip("کلید میانبر F8")
+                    .Listeners(l => l.Click.Handler = "SaveOrganization();"),
+        X.Button()
+            .Text("خروج")
+            .Icon(Ext.Net.Icon.DoorOut)
+        //.ToolTip("کلید میانبر Esc")
+                    .OnClientClick("App.NewOrganization.destroy();"))
+    .CloseAction(Ext.Net.CloseAction.Destroy)
+    .Items(
+        X.FormPanel()
+            .Border(false)
+            .Layout(LayoutType.Fit)
+            .Items(
+                X.Panel()
+                    .Border(false)
+                    .PaddingSpec("10px 0 0 0")
+                    .Layout(LayoutType.VBox)
+                    .LayoutConfig(new VBoxLayoutConfig { Align = VBoxAlign.Center })
+                    .Items(
+                        X.FieldSet()
+                            .Border(false)
+                                 .Layout(Ext.Net.LayoutType.VBox)
+                        .LayoutConfig(new Ext.Net.VBoxLayoutConfig { Align = VBoxAlign.Center })
+                            //.Height(145)
+                            //.Defaults(new { Margin =2 })
+                            //.Layout(LayoutType.Table)
+                            //.LayoutConfig(new TableLayoutConfig { Columns = 4 })
+                            .Items(
+                            X.FieldSet()
+                            .Border(true)
+                            .Height(170).Title("سازمان")
+                            .Defaults(new { Margin =2 })
+                            .Layout(LayoutType.Table)
+                            .LayoutConfig(new TableLayoutConfig { Columns = 2 })
+                            .Items(
+                                X.Hidden()
+                                    .ItemID("fldId"),
+                                X.Label("سازمان:"),
+                                X.TextField()
+                                            .ItemID("txtName")
+                                    .Width(190)
+                                    .AllowBlank(false)
+                                    .BlankText("لطفا سازمان را وارد نمایید.")
+                                    .MsgTarget(Ext.Net.MessageTarget.Side),
+                                        X.Label("سمت:"),
+                                    X.TextField()
+                                                .ItemID("txtPost")
+                                        .Width(190)
+                                        .AllowBlank(false)
+                                        .BlankText("لطفا سمت را وارد نمایید.")
+                                        .MsgTarget(Ext.Net.MessageTarget.Side),
+                                       
+                                        
+                                             X.Label("آدرس:"),
+                                    X.TextField()
+                                                .ItemID("txtAddress")
+                                        .Width(190)
+                                        .AllowBlank(true)
+                                        .MsgTarget(Ext.Net.MessageTarget.Side), 
+                                   
+                                X.Label("توضیحات:"),
+                                X.TextArea()
+                                    .ItemID("txtDesc")
+                                    .Width(190)
+                                    )
+                            )
+
+
+                )
+            )
+        )
+)
+
+<script type="text/javascript">
+
+
+
+    function LoadOrganization() {
+        if ('@ViewBag.Id' != '0') {
+            App.NewOrganization.body.mask("در حال بارگذاری...");
+            Ext.net.DirectMethod.request({
+                url: '/NewVer/Organization_New/Details',
+                params: {
+                    Id: '@ViewBag.Id'
+                },
+                success: function (data) {
+                    if (data.Er == 0) {
+                        var txtName = App.NewOrganization.queryById('txtName');
+                        txtName.setValue(data.fldName);
+                        var txtPost = App.NewOrganization.queryById('txtPost');
+                        txtPost.setValue(data.fldPost);
+                        var txtAddress = App.NewOrganization.queryById('txtAddress');
+                        txtAddress.setValue(data.fldAddress);
+                        var txtDesc = App.NewOrganization.queryById('txtDesc');
+                        txtDesc.setValue(data.fldDesc);
+                        var Id = App.NewOrganization.queryById('fldId');
+                        Id.setValue(data.fldId);
+                    }
+                    else if (data.Er == 1) {
+                        Ext.MessageBox.show({
+                            title: data.MsgTitle,
+                            msg: data.Msg,
+                            icon: Ext.MessageBox.ERROR,
+                            buttons: Ext.MessageBox.OK
+                        });
+                    }
+                    App.NewOrganization.body.mask().hide();
+                }
+            });
+        }
+        else {
+            App.NewOrganization.queryById('txtName').validate();
+            App.NewOrganization.queryById('txtPost').validate();
+            App.NewOrganization.queryById('txtAddress').validate();
+        }
+    }
+
+
+    function SaveOrganization() {
+        var txtName = App.NewOrganization.queryById('txtName');
+        var txtPost = App.NewOrganization.queryById('txtPost');
+        var txtAddress = App.NewOrganization.queryById('txtAddress');
+        var Id = App.NewOrganization.queryById('fldId');
+        var txtDesc = App.NewOrganization.queryById('txtDesc');
+
+        var er = false;
+
+        if (txtName.validate() == false) {
+            er = true;
+        }
+        if (txtPost.validate() == false) {
+            er = true;
+        }
+        if (txtAddress.validate() == false) {
+            er = true;
+        }
+        if (er == true)
+            return;
+        App.NewOrganization.body.mask("در حال ذخیره سازی...");
+        Ext.net.DirectMethod.request({
+            url: '/NewVer/Organization_New/Save',
+            params: {
+                fldID: Id.getValue(),
+                fldName: txtName.getValue(),
+                fldPost: txtPost.getValue(),
+                fldAddress: txtAddress.getValue(),
+                fldDesc: txtDesc.getValue()
+            },
+            success: function (data) {
+                var ic = Ext.MessageBox.INFO;
+                if (data.Er == 1)
+                    ic = Ext.MessageBox.ERROR;
+                Ext.MessageBox.show({
+                    title: data.MsgTitle,
+                    msg: data.Msg,
+                    icon: ic,
+                    buttons: Ext.MessageBox.OK
+                });
+                if (data.Er != 1) {
+                    ClearOrganization();
+                }
+                App.NewOrganization.body.mask().hide();
+                App.Organization.queryById('GridOrganization').store.load();
+            }
+        });
+    }
+
+    function ClearOrganization() {
+        App.NewOrganization.queryById('txtDesc').setValue("");
+        App.NewOrganization.queryById('txtName').setValue("");
+        App.NewOrganization.queryById('txtPost').setValue("");
+        App.NewOrganization.queryById('txtAddress').setValue("");
+        App.NewOrganization.queryById('fldId').setValue(0);
+    }
+
+  /*  function EnterNext() {
+        var keyfield = App.NewCustomer.queryById(Ext.getCmp((Ext.Element.getActiveElement()).name).itemId);
+        var nextfld = keyfield.nextSibling();
+        nextfld.focus();
+        nextfld.selectText();
+    }*/
+
+</script>

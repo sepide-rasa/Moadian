@@ -1,0 +1,352 @@
+﻿@using Ext.Net.MVC
+@using Hogaf.ExtNet.UX
+@using Ext.Net;
+@{
+    var X = Html.X();
+}
+<style>
+    .LblStyle {
+        height: auto;
+    }
+
+    .LblRed {
+        color: red;
+    }
+
+    }
+</style>
+@(Html.X().Window().Modal(true)
+.Width(560)
+.Resizable(false)
+    .Title("تنظیمات پنل پیامک")
+         .ID("NewSmsSetting_New")
+        .Closable(true).ButtonAlign(Ext.Net.Alignment.Center)
+    .CloseAction(Ext.Net.CloseAction.Destroy)
+        .Layout(LayoutType.Fit)
+                   .Buttons(X.Button().Text("ذخیره").Icon(Ext.Net.Icon.Disk)//.ToolTip("کلید میانبر F8")
+                               .Listeners(l =>
+                               {
+                                   l.Click.Handler = "SaveSmsSetting_New();";
+
+                               })
+                               .ItemID("btnSave")
+                                ,
+                                X.Button().Text("خروج").Icon(Ext.Net.Icon.DoorOut)//.ToolTip("کلید میانبر Esc")
+                                       .OnClientClick("App.NewSmsSetting_New.destroy()"))
+    .Items(
+        X.FormPanel()
+            .DefaultButton("btn")
+        .TitleAlign(Ext.Net.TitleAlign.Center)
+           .Layout(LayoutType.Fit)
+                .Items(
+
+                X.Panel().Border(false)
+                .PaddingSpec("5px 0 10px 0")
+                    .Layout(Ext.Net.LayoutType.VBox)
+                    .LayoutConfig(new Ext.Net.VBoxLayoutConfig { Align = VBoxAlign.Center })
+            .Items(
+            X.Panel().Layout(LayoutType.HBox).Border(false)
+                .LayoutConfig(new Ext.Net.HBoxLayoutConfig { Align = HBoxAlign.Middle })
+                  .Defaults(new { Margin = 5 })
+            .Items(
+                 X.FieldSet()
+                        .Border(true)
+                        .Layout(LayoutType.Table)
+                             .LayoutConfig(new Ext.Net.TableLayoutConfig { Columns = 4 })
+        // .LayoutConfig(new Ext.Net.VBoxLayoutConfig { Align = VBoxAlign.Left })
+                        .Title("تنظیمات پنل پیامک")
+                            .Width(525)
+                        .Items(
+        //X.FieldSet()
+
+                       // .Border(false)
+        // .Layout(LayoutType.HBox)
+        // .Items(
+
+                            X.Hidden().ItemID("fldId"),
+                            X.Hidden().ItemID("countryId"),
+                            X.Hidden().ItemID("countrySID"),
+                            X.Hidden().ItemID("countryNType"),
+
+                                   X.Label("کد کاربری:"),
+                     X.TextField()
+                     .EnforceMaxLength(true)
+                    // .MaxLength(20)
+                         .ItemID("txtUserName")
+
+                    .MsgTarget(Ext.Net.MessageTarget.Side)
+                    .AllowBlank(false)
+                    .Width(190)
+                   // .MaskRe("/[0-9,-]/")
+                    .BlankText("لطفا کد کاربری را وارد نمایید.")
+
+                             , X.Label("کلمه عبور :"),
+                     X.TextField()
+                     .EnforceMaxLength(true)
+                    // .MaxLength(20)
+
+                         .ItemID("txtPassword")
+                    .MsgTarget(Ext.Net.MessageTarget.Side)
+                    .AllowBlank(false)
+                    .Width(190)
+                    //.MaskRe("/[0-9,-]/")
+                    .BlankText("لطفا کلمه عبور را وارد نمایید."),
+
+             //X.FieldSet()
+
+             //           .Border(false)
+        //           .Layout(LayoutType.HBox)
+        //           .Items(
+
+                     X.Label("شماره خط:"),
+                     X.TextField()
+                     .EnforceMaxLength(true)
+                     .MaxLength(11)
+                         .ItemID("txtLineNumber")
+                    .MsgTarget(Ext.Net.MessageTarget.Side)
+                    .AllowBlank(false)
+                    .Width(190)
+                    .MaskRe("/[0-9,-]/")
+                    .BlankText("لطفا شماره خط را وارد نمایید."),
+                         X.Label("توضیحات:"),
+                        X.TextArea()
+                        .ItemID("txtDesc")
+                        .Width(190)
+        //)
+                        )
+                        ),
+                              X.Panel().Layout(LayoutType.HBox).Border(false).Defaults(new { Margin = 5 })
+            .Items(
+                        X.FieldSet()
+                    .Border(true)
+                    .Title("موقعیت در تقسیمات کشوری")
+                    .Width(400)
+                    .Height(400)
+                    .Layout(LayoutType.Column)
+                    .Defaults(new { Margin = 2 })
+                        .Items(
+                                                    X.TreePanel()
+                                                        .ID("TreeCountrySms")
+                                                        .AutoScroll(true)
+                                                        .Width(305)
+                                                        .Height(300)
+                                                        .Expand(true)
+                                                        .UseArrows(true)
+                                                        .Border(false)
+        //.Store(
+        //    Html.X().TreeStore()
+        //        .Listeners(l => l.Load.Handler = "alert('test');")
+        //            .Proxy(
+        //                Html.X().AjaxProxy()
+        //                    .Url(Url.Action("nodeLoadTreeCountry"))
+        //                    )
+        //            )
+                                                        .Listeners(a =>
+                                                        {
+                                                            a.Select.Handler = "GetTreeCountryIdSms(record);";
+                                                            a.AfterRender.Handler = "this.getRootNode().expand();";
+                                                            a.BeforeLoad.Fn = "nodeLoadTreeCountrySms";
+                                                        })
+                                                            .Root(Html.X().Node().NodeID("1").DataPath("0").Cls("0").Text("جمهوری اسلامی ایران").IconFile("/Content/images/0.png")),
+                                                    X.Label()
+                                                        .Cls("LblRed")
+                                                        .Text("مورد انتخاب شده: "),
+                                                    X.Label()
+        //.Cls("LblStyle")
+                                                        .ItemID("lblTitleCountryD")
+                                                    )
+                                    )
+                                    )
+
+            )
+        )
+)
+
+
+<script type="text/javascript">
+    setTimeout("LoadSmsSetting_New()", 700);
+
+    var nodeLoadTreeCountrySms = function (store, operation, options) {
+        var node = operation.node;
+        Ext.net.DirectMethod.request({
+            url: '/NewVer/SmsSetting_New/NodeLoadTreeCountry',
+            params: {
+                nod: node.getId()
+            },
+            success: function (result) {
+                node.set('loading', false);
+                node.set('loaded', true);
+                node.appendChild(result);
+                node.expand();
+                /*if (node.getId() == "1") {
+                    SetDefault1();
+                }*/
+            },
+            failure: function (errorMsg) {
+                Ext.Msg.alert('Failure', errorMsg);
+            }
+        });
+
+        return false;
+    };
+
+    function SetDefault1() {
+        App.TreeCountrySms.getSelectionModel().select(0);
+    }
+
+    function GetTreeCountryIdSms(record) {
+        var pathCountry = record.getPath("text");
+        var TextCountry = pathCountry.split('/').splice(1).join("-->");
+        App.NewSmsSetting_New.queryById("countryId").setValue(record.getId());
+        App.NewSmsSetting_New.queryById("countrySID").setValue(record.data.cls);
+        App.NewSmsSetting_New.queryById("countryNType").setValue(record.data.dataPath);
+        App.NewSmsSetting_New.queryById('lblTitleCountryD').setText(TextCountry);
+    };
+
+
+
+    function LoadSmsSetting_New() {
+        if ('@ViewBag.Id' != '0') {
+            App.NewSmsSetting_New.body.mask("در حال بارگذاری...");
+            Ext.net.DirectMethod.request({
+                url: '/NewVer/SmsSetting_New/Details',
+                params: {
+                    Id: '@ViewBag.Id'
+                },
+                success: function (data) {
+                    if (data.Er == 0) {
+
+                    var txtUserName = App.NewSmsSetting_New.queryById('txtUserName');
+                    txtUserName.setValue(data.fldUserName);
+                    var txtPassword = App.NewSmsSetting_New.queryById('txtPassword');
+                    txtPassword.setValue(data.fldPassword);
+                    var txtLineNumber = App.NewSmsSetting_New.queryById('txtLineNumber');
+                    txtLineNumber.setValue(data.fldLineNumber);
+                    var txtDesc = App.NewSmsSetting_New.queryById('txtDesc');
+                    txtDesc.setValue(data.fldDesc);
+                    var Id = App.NewSmsSetting_New.queryById('fldId');
+                    Id.setValue(data.fldId);
+                    App.NewSmsSetting_New.queryById("countryId").setValue(data.fldCountryId);
+                    App.NewSmsSetting_New.queryById("countrySID").setValue(data.fldCountryCode);
+                    App.NewSmsSetting_New.queryById("countryNType").setValue(data.fldCountryType);
+
+                    if (data.Path == "/1") {
+                        App.TreeCountrySms.getSelectionModel().select(0);
+                    }
+                    else {
+                        Ext.net.DirectMethod.request({
+                            url: '/NewVer/SmsSetting_New/LoadPath',
+                            params: {
+                                Path: data.Path
+                            },
+                            success: function (result) {
+                                if (result.length != 0) {
+                                    var idd = data.Path.split('/')[2];
+                                    App.TreeCountrySms.store.getNodeById(idd).appendChild(result);
+                                    var nodee = App.TreeCountrySms.store.getNodeById(data.Path.split('/')[data.Path.split('/').length - 1]);
+                                    App.TreeCountrySms.expandPath(data.Path);
+                                    App.TreeCountrySms.selectPath(data.Path);
+                                }
+                                else {
+                                    App.TreeCountrySms.selectPath(data.Path);
+                                }
+                            },
+                            failure: function (errorMsg) {
+                                Ext.Msg.alert('Failure', errorMsg);
+                            }
+                        });
+                    }
+
+
+                }
+            else if (data.Er == 1) {
+                Ext.MessageBox.show({
+                    title: data.MsgTitle,
+                    msg: data.Msg,
+                    icon: Ext.MessageBox.ERROR,
+                    buttons: Ext.MessageBox.OK
+                });
+            }
+                    App.NewSmsSetting_New.body.mask().hide();
+                }
+            });
+        }
+        else {
+
+            App.NewSmsSetting_New.queryById('txtUserName').validate();
+            App.NewSmsSetting_New.queryById('txtPassword').validate();
+            App.NewSmsSetting_New.queryById('txtLineNumber').validate();
+            SetDefault1();
+        }
+
+    }
+
+    function SaveSmsSetting_New() {
+        var txtUserName = App.NewSmsSetting_New.queryById('txtUserName');
+        var txtPassword = App.NewSmsSetting_New.queryById('txtPassword');
+        var txtLineNumber = App.NewSmsSetting_New.queryById('txtLineNumber');
+        var Id = App.NewSmsSetting_New.queryById('fldId');
+        var txtDesc = App.NewSmsSetting_New.queryById('txtDesc');
+        var er = false;
+
+        if (txtUserName.validate() == false) {
+            er = true;
+        }
+        if (txtPassword.validate() == false) {
+            er = true;
+        }
+        if (txtLineNumber.validate() == false) {
+            er = true;
+        }
+        if (er == true)
+            return;
+        App.NewSmsSetting_New.body.mask("در حال ذخیره سازی...");
+        Ext.net.DirectMethod.request({
+            url: '/NewVer/SmsSetting_New/Save',
+            params: {
+                fldCountryType: App.NewSmsSetting_New.queryById("countryNType").getValue(),
+                fldCountryCode: App.NewSmsSetting_New.queryById("countrySID").getValue(),
+                fldUserName: txtUserName.getValue(),
+                fldPassword: txtPassword.getValue(),
+                fldLineNumber: txtLineNumber.getValue(),
+                fldId: Id.getValue(),
+                fldDesc:txtDesc.getValue()
+            },
+            success: function (data) {
+                var ic = Ext.MessageBox.INFO;
+                if (data.Err == 1)
+                    ic = Ext.MessageBox.ERROR;
+                Ext.MessageBox.show({
+                    Name: data.MsgName,
+                    msg: data.Msg,
+                    icon: ic,
+                    buttons: Ext.MessageBox.OK
+                });
+                App.NewSmsSetting_New.body.mask().hide();
+                App.SmsSetting.queryById('GridSmsSetting').store.load();
+                if (data.Err != 1)
+                    ClearSmsSetting_New();
+            }
+
+        });
+    }
+    function ClearSmsSetting_New() {
+        App.NewSmsSetting_New.queryById('txtUserName').setValue("");
+        App.NewSmsSetting_New.queryById('txtPassword').setValue("");
+        App.NewSmsSetting_New.queryById('txtLineNumber').setValue("");
+        App.NewSmsSetting_New.queryById('lblTitleCountryD').setText("");
+        App.NewSmsSetting_New.queryById('txtDesc').setValue("");
+        App.TreeCountrySms.getSelectionModel().select(0);
+        App.NewSmsSetting_New.queryById("countryNType").setValue(0);
+        App.NewSmsSetting_New.queryById("countrySID").setValue(0);
+        App.NewSmsSetting_New.queryById("countryId").setValue(0);
+         App.NewSmsSetting_New.queryById('fldId').setValue(0);
+    }
+   /* function EnterNext() {
+        var keyfield = App.NewSmsSetting_New.queryById(Ext.getCmp((Ext.Element.getActiveElement()).name).itemId);
+        var nextfld = keyfield.nextSibling();
+        nextfld.focus();
+        nextfld.selectText();
+
+    }*/
+</script>

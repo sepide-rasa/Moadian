@@ -1,0 +1,527 @@
+﻿@using Kendo.Mvc.UI;
+<div class="modal" id="MainSetting">
+    <script src="@Url.Content("~/Content/Base.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Scripts/jquery.ui.datepicker-cc.all.min.js")" type="text/javascript"></script>
+    <div>
+    <a href="@Url.Content("~/Helps/تنظیمات%20اصلی.htm")" target="_blank" id="Help" title="راهنما" style="background-image:url('/Content/images/1381415123_help.png');background-repeat: no-repeat;height: 20px;float: left;top: 10px;left: 10px;"></a>    
+        <br />
+        <center>
+            <table>
+                <tr>
+                    <td align="left">
+                        تاریخ پیاده سازی:
+                    </td>
+                    <td dir="rtl" align="right" colspan="2">
+                        @Html.TextBox("txtDate", null, new { @dir = "ltr", @style = "width: 162px;" })
+                        <span id="lblDateError" style="color: Red;"></span>
+                    </td>
+                </tr>
+                <tr>
+                    <td align="left" >
+                        <span style="color: Red;">*</span> نوع جریمه:
+                    </td>
+                    <td colspan="2">
+                        @(Html.Kendo().DropDownList()
+                                  .Name("cboFineType")
+                                  .DataTextField("Text")
+                                  .DataValueField("Value")
+                                  .BindTo(new List<SelectListItem>() {
+                                      new SelectListItem() {
+                                          Text = "روز شمار",
+                                          Value = "flase"
+                                      },
+                                     new SelectListItem() {
+                                         Text = "ماه شمار",
+                                          Value = "true"
+                                      }
+                                  })
+                            )
+                        <span id="lblcboRoundError" style="color: Red;"></span>
+                    </td>
+                </tr>
+                <tr>
+                    <td dir="rtl" align="left" colspan="2">
+                        @Html.CheckBox("chLate")
+                    </td>
+                    <td align="right">
+                        اخذ جریمه دیر کرد
+                    </td>
+                </tr>
+                <tr>
+                    <td dir="rtl" align="left" colspan="2">
+                        @Html.CheckBox("chTax")
+                    </td>
+                    <td align="right">
+                        اخذ خودرو فرسوده
+                    </td>
+                </tr>
+                <tr>
+                    <td dir="rtl" align="left" colspan="2">
+                        @Html.CheckBox("chSeri")
+                    </td>
+                    <td align="right">
+                        اعمال سری خودرو
+                    </td>
+                </tr>
+                <tr>
+                    <td dir="rtl" align="left" colspan="2">
+                        @Html.CheckBox("chApply")
+                    </td>
+                    <td align="right">
+                        اعمال تقسیمات کشوری 
+                    </td>
+                </tr>
+                <tr>
+                    <td dir="rtl" align="left" colspan="2">
+                        @Html.CheckBox("chBime")
+                    </td>
+                    <td align="right">
+                       اخذ عوارض از تاریخ بیمه
+                    </td>
+                </tr>
+                <tr>
+                    <td align="left">
+                        موقعیت در تقسیمات کشوری:
+                    </td>
+                    <td colspan="2" dir="rtl" id="countryLocation" align="right">
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="3" align="center" style="height: 30px;">
+                        @Html.Label("مورد انتخاب شده: ", new { @id = "CountryPosition" })
+                    </td>
+                </tr>
+                <tr>
+                    <td align="left">
+                        سلسله مراتب خودرو:
+                    </td>
+                    <td colspan="2" dir="rtl" id="carLocation" align="right">
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="3" align="center" style="height: 30px;">
+                        @Html.Label("مورد انتخاب شده: ", new { @id = "carPosition" })
+                    </td>
+                </tr>
+                <tr>
+                    @Html.Hidden("fldId")
+                </tr>
+            </table>
+            <p>
+                @Avarez.Helper.winClass.Buttons("AddLink", "ذخیره", "Save")
+                @Avarez.Helper.winClass.Buttons("EditLink", "ویرایش", "Edit")
+                @Avarez.Helper.winClass.Buttons("DelLink", "حذف", "Del")
+                @Avarez.Helper.winClass.Buttons("exit", "خروج", "Exit")
+            </p>
+        </center>
+        @(Html.Kendo().PanelBar()
+        .Name("panelbar-images")
+        .Items(panelbar =>
+        {
+            panelbar.Add().Text("جستجو")
+                .ImageUrl(Url.Content("~/Content/images/search.png"))
+                .Content(@<div>
+                    <table>
+                        <tr>
+                            <td>
+                                فیلد جستجو:@Html.DropDownList("cboSearchFiald", new SelectList(new[] { new { ID = "0", Name = "نام تقسیمات کشوری " }, new { ID = "1", Name = "تاریخ پیاده سازی" } }, "ID", "Name"))
+                            </td>
+                            <td>
+                                نوع جستجو: @Html.DropDownList("cboSearchType", new SelectList(new[] { new { ID = "0", Name = "مشابه عبارت" }, new { ID = "1", Name = "مشابه عبارت از سمت راست" }, new { ID = "2", Name = "عین عبارت" } }, "ID", "Name"))
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                عبارت جستجو: @Avarez.Helper.winClass.textbox("txtSearch")
+                            </td>
+                            <td>
+                                نتیجه رکوردها: @Html.TextBox("txtTop", 30, new { @style = "width:30px;" }) رکورد
+                            </td>
+                        </tr>
+                    </table>
+                    <br />
+                </div>);
+        })
+        )
+        <div class="k-rtl demo-section">
+            @(Html.Kendo().Grid<Avarez.Models.sp_MainSettingSelect>()
+                .Name("Grid")
+                .Columns(columns =>
+                {
+                    columns.Bound(p => p.fldID).Title("کد").Visible(false);
+                    columns.Bound(p => p.fldCarSeriesName).Title("سری خودرو");
+                    columns.Bound(p => p.fldCountryDivisionsName).Title("تقسیمات کشوری");
+                    columns.Bound(p => p.fldCountryDivisionsTreeApply).Title(" اعمال تقسیمات کشوری");
+                    columns.Bound(p => p.fldCarSeriesTreeApply).Title("اعمال سری خودرو");
+                    columns.Bound(p => p.fldImplementationDate).Title("تاریخ پیاده سازی");
+                    columns.Bound(p => p.fldDesc).Title("توضیحات");
+                })
+            .Selectable(selectable => selectable.Mode(GridSelectionMode.Single))
+            .Pageable()
+            .Scrollable()
+            .DataSource(data =>
+                data.Ajax()
+                .PageSize(10)
+                .Read("Fill", "MainSetting")
+            )
+        )
+        </div>
+    </div>
+    <script type="text/javascript">
+        function select(e) {
+            var dataItem = this.dataItem(e.node);
+            countryid = dataItem.id;
+            countrySID = dataItem.fldSid;
+            countryNType = dataItem.fldNodeType;
+            var url = '@Url.Content("~/MainSetting/CountryPosition")';
+            $.ajax({
+                type: "post",
+                url: url,
+                data: { id: countryid },
+                datatype: "json",
+                success: function (data) {
+                    var m = data;
+                    $('#CountryPosition').html('مورد انتخاب شده: ' + m.Position);
+                    var treeview = $("#treeview").data("kendoTreeView");
+                    treeview.collapse(".k-item");
+                },
+                failure: function (data) {
+                    alert(data.data);
+                }
+            });
+        }
+
+        var countryid;
+        var countrySID;
+        var countryNType;
+
+        function carselect(e) {
+            var dataItem = this.dataItem(e.node);
+            carid = dataItem.id;
+            carSID = dataItem.fldSid;
+            carNType = dataItem.fldNodeType;
+            var url = '@Url.Content("~/MainSetting/CarPosition")';
+            $.ajax({
+                type: "post",
+                url: url,
+                data: { id: carid },
+                datatype: "json",
+                success: function (data) {
+                    var m = data;
+                    $('#carPosition').html('مورد انتخاب شده: ' + m.Position);
+                    var treeview = $("#cartreeview").data("kendoTreeView");
+                    treeview.collapse(".k-item");
+                },
+                failure: function (data) {
+                    alert(data.data);
+                }
+            });
+        }
+
+        var carid;
+        var carSID;
+        var carNType;
+        $("document").ready(function () {
+
+            $("#txtDate").datepicker({
+                showButtonPanel: true
+            });
+            $('#countryLocation').html($('#LocationDiv').valueOf());
+            $('#carLocation').html($('#carLocationDiv').valueOf());
+            $("#AddLink").button();
+            $("#EditLink").button();
+            $("#DelLink").button();
+            $("#Next").button();
+            $("#exit").button();
+            $("#btnBrowse").button();
+            $("#btnRemove").button();
+            $("#Help").button();
+
+            $("#exit").click(function () {
+                $("#MainSetting").remove();
+            });
+
+            $('#MainSetting').on('keyup', 'input', function (event) {
+                if (event.which == 13) {
+                    var inputs = $('#MainSetting').find(':input:visible');
+                    inputs.eq(inputs.index(this) + 1).focus();
+                }
+            });
+
+            $(document).keyup(function (event) {
+                if (event.which == 119) {
+                    SaveRecord();
+                }
+                else if (event.which == 113) {
+                    EditRecord();
+                }
+                else if (event.which == 115) {
+                    DeleteRecord();
+                }
+            });
+            $('#AddLink').attr('title', 'کلید میانبر (F8)'); //119
+            $('#EditLink').attr('title', 'کلید میانبر (F2)'); //113
+            $('#DelLink').attr('title', 'کلید میانبر (F4)'); //115
+
+            jQuery("#EditLink").click(function () {
+                EditRecord();
+            });
+
+            $('#DelLink').click(function () {
+                DeleteRecord();
+            });
+
+            $("#AddLink").click(function () {
+                SaveRecord();
+            });
+
+            $('#Next').click(function () {
+                var url = '@Url.Action("Reload", "MainSetting")';
+                Reload(url, 'Grid', carNType, carSID, document.getElementById('SubNodes').checked);
+            });
+
+            $('#txtSearch').keyup(function () {
+                var url = '@Url.Action("Reload", "MainSetting")';
+                Reload(url, 'Grid', $("#cboSearchFiald").val(), $("#txtSearch").val(), $("#txtTop").val(), $("#cboSearchType").val());
+            });
+
+            $("#btnBrowse").click(function () {
+                performClick(document.getElementById('image'));
+            });
+
+            function performClick(node) {
+                var evt = document.createEvent("MouseEvents");
+                evt.initEvent("click", true, false);
+                node.dispatchEvent(evt);
+            }
+
+            $("#txtDate").change(function () {
+                if ($("#txtDate").val() != '') {
+                    $("#txtDate").removeClass("input-validation-error");
+                    $("#lblDateError").html("");
+                }
+                else {
+                    $("#txtDate").addClass("input-validation-error");
+                    $('#lblDateError').html('لطفا تاریخ را وارد کنید.');
+                }
+            });
+        });
+        function Clear() {
+
+        }
+        function DeleteRecord() {
+                var entityGrid = $("#Grid").data("kendoGrid");
+                var selectedItem = entityGrid.dataItem(entityGrid.select());
+                if (selectedItem) {
+                    var id = selectedItem.fldID;
+                    var URL = '@Url.Content("~/metro/YesNomsg")';
+                    URL = URL + "/?id=" + id + "&URL=" + '@Url.Content("~/MainSetting/Delete")';
+                    windowAppend("body", URL);
+                    $("#message").html('آیا مایل به حذف رکورد انتخاب شده هستید؟');
+                }
+                else {
+                    alert('لطفا یک سطر را انتخاب کنید.');
+                }
+                Clear();
+            }
+            function SaveRecord() {
+                var er = false;
+                if ($("#txtDate").val() == '') {
+                    $("#txtDate").addClass("input-validation-error");
+                    $('#lblDateError').html('لطفا تاریخ را وارد کنید.');
+                    er = true;
+                }
+                else {
+                    $("#txtDate").removeClass("input-validation-error");
+                    $('#lblDateError').html('');
+                }
+
+                if (er)
+                    return;
+                var data = {
+                    fldLateFine: document.getElementById('chLate').checked,
+                    fldTax: document.getElementById('chTax').checked,
+                    fldTypeCountryDivisions: countryNType,
+                    fldCodeCountryDivisions: countrySID,
+                    fldImplementationDate: $("#txtDate").val(),
+                    fldCountryDivisionsTreeApply: document.getElementById('chApply').checked,
+                    fldTypeCar: carNType,
+                    fldCodeCar: carSID,
+                    fldCarSeriesTreeApply: document.getElementById('chSeri').checked,
+                    fldId: $("#fldId").val(),
+                    fldFineType: $("#cboFineType").val(),
+                    fldFirstInsurance: document.getElementById('chBime').checked
+                };
+                if (data != '') {
+                    PostForm(data, '@Url.Content("~/MainSetting/Save")', "#win");
+                }
+                Clear();
+            }
+            function EditRecord() {
+                var entityGrid = $("#Grid").data("kendoGrid");
+                var selectedItem = entityGrid.dataItem(entityGrid.select());
+                if (selectedItem) {
+                    var id = selectedItem.fldID;
+                    var URL = '@Url.Content("~/MainSetting/Details")';
+                    URL = URL + "/" + id;
+                    $.ajax({
+                        type: "GET",
+                        url: URL,
+                        success: function (data) {
+                            var finetype = $("#cboFineType").data("kendoDropDownList");
+                            document.getElementById('chLate').checked = data.fldLateFine;
+                            finetype.value(data.finetype);
+                            document.getElementById('chTax').checked = data.fldTax;
+                            document.getElementById('chApply').checked = data.fldCountryDivisionsTreeApply;
+                            document.getElementById('chSeri').checked = data.fldCarSeriesTreeApply;
+                            document.getElementById('chBime').checked = data.firstbime;
+                            $('#txtDate').val(data.fldImplementationDate);
+                            $('#fldId').val(data.fldId);
+                            $('#txtDesc').val(data.fldDesc);
+                            countryid = data.countryId;
+                            countrySID = data.countryCode;
+                            countryNType = data.CountryType;
+                            var url = '@Url.Content("~/AmountCost/CountryPosition")';
+                            $.ajax({
+                                type: "post",
+                                url: url,
+                                data: { id: countryid },
+                                datatype: "json",
+                                success: function (data) {
+                                    var m = data;
+                                    $('#CountryPosition').html('مورد انتخاب شده: ' + m.Position);
+                                },
+                                failure: function (data) {
+                                    alert(data.data);
+                                }
+                            });
+
+                            carid = data.carid;
+                            carSID = data.carCode;
+                            carNType = data.carType;
+                            var url = '@Url.Content("~/AmountCost/CarPosition")';
+                            $.ajax({
+                                type: "post",
+                                url: url,
+                                data: { id: carid },
+                                datatype: "json",
+                                success: function (data) {
+                                    var m = data;
+                                    $('#carPosition').html('مورد انتخاب شده: ' + m.Position);
+                                },
+                                failure: function (data) {
+                                    alert(data.data);
+                                }
+                            });
+                        },
+                        failure: function (data) {
+                            alert(data.data);
+                        }
+                    });
+                }
+                else {
+                    alert('لطفا یک سطر را انتخاب کنید.');
+                }
+            }
+
+        function Reload(Url, gridname, field, value, top, searchType) {
+            var grid = $('#' + gridname).data('kendoGrid');
+            $.ajax({
+                url: Url,
+                type: 'get',
+                datatype: 'json',
+                data: { field: field, value: value, top: top, searchtype: searchType },
+                error: function (xhr, status, error) {
+                    alert(xhr + status);
+                },
+                success: function (result) {
+                    $("#" + gridname).data("kendoGrid").dataSource.data(result);
+                }
+
+            });
+        }
+
+        function PostForm(datas, url, id) {
+            var sendInfo = datas;
+            $('#Lock').show();
+            $.ajax({
+                type: "POST",
+                url: url,
+                data: sendInfo,
+                datatype: "json",
+                success: function (data) {
+                    var m = data;
+                    windowAppend("body", "/metro/error");
+                    $("#message").html(m.data);
+                    switch (m.state) {
+                        case 0:
+                            $("#error .wintitle").html("ذخیره موفق");
+                            break;
+                        case 1:
+                            $("#error .wintitle").html("خطا");
+                            break;
+                    }
+                    var url = '@Url.Action("Reload", "MainSetting")';
+                    Reload(url, 'Grid', '0', '', 30, 1);
+                    $('#Lock').hide();
+                },
+                failure: function (data) {
+                    alert(data.data);
+                }
+            });
+        }
+        
+    </script>
+</div>
+<div class="treeview-back  k-rtl" dir="rtl" id="LocationDiv">
+    @(Html.Kendo().TreeView()
+                        .Name("treeview")
+                        .DataImageUrlField("image")
+
+                        .DataTextField("Name")
+                        .Checkboxes(chkbxs =>
+                        {
+                            chkbxs.Enabled(false).CheckChildren(false);
+                        })
+                        .DataSource(dataSource => dataSource
+                        .Read(read => read
+                                  .Action("_CountryTree", "MainSetting")
+                        )
+                        )
+                        .Events(events =>
+                        events.Select("select"))
+                        )
+</div>
+<div class="treeview-back  k-rtl" dir="rtl" id="carLocationDiv">
+    @(Html.Kendo().TreeView()
+                        .Name("cartreeview")
+                        .DataImageUrlField("image")
+
+                        .DataTextField("Name")
+                        .Checkboxes(chkbxs =>
+                        {
+                            chkbxs.Enabled(false).CheckChildren(false);
+                        })
+                        .DataSource(dataSource => dataSource
+                        .Read(read => read
+                          .Action("_CarTree", "MainSetting")
+                        )
+                        )
+                        .Events(events =>
+                        events.Select("carselect"))
+                        )
+</div>
+<style type="text/css">
+    .treeview-back
+    {
+        width: 400px;
+        margin: 30px;
+        padding: 20px;
+        -moz-box-shadow: 0 1px 2px rgba(0,0,0,0.45), inset 0 0 30px rgba(0,0,0,0.07);
+        -webkit-box-shadow: 0 1px 2px rgba(0,0,0,0.45), inset 0 0 30px rgba(0,0,0,0.07);
+        box-shadow: 0 1px 2px rgba(0,0,0,0.45), inner 0 0 30px rgba(0,0,0,0.07);
+        -webkit-border-radius: 8px;
+        -moz-border-radius: 8px;
+        border-radius: 8px;
+    }
+</style>

@@ -1,0 +1,309 @@
+﻿@using Kendo.Mvc.UI;
+<div class="modal" id="BankInf">
+    <script src="@Url.Content("~/Content/Base.js")" type="text/javascript"></script>
+    
+    <div>
+    <a href="@Url.Content("~/Helps/تعریف اطلاعات پرداخت آنلاین.htm")" target="_blank" id="Help" title="راهنما" style="background-image:url('/Content/images/1381415123_help.png');background-repeat: no-repeat;height: 20px;float: left;top: 10px;left: 10px;"></a>
+        <br />
+        <center>
+            <table>                
+                <tr>
+                    <td align="left">
+                        @Html.Hidden("fldId")
+                        <span style="color: Red;">*</span> نام بانک:
+                    </td>
+                    <td>
+                        @Avarez.Helper.winClass.textbox("cboBank")
+                        <span id="lblBankError" style="color: Red;"></span>
+                    </td>
+                </tr>                
+                <tr>
+                    <td align="left">
+                        <span style="color: Red;">*</span> استان:
+                    </td>
+                    <td>
+                        @Avarez.Helper.winClass.textbox("cboState")
+                        <span id="lblStateError" style="color: Red;"></span>
+                    </td>
+                </tr>
+                <tr>
+                    <td align="left">
+                        <span style="color: Red;">*</span> شهرداری:
+                    </td>
+                    <td>
+                        @Avarez.Helper.winClass.textbox("cboMnu")
+                        <span id="lblMnuError" style="color: Red;"></span>
+                    </td>
+                </tr>
+                <tr>
+                    <td align="left">
+                        <span style="color: Red;">*</span> منطقه:
+                    </td>
+                    <td>
+                        @Avarez.Helper.winClass.textbox("cboLocal")
+                        <span id="lblLocalError" style="color: Red;"></span>
+                    </td>
+                </tr>
+            </table>
+            <p>
+                @Avarez.Helper.winClass.Buttons("next", "ادامه", "next")
+                @Avarez.Helper.winClass.Buttons("DelLink", "حذف", "Del")
+                @Avarez.Helper.winClass.Buttons("exit", "خروج", "Exit")
+            </p>
+        </center>
+        @*@(Html.Kendo().PanelBar()
+        .Name("panelbar-images")
+        .Items(panelbar =>
+        {
+            panelbar.Add().Text("جستجو")
+                .ImageUrl(Url.Content("~/Content/images/search.png"))
+                .Content(@<div>
+                    <table>
+                        <tr>
+                            <td>
+                                فیلد جستجو:@Html.DropDownList("cboSearchFiald", new SelectList(new[] { new { ID = "0", Name = "نام بانک" } }, "ID", "Name"))
+                            </td>
+                            <td>
+                                نوع جستجو: @Html.DropDownList("cboSearchType", new SelectList(new[] { new { ID = "0", Name = "مشابه عبارت" }, new { ID = "1", Name = "مشابه عبارت از سمت راست" }, new { ID = "2", Name = "عین عبارت" } }, "ID", "Name"))
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                عبارت جستجو: @Avarez.Helper.winClass.textbox("txtSearch")
+                            </td>
+                            <td>
+                                نتیجه رکوردها: @Html.TextBox("txtTop", 30, new { @style = "width:30px;" }) رکورد
+                            </td>
+                        </tr>
+                    </table>
+                    <br />
+                </div>);
+        })
+        )*@
+        <div class="k-rtl demo-section">
+            @(Html.Kendo().Grid<Avarez.Models.sp_SelectNameBankAndMunForBankInformation>()
+                .Name("Grid")
+                .Columns(columns =>
+                        {
+                            columns.Bound(p => p.fldCountryDiv).Visible(false);
+                    columns.Bound(p => p.BankId).Visible(false);
+                    columns.Bound(p => p.fldMunId).Visible(false);
+                    columns.Bound(p => p.fldBankName).Title("نام بانک");
+                    columns.Bound(p => p.fldMunName).Title("شهرداری");                   
+                })
+            .Selectable(selectable => selectable.Mode(GridSelectionMode.Single))
+            .Pageable()
+            .Scrollable()
+            .DataSource(data =>
+                data.Ajax()
+                .PageSize(10)
+                .Read("Fill", "BankInf")
+            )
+        )
+        </div>
+    </div>
+    <script type="text/javascript">
+        function selectCity() {
+            return {
+                cboState: $("#cboState").val()
+            };
+        }
+        function selectLocal() {
+            return {
+                cboMnu: $("#cboMnu").val()
+            };
+        }
+        $("document").ready(function () {
+            $("#AddLink").button();
+            $("#DelLink").button();
+            $("#exit").button();
+            $("#next").button();
+            $("#Help").button();
+            $("#exit").click(function () {
+                $("#BankInf").remove();
+            });
+
+            $('#BankInf').on('keyup', 'input', function (event) {
+                if (event.which == 13) {
+                    var inputs = $('#BankInf').find(':input:visible');
+                    inputs.eq(inputs.index(this) + 1).focus();
+                }
+            });
+
+            $('#txtSearch').keyup(function () {
+                var url = '@Url.Action("Reload", "BankInf")';
+                Reload(url, 'Grid', $("#cboSearchFiald").val(), $("#txtSearch").val(), $("#txtTop").val(), $("#cboSearchType").val());
+            });
+
+            $("#cboMnu").change(function () {
+                var url = '@Url.Action("Reload", "BankInf")';
+                var fldtype = 5;
+                Reload(url, 'Grid', $("#cboMnu").val(), fldtype);
+            });
+            $("#cboLocal").change(function () {
+                var url = '@Url.Action("Reload", "BankInf")';
+                var fldtype= 6;
+                Reload(url, 'Grid', $("#cboLocal").val(), fldtype);
+            });
+            $('#next').click(function () {
+                if ($("#cboBank").val() == '') {
+                    $("#cboBank").addClass("input-validation-error");
+                    $('#lblBankError').html('لطفا بانک را انتخاب کنید.');
+                    return;
+                }
+                else {
+                    $("#cboBank").removeClass("input-validation-error");
+                    $('#lblBankError').html('');
+                }
+                if ($("#cboMnu").val() == '') {
+                    $("#cboMnu").addClass("input-validation-error");
+                    $('#lblMnuError').html('لطفا شهرداری را انتخاب کنید.');
+                    return;
+                }
+                else {
+                    $("#cboMnu").removeClass("input-validation-error");
+                    $('#lblMnuError').html('');
+                }
+                var URL = '@Url.Content("~/BankInfDetails/Index")';
+                windows("#win", URL + "?BankId=" + $("#cboBank").val() + '&MunId=' + $("#cboMnu").val() + '&LocalId='+$('#cboLocal').val());
+            });
+            $('#DelLink').click(function () {
+                var entityGrid = $("#Grid").data("kendoGrid");
+                var selectedItem = entityGrid.dataItem(entityGrid.select());
+                if (selectedItem) {
+                    var idbank = selectedItem.BankId;
+                    var idmnu = selectedItem.fldMunId;
+                    var fldCountryDiv = selectedItem.fldCountryDiv;
+                    var URL = '@Url.Content("~/metro/YesNomsg")';
+                    URL = URL + "/?id=" + idbank + '-' + idmnu + '|' + fldCountryDiv + "&URL=" + '@Url.Content("~/BankInf/Delete")';
+                    windowAppend("body", URL);
+                    $("#message").html('آیا مایل به حذف رکورد انتخاب شده هستید؟');
+                }
+                else {
+                    alert('لطفا یک سطر را انتخاب کنید.');
+                }
+                Clear();
+            });
+        });
+            
+        function Clear() {
+            $('#txtName').val('');
+            $('#fldId').val(0);
+            $('#txtInfinitiveBank').val('');
+            $('#txtCentralBankCode').val('');
+            $('#txtDesc').val('');
+            $('#PreviewImage').attr('src', '@Url.Content("~/Content/images/Blank.jpg")');
+        }
+        
+        function Reload(Url, gridname, value,type) {
+            var grid = $('#' + gridname).data('kendoGrid');
+            $.ajax({
+                url: Url,
+                type: 'get',
+                datatype: 'json',
+                data: { value: value ,type:type},
+                error: function (xhr, status, error) {
+                    alert(xhr + status);
+                },
+                success: function (result) {
+                    $("#" + gridname).data("kendoGrid").dataSource.data(result);
+                }
+
+            });
+        }
+        function PostForm(datas, url, id) {
+            var sendInfo = datas;
+            $('#Lock').show();
+            $.ajax({
+                type: "POST",
+                url: url,
+                data: sendInfo,
+                datatype: "json",
+                success: function (data) {
+                    var m = data;
+                    windowAppend("body", "/metro/error");
+                    $("#message").html(m.data);
+                    switch (m.state) {
+                        case 0:
+                            $("#error .wintitle").html("ذخیره موفق");
+                            break;
+                        case 1:
+                            $("#error .wintitle").html("خطا");
+                            break;
+                    }
+                    Reload(url, 'Grid', $("#cboLocal").val(), 6);
+                    $('#Lock').hide();
+                },
+                failure: function (data) {
+                    alert(data.data);
+                }
+            });
+        }
+    </script>
+</div>
+<div class="k-rtl">
+    @(Html.Kendo().DropDownList()
+          .Name("cboBank")
+          .OptionLabel("نام بانک...")
+          .DataTextField("fldName")
+          .DataValueField("fldID")
+          .DataSource(source =>
+          {
+              source.Read(read =>
+              {
+                  read.Action("GetCascadeBank", "BankInf");
+              });
+          }).HtmlAttributes(new { @style = "display: none;width:105px;" })
+    )
+    @(Html.Kendo().DropDownList()
+          .Name("cboState")
+          .OptionLabel("نام استان...")
+          .DataTextField("fldName")
+          .DataValueField("fldID")
+          .DataSource(source =>
+          {
+              source.Read(read =>
+              {
+                  read.Action("GetCascadeState", "BankInf");
+              });
+          }).HtmlAttributes(new { @style = "display: none;width:105px;" })
+    )
+    @(Html.Kendo().DropDownList()
+          .Name("cboMnu")
+          .OptionLabel("نام شهرداری...")
+                  .DataTextField("fldName")
+                  .DataValueField("fldID")
+          .DataSource(source =>
+          {
+              source.Read(read =>
+              {
+                  read.Action("GetCascadeCounty", "BankInf")
+                      .Data("selectCity");
+              })
+              .ServerFiltering(true);
+          })
+          .Enable(true)
+          .AutoBind(false)
+          .CascadeFrom("cboState")
+          .HtmlAttributes(new { @style = "display: none;width:105px;" })
+    )
+    @(Html.Kendo().DropDownList()
+          .Name("cboLocal")
+          .OptionLabel("نام منطقه...")
+                  .DataTextField("fldName")
+                  .DataValueField("fldID")
+          .DataSource(source =>
+          {
+              source.Read(read =>
+              {
+                  read.Action("GetCascadeLocal", "BankInf")
+                      .Data("selectLocal");
+              })
+              .ServerFiltering(true);
+          })
+          .Enable(true)
+          .AutoBind(false)
+          .CascadeFrom("cboMnu")
+          .HtmlAttributes(new { @style = "display: none;width:105px;" })
+    )
+</div>

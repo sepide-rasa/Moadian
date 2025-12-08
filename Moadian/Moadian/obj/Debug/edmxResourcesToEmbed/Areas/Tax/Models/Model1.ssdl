@@ -1,0 +1,347 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="cartaxtest2Model.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2008" Alias="Self" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <Function Name="sp_ErrorProgramInsert" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="fldID" Type="int" Mode="InOut" />
+    <Parameter Name="fldText" Type="nvarchar(max)" Mode="In" />
+    <Parameter Name="fldUserID" Type="bigint" Mode="In" />
+    <Parameter Name="fldDesc" Type="nvarchar(max)" Mode="In" />
+    <Parameter Name="fldDate" Type="datetime" Mode="In" />
+    <Parameter Name="fldUserPass" Type="nvarchar" Mode="In" />
+  </Function>
+  <Function Name="prs_InsertSooratHesabForExcel" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="Movadi">
+    <Parameter Name="HeaderId" Type="bigint" Mode="InOut" />
+    <Parameter Name="fldForooshandeId" Type="bigint" Mode="In" />
+    <Parameter Name="fldkh_Name" Type="nvarchar" Mode="In" />
+    <Parameter Name="fldkh_Family" Type="nvarchar" Mode="In" />
+    <Parameter Name="fldBid" Type="varchar" Mode="In" />
+    <Parameter Name="fldkh_TypeShakhsId" Type="tinyint" Mode="In" />
+    <Parameter Name="fldtinb" Type="varchar" Mode="In" />
+    <Parameter Name="fldTaxId" Type="varchar" Mode="In" />
+    <Parameter Name="fldIndatim" Type="datetime" Mode="In" />
+    <Parameter Name="fldIndati2m" Type="datetime" Mode="In" />
+    <Parameter Name="fldInty" Type="tinyint" Mode="In" />
+    <Parameter Name="fldInp" Type="tinyint" Mode="In" />
+    <Parameter Name="fldInno" Type="varchar" Mode="In" />
+    <Parameter Name="fldIrtaxId" Type="varchar" Mode="In" />
+    <Parameter Name="fldFunctionName" Type="nvarchar" Mode="In" />
+    <Parameter Name="fldShomareFish" Type="varchar" Mode="In" />
+    <Parameter Name="fldUserId" Type="bigint" Mode="In" />
+    <Parameter Name="fldDesc" Type="nvarchar(max)" Mode="In" />
+  </Function>
+  <Function Name="prs_rptSooratHesab_Header" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="Movadi">
+    <Parameter Name="fldIdSooratHesab" Type="bigint" Mode="In" />
+  </Function>
+  <Function Name="prs_SelectDetailSooratHesab" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="Movadi">
+    <Parameter Name="fldIdSooratHesab" Type="bigint" Mode="In" />
+  </Function>
+  <Function Name="prs_SelectHeaderSooratHesab" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="Movadi">
+    <Parameter Name="fldIdSooratHesab" Type="bigint" Mode="In" />
+  </Function>
+  <Function Name="prs_SelectParametr_Field_Template" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="Movadi">
+    <Parameter Name="TemplateId" Type="int" Mode="In" />
+  </Function>
+  <Function Name="prs_tblCurrencyTypeSelect" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="Movadi">
+    <Parameter Name="fieldname" Type="nvarchar" Mode="In" />
+    <Parameter Name="value" Type="nvarchar" Mode="In" />
+    <Parameter Name="h" Type="int" Mode="In" />
+  </Function>
+  <Function Name="prs_tblKala_KhedmatDelete" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="Movadi">
+    <Parameter Name="Code" Type="varchar" Mode="In" />
+    <Parameter Name="type" Type="bit" Mode="In" />
+  </Function>
+  <Function Name="prs_tblKala_KhedmatInsert" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="Movadi">
+    <Parameter Name="fldCode" Type="varchar" Mode="In" />
+    <Parameter Name="fldTypeShenaseId" Type="tinyint" Mode="In" />
+    <Parameter Name="fldTarikh" Type="varchar" Mode="In" />
+    <Parameter Name="fldRunDate" Type="varchar" Mode="In" />
+    <Parameter Name="fldExpDate" Type="varchar" Mode="In" />
+    <Parameter Name="fldSpecialOrGeneral" Type="bit" Mode="In" />
+    <Parameter Name="fldTaxableOrFree" Type="bit" Mode="In" />
+    <Parameter Name="fldVat" Type="tinyint" Mode="In" />
+    <Parameter Name="fldVatCustomPurposes" Type="tinyint" Mode="In" />
+    <Parameter Name="fldDescriptionOfID" Type="nvarchar" Mode="In" />
+    <Parameter Name="type" Type="bit" Mode="In" />
+  </Function>
+  <Function Name="prs_tblKala_KhedmatSelect" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="Movadi">
+    <Parameter Name="fieldname" Type="nvarchar" Mode="In" />
+    <Parameter Name="value" Type="nvarchar" Mode="In" />
+    <Parameter Name="h" Type="int" Mode="In" />
+  </Function>
+  <Function Name="prs_tblMeasureUnitSelect" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="Movadi">
+    <Parameter Name="fieldname" Type="nvarchar" Mode="In" />
+    <Parameter Name="value" Type="nvarchar" Mode="In" />
+    <Parameter Name="h" Type="int" Mode="In" />
+  </Function>
+  <Function Name="prs_tblShakhsHaghighi_HoghoghiDelete" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="Movadi">
+    <Parameter Name="fldId" Type="bigint" Mode="In" />
+    <Parameter Name="fldUserId" Type="bigint" Mode="In" />
+    <Parameter Name="fldUserPass" Type="nvarchar" Mode="In" />
+  </Function>
+  <Function Name="prs_tblShakhsHaghighi_HoghoghiInsert" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="Movadi">
+    <Parameter Name="fldName" Type="nvarchar" Mode="In" />
+    <Parameter Name="fldFamily" Type="nvarchar" Mode="In" />
+    <Parameter Name="fldNationalCode" Type="varchar" Mode="In" />
+    <Parameter Name="fldCodeEghtesadi" Type="varchar" Mode="In" />
+    <Parameter Name="fldTypeShakhsId" Type="tinyint" Mode="In" />
+    <Parameter Name="fldCodePosti" Type="varchar" Mode="In" />
+    <Parameter Name="fldCodeShobe" Type="varchar" Mode="In" />
+    <Parameter Name="fldOwnerId" Type="bigint" Mode="In" />
+    <Parameter Name="fldUserID" Type="bigint" Mode="In" />
+    <Parameter Name="fldDesc" Type="nvarchar(max)" Mode="In" />
+  </Function>
+  <Function Name="prs_tblShakhsHaghighi_HoghoghiSelect" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="Movadi">
+    <Parameter Name="fieldname" Type="nvarchar" Mode="In" />
+    <Parameter Name="value" Type="nvarchar" Mode="In" />
+    <Parameter Name="UserId" Type="bigint" Mode="In" />
+    <Parameter Name="h" Type="int" Mode="In" />
+  </Function>
+  <Function Name="prs_tblShakhsHaghighi_HoghoghiUpdate" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="Movadi">
+    <Parameter Name="fldId" Type="bigint" Mode="In" />
+    <Parameter Name="fldName" Type="nvarchar" Mode="In" />
+    <Parameter Name="fldFamily" Type="nvarchar" Mode="In" />
+    <Parameter Name="fldNationalCode" Type="varchar" Mode="In" />
+    <Parameter Name="fldCodeEghtesadi" Type="varchar" Mode="In" />
+    <Parameter Name="fldTypeShakhsId" Type="tinyint" Mode="In" />
+    <Parameter Name="fldCodePosti" Type="varchar" Mode="In" />
+    <Parameter Name="fldCodeShobe" Type="varchar" Mode="In" />
+    <Parameter Name="fldOwnerId" Type="bigint" Mode="In" />
+    <Parameter Name="fldUserID" Type="bigint" Mode="In" />
+    <Parameter Name="fldDesc" Type="nvarchar(max)" Mode="In" />
+  </Function>
+  <Function Name="prs_tblSooratHesab_DetailInsert" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="Movadi">
+    <Parameter Name="fldHeaderId" Type="bigint" Mode="In" />
+    <Parameter Name="fldUserID" Type="bigint" Mode="In" />
+  </Function>
+  <Function Name="prs_tblSooratHesab_DetailUpdate" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="Movadi">
+    <Parameter Name="fldHeaderId" Type="bigint" Mode="In" />
+    <Parameter Name="fldUserID" Type="bigint" Mode="In" />
+  </Function>
+  <Function Name="prs_tblSooratHesab_HeaderDelete" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="Movadi">
+    <Parameter Name="fldId" Type="bigint" Mode="In" />
+    <Parameter Name="flduserId" Type="bigint" Mode="In" />
+  </Function>
+  <Function Name="prs_tblSooratHesab_HeaderInsert" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="Movadi">
+    <Parameter Name="fldid" Type="bigint" Mode="InOut" />
+    <Parameter Name="fldTaxId" Type="varchar" Mode="In" />
+    <Parameter Name="fldIndatim" Type="datetime" Mode="In" />
+    <Parameter Name="fldIndati2m" Type="datetime" Mode="In" />
+    <Parameter Name="fldInty" Type="tinyint" Mode="In" />
+    <Parameter Name="fldInp" Type="tinyint" Mode="In" />
+    <Parameter Name="fldInno" Type="varchar" Mode="In" />
+    <Parameter Name="fldIrtaxId" Type="varchar" Mode="In" />
+    <Parameter Name="fldKharidarId" Type="bigint" Mode="In" />
+    <Parameter Name="fldForooshandeId" Type="bigint" Mode="In" />
+    <Parameter Name="fldFunctionName" Type="nvarchar" Mode="In" />
+    <Parameter Name="fldkh_Pas_No" Type="varchar" Mode="In" />
+    <Parameter Name="fldkh_TypeFly" Type="tinyint" Mode="In" />
+    <Parameter Name="fldF_Sh_Parvane" Type="varchar" Mode="In" />
+    <Parameter Name="fldF_GomrokCode" Type="varchar" Mode="In" />
+    <Parameter Name="fldF_UniqId" Type="varchar" Mode="In" />
+    <Parameter Name="fldUserId" Type="bigint" Mode="In" />
+  </Function>
+  <Function Name="prs_tblSooratHesab_HeaderSelect" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="Movadi">
+    <Parameter Name="fieldname" Type="nvarchar" Mode="In" />
+    <Parameter Name="value" Type="nvarchar(max)" Mode="In" />
+    <Parameter Name="Value1" Type="nvarchar" Mode="In" />
+    <Parameter Name="value2" Type="nvarchar" Mode="In" />
+    <Parameter Name="h" Type="int" Mode="In" />
+  </Function>
+  <Function Name="prs_tblSooratHesab_HeaderUpdate" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="Movadi">
+    <Parameter Name="fldid" Type="bigint" Mode="In" />
+    <Parameter Name="fldTaxId" Type="varchar" Mode="In" />
+    <Parameter Name="fldIndatim" Type="datetime" Mode="In" />
+    <Parameter Name="fldIndati2m" Type="datetime" Mode="In" />
+    <Parameter Name="fldInty" Type="tinyint" Mode="In" />
+    <Parameter Name="fldInp" Type="tinyint" Mode="In" />
+    <Parameter Name="fldInno" Type="varchar" Mode="In" />
+    <Parameter Name="fldIrtaxId" Type="varchar" Mode="In" />
+    <Parameter Name="fldKharidarId" Type="bigint" Mode="In" />
+    <Parameter Name="fldForooshandeId" Type="bigint" Mode="In" />
+    <Parameter Name="fldFunctionName" Type="nvarchar" Mode="In" />
+    <Parameter Name="fldkh_Pas_No" Type="varchar" Mode="In" />
+    <Parameter Name="fldkh_TypeFly" Type="tinyint" Mode="In" />
+    <Parameter Name="fldF_Sh_Parvane" Type="varchar" Mode="In" />
+    <Parameter Name="fldF_GomrokCode" Type="varchar" Mode="In" />
+    <Parameter Name="fldF_UniqId" Type="varchar" Mode="In" />
+    <Parameter Name="fldUserId" Type="bigint" Mode="In" />
+  </Function>
+  <Function Name="prs_tblSooratHesabExcelField_TemplateDelete" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="Movadi">
+    <Parameter Name="fldTemplateId" Type="int" Mode="In" />
+    <Parameter Name="fldUserId" Type="bigint" Mode="In" />
+  </Function>
+  <Function Name="prs_tblSooratHesabExcelField_TemplateInsert" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="Movadi">
+    <Parameter Name="fldTemplateId" Type="int" Mode="In" />
+    <Parameter Name="fldParametrId" Type="smallint" Mode="In" />
+    <Parameter Name="fldColumnNum" Type="smallint" Mode="In" />
+    <Parameter Name="fldUserId" Type="bigint" Mode="In" />
+    <Parameter Name="fldDesc" Type="nvarchar" Mode="In" />
+  </Function>
+  <Function Name="prs_tblSooratHesabExcelField_TemplateSelect" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="Movadi">
+    <Parameter Name="fieldname" Type="nvarchar" Mode="In" />
+    <Parameter Name="value" Type="nvarchar" Mode="In" />
+    <Parameter Name="value1" Type="nvarchar" Mode="In" />
+    <Parameter Name="h" Type="int" Mode="In" />
+  </Function>
+  <Function Name="prs_tblSooratHesabExcelField_TemplateUpdate" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="Movadi">
+    <Parameter Name="fldId" Type="bigint" Mode="In" />
+    <Parameter Name="fldTemplateId" Type="int" Mode="In" />
+    <Parameter Name="fldParametrId" Type="smallint" Mode="In" />
+    <Parameter Name="fldColumnNum" Type="smallint" Mode="In" />
+    <Parameter Name="fldUserId" Type="bigint" Mode="In" />
+    <Parameter Name="fldDesc" Type="nvarchar" Mode="In" />
+  </Function>
+  <Function Name="prs_tblSooratHesabExcelTemplateDelete" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="Movadi">
+    <Parameter Name="fldId" Type="int" Mode="In" />
+    <Parameter Name="fldUserId" Type="bigint" Mode="In" />
+  </Function>
+  <Function Name="prs_tblSooratHesabExcelTemplateInsert" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="Movadi">
+    <Parameter Name="fldid" Type="int" Mode="InOut" />
+    <Parameter Name="fldTitle" Type="nvarchar" Mode="In" />
+    <Parameter Name="fldStartRowNumber" Type="tinyint" Mode="In" />
+    <Parameter Name="fldUserId" Type="bigint" Mode="In" />
+    <Parameter Name="fldDesc" Type="nvarchar" Mode="In" />
+  </Function>
+  <Function Name="prs_tblSooratHesabExcelTemplateSelect" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="Movadi">
+    <Parameter Name="fieldname" Type="nvarchar" Mode="In" />
+    <Parameter Name="value" Type="nvarchar" Mode="In" />
+    <Parameter Name="h" Type="int" Mode="In" />
+  </Function>
+  <Function Name="prs_tblSooratHesabExcelTemplateUpdate" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="Movadi">
+    <Parameter Name="fldId" Type="int" Mode="In" />
+    <Parameter Name="fldTitle" Type="nvarchar" Mode="In" />
+    <Parameter Name="fldStartRowNumber" Type="tinyint" Mode="In" />
+    <Parameter Name="fldUserId" Type="bigint" Mode="In" />
+    <Parameter Name="fldDesc" Type="nvarchar" Mode="In" />
+  </Function>
+  <Function Name="prs_tblSooratHesabFromWebServiceInsert" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="Movadi">
+    <Parameter Name="HeaderId" Type="bigint" Mode="InOut" />
+    <Parameter Name="fldForooshandeId" Type="bigint" Mode="In" />
+    <Parameter Name="fldkh_Name" Type="nvarchar" Mode="In" />
+    <Parameter Name="fldkh_Family" Type="nvarchar" Mode="In" />
+    <Parameter Name="fldBid" Type="varchar" Mode="In" />
+    <Parameter Name="fldkh_TypeShakhsId" Type="tinyint" Mode="In" />
+    <Parameter Name="fldtinb" Type="varchar" Mode="In" />
+    <Parameter Name="fldTaxId" Type="varchar" Mode="In" />
+    <Parameter Name="fldIndatim" Type="datetime" Mode="In" />
+    <Parameter Name="fldIndati2m" Type="datetime" Mode="In" />
+    <Parameter Name="fldInty" Type="tinyint" Mode="In" />
+    <Parameter Name="fldInp" Type="tinyint" Mode="In" />
+    <Parameter Name="fldInno" Type="varchar" Mode="In" />
+    <Parameter Name="fldIrtaxId" Type="varchar" Mode="In" />
+    <Parameter Name="fldFunctionName" Type="nvarchar" Mode="In" />
+    <Parameter Name="fldUserId" Type="bigint" Mode="In" />
+    <Parameter Name="fldDesc" Type="nvarchar(max)" Mode="In" />
+  </Function>
+  <Function Name="prs_tblSooratHesabHeader_ValueInsert" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="Movadi">
+    <Parameter Name="fldHeaderId" Type="bigint" Mode="In" />
+    <Parameter Name="fldValue" Type="nvarchar" Mode="In" />
+    <Parameter Name="fldParametrHeaderId" Type="smallint" Mode="In" />
+    <Parameter Name="fldUserId" Type="bigint" Mode="In" />
+  </Function>
+  <Function Name="prs_tblSooratHesabHeader_ValueUpdate" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="Movadi">
+    <Parameter Name="fldHeaderId" Type="bigint" Mode="In" />
+    <Parameter Name="fldValue" Type="nvarchar" Mode="In" />
+    <Parameter Name="fldParametrHeaderId" Type="smallint" Mode="In" />
+    <Parameter Name="fldUserId" Type="bigint" Mode="In" />
+  </Function>
+  <Function Name="prs_tblSooratHesabStatusInsert" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="Movadi">
+    <Parameter Name="fldHeaderId" Type="bigint" Mode="In" />
+    <Parameter Name="fldStatus" Type="tinyint" Mode="In" />
+    <Parameter Name="fldMatn" Type="nvarchar(max)" Mode="In" />
+    <Parameter Name="fldReferenceNumber" Type="varchar" Mode="In" />
+    <Parameter Name="fldSerializeObject" Type="nvarchar(max)" Mode="In" />
+    <Parameter Name="fldUID" Type="varchar" Mode="In" />
+    <Parameter Name="fldUserId" Type="bigint" Mode="In" />
+  </Function>
+  <Function Name="prs_tblSooratHesabStatusSelect" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="Movadi">
+    <Parameter Name="fieldname" Type="nvarchar" Mode="In" />
+    <Parameter Name="value" Type="nvarchar" Mode="In" />
+    <Parameter Name="h" Type="int" Mode="In" />
+  </Function>
+  <Function Name="prs_tblTarfGharardadDelete" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="Movadi">
+    <Parameter Name="fldId" Type="int" Mode="In" />
+    <Parameter Name="fldUserId" Type="bigint" Mode="In" />
+  </Function>
+  <Function Name="prs_tblTarfGharardadInsert" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="Movadi">
+    <Parameter Name="fldId" Type="int" Mode="InOut" />
+    <Parameter Name="fldShakhsId" Type="bigint" Mode="In" />
+    <Parameter Name="fldUniqId" Type="varchar" Mode="In" />
+    <Parameter Name="fldPrivateKey" Type="varbinary" Mode="In" />
+    <Parameter Name="fldSignatureCertificate" Type="varbinary" Mode="In" />
+    <Parameter Name="fldUserID" Type="bigint" Mode="In" />
+    <Parameter Name="fldDesc" Type="nvarchar(max)" Mode="In" />
+  </Function>
+  <Function Name="prs_tblTarfGharardadSelect" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="Movadi">
+    <Parameter Name="fieldname" Type="nvarchar" Mode="In" />
+    <Parameter Name="value" Type="nvarchar" Mode="In" />
+    <Parameter Name="h" Type="int" Mode="In" />
+  </Function>
+  <Function Name="prs_tblTarfGharardadUpdate" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="Movadi">
+    <Parameter Name="fldId" Type="int" Mode="In" />
+    <Parameter Name="fldShakhsId" Type="bigint" Mode="In" />
+    <Parameter Name="fldUniqId" Type="varchar" Mode="In" />
+    <Parameter Name="fldPrivateKey" Type="varbinary" Mode="In" />
+    <Parameter Name="fldSignatureCertificate" Type="varbinary" Mode="In" />
+    <Parameter Name="fldUserID" Type="bigint" Mode="In" />
+    <Parameter Name="fldDesc" Type="nvarchar(max)" Mode="In" />
+  </Function>
+  <Function Name="prs_tblTypeShakhsSelect" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="Movadi">
+    <Parameter Name="fieldname" Type="nvarchar" Mode="In" />
+    <Parameter Name="value" Type="nvarchar" Mode="In" />
+    <Parameter Name="h" Type="int" Mode="In" />
+  </Function>
+  <Function Name="prs_TransactionInfInsert" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="Movadi">
+    <Parameter Name="fldTarfGharardadId" Type="int" Mode="In" />
+    <Parameter Name="fldUserName" Type="nvarchar" Mode="In" />
+    <Parameter Name="fldPass" Type="nvarchar" Mode="In" />
+    <Parameter Name="fldUserId" Type="bigint" Mode="In" />
+    <Parameter Name="fldDesc" Type="nvarchar(max)" Mode="In" />
+    <Parameter Name="fldInherit" Type="bit" Mode="In" />
+  </Function>
+  <Function Name="prs_TransactionInfSelect" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="Movadi">
+    <Parameter Name="fieldname" Type="nvarchar" Mode="In" />
+    <Parameter Name="Value" Type="nvarchar" Mode="In" />
+    <Parameter Name="h" Type="int" Mode="In" />
+  </Function>
+  <Function Name="prs_TransactionInfUpdate" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="Movadi">
+    <Parameter Name="fldId" Type="int" Mode="In" />
+    <Parameter Name="fldUserName" Type="nvarchar" Mode="In" />
+    <Parameter Name="fldTarfGharardadId" Type="int" Mode="In" />
+    <Parameter Name="fldPass" Type="nvarchar" Mode="In" />
+    <Parameter Name="fldUserId" Type="bigint" Mode="In" />
+    <Parameter Name="fldDesc" Type="nvarchar(max)" Mode="In" />
+    <Parameter Name="fldInherit" Type="bit" Mode="In" />
+  </Function>
+  <Function Name="prs_User_GharardadInsert" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="Movadi">
+    <Parameter Name="fldId" Type="bigint" Mode="InOut" />
+    <Parameter Name="fldTarfGharardadId" Type="int" Mode="In" />
+    <Parameter Name="fldStatus" Type="bit" Mode="In" />
+    <Parameter Name="fldPassword" Type="nvarchar" Mode="In" />
+    <Parameter Name="fldUserName" Type="nvarchar" Mode="In" />
+    <Parameter Name="fldUserID" Type="bigint" Mode="In" />
+    <Parameter Name="fldDesc" Type="nvarchar(max)" Mode="In" />
+    <Parameter Name="fldImage" Type="image" Mode="In" />
+  </Function>
+  <Function Name="prs_User_GharardadResetPass" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="Movadi">
+    <Parameter Name="fldID" Type="bigint" Mode="In" />
+    <Parameter Name="fldPassword" Type="nvarchar" Mode="In" />
+  </Function>
+  <Function Name="prs_User_GharardadSelect" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="Movadi">
+    <Parameter Name="fieldname" Type="nvarchar" Mode="In" />
+    <Parameter Name="Value" Type="nvarchar" Mode="In" />
+    <Parameter Name="h" Type="int" Mode="In" />
+    <Parameter Name="Pass" Type="nvarchar" Mode="In" />
+    <Parameter Name="fldUserId" Type="int" Mode="In" />
+    <Parameter Name="fldUserPass" Type="nvarchar" Mode="In" />
+  </Function>
+  <Function Name="prs_User_GharardadUpdate" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="Movadi">
+    <Parameter Name="fldID" Type="bigint" Mode="In" />
+    <Parameter Name="fldTarfGharardadId" Type="int" Mode="In" />
+    <Parameter Name="fldStatus" Type="bit" Mode="In" />
+    <Parameter Name="fldUserName" Type="nvarchar" Mode="In" />
+    <Parameter Name="fldUserID" Type="bigint" Mode="In" />
+    <Parameter Name="fldDesc" Type="nvarchar(max)" Mode="In" />
+    <Parameter Name="fldpic" Type="image" Mode="In" />
+  </Function>
+  <EntityContainer Name="cartaxtest2ModelStoreContainer" />
+</Schema>

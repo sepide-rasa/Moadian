@@ -1,0 +1,218 @@
+﻿@model Avarez.Models.sp_tblPcPos_Param_Value
+@using Ext.Net.MVC
+@using Hogaf.ExtNet.UX
+@using Ext.Net;
+@{
+    var X = Html.X();
+}
+<style>
+    .LblStyle {
+        height: auto;
+    }
+
+    .LblRed {
+        color: red;
+    }
+</style>
+<script src="~/Scripts/accounting.js"></script>
+<script>
+    var template = '<span>{0}</span>';
+    var Rial = function (value) {
+        if (value != "") {
+            return Ext.String.format(template, accounting.formatNumber(value));
+        }
+    };
+</script>
+
+@(Html.X().Panel()
+    .Resizable(false).Border(false).PaddingSpec("0 0 10px 0")
+        //.Width(570)
+        //.Height(193)
+    .Title("مقدار دهی پارامترهای PcPos")
+    .Layout(LayoutType.Fit)
+         .ID("PcPosParam")
+    .Closable(true)
+    .CloseAction(Ext.Net.CloseAction.Destroy)
+    .Items(
+        X.FormPanel().AutoScroll(true)
+                   .Layout(Ext.Net.LayoutType.VBox)
+                     .LayoutConfig(new Ext.Net.VBoxLayoutConfig { Align = Ext.Net.VBoxAlign.Center })
+            .Border(false)
+            .Items(
+
+                                X.Panel().Layout(Ext.Net.LayoutType.VBox).PaddingSpec("20px 0 0 0")
+                 .LayoutConfig(new Ext.Net.VBoxLayoutConfig { Align = Ext.Net.VBoxAlign.Center })
+                            .Border(false)
+                            .Items(
+                            X.FieldSet().Border(false)
+                                .LayoutConfig(new Ext.Net.TableLayoutConfig { Columns = 2 })
+                                    .Defaults(new { Margin = 2 })
+                            .Items(
+                            X.Label("اطلاعات PcPos:"),
+                            X.ComboBox()
+                            .ItemID("cboPcPosInfo")
+                            .Editable(false)
+                            .TypeAhead(true)
+                            .QueryMode(DataLoadMode.Local)
+                            .ForceSelection(true)
+                            .TriggerAction(TriggerAction.All)
+                            .DisplayField("fldBankName")
+                            .ValueField("fldId")
+                            .EmptyText("...")
+                            .Width(230)
+                                .Store(X.Store()//.AutoLoad(false)
+                                .Model(X.Model()
+                                    .IDProperty("fldId")
+                                    .Fields(
+                                    new ModelField("fldId", ModelFieldType.String) { Mapping = "fldId" },
+                                    new ModelField("fldBankName", ModelFieldType.String) { Mapping = "fldBankName" }
+                                    )
+                                )
+                                    .Proxy(X.AjaxProxy()
+                                        .Url(Url.Action("GetPcPosInfo"))
+                                    .Reader(X.JsonReader().Root("data"))
+                                    )
+                                            
+                               //  .Listeners(li => li.Load.Handler = "LoadYear();")
+                            ).Listeners(l => l.Change.Handler = "ChangePcPosInfo()")
+                            .MsgTarget(Ext.Net.MessageTarget.Side)
+                            .AllowBlank(false)
+                            .BlankText("لطفا اطلاعات مورد نظر را انتخاب کنید.")
+                            )
+                            )
+                            , X.Panel().Border(false).PaddingSpec("30px 0 0 0")
+                            .Items(
+                                X.GridPanel().Width(1200)
+                                   .TopBar(
+                            Html.X().Toolbar()
+                                .Items(
+                                    X.Button()
+                                        .Text("ذخیره")
+                                            .Icon(Ext.Net.Icon.Disk)
+                                            .Listeners(li => li.Click.Handler = "SavePcPosParam()")
+                                                 , X.Button()
+                                            .Text("راهنما")
+                                            .Icon(Ext.Net.Icon.Help)
+                                                     .Listeners(de => de.Click.Handler = "HelpPcPosParam_Detail();")
+                                        )
+                                    )
+                        .AutoScroll(true)
+                            .Height(500)
+                                .ItemID("GridPcPosParam_Detail")
+                        .BottomBar(X.PagingToolbar())
+                        .Store(
+                                    Html.X().StoreForModel()
+                        .PageSize(10)
+                        .RemoteFilter(true)
+                        .RemotePaging(true)
+        // .Listeners(l => l.DataChanged.Handler = "App.City_New.queryById('GridCity_New').selModel.refresh();")
+                                 )
+
+                       // .Plugins(X.FilterHeader().Remote(true))
+                           .Plugins(Html.X().CellEditing())
+                        .ColumnModel(
+                            Html.X().RowNumbererColumn(),
+                                Html.X().Column().DataIndex(Model, m => m.fldId).Text("کد").Hidden(true).Hideable(true).Flex(2),
+                                Html.X().Column().DataIndex(Model, m => m.fldFaName).Text("نام فارسی").Wrap(true).Flex(2),
+                                Html.X().Column().DataIndex(Model, m => m.fldEnName).Text("نام انگلیسی").Flex(2),
+                                Html.X().Column().DataIndex(Model, m => m.fldValue).Text("مقدار").Editor(X.TextField()).Flex(2)
+                             )
+                    .SelectionModel(
+                        Html.X().RowSelectionModel()
+                            .Mode(Ext.Net.SelectionMode.Single)
+                             )
+                            )
+            )
+        )
+)
+<script type="text/javascript">
+    function ChangePcPosInfo() {
+        var cboPcPosInfo = App.PcPosParam.queryById('cboPcPosInfo');
+        if (cboPcPosInfo.getValue() != "") {
+            App.PcPosParam.body.mask("در حال بارگذاری...");
+            Ext.net.DirectMethod.request({
+                url: '/NewVer/PcPosParam_Detail_New/Reload',
+                params: {
+                    value: cboPcPosInfo.getValue()
+                },
+                success: function (data) {
+                    App.PcPosParam.queryById('GridPcPosParam_Detail').getStore().loadData(data);
+                    App.PcPosParam.body.mask().hide();
+                }
+            });
+        }
+        else {
+            Ext.MessageBox.show({
+                Name: "خطا",
+                msg: "لطفا یک مورد از اطلاعات PcPos را انتخاب کنید.",
+                icon: Ext.MessageBox.ERROR,
+                buttons: Ext.MessageBox.OK
+            });
+        }
+    }
+    function SavePcPosParam() {
+        var cboPcPosInfo = App.PcPosParam.queryById('cboPcPosInfo');
+        var er = false;
+        if (cboPcPosInfo.validate() == false)
+            er = true;
+        if (er == true)
+            return;
+        var ArrayL = new Array();
+        var ParametrId;
+        var Mount;
+        var Grid = App.PcPosParam.queryById('GridPcPosParam_Detail');
+        for (var i = 0; i < Grid.selModel.store.count() ; i++) {
+            row = Grid.selModel.store.data.items[i];
+            ParametrId = row.data.fldId;
+            Mount = row.data.fldValue;
+            if (Mount != "") {
+                ArrayL.push({
+                    "fldParamId": ParametrId,
+                    "fldValue": Mount
+                });
+            }    
+        }
+        var data1 = {
+            Value: ArrayL,
+            PcPosInfoId: cboPcPosInfo.getValue()
+        };
+        App.PcPosParam.body.mask("در حال ذخیره سازی...");
+        $.ajax({
+            type: "POST",
+            url: '/NewVer/PcPosParam_Detail_New/Save',
+            contentType: "application/json; charset=utf-8",
+            data: JSON.stringify(data1),
+            datatype: "json",
+            success: function (data) {
+                var ic = Ext.MessageBox.INFO;
+                if (data.Er == 1)
+                    ic = Ext.MessageBox.ERROR;
+                Ext.MessageBox.show({
+                    Name: data.MsgTitle,
+                    msg: data.Msg,
+                    icon: ic,
+                    buttons: Ext.MessageBox.OK
+                });
+                if (data.Er != 1) {
+                    ChangePcPosInfo();
+                }
+                App.PcPosParam.body.mask().hide();
+            },
+            failure: function (data) {
+                alert(data.data);
+            }
+        });
+    }
+
+
+
+    function HelpPcPosParam_Detail() {
+        Ext.net.Mask.show({ msg: 'در حال بارگذاری...' });
+        Ext.net.DirectMethod.request({
+            url: '/NewVer/PcPosParam_Detail_New/Help',
+            success: function (data) {
+                Ext.net.Mask.hide();
+            }
+        });
+    }
+</script>

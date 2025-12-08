@@ -1,0 +1,646 @@
+﻿@model IEnumerable<Avarez.Models.sp_CarExperienceSelect>
+@using Ext.Net.MVC
+@using Hogaf.ExtNet.UX
+@using Ext.Net;
+@using Ext.Net.Utilities;
+@{
+
+    var X = Html.X();
+}
+<style>
+    #fieldsetfile legend {
+        text-align: right;
+        font-family: Tahoma !important;
+    }
+</style>
+@(X.Window()
+    .ID("GuestParvande_CarExp")
+    .Closable(true)
+    .Height(588)
+    .Width(800)
+    .Title("ثبت سابقه")
+    .Layout(LayoutType.Fit)
+    .AutoScroll(true)
+    .CloseAction(Ext.Net.CloseAction.Destroy)
+    .Buttons(
+        X.Button()
+            .Text("بازگشت")
+            .Icon(Ext.Net.Icon.NextGreen)
+                .Listeners(l => l.Click.Handler = "BackToParvande();"),
+        X.Button()
+            .Text("پرداخت آنلاین")
+            .Icon(Ext.Net.Icon.PreviousGreen)
+            .Listeners(l => l.Click.Handler = "OnlinePay();")
+        )
+    .Items(
+        X.FormPanel()
+            .BodyStyle("background-color:#dfe8f6;")
+            .Border(false)
+            .Layout(Ext.Net.LayoutType.VBox)
+            .LayoutConfig(new VBoxLayoutConfig { Align = VBoxAlign.Center })
+            .Items(
+                X.Panel()
+                    //.Layout(Ext.Net.LayoutType.Fit)
+                    .BodyStyle("background-color:#dfe8f6;")
+                    .Height(50)
+                    .Width(514)
+                    .Border(false)
+                    .Items(
+                        X.Image()
+                            .ItemID("Image2")
+                            .ImageUrl("/Content/images/New52.png")
+                        ),
+                X.FieldSet()
+                    .Border(true)
+                    .Title("مشخصات سابقه")
+                    .LayoutConfig(new Ext.Net.TableLayoutConfig { Columns = 2 })
+                    .Defaults(new { Margin = 5 })
+                    .Items(
+                        X.Hidden()
+                            .ItemID("fldIdSavabegh")
+                            .Value(0),
+                        X.Hidden()
+                            .ItemID("fldFileIdSavabegh")
+                            .Value(0),
+                        X.ComboBox()
+                            .ItemID("cboState")
+                            .FieldLabel("استان")
+                            .Width(300)
+                            .AutoFocus(true)
+                            .ForceSelection(true)
+                            .QueryMode(DataLoadMode.Local)
+                            .TriggerAction(TriggerAction.All)
+                            .DisplayField("fldName")
+                            .AllowBlank(false)
+                            .BlankText("لطفا استان را انتخاب نمایید.")
+                            .ValueField("fldID")
+                            .EmptyText("استان...")
+                            .Listeners(ls => ls.Select.Handler = "loadCboMunKh()")
+                            .Store(X.Store()
+                                .Model(X.Model()
+                                    .IDProperty("fldID")
+                                    .Fields(
+                                        new ModelField("fldID", ModelFieldType.String) { Mapping = "fldID" },
+                                        new ModelField("fldName", ModelFieldType.String) { Mapping = "fldName" }
+                                        )
+                                    )
+                                .Proxy(X.AjaxProxy()
+                                    .Url(Url.Action("GetCascadeState"))
+                                    .Reader(X.JsonReader().Root("data"))
+                                    )
+                                ),
+                        X.ComboBox()
+                            .FieldLabel("شهرداری")
+                            .ItemID("cboMun")
+                            .EmptyText("شهرداری...")
+                            .Width(300)
+                            .AllowBlank(false)
+                            .BlankText("لطفا شهرداری را انتخاب نمایید.")
+                            .QueryMode(DataLoadMode.Local)
+                            .ForceSelection(true)
+                            .TriggerAction(TriggerAction.All)
+                            .DisplayField("fldName")
+                            .ValueField("fldID")
+                            .Store(X.Store()
+                                .AutoLoad(false)
+                                .Model(X.Model()
+                                    .IDProperty("fldID")
+                                    .Fields(
+                                        new ModelField("fldID", ModelFieldType.String) { Mapping = "fldID" },
+                                        new ModelField("fldName", ModelFieldType.String) { Mapping = "fldName" })
+                                    )
+                                .Proxy(X.AjaxProxy()
+                                    .Url(Url.Action("GetCascadeCounty"))
+                                    .Reader(X.JsonReader().Root("data")))
+                                ),
+                        X.ComboBox()
+                            .ItemID("CboAzSal")
+                            .FieldLabel("از سال")
+                            .Editable(false)
+                            .TypeAhead(true)
+                            .Width(300)
+                            .BlankText("لطفا از سال را انتخاب نمایید.")
+                            .QueryMode(DataLoadMode.Local)
+                            .TriggerAction(TriggerAction.All)
+                            .AllowBlank(false)
+                            .DisplayField("fldName")
+                            .ValueField("fldID")
+                            .EmptyText("از سال...")
+                            .Listeners(l => l.Select.Handler = "loadCboTaSalKh()")
+                            .Store(X.Store()
+                                .Model(X.Model()
+                                    .IDProperty("fldID")
+                                    .Fields(
+                                        new ModelField("fldID", ModelFieldType.String) { Mapping = "fldID" },
+                                        new ModelField("fldName", ModelFieldType.String) { Mapping = "fldName" }
+                                    )
+                                )
+                                .Proxy(X.AjaxProxy()
+                                    .Url(Url.Action("GetSal"))
+                                    .Reader(X.JsonReader().Root("data")))
+                                .Parameters(ps => ps.Add(new StoreParameter("CarFileId", ViewBag.CarFileId, ParameterMode.Raw)))
+                                ),
+                        X.ComboBox()
+                            .ItemID("CboTaSal")
+                            .FieldLabel("تا سال")
+                            .Editable(false)
+                            .TypeAhead(true)
+                            .BlankText("لطفا تا سال را انتخاب نمایید.")
+                            .QueryMode(DataLoadMode.Local)
+                            .TriggerAction(TriggerAction.All)
+                            .AllowBlank(false)
+                            .DisplayField("fldSalP")
+                            .ValueField("fldSalP")
+                            .Width(300)
+                            .EmptyText("تا سال...")
+                            .Store(X.Store()
+                                .AutoLoad(false)
+                                .Model(X.Model()
+                                    .IDProperty("fldSalP")
+                                    .Fields(
+                                        new ModelField("fldSalP", ModelFieldType.String) { Mapping = "fldSal" }
+                                        )
+                                    )
+                                .Proxy(X.AjaxProxy()
+                                    .Url(Url.Action("GetSal2"))
+                                    .Reader(X.JsonReader().Root("data")))
+                                ),
+                        X.TextField()
+                            .EnforceMaxLength(true)
+                            .FieldLabel("شماره نامه")                            
+                            .MaxLength(25)
+                            .Width(300)
+                            .ItemID("txtShName")
+                            .ReadOnly(false)
+                            .AllowBlank(false)
+                            .BlankText("لطفا شماره نامه را وارد نمایید."),
+                        X.TextField()
+                            .FieldLabel("توضیحات")                        
+                            .Width(300)
+                            .AutoScroll(true)
+                            .ItemID("txtDesc"),
+                        X.FieldSet()
+                            .Border(true)
+                            .Defaults(new { Margin = 2 })
+                            .ID("fieldsetfile")
+                            .ColSpan(2)
+                            .Layout(LayoutType.HBox)
+                            .ItemID("pnlUpload")
+                            .Height(50)
+                            .Width(650)
+                            .Title("آپلود فایل مدرک(حداکثر 700KB)")
+                            .Items(
+                                X.Label("تصویر مدرک:"),
+                                X.FileUploadField()
+                                    .ItemID("FileUploadSavabegh")
+                                    .ButtonOnly(true)
+                                    .Icon(Icon.Attach)
+                                    .ButtonText("انتخاب فایل")
+                                    .DirectEvents(l =>
+                                    {
+                                        l.Change.Action = "Upload";
+                                        l.Change.Success = "hideprogressSavabegh1();";
+                                    })
+                                         .Listeners(l => l.Change.Fn = "showFile"),
+                                X.Container()
+                                    //.Hidden(!(bool)ForceScan)
+                                    .Content(@<center><div id="fi-button-msg+@ViewBag.CarFileId" style="display:none; width:300px;height:25px"></div></center>)
+                            )
+                    ),
+                X.FieldSet()
+                    .Border(false)
+                    .LayoutConfig(new Ext.Net.TableLayoutConfig { Columns = 2 })
+                    .Defaults(new { Margin = 5 })
+                    .Items(
+                        X.Button()
+                            .Text("ذخیره")
+                        .Listeners(l => l.Click.Handler = "SaveSavabegh();")
+                            .Icon(Ext.Net.Icon.Disk)
+                        ),
+                X.Panel()
+                    
+                    .Border(false)
+                    .AutoScroll(true)
+                    //.ID("PnlGridPanelPelak")
+                    .Layout(Ext.Net.LayoutType.Fit)
+                    .Items(
+                        X.GridPanel()
+                                                                .Height(250)
+                                                            .Width(780)
+                            .BodyStyle("background-color:#dfe8f6;")
+                            .BottomBar(X.PagingToolbar())
+                            .Listeners(li =>
+                            {
+                                //li.AfterRender.Handler = "LoadPelakPic();";
+                                li.ItemClick.Handler = "CheckTaiid();";
+                            })
+                            .AutoScroll(true)
+                            .TopBar(
+                                Html.X().Toolbar()
+                                    .Items(
+                                        X.Button()
+                                            .Text("ویرایش")
+                                            .ItemID("UpdateSavabegh")
+                                            .Icon(Ext.Net.Icon.Pencil)
+                                            .Listeners(Li => Li.Click.Handler = "EditSavabegh();"),
+                                        X.Button()
+                                            .Text("حذف")
+                                            .ItemID("DelSavabegh")
+                                            .Icon(Ext.Net.Icon.Delete)
+                                            .Listeners(de =>
+                                            {
+                                                de.Click.Handler = "DeleteSavabegh();";
+                                            })//,
+                                       /* X.Button()
+                                            .Text("راهنما")
+                                            .ItemID("HelpSavabegh")
+                                            .Icon(Ext.Net.Icon.Help)
+                                            .Listeners(de =>
+                                            {
+                                                de.Click.Handler = "HelpSavabegh();";
+                                            })*/
+                                        )
+                                    )
+                            .ItemID("GridSavabegh")
+                            //.BottomBar(X.PagingToolbar())
+                            .Store(
+                                X.StoreForModel()
+                                    .Listeners(l => l.DataChanged.Handler = "App.GuestParvande_CarExp.queryById('GridSavabegh').selModel.refresh();")
+                                    .Parameters(new { CarFileId = @ViewBag.CarFileId })
+                                    .Proxy(Html.X().AjaxProxy()
+                                        .Url(Url.Action("ReadCarExperience"))
+                                        .Reader(Html.X().JsonReader().Root("data"))
+                                    )
+                                    .PageSize(10000)
+                                    .RemoteFilter(true)
+                                    .RemotePaging(true)
+                                )
+                            .View(
+                                Html.X().GridView().LoadingText("در حال بارگذاری...").RTL(true)
+                            )
+                            .ColumnModel(
+                                Html.X().RowNumbererColumn().Flex(1),
+                                Html.X().Column().DataIndex(Model, m => m.fldID).Text("کد").Flex(1).Hidden(true),
+                                Html.X().Column().DataIndex(Model, m => m.fldAccept).Text("fldAccept").Flex(1).Hidden(true),
+                                Html.X().Column().DataIndex(Model, m => m.fldName).Text("شهرداری").Wrap(true).Flex(4),
+                                Html.X().Column().DataIndex(Model, m => m.fldLetterNumber).Text("ش نامه").Wrap(true).Flex(3),
+                                Html.X().Column().DataIndex(Model, m => m.fldStartDate).Text("از تاریخ").Wrap(true).Flex(3),
+                                Html.X().Column().DataIndex(Model, m => m.fldEndDate).Text("تا تاریخ").Wrap(true).Flex(3),
+                                Html.X().Column().DataIndex(Model, m => m.fldPlaqueNumber).Text("ش پلاک").Wrap(true).Flex(2),
+                                //Html.X().Column().DataIndex(Model, m => m.fldUserName).Text("كاربر").Wrap(true).Flex(4),
+                                Html.X().Column().DataIndex(Model, m => m.fldAcceptName).Text("وضعیت تأیید").Wrap(true)/*.Renderer("checkexcistFile")*/.Flex(3)
+                                //Html.X().Column().DataIndex(Model, m => m.fldDate).Text("تاریخ ثبت").Wrap(true).Flex(3),
+                                //Html.X().Column().DataIndex(Model, m => m.fldDesc).Text("توضیحات").Wrap(true).Flex(3).Wrap(true)
+                                            )
+                                )
+
+
+            )
+            )
+)
+
+
+<script type="text/javascript">
+    var TaSal = 0;
+    var MojazSavabegh2 = 0;
+    var sizeeSavabegh2 = 0;
+    var EndUploadSavabegh2 = false;
+    var carfile = '@ViewBag.CarFileId';
+    var carID = '@ViewBag.CarId';
+    var fileId = 0;
+    function loadCboMunKh() {
+        App.GuestParvande_CarExp.queryById('cboMun').getStore().load(
+        {
+            params: {
+                State: App.GuestParvande_CarExp.queryById('cboState').getValue()
+            }
+        });
+        App.GuestParvande_CarExp.queryById('cboMun').expand();
+    }
+
+    function loadCboTaSalKh() {
+        App.GuestParvande_CarExp.queryById('CboTaSal').clearValue();
+        App.GuestParvande_CarExp.queryById('CboTaSal').getStore().load({
+            params: {
+                StartYear: App.GuestParvande_CarExp.queryById('CboAzSal').getValue()
+            }
+        });
+    }
+    function hideprogressSavabegh1() {
+        if (MojazSavabegh2 == 1 && sizeeSavabegh2 == 1) {
+            EndUploadSavabegh2 = true;
+        }
+        MojazSavabegh2 = 0;
+        sizeeSavabegh2 = 0;
+    }
+    var CheckExperience2 = setInterval(CheckEndExperience2, 500);
+
+    function CheckEndExperience2() {
+        if (EndUploadSavabegh2 == true) {
+            Ext.MessageBox.hide();
+            Ext.Msg.alert('عملیات موفق', 'فایل با موفقیت آپلود شد.');
+            clearInterval(CheckEndExperience2);
+            EndUploadSavabegh2 = false;
+        }
+    }
+    var showFile = function (fb, v) {
+        var id = fb.fileInputEl.dom.id;
+        var el = Ext.get('fi-button-msg+'+'@ViewBag.CarFileId');
+        if (v) {
+            showProgressBarSavabegh2();
+            if (v.split('.').pop().toLowerCase() == "jpg" || v.split('.').pop().toLowerCase() == "jpeg"
+               || v.split('.').pop().toLowerCase() == "png" || v.split('.').pop().toLowerCase() == "tif"
+               || v.split('.').pop().toLowerCase() == "tiff") {
+                MojazSavabegh2 = 1;
+                if ('@ViewBag.ImageSetting' == "4") {
+                    if (document.getElementById(id).files[0].size <= 716800 && document.getElementById(id).files[0].size > 51200) {
+                        sizeeSavabegh2 = 1;
+                    }
+                    if (sizeeSavabegh2 == 1) {
+                        el.update(v);
+                    }
+                    else {
+                        el.update("");
+                    }
+
+                    if (!el.isVisible()) {
+                        el.slideIn('t', {
+                            duration: .2,
+                            easing: 'easeIn',
+                            callback: function () {
+                                el.highlight();
+                            }
+                        });
+                    }
+                    else {
+                        el.highlight();
+                    }
+                }
+                else {
+                    if (document.getElementById(id).files[0].size <= 716800) {
+                        sizeeSavabegh2 = 1;
+                    }
+                    if (sizeeSavabegh2 == 1) {
+                        el.update('<b>فایل انتخاب شده:</b> ' + v);
+                    }
+                    else {
+                        el.update("");
+                    }
+
+                    if (!el.isVisible()) {
+                        el.slideIn('t', {
+                            duration: .2,
+                            easing: 'easeIn',
+                            callback: function () {
+                                el.highlight();
+                            }
+                        });
+                    } else {
+                        el.highlight();
+                    }
+                }
+            }
+            else {
+                el.update("");
+            }
+        }
+    };
+    function showProgressBarSavabegh2() {
+        Ext.MessageBox.show({
+            msg: 'لطفاً منتظر باشید',
+            progressText: 'در حال آپلود فایل...',
+            width: 300,
+            wait: true,
+            waitConfig:
+            {
+                interval: 200,
+                text: 'در حال آپلود فایل...',
+                scope: this
+            }
+        });
+    }
+    function DeleteSavabegh() {
+        var SelectedRow = App.GuestParvande_CarExp.queryById('GridSavabegh').selModel.getLastSelected();
+        if (SelectedRow != null) {
+            Ext.MessageBox.show({
+                title: "هشدار",
+                msg: "آیا برای حذف مطمئن هستید؟",
+                icon: Ext.MessageBox.WARNING,
+                buttons: Ext.MessageBox.YESNO,
+                fn: function (btn) {
+                    if (btn == 'yes') {
+                        Ext.net.DirectMethod.request({
+                            url: '/NewVer/KhodEzhari_CarExperience/Delete',
+                            params: {
+                                id: SelectedRow.data.fldID
+                            },
+                            success: function (data) {
+                                var ic = Ext.MessageBox.INFO;
+                                if (data.Err == 1)
+                                    ic = Ext.MessageBox.ERROR;
+                                Ext.MessageBox.show({
+                                    title: data.MsgTitle,
+                                    msg: data.Msg,
+                                    icon: ic,
+                                    buttons: Ext.MessageBox.OK
+                                });
+                                App.GuestParvande_CarExp.queryById('GridSavabegh').store.load();
+                            }
+                        });
+                    }
+                }
+            });
+        }
+        else {
+            Ext.MessageBox.show({
+                title: "خطا",
+                msg: "لطفا یک سطر را انتخاب کنید.",
+                icon: Ext.MessageBox.ERROR,
+                buttons: Ext.MessageBox.OK
+            });
+        }
+    }
+    function SaveSavabegh() {
+        var cboState = App.GuestParvande_CarExp.queryById('cboState');
+        var cboMun = App.GuestParvande_CarExp.queryById('cboMun');
+        var CboAzSal = App.GuestParvande_CarExp.queryById('CboAzSal');
+        var CboTaSal = App.GuestParvande_CarExp.queryById('CboTaSal');
+        var txtShName = App.GuestParvande_CarExp.queryById('txtShName');
+        var Id = App.GuestParvande_CarExp.queryById('fldIdSavabegh');
+        var txtDesc = App.GuestParvande_CarExp.queryById('txtDesc');
+        var er = false;
+
+        if (cboState.validate() == false) {
+            er = true;
+        }
+        if (cboMun.validate() == false) {
+            er = true;
+        }
+        if (CboAzSal.validate() == false) {
+            er = true;
+        }
+        if (CboTaSal.validate() == false) {
+            er = true;
+        }
+        if (txtShName.validate() == false) {
+            er = true;
+        }
+        if (er == true)
+            return;
+        App.GuestParvande_CarExp.body.mask("در حال ذخیره سازی...");
+        Ext.net.DirectMethod.request({
+            url: '/NewVer/KhodEzhari_CarExperience/Save',
+            params: {
+                fldCarFileID: carfile,
+                fldId: Id.getValue(),
+                fldMunicipalityID: cboMun.getValue(),
+                fldFromYear: CboAzSal.getValue(),
+                fldToYear: CboTaSal.getValue(),
+                fldLetterNumber: txtShName.getValue(),
+                fldFileId: fileId,
+                fldDesc: txtDesc.getValue()
+            },
+            success: function (data) {
+                var ic = Ext.MessageBox.INFO;
+                if (data.Err == 1)
+                    ic = Ext.MessageBox.ERROR;
+                Ext.MessageBox.show({
+                    title: data.MsgTitle,
+                    msg: data.Msg,
+                    icon: ic,
+                    buttons: Ext.MessageBox.OK
+                });
+                App.GuestParvande_CarExp.queryById('GridSavabegh').store.load();
+                if (data.Err != 1)
+                    ClearGuestParvande_CarExp();
+                App.GuestParvande_CarExp.body.mask().hide();
+            }
+
+        });
+    }
+    function ClearGuestParvande_CarExp() {
+        App.GuestParvande_CarExp.queryById('cboState').setValue("");
+        App.GuestParvande_CarExp.queryById('cboMun').setValue("");
+        App.GuestParvande_CarExp.queryById('CboAzSal').setValue("");
+        App.GuestParvande_CarExp.queryById('CboTaSal').setValue("");
+        App.GuestParvande_CarExp.queryById('txtShName').setValue("");
+        App.GuestParvande_CarExp.queryById('txtDesc').setValue("");
+        var el = Ext.get('fi-button-msg+' + '@ViewBag.CarFileId');
+        el.update("");
+        App.GuestParvande_CarExp.queryById('fldIdSavabegh').setValue(0);
+    }
+    function EditSavabegh() {
+        var SelectedRow = App.GuestParvande_CarExp.queryById('GridSavabegh').selModel.getLastSelected();
+        if (SelectedRow != null) {
+            if (SelectedRow.data.fldAccept == false) {
+                App.GuestParvande_CarExp.body.mask('در حال بارگذاری ...');
+                Ext.net.DirectMethod.request({
+                    url: '/NewVer/KhodEzhari_CarExperience/Details',
+                    params: {
+                        Id: SelectedRow.data.fldID
+                    },
+                    success: function (data) {
+                        if (data.Er != 1) {
+                            var cboState = App.GuestParvande_CarExp.queryById('cboState');
+                            cboState.setValue(data.fldStateId);
+                            var cboMun = App.GuestParvande_CarExp.queryById('cboMun');
+                            cboMun.clearValue();
+                            cboMun.getStore().load(
+                            {
+                                params: {
+                                    State: data.fldStateId
+                                }
+                            });
+                            cboMun.store.on('load', function () {
+                                cboMun.setValue(data.fldMunID);
+                            });
+                            var CboAzSal = App.GuestParvande_CarExp.queryById('CboAzSal');
+                            CboAzSal.setValue(data.fldFromYear);
+                            var CboTaSal = App.GuestParvande_CarExp.queryById('CboTaSal');
+                            CboTaSal.setValue(data.fldToYear);
+                            var txtShName = App.GuestParvande_CarExp.queryById('txtShName');
+                            txtShName.setValue(data.fldLetterNumber);
+                            var Id = App.GuestParvande_CarExp.queryById('fldIdSavabegh');
+                            Id.setValue(data.fldId);
+                            var txtDesc = App.GuestParvande_CarExp.queryById('txtDesc');
+                            txtDesc.setValue(data.fldDesc);
+                            fileId = data.fldFileId;
+                        }
+                        else {
+                            Ext.MessageBox.show({
+                                title: data.MsgTitle,
+                                msg: data.Msg,
+                                icon: Ext.MessageBox.ERROR,
+                                buttons: Ext.MessageBox.OK
+                            });
+                        }
+                        App.GuestParvande_CarExp.body.mask().hide();
+                    }
+                });
+            }
+            else {
+                Ext.MessageBox.show({
+                    Name: "خطا",
+                    msg: "سابقه موردنظر بررسی شده و قادر به ویرایش آن نمی باشید.",
+                    icon: Ext.MessageBox.ERROR,
+                    buttons: Ext.MessageBox.OK
+                });
+            }
+            App.GuestParvande_CarExp.body.mask().hide();
+        }
+        else {
+            Ext.MessageBox.show({
+                title: "خطا",
+                msg: "لطفا یک سطر را انتخاب کنید.",
+                icon: Ext.MessageBox.ERROR,
+                buttons: Ext.MessageBox.OK
+            });
+        }
+    }
+
+
+    function BackToParvande() {
+        App.GuestParvande_CarExp.body.mask("در حال بارگذاری...");
+        Ext.net.DirectMethod.request({
+            url: '/NewVer/KhodEzhari_Parvande/Index',
+            params: {
+                MalekId: '@ViewBag.MalekId',
+                PelakId: '@ViewBag.PelakId'
+            },
+            success: function () {
+                App.GuestParvande_CarExp.body.mask().hide();
+                App.GuestParvande_CarExp.destroy();
+            }
+        })
+    }
+
+    function HelpSavabegh() {
+        App.GuestParvande_CarExp.body.mask("در حال بارگذاری...");
+        Ext.net.DirectMethod.request({
+            url: '/NewVer/KhodEzhari_Parvande/HelpSavabegh',
+            params: {
+
+            },
+            success: function (data) {
+                App.GuestParvande_CarExp.body.mask().hide();
+            }
+        });
+    }
+   
+    function OnlinePay() {
+        App.GuestParvande_CarExp.body.mask("در حال بارگذاری...");
+            Ext.net.DirectMethod.request({
+                url: '/NewVer/KhodEzhari_OnlinePay/Index',
+                params: {
+                    CarId: '@ViewBag.CarId',
+                    CarFileId: '@ViewBag.CarFileId',
+                    MalekId: '@ViewBag.MalekId',
+                    PelakId: '@ViewBag.PelakId'
+                },
+                success: function () {
+                    App.GuestParvande_CarExp.body.mask().hide();
+                    App.GuestParvande_CarExp.destroy();
+                }
+            });
+    }
+</script>

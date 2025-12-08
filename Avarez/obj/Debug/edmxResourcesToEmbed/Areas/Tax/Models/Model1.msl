@@ -1,0 +1,423 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="cartaxtest2ModelStoreContainer" CdmEntityContainer="cartaxtest2Entities">
+    <FunctionImportMapping FunctionImportName="prs_tblTarfGharardadSelect" FunctionName="cartaxtest2Model.Store.prs_tblTarfGharardadSelect">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="cartaxtest2Model.prs_tblTarfGharardadSelect">
+          <ScalarProperty Name="fldId" ColumnName="fldId" />
+          <ScalarProperty Name="fldShakhsId" ColumnName="fldShakhsId" />
+          <ScalarProperty Name="fldUniqId" ColumnName="fldUniqId" />
+          <ScalarProperty Name="fldPrivateKey" ColumnName="fldPrivateKey" />
+          <ScalarProperty Name="fldSignatureCertificate" ColumnName="fldSignatureCertificate" />
+          <ScalarProperty Name="fldUserID" ColumnName="fldUserID" />
+          <ScalarProperty Name="fldDesc" ColumnName="fldDesc" />
+          <ScalarProperty Name="fldDate" ColumnName="fldDate" />
+          <ScalarProperty Name="fldNameShakhs" ColumnName="fldNameShakhs" />
+          <ScalarProperty Name="fldCodeEghtesadi" ColumnName="fldCodeEghtesadi" />
+          <ScalarProperty Name="fldCodeShobe" ColumnName="fldCodeShobe" />
+          <ScalarProperty Name="fldNationalCode" ColumnName="fldNationalCode" />
+          <ScalarProperty Name="fldCodePosti" ColumnName="fldCodePosti" />
+          <ScalarProperty Name="fldNameTypeShakhs" ColumnName="fldNameTypeShakhs" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="prs_User_GharardadSelect" FunctionName="cartaxtest2Model.Store.prs_User_GharardadSelect">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="cartaxtest2Model.prs_User_GharardadSelect">
+          <ScalarProperty Name="fldID" ColumnName="fldID" />
+          <ScalarProperty Name="fldName" ColumnName="fldName" />
+          <ScalarProperty Name="fldFamily" ColumnName="fldFamily" />
+          <ScalarProperty Name="fldStatus" ColumnName="fldStatus" />
+          <ScalarProperty Name="fldUserName" ColumnName="fldUserName" />
+          <ScalarProperty Name="fldMelliCode" ColumnName="fldMelliCode" />
+          <ScalarProperty Name="fldStartDate" ColumnName="fldStartDate" />
+          <ScalarProperty Name="fldCountryDivisionsID" ColumnName="fldCountryDivisionsID" />
+          <ScalarProperty Name="fldUserName1" ColumnName="fldUserName1" />
+          <ScalarProperty Name="fldUserID" ColumnName="fldUserID" />
+          <ScalarProperty Name="fldDesc" ColumnName="fldDesc" />
+          <ScalarProperty Name="fldDate" ColumnName="fldDate" />
+          <ScalarProperty Name="fldPassword" ColumnName="fldPassword" />
+          <ScalarProperty Name="fldUserType" ColumnName="fldUserType" />
+          <ScalarProperty Name="fldTarfGharardadId" ColumnName="fldTarfGharardadId" />
+          <ScalarProperty Name="fldStatusName" ColumnName="fldStatusName" />
+          <ScalarProperty Name="fldNameTypeShakhs" ColumnName="fldNameTypeShakhs" />
+          <ScalarProperty Name="fldShakhsId" ColumnName="fldShakhsId" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="prs_tblShakhsHaghighi_HoghoghiDelete" FunctionName="cartaxtest2Model.Store.prs_tblShakhsHaghighi_HoghoghiDelete" />
+    <FunctionImportMapping FunctionImportName="prs_tblShakhsHaghighi_HoghoghiInsert" FunctionName="cartaxtest2Model.Store.prs_tblShakhsHaghighi_HoghoghiInsert" />
+    <FunctionImportMapping FunctionImportName="prs_tblShakhsHaghighi_HoghoghiSelect" FunctionName="cartaxtest2Model.Store.prs_tblShakhsHaghighi_HoghoghiSelect">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="cartaxtest2Model.prs_tblShakhsHaghighi_HoghoghiSelect">
+          <ScalarProperty Name="fldId" ColumnName="fldId" />
+          <ScalarProperty Name="fldName" ColumnName="fldName" />
+          <ScalarProperty Name="fldFamily" ColumnName="fldFamily" />
+          <ScalarProperty Name="fldNationalCode" ColumnName="fldNationalCode" />
+          <ScalarProperty Name="fldCodeEghtesadi" ColumnName="fldCodeEghtesadi" />
+          <ScalarProperty Name="fldTypeShakhsId" ColumnName="fldTypeShakhsId" />
+          <ScalarProperty Name="fldCodePosti" ColumnName="fldCodePosti" />
+          <ScalarProperty Name="fldCodeShobe" ColumnName="fldCodeShobe" />
+          <ScalarProperty Name="fldOwnerId" ColumnName="fldOwnerId" />
+          <ScalarProperty Name="fldUserID" ColumnName="fldUserID" />
+          <ScalarProperty Name="fldDesc" ColumnName="fldDesc" />
+          <ScalarProperty Name="fldDate" ColumnName="fldDate" />
+          <ScalarProperty Name="fldNameTypeShakhs" ColumnName="fldNameTypeShakhs" />
+          <ScalarProperty Name="fldIdTarfGharardad" ColumnName="fldIdTarfGharardad" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="prs_tblShakhsHaghighi_HoghoghiUpdate" FunctionName="cartaxtest2Model.Store.prs_tblShakhsHaghighi_HoghoghiUpdate" />
+    <FunctionImportMapping FunctionImportName="prs_tblTarfGharardadDelete" FunctionName="cartaxtest2Model.Store.prs_tblTarfGharardadDelete" />
+    <FunctionImportMapping FunctionImportName="prs_tblTarfGharardadInsert" FunctionName="cartaxtest2Model.Store.prs_tblTarfGharardadInsert" />
+    <FunctionImportMapping FunctionImportName="prs_tblTarfGharardadUpdate" FunctionName="cartaxtest2Model.Store.prs_tblTarfGharardadUpdate" />
+    <FunctionImportMapping FunctionImportName="prs_tblTypeShakhsSelect" FunctionName="cartaxtest2Model.Store.prs_tblTypeShakhsSelect">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="cartaxtest2Model.prs_tblTypeShakhsSelect">
+          <ScalarProperty Name="fldId" ColumnName="fldId" />
+          <ScalarProperty Name="fldNameTypeShakhs" ColumnName="fldNameTypeShakhs" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="prs_User_GharardadInsert" FunctionName="cartaxtest2Model.Store.prs_User_GharardadInsert" />
+    <FunctionImportMapping FunctionImportName="prs_User_GharardadUpdate" FunctionName="cartaxtest2Model.Store.prs_User_GharardadUpdate" />
+    <FunctionImportMapping FunctionImportName="prs_tblMeasureUnitSelect" FunctionName="cartaxtest2Model.Store.prs_tblMeasureUnitSelect">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="cartaxtest2Model.prs_tblMeasureUnitSelect">
+          <ScalarProperty Name="fldId" ColumnName="fldId" />
+          <ScalarProperty Name="fldName" ColumnName="fldName" />
+          <ScalarProperty Name="fldCode" ColumnName="fldCode" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="prs_tblKala_KhedmatSelect" FunctionName="cartaxtest2Model.Store.prs_tblKala_KhedmatSelect">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="cartaxtest2Model.prs_tblKala_KhedmatSelect">
+          <ScalarProperty Name="fldId" ColumnName="fldId" />
+          <ScalarProperty Name="fldCode" ColumnName="fldCode" />
+          <ScalarProperty Name="fldTypeShenaseId" ColumnName="fldTypeShenaseId" />
+          <ScalarProperty Name="fldTarikh" ColumnName="fldTarikh" />
+          <ScalarProperty Name="fldRunDate" ColumnName="fldRunDate" />
+          <ScalarProperty Name="fldExpDate" ColumnName="fldExpDate" />
+          <ScalarProperty Name="fldSpecialOrGeneral" ColumnName="fldSpecialOrGeneral" />
+          <ScalarProperty Name="fldTaxableOrFree" ColumnName="fldTaxableOrFree" />
+          <ScalarProperty Name="fldVat" ColumnName="fldVat" />
+          <ScalarProperty Name="fldVatCustomPurposes" ColumnName="fldVatCustomPurposes" />
+          <ScalarProperty Name="fldDescriptionOfID" ColumnName="fldDescriptionOfID" />
+          <ScalarProperty Name="fldNameShenase" ColumnName="fldNameShenase" />
+          <ScalarProperty Name="fldSpecialOrGeneralName" ColumnName="fldSpecialOrGeneralName" />
+          <ScalarProperty Name="fldTaxableOrFreeName" ColumnName="fldTaxableOrFreeName" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="prs_SelectDetailSooratHesab" FunctionName="cartaxtest2Model.Store.prs_SelectDetailSooratHesab">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="cartaxtest2Model.prs_SelectDetailSooratHesab">
+          <ScalarProperty Name="fldsstt" ColumnName="fldsstt" />
+          <ScalarProperty Name="fldam" ColumnName="fldam" />
+          <ScalarProperty Name="fldmu" ColumnName="fldmu" />
+          <ScalarProperty Name="fldnw" ColumnName="fldnw" />
+          <ScalarProperty Name="fldfee" ColumnName="fldfee" />
+          <ScalarProperty Name="fldcfee" ColumnName="fldcfee" />
+          <ScalarProperty Name="fldcut" ColumnName="fldcut" />
+          <ScalarProperty Name="fldexr" ColumnName="fldexr" />
+          <ScalarProperty Name="fldssrv" ColumnName="fldssrv" />
+          <ScalarProperty Name="fldsscv" ColumnName="fldsscv" />
+          <ScalarProperty Name="fldprdis" ColumnName="fldprdis" />
+          <ScalarProperty Name="fldolt" ColumnName="fldolt" />
+          <ScalarProperty Name="fldolr" ColumnName="fldolr" />
+          <ScalarProperty Name="fldolam" ColumnName="fldolam" />
+          <ScalarProperty Name="fldconsfee" ColumnName="fldconsfee" />
+          <ScalarProperty Name="fldspro" ColumnName="fldspro" />
+          <ScalarProperty Name="fldbros" ColumnName="fldbros" />
+          <ScalarProperty Name="fldtcpbs" ColumnName="fldtcpbs" />
+          <ScalarProperty Name="fldcop" ColumnName="fldcop" />
+          <ScalarProperty Name="fldvop" ColumnName="fldvop" />
+          <ScalarProperty Name="fldbsrn" ColumnName="fldbsrn" />
+          <ScalarProperty Name="fldtsstam" ColumnName="fldtsstam" />
+          <ScalarProperty Name="flddis" ColumnName="flddis" />
+          <ScalarProperty Name="fldadis" ColumnName="fldadis" />
+          <ScalarProperty Name="fldvra" ColumnName="fldvra" />
+          <ScalarProperty Name="fldvam" ColumnName="fldvam" />
+          <ScalarProperty Name="fldodr" ColumnName="fldodr" />
+          <ScalarProperty Name="fldodt" ColumnName="fldodt" />
+          <ScalarProperty Name="fldodam" ColumnName="fldodam" />
+          <ScalarProperty Name="fldHeaderId" ColumnName="fldHeaderId" />
+          <ScalarProperty Name="fldsstid" ColumnName="fldsstid" />
+          <ScalarProperty Name="fldpspd" ColumnName="fldpspd" />
+          <ScalarProperty Name="fldcui" ColumnName="fldcui" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="prs_SelectHeaderSooratHesab" FunctionName="cartaxtest2Model.Store.prs_SelectHeaderSooratHesab">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="cartaxtest2Model.prs_SelectHeaderSooratHesab">
+          <ScalarProperty Name="fldTaxId" ColumnName="fldTaxId" />
+          <ScalarProperty Name="fldIndatim" ColumnName="fldIndatim" />
+          <ScalarProperty Name="fldIndatim_Zaman" ColumnName="fldIndatim_Zaman" />
+          <ScalarProperty Name="fldIndati2m" ColumnName="fldIndati2m" />
+          <ScalarProperty Name="fldIndati2m_Zaman" ColumnName="fldIndati2m_Zaman" />
+          <ScalarProperty Name="fldInno" ColumnName="fldInno" />
+          <ScalarProperty Name="fldIrtaxId" ColumnName="fldIrtaxId" />
+          <ScalarProperty Name="fldInty" ColumnName="fldInty" />
+          <ScalarProperty Name="fldinp" ColumnName="fldinp" />
+          <ScalarProperty Name="fldTypeSooratHesab" ColumnName="fldTypeSooratHesab" />
+          <ScalarProperty Name="fldNamePettern" ColumnName="fldNamePettern" />
+          <ScalarProperty Name="fldTinb" ColumnName="fldTinb" />
+          <ScalarProperty Name="fldBpc" ColumnName="fldBpc" />
+          <ScalarProperty Name="fldbbc" ColumnName="fldbbc" />
+          <ScalarProperty Name="fldkh_Bid" ColumnName="fldkh_Bid" />
+          <ScalarProperty Name="fldTins" ColumnName="fldTins" />
+          <ScalarProperty Name="fldf_CodePosti" ColumnName="fldf_CodePosti" />
+          <ScalarProperty Name="fldSbc" ColumnName="fldSbc" />
+          <ScalarProperty Name="fldBid" ColumnName="fldBid" />
+          <ScalarProperty Name="fldTob" ColumnName="fldTob" />
+          <ScalarProperty Name="fldKh_Tob" ColumnName="fldKh_Tob" />
+          <ScalarProperty Name="fldtyeShkashFoorosh" ColumnName="fldtyeShkashFoorosh" />
+          <ScalarProperty Name="fldTypeShakhKharid" ColumnName="fldTypeShakhKharid" />
+          <ScalarProperty Name="fldins" ColumnName="fldins" />
+          <ScalarProperty Name="fldft" ColumnName="fldft" />
+          <ScalarProperty Name="fldbpn" ColumnName="fldbpn" />
+          <ScalarProperty Name="fldscln" ColumnName="fldscln" />
+          <ScalarProperty Name="fldscc" ColumnName="fldscc" />
+          <ScalarProperty Name="fldcdcn" ColumnName="fldcdcn" />
+          <ScalarProperty Name="fldcdcd" ColumnName="fldcdcd" />
+          <ScalarProperty Name="fldcrn" ColumnName="fldcrn" />
+          <ScalarProperty Name="fldbilid" ColumnName="fldbilid" />
+          <ScalarProperty Name="fldtprdis" ColumnName="fldtprdis" />
+          <ScalarProperty Name="fldtdis" ColumnName="fldtdis" />
+          <ScalarProperty Name="fldtadis" ColumnName="fldtadis" />
+          <ScalarProperty Name="fldtvam" ColumnName="fldtvam" />
+          <ScalarProperty Name="fldtodam" ColumnName="fldtodam" />
+          <ScalarProperty Name="fldtbill" ColumnName="fldtbill" />
+          <ScalarProperty Name="fldtonw" ColumnName="fldtonw" />
+          <ScalarProperty Name="fldtorv" ColumnName="fldtorv" />
+          <ScalarProperty Name="fldtocv" ColumnName="fldtocv" />
+          <ScalarProperty Name="fldsetm" ColumnName="fldsetm" />
+          <ScalarProperty Name="fldcap" ColumnName="fldcap" />
+          <ScalarProperty Name="fldinsp" ColumnName="fldinsp" />
+          <ScalarProperty Name="fldtvop" ColumnName="fldtvop" />
+          <ScalarProperty Name="fldtax17" ColumnName="fldtax17" />
+          <ScalarProperty Name="fldSh_Indatim" ColumnName="fldSh_Indatim" />
+          <ScalarProperty Name="fldSh_Indati2m" ColumnName="fldSh_Indati2m" />
+          <ScalarProperty Name="fldf_name" ColumnName="fldf_name" />
+          <ScalarProperty Name="fldkh_Name" ColumnName="fldkh_Name" />
+          <ScalarProperty Name="fldForooshandeId" ColumnName="fldForooshandeId" />
+          <ScalarProperty Name="fldKharidarId" ColumnName="fldKharidarId" />
+          <ScalarProperty Name="fldFunctionName" ColumnName="fldFunctionName" />
+          <ScalarProperty Name="fldShomareFish" ColumnName="fldShomareFish" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="prs_tblSooratHesabHeader_ValueInsert" FunctionName="cartaxtest2Model.Store.prs_tblSooratHesabHeader_ValueInsert" />
+    <FunctionImportMapping FunctionImportName="prs_tblCurrencyTypeSelect" FunctionName="cartaxtest2Model.Store.prs_tblCurrencyTypeSelect">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="cartaxtest2Model.prs_tblCurrencyTypeSelect">
+          <ScalarProperty Name="fldId" ColumnName="fldId" />
+          <ScalarProperty Name="fldNameEn" ColumnName="fldNameEn" />
+          <ScalarProperty Name="fldCurrency" ColumnName="fldCurrency" />
+          <ScalarProperty Name="fldAlphabeticCode" ColumnName="fldAlphabeticCode" />
+          <ScalarProperty Name="fldNumericCode" ColumnName="fldNumericCode" />
+          <ScalarProperty Name="fldMinorUnit" ColumnName="fldMinorUnit" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="prs_tblSooratHesab_DetailInsert" FunctionName="cartaxtest2Model.Store.prs_tblSooratHesab_DetailInsert" />
+    <FunctionImportMapping FunctionImportName="prs_tblSooratHesab_HeaderInsert" FunctionName="cartaxtest2Model.Store.prs_tblSooratHesab_HeaderInsert" />
+    <FunctionImportMapping FunctionImportName="prs_tblSooratHesab_HeaderSelect" FunctionName="cartaxtest2Model.Store.prs_tblSooratHesab_HeaderSelect">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="cartaxtest2Model.prs_tblSooratHesab_HeaderSelect">
+          <ScalarProperty Name="fldId" ColumnName="fldId" />
+          <ScalarProperty Name="fldTaxId" ColumnName="fldTaxId" />
+          <ScalarProperty Name="fldIndatim" ColumnName="fldIndatim" />
+          <ScalarProperty Name="fldIndati2m" ColumnName="fldIndati2m" />
+          <ScalarProperty Name="fldInty" ColumnName="fldInty" />
+          <ScalarProperty Name="fldInp" ColumnName="fldInp" />
+          <ScalarProperty Name="fldInno" ColumnName="fldInno" />
+          <ScalarProperty Name="fldIrtaxId" ColumnName="fldIrtaxId" />
+          <ScalarProperty Name="fldKharidarId" ColumnName="fldKharidarId" />
+          <ScalarProperty Name="fldForooshandeId" ColumnName="fldForooshandeId" />
+          <ScalarProperty Name="fldUserId" ColumnName="fldUserId" />
+          <ScalarProperty Name="fldDate" ColumnName="fldDate" />
+          <ScalarProperty Name="fldf_Name" ColumnName="fldf_Name" />
+          <ScalarProperty Name="fldkh_name" ColumnName="fldkh_name" />
+          <ScalarProperty Name="fldTypeSooratHesab" ColumnName="fldTypeSooratHesab" />
+          <ScalarProperty Name="fldNamePettern" ColumnName="fldNamePettern" />
+          <ScalarProperty Name="fldStatus" ColumnName="fldStatus" />
+          <ScalarProperty Name="fldStatusName" ColumnName="fldStatusName" />
+          <ScalarProperty Name="fldReferenceNumber" ColumnName="fldReferenceNumber" />
+          <ScalarProperty Name="fldUid" ColumnName="fldUid" />
+          <ScalarProperty Name="fldf_NationalCode" ColumnName="fldf_NationalCode" />
+          <ScalarProperty Name="fldkh_fldNationalCode" ColumnName="fldkh_fldNationalCode" />
+          <ScalarProperty Name="fldf_CodeEghtesadi" ColumnName="fldf_CodeEghtesadi" />
+          <ScalarProperty Name="fldkh_CodeEghtesadi" ColumnName="fldkh_CodeEghtesadi" />
+          <ScalarProperty Name="fldSubject" ColumnName="fldSubject" />
+          <ScalarProperty Name="fldFunctionName" ColumnName="fldFunctionName" />
+          <ScalarProperty Name="fldSerializeObject" ColumnName="fldSerializeObject" />
+          <ScalarProperty Name="fldShomareFish" ColumnName="fldShomareFish" />
+          <ScalarProperty Name="SumSooratHesab" ColumnName="SumSooratHesab" />
+          <ScalarProperty Name="fldRaveshTasviye" ColumnName="fldRaveshTasviye" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="prs_tblSooratHesab_HeaderDelete" FunctionName="cartaxtest2Model.Store.prs_tblSooratHesab_HeaderDelete" />
+    <FunctionImportMapping FunctionImportName="prs_tblSooratHesabStatusInsert" FunctionName="cartaxtest2Model.Store.prs_tblSooratHesabStatusInsert">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="cartaxtest2Model.prs_tblSooratHesabStatusInsert">
+          <ScalarProperty Name="fldId" ColumnName="fldId" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="prs_rptSooratHesab_Header" FunctionName="cartaxtest2Model.Store.prs_rptSooratHesab_Header">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="cartaxtest2Model.prs_rptSooratHesab_Header">
+          <ScalarProperty Name="fldsh_Maliyati" ColumnName="fldsh_Maliyati" />
+          <ScalarProperty Name="fldTarikhSoodor" ColumnName="fldTarikhSoodor" />
+          <ScalarProperty Name="fldTarikhEijad" ColumnName="fldTarikhEijad" />
+          <ScalarProperty Name="fldSerial" ColumnName="fldSerial" />
+          <ScalarProperty Name="fldSh_Marja" ColumnName="fldSh_Marja" />
+          <ScalarProperty Name="fldTypeSooratHesab" ColumnName="fldTypeSooratHesab" />
+          <ScalarProperty Name="fldNamePettern" ColumnName="fldNamePettern" />
+          <ScalarProperty Name="fldkh_Eghtesadi" ColumnName="fldkh_Eghtesadi" />
+          <ScalarProperty Name="fldkh_CodePosti" ColumnName="fldkh_CodePosti" />
+          <ScalarProperty Name="fldkh_CodeShobe" ColumnName="fldkh_CodeShobe" />
+          <ScalarProperty Name="fldkh_NationalCode" ColumnName="fldkh_NationalCode" />
+          <ScalarProperty Name="fldf_CodeEghtesadi" ColumnName="fldf_CodeEghtesadi" />
+          <ScalarProperty Name="fldf_CodePosti" ColumnName="fldf_CodePosti" />
+          <ScalarProperty Name="fldf_CodeShobe" ColumnName="fldf_CodeShobe" />
+          <ScalarProperty Name="fldf_NationalCode" ColumnName="fldf_NationalCode" />
+          <ScalarProperty Name="fldSubject" ColumnName="fldSubject" />
+          <ScalarProperty Name="fldFlyType" ColumnName="fldFlyType" />
+          <ScalarProperty Name="fldPas_No" ColumnName="fldPas_No" />
+          <ScalarProperty Name="fldParvane_No" ColumnName="fldParvane_No" />
+          <ScalarProperty Name="fldCodeEzhar" ColumnName="fldCodeEzhar" />
+          <ScalarProperty Name="fldCotazh_No" ColumnName="fldCotazh_No" />
+          <ScalarProperty Name="fldCotazh_Date" ColumnName="fldCotazh_Date" />
+          <ScalarProperty Name="fldEshterak_No" ColumnName="fldEshterak_No" />
+          <ScalarProperty Name="fldSumMablagh" ColumnName="fldSumMablagh" />
+          <ScalarProperty Name="fldSumTakhfif" ColumnName="fldSumTakhfif" />
+          <ScalarProperty Name="fldSumMablagh_Takhfif" ColumnName="fldSumMablagh_Takhfif" />
+          <ScalarProperty Name="fldSumMaliyat" ColumnName="fldSumMaliyat" />
+          <ScalarProperty Name="fldSumMablaghSayer" ColumnName="fldSumMablaghSayer" />
+          <ScalarProperty Name="fldSumSooratheasb" ColumnName="fldSumSooratheasb" />
+          <ScalarProperty Name="fldSumVaznKhales" ColumnName="fldSumVaznKhales" />
+          <ScalarProperty Name="fldArzeshReyali" ColumnName="fldArzeshReyali" />
+          <ScalarProperty Name="fldArzeshArzi" ColumnName="fldArzeshArzi" />
+          <ScalarProperty Name="fldRaveshTasviye" ColumnName="fldRaveshTasviye" />
+          <ScalarProperty Name="fldMablaghNaghdi" ColumnName="fldMablaghNaghdi" />
+          <ScalarProperty Name="fldMablaghNesiye" ColumnName="fldMablaghNesiye" />
+          <ScalarProperty Name="fldSumSahmMaliyat" ColumnName="fldSumSahmMaliyat" />
+          <ScalarProperty Name="fldMaliyat17" ColumnName="fldMaliyat17" />
+          <ScalarProperty Name="fldUniqCode" ColumnName="fldUniqCode" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="prs_tblSooratHesabFromWebServiceInsert" FunctionName="cartaxtest2Model.Store.prs_tblSooratHesabFromWebServiceInsert" />
+    <FunctionImportMapping FunctionImportName="prs_InsertSooratHesabForExcel" FunctionName="cartaxtest2Model.Store.prs_InsertSooratHesabForExcel" />
+    <FunctionImportMapping FunctionImportName="prs_TransactionInfInsert" FunctionName="cartaxtest2Model.Store.prs_TransactionInfInsert" />
+    <FunctionImportMapping FunctionImportName="prs_TransactionInfSelect" FunctionName="cartaxtest2Model.Store.prs_TransactionInfSelect">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="cartaxtest2Model.prs_TransactionInfSelect">
+          <ScalarProperty Name="fldId" ColumnName="fldId" />
+          <ScalarProperty Name="fldUserName" ColumnName="fldUserName" />
+          <ScalarProperty Name="fldDivId" ColumnName="fldDivId" />
+          <ScalarProperty Name="fldPass" ColumnName="fldPass" />
+          <ScalarProperty Name="fldUserId" ColumnName="fldUserId" />
+          <ScalarProperty Name="fldDate" ColumnName="fldDate" />
+          <ScalarProperty Name="fldDesc" ColumnName="fldDesc" />
+          <ScalarProperty Name="fldInherit" ColumnName="fldInherit" />
+          <ScalarProperty Name="fldName" ColumnName="fldName" />
+          <ScalarProperty Name="fldTarfGharardadId" ColumnName="fldTarfGharardadId" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="prs_TransactionInfUpdate" FunctionName="cartaxtest2Model.Store.prs_TransactionInfUpdate" />
+    <FunctionImportMapping FunctionImportName="prs_tblSooratHesabHeader_ValueUpdate" FunctionName="cartaxtest2Model.Store.prs_tblSooratHesabHeader_ValueUpdate" />
+    <FunctionImportMapping FunctionImportName="prs_tblSooratHesabExcelTemplateSelect" FunctionName="cartaxtest2Model.Store.prs_tblSooratHesabExcelTemplateSelect">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="cartaxtest2Model.prs_tblSooratHesabExcelTemplateSelect">
+          <ScalarProperty Name="fldId" ColumnName="fldId" />
+          <ScalarProperty Name="fldTitle" ColumnName="fldTitle" />
+          <ScalarProperty Name="fldStartRowNumber" ColumnName="fldStartRowNumber" />
+          <ScalarProperty Name="fldUserId" ColumnName="fldUserId" />
+          <ScalarProperty Name="fldDesc" ColumnName="fldDesc" />
+          <ScalarProperty Name="fldDate" ColumnName="fldDate" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="prs_tblSooratHesabExcelField_TemplateSelect" FunctionName="cartaxtest2Model.Store.prs_tblSooratHesabExcelField_TemplateSelect">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="cartaxtest2Model.prs_tblSooratHesabExcelField_TemplateSelect">
+          <ScalarProperty Name="fldId" ColumnName="fldId" />
+          <ScalarProperty Name="fldTemplateId" ColumnName="fldTemplateId" />
+          <ScalarProperty Name="fldParametrId" ColumnName="fldParametrId" />
+          <ScalarProperty Name="fldColumnNum" ColumnName="fldColumnNum" />
+          <ScalarProperty Name="fldUserId" ColumnName="fldUserId" />
+          <ScalarProperty Name="fldDate" ColumnName="fldDate" />
+          <ScalarProperty Name="fldDesc" ColumnName="fldDesc" />
+          <ScalarProperty Name="fldNameEn" ColumnName="fldNameEn" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="prs_SelectParametr_Field_Template" FunctionName="cartaxtest2Model.Store.prs_SelectParametr_Field_Template">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="cartaxtest2Model.prs_SelectParametr_Field_Template">
+          <ScalarProperty Name="fldNameEn" ColumnName="fldNameEn" />
+          <ScalarProperty Name="fldNameFa" ColumnName="fldNameFa" />
+          <ScalarProperty Name="fldColumnNum" ColumnName="fldColumnNum" />
+          <ScalarProperty Name="fldInExcel" ColumnName="fldInExcel" />
+          <ScalarProperty Name="fldEjbari" ColumnName="fldEjbari" />
+          <ScalarProperty Name="fldId" ColumnName="fldId" />
+          <ScalarProperty Name="fldEjbariName" ColumnName="fldEjbariName" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="prs_tblSooratHesabExcelField_TemplateDelete" FunctionName="cartaxtest2Model.Store.prs_tblSooratHesabExcelField_TemplateDelete" />
+    <FunctionImportMapping FunctionImportName="prs_tblSooratHesabExcelField_TemplateInsert" FunctionName="cartaxtest2Model.Store.prs_tblSooratHesabExcelField_TemplateInsert" />
+    <FunctionImportMapping FunctionImportName="prs_tblSooratHesabExcelField_TemplateUpdate" FunctionName="cartaxtest2Model.Store.prs_tblSooratHesabExcelField_TemplateUpdate" />
+    <FunctionImportMapping FunctionImportName="prs_tblSooratHesabExcelTemplateDelete" FunctionName="cartaxtest2Model.Store.prs_tblSooratHesabExcelTemplateDelete" />
+    <FunctionImportMapping FunctionImportName="prs_tblSooratHesabExcelTemplateInsert" FunctionName="cartaxtest2Model.Store.prs_tblSooratHesabExcelTemplateInsert" />
+    <FunctionImportMapping FunctionImportName="prs_tblSooratHesabExcelTemplateUpdate" FunctionName="cartaxtest2Model.Store.prs_tblSooratHesabExcelTemplateUpdate" />
+    <FunctionImportMapping FunctionImportName="prs_User_GharardadResetPass" FunctionName="cartaxtest2Model.Store.prs_User_GharardadResetPass" />
+    <FunctionImportMapping FunctionImportName="prs_tblSooratHesabStatusSelect" FunctionName="cartaxtest2Model.Store.prs_tblSooratHesabStatusSelect">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="cartaxtest2Model.prs_tblSooratHesabStatusSelect">
+          <ScalarProperty Name="fldid" ColumnName="fldid" />
+          <ScalarProperty Name="fldHeaderId" ColumnName="fldHeaderId" />
+          <ScalarProperty Name="fldStatus" ColumnName="fldStatus" />
+          <ScalarProperty Name="fldMatn" ColumnName="fldMatn" />
+          <ScalarProperty Name="fldDate" ColumnName="fldDate" />
+          <ScalarProperty Name="fldUserId" ColumnName="fldUserId" />
+          <ScalarProperty Name="fldReferenceNumber" ColumnName="fldReferenceNumber" />
+          <ScalarProperty Name="fldUid" ColumnName="fldUid" />
+          <ScalarProperty Name="fldStatusName" ColumnName="fldStatusName" />
+          <ScalarProperty Name="fldSerializeObject" ColumnName="fldSerializeObject" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="prs_tblSooratHesab_HeaderUpdate" FunctionName="cartaxtest2Model.Store.prs_tblSooratHesab_HeaderUpdate" />
+    <FunctionImportMapping FunctionImportName="prs_tblSooratHesab_DetailUpdate" FunctionName="cartaxtest2Model.Store.prs_tblSooratHesab_DetailUpdate" />
+    <FunctionImportMapping FunctionImportName="sp_ErrorProgramInsert" FunctionName="cartaxtest2Model.Store.sp_ErrorProgramInsert" />
+    <FunctionImportMapping FunctionImportName="prs_tblKala_KhedmatInsert" FunctionName="cartaxtest2Model.Store.prs_tblKala_KhedmatInsert" />
+    <FunctionImportMapping FunctionImportName="prs_tblKala_KhedmatDelete" FunctionName="cartaxtest2Model.Store.prs_tblKala_KhedmatDelete" />
+    <FunctionImportMapping FunctionImportName="prs_tblSooratHesab_DetailDelete" FunctionName="cartaxtest2Model.Store.prs_tblSooratHesab_DetailDelete" />
+    <FunctionImportMapping FunctionImportName="prs_UpdateIrTaxId" FunctionName="cartaxtest2Model.Store.prs_UpdateIrTaxId" />
+    <FunctionImportMapping FunctionImportName="prs_tblSooratHesabStatus_DetailInsert" FunctionName="cartaxtest2Model.Store.prs_tblSooratHesabStatus_DetailInsert" />
+    <FunctionImportMapping FunctionImportName="prs_tblSooratHesabStatus_DetailSelect" FunctionName="cartaxtest2Model.Store.prs_tblSooratHesabStatus_DetailSelect">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="cartaxtest2Model.prs_tblSooratHesabStatus_DetailSelect">
+          <ScalarProperty Name="fldId" ColumnName="fldId" />
+          <ScalarProperty Name="fldSooratHesabStatusId" ColumnName="fldSooratHesabStatusId" />
+          <ScalarProperty Name="fldStatusError" ColumnName="fldStatusError" />
+          <ScalarProperty Name="fldMatn" ColumnName="fldMatn" />
+          <ScalarProperty Name="fldCode" ColumnName="fldCode" />
+          <ScalarProperty Name="fldUserId" ColumnName="fldUserId" />
+          <ScalarProperty Name="fldDate" ColumnName="fldDate" />
+          <ScalarProperty Name="fldStatusErrorName" ColumnName="fldStatusErrorName" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="prs_tblSooratHesabStatusUpdate" FunctionName="cartaxtest2Model.Store.prs_tblSooratHesabStatusUpdate" />
+    <FunctionImportMapping FunctionImportName="prs_tblSooratHesabStatusUpdate_Matn" FunctionName="cartaxtest2Model.Store.prs_tblSooratHesabStatusUpdate_Matn" />
+  </EntityContainerMapping>
+</Mapping>

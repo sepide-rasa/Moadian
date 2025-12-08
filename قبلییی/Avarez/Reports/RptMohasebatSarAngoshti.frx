@@ -1,0 +1,160 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Report ScriptLanguage="CSharp" ReportInfo.Created="12/23/2015 09:02:44" ReportInfo.Modified="09/21/2017 10:56:26" ReportInfo.CreatorVersion="2015.1.2.0">
+  <Styles>
+    <Style Name="Style1" Fill.Color="LightGray"/>
+    <Style Name="Style2" Fill.Color="232, 244, 255"/>
+  </Styles>
+  <Dictionary>
+    <TableDataSource Name="sp_PictureSelect" ReferenceName="CarTaxDataSet.sp_PictureSelect" DataType="System.Int32" Enabled="true">
+      <Column Name="fldID" DataType="System.Int32"/>
+      <Column Name="fldPic" DataType="System.Byte[]" BindableControl="Picture"/>
+      <Column Name="fldMunicipalityPic" DataType="System.String"/>
+      <Column Name="fldMunicipalityPicID" DataType="System.Int32"/>
+      <Column Name="fldBankPic" DataType="System.String"/>
+      <Column Name="fldBankPicID" DataType="System.Int32"/>
+      <Column Name="fldUserPic" DataType="System.String"/>
+      <Column Name="fldUserPicID" DataType="System.Int64"/>
+      <Column Name="fldUserName" DataType="System.String"/>
+      <Column Name="fldUserID" DataType="System.Int64"/>
+      <Column Name="fldDesc" DataType="System.String"/>
+      <Column Name="fldDate" DataType="System.String"/>
+    </TableDataSource>
+    <TableDataSource Name="sp_jCalcSingleBaze" ReferenceName="CarTaxDataSet.sp_jCalcSingleBaze" DataType="System.Int32" Enabled="true">
+      <Column Name="fldyear" DataType="System.Int32"/>
+      <Column Name="fldFirstPrice" DataType="System.Int64"/>
+      <Column Name="fldCurectPrice" DataType="System.Int64"/>
+      <Column Name="fldValueAdded" DataType="System.Int64"/>
+      <Column Name="fldFinalPrice" DataType="System.Int64"/>
+      <Column Name="fldFine" DataType="System.Int64"/>
+      <Column Name="fldCountMonth" DataType="System.Int64"/>
+      <Column Name="fldDiscount" DataType="System.Int64"/>
+      <Column Name="fldDept" DataType="System.Int64"/>
+    </TableDataSource>
+    <Parameter Name="date" DataType="System.String"/>
+    <Parameter Name="time" DataType="System.String"/>
+    <Parameter Name="StateName" DataType="System.String"/>
+    <Parameter Name="MunicipalityName" DataType="System.String"/>
+    <Parameter Name="AreaName" DataType="System.String"/>
+    <Parameter Name="OfficeName" DataType="System.String"/>
+    <Parameter Name="MyTablighat" DataType="System.String"/>
+    <Parameter Name="TypeModel" DataType="System.String"/>
+    <Parameter Name="NoeKhodro" DataType="System.String"/>
+    <Parameter Name="NoeCabin" DataType="System.String"/>
+    <Parameter Name="SystemKhodro" DataType="System.String"/>
+    <Parameter Name="TipKhodro" DataType="System.String"/>
+    <Parameter Name="ClassKhodro" DataType="System.String"/>
+    <Parameter Name="Model" DataType="System.String"/>
+    <Parameter Name="TarikhBime" DataType="System.String"/>
+    <Parameter Name="AzSal" DataType="System.String"/>
+    <Parameter Name="TaSal" DataType="System.String"/>
+    <Total Name="Avarez" Expression="[sp_jCalcSingleBaze.fldFirstPrice]" Evaluator="Data1" PrintOn="ReportSummary1"/>
+    <Total Name="Mablagh" Expression="[sp_jCalcSingleBaze.fldCurectPrice]" Evaluator="Data1" PrintOn="ReportSummary1"/>
+    <Total Name="ArzeshAfzode" Expression="[sp_jCalcSingleBaze.fldValueAdded]" Evaluator="Data1" PrintOn="ReportSummary1"/>
+    <Total Name="MablaghNahayi" Expression="[sp_jCalcSingleBaze.fldFinalPrice]" Evaluator="Data1" PrintOn="ReportSummary1"/>
+    <Total Name="jarime" Expression="[sp_jCalcSingleBaze.fldFine]" Evaluator="Data1" PrintOn="ReportSummary1"/>
+    <Total Name="CountMonth" Expression="[sp_jCalcSingleBaze.fldCountMonth]" Evaluator="Data1" PrintOn="ReportSummary1"/>
+    <Total Name="Takhfif" Expression="[sp_jCalcSingleBaze.fldDiscount]" Evaluator="Data1" PrintOn="ReportSummary1"/>
+    <Total Name="SumKol" Expression="[sp_jCalcSingleBaze.fldDept]" Evaluator="Data1" PrintOn="ReportSummary1"/>
+  </Dictionary>
+  <ReportPage Name="Page1" Watermark.Enabled="true" Watermark.Text="این گواهی فقط به درخواست مودی صادر گردیده و هیچ ارزش دیگری نداشته و غیر قابل استناد می باشد." Watermark.Font="RasaFont, 60pt">
+    <ReportTitleBand Name="ReportTitle1" Width="718.2"/>
+    <PageHeaderBand Name="PageHeader1" Top="4" Width="718.2" Height="339.77">
+      <TableObject Name="Table3" Left="1.93" Top="2.83" Width="714.35" Height="100.75">
+        <TableColumn Name="Column59" Width="167.64"/>
+        <TableColumn Name="Column60" Width="387.11"/>
+        <TableColumn Name="Column61" Width="159.6"/>
+        <TableRow Name="Row4" Height="100.75">
+          <TableCell Name="Cell59" Text="تاریخ چاپ :[date]&#13;&#10;ساعت چاپ:[time]&#13;&#10;صفحه:[Page#] از [TotalPages#]" VertAlign="Center" RightToLeft="true" Font="RasaFont, 12pt"/>
+          <TableCell Name="Cell60" Text="[StateName]&#13;&#10;[MunicipalityName]&#13;&#10;[AreaName]&#13;&#10;[OfficeName]" HorzAlign="Center" VertAlign="Center" RightToLeft="true" Font="RasaFont, 12pt"/>
+          <TableCell Name="Cell61" HorzAlign="Right" VertAlign="Center" Font="RasaFont, 10pt">
+            <PictureObject Name="Picture1" Left="43.47" Top="11.33" Width="75.6" Height="75.6" DataColumn="sp_PictureSelect.fldPic"/>
+          </TableCell>
+        </TableRow>
+      </TableObject>
+      <TableObject Name="Table1" Left="15.14" Top="299.17" Width="687.93" Height="40.6" Border.Lines="All">
+        <TableColumn Name="Column1" Width="107.71"/>
+        <TableColumn Name="Column2" Width="73.71"/>
+        <TableColumn Name="Column3" Width="92.6"/>
+        <TableColumn Name="Column4"/>
+        <TableColumn Name="Column5"/>
+        <TableColumn Name="Column6" Width="80.32"/>
+        <TableColumn Name="Column7"/>
+        <TableColumn Name="Column8" Width="68.99"/>
+        <TableColumn Name="Column9"/>
+        <TableRow Name="Row1" Height="40.6">
+          <TableCell Name="Cell1" Border.Lines="All" Fill="Glass" Fill.Color="SkyBlue" Fill.Blend="0.2" Fill.Hatch="true" Text="جمع کل" HorzAlign="Center" VertAlign="Center" RightToLeft="true" Font="RasaFont, 11pt, style=Bold"/>
+          <TableCell Name="Cell2" Border.Lines="All" Fill="Glass" Fill.Color="SkyBlue" Fill.Blend="0.2" Fill.Hatch="true" Text="تخفیف" HorzAlign="Center" VertAlign="Center" RightToLeft="true" Font="RasaFont, 11pt, style=Bold"/>
+          <TableCell Name="Cell3" Border.Lines="All" Fill="Glass" Fill.Color="SkyBlue" Fill.Blend="0.2" Fill.Hatch="true" Text="تعداد ماه/روز" HorzAlign="Center" VertAlign="Center" RightToLeft="true" Font="RasaFont, 11pt, style=Bold"/>
+          <TableCell Name="Cell4" Border.Lines="All" Fill="Glass" Fill.Color="SkyBlue" Fill.Blend="0.2" Fill.Hatch="true" Text="جریمه" HorzAlign="Center" VertAlign="Center" RightToLeft="true" Font="RasaFont, 11pt, style=Bold"/>
+          <TableCell Name="Cell5" Border.Lines="All" Fill="Glass" Fill.Color="SkyBlue" Fill.Blend="0.2" Fill.Hatch="true" Text="مبلغ نهایی" HorzAlign="Center" VertAlign="Center" RightToLeft="true" Font="RasaFont, 11pt, style=Bold"/>
+          <TableCell Name="Cell26" Border.Lines="All" Fill="Glass" Fill.Color="SkyBlue" Fill.Blend="0.2" Fill.Hatch="true" Text="تبصره ب ماده43" HorzAlign="Center" VertAlign="Center" RightToLeft="true" Font="RasaFont, 11pt, style=Bold"/>
+          <TableCell Name="Cell27" Border.Lines="All" Fill="Glass" Fill.Color="SkyBlue" Fill.Blend="0.2" Fill.Hatch="true" Text="مبلغ موثر" HorzAlign="Center" VertAlign="Center" RightToLeft="true" Font="RasaFont, 11pt, style=Bold"/>
+          <TableCell Name="Cell28" Border.Lines="All" Fill="Glass" Fill.Color="SkyBlue" Fill.Blend="0.2" Fill.Hatch="true" Text="عوارض" HorzAlign="Center" VertAlign="Center" RightToLeft="true" Font="RasaFont, 11pt, style=Bold"/>
+          <TableCell Name="Cell29" Border.Lines="All" Fill="Glass" Fill.Color="SkyBlue" Fill.Blend="0.2" Fill.Hatch="true" Text="سال" HorzAlign="Center" VertAlign="Center" RightToLeft="true" Font="RasaFont, 11pt, style=Bold"/>
+        </TableRow>
+      </TableObject>
+      <TextObject Name="Text2" Left="297.29" Top="110.57" Width="123.62" Height="24.56" Text="محاسبات سر انگشتی" HorzAlign="Center" VertAlign="Center" RightToLeft="true" Font="RasaFont, 12pt, style=Bold"/>
+      <TextObject Name="Text3" Left="340.29" Top="142.58" Width="240.03" Height="23.61" Text="نوع مدل: [TypeModel]" VertAlign="Center" RightToLeft="true" Font="RasaFont, 11pt"/>
+      <TextObject Name="Text4" Left="66.61" Top="141.72" Width="240.03" Height="23.61" Text="نوع خودرو: [NoeKhodro]" VertAlign="Center" RightToLeft="true" Font="RasaFont, 11pt"/>
+      <TextObject Name="Text5" Left="340.23" Top="168.99" Width="240.03" Height="23.61" Text="نوع کابین: [NoeCabin]" VertAlign="Center" RightToLeft="true" Font="RasaFont, 11pt"/>
+      <TextObject Name="Text6" Left="67.08" Top="168.2" Width="240.03" Height="23.61" Text="سیستم خودرو: [SystemKhodro]" VertAlign="Center" RightToLeft="true" Font="RasaFont, 11pt"/>
+      <TextObject Name="Text7" Left="339.33" Top="194.6" Width="240.03" Height="23.61" Text="تیپ خودرو: [TipKhodro]" VertAlign="Center" RightToLeft="true" Font="RasaFont, 11pt"/>
+      <TextObject Name="Text8" Left="67.12" Top="193.69" Width="240.03" Height="23.61" Text="کلاس خودرو: [ClassKhodro]" VertAlign="Center" RightToLeft="true" Font="RasaFont, 11pt"/>
+      <TextObject Name="Text9" Left="339.3" Top="220.12" Width="240.03" Height="23.61" Text="مدل: [Model]" VertAlign="Center" RightToLeft="true" Font="RasaFont, 11pt"/>
+      <TextObject Name="Text10" Left="66.08" Top="218.27" Width="240.03" Height="23.61" Text="تاریخ اولین بیمه: [TarikhBime]" VertAlign="Center" RightToLeft="true" Font="RasaFont, 11pt"/>
+      <TextObject Name="Text11" Left="340.24" Top="245.66" Width="240.03" Height="23.61" Text="از سال: [AzSal]" VertAlign="Center" RightToLeft="true" Font="RasaFont, 11pt"/>
+      <TextObject Name="Text12" Left="66.11" Top="243.78" Width="240.03" Height="23.61" Text="تا سال: [TaSal]" VertAlign="Center" RightToLeft="true" Font="RasaFont, 11pt"/>
+    </PageHeaderBand>
+    <DataBand Name="Data1" Top="347.77" Width="718.2" Height="30.2" DataSource="sp_jCalcSingleBaze">
+      <TableObject Name="Table2" Left="15.13" Width="687.93" Height="30.2" Border.Lines="All" EvenStyle="Style2">
+        <TableColumn Name="Column10" Width="107.71"/>
+        <TableColumn Name="Column11" Width="73.71"/>
+        <TableColumn Name="Column12" Width="92.6"/>
+        <TableColumn Name="Column13"/>
+        <TableColumn Name="Column14"/>
+        <TableColumn Name="Column15" Width="80.32"/>
+        <TableColumn Name="Column16"/>
+        <TableColumn Name="Column17" Width="68.99"/>
+        <TableColumn Name="Column18"/>
+        <TableRow Name="Row2" Height="30.2">
+          <TableCell Name="Cell30" Border.Lines="All" Text="[sp_jCalcSingleBaze.fldDept]" Format="Number" Format.UseLocale="false" Format.DecimalDigits="0" Format.DecimalSeparator="," Format.GroupSeparator="," Format.NegativePattern="0" AutoShrink="FontSize" HorzAlign="Center" VertAlign="Center" RightToLeft="true" Font="RasaFont, 11pt"/>
+          <TableCell Name="Cell31" Border.Lines="All" Text="[sp_jCalcSingleBaze.fldDiscount]" Format="Number" Format.UseLocale="false" Format.DecimalDigits="0" Format.DecimalSeparator="," Format.GroupSeparator="," Format.NegativePattern="0" AutoShrink="FontSize" HorzAlign="Center" VertAlign="Center" RightToLeft="true" Font="RasaFont, 11pt"/>
+          <TableCell Name="Cell32" Border.Lines="All" Text="[sp_jCalcSingleBaze.fldCountMonth]" Format="Number" Format.UseLocale="false" Format.DecimalDigits="0" Format.DecimalSeparator="," Format.GroupSeparator="," Format.NegativePattern="0" AutoShrink="FontSize" HorzAlign="Center" VertAlign="Center" RightToLeft="true" Font="RasaFont, 11pt"/>
+          <TableCell Name="Cell33" Border.Lines="All" Text="[sp_jCalcSingleBaze.fldFine]" Format="Number" Format.UseLocale="false" Format.DecimalDigits="0" Format.DecimalSeparator="," Format.GroupSeparator="," Format.NegativePattern="0" AutoShrink="FontSize" HorzAlign="Center" VertAlign="Center" RightToLeft="true" Font="RasaFont, 11pt"/>
+          <TableCell Name="Cell34" Border.Lines="All" Text="[sp_jCalcSingleBaze.fldFinalPrice]" Format="Number" Format.UseLocale="false" Format.DecimalDigits="0" Format.DecimalSeparator="," Format.GroupSeparator="," Format.NegativePattern="0" AutoShrink="FontSize" HorzAlign="Center" VertAlign="Center" RightToLeft="true" Font="RasaFont, 11pt"/>
+          <TableCell Name="Cell35" Border.Lines="All" Text="[sp_jCalcSingleBaze.fldValueAdded]" Format="Number" Format.UseLocale="false" Format.DecimalDigits="0" Format.DecimalSeparator="," Format.GroupSeparator="," Format.NegativePattern="0" AutoShrink="FontSize" HorzAlign="Center" VertAlign="Center" RightToLeft="true" Font="RasaFont, 11pt"/>
+          <TableCell Name="Cell36" Border.Lines="All" Text="[sp_jCalcSingleBaze.fldCurectPrice]" Format="Number" Format.UseLocale="false" Format.DecimalDigits="0" Format.DecimalSeparator="," Format.GroupSeparator="," Format.NegativePattern="0" AutoShrink="FontSize" HorzAlign="Center" VertAlign="Center" RightToLeft="true" Font="RasaFont, 11pt"/>
+          <TableCell Name="Cell37" Border.Lines="All" Text="[sp_jCalcSingleBaze.fldFirstPrice]" Format="Number" Format.UseLocale="false" Format.DecimalDigits="0" Format.DecimalSeparator="," Format.GroupSeparator="," Format.NegativePattern="0" AutoShrink="FontSize" HorzAlign="Center" VertAlign="Center" RightToLeft="true" Font="RasaFont, 11pt"/>
+          <TableCell Name="Cell38" Border.Lines="All" Text="[sp_jCalcSingleBaze.fldyear]" AutoShrink="FontSize" HorzAlign="Center" VertAlign="Center" RightToLeft="true" Font="RasaFont, 11pt"/>
+        </TableRow>
+      </TableObject>
+    </DataBand>
+    <ReportSummaryBand Name="ReportSummary1" Top="381.97" Width="718.2" Height="27.38">
+      <TableObject Name="Table4" Left="15.14" Width="687.93" Height="27.38" Border.Lines="All">
+        <TableColumn Name="Column62" Width="107.71"/>
+        <TableColumn Name="Column63" Width="73.71"/>
+        <TableColumn Name="Column64" Width="92.6"/>
+        <TableColumn Name="Column65"/>
+        <TableColumn Name="Column66"/>
+        <TableColumn Name="Column67" Width="80.32"/>
+        <TableColumn Name="Column68"/>
+        <TableColumn Name="Column69" Width="68.99"/>
+        <TableColumn Name="Column70"/>
+        <TableRow Name="Row5" Height="27.38">
+          <TableCell Name="Cell62" Border.Lines="All" Text="[SumKol]" Format="Number" Format.UseLocale="false" Format.DecimalDigits="0" Format.DecimalSeparator="," Format.GroupSeparator="," Format.NegativePattern="0" AutoShrink="FontSize" HorzAlign="Center" VertAlign="Center" RightToLeft="true" Font="RasaFont, 11pt"/>
+          <TableCell Name="Cell63" Border.Lines="All" Text="[Takhfif]" Format="Number" Format.UseLocale="false" Format.DecimalDigits="0" Format.DecimalSeparator="," Format.GroupSeparator="," Format.NegativePattern="0" AutoShrink="FontSize" HorzAlign="Center" VertAlign="Center" RightToLeft="true" Font="RasaFont, 11pt"/>
+          <TableCell Name="Cell64" Border.Lines="All" Text="[CountMonth]" Format="Number" Format.UseLocale="true" AutoShrink="FontSize" HorzAlign="Center" VertAlign="Center" RightToLeft="true" Font="RasaFont, 11pt"/>
+          <TableCell Name="Cell65" Border.Lines="All" Text="[jarime]" Format="Number" Format.UseLocale="false" Format.DecimalDigits="0" Format.DecimalSeparator="," Format.GroupSeparator="," Format.NegativePattern="0" AutoShrink="FontSize" HorzAlign="Center" VertAlign="Center" RightToLeft="true" Font="RasaFont, 11pt"/>
+          <TableCell Name="Cell66" Border.Lines="All" Text="[MablaghNahayi]" Format="Number" Format.UseLocale="false" Format.DecimalDigits="0" Format.DecimalSeparator="," Format.GroupSeparator="," Format.NegativePattern="0" AutoShrink="FontSize" HorzAlign="Center" VertAlign="Center" RightToLeft="true" Font="RasaFont, 11pt"/>
+          <TableCell Name="Cell67" Border.Lines="All" Text="[ArzeshAfzode]" Format="Number" Format.UseLocale="false" Format.DecimalDigits="0" Format.DecimalSeparator="," Format.GroupSeparator="," Format.NegativePattern="0" AutoShrink="FontSize" HorzAlign="Center" VertAlign="Center" RightToLeft="true" Font="RasaFont, 11pt"/>
+          <TableCell Name="Cell68" Border.Lines="All" Text="[Mablagh]" Format="Number" Format.UseLocale="false" Format.DecimalDigits="0" Format.DecimalSeparator="," Format.GroupSeparator="," Format.NegativePattern="0" AutoShrink="FontSize" HorzAlign="Center" VertAlign="Center" RightToLeft="true" Font="RasaFont, 11pt"/>
+          <TableCell Name="Cell69" Border.Lines="All" Text="[Avarez]" Format="Number" Format.UseLocale="false" Format.DecimalDigits="0" Format.DecimalSeparator="," Format.GroupSeparator="," Format.NegativePattern="0" AutoShrink="FontSize" HorzAlign="Center" VertAlign="Center" RightToLeft="true" Font="RasaFont, 11pt"/>
+          <TableCell Name="Cell70" Border.Lines="All" Text="جمع کل" AutoShrink="FontSize" HorzAlign="Center" VertAlign="Center" RightToLeft="true" Font="RasaFont, 11pt"/>
+        </TableRow>
+      </TableObject>
+    </ReportSummaryBand>
+    <PageFooterBand Name="PageFooter1" Top="413.35" Width="718.2" Height="32.12" CanGrow="true">
+      <TextObject Name="Text1" Left="10.36" Top="3.77" Width="703.02" Height="25.5" CanGrow="true" GrowToBottom="true" Text="[MyTablighat]" VertAlign="Center" RightToLeft="true" Font="RasaFont, 11pt, style=Bold"/>
+    </PageFooterBand>
+  </ReportPage>
+</Report>

@@ -1,0 +1,310 @@
+﻿@using Ext.Net.MVC
+@using Hogaf.ExtNet.UX
+@using Ext.Net;
+@{
+    var X = Html.X();
+}
+
+<style>
+    .LblStyle {
+        height: auto;
+    }
+
+    .LblRed {
+        color: red;
+    }
+
+</style>
+
+@(Html.X().Window().Modal(true)
+.Width(560)
+.Resizable(false)
+            .Title("الگوی شماره دهی")//.Listeners(l => l.AfterRender.Handler = "LoadPattern()")
+                 .ID("NewPattern")
+        .Closable(true).ButtonAlign(Ext.Net.Alignment.Center)
+    .CloseAction(Ext.Net.CloseAction.Destroy)
+        .Layout(LayoutType.Fit)
+                   .Buttons(X.Button().Text("ذخیره").Icon(Ext.Net.Icon.Disk)//.ToolTip("کلید میانبر F8")
+                               .Listeners(l =>
+                               {
+                                   l.Click.Handler = "SavePattern();";
+
+                               })
+                               .ItemID("btnSave")
+                                ,
+                                X.Button().Text("خروج").Icon(Ext.Net.Icon.DoorOut)//.ToolTip("کلید میانبر Esc")
+                                               .OnClientClick("App.NewPattern.destroy()"))
+    .Items(
+        X.FormPanel()
+        .Border(false)
+        //.Margin(5)
+            .DefaultButton("btn")
+        .TitleAlign(Ext.Net.TitleAlign.Center)
+           .Layout(LayoutType.Fit)
+                .Items(
+
+                X.Panel().Border(false)//.PaddingSpec("5px 0 10px 0")
+                    .Layout(Ext.Net.LayoutType.VBox)
+                    .LayoutConfig(new Ext.Net.VBoxLayoutConfig { Align = VBoxAlign.Center })
+            .Items(
+                    X.Panel().Border(false)
+                  .Defaults(new { Margin = 3 })
+                      
+            .Items(
+                 X.FieldSet()
+                .Border(true)
+                    .Width(515)
+                .Title("مشخصات الگو")
+                          //.Defaults(new { Margin = 3 })
+                               .LayoutConfig(new TableLayoutConfig { Columns = 1 }) 
+                .Items(
+                X.Hidden().ItemID("fldId"),
+                    X.Hidden().ItemID("countryId"),
+                    X.Hidden().ItemID("countrySID"),
+                    X.Hidden().ItemID("countryNType"),
+                     X.FieldSet().PaddingSpec("0 0 0 25px")
+                .Border(false)
+                .Defaults(new { Margin = 2 })
+                   .LayoutConfig(new TableLayoutConfig { Columns = 3 })
+                   .Items(
+                       X.Label("الگو:"),
+                        X.ComboBox()
+                            .Width(190)
+                            .ItemID("cboType")
+                            .Editable(false)
+                            .TypeAhead(true)
+                            .QueryMode(DataLoadMode.Local)
+                            .TriggerAction(TriggerAction.All)
+                            .SelectedItems(new { Value = "0" })
+                            .Items(
+                                new ListItem("شماره ثبت", "0"),
+                                new ListItem("شمارنده", "1"),
+                                new ListItem("کد موقعیت", "2"),
+                                new ListItem("سال", "3")
+                                                )
+                           , X.Button().Text("اضافه")
+                           .Icon(Ext.Net.Icon.Add)  
+                           .Listeners(l=>l.Click.Handler="AddParams()")
+                   )
+                     ,X.FieldSet()
+                     .PaddingSpec("0 0 0 13px")
+                    .Border(false)
+                .Defaults(new { Margin = 2 })
+                   .LayoutConfig(new TableLayoutConfig { Columns = 3 })
+                   .Items(
+                       X.Label("کاراکتر:"),//.MarginSpec("0 0 8px 0"),
+                        X.TextField()
+                            .ItemID("txtChar")
+                            .Width(190)
+                            .MsgTarget(Ext.Net.MessageTarget.Side)
+                        , X.Button().Text("اضافه")
+                        .Icon(Ext.Net.Icon.Add)
+                            .Listeners(l => l.Click.Handler = "AddText()")
+                        )
+                        , X.FieldSet()
+                         .PaddingSpec("0 0 0 5px")
+                    .Border(false)
+                .Defaults(new { Margin = 2 })
+                   .LayoutConfig(new TableLayoutConfig { Columns = 3 })
+                   .Items(
+                          X.Label("متن الگو:"),
+                        X.TextField()
+                            .ItemID("txtPattern")
+                            .Width(350)
+                            .AllowBlank(false)
+                            .BlankText("لطفا متن الگو را تکمیل نمایید.")
+                            .MsgTarget(Ext.Net.MessageTarget.Side)
+                        , X.Button().Text("حذف الگو")
+                        .Icon(Ext.Net.Icon.Delete)
+                            .Listeners(l => l.Click.Handler = "clearParams()"))  
+                                    
+                            )
+                        ),
+                              X.Panel().Layout(LayoutType.VBox)
+                                   .LayoutConfig(new Ext.Net.VBoxLayoutConfig { Align = VBoxAlign.Center })
+                              .Border(false).Defaults(new { Margin = 5 })
+                        .Items(
+                        X.FieldSet()
+                    .Border(true)
+                    .Title("موقعیت در تقسیمات کشوری")
+                    .Width(515)
+                    .Height(400)
+                    .Layout(LayoutType.Column)
+                    .Defaults(new { Margin = 2 })
+                    .Items(
+                              X.TreePanel()
+                                .ID("TreeCountryP")
+                                .AutoScroll(true)
+                                .Width(490)
+                                .ColSpan(2)
+                                .Expand(true)
+                                .Height(300)
+                                .Expand(true)
+                                .UseArrows(true)
+                                .Border(false)
+                                .Listeners(a =>
+                                    {
+                                        a.Select.Handler = "GetTreeCountryIdP(record);";
+                                        a.AfterRender.Handler = "this.getRootNode().expand();";
+                                    })
+                                .Root(Html.X().Node().NodeID("1").DataPath("0").Cls("0").Text("جمهوری اسلامی ایران").IconFile("/Content/images/0.png"))
+                                .Listeners(l =>
+                                {
+                                    l.BeforeLoad.Fn = "nodeLoadTreeCountryP";
+                                })
+                                , X.Label()
+                                .Cls("LblRed")
+                                .Text("مورد انتخاب شده: ")
+                                , X.Label()
+
+                                .Cls("LblStyle")
+                                .ItemID("lblTitleCountry")
+                                )
+                            )
+                        )
+
+            )
+        )
+)
+@(Html.X().KeyMap()
+            .ID("NewPatternMap")
+            .Target("={App.NewPattern.getTargetEl()}")
+            .Binding(b =>
+            {
+                b.Add(Html.X().KeyBinding()
+                .KeysString(((int)Ext.Net.KeyCode.F8).ToString())
+                .Handler("SavePattern(); ")
+                );
+
+            }))
+<script type="text/javascript">
+    var Pattern = "";
+    function AddParams() {
+        var cboType = App.NewPattern.queryById('cboType');
+        var txtPattern = App.NewPattern.queryById('txtPattern');
+        var Pat = txtPattern.getValue();
+        txtPattern.setValue(Pat + cboType.getDisplayValue() + '*');
+        Pattern = Pattern + cboType.getDisplayValue() + '*';
+    }
+    function AddText() {
+        var txtChar = App.NewPattern.queryById('txtChar');
+        var txtPattern = App.NewPattern.queryById('txtPattern');
+        var Pat = txtPattern.getValue();
+        txtPattern.setValue(Pat + txtChar.getValue() + '*');
+        Pattern = Pattern + txtChar.getValue() + '*';
+        txtChar.setValue("");
+    }
+    function clearParams() {
+        var txtPattern = App.NewPattern.queryById('txtPattern');
+        txtPattern.setValue("");
+        Pattern = "";
+    }
+    var nodeLoadTreeCountryP = function (store, operation, options) {
+        var node = operation.node;
+        Ext.net.DirectMethod.request({
+            url: '/NewVer/Pattern_New/NodeLoadTreeCountry',
+            params: {
+                nod: node.getId()
+            },
+            success: function (result) {
+                node.set('loading', false);
+                node.set('loaded', true);
+                node.appendChild(result);
+                node.expand();
+            },
+
+            failure: function (errorMsg) {
+                Ext.Msg.alert('Failure', errorMsg);
+            }
+        });
+
+        return false;
+    };
+
+    function GetTreeCountryIdP(record) {
+        var path = record.getPath("text");
+        var Text = path.split('/').splice(1).join("-->");
+        App.NewPattern.queryById("countryId").setValue(record.getId());
+        App.NewPattern.queryById("countrySID").setValue(record.data.cls);
+        App.NewPattern.queryById("countryNType").setValue(record.data.dataPath);
+        if (App.NewPattern.queryById("countryNType").getValue() >= 5) {
+            App.NewPattern.queryById('lblTitleCountry').setText(Text);
+        }
+        else {
+            App.NewPattern.queryById('lblTitleCountry').setText('شما مجاز به انتخاب این گزینه نمی باشید.');
+            App.NewPattern.queryById("countryNType").setValue(-1);
+        }
+    };
+
+  
+    function SavePattern() {
+        var txtPattern = App.NewPattern.queryById('txtPattern');
+        var Id = App.NewPattern.queryById('fldId');
+        var er = false;
+        if (txtPattern.validate() == false) {
+            er = true;
+        }
+        if (App.TreeCountryP.getSelectionModel().getLastSelected() == undefined) {
+            Ext.MessageBox.show({
+                Name: "حطا",
+                msg: "لطفا شهرداری مورد نظر را از قسمت تقسیمات کشوری انتخاب نمایید.",
+                icon: Ext.MessageBox.ERROR,
+                buttons: Ext.MessageBox.OK
+            });
+            return;
+        }
+        else if (App.NewPattern.queryById("countryNType").getValue() < 5) {
+            Ext.MessageBox.show({
+                Name: "حطا",
+                msg: "موقعیت انتخاب شده در تقسیمات کشوری مجاز نیست.",
+                icon: Ext.MessageBox.ERROR,
+                buttons: Ext.MessageBox.OK
+            });
+            return;
+        }
+        if (er == true)
+            return;
+        App.NewPattern.body.mask("در حال ذخیره سازی...");
+        Ext.net.DirectMethod.request({
+            url: '/NewVer/Pattern_New/Save',
+            params: {
+                fldTypeCountryDivisions: App.NewPattern.queryById("countryNType").getValue(),
+                fldCodeCountryDivisions: App.NewPattern.queryById("countrySID").getValue(),
+                fldPattern: Pattern,
+                fldId: Id.getValue()
+            },
+            success: function (data) {
+                var ic = Ext.MessageBox.INFO;
+                if (data.Er == 1)
+                    ic = Ext.MessageBox.ERROR;
+                Ext.MessageBox.show({
+                    Name: data.MsgName,
+                    msg: data.Msg,
+                    icon: ic,
+                    buttons: Ext.MessageBox.OK
+                });
+                App.NewPattern.body.mask().hide();
+                App.Pattern.queryById('GridPattern').store.load();
+                if (data.Er != 1)
+                    ClearPattern();
+            }
+
+        });
+    }
+    function ClearPattern() {
+        App.NewPattern.queryById('txtPattern').setValue("");
+        App.NewPattern.queryById('txtChar').setValue("");
+        App.NewPattern.queryById("countryId").setValue(0);
+        App.NewPattern.queryById("countrySID").setValue(0);
+        App.NewPattern.queryById("countryNType").setValue(0);
+        App.NewPattern.queryById('fldId').setValue(0);
+        App.TreeCountryP.getSelectionModel().select(0);
+    }
+  /*  function EnterNext() {
+        var keyfield = App.NewPattern.queryById(Ext.getCmp((Ext.Element.getActiveElement()).name).itemId);
+        var nextfld = keyfield.nextSibling();
+        nextfld.focus();
+        nextfld.selectText();
+
+    }*/
+</script>

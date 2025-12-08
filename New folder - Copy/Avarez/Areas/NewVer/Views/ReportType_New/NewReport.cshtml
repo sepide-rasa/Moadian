@@ -1,0 +1,397 @@
+﻿@using Ext.Net.MVC
+@using Hogaf.ExtNet.UX
+@using Ext.Net;
+@{
+    var X = Html.X();
+}
+
+@(Html.X().Window()
+    .Listeners(l => l.AfterRender.Handler = "LoadReport()")
+    .Modal(true)
+    .Resizable(false)
+    .Width(610)
+    .Height(400)
+    .Title("ثبت گزارش جدید")
+    .Layout(LayoutType.Fit)
+    .ID("NewReport")
+    .Closable(true)
+    .ButtonAlign(Ext.Net.Alignment.Center)
+    .Buttons(
+        X.Button()
+            .Text("ذخیره")
+            .Icon(Ext.Net.Icon.Disk)
+        //.ToolTip("کلید میانبر F8")
+            .Listeners(l => l.Click.Handler = "SaveReport();"),
+        X.Button()
+            .Text("خروج")
+            .Icon(Ext.Net.Icon.DoorOut)
+        //.ToolTip("کلید میانبر Esc")
+            .OnClientClick("App.NewReport.destroy();"))
+    .CloseAction(Ext.Net.CloseAction.Destroy)
+    .Items(
+        X.FormPanel()
+            .Border(false)
+            .Layout(LayoutType.Fit)
+            .Items(
+                X.Panel()
+                    .Border(false)
+                    .PaddingSpec("15px 0 0 0")
+                    .Layout(LayoutType.VBox)
+                    .LayoutConfig(new VBoxLayoutConfig { Align = VBoxAlign.Center })
+                    .Items(
+                    X.Hidden().ItemID("fldId"),
+                        X.FieldSet()
+                            .Border(true)
+                            .Height(150)
+                            .Title("انتخاب تصویر گزارش(حداکثر حجم مجاز: 100KB)")
+                            .Layout(LayoutType.HBox)
+                            .LayoutConfig(new HBoxLayoutConfig { Align = HBoxAlign.Middle })
+        /*.LayoutConfig(new TableLayoutConfig { Columns=3})*/
+                            .Width(565)
+        //.Defaults(new { Margin = 2 })
+                            .Items(
+                                X.FileUploadField()
+                                    .ID("FileUploadField1")
+                                    .MarginSpec("0 10px 0 0")
+                                    .Icon(Ext.Net.Icon.DiskUpload)
+                                    .ButtonOnly(true)
+                                    .ButtonText("انتخاب")
+                                    .DirectEvents(l =>
+                                    {
+                                        l.Change.Action = "Upload";
+                                        l.Change.Success = "hideprogressReport();";
+                                    })
+                                    .Listeners(l => l.Change.Fn = "showFile"),
+                                X.Container()
+                                    .Content(@<div id="fi-button-msg" style="width: 350px; text-align:right;"><b>فایل انتخاب شده:</b></div>),
+                                X.Panel()
+                                    .Border(false)
+                                    .Layout(LayoutType.VBox)
+                                        .LayoutConfig(new VBoxLayoutConfig { Align=VBoxAlign.Center})
+                                    .Items(
+                                        X.Label("پیش نمایش"),
+                                        X.Panel()
+                                            .Frame(true)
+                                            .MarginSpec("3px 0 0 0")
+                                            .Layout(LayoutType.Fit)
+                                            .Items(
+                                                X.Image()
+                                                    .ItemID("Image")
+                                                    .Flex(1)
+                                                    .ImageUrl("/Content/Blank.jpg")
+                                                    .Width(80)
+                                                    .Height(80)
+                                                    //.PaddingSpec("0 0 15px 0")
+                                                    .Border(true)
+                                                    .Frame(true)))
+                            ),
+                                X.FieldSet()
+                                .Border(true)
+                              //  .Height(70)
+                                .Title("انتخاب فایل گزارش")
+                                .Layout(LayoutType.VBox)
+                                .LayoutConfig(new VBoxLayoutConfig { Align = VBoxAlign.Right })
+            //.LayoutConfig(new TableLayoutConfig { Columns=3})
+                                .Width(565)
+            //.Defaults(new { Margin = 2 })
+                                .Items(
+                                        X.FieldSet()
+                                    .MarginSpec("10px 0 0 0")
+                                        .Border(false)
+                                      //  .Height(70)
+                                        .Layout(LayoutType.HBox)
+                                        .LayoutConfig(new HBoxLayoutConfig { Align = HBoxAlign.Middle })
+                                      .Items(
+
+                                        X.FileUploadField()
+                                            .FieldStyle("direction:ltr;")
+                                            .ID("FileUploadField")
+                                            .MarginSpec("0 10px 0 0")
+                                        .ButtonOnly(true).ButtonText("انتخاب")
+                                        .DirectEvents(l =>
+                                                {
+                                                    l.Change.Action = "UploadFileNew";
+                                                    l.Change.Success = "hideprogressDocuments();";
+                                                }
+                                            )
+                                        .Listeners(l => l.Change.Fn = "showFile1")
+                                        .Icon(Ext.Net.Icon.DiskUpload)
+                                            , X.Button()
+                                                .MarginSpec("0 10px 0 0")
+                                        .ID("btnDownload")
+                                        .Text("دانلود")
+                                        .Icon(Ext.Net.Icon.DiskDownload)
+                                        .Listeners
+                                        (l =>
+                                            {
+                                                l.Click.Handler = "Download();";
+                                            }
+                                                )//.ColSpan(2)
+                                        , X.Container().Content(@<div id="fi-button-msg1" style="width: 350px; text-align:right;"><b>فایل انتخاب شده:</b></div>)),
+                                            X.Label("توضیحات:")
+                                        .MarginSpec("10px 0 0 0"),
+                                                            X.TextArea()//.FieldLabel("توضیحات:")
+                                                            .LabelAlign(LabelAlign.Top)
+                                                        //.RTL(true)
+                                                        .ItemID("txtDesc").ColSpan(3)
+                                                            .Width(540)
+                                        )
+
+
+                                    
+                )
+            )
+        )
+)
+
+<script type="text/javascript">
+    var MojazReport = 0;
+    var sizeeReport = 0;
+    var EndUploadReport = false;
+
+    var MojazDocuments = 0;
+    var sizeeDocuments = 0;
+    var fileId = 0;
+    var EndUploadDocuments = false;
+
+    var CheckReport = setInterval(CheckEndReport, 500);
+
+    function CheckEndReport() {
+        if (EndUploadReport == true) {
+            Ext.net.DirectMethod.request({
+                url: '/NewVer/ReportType_New/ShowPic',
+                success: function (data) {
+                    value = "data:image/gif;base64," + data.image;
+                    App.NewReport.queryById('Image').setImageUrl(value);
+                }
+            });
+
+            Ext.MessageBox.hide();
+            Ext.Msg.alert('عملیات موفق', 'فایل با موفقیت آپلود شد.');
+            clearInterval(CheckEndReport);
+            EndUploadReport = false;
+        }
+    }
+    var showFile = function (fb, v) {
+        var id = fb.fileInputEl.dom.id;
+        var el = Ext.get('fi-button-msg');
+        if (v) {
+            showProgressBarReport();
+            if (v.split('.').pop().toLowerCase() == "jpg" || v.split('.').pop().toLowerCase() == "png") {
+                MojazReport = 1;
+                if (document.getElementById(id).files[0].size <= 102400) {
+                    sizeeReport = 1;
+                }
+                if (sizeeReport == 1) {
+                    el.update('<b>فایل انتخاب شده:</b> ' + v);
+                }
+                else {
+                    el.update('<b>فایل انتخاب شده:</b> ');
+                }
+
+                if (!el.isVisible()) {
+                    el.slideIn('t', {
+                        duration: .2,
+                        easing: 'easeIn',
+                        callback: function () {
+                            el.highlight();
+                        }
+                    });
+                } else {
+                    el.highlight();
+                }
+            }
+            else {
+                el.update('<b>فایل انتخاب شده:</b> ');
+            }
+        }
+    };
+
+    function hideprogressReport() {
+        if (MojazReport == 1 && sizeeReport == 1) {
+            EndUploadReport = true;
+        }
+        MojazReport = 0;
+        sizeeReport = 0;
+    }
+
+    function showProgressBarReport() {
+        Ext.MessageBox.show({
+            msg: 'لطفاً منتظر باشید',
+            progressText: 'در حال آپلود فایل...',
+            width: 300,
+            wait: true,
+            waitConfig:
+            {
+                interval: 200,
+                text: 'در حال آپلود فایل...',
+                scope: this
+            }
+        });
+    }
+
+    function LoadReport() {
+        if ('@ViewBag.Id' != '0') {
+            App.NewReport.body.mask("در حال بارگذاری...");
+            Ext.net.DirectMethod.request({
+                url: '/NewVer/ReportType_New/Details',
+                params: {
+                    Id: '@ViewBag.Id'
+                },
+                success: function (data) {
+                    if (data.Er == 1) {
+                        Ext.MessageBox.show({
+                            title: data.MsgTitle,
+                            msg: data.Msg,
+                            icon: Ext.MessageBox.ERROR,
+                            buttons: Ext.MessageBox.OK
+                        });
+                    }
+                    else {
+                        var Id = App.NewReport.queryById('fldId');
+                        Id.setValue(data.fldId);
+                        var txtDesc = App.NewReport.queryById('txtDesc');
+                        txtDesc.setValue(data.fldDesc);
+                        if (data.Image != "") {
+                            var fldfile = "data:image/gif;base64," + data.Image;
+                            App.NewReport.queryById('Image').setImageUrl(fldfile);
+                        }
+                        else {
+                            App.NewReport.queryById('Image').setImageUrl("/Content/Blank.jpg");
+                        }
+                    }
+                    App.NewReport.body.mask().hide();
+                }
+            });
+        }
+        else
+            App.NewReport.queryById('btnDownload').setDisabled(true);
+    }
+
+    function SaveReport() {
+        var txtDesc = App.NewReport.queryById('txtDesc');
+        var Id = App.NewReport.queryById('fldId');
+
+
+        App.NewReport.body.mask("در حال ذخیره سازی...");
+        Ext.net.DirectMethod.request({
+            url: '/NewVer/ReportType_New/Save',
+            params: {
+                fldID: Id.getValue(),
+                fldDesc: txtDesc.getValue(),
+                fldReportTypeId: '@ViewBag.ReportId'
+            },
+            success: function (data) {
+                var ic = Ext.MessageBox.INFO;
+                if (data.Er == 1)
+                    ic = Ext.MessageBox.ERROR;
+                Ext.MessageBox.show({
+                    title: data.MsgTitle,
+                    msg: data.Msg,
+                    icon: ic,
+                    buttons: Ext.MessageBox.OK
+                });
+                App.Reports.queryById('GridReports').store.load();
+                if (data.Er == 0) {
+                    ClearReport();
+                }
+                App.NewReport.body.mask().hide();
+            }
+        });
+    }
+
+    function ClearReport() {
+        App.NewReport.queryById('txtDesc').setValue("");
+        App.NewReport.queryById('fldId').setValue(0);
+        App.NewReport.queryById('Image').setImageUrl("/Content/Blank.jpg");
+        Ext.get('fi-button-msg').update('<b>فایل انتخاب شده:</b> ');
+        Ext.get('fi-button-msg1').update('<b>فایل انتخاب شده:</b> ');
+    }
+
+    function hideprogressDocuments() {
+        if (MojazDocuments == 1 && sizeeDocuments == 1) {
+            EndUploadDocuments = true;
+        }
+        MojazDocuments = 0;
+        sizeeDocuments = 0;
+    }
+    var CheckDocuments = setInterval(CheckEndDocuments, 500);
+
+    function CheckEndDocuments() {
+        if (EndUploadDocuments == true) {
+            Ext.MessageBox.hide();
+            Ext.Msg.alert('عملیات موفق', 'فایل با موفقیت آپلود شد.');
+            clearInterval(CheckEndDocuments);
+            EndUploadDocuments = false;
+        }
+    }
+    var showFile1 = function (fb, v) {
+        var id = fb.fileInputEl.dom.id;
+        var el = Ext.get('fi-button-msg1');
+        if (v) {
+            showProgressBarDocuments();
+            if (v.split('.').pop().toLowerCase() == "frx") {
+                MojazDocuments = 1;
+                if (document.getElementById(id).files[0].size <= 104857600) {
+                    sizeeDocuments = 1;
+                }
+                if (sizeeDocuments == 1) {
+                    el.update('<b>فایل انتخاب شده:</b> ' + v);
+                }
+                else {
+                    el.update("");
+                }
+
+                if (!el.isVisible()) {
+                    el.slideIn('t', {
+                        duration: .2,
+                        easing: 'easeIn',
+                        callback: function () {
+                            el.highlight();
+                        }
+                    });
+                } else {
+                    el.highlight();
+                }
+            }
+            else {
+                el.update("");
+            }
+        }
+    };
+    function showProgressBarDocuments() {
+        Ext.MessageBox.show({
+            msg: 'لطفاً منتظر باشید',
+            progressText: 'در حال آپلود فایل...',
+            width: 300,
+            wait: true,
+            waitConfig:
+            {
+                interval: 200,
+                text: 'در حال آپلود فایل...',
+                scope: this
+            }
+        });
+    }
+    function Download() {
+        var Id = App.NewReport.queryById('fldId').getValue();
+        if (Id != 0) {
+            window.location.href = '@Url.Content("/NewVer/ReportType_New/DownloadFile?Id=")' + Id;
+        }
+        else {
+            Ext.MessageBox.show({
+                title: "خطا",
+                msg: "فایل مورد نظر انتخاب نشده است.",
+                icon: Ext.MessageBox.ERROR,
+                buttons: Ext.MessageBox.OK
+            });
+        }
+    }
+    function EnterNext() {
+        var keyfield = App.NewCustomer.queryById(Ext.getCmp((Ext.Element.getActiveElement()).name).itemId);
+        var nextfld = keyfield.nextSibling();
+        nextfld.focus();
+        nextfld.selectText();
+    }
+
+</script>

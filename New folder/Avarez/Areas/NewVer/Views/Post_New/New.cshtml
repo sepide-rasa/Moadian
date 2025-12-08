@@ -1,0 +1,166 @@
+﻿@using Ext.Net.MVC
+@using Hogaf.ExtNet.UX
+@using Ext.Net;
+@{
+    var X = Html.X();
+}
+
+@(Html.X().Window()
+    .Modal(true)
+         .Resizable(false)
+                    .Listeners(l => l.AfterRender.Handler = "LoadPost()")
+    .Width(300)
+    .Height(220)
+    .Title("تعریف سمت")
+    //.Layout(LayoutType.Fit)
+            .ID("NewPost")
+    .Closable(true)
+    .ButtonAlign(Ext.Net.Alignment.Center)
+    .Buttons(
+        X.Button()
+            .Text("ذخیره")
+            .Icon(Ext.Net.Icon.Disk)
+        //.ToolTip("کلید میانبر F8")
+                    .Listeners(l => l.Click.Handler = "SavePost();"),
+        X.Button()
+            .Text("خروج")
+            .Icon(Ext.Net.Icon.DoorOut)
+        //.ToolTip("کلید میانبر Esc")
+                    .OnClientClick("App.NewPost.destroy();"))
+    .CloseAction(Ext.Net.CloseAction.Destroy)
+    .Items(
+        X.FormPanel()
+            .Border(false)
+          //  .Layout(LayoutType.Fit)
+            .Items(
+                X.Panel()
+                    .Border(false)
+                    .PaddingSpec("15px 0 0 0")
+                    .Layout(LayoutType.VBox)
+                    .LayoutConfig(new VBoxLayoutConfig { Align = VBoxAlign.Center })
+                    .Items(
+                        X.FieldSet()
+                            .Border(true)
+                            .Title("سمت")
+                            .Height(130)
+                            .Defaults(new { Margin = 2 })
+                            .Layout(LayoutType.Table)
+        //.Title("رنگ خودرو")
+                            .LayoutConfig(new TableLayoutConfig { Columns = 2 })
+                            .Items(
+                                X.Hidden()
+                                    .ItemID("fldId"),
+
+                                X.Label("سمت:"),
+                                X.TextField()
+                                            .ItemID("txtPost")
+                                    .Width(190)
+                                    .AllowBlank(false)
+                                    .BlankText("لطفا سمت را وارد نمایید.")
+                                    .MsgTarget(Ext.Net.MessageTarget.Side),
+                                  
+
+                                X.Label("توضیحات:"),
+                                X.TextArea()
+                                    .ItemID("txtDesc")
+                                    .Width(190)
+                            )
+
+
+                )
+            )
+        )
+)
+
+<script type="text/javascript">
+
+
+
+    function LoadPost() {
+        if ('@ViewBag.Id' != '0') {
+            App.NewPost.body.mask("در حال بارگذاری...");
+            Ext.net.DirectMethod.request({
+                url: '/NewVer/Post_New/Details',
+                params: {
+                    Id: '@ViewBag.Id'
+                },
+                success: function (data) {
+                    if (data.Er == 0) {
+                        var txtPost = App.NewPost.queryById('txtPost');
+                        txtPost.setValue(data.fldName);
+                        var txtDesc = App.NewPost.queryById('txtDesc');
+                        txtDesc.setValue(data.fldDesc);
+                        var Id = App.NewPost.queryById('fldId');
+                        Id.setValue(data.fldId);
+                    }
+                    else if (data.Er == 1) {
+                        Ext.MessageBox.show({
+                            title: data.MsgTitle,
+                            msg: data.Msg,
+                            icon: Ext.MessageBox.ERROR,
+                            buttons: Ext.MessageBox.OK
+                        });
+                    }
+                    App.NewPost.body.mask().hide();
+                }
+            });
+        }
+        else {
+            App.NewPost.queryById('txtPost').validate();
+        }
+    }
+
+
+    function SavePost() {
+        var txtPost = App.NewPost.queryById('txtPost');
+        var Id = App.NewPost.queryById('fldId');
+        var txtDesc = App.NewPost.queryById('txtDesc');
+
+        var er = false;
+
+        if (txtPost.validate() == false) {
+            er = true;
+        }
+        if (er == true)
+            return;
+        App.NewPost.body.mask("در حال ذخیره سازی...");
+        Ext.net.DirectMethod.request({
+            url: '/NewVer/Post_New/Save',
+            params: {
+                fldID: Id.getValue(),
+                fldName: txtPost.getValue(),
+                fldDesc: txtDesc.getValue()
+            },
+            success: function (data) {
+                var ic = Ext.MessageBox.INFO;
+                if (data.Er == 1)
+                    ic = Ext.MessageBox.ERROR;
+                Ext.MessageBox.show({
+                    title: data.MsgTitle,
+                    msg: data.Msg,
+                    icon: ic,
+                    buttons: Ext.MessageBox.OK
+                });
+                if (data.Er != 1) {
+                    ClearPost();
+                }
+                App.NewPost.body.mask().hide();
+                App.Post.queryById('GridPost').store.load();
+            }
+        });
+    }
+
+    function ClearPost() {
+        App.NewPost.queryById('txtDesc').setValue("");
+        App.NewPost.queryById('txtPost').setValue("");
+        App.NewPost.queryById('fldId').setValue(0);
+    }
+
+   /* function EnterNext() {
+        var keyfield = App.NewCustomer.queryById(Ext.getCmp((Ext.Element.getActiveElement()).name).itemId);
+        var nextfld = keyfield.nextSibling();
+        nextfld.focus();
+        nextfld.selectText();
+    }*/
+
+</script>

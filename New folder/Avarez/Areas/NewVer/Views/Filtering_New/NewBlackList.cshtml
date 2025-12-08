@@ -1,0 +1,152 @@
+﻿@using Ext.Net.MVC
+@using Hogaf.ExtNet.UX
+@using Ext.Net;
+@{
+    var X = Html.X();
+}
+@(Html.X().Window().Modal(true).Listeners(li => li.AfterRender.Handler = "LoadBlackList();")
+    .Width(250)
+    .Title("ثبت لیست سیاه")
+    .ID("NewBlackList")
+    .Closable(true)
+    .CloseAction(Ext.Net.CloseAction.Destroy)
+    .Items(
+        X.FormPanel().Border(false)
+        .Border(false).ButtonAlign(Ext.Net.Alignment.Center)
+
+        .DefaultButton("btn")
+        .TitleAlign(Ext.Net.TitleAlign.Center)
+               .Buttons(X.Button().Text("ذخیره").Icon(Ext.Net.Icon.Disk)//.ToolTip("کلید میانبر F8")
+                           .Listeners(l =>
+                           {
+                               l.Click.Handler = "SaveBlackList();";
+
+                           })
+                           .ItemID("btnSave")
+                            ,
+                            X.Button().Text("خروج").Icon(Ext.Net.Icon.DoorOut)//.ToolTip("کلید میانبر Esc")
+                                            .OnClientClick("App.NewBlackList.destroy()"))
+
+
+                .Items(
+                X.Panel().Border(false)
+
+            .Items(
+                X.FieldSet().Border(false)
+                .Center()
+                .LayoutConfig(new Ext.Net.TableLayoutConfig { Columns = 1 })
+                    .Defaults(new { Margin = 10 })
+                .Items(
+                X.Hidden().ItemID("Id")
+
+                        , X.ComboBox()
+                        .LabelAlign(Ext.Net.LabelAlign.Top)
+                        .ItemID("CboType")
+                            .FieldLabel("نوع محدودیت")
+                        .Editable(false)
+                        .TypeAhead(true)
+                            .BlankText("لطفا نوع محدودیت را انتخاب کنید.")
+                        .QueryMode(DataLoadMode.Local)
+                        .TriggerAction(TriggerAction.All)
+                        .Items(
+                                new ListItem("جلوگیری از انجام هر کاری", "1"),
+                                new ListItem("جلوگیری از صدور فیش", "2")
+                        ).Width(200)
+                        .SelectedItems(new { Value = "1" })
+        //.ColSpan(2)
+                    ,
+                    X.TextArea()
+                    .ItemID("txtMsg")
+                         .BlankText("لطفا نوع محدودیت را انتخاب کنید.")
+                        .FieldLabel("پیغام")
+                    .MsgTarget(Ext.Net.MessageTarget.Side)
+                    .Width(200)
+        .AllowBlank(true)
+                    .LabelAlign(Ext.Net.LabelAlign.Top)
+                                      )
+                )
+                    .Layout(Ext.Net.LayoutType.VBox)
+                    .LayoutConfig(new Ext.Net.VBoxLayoutConfig { Align = Ext.Net.VBoxAlign.Center })
+)
+        )
+)
+
+
+<script type="text/javascript">
+    var CarID = '@ViewBag.CarID';
+    function LoadBlackList() {
+        if ('@ViewBag.Id' != '0') {
+            /*Edit*/
+            Ext.net.DirectMethod.request({
+                url: '/NewVer/Filtering_New/DetailsBlackList',
+                params: {
+                    id: '@ViewBag.Id'
+                },
+                success: function (data) {
+                    var txtMsg = App.NewBlackList.queryById('txtMsg');
+                    txtMsg.setValue(data.fldMsg);
+                    var CboType = App.NewBlackList.queryById('CboType');
+                    CboType.setValue(data.fldType);
+                    var Id = App.NewBlackList.queryById('Id');
+                    Id.setValue(data.fldId);
+
+                }
+            });
+        }
+    }
+
+    function SaveBlackList() {
+        var CboType = App.NewBlackList.queryById('CboType');
+        var txtMsg = App.NewBlackList.queryById('txtMsg');
+        var Id = App.NewBlackList.queryById('Id');
+        var er = false;
+
+        if (txtMsg.validate() == false) {
+            er = true;
+        }
+        if (CboType.validate() == false) {
+            er = true;
+        }
+
+        if (er == true)
+            return;
+
+        Ext.net.DirectMethod.request({
+            url: '/NewVer/Filtering_New/SaveBlackList',
+            params: {
+                fldId: Id.getValue(),
+                fldType: CboType.getValue(),
+                fldMsg: txtMsg.getValue(),
+                fldCarId: CarID
+            },
+            success: function (data) {
+                if (data.Err == 0) {
+                    Ext.MessageBox.show({
+                        Name: data.MsgName,
+                        msg: data.Msg,
+                        icon: Ext.MessageBox.INFO,
+                        buttons: Ext.MessageBox.OK
+                    });
+                    Reload();
+                    ClearBlackList();
+                }
+                else {
+                    Ext.MessageBox.show({
+                        title: data.MsgTitle,
+                        msg: data.Msg,
+                        icon: Ext.MessageBox.ERROR,
+                        buttons: Ext.MessageBox.OK
+                    });
+                }
+            }
+
+        });
+    }
+    function ClearBlackList() {
+        App.NewBlackList.queryById('CboType').setValue("");
+        App.NewBlackList.queryById('txtMsg').setValue("");
+        App.NewBlackList.queryById('Id').setValue(0);
+
+    }
+
+</script>

@@ -1,0 +1,120 @@
+﻿@using Kendo.Mvc.UI;
+<div class="modal" id="Error">
+    <script src="@Url.Content("~/Content/Base.js")" type="text/javascript"></script>
+    <div>
+  <a href="@Url.Content("~/Helps/مدیریت خطا.htm")" target="_blank" id="Help" title="راهنما" style="background-image:url('/Content/images/1381415123_help.png');background-repeat: no-repeat;height: 20px;float: left;top: 10px;left: 10px;"></a>
+        <br />
+        @(Html.Kendo().PanelBar()
+            .Name("panelbar-images")
+            .Items(panelbar =>
+            {
+                panelbar.Add().Text("جستجو").Expanded(true)
+                    .ImageUrl(Url.Content("~/Content/images/search.png"))
+                    .Content(@<div>
+                        <table>
+                            <tr>
+                                <td>
+                                    فیلد جستجو:@Html.DropDownList("cboSearchFiald", new SelectList(new[] { new { ID = "0", Name = "کد خطا" }, new { ID = "1", Name = "نام کاربر" }, new { ID = "2", Name = "تاریخ" } }, "ID", "Name"))
+                                </td>
+                                <td>
+                                    نوع جستجو: @Html.DropDownList("cboSearchType", new SelectList(new[] { new { ID = "0", Name = "مشابه عبارت" }, new { ID = "1", Name = "مشابه عبارت از سمت راست" }, new { ID = "2", Name = "عین عبارت" } }, "ID", "Name"))
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    عبارت جستجو: @Avarez.Helper.winClass.textbox("txtSearch")
+                                </td>
+                                <td>
+                                    نتیجه رکوردها: @Html.TextBox("txtTop", 30, new { @style = "width:30px;" }) رکورد
+                                </td>
+                            </tr>
+                        </table>
+                        <br />
+                    </div>);
+            })
+        )
+    </div>    
+    <script type="text/x-kendo-template" id="template">
+    <div id="details-container" dir="rlt">
+            متن خطا: #= fldText #
+            <br/>
+            <br/>
+            توضیحات: #= fldDesc #
+    </div>
+    </script>
+    <script type="text/javascript">
+        var detailsTemplate = kendo.template($("#template").html());
+        function _load() {
+            $('.k-button').removeAttr('href');
+        }
+        function showDetails(e) {
+            var dataItem = this.dataItem($(e.currentTarget).closest("tr"));
+            var wnd = $("#Details").data("kendoWindow");
+
+            wnd.content(detailsTemplate(dataItem));
+            wnd.center().open();
+            $('.k-window').attr('style', 'padding-top: 32px;width: 300px;display: block;top: 207.5px;left: 524.5px;z-index: 10003;opacity: 1;-webkit-transform: scale(1);');
+        }
+
+        $("document").ready(function () {
+            $("#exit").button();
+           $("#Help").button();
+
+            var f = $('.k-button');
+            f.removeAttr('href');
+            $("#exit").click(function () {
+                $("#Error").remove();
+            });
+
+            $('#txtSearch').keyup(function () {
+                var url = '@Url.Action("Reload", "Error")';
+                Reload(url, 'Grid', $("#cboSearchFiald").val(), $("#txtSearch").val(), $("#txtTop").val(), $("#cboSearchType").val());                
+            });
+
+            function Reload(Url, gridname, field, value, top, searchType) {
+                var grid = $('#' + gridname).data('kendoGrid');
+                $.ajax({
+                    url: Url,
+                    type: 'get',
+                    datatype: 'json',
+                    data: { field: field, value: value, top: top, searchtype: searchType },
+                    error: function (xhr, status, error) {
+                        alert(xhr + status);
+                    },
+                    success: function (result) {
+                        $("#" + gridname).data("kendoGrid").dataSource.data(result);
+                        $('.k-button').removeAttr('href');
+                    }
+                });
+            }
+        });
+
+    </script>
+    <div class="k-rtl demo-section">
+        @(Html.Kendo().Grid<Avarez.Models.sp_ErrorProgramSelect>()
+            .Name("Grid")
+            .Columns(columns =>
+            {
+                columns.Bound(p => p.fldID).Title("کد تاریخ");
+                columns.Bound(p => p.fldUserName).Title("نام کاربر");
+                columns.Bound(p => p.fldDate).Title("تاریخ ");
+                columns.Command(command => command.Custom("ViewDetails").Click("showDetails").Text("جزئیات").HtmlAttributes(new { @style = "color: #000000;" }));
+            })
+            .Selectable(selectable => selectable.Mode(GridSelectionMode.Single))
+            .Pageable()
+            .Scrollable()
+            .DataSource(data =>
+            data.Ajax()
+            .PageSize(10).Read("Fill", "Error")
+            ).Events(events=>events.DataBound("_load"))
+    )        
+    </div>
+    @(Html.Kendo().Window().Name("Details")
+    .Title("جزئیات")
+    .Visible(false)
+    .Modal(true)
+    .Draggable(true)
+    .Width(600)
+    .Height(500)      
+)
+</div>

@@ -1,0 +1,64 @@
+﻿@using Ext.Net.MVC
+@using Hogaf.ExtNet.UX
+@using Ext.Net;
+@{
+    var X = Html.X();
+}
+
+
+@(Html.X().Window().Modal(true).Listeners(li => li.AfterRender.Handler = "LoadAkhbar()")
+.Width(550).Height(200)
+    .Title("متن خبر")
+            .ID("Akhbar")
+    .Closable(true)
+    .CloseAction(Ext.Net.CloseAction.Destroy)
+    .Items(
+        X.FormPanel().Border(false)
+        .Border(false).ButtonAlign(Ext.Net.Alignment.Center)
+
+            .DefaultButton("btn")
+        .TitleAlign(Ext.Net.TitleAlign.Center)
+               .Buttons(
+                            X.Button().Text("خروج").Icon(Ext.Net.Icon.DoorOut).ToolTip("کلید میانبر Esc")
+                                                   .OnClientClick("App.Akhbar.destroy()"))
+
+                .Items(
+                X.Panel().Border(false)
+
+            .Items(
+                X.FieldSet().Border(false)
+                .Center()
+                .LayoutConfig(new Ext.Net.TableLayoutConfig { Columns = 3 })
+                .Defaults(new { Margin = 2 })
+                .Items(
+        X.FieldSet().Border(false).PaddingSpec("15px 0 0 0")
+            .LayoutConfig(new Ext.Net.TableLayoutConfig { Columns = 3 })
+                .Defaults(new { Margin = 2 })
+        .Items(
+                           X.TextArea().ItemID("txtAkhbar").ReadOnly(true).Width(500).Height(100)
+                             )
+
+                        )
+
+                )
+                    .Layout(Ext.Net.LayoutType.VBox)
+                    .LayoutConfig(new Ext.Net.VBoxLayoutConfig { Align = Ext.Net.VBoxAlign.Center })
+            )
+        )
+)
+<script type="text/javascript">
+    var idKhabar='@ViewBag.id';
+    function LoadAkhbar() {
+
+        var txtAkhbar = App.Akhbar.queryById('txtAkhbar');
+        Ext.net.DirectMethod.request({
+            url: '/NewVer/Account_New/MatnKabar',
+            params: {
+                idKhabar: idKhabar
+            },
+            success: function (data) {
+                txtAkhbar.setValue(data.fldMemo);
+            }
+        });
+    }
+</script>

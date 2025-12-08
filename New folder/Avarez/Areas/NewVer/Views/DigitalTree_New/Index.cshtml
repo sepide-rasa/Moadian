@@ -1,0 +1,318 @@
+﻿@using Ext.Net.MVC
+@using Hogaf.ExtNet.UX
+@using Ext.Net;
+@{
+    var X = Html.X();
+}
+
+<style>
+    .LblStyle {
+        height: auto;
+    }
+
+    .LblRed {
+        color: red;
+    }
+</style>
+
+@(X.Panel().Border(false)
+        .Title("ساختار درختی بایگانی دیجیتال")
+         .ID("DigitalTree_New")
+        .Closable(true).ButtonAlign(Ext.Net.Alignment.Center)
+    .CloseAction(Ext.Net.CloseAction.Destroy)
+        .Layout(LayoutType.Fit)
+                   .Buttons(X.Button().Text("ذخیره").Icon(Ext.Net.Icon.Disk)//.ToolTip("کلید میانبر F8")
+                               .Listeners(l =>
+                               {
+                                   l.Click.Handler = "SaveDigitalTree_New();";
+
+                               })
+                               .ItemID("btnSave")
+                    ,X.Button()
+                            .Text("ویرایش")
+                            .Icon(Ext.Net.Icon.Pencil)
+                            .Listeners(Li => Li.Click.Handler = "EditStudentArchive_Tree();"),
+                    X.Button()
+                            .Text("حذف")
+                            .Icon(Ext.Net.Icon.Delete)
+                            .Listeners(de => de.Click.Handler = "DeleteStudentArchive_Tree();"),
+                    X.Button().Text("خروج").Icon(Ext.Net.Icon.DoorOut)//.ToolTip("کلید میانبر Esc")
+                                       .OnClientClick("App.DigitalTree_New.destroy()"))
+    .Items(
+        X.FormPanel()
+        .Border(false)
+            .DefaultButton("btn")
+        .TitleAlign(Ext.Net.TitleAlign.Center)
+           .Layout(LayoutType.Fit)
+                .Items(
+
+                X.Panel().Border(false)//.PaddingSpec("5px 0 10px 0")
+                    .Layout(Ext.Net.LayoutType.VBox)
+                    .LayoutConfig(new Ext.Net.VBoxLayoutConfig { Align = VBoxAlign.Center })
+            .Items(
+            X.Panel().Layout(LayoutType.HBox).Border(false)
+                .LayoutConfig(new Ext.Net.HBoxLayoutConfig { Align = HBoxAlign.Middle })
+                  .Defaults(new { Margin = 5 })
+            .Items(
+                 X.FieldSet()
+                        .Border(true)
+                        .Layout(LayoutType.VBox)
+                        .LayoutConfig(new Ext.Net.VBoxLayoutConfig { Align = VBoxAlign.Right })
+                        .Title("مشخصات")
+                            .Width(425)
+                        .Items(
+                       X.FieldSet()
+
+                        .Border(false)
+                        .Layout(LayoutType.HBox)
+                        .Items(
+
+                            X.Hidden().ItemID("fldId"),
+                            X.Hidden().ItemID("fldFatherId"),
+                  X.Label("عنوان:"),
+                     X.TextField()
+                     .ItemID("txtName")
+                    .MaxLength(50)
+                    .MsgTarget(Ext.Net.MessageTarget.Side)
+                    .AllowBlank(false)
+                    .Width(190)
+                    .MaxLength(50)
+                    .EnforceMaxLength(true)
+                    .BlankText("لطفا عنوان را وارد نمایید.")
+                    .AutoFocus(true),
+        X.FieldSet()
+        .Border(false)
+         .Layout(LayoutType.HBox)
+         .Items(
+                            X.Checkbox()
+                            .ItemID("CheckedUplodFile")
+                            .LabelAlign(Ext.Net.LabelAlign.Left)
+                                .PaddingSpec("0 0 0 3px")
+                            .LabelSeparator("")
+                            , X.Label("امکان اضافه نمودن فایل")
+                            )
+                        )
+                        )
+                        )
+                                  , X.Panel().Layout(LayoutType.HBox).Border(false).Defaults(new { Margin = 5 })
+                .Items(
+                            X.FieldSet()
+                        .Border(true)
+                        .Title("ساختار درختی بایگانی دیجیتال")
+                        .Width(425)
+                        .Height(400)
+                        .Layout(LayoutType.Column)
+                        .Defaults(new { Margin = 2 })
+                        .Items(
+                                  X.TreePanel()
+                                    .ID("TreeArchives")
+                                    .AutoScroll(true)
+                                    .Width(400)
+                                    .ColSpan(2)
+                                    .Expand(true)
+                                    .Height(300)
+                                    .Expand(true)
+                                    .UseArrows(true)
+                                    .Border(false)
+                                    .Listeners(a =>
+                                        {
+                                            a.Select.Handler = "GetTreeArchivesId(record);";
+                                            a.AfterRender.Handler = "this.getRootNode().expand();";
+                                        })
+                                                .Root(Html.X().Node().NodeID("0").Text("بایگانی دیجیتال"))
+                                                    .Listeners(l =>
+                                                    {
+                                                        l.BeforeLoad.Fn = "nodeLoadTreeArchives";
+                                                    })
+
+                                    )
+                                        )
+                                    
+
+            )
+        )
+)
+)
+
+<script type="text/javascript">
+    var NodeId = 0;
+    var dragS = 0;
+    var id;
+    var newParentid;
+    var fldFatherId;
+    var fldId;
+
+    var nodeLoadTreeArchives = function (store, operation, options) {
+        var node = operation.node;
+        Ext.net.DirectMethod.request({
+            url: '/NewVer/DigitalTree_New/NodeLoadTreeArchives',
+            params: {
+                nod: node.getId()
+            },
+            success: function (result) {
+                node.set('loading', false);
+                node.set('loaded', true);
+                node.appendChild(result);
+                node.expand();
+            },
+
+            failure: function (errorMsg) {
+                Ext.Msg.alert('Failure', errorMsg);
+            }
+        });
+
+        return false;
+    };
+    function GetTreeArchivesId(record) {
+        NodeId = record.getId();
+
+    };
+
+    
+
+    function EditStudentArchive_Tree() {
+
+        if (NodeId != 0) {
+            Ext.net.Mask.show({ msg: 'در حال بارگذاری...' });
+            Ext.net.DirectMethod.request({
+                url: '/DigitalTree_New/Details',
+                params: {
+                    id: NodeId
+                },
+                success: function (data) {
+                    if (data.Er == 0) {
+                        var txtName = App.DigitalTree_New.queryById('txtName');
+                        txtName.setValue(data.fldName);
+                        var CheckedUplodFile = App.DigitalTree_New.queryById('CheckedUplodFile');
+                        CheckedUplodFile.setValue(data.fldAddable);
+                        var FatherId = App.DigitalTree_New.queryById('fldFatherId');
+                        FatherId.setValue(data.fldPId);
+                        var Id = App.DigitalTree_New.queryById('fldId');
+                        Id.setValue(data.fldId);
+                    }
+                    else if (data.Er == 1) {
+                        Ext.MessageBox.show({
+                            title: data.MsgTitle,
+                            msg: data.Msg,
+                            icon: Ext.MessageBox.ERROR,
+                            buttons: Ext.MessageBox.OK
+                        });
+                    }
+                    App.TreeArchives.store.load();
+                    Ext.net.Mask.hide();
+                }
+            });
+
+        }
+        else {
+            Ext.MessageBox.show({
+                title: "خطا",
+                msg: "لطفا یک مورد را انتخاب کنید",
+                icon: Ext.MessageBox.ERROR,
+                buttons: Ext.MessageBox.OK
+            });
+        }
+    }
+
+     
+
+    function SaveDigitalTree_New() {
+        var Id = App.DigitalTree_New.queryById('fldId');
+        var CheckedUplodFile = App.DigitalTree_New.queryById('CheckedUplodFile');
+        var FatherId = App.DigitalTree_New.queryById('fldFatherId');
+        var txtName = App.DigitalTree_New.queryById('txtName');
+        var er = false;
+        if (Id.getValue() == '' || Id.getValue() == 0) {
+            fldFatherId = NodeId;
+            fldId = Id.getValue();
+        }
+        else {
+            fldFatherId = FatherId.getValue();
+            fldId = Id.getValue();
+        }
+        if (txtName.validate() == false) {
+            er = true;
+        }
+        if (NodeId == 0)
+            fldFatherId = null;
+        if (er)
+            return;
+        App.DigitalTree_New.body.mask("در حال ذخیره سازی...");
+        Ext.net.DirectMethod.request({
+            url: '/NewVer/DigitalTree_New/Save',
+            params: {
+                fldId: fldId,
+                PId: fldFatherId,
+                fldName: txtName.getValue(),
+                fldAddable: CheckedUplodFile.getValue()
+            },
+            success: function (data) {
+                var ic = Ext.MessageBox.INFO;
+                if (data.Er == 1)
+                    ic = Ext.MessageBox.ERROR;
+                Ext.MessageBox.show({
+                    Name: data.MsgName,
+                    msg: data.Msg,
+                    icon: ic,
+                    buttons: Ext.MessageBox.OK
+                });
+                App.DigitalTree_New.body.mask().hide();
+                App.TreeArchives.store.load();
+                if (data.Er != 1)
+                    ClearDigitalTree_New();
+            }
+
+        });
+    }
+    function ClearDigitalTree_New() {
+        App.DigitalTree_New.queryById('txtName').setValue("");
+        App.DigitalTree_New.queryById('CheckedUplodFile').setValue(false);
+        App.DigitalTree_New.queryById('fldFatherId').setValue(0);
+        App.DigitalTree_New.queryById('fldId').setValue(0);
+        NodeId = 0;
+    }
+
+    function DeleteStudentArchive_Tree() {
+
+        if (NodeId != null) {
+            Ext.MessageBox.show({
+                title: "هشدار",
+                msg: "آیا برای حذف مطمئن هستید؟",
+                icon: Ext.MessageBox.WARNING,
+                buttons: Ext.MessageBox.YESNO,
+                fn: function (btn) {
+                    if (btn == 'yes') {
+                        Ext.net.DirectMethod.request({
+                            url: '/DigitalTree_New/Delete',
+                            params: {
+                                id: NodeId
+                            },
+                            success: function (data) {
+                                ic = Ext.MessageBox.INFO;
+                                if (data.Er == 1)
+                                    ic = Ext.MessageBox.ERROR;
+                                Ext.MessageBox.show({
+                                    title: data.MsgTitle,
+                                    msg: data.Msg,
+                                    icon: ic,
+                                    buttons: Ext.MessageBox.OK
+                                });
+                                App.TreeArchives.store.load();
+                            }
+                        });
+                    }
+                }
+            });
+        }
+        else {
+            Ext.MessageBox.show({
+                title: "خطا",
+                msg: "لطفا یک مورد را انتخاب کنید",
+                icon: Ext.MessageBox.ERROR,
+                buttons: Ext.MessageBox.OK
+            });
+        }
+    }
+
+    
+</script>

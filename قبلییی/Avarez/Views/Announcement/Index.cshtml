@@ -1,0 +1,474 @@
+﻿@using Kendo.Mvc.UI;
+<div class="modal" id="Announcement">
+    <script src="@Url.Content("~/Content/Base.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Scripts/jquery.ui.datepicker-cc.all.min.js")" type="text/javascript"></script>
+    <div>
+    <a href="@Url.Content("~/Helps/ثبت اطلاعیه.htm")" target="_blank" id="Help" title="راهنما" style="background-image:url('/Content/images/1381415123_help.png');background-repeat: no-repeat;height: 20px;float: left;top: 10px;left: 10px;"></a>
+        <br />
+        <center>
+            <table>
+                <tr>
+                    <td align="left">
+                        <span style="color: Red;">*</span> تاریخ:
+                    </td>
+                    <td>
+                        @Html.TextBox("txtDate", null, new { @dir = "ltr", @style = "width: 162px;" })
+                        <span id="lblDateError" style="color: Red;"></span>
+                    </td>
+                </tr>
+                <tr>
+                    @Html.Hidden("fldId")
+                    <td align="left">
+                        <span style="color: Red;">*</span> عنوان اطلاعیه:
+                    </td>
+                    <td >
+                        @Avarez.Helper.winClass.textbox("txtSubject")
+                        <span id="lblSubjecttError" style="color: Red;"></span>
+                    </td>
+                </tr>
+                <tr>
+                    <td align="left">
+                        <span style="color: Red;">*</span> متن اطلاعیه:
+                    </td>
+                    <td >
+                        @Avarez.Helper.winClass.textArea("txtBody", 4, 30)
+                        <span id="lblBodyError" style="color: Red;"></span>
+                    </td>
+                </tr>
+                <tr>
+                    <td align="left">
+                        <span style="color: Red;"></span> توضیحات:
+                    </td>
+                    <td >
+                        @Avarez.Helper.winClass.textArea("txtDesc", 4, 30)
+                        <span id="lblDescError" style="color: Red;"></span>
+                    </td>
+                </tr>
+                <tr>
+                    <td align="left">
+                        <span style="color: Red;">*</span>وضعیت:
+                    </td>
+                    <td>
+                        @(Html.Kendo().DropDownList()
+                                  .Name("cboStatus")
+                                  .DataTextField("Text")
+                                  .DataValueField("Value")
+                                  .BindTo(new List<SelectListItem>() {
+
+                                      new SelectListItem() {
+                                          Text = "فعال",
+                                          Value = "true"
+                                      },
+                                     new SelectListItem() {
+                                          Text = "غیرفعال",
+                                          Value = "false"
+                                      }
+
+                                  })
+                                  .Value("1")
+                            )
+                    </td>
+                </tr>
+                
+                <tr>
+                    <td align="left">
+                        موقعیت در تقسیمات کشوری:
+                    </td>
+                    <td colspan="2" dir="rtl" id="countryLocation" align="right">
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="3" align="center" style="height: 30px;">
+                        @Html.Label("مورد انتخاب شده: ", new { @id = "CountryPosition" })
+                    </td>
+                </tr>  
+            </table>
+            <p>
+                @Avarez.Helper.winClass.Buttons("AddLink", "ذخیره", "Save")
+                @Avarez.Helper.winClass.Buttons("EditLink", "ویرایش", "Edit")
+                @Avarez.Helper.winClass.Buttons("DelLink", "حذف", "Del")
+                @Avarez.Helper.winClass.Buttons("Next", "ادامه", "Next")
+                @Avarez.Helper.winClass.Buttons("exit", "خروج", "Exit")
+            </p>
+        </center>
+        @(Html.Kendo().PanelBar()
+        .Name("panelbar-images")
+        .Items(panelbar =>
+        {
+            panelbar.Add().Text("جستجو")
+                .ImageUrl(Url.Content("~/Content/images/search.png"))
+                .Content(@<div>
+                    <table>
+                        <tr>
+                            <td>
+                                فیلد جستجو:@Html.DropDownList("cboSearchFiald", new SelectList(new[] { new { ID = "1", Name = "موقعیت تقسیمات کشوری " }, new { ID = "2", Name = "تاریخ" }, new { ID = "3", Name = "عنوان" } }, "ID", "Name"))
+                            </td>
+                            <td>
+                                نوع جستجو: @Html.DropDownList("cboSearchType", new SelectList(new[] { new { ID = "0", Name = "مشابه عبارت" }, new { ID = "1", Name = "مشابه عبارت از سمت راست" }, new { ID = "2", Name = "عین عبارت" } }, "ID", "Name"))
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                عبارت جستجو: @Avarez.Helper.winClass.textbox("txtSearch")
+                            </td>
+                            <td>
+                                نتیجه رکوردها: @Html.TextBox("txtTop", 30, new { @style = "width:30px;" }) رکورد
+                            </td>
+                        </tr>
+                    </table>
+                    <br />
+                </div>);
+        })
+        )
+        <div class="k-rtl demo-section">
+            @(Html.Kendo().Grid<Avarez.Models.sp_AnnouncementManagerSelect>()
+                .Name("Grid")
+                .Columns(columns =>
+                {
+                    columns.Bound(p => p.fldID).Title("کد").Visible(false);                    
+                    columns.Bound(p => p.fldSubject).Title("عنوان");
+                    columns.Bound(p => p.fldShowStatusName).Title("وضعیت");
+                    columns.Bound(p => p.fldDate).Title("تاریخ");
+                    columns.Bound(p => p.fldCountryDivisonTempName).Title("تقسیمات کشوری");
+                    columns.Bound(p => p.fldDesc).Title("توضیحات");
+                })
+            .Selectable(selectable => selectable.Mode(GridSelectionMode.Single))
+            .Pageable()
+            .Scrollable()
+            .DataSource(data =>
+                data.Ajax()
+                .PageSize(10)
+                .Read("Fill", "Announcement")
+            )
+        )
+        </div>
+    </div>
+    <script type="text/javascript">
+        function select(e) {
+            var dataItem = this.dataItem(e.node);
+            countryid = dataItem.id;
+            countrySID = dataItem.fldSid;
+            countryNType = dataItem.fldNodeType;
+            var url = '@Url.Content("~/Announcement/CountryPosition")';
+            $.ajax({
+                type: "post",
+                url: url,
+                data: { id: countryid },
+                datatype: "json",
+                success: function (data) {
+                    var m = data;
+                    $('#CountryPosition').html('مورد انتخاب شده: ' + m.Position);
+                    var treeview = $("#treeview").data("kendoTreeView");
+                    treeview.collapse(".k-item");
+                },
+                failure: function (data) {
+                    alert(data.data);
+                }
+            });
+        }
+
+        var countryid;
+        var countrySID;
+        var countryNType;
+
+        $("document").ready(function () {
+
+            $("#txtDate").datepicker({
+                showButtonPanel: true
+            });
+            $('#countryLocation').html($('#LocationDiv').valueOf());
+            $("#AddLink").button();
+            $("#EditLink").button();
+            $("#DelLink").button();
+            $("#Next").button();
+            $("#exit").button();
+            $("#Help").button();
+
+
+            $("#exit").click(function () {
+                $("#Announcement").remove();
+            });
+
+            $('#Announcement').on('keyup', 'input', function (event) {
+                if (event.which == 13) {
+                    var inputs = $('#Announcement').find(':input:visible');
+                    inputs.eq(inputs.index(this) + 1).focus();
+                }
+            });
+
+            $(document).keyup(function (event) {
+                if (event.which == 119) {
+                    SaveRecord();
+                }
+                else if (event.which == 113) {
+                    EditRecord();
+                }
+                else if (event.which == 115) {
+                    DeleteRecord();
+                }
+            });
+            $('#AddLink').attr('title', 'کلید میانبر (F8)'); //119
+            $('#EditLink').attr('title', 'کلید میانبر (F2)'); //113
+            $('#DelLink').attr('title', 'کلید میانبر (F4)'); //115
+
+            jQuery("#EditLink").click(function () {
+                EditRecord();
+            });
+
+            $('#DelLink').click(function () {
+                DeleteRecord();
+            });
+
+            $("#AddLink").click(function () {
+                SaveRecord();
+            });
+
+            $('#txtSearch').keyup(function () {
+                var url = '@Url.Action("Reload", "Announcement")';
+                Reload(url, 'Grid', $("#cboSearchFiald").val(), $("#txtSearch").val(), $("#txtTop").val(), $("#cboSearchType").val());
+            });
+
+            $("#txtSubject").keyup(function () {
+                if ($("#txtSubject").val() != '') {
+                    $("#txtSubject").removeClass("input-validation-error");
+                    $("#lblSubjectError").html("");
+                }
+                else {
+                    $("#txtSubject").addClass("input-validation-error");
+                    $('#lblSubjectError').html('لطفا کد عنوان اطلاعیه را وارد کنید.');
+                }
+            });
+            $("#txtBody").keyup(function () {
+                if ($("#txtBody").val() != '') {
+                    $("#txtBody").removeClass("input-validation-error");
+                    $("#lblBodyError").html("");
+                }
+                else {
+                    $("#txtBody").addClass("input-validation-error");
+                    $('#lblBodyError').html('لطفا متن اطلاعیه را وارد کنید.');
+                }
+            });
+            $("#txtDate").change(function () {
+                if ($("#txtDate").val() != '') {
+                    $("#txtDate").removeClass("input-validation-error");
+                    $("#lblDateError").html("");
+                }
+                else {
+                    $("#txtDate").addClass("input-validation-error");
+                    $('#lblDateError').html('لطفا تاریخ را وارد کنید.');
+                }
+            });
+
+            $('#Next').click(function () {
+                var entityGrid = $("#Grid").data("kendoGrid");
+                var selectedItem = entityGrid.dataItem(entityGrid.select());
+                if (selectedItem) {
+                    var id = selectedItem.fldID;
+                    var URL = '@Url.Content("~/AnnouncementAttach/Index")';
+                    URL = URL;
+                    windows("#win", URL + "/" + id);
+                } else {
+                    alert('لطفا یک سطر را انتخاب کنید.');
+                }
+            });
+        });
+        function Clear() {
+            $('#txtSubject').val('');
+            $('#txtBody').val('');
+            $('#txtDate').val('');
+            $('#fldId').val(0);
+            $('#txtDesc').val('');
+            var status = $("#cboStatus").data("kendoDropDownList");
+            status.value(true);
+            countryid = 0;
+            $('#CountryPosition').html('مورد انتخاب شده: ');
+        }
+        function SaveRecord() {
+                var er = false;
+                if ($("#txtSubject").val() == '') {
+                    $("#txtSubject").addClass("input-validation-error");
+                    $('#lblSubjectError').html('لطفا عنوان اطلاعیه را وارد کنید.');
+                    er = true;
+                }
+                else {
+                    $("#txtSubject").removeClass("input-validation-error");
+                    $('#lblSubjectError').html('');
+                }
+
+                if ($("#txtBody").val() == '') {
+                    $("#txtBody").addClass("input-validation-error");
+                    $('#lblBodyError').html('لطفا متن اطلاعیه را وارد کنید.');
+                    er = true;
+                }
+                else {
+                    $("#txtBody").removeClass("input-validation-error");
+                    $('#lblBodyError').html('');
+                }
+
+
+                if ($("#txtDate").val() == '') {
+                    $("#txtDate").addClass("input-validation-error");
+                    $('#lblStartError').html('لطفا تاریخ را وارد کنید.');
+                    er = true;
+                }
+                else {
+                    $("#txtDate").removeClass("input-validation-error");
+                    $('#lblDateError').html('');
+                }
+
+                if (er)
+                    return;
+                var data = {
+                    fldSubject: $("#txtSubject").val(),
+                    fldMemo: $("#txtBody").val(),
+                    fldShowStatus: $("#cboStatus").val(),
+                    fldCountryDivisonTempID: countryid,
+                    fldDesc: $("#txtDesc").val(),
+                    fldDateInsert: $("#txtDate").val(),
+                    fldId: $("#fldId").val()
+                };
+                if (data != '') {
+                    PostForm(data, '@Url.Content("~/Announcement/Save")', "#win");
+                }
+                Clear();
+            }
+            function EditRecord() {
+                var entityGrid = $("#Grid").data("kendoGrid");
+                var selectedItem = entityGrid.dataItem(entityGrid.select());
+                if (selectedItem) {
+                    var id = selectedItem.fldID;
+                    var URL = '@Url.Content("~/Announcement/Details")';
+                    URL = URL + "/" + id;
+                    $.ajax({
+                        type: "GET",
+                        url: URL,
+                        success: function (data) {
+                            $('#txtSubject').val(data.fldSubject);
+                            $('#txtBody').val(data.fldMemo);
+                            $('#txtDate').val(data.fldDate);
+                            $('#fldId').val(data.fldId);
+                            $('#txtDesc').val(data.fldDesc);
+                            var status = $("#cboStatus").data("kendoDropDownList");
+                            status.value(data.fldShowStatus);
+                            countryid = data.fldCountryDivisonTempID;
+                            var url = '@Url.Content("~/Announcement/CountryPosition")';
+                            $.ajax({
+                                type: "post",
+                                url: url,
+                                data: { id: countryid },
+                                datatype: "json",
+                                success: function (data) {
+                                    var m = data;
+                                    $('#CountryPosition').html('مورد انتخاب شده: ' + m.Position);
+                                },
+                                failure: function (data) {
+                                    alert(data.data);
+                                }
+                            });
+                        },
+                        failure: function (data) {
+                            alert(data.data);
+                        }
+                    });
+                }
+                else {
+                    alert('لطفا یک سطر را انتخاب کنید.');
+                }
+            }
+         function DeleteRecord() {
+                var entityGrid = $("#Grid").data("kendoGrid");
+                var selectedItem = entityGrid.dataItem(entityGrid.select());
+                if (selectedItem) {
+                    var id = selectedItem.fldID;
+                    var URL = '@Url.Content("~/metro/YesNomsg")';
+                    URL = URL + "/?id=" + id + "&URL=" + '@Url.Content("~/Announcement/Delete")';
+                    windowAppend("body", URL);
+                    $("#message").html('آیا مایل به حذف رکورد انتخاب شده هستید؟');
+                }
+                else {
+                    alert('لطفا یک سطر را انتخاب کنید.');
+                }
+                Clear();
+            }
+        function Reload(Url, gridname, field, value, top, searchType) {
+            var grid = $('#' + gridname).data('kendoGrid');
+            $.ajax({
+                url: Url,
+                type: 'get',
+                datatype: 'json',
+                data: { field: field, value: value, top: top, searchtype: searchType },
+                error: function (xhr, status, error) {
+                    alert(xhr + status);
+                },
+                success: function (result) {
+                    $("#" + gridname).data("kendoGrid").dataSource.data(result);
+                }
+
+            });
+        }
+
+        function PostForm(datas, url, id) {
+            var sendInfo = datas;
+            $('#Lock').show();
+            $.ajax({
+                type: "POST",
+                url: url,
+                data: sendInfo,
+                datatype: "json",
+                success: function (data) {
+                    var m = data;
+                    windowAppend("body", "/metro/error");
+                    $("#message").html(m.data);
+                    switch (m.state) {
+                        case 0:
+                            $("#error .wintitle").html("ذخیره موفق");
+                            break;
+                        case 1:
+                            $("#error .wintitle").html("خطا");
+                            break;
+                    }
+                    var url = '@Url.Action("Reload", "Announcement")';
+                    Reload(url, 'Grid', '0', '', 30, 1);
+                    $('#Lock').hide();
+                },
+                failure: function (data) {
+                    alert(data.data);
+                }
+            });
+        }
+        
+    </script>
+</div>
+<div class="treeview-back  k-rtl" dir="rtl" id="LocationDiv">
+    @(Html.Kendo().TreeView()
+                        .Name("treeview")
+                        .DataImageUrlField("image")
+
+                        .DataTextField("Name")
+                        .Checkboxes(chkbxs =>
+                        {
+                            chkbxs.Enabled(false).CheckChildren(false);
+                        })
+                        .DataSource(dataSource => dataSource
+                        .Read(read => read
+                        .Action("_CountryTree", "Announcement")
+                        )
+                        )
+                        .Events(events =>
+                        events.Select("select"))
+                        )
+</div>
+<style type="text/css">
+    .treeview-back
+    {
+        width: 400px;
+        margin: 30px;
+        padding: 20px;
+        -moz-box-shadow: 0 1px 2px rgba(0,0,0,0.45), inset 0 0 30px rgba(0,0,0,0.07);
+        -webkit-box-shadow: 0 1px 2px rgba(0,0,0,0.45), inset 0 0 30px rgba(0,0,0,0.07);
+        box-shadow: 0 1px 2px rgba(0,0,0,0.45), inner 0 0 30px rgba(0,0,0,0.07);
+        -webkit-border-radius: 8px;
+        -moz-border-radius: 8px;
+        border-radius: 8px;
+    }
+</style>

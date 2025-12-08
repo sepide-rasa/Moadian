@@ -1,0 +1,164 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+@{
+    Random x = new Random();
+    int imageIndex = x.Next(1, 3);
+}
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>سامانه جامع تشخیص و وصول عوارض خودرو - استان قزوین</title>
+    <!-- CSS -->
+    <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Roboto:400,100,300,500">
+    <link rel="stylesheet" href="@Url.Content("~/Scripts/bootstarapLogin/assets/bootstrap/css/bootstrap.min.css")">
+    <link rel="stylesheet" href="@Url.Content("~/Scripts/bootstarapLogin/assets/font-awesome/css/font-awesome.min.css")">
+    <link rel="stylesheet" href="@Url.Content("~/Scripts/bootstarapLogin/assets/css/form-elements.css")">
+    <link rel="stylesheet" href="@Url.Content("~/Scripts/bootstarapLogin/assets/css/style.css")">
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    <!-- Favicon and touch icons -->
+    <link rel="shortcut icon" href="@Url.Content("~/Scripts/bootstarapLogin/assets/ico/favicon.ico")">
+
+</head>
+<body dir="rtl" style="font-family:'B Zar'">
+    <center>
+        <!-- Top content -->
+        <div class="top-content">
+
+            <div class="inner-bg">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-sm-6 col-sm-offset-3 form-box">
+                            <div class="form-top">
+                                <div class="form-top-left">
+                                    <h3>سامانه جامع تشخیص و وصول عوارض خودرو - استان قزوین</h3>
+                                </div>
+                                <div class="form-top-right">
+                                    <i class="fa fa-lock"></i>
+                                </div>
+                            </div>
+                            <div class="form-bottom">
+                                <form role="form" action="/newver/account_new/vorod" method="post" class="login-form">
+                                    <div class="form-group">
+                                        <select class="form-control" id="CboMnu" name="CboMnu">
+                                            <option value="" disabled selected>شهرداری...</option>
+                                        </select>
+                                    </div>
+                                    <input type="hidden" name="UserType" value="2" />
+                                    <input type="hidden" name="cboState" value="3" />
+
+                                    <button type="submit" class="btn" style="font-family:'B Zar'">ورود</button>
+                                    <br />
+                                    <span id="err"></span>
+                                    <div dir="rtl" style="width:100%; color:red;text-align:right;margin-bottom:10px;">
+                                        @Html.ValidationSummary(true, "ورود ناموفق", new { @style = "font-weight:bold;" })
+                                    </div>
+                                </form>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="landing-footer">
+            <ul class="navbar navbar-nav">
+                <li>
+                    <span class="latin-font hidden-xs ng-scope" style="font-size: medium;" translate="copyrighten">Qazvin_Fava - Copyright ©</span>
+                    <span class="latin-font hidden-xs ng-binding" style="font-size: medium;" ng-bind="copyrightyear">2019</span>
+                </li>
+            </ul>
+            <ul style="margin-right: -40px;" class="navbar navbar-nav pull-left hidden-xs">
+                <li translate="helpDeskTel" style="font-size: medium;" class="ng-scope">تلفن پشتیبانی : 32347992-023</li>
+            </ul>
+        </div>
+    </center>
+    <!-- Javascript -->
+    <script src="@Url.Content("~/Scripts/bootstarapLogin/assets/js/jquery-1.11.1.min.js")"></script>
+    <script src="@Url.Content("~/Scripts/bootstarapLogin/assets/bootstrap/js/bootstrap.min.js")"></script>
+    <script src="@Url.Content("~/Scripts/bootstarapLogin/assets/js/jquery.backstretch.min.js")"></script>
+    <script type="text/javascript">
+        jQuery(document).ready(function () {
+            var option = document.createElement("option");
+            var data1 = {
+                ID: 17
+            };
+            $.ajax({
+                type: "POST",
+                url: '/NewVer/Account_New/GetCascadeCounty2',
+                contentType: "application/json; charset=utf-8",
+                data: JSON.stringify(data1),
+                datatype: "json",
+                success: function (data) {
+                    for (var i = 0; i < data.CountyName.length; i++) {
+                        var opt = new Option(data.CountyName[i], data.CountyId[i]);
+                        $("#CboMnu").append(opt);
+                    }
+                },
+                failure: function (data) {
+                    alert(data.data);
+                }
+            });
+            /*
+            Fullscreen background
+            */
+
+            $.backstretch("../../../Scripts/bootstarapLogin/assets/img/backgrounds/3.jpg");
+
+            /*
+            Form validation
+            */
+            $('.login-form input[type="text"], .login-form input[type="password"], .login-form textarea').on('focus', function () {
+                $(this).removeClass('input-error');
+            });
+
+
+
+        });
+        
+        
+        $('#login').click(function () {
+
+            $(this).removeClass('input-error');
+            var UserNameDafater = $('#username').val();
+            var PassDafater = $('#password').val();
+            var txtCapthaloginD = $('#captcha').val();
+            $.ajax({
+                url: '/NewVer/Account_New/LogOn',
+                method: 'post',
+                data: {
+                    UserName: UserNameDafater,
+                    Password: PassDafater,
+                    Captcha: txtCapthaloginD,
+                    Mun: $('#Mun').val()
+                },
+                success: function (data) {
+                    if (data.Msg != "") {
+                        $("#err").html(data.Msg);
+                        if (data.HaveCaptcha2 > 1) {
+                            $("#capt").show();
+                        }
+                    }
+                    else {
+                        if (data.state == "0")
+                            window.location.href = "/NewVer/First/index";
+                        else {
+                            $("#err").html("انتخاب شهرداری ضروری می باشد");
+                        }
+
+                    }
+                }
+            });
+        });
+
+    </script>
+    <!--[if lt IE 10]>
+        <script src="assets/js/placeholder.js"></script>
+    <![endif]-->
+</body>
+</html>

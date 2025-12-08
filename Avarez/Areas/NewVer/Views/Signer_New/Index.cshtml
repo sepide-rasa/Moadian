@@ -1,0 +1,228 @@
+﻿@model IEnumerable<Avarez.Models.sp_SignerEmployeeSelect>
+@using Ext.Net;
+@using Ext.Net.MVC;
+@{
+
+    var X = Html.X();
+}
+
+@(X.Panel()
+        //.Listeners(li => li.AfterRender.Handler = "SignerMap();")
+    .ID("Signer_New")
+    .Title("اشخاص صاحب امضا")
+    .Closable(true)
+    .Border(false)
+    .CloseAction(Ext.Net.CloseAction.Destroy)
+    .Layout(Ext.Net.LayoutType.Fit)
+    .Items(
+        X.Panel()
+            .ItemID("PnlGridSigner_New")
+            .Border(false)
+            .Layout(Ext.Net.LayoutType.Fit)
+            .Items(
+                X.GridPanel()
+                    .AutoScroll(true)
+                    .TopBar(
+                        Html.X().Toolbar()
+                            .Items(
+                                X.Button()
+                                    .Text("جدید")
+                                    .Icon(Ext.Net.Icon.Add)
+        //.ToolTip("کلید میانبر F8")
+                                    .Listeners(li => li.Click.Handler = "NewSigner_New();"),
+                                X.Button()
+                                    .Text("ویرایش")
+                                    .Icon(Ext.Net.Icon.Pencil)
+        //.ToolTip("کلید میانبر F2")
+                                    .Listeners(Li => Li.Click.Handler = "EditSigner_New();"),
+                                X.Button()
+                                    .Text("حذف")
+                                    .Icon(Ext.Net.Icon.Delete)
+        //.ToolTip("کلید میانبر F9")
+                                    .Listeners(de => de.Click.Handler = "DeleteSigner_New();")
+
+
+                                             , X.Button()
+                                            .Text("راهنما")
+                                            .Icon(Ext.Net.Icon.Help)
+                                                            .Listeners(de => de.Click.Handler = "HelpSigner_New();")
+                                    )
+                                    )
+                    .ItemID("GridSigner_New")
+                    .BottomBar(X.PagingToolbar())
+                    .Store(
+                        Html.X().StoreForModel()
+                            .Proxy(Html.X().AjaxProxy()
+                                .Url(Url.Action("Read"))
+                                .Reader(Html.X().JsonReader().Root("data"))
+        )
+                    .PageSize(20)
+                    .RemoteFilter(true)
+                    .RemotePaging(true)
+                    .Listeners(l => l.DataChanged.Handler = "App.Signer_New.queryById('GridSigner_New').selModel.refresh();")
+    )
+                    .View(
+                        Html.X().GridView().LoadingText("در حال بارگذاری...").RTL(true)
+    )
+                    .Plugins(X.FilterHeader().Remote(true))
+                    .ColumnModel(
+                            Html.X().RowNumbererColumn(),
+                            Html.X().Column().DataIndex(Model, m => m.fldID).Text("کد").Hidden(true).Flex(1),
+                            Html.X().Column().DataIndex(Model, m => m.fldName).Text("نام ").Wrap(true).Flex(3),
+                            Html.X().Column().DataIndex(Model, m => m.fldFamily).Text("نام خانوادگی ").Wrap(true).Flex(3),
+                            Html.X().Column().DataIndex(Model, m => m.fldMelliCode).Text("کد ملی ").Wrap(true).Flex(3),
+                            Html.X().Column().DataIndex(Model, m => m.fldMunicipalityName).Text("شهرداری ").Wrap(true).Flex(3),
+                            Html.X().Column().DataIndex(Model, m => m.fldLocalID).Text("کد منطقه ").Hidden(true).Wrap(true).Flex(3),
+                            Html.X().Column().DataIndex(Model, m => m.fldLocalName).Text("منطقه ").Wrap(true).Flex(3),
+                            Html.X().Column().DataIndex(Model, m => m.fldAreaID).Text("کد ناحیه").Hidden(true).Wrap(true).Flex(3),
+                            Html.X().Column().DataIndex(Model, m => m.fldAreaName).Text("ناحیه ").Wrap(true).Flex(3),
+                            Html.X().Column().DataIndex(Model, m => m.fldOfficeName).Text("دفتر ").Wrap(true).Flex(3),
+                            Html.X().Column().DataIndex(Model, m => m.fldDesc).Text("توضیحات").Wrap(true).Flex(3)
+    )
+                .SelectionModel(
+                    Html.X().RowSelectionModel()
+                        .Mode(Ext.Net.SelectionMode.Single)
+    )
+
+))
+)
+
+<script type="text/javascript">
+
+    function SignerMap() {
+        var k = new Ext.KeyMap(
+            document,
+            [{
+                target: Ext.get('Signer_New'),
+                scope: this,
+                key: [119],
+                fn: function (key, event) {
+                    if (App.Signer_New && App.NewSigner_New) {
+                        if (App.NewSigner_New.active == false)
+                            NewSigner_New();
+                    }
+                    else if (App.Signer_New && !App.NewSigner_New)
+                        NewSigner_New();
+                }
+            },
+            {
+                target: App.Signer_New.getTargetEl(),
+                scope: this,
+                key: [113],
+                fn: function (key, event) {
+                    if (App.Signer_New && App.NewSigner_New) {
+                        if (App.NewSigner_New.active == false)
+                            EditSigner_New();
+                    }
+                    else if (App.Signer_New && !App.NewSigner_New)
+                        EditSigner_New();
+                }
+            },
+            {
+                target: App.Signer_New.getTargetEl(),
+                scope: this,
+                key: [120],
+                fn: function (key, event) {
+                    if (App.Signer_New && App.NewSigner_New) {
+                        if (App.NewSigner_New.active == false)
+                            DeleteSigner_New();
+                    }
+                    else if (App.Signer_New && !App.NewSigner_New)
+                        DeleteSigner_New();
+                }
+            }]
+            )
+    }
+
+    function NewSigner_New() {
+        Ext.net.Mask.show({ msg: 'در حال بارگذاری...' });
+        Ext.net.DirectMethod.request({
+            url: '/NewVer/Signer_New/New',
+            params: {
+               Id: 0
+            },
+            success: function () {
+                Ext.net.Mask.hide();
+            }
+        });
+    }
+
+    function EditSigner_New() {
+        var SelectedRow = App.Signer_New.queryById('GridSigner_New').selModel.getLastSelected();
+        if (SelectedRow != null) {
+            Ext.net.Mask.show({ msg: 'در حال بارگذاری...' });
+            Ext.net.DirectMethod.request({
+                url: '/NewVer/Signer_New/New',
+                params: {
+                    Id: SelectedRow.data.fldID,
+                },
+                success: function () {
+                    Ext.net.Mask.hide();
+                }
+            });
+        }
+        else {
+            Ext.MessageBox.show({
+                title: "خطا",
+                msg: "لطفا یک سطر را انتخاب نمایید.",
+                icon: Ext.MessageBox.ERROR,
+                buttons: Ext.MessageBox.OK
+            });
+        }
+    }
+
+    function DeleteSigner_New() {
+        var SelectedRow = App.Signer_New.queryById('GridSigner_New').selModel.getLastSelected();
+        if (SelectedRow != null) {
+            Ext.MessageBox.show({
+                title: "هشدار",
+                msg: "آیا برای حذف مطمئن هستید؟",
+                icon: Ext.MessageBox.WARNING,
+                buttons: Ext.MessageBox.YESNO,
+                fn: function (btn) {
+                    if (btn == 'yes') {
+                        Ext.net.Mask.show({ msg: 'در حال انجام عملیات...' });
+                        Ext.net.DirectMethod.request({
+                            url: '/NewVer/Signer_New/Delete',
+                            params: {
+                                Id: SelectedRow.data.fldID
+                            },
+                            success: function (data) {
+                                var ic = Ext.MessageBox.INFO;
+                                if (data.Er == 1)
+                                    ic = Ext.MessageBox.ERROR;
+                                Ext.MessageBox.show({
+                                    title: data.MsgTitle,
+                                    msg: data.Msg,
+                                    icon: ic,
+                                    buttons: Ext.MessageBox.OK
+                                });
+                                Ext.net.Mask.hide();
+                                App.Signer_New.queryById('GridSigner_New').store.load();
+                            }
+                        });
+                    }
+                }
+            });
+        }
+        else {
+            Ext.MessageBox.show({
+                title: "خطا",
+                msg: "لطفا یک سطر را انتخاب نمایید.",
+                icon: Ext.MessageBox.ERROR,
+                buttons: Ext.MessageBox.OK
+            });
+        }
+    }
+
+
+    function HelpSigner_New() {
+        Ext.net.Mask.show({ msg: 'در حال بارگذاری...' });
+        Ext.net.DirectMethod.request({
+            url: '/NewVer/Signer_New/Help',
+            success: function (data) {
+                Ext.net.Mask.hide();
+            }
+        });
+    }
+</script>

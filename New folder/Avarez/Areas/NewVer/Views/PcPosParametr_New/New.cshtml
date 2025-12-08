@@ -1,0 +1,234 @@
+﻿@using Ext.Net.MVC
+@using Hogaf.ExtNet.UX
+@using Ext.Net;
+@{
+    var X = Html.X();
+}
+
+
+@(Html.X().Window()
+    .Modal(true)
+    .Resizable(false)
+    .Width(370)
+    .Height(250)
+    .Title("تعریف پارامتر PcPos")
+    .Layout(LayoutType.Fit)
+    .ID("NewPcPosParametr")
+    .Closable(true)
+    .ButtonAlign(Ext.Net.Alignment.Center)
+    .Buttons(
+        X.Button()
+            .Text("ذخیره")
+            .Icon(Ext.Net.Icon.Disk)
+        //.ToolTip("کلید میانبر F8")
+            .Listeners(l => l.Click.Handler = "SavePcPosParametr();"),
+        X.Button()
+            .Text("خروج")
+            .Icon(Ext.Net.Icon.DoorOut)
+        //.ToolTip("کلید میانبر Esc")
+            .OnClientClick("App.NewPcPosParametr.destroy();"))
+    .CloseAction(Ext.Net.CloseAction.Destroy)
+    .Items(
+        X.FormPanel()
+            .Border(false)
+            .Layout(LayoutType.Fit)
+            .Items(
+                X.Panel()
+                    .Border(false)
+                    .PaddingSpec("10px 0 0 0")
+                    .Items(
+                        X.FieldSet()//.Title("اطلاعات پارامترها")
+                            .Border(false)
+                                 .Layout(Ext.Net.LayoutType.VBox)
+                        .LayoutConfig(new Ext.Net.VBoxLayoutConfig { Align = VBoxAlign.Center })
+                            //.Defaults(new { Margin = 2 })
+                            //.Layout(LayoutType.Table)
+                            //.LayoutConfig(new TableLayoutConfig { Columns = 2 })
+                            .Items(
+                             X.FieldSet().Title("اطلاعات پارامترها")
+                            .Border(true).Height(166)
+                            .Defaults(new { Margin = 2 })
+                            .Layout(LayoutType.Table)
+                            .LayoutConfig(new TableLayoutConfig { Columns = 2 })
+                            .Items(
+                                X.Hidden()
+                                    .ItemID("fldId"),
+                                X.Label("نام بانک:"),
+                                X.ComboBox()
+                                    .ItemID("cboBankName")
+                                        .EmptyText("نام بانک")
+                                    .TypeAhead(true)
+                                    .AllowBlank(false)
+                                        .BlankText("لطفا نام بانک را انتخاب نمایید.")
+                                    .MsgTarget(Ext.Net.MessageTarget.Side)
+                                    .QueryMode(DataLoadMode.Local)
+                                    .ForceSelection(true)
+                                    .Editable(false)
+                                    .Width(210)
+                                    .TriggerAction(TriggerAction.All)
+                                        .DisplayField("fldName")
+                                    .ValueField("fldId")
+                                    .Store(X.Store()
+                                        .Model(X.Model()
+                                            .IDProperty("fldId")
+                                            .Fields(
+                                                    new ModelField("fldId", ModelFieldType.String) { Mapping = "fldId" },
+                                                    new ModelField("fldName", ModelFieldType.String) { Mapping = "fldBankName" })
+                                                )
+                                        .Proxy(X.AjaxProxy()
+                                                .Url(Url.Action("GetPcPosInfo"))
+                                            .Reader(X.JsonReader().Root("data")))
+                                        .Listeners(li => li.Load.Handler = "LoadPcPosParametr();")
+                                            ),
+                                X.Label("نام فارسی:"),
+                                X.TextField()
+                                    .ItemID("txtPcPosParametrNameFa")
+                                    .Width(210)
+                                        .Listeners(l => l.KeyUp.Fn = "onInitializeToFN")
+                                    .AllowBlank(false)
+                                    .EnforceMaxLength(true)
+                                         .EnableKeyEvents(true)
+                                    .MaxLength(50)
+                                   
+                                    .BlankText("لطفا نام فارسی را وارد نمایید.")
+                                    .MsgTarget(Ext.Net.MessageTarget.Side),
+                                    
+                                X.Label("نام انگلیسی:"),
+                                X.TextField()
+                                        .ItemID("txtPcPosParametrNameEn")
+                                 
+                                    .MaxLength(20)
+                                    .EnforceMaxLength(true)
+                                         .EnableKeyEvents(true)
+                                    .Width(210)
+                                    .AllowBlank(false)
+                                    .BlankText("لطفا نام انگلیسی را وارد نمایید.")
+                                        .Listeners(l => l.KeyUp.Fn = "onInitializeToEn")
+                                    .MsgTarget(Ext.Net.MessageTarget.Side),
+                                   X.Label("توضیحات:"),
+                                X.TextArea()
+                                    .ItemID("txtDesc")
+                                    .Width(210)
+                                    )
+                            )
+                )
+            )
+        )
+)
+
+<script type="text/javascript">
+    var onInitializeToEn = function () {
+        var tt = App.NewPcPosParametr.queryById('txtPcPosParametrNameEn');
+        changeLagToEn(tt);
+    };
+    var onInitializeToFN = function () {
+        var tt = App.NewPcPosParametr.queryById('txtPcPosParametrNameFa');
+        changeLagToFa(tt);
+    };
+    function LoadPcPosParametr() {
+        if ('@ViewBag.Id' != '0') {
+            App.NewPcPosParametr.body.mask("در حال بارگذاری...");
+            Ext.net.DirectMethod.request({
+                url: '/NewVer/PcPosParametr_New/Details',
+                params: {
+                    Id: '@ViewBag.Id'
+                },
+                success: function (data) {
+                    if (data.Er == 1) {
+                        Ext.MessageBox.show({
+                            title: data.MsgTitle,
+                            msg: data.Msg,
+                            icon: Ext.MessageBox.ERROR,
+                            buttons: Ext.MessageBox.OK
+                        });
+                    }
+                    else {
+                        var cboBankName = App.NewPcPosParametr.queryById('cboBankName');
+                        cboBankName.setValue(String(data.fldBankId));
+                        var txtPcPosParametrNameFa = App.NewPcPosParametr.queryById('txtPcPosParametrNameFa');
+                        txtPcPosParametrNameFa.setValue(data.fldFaName);
+                        var txtPcPosParametrNameEn = App.NewPcPosParametr.queryById('txtPcPosParametrNameEn');
+                        txtPcPosParametrNameEn.setValue(data.fldEnName);
+                        var txtDesc = App.NewPcPosParametr.queryById('txtDesc');
+                        txtDesc.setValue(data.fldDesc);
+                        var Id = App.NewPcPosParametr.queryById('fldId');
+                        Id.setValue(data.fldId);
+                    }
+                    App.NewPcPosParametr.body.mask().hide();
+                }
+            });
+        }
+        else {
+            App.NewPcPosParametr.queryById('cboBankName').validate();
+            App.NewPcPosParametr.queryById('txtPcPosParametrNameFa').validate();
+            App.NewPcPosParametr.queryById('txtPcPosParametrNameEn').validate();
+        }
+    }
+
+    function SavePcPosParametr() {
+        var cboBankName = App.NewPcPosParametr.queryById('cboBankName');
+        var Id = App.NewPcPosParametr.queryById('fldId');
+        var txtPcPosParametrNameFa = App.NewPcPosParametr.queryById('txtPcPosParametrNameFa');
+        var txtPcPosParametrNameEn = App.NewPcPosParametr.queryById('txtPcPosParametrNameEn');
+        var txtDesc = App.NewPcPosParametr.queryById('txtDesc');
+
+        var er = false;
+
+        if (cboBankName.validate() == false) {
+            er = true;
+        }
+        if (txtPcPosParametrNameFa.validate() == false) {
+            er = true;
+        }
+        if (txtPcPosParametrNameEn.validate() == false) {
+            er = true;
+        }
+
+        if (er == true)
+            return;
+
+        App.NewPcPosParametr.body.mask("در حال ذخیره سازی...");
+        Ext.net.DirectMethod.request({
+            url: '/NewVer/PcPosParametr_New/Save',
+            params: {
+                fldId: Id.getValue(),
+                fldFaName: txtPcPosParametrNameFa.getValue(),
+                fldEnName: txtPcPosParametrNameEn.getValue(),
+                fldBankId: cboBankName.getValue(),
+                fldDesc: txtDesc.getValue()
+            },
+            success: function (data) {
+                var ic = Ext.MessageBox.INFO;
+                if (data.Er == 1)
+                    ic = Ext.MessageBox.ERROR;
+                Ext.MessageBox.show({
+                    title: data.MsgTitle,
+                    msg: data.Msg,
+                    icon: ic,
+                    buttons: Ext.MessageBox.OK
+                });
+                App.PcPosParametr.queryById('GridPcPosParametr').store.load();
+                if (data.Er == 0) {
+                    ClearPcPosParametr();
+                }
+                App.NewPcPosParametr.body.mask().hide();
+            }
+        });
+    }
+
+    function ClearPcPosParametr() {
+        App.NewPcPosParametr.queryById('cboBankName').setValue("");
+        App.NewPcPosParametr.queryById('txtPcPosParametrNameFa').setValue("");
+        App.NewPcPosParametr.queryById('txtPcPosParametrNameEn').setValue("");
+        App.NewPcPosParametr.queryById('txtDesc').setValue("");
+        App.NewPcPosParametr.queryById('fldId').setValue(0);
+    }
+
+  /*  function EnterNext() {
+        var keyfield = App.NewCustomer.queryById(Ext.getCmp((Ext.Element.getActiveElement()).name).itemId);
+        var nextfld = keyfield.nextSibling();
+        nextfld.focus();
+        nextfld.selectText();
+    }*/
+
+</script>

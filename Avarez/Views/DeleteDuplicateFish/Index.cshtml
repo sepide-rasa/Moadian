@@ -1,0 +1,93 @@
+﻿<div id="DeleteDuplicateFish">
+    <script src="../../Scripts/jquery.ui.datepicker-cc.all.min.js" type="text/javascript"></script>
+    <center>
+        <br /><br />
+        <span style="color:Red;font-size:large;">
+            هشدار:
+            <br />   <br />
+            توسط این فرم تمامی فیش های صادر شده و پرداخت نشده توسط   <br /> شما از سیستم حذف خواهد شد.
+            <br />
+            لطفا درصورت اطمینان از این فرم استفاده کنید.
+        </span>
+        <br /><br /><br /><br />
+        <table>
+            <tr>
+                <td align="left">
+                    از تاریخ:
+                </td>
+                <td>
+                    @Avarez.Helper.winClass.textbox("txtStart")
+                </td>
+            </tr>
+            <tr>
+                <td align="left">
+                    تا تاریخ:
+                </td>
+                <td>
+                    @Avarez.Helper.winClass.textbox("txtEnd")
+                </td>
+            </tr>
+        </table><br />
+        @Avarez.Helper.winClass.Buttons("btnDelete", "حذف", "del")
+        @Avarez.Helper.winClass.Buttons("btnExit", "خروج", "exit")
+    </center>
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#btnDelete').button();
+            $('#btnExit').button();
+            $('#txtStart').datepicker({
+                onSelect: function (dateText, inst) {
+                    $('#txtEnd').datepicker('option', 'minDate', new JalaliDate(inst['selectedYear'], inst['selectedMonth'], inst['selectedDay']));
+                },
+                showButtonPanel: true,
+                changeMonth: true,
+                changeYear: true
+            });
+
+            $('#txtEnd').datepicker({
+                showButtonPanel: true,
+                changeMonth: true,
+                changeYear: true
+            });
+            $('#btnExit').click(function () {
+                $('#DeleteDuplicateFish').remove();
+            });
+
+            $('#btnDelete').click(function () {
+                var URL = '@Url.Content("~/metro/DuplicatedFishYesNomsg")';
+                URL = URL + "/?From=" + $('#txtStart').val() + "&To=" + $('#txtEnd').val() + "&URL=" + '@Url.Content("~/DeleteDuplicateFish/Delete")';
+                windowAppend("body", URL);
+                $("#message").html('هشدار مجدد: آیا کاملا مطمئن هستید؟');
+            });
+        });
+
+        function PostForm(datas, url, id) {
+            var sendInfo = datas;
+            $('#Lock').show();
+            $.ajax({
+                type: "POST",
+                url: url,
+                data: sendInfo,
+                datatype: "json",
+                success: function (data) {
+                    var m = data;
+                    windowAppend("body", "/metro/error");
+                    $("#message").html(m.data);
+                    switch (m.state) {
+                        case 0:
+                            $("#error .wintitle").html("ذخیره موفق");
+                            break;
+                        case 1:
+                            $("#error .wintitle").html("خطا");
+                            break;
+                    }                    
+                    $('#Lock').hide();
+                },
+                failure: function (data) {
+                    alert(data.data);
+                }
+            });
+        }
+    </script>
+</div>

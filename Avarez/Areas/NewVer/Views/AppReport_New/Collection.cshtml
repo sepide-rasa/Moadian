@@ -1,0 +1,398 @@
+﻿@using Ext.Net.MVC
+@using Hogaf.ExtNet.UX
+@using Ext.Net;
+@using Avarez.Controllers.Users;
+@{
+    var X = Html.X();
+}
+
+<style>
+    .LblRed {
+        color:red;
+    }
+</style>
+@(Html.X().Panel().Border(false)//.Modal(true)
+             //.Listeners(l => l.AfterRender.Handler = "SetDefault1()")
+        //.Width(500)//.Height(300)
+    .Title("جدول وصول")
+    .ID("Collection")
+    .Closable(true)
+        .Layout(LayoutType.Fit)
+            .ButtonAlign(Ext.Net.Alignment.Center)
+                    .DefaultButton("btn")
+                .TitleAlign(Ext.Net.TitleAlign.Center)
+                       .Buttons(X.Button().Text("چاپ").Icon(Ext.Net.Icon.Printer).Margin(5)
+        // .Hidden(!Permossions.haveAccess(Convert.ToInt32(Session["UserId"]), 389))
+                                   .Listeners(l =>
+                                   {
+                                       l.Click.Handler = "PrintCollection()";
+
+                                   })
+                                    ,
+                                    X.Button().Text("خروجی اکسل").Icon(Ext.Net.Icon.PageExcel).Margin(5)
+        // .Hidden(!Permossions.haveAccess(Convert.ToInt32(Session["UserId"]), 390))
+                                   .Listeners(l =>
+                                   {
+                                       l.Click.Handler = "ExcelDl()";
+
+                                   }),
+                                    /*X.Button().Text("خروجی اکسل").Icon(Ext.Net.Icon.PageExcel).Margin(5)
+        // .Hidden(!Permossions.haveAccess(Convert.ToInt32(Session["UserId"]), 390))
+                                   .Listeners(l =>
+                                   {
+                                       l.Click.Handler = "ExcelDlTank()";
+
+                                   }),*/
+                                       X.Button().Text("دانلود").Icon(Ext.Net.Icon.ArrowDown).Margin(5)
+        // .Hidden(!Permossions.haveAccess(Convert.ToInt32(Session["UserId"]), 390))
+                                       .Listeners(l =>
+                                       {
+                                           l.Click.Handler = "DownloadCollection()";
+
+                                       }),
+                                    X.Button().Text("خروج").Icon(Ext.Net.Icon.DoorOut).ToolTip("کلید میانبر Esc")
+                                        .OnClientClick("App.Collection.destroy()"))
+    .CloseAction(Ext.Net.CloseAction.Destroy)
+    .Items(
+        X.Hidden().ItemID("countryId"),
+                            X.Hidden().ItemID("countrySID"),
+                            X.Hidden().ItemID("countryNType"),
+                        X.TabPanel().Border(false).Layout(LayoutType.Fit).ID("CollectionTab")
+                .Items(
+
+                    X.Panel().AutoScroll(true).Border(false).Title("جدول وصول")
+                    .Layout(Ext.Net.LayoutType.VBox)
+                         .LayoutConfig(new Ext.Net.VBoxLayoutConfig { Align = Ext.Net.VBoxAlign.Center })
+                    
+                .Items(
+
+                X.FieldSet().Border(false)
+                .Center().PaddingSpec("20px 0 0 0")
+                .LayoutConfig(new Ext.Net.TableLayoutConfig { Columns = 4 })
+                .Defaults(new { Margin = 2 })
+                .Items(
+                    X.Label("نوع پرداخت:"),
+                         X.ComboBox()
+                        .Width(190)
+                            .ItemID("CboPayType")
+                        .Editable(false)
+                        .TypeAhead(true)
+                        .QueryMode(DataLoadMode.Local)
+                        .TriggerAction(TriggerAction.All)
+                        .SelectedItems(new { Value = "1" })
+                        .Items(
+                            new ListItem("حضوری", "1"),
+                            new ListItem("غیر حضوری", "2"),
+                            new ListItem("حضوری و غیر حضوری", "3")
+                                )
+                              
+                            , X.Label("نحوه پرداخت:"),
+                            X.ComboBox()
+                            .ItemID("cboSettleType")
+                            .Editable(false)
+                            .TypeAhead(true)
+                            .QueryMode(DataLoadMode.Local)
+                            .ForceSelection(true)
+                            .TriggerAction(TriggerAction.All)
+                            .DisplayField("fldName")
+                            .ValueField("fldID")
+                            .EmptyText("همه موارد")
+                                .Width(190)
+                                .Store(X.Store()//.AutoLoad(false)
+                                .Model(X.Model()
+                                .IDProperty("fldID")
+                                    .Fields(
+                                        new ModelField("fldID", ModelFieldType.String) { Mapping = "fldID" },
+                                        new ModelField("fldName", ModelFieldType.String) { Mapping = "fldName" }
+                                    )
+                                )
+                                    .Proxy(X.AjaxProxy()
+                                        .Url(Url.Action("GetSettleType"))
+                                    .Reader(X.JsonReader().Root("data"))
+                                    )
+                        ),
+                        X.Label().Text("تاریخ شروع:")
+                    , X.PDateField()
+                        .ItemID("txtAzTarikh")
+                            .Width(190)
+                        .Editable(false)
+                        .MsgTarget(Ext.Net.MessageTarget.Side)
+                        .AllowBlank(false)
+                        .MaskRe("/[0-9,/]/")
+                        .BlankText("لطفا تاریخ را انتخاب نمایید.")
+                        .Listeners(l => l.Change.Handler = "AzTarikh()")
+                        .Listeners(l => l.AfterRender.Handler = "setOnlyOneMonth2()")
+                        .LabelAlign(Ext.Net.LabelAlign.Top)
+                    , X.Label().Text("تاریخ پایان:")
+                    , X.PDateField()
+                                .ItemID("txtTaTarikh")//.PaddingSpec("0 0 9px 0")
+                            .Width(190)
+                        .MsgTarget(Ext.Net.MessageTarget.Side)
+                        .AllowBlank(false)
+                        .Editable(false)
+                        .MaskRe("/[0-9,/]/")
+                        .BlankText("لطفا تاریخ را انتخاب نمایید.")
+                        .LabelAlign(Ext.Net.LabelAlign.Top)
+                        .Listeners(l => l.Change.Handler = "TaTarikh()")
+                            
+                        )
+                        ,X.Panel().Border(false).PaddingSpec("20px 0 0 0")
+                            .Layout(Ext.Net.LayoutType.VBox)
+                             .LayoutConfig(new Ext.Net.VBoxLayoutConfig { Align = Ext.Net.VBoxAlign.Center })
+                        .Items(
+                        X.FieldSet().Title("موقعیت در تقسیمات کشوری")
+                                        .Center().Height(400).Width(515)
+                                 .LayoutConfig(new Ext.Net.VBoxLayoutConfig { Align = VBoxAlign.Stretch })
+                                .Items(
+                                    X.TreePanel()
+                                    .ID("TreeStructureColl")
+                                    .AutoScroll(true)
+                                    .Width(300)
+                                    .Expand(true)
+                                    .Height(300)
+                                    .UseArrows(true)
+                                    .Border(false)
+                                        .Listeners(a =>
+                                        {
+                                            a.Select.Handler = "GetTreeStructureIdColl(record);";
+                                            a.AfterRender.Handler = "this.getRootNode().expand();";
+                                            a.BeforeLoad.Fn = "nodeLoadTreeStructureColl";
+                                        })
+                                            .Root(Html.X().Node().NodeID("0").Cls("0").DataPath("0").Text("تقسیمات کشوری"))
+                                        //.Root(Html.X().Node().NodeID("1").IconFile("/Content/images/0.png").Cls("0").DataPath("0").Text("جمهوری اسلامی ایران"))
+                                    , X.Label()
+                                    .Cls("LblRed")
+                                    .Text("مورد انتخاب شده: ")
+                                    , X.Label()
+                                    .ItemID("lblTitle")
+                                )
+                        )
+                ).ColSpan(3)
+
+                       )
+                            .Layout(Ext.Net.LayoutType.VBox)
+                            .LayoutConfig(new Ext.Net.VBoxLayoutConfig { Align = Ext.Net.VBoxAlign.Center })
+                    )
+
+                )
+)
+<script type="text/javascript">
+
+    function showBargozary() {
+        Ext.MessageBox.show({
+            msg: 'لطفاً منتظر باشید',
+            progressText: 'در حال بارگذاری...',
+            width: 300,
+            wait: true,
+            waitConfig:
+            {
+                /*duration: 10000,*/
+                interval: 200,
+                /*increment: 15,*/
+                text: 'در حال بارگذاری...',
+                scope: this
+                /*fn: function () {
+                    Ext.MessageBox.hide();
+                    Ext.Msg.alert('Status', 'Saved successfully!');
+                }*/
+            }
+        });
+    }
+    function setOnlyOneMonth2() {
+        if ('@ViewBag.StartDate' != "0") {
+            var txtAzTarikh = App.Collection.queryById('txtAzTarikh');
+            txtAzTarikh.setMinValue(new Date('@ViewBag.StartDate'));
+        }
+    }
+
+    function AzTarikh() {
+        var txtAzTarikh = App.Collection.queryById('txtAzTarikh');
+        var txtTaTarikh = App.Collection.queryById('txtTaTarikh');
+        txtTaTarikh.setMinValue(txtAzTarikh.getValue());
+        txtTaTarikh.minText = "تاریخ شروع نباید از تاریخ پایان بزرگتر باشد.";
+    }
+    function TaTarikh() {
+        var txtAzTarikh = App.Collection.queryById('txtAzTarikh');
+        var txtTaTarikh = App.Collection.queryById('txtTaTarikh');
+        txtAzTarikh.setMaxValue(txtTaTarikh.getValue());
+        txtAzTarikh.maxText = "تاریخ شروع نباید از تاریخ پایان بزرگتر باشد.";
+    }
+
+    var nodeLoadTreeStructureColl = function (store, operation, options) {
+        var node = operation.node;
+        Ext.net.DirectMethod.request({
+            url: '/NewVer/AppReport_New/NodeLoadTreeCountry',
+            params: {
+                nod: node.getId()
+            },
+            success: function (result) {
+                node.set('loading', false);
+                node.set('loaded', true);
+                node.appendChild(result);
+                node.expand();
+            },
+
+            failure: function (errorMsg) {
+                Ext.Msg.alert('Failure', errorMsg);
+            }
+        });
+
+        return false;
+    };
+
+    function GetTreeStructureIdColl(record) {
+        var path = record.getPath("text");
+        var Text = path.split('/').splice(1).join("-->");
+        App.Collection.queryById('countryId').setValue(record.getId());
+        App.Collection.queryById('countrySID').setValue(record.data.cls);
+        App.Collection.queryById('countryNType').setValue(record.data.dataPath);
+        if (record.getId() != 0) {
+            App.Collection.queryById('lblTitle').setText(Text);
+        }
+        else {
+            App.Collection.queryById('lblTitle').setText("");
+        }
+    };
+
+    function PrintCollection() { 
+        var CboPayType = App.Collection.queryById('CboPayType');
+        var cboSettleType = App.Collection.queryById('cboSettleType');
+        var txtAzTarikh = App.Collection.queryById('txtAzTarikh');
+        var txtTaTarikh = App.Collection.queryById('txtTaTarikh');
+        var er = false;
+        if (txtAzTarikh.validate() == false) {
+            er = true;
+        }
+        if (txtTaTarikh.validate() == false) {
+            er = true;
+        }
+        if (er == true)
+            return;
+        if (App.Collection.queryById('countryId').getValue() == 0 || App.Collection.queryById('countryId').getValue()=="") {
+            Ext.MessageBox.show({
+                title: "خطا",
+                msg: "لطفا موقعیت کاربر را انتخاب نمایید.",
+                icon: Ext.MessageBox.ERROR,
+                buttons: Ext.MessageBox.OK
+            });
+            return;
+        }
+        else {
+            showBargozary();
+            Ext.net.DirectMethod.request({
+                url: '/NewVer/AppReport_New/PrintCollection',
+                params: {
+                    containerId: "CollectionTab",
+                    SDate: txtAzTarikh.rawValue,
+                    EDate: txtTaTarikh.rawValue,
+                    ReportType: CboPayType.getValue(),
+                    treeid: App.Collection.queryById('countryId').getValue(),
+                    SettleTypeId: cboSettleType.getValue()
+
+                },
+                success: function () {
+                    Ext.MessageBox.hide();
+                }
+            });
+        }
+        
+    }
+
+    function DownloadCollection() {
+        var CboPayType = App.Collection.queryById('CboPayType');
+        var cboSettleType = App.Collection.queryById('cboSettleType');
+        var txtAzTarikh = App.Collection.queryById('txtAzTarikh');
+        var txtTaTarikh = App.Collection.queryById('txtTaTarikh');
+        var er = false;
+        if (txtAzTarikh.validate() == false) {
+            er = true;
+        }
+        if (txtTaTarikh.validate() == false) {
+            er = true;
+        }
+        if (er == true)
+            return;
+        if (App.Collection.queryById('countryId').getValue() == 0 || App.Collection.queryById('countryId').getValue() == "") {
+            Ext.MessageBox.show({
+                title: "خطا",
+                msg: "لطفا موقعیت کاربر را انتخاب نمایید.",
+                icon: Ext.MessageBox.ERROR,
+                buttons: Ext.MessageBox.OK
+            });
+            return;
+        }
+        else {
+            var idco1 = App.Collection.queryById('countryId').getValue();
+            window.location.href = '@Url.Content("/NewVer/AppReport_New/DownloadPDFCollection?SDate=")'
+                + txtAzTarikh.rawValue + '&EDate=' + txtTaTarikh.rawValue + '&ReportType=' + CboPayType.getValue()
+                + '&treeid=' + idco1 + '&SettleTypeId=' + cboSettleType.getValue();
+
+        }
+
+    }
+
+
+    function ExcelDl() {
+        var CboPayType = App.Collection.queryById('CboPayType');
+        var cboSettleType = App.Collection.queryById('cboSettleType');
+        var txtAzTarikh = App.Collection.queryById('txtAzTarikh');
+        var txtTaTarikh = App.Collection.queryById('txtTaTarikh');
+        var er = false;
+        if (txtAzTarikh.validate() == false) {
+            er = true;
+        }
+        if (txtTaTarikh.validate() == false) {
+            er = true;
+        }
+        if (er == true)
+            return;
+
+        var Checked = "";
+        if (App.Collection.queryById('countryId').getValue() == 0 || App.Collection.queryById('countryId').getValue() == "") {
+            Ext.MessageBox.show({
+                title: "خطا",
+                msg: "لطفا موقعیت کاربر را انتخاب نمایید.",
+                icon: Ext.MessageBox.ERROR,
+                buttons: Ext.MessageBox.OK
+            });
+            return;
+        }
+        else {
+            var idco = App.Collection.queryById('countryId').getValue();
+            Checked = "fldCarFileID" + ";" + "fldName" + ";" + "fldMelli_EconomicCode" + ";" + "fldMotorNumber" + ";" + "fldShasiNumber" + ";" + "fldCollectionDate" + ";" + "fldPrice" + ";" + "fldBankName" + ";" + "userName";
+            window.location.href = '@Url.Content("~/NewVer/AppReport_New/CollectionExcel/")' + '?Checked=' + Checked + '&SDate=' + txtAzTarikh.rawValue + '&EDate=' + txtTaTarikh.rawValue + '&ReportType=' + CboPayType.getValue() + '&treeid=' + idco + '&SettleTypeId=' + cboSettleType.getValue();
+        }
+    } 
+
+    function ExcelDlTank() {
+        var CboPayType = App.Collection.queryById('CboPayType');
+        var cboSettleType = App.Collection.queryById('cboSettleType');
+        var txtAzTarikh = App.Collection.queryById('txtAzTarikh');
+        var txtTaTarikh = App.Collection.queryById('txtTaTarikh');
+        var er = false;
+        if (txtAzTarikh.validate() == false) {
+            er = true;
+        }
+        if (txtTaTarikh.validate() == false) {
+            er = true;
+        }
+        if (er == true)
+            return;
+
+        var Checked = "";
+        if (App.Collection.queryById('countryId').getValue() == 0 || App.Collection.queryById('countryId').getValue() == "") {
+            Ext.MessageBox.show({
+                title: "خطا",
+                msg: "لطفا موقعیت کاربر را انتخاب نمایید.",
+                icon: Ext.MessageBox.ERROR,
+                buttons: Ext.MessageBox.OK
+            });
+            return;
+        }
+        else {
+            var idco = App.Collection.queryById('countryId').getValue();
+            Checked = "fldCarFileID" + ";" + "fldName" + ";" + "fldMelli_EconomicCode" + ";" + "fldMotorNumber" + ";" + "fldShasiNumber" + ";" + "fldCollectionDate" + ";" + "fldPrice" + ";" + "fldBankName" + ";" + "userName" + ";" + "fldPeacockeryId" + ";" + "fldFile";
+            window.location.href = '@Url.Content("~/NewVer/AppReport_New/CollectionExcelTank/")' + '?Checked=' + Checked + '&SDate=' + txtAzTarikh.rawValue + '&EDate=' + txtTaTarikh.rawValue + '&ReportType=' + CboPayType.getValue() + '&treeid=' + idco + '&SettleTypeId=' + cboSettleType.getValue();
+        }
+    }
+</script>

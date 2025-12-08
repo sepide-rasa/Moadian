@@ -1,0 +1,14 @@
+﻿<div id="Preview">
+    @Avarez.Helper.winClass.windowHeader("", "پیش نمایش", 950, 630)
+    <img src="@Url.Content("~/ListImageInTree/Image/" + ViewBag.id)" width="100%"/>
+    
+    <script type="text/javascript">
+        $("document").ready(function () {
+            $("#Preview #btnClose").click(function () {
+                $("#Preview").remove();
+            });
+        });
+    
+</script>
+@Avarez.Helper.winClass.windowFother()
+</div>

@@ -1,0 +1,188 @@
+﻿@using Ext.Net.MVC
+@using Hogaf.ExtNet.UX
+@using Ext.Net;
+@using Ext.Net.Utilities;
+@{
+    var X = Html.X();
+}
+<style>
+    #fi-button-msg {
+        border: 2px solid #ccc;
+        padding: 5px 10px;
+        background: #eee;
+        margin: 5px;
+        float: left;
+    }
+</style>
+
+@(Html.X().Window()
+    .Modal(true)
+        .Listeners(li => li.AfterRender.Handler = "LoadTrans();")
+    .Width(560)//.Height(300)
+        .Title("اطلاعات سرویس تراکنش")
+                .ID("NewTrans")
+    .Resizable(false)
+    .Closable(true)
+    .CloseAction(Ext.Net.CloseAction.Destroy)
+    .ButtonAlign(Alignment.Center)
+    .Layout(LayoutType.Fit)
+    .Buttons(
+        X.Button()
+            .Text("ذخیره")
+            .Icon(Ext.Net.Icon.Disk)
+            .Listeners(l =>
+            {
+                l.Click.Handler = "SaveTrans();";
+            })
+            .ItemID("btnSave"),
+        X.Button()
+            .Text("خروج")
+            .Icon(Ext.Net.Icon.BulletCross)
+            .ToolTip("کلید میانبر Esc")
+                    .OnClientClick("App.NewTrans.destroy()"))
+    .Items(
+        X.FormPanel()
+            .MarginSpec("10px 0 10px 0")
+            .Border(false)
+            .Layout(Ext.Net.LayoutType.VBox)
+            .LayoutConfig(new Ext.Net.VBoxLayoutConfig { Align = Ext.Net.VBoxAlign.Center })
+            .Items(
+                    X.Hidden().ItemID("fldId"),
+
+                X.FieldSet()
+                    .Border(true)
+                    .Title("وب سرویس تراکنش")
+                    .ItemID("test")
+                    //.Height(115)
+                    .Width(530)
+                    .Center()
+                    .LayoutConfig(new Ext.Net.TableLayoutConfig { Columns = 4 })
+                    .Defaults(new { Margin = 2 })
+                    .Items(
+                      X.Label("نام کاربری:")
+                            , X.TextField()
+                                .ItemID("txtTransName")
+                                .AllowBlank(false)
+                                .BlankText("لطفا نام کاربری را وارد کنید.")
+                                .MsgTarget(Ext.Net.MessageTarget.Side)
+                                      , X.Label("رمز عبور :"),
+                     X.TextField()
+                     .EnforceMaxLength(true)
+        // .MaxLength(20)
+
+                             .ItemID("txtPass")
+                             .InputType(Ext.Net.InputType.Password)
+                    .MsgTarget(Ext.Net.MessageTarget.Side)
+                    .AllowBlank(false)
+                    .Width(190)
+        //.MaskRe("/[0-9,-]/")
+                    .BlankText("لطفا رمز عبور را وارد نمایید.")
+                    //, X.Label("توضیحات:")
+                    //, X.TextArea()
+                    //    .ItemID("txtDesc")
+                    //    .LabelAlign(Ext.Net.LabelAlign.Top)
+                    //    .Width(160)
+                    , X.Label("میزان شارژ:")
+                    , X.TextField()
+                    .ReadOnly(true)
+                    .Value(ViewBag.Mojodi)
+                  
+                 
+                    )
+
+        //, X.Label("توضیحات:")
+        //, X.TextArea()
+        //    .ItemID("txtDesc")
+        //    .LabelAlign(Ext.Net.LabelAlign.Top)
+        //    .Width(160)
+                )
+
+            )
+        )
+)
+
+<script type="text/javascript">
+    
+    function LoadTrans() {
+        if ('@ViewBag.Id' != '0') {
+            /*Edit*/
+            Ext.net.DirectMethod.request({
+                url: '/Tax/UserTax/DetailsTrans',
+                params: {
+                    id: '@ViewBag.Id'
+                },
+                success: function (data) {
+                    var txtPass = App.NewTrans.queryById('txtPass');
+                    txtPass.setValue(data.fldPass);
+                    var txtTransName = App.NewTrans.queryById('txtTransName');
+                    txtTransName.setValue(data.fldUserName);
+                  /*  var txtDesc = App.NewTrans.queryById('txtDesc');
+                    txtDesc.setValue(data.fldDesc);*/
+                    var Id = App.NewTrans.queryById('fldId');
+                    Id.setValue(data.fldId);
+                }
+            });
+        }
+    }
+
+    function SaveTrans() {
+        var txtPass = App.NewTrans.queryById('txtPass');
+        var txtTransName = App.NewTrans.queryById('txtTransName');
+        /*var txtDesc = App.NewTrans.queryById('txtDesc');*/
+        var Id = App.NewTrans.queryById('fldId');
+
+        var er = false;
+
+        if (txtPass.validate() == false) {
+            er = true;
+        }
+        if (txtTransName.validate() == false) {
+            er = true;
+        }
+
+
+            if (er == true)
+                return;
+
+
+
+            var data = {
+                fldId: Id.getValue(),
+                fldPass: txtPass.getValue(),
+                fldUserName: txtTransName.getValue(),
+                fldTarfGharardadId:'@ViewBag.TarfGharardadId'
+            };
+
+            $.ajax({
+                type: "POST",
+                url: '/Tax/UserTax/SaveTrans',
+                datatype: "json",
+                data: JSON.stringify(data),
+                contentType: 'application/json',
+                success: function (data) {
+                    var ic = Ext.MessageBox.INFO;
+                    if (data.Er == 1)
+                        ic = Ext.MessageBox.ERROR;
+                    Ext.MessageBox.show({
+                        title: data.MsgTitle,
+                        msg: data.Msg,
+                        icon: ic,
+                        buttons: Ext.MessageBox.OK
+                    });
+                    App.TransTab.queryById('Grid').store.load();
+                   
+                },
+                failure: function (data) {
+                    alert(data.data);
+                }
+            });
+    }
+
+
+    function EnterNext() {
+        var keyfield = App.TransTab.activeTab.queryById(Ext.getCmp((Ext.Element.getActiveElement()).name).itemId);
+        var nextfld = keyfield.nextSibling();
+        nextfld.focus();
+        nextfld.selectText();
+    }
+</script>

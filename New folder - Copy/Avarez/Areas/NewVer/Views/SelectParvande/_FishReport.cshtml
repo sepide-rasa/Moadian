@@ -1,0 +1,38 @@
+﻿@using Ext.Net;
+@using Ext.Net.MVC;
+@using Ext.Net.Utilities;
+@{
+    var X = Html.X();
+}
+@(
+ Html.X().Panel().Height(560)
+     .Listeners(l => l.AfterRender.Handler = "SetSize_FishReport()")
+        //.Title("پیش نمایش")
+                .ID("Print_FishReport")
+        .AutoScroll(true)
+        .Closable(false)
+        .CloseAction(Ext.Net.CloseAction.Destroy)
+        .Html("<center><object class='se-pre-con' id='PrintTab_FishReport' style='width: 1000px;height: 600px;border: 1px solid #ccc;' type='application/pdf' data='/NewVer/SelectParvande/_GenerateFishReport?PeacockeryId=" + @ViewBag.PeacockeryId + "&mablagh=" + @ViewBag.mablagh + "&fldFine=" + @ViewBag.fldFine + "&fldValueAddPrice=" + @ViewBag.fldValueAddPrice + "&fldPrice=" + @ViewBag.fldPrice + "&Years=" + @ViewBag.Years + "&Bed=" + @ViewBag.Bed + "&fldOtherPrice=" + @ViewBag.fldOtherPrice + "&fldMainDiscount=" + @ViewBag.fldMainDiscount + "&fldFineDiscount=" + @ViewBag.fldFineDiscount + "&fldValueAddDiscount=" + @ViewBag.fldValueAddDiscount + "&fldOtherDiscount=" + @ViewBag.fldOtherDiscount + "&Joziyat=" + @ViewBag.Joziyat + "'></object></center>")
+)
+
+
+<script type="text/javascript">
+    function SetSize_FishReport() {
+        App.Print_FishReport.setHeight(Ext.getBody().getViewSize().height);
+        $('#PrintTab_FishReport').height(Ext.getBody().getViewSize().height - 10);
+    }
+
+</script>
+
+
+@*@using Ext.Net.MVC;
+
+@(
+ Html.X().Window().Height(560).Width(1200)
+        .Title("پیش نمایش")
+        .AutoScroll(true)
+        .Closable(true)
+        .CloseAction(Ext.Net.CloseAction.Destroy)
+        //.Items(Html.X().Container().Content("<center><object style='width: 1200px;height: 550px;border: 1px solid #ccc;' type='application/pdf' data='/NewVer/SodorFish/GeneratPdfReceipt?ResidId=" + @ViewBag.ResidId + "&Type=" + @ViewBag.Type + "'></object></center>"))
+                        .Html("<center><object style='width: 1200px;height: 550px;border: 1px solid #ccc;' type='application/pdf' data='/NewVer/SodorFish/_GenerateFishReport?PeacockeryId=" + @ViewBag.PeacockeryId + "&mablagh=" + @ViewBag.mablagh + "&fldFine=" + @ViewBag.fldFine + "&fldValueAddPrice=" + @ViewBag.fldValueAddPrice + "&fldPrice=" + @ViewBag.fldPrice + "&Years=" + @ViewBag.Years + "&Bed=" + @ViewBag.Bed + "&fldOtherPrice=" + @ViewBag.fldOtherPrice + "&fldMainDiscount=" + @ViewBag.fldMainDiscount + "&fldFineDiscount=" + @ViewBag.fldFineDiscount + "&fldValueAddDiscount=" + @ViewBag.fldValueAddDiscount + "&fldOtherDiscount=" + @ViewBag.fldOtherDiscount + "&Joziyat=" + @ViewBag.Joziyat + "'></object></center>")
+)*@

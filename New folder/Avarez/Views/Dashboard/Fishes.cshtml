@@ -1,0 +1,110 @@
+﻿@model List<Avarez.Models.sp_PeacockerySelect>
+@using Ext.Net.MVC;
+@using Ext.Net;
+@using Hogaf.ExtNet.UX;
+@{
+    var X = Html.X();
+}
+@(X.Panel().Border(false)
+        .ID("fish").Title("فیش های صادره")
+            .AutoScroll(true)
+            .Closable(true)
+            .CloseAction(Ext.Net.CloseAction.Destroy)
+            .Items(
+                X.Panel().Border(false)
+                .Border(false)
+                .AutoScroll(true)
+                .Items(
+                    X.TabPanel().ID("FishTab")
+                    .AutoScroll(true).Items(
+                        X.Panel().ItemID("GridPanel")
+                        .Title("فیش ها")
+                        .Items(
+                    X.GridPanel().AutoScroll(true)
+                        .TopBar(
+                        Html.X().Toolbar()
+                        .Items(                            
+                            X.Button().Text("چاپ فیش").Icon(Ext.Net.Icon.Table).ToolTip("چاپ فیش انتخاب شده")
+                            .Listeners(de => { de.Click.Handler = "FishPrint();"; })
+                        )
+                    )
+                        .ItemID("Grid1").Flex(2)
+                    .BottomBar(X.PagingToolbar())
+                    .Height(540)
+        //.ColumnWidth(0.6)
+        //.Layout(Ext.Net.LayoutType.Column)
+            .Listeners(l => l.AfterRender.Handler = "Reload();")
+                    .Store(
+                        X.StoreForModel()
+        //.Proxy(Html.X().AjaxProxy()
+        //.Url(Url.Action("Read"))
+        //.Reader(Html.X().JsonReader().Root("data"))
+
+                        //)
+                        .PageSize(20)
+                        .RemoteFilter(true)
+                        .RemotePaging(true)
+        //.Listeners(l => l.DataChanged.Handler = "App.EdaratKol.queryById('GridEdaratKol').selModel.refresh();")
+                    )
+                    .View(
+                        Html.X().GridView().LoadingText("در حال بارگذاری...").RTL(true)
+                    )
+                    .Plugins(X.FilterHeader().Remote(true))
+                    .ColumnModel(
+                            Html.X().Column().DataIndex(Model, m => m.fldID).Hidden(true),
+                            Html.X().Column().DataIndex(Model, m => m.fldName).Text("نام مالک").Flex(5),
+                            Html.X().Column().DataIndex(Model, m => m.fldMotorNumber).Text("شماره موتور").Flex(5),
+                            Html.X().Column().DataIndex(Model, m => m.fldShasiNumber).Text("شماره شاسی").Flex(5),
+                            Html.X().Column().DataIndex(Model, m => m.fldVIN).Text("VIN").Flex(5),
+                            Html.X().Column().DataIndex(Model, m => m.fldShowMoney).Text("مبلغ").Flex(5),
+                            Html.X().Column().DataIndex(Model, m => m.fldIssuanceDate).Text("تاریخ صدور").Flex(5),
+                            Html.X().Column().DataIndex(Model, m => m.fldUserName).Text("نام کاربر").Flex(5)                            
+
+                    )
+
+                )
+                )
+            )
+        )
+)
+
+<script type="text/javascript">
+    function Reload() {
+       
+        Ext.net.DirectMethod.request({
+            url: '/Dashboard/ReadFishes',
+            params: {
+                CarfileId: '@ViewBag.CarFileId'
+            },
+            success: function (data) {
+                App.fish.queryById('Grid1').getStore().loadData(data);
+            }
+        });
+    }
+    function FishPrint() {
+        var SelectedRow = App.fish.queryById('Grid1').selModel.getLastSelected();
+        if (SelectedRow != null) {
+            Ext.net.Mask.show({ msg: 'در حال بارگذاری...' });
+            Ext.net.DirectMethod.request({
+                url: '/Dashboard/printFish',
+                params: {
+                    FishId: SelectedRow.data.fldID,
+                    containerId: "FishTab"
+                },
+                success: function () {
+                    Ext.net.Mask.hide();
+                }
+            });
+        }
+        else {
+            Ext.MessageBox.show({
+                title: "خطا",
+                msg: "لطفا یک سطر را انتخاب کنید",
+                icon: Ext.MessageBox.ERROR,
+                buttons: Ext.MessageBox.OK
+            });
+        }
+    }
+</script>
+
+

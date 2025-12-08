@@ -1,0 +1,1887 @@
+﻿@using Ext.Net.MVC
+@using Hogaf.ExtNet.UX
+@using Ext.Net;
+@{
+    var X = Html.X();
+    Avarez.Models.cartaxEntities Car = new Avarez.Models.cartaxEntities();
+    var subSett = Car.sp_SelectSubSetting(0, 0, Convert.ToInt32(Session["CountryType"]), Convert.ToInt32(Session["CountryCode"]), Car.sp_GetDate().FirstOrDefault().CurrentDateTime).FirstOrDefault();
+    bool? ForceScan = true;
+    if (subSett != null)
+    {
+        ForceScan = subSett.fldHaveScan;
+    }
+}
+<style>
+    #UImage {
+        border-color: black;
+        border-style: solid;
+    }
+    .fontlbl {
+        font-size: 11px;
+    }
+    .lbl2{
+        color:red;
+    }
+    .minwidthtd{
+        max-width:100px
+    }
+</style>
+
+@(Html.X().Window()
+    .Modal(true)
+        //.Listeners(li => li.AfterRender.Handler = "LoadNewParvandeKhodro();")
+    .Width(710).Height(515)
+    .Title("ثبت پرونده جدید")
+    .Resizable(false)
+    .ID("NewParvandeKhodro")
+    .Closable(true)
+    .CloseAction(Ext.Net.CloseAction.Destroy)
+    .Layout(LayoutType.Fit)
+    .ButtonAlign(Ext.Net.Alignment.Center)
+    .Listeners(l => l.AfterRender.Fn = "addKeyMapNewParvandeKhodro")
+    .Buttons(
+        X.Button()
+            .Text("ذخیره")
+            .Icon(Ext.Net.Icon.Disk)
+                 .Hidden(!Avarez.Controllers.Users.Permossions.haveAccess(Convert.ToInt32(Session["UserId"]), 238))
+        //.ToolTip("کلید میانبر F8")
+            .Listeners(l =>
+            {
+                l.Click.Handler = "SaveParvandeKhodro();";
+            })
+            .ItemID("btnSavePerson"),
+        X.Button()
+            .Text("خروج")
+            .Icon(Ext.Net.Icon.BulletCross)
+            .ToolTip("کلید میانبر Esc")
+            .OnClientClick("App.NewParvandeKhodro.destroy()"))
+    .Items(
+        X.FormPanel()
+            .Border(false)
+            .PaddingSpec("10px 0 10px 0")
+            .ID("FormPanelll")
+            .Layout(LayoutType.VBox)
+            .LayoutConfig(new VBoxLayoutConfig { Align = VBoxAlign.Center })
+            .Items(
+                X.FieldSet().PaddingSpec("0 0 0 0")
+                .Border(false)
+                .Defaults(new { Margin = 2 })
+             .Layout(LayoutType.HBox)
+                    .LayoutConfig(new HBoxLayoutConfig { Align = HBoxAlign.Middle })
+            
+            .Items(
+              X.Button().ItemID("btnSearchClass").Text("جستجوی کلاس").Icon(Ext.Net.Icon.Find).Listeners(l =>
+                               {
+                                   l.Click.Handler = "SearchClass()";
+                                   l.Render.Handler = "hide('btnSearchClass');";
+                               })
+                              , X.ComboBox()
+                                .ItemID("CboPelakType")
+                               
+                                //.AutoFocus(true)
+                                .MsgTarget(Ext.Net.MessageTarget.Side)
+                                //.Width(300)
+                                .FieldLabel("نوع پلاک")
+                                .TypeAhead(true)
+                                .Editable(false)
+                                .QueryMode(DataLoadMode.Local)
+                                .BlankText("لطفا نوع پلاک را انتخاب کنید.")
+                                .ForceSelection(true)
+                                .TriggerAction(TriggerAction.All)
+                                .DisplayField("Name")
+                                .ValueField("ID")
+                                .EmptyText("...")
+                                .EmptyText("نوع پلاک")
+                                .FieldLabel("نوع پلاک")
+                                .Items(
+                                    new ListItem("پلاک انتظامی", "0"),
+                                    new ListItem("سایر", "1")
+                                        )
+                                .SelectedItems(new { Value = "0" })
+                                    .Listeners(l => l.Select.Handler = "ChangeCboPelakType();")
+                            )
+                    
+                    , X.FieldSet()
+                    .Border(false)
+                    .Title("")
+                    .Layout(LayoutType.VBox)
+                    .LayoutConfig(new Ext.Net.VBoxLayoutConfig { Align = VBoxAlign.Center })
+                    .Defaults(new { Margin = 2 })
+                    .Items(
+                        X.FieldSet().Border(true).Title("مشخصات خودرو").Layout(LayoutType.Table)
+                            .LayoutConfig(new Ext.Net.TableLayoutConfig { Columns = 2 })
+                    .Items(
+                            X.Hidden().ItemID("fldId")
+                                    , X.Hidden().ItemID("fldCarId")
+        //,
+        //X.Button().ItemID("btnSearchClass").Text("جستجوی کلاس").Icon(Ext.Net.Icon.Find).Listeners(l=>
+        //{
+        //    l.Click.Handler = "SearchClass()";
+        //    l.Render.Handler = "hide('btnSearchClass');";
+        //})
+        //        .ColSpan(2)
+                               ,
+                                    X.ComboBox()
+                                    .AutoFocus(true)
+                                    .MsgTarget(Ext.Net.MessageTarget.Side)
+                                    .Width(300)
+                                    .FieldLabel("نوع ساخت")
+                                    .ItemID("cboCarMake")
+                                    .TypeAhead(true)
+                                    .Editable(false)
+                                    .QueryMode(DataLoadMode.Local)
+                                    .BlankText("لطفا نوع ساخت را انتخاب کنید.")
+                                    .ForceSelection(true)
+                                    .TriggerAction(TriggerAction.All)
+                                    .DisplayField("Name")
+                                    .ValueField("ID")
+                                    .EmptyText("...")
+                                    .Listeners(ls =>
+                                    {
+                                        ls.Change.Handler = " App.NewParvandeKhodro.queryById('cboCarAccountTypes').clearValue();App.NewParvandeKhodro.queryById('cboCarAccountTypes').getStore().load();App.NewParvandeKhodro.queryById('cboYear').clearValue();App.NewParvandeKhodro.queryById('cboYear').getStore().load();App.NewParvandeKhodro.queryById('cboShort').clearValue();App.NewParvandeKhodro.queryById('cboShort').getStore().load();SetValueShort();";
+                                    }
+                                        )
+                                     .Store(X.Store()
+                                        .Model(X.Model()
+                                        .IDProperty("fldId")
+                                        .Fields(
+                                                    new ModelField("ID", ModelFieldType.String) { Mapping = "ID" },
+                                                    new ModelField("Name", ModelFieldType.String) { Mapping = "Name" }
+                                                )
+                                                    )
+                                        .Proxy(X.AjaxProxy()
+                                                .Url(Url.Action("GetMake"))
+                                        .Reader(X.JsonReader().Root("data"))
+                                                )
+                                            .Listeners(li => li.Load.Handler = "LoadNewParvandeKhodro();")
+                                                )
+                                    .AllowBlank(false)
+                                    ,
+                                    X.ComboBox()
+                                    .MsgTarget(Ext.Net.MessageTarget.Side)
+                                    .Width(300)
+                                    .FieldLabel("نوع کاربری")
+                                    .ItemID("cboCarAccountTypes")
+                                    .TypeAhead(true)
+                                    .Editable(false)
+                                    .QueryMode(DataLoadMode.Local)
+                                    .BlankText("لطفا نوع کاربری را انتخاب کنید.")
+                                    .ForceSelection(true)
+                                    .TriggerAction(TriggerAction.All)
+                                    .DisplayField("Name")
+                                    .ValueField("ID")
+                                    .EmptyText("...")
+                                    .Listeners(li => li.Select.Handler = "App.NewParvandeKhodro.queryById('cboCarCabin').clearValue(); App.NewParvandeKhodro.queryById('cboCarCabin').getStore().load();")
+
+                                     .Store(X.Store()
+                                     .AutoLoad(false)
+                                        .Model(X.Model()
+                                        .IDProperty("fldId")
+                                        .Fields(
+                                                    new ModelField("ID", ModelFieldType.String) { Mapping = "ID" },
+                                                    new ModelField("Name", ModelFieldType.String) { Mapping = "Name" }
+                                                )
+                                                    )
+                                        .Proxy(X.AjaxProxy()
+                                                .Url(Url.Action("GetAccount"))
+                                        .Reader(X.JsonReader().Root("data"))
+                                                    )
+                                                            .Parameters(ps => ps.Add(new StoreParameter("cboCarMake", "App.NewParvandeKhodro.queryById('cboCarMake').getValue()", ParameterMode.Raw)))
+                                                )
+                                    .AllowBlank(false)
+                                    ,
+                                    X.ComboBox()
+                                    .MsgTarget(Ext.Net.MessageTarget.Side)
+                                    .Width(300)
+                                    .FieldLabel("نوع کابین")
+                                    .ItemID("cboCarCabin")
+                                    .TypeAhead(true)
+                                        .Editable(false)
+                                    .QueryMode(DataLoadMode.Local)
+                                    .BlankText("لطفا نوع کابین را انتخاب کنید.")
+                                    .ForceSelection(true)
+                                    .TriggerAction(TriggerAction.All)
+                                    .DisplayField("Name")
+                                    .ValueField("ID")
+                                    .EmptyText("...")
+                                    .Listeners(ls =>
+                                    {
+                                        ls.Select.Handler = "App.NewParvandeKhodro.queryById('cboSystem').clearValue(); App.NewParvandeKhodro.queryById('cboSystem').getStore().load();";
+                                    }
+                                        )
+                                            .Store(X.Store()
+                                         .AutoLoad(false)
+                                        .Model(X.Model()
+                                        .IDProperty("fldId")
+                                        .Fields(
+                                                    new ModelField("ID", ModelFieldType.String) { Mapping = "ID" },
+                                                    new ModelField("Name", ModelFieldType.String) { Mapping = "Name" }
+                                                )
+                                                    )
+                                        .Proxy(X.AjaxProxy()
+                                            .Url(Url.Action("GetCabin"))
+                                        .Reader(X.JsonReader().Root("data"))
+                                                    )
+                                                                .Parameters(ps => ps.Add(new StoreParameter("cboCarAccountTypes", "App.NewParvandeKhodro.queryById('cboCarAccountTypes').getValue()", ParameterMode.Raw)))
+                                                )
+                                    .AllowBlank(false)
+                                    ,
+                                    X.ComboBox()
+                                    .MsgTarget(Ext.Net.MessageTarget.Side)
+                                    .Width(300)
+                                    .FieldLabel("سیستم خودرو")
+                                    .ItemID("cboSystem")
+                                    .TypeAhead(true)
+                                        .Editable(false)
+                                    .QueryMode(DataLoadMode.Local)
+                                    .BlankText("لطفا سیستم خودرو را انتخاب کنید.")
+                                    .ForceSelection(true)
+                                    .TriggerAction(TriggerAction.All)
+                                    .DisplayField("Name")
+                                    .ValueField("ID")
+                                    .EmptyText("...")
+                                    .Listeners(ls =>
+                                    {
+                                        ls.Select.Handler = " App.NewParvandeKhodro.queryById('cboModel').clearValue();App.NewParvandeKhodro.queryById('cboModel').getStore().load();";
+                                    }
+                                        )
+                                            .Store(X.Store()
+                                         .AutoLoad(false)
+                                        .Model(X.Model()
+                                        .IDProperty("fldId")
+                                        .Fields(
+                                                    new ModelField("ID", ModelFieldType.String) { Mapping = "ID" },
+                                                    new ModelField("Name", ModelFieldType.String) { Mapping = "Name" }
+                                                )
+                                                    )
+                                        .Proxy(X.AjaxProxy()
+                                                .Url(Url.Action("GetSystem"))
+                                        .Reader(X.JsonReader().Root("data"))
+                                                    )
+                                                                .Parameters(ps => ps.Add(new StoreParameter("cboCarCabin", "App.NewParvandeKhodro.queryById('cboCarCabin').getValue()", ParameterMode.Raw)))
+                                                )
+                                    .AllowBlank(false)
+                                    ,
+                                    X.ComboBox()
+                                    .MsgTarget(Ext.Net.MessageTarget.Side)
+                                    .Width(300)
+                                    .FieldLabel("تیپ خودرو")
+                                    .ItemID("cboModel")
+                                    .TypeAhead(true)
+                                        .Editable(false)
+                                    .QueryMode(DataLoadMode.Local)
+                                    .BlankText("لطفا تیپ خودرو را انتخاب کنید.")
+                                    .ForceSelection(true)
+                                    .TriggerAction(TriggerAction.All)
+                                    .DisplayField("Name")
+                                    .ValueField("ID")
+                                    .EmptyText("...")
+                                    .Listeners(ls =>
+                                    {
+                                        ls.Select.Handler = " App.NewParvandeKhodro.queryById('cboClass').clearValue();App.NewParvandeKhodro.queryById('cboClass').getStore().load();";
+                                    }
+                                        )
+                                            .Store(X.Store()
+                                         .AutoLoad(false)
+                                        .Model(X.Model()
+                                        .IDProperty("fldId")
+                                        .Fields(
+                                                    new ModelField("ID", ModelFieldType.String) { Mapping = "ID" },
+                                                    new ModelField("Name", ModelFieldType.String) { Mapping = "Name" }
+                                                )
+                                                    )
+                                        .Proxy(X.AjaxProxy()
+                                                .Url(Url.Action("GetModel"))
+                                        .Reader(X.JsonReader().Root("data"))
+                                                    )
+                                                                .Parameters(ps => ps.Add(new StoreParameter("cboSystem", "App.NewParvandeKhodro.queryById('cboSystem').getValue()", ParameterMode.Raw)))
+                                                )
+                                    .AllowBlank(false)
+                                    ,
+                                    X.ComboBox()
+                                    .MsgTarget(Ext.Net.MessageTarget.Side)
+                                    .Width(300)
+                                    .FieldLabel("کلاس خودرو")
+                                    .ItemID("cboClass")
+                                    .TypeAhead(true)
+                                        .Editable(false)
+                                    .QueryMode(DataLoadMode.Local)
+                                    .BlankText("لطفا کلاس خودرو را انتخاب کنید.")
+                                    .ForceSelection(true)
+                                    .TriggerAction(TriggerAction.All)
+                                    .DisplayField("Name")
+                                    .ValueField("ID")
+                                    .EmptyText("...")
+                                            .Store(X.Store()
+                                         .AutoLoad(false)
+                                        .Model(X.Model()
+                                        .IDProperty("fldId")
+                                        .Fields(
+                                                    new ModelField("ID", ModelFieldType.String) { Mapping = "ID" },
+                                                    new ModelField("Name", ModelFieldType.String) { Mapping = "Name" }
+                                                )
+                                                    )
+                                        .Proxy(X.AjaxProxy()
+                                                .Url(Url.Action("GetClass"))
+                                        .Reader(X.JsonReader().Root("data"))
+                                                    )
+                                                                .Parameters(ps => ps.Add(new StoreParameter("cboModel", "App.NewParvandeKhodro.queryById('cboModel').getValue()", ParameterMode.Raw)))
+                                                )
+                                    .AllowBlank(false)
+                                        ,
+                                    X.TextField()
+                                    .FieldLabel("شماره موتور")
+                                    .ItemID("txtMotor")
+                                        .FieldStyle("direction:ltr;")
+                                        .EnforceMaxLength(true)
+                                        .MaxLength(50)
+                                    .Width(300)
+                                    .Listeners(l => l.Change.Handler = "ChangeTxtMotor()")
+                                    .MsgTarget(Ext.Net.MessageTarget.Side)
+                                    .AllowBlank(false)
+                                    .BlankText("لطفا شماره موتور را وارد کنید.")
+                                        ,
+                                    X.TextField()
+                                        .FieldLabel("شماره شاسی")
+                                                .FieldStyle("direction:ltr;")
+                                    .ItemID("txtShasi")
+                                        .EnforceMaxLength(true)
+                                            .MaxLength(50)
+                                    .Width(300)
+                                    .Listeners(l => l.Change.Handler = "ChangeTxtShasi()")
+                                    .MsgTarget(Ext.Net.MessageTarget.Side)
+                                    .AllowBlank(false)
+                                    .BlankText("لطفا شماره شاسی را وارد کنید.")
+                                    ,
+                                    X.ComboBox()
+                                    .MsgTarget(Ext.Net.MessageTarget.Side)
+                                    .Width(300)
+                                    .FieldLabel("رنگ خودرو")
+                                    .ItemID("cboColor")
+                                    .TypeAhead(true)
+                                    .Editable(true)
+                                    .ForceSelection(true)
+                                    .QueryMode(DataLoadMode.Local)
+                                    .BlankText("لطفا رنگ خودرو را انتخاب کنید.")
+                                    .TriggerAction(TriggerAction.All)
+                                    .DisplayField("Name")
+                                    .ValueField("ID")
+                                    .EmptyText("...")
+                                        .Store(X.Store()
+                                        .Model(X.Model()
+                                        .IDProperty("fldId")
+                                        .Fields(
+                                                    new ModelField("ID", ModelFieldType.String) { Mapping = "ID" },
+                                                    new ModelField("Name", ModelFieldType.String) { Mapping = "Name" }
+                                                )
+                                                    )
+                                        .Proxy(X.AjaxProxy()
+                                                .Url(Url.Action("GetColor"))
+                                        .Reader(X.JsonReader().Root("data"))
+                                                    )
+                                                )
+                                    .AllowBlank(false)
+                                    ,
+                                    X.ComboBox()
+                                    .MsgTarget(Ext.Net.MessageTarget.Side)
+                                    .Width(300)
+                                    .FieldLabel("سال تولید")
+                                    .ItemID("cboYear")
+                                    .TypeAhead(true)
+                                        .Editable(false)
+                                    .QueryMode(DataLoadMode.Local)
+                                    .BlankText("لطفا سال تولید را انتخاب کنید.")
+                                    .ForceSelection(true)
+                                    .TriggerAction(TriggerAction.All)
+                                    .DisplayField("Name")
+                                    .ValueField("ID")
+                                    .EmptyText("...")
+                                            .Store(X.Store()
+                                         .AutoLoad(false)
+                                        .Model(X.Model()
+                                        .IDProperty("fldId")
+                                        .Fields(
+                                                    new ModelField("ID", ModelFieldType.String) { Mapping = "ID" },
+                                                    new ModelField("Name", ModelFieldType.String) { Mapping = "Name" }
+                                                )
+                                                    )
+                                        .Proxy(X.AjaxProxy()
+                                                .Url(Url.Action("GetYear"))
+                                        .Reader(X.JsonReader().Root("data"))
+                                                    )
+                                                                .Parameters(ps => ps.Add(new StoreParameter("Noo", "App.NewParvandeKhodro.queryById('cboCarMake').getValue()", ParameterMode.Raw)))
+                                                )
+                                                        .Listeners(l => l.Select.Handler = "ChangeYear();")
+                                    .AllowBlank(false)
+                                    ,
+                                    X.FieldSet()
+                                    .Border(false)
+                                        .Layout(LayoutType.HBox)
+                                        .Defaults(new { Margin = 1 })
+                                    .Items(
+                                            X.Label().Text("تاریخ سند کارخانه:").ItemID("lblDate4")
+                                            .Margins("5px 0px 0px 0"),
+                                        X.TextField()
+                                                .ItemID("txtDateD").MaskRe("[0-9]").MinLength(2).MaxLength(2).EnforceMaxLength(true).Listeners(l => l.Change.Handler = "checkDay2('txtDateD')")
+        // .FieldLabel("تاریخ اولین بیمه")
+                                        .Width(30)
+        //.MsgTarget(Ext.Net.MessageTarget.Side)
+                                        .AllowBlank(false)
+                                            .BlankText("لطفا روز سند کارخانه را وارد کنید.")
+                                            ,
+                                            X.Label().Text("/").ItemID("lblDate5"),
+                                        X.TextField()
+                                            .ItemID("txtDateM").Listeners(l => l.Change.Handler = "checkMonth2('txtDateM')").MaskRe("[0-9]").MinLength(2).MaxLength(2).EnforceMaxLength(true)
+        // .FieldLabel("/")
+                                        .LabelSeparator(" ")
+                                        .Width(30)
+        //.MsgTarget(Ext.Net.MessageTarget.Side)
+                                        .AllowBlank(false)
+                                            .BlankText("لطفا ماه سند کارخانه را وارد کنید.")
+                                            ,
+                                            X.Label().Text("/").ItemID("lblDate6"),
+                                            X.ComboBox()
+                                                .MsgTarget(Ext.Net.MessageTarget.Side)
+                                                .Width(60)
+                                                .ItemID("txtDate")
+                                                .TypeAhead(true)
+                                                .Editable(false)
+                                                .QueryMode(DataLoadMode.Local)
+                                                .BlankText("لطفا سال سند کارخانه را انتخاب نمایید.")
+                                                .ForceSelection(true)
+                                                .TriggerAction(TriggerAction.All)
+                                                .DisplayField("Name")
+                                                .ValueField("ID")
+                                                .EmptyText("...")
+                                                .Store(X.Store()
+                                                    .AutoLoad(false)
+                                                    .Model(X.Model()
+                                                        .IDProperty("fldId")
+                                                        .Fields(
+                                                            new ModelField("ID", ModelFieldType.String) { Mapping = "ID" },
+                                                            new ModelField("Name", ModelFieldType.String) { Mapping = "Name" }
+                                                            )
+                                                        )
+                                                    .Proxy(X.AjaxProxy()
+                                                        .Url(Url.Action("GetFillDate"))
+                                                        .Reader(X.JsonReader().Root("data"))
+                                                        )
+                        .Parameters(ps => ps.Add(new StoreParameter("year", "App.NewParvandeKhodro.queryById('cboYear').getValue()", ParameterMode.Raw)))
+                        .Parameters(ps => ps.Add(new StoreParameter("Make", "App.NewParvandeKhodro.queryById('cboCarMake').getValue()", ParameterMode.Raw)))
+                                                            )
+                                                .AllowBlank(false)
+                                       /* X.TextField()
+                                        .ItemID("txtDate")
+        // .FieldLabel("/")
+                                        .LabelSeparator(" ")
+                                        .ReadOnly(true)
+                                        .Width(50)
+        //.MsgTarget(Ext.Net.MessageTarget.Side)
+                                        .AllowBlank(false)*/
+        //.BlankText("لطفا سال سند کارخانه را وارد کنید.")
+                                    ),
+                                    X.FieldSet()
+                                    .Border(false)
+                                    .Layout(LayoutType.HBox)
+        //.LayoutConfig(new Ext.Net.TableLayoutConfig { Columns = 3 })
+                                        .Defaults(new { Margin = 1 })
+                                    .Items(
+                                        X.Label().Text("تاریخ پلاک گذاری:").ItemID("lblDate1").Listeners(l => l.Render.Handler = "hide('lblDate1');")
+                                    .Margins("5px 0px 0px 7px"),
+                                            X.TextField().Listeners(l => l.Change.Handler = "checkDay2('txtDatePD')").MinLength(2).MaxLength(2).EnforceMaxLength(true).MaskRe("[0-9]")
+                                        .ItemID("txtDatePD").Listeners(l => l.Render.Handler = "hide('txtDatePD');")
+        //.FieldLabel("تاریخ پلاک گذاری")
+                                        .Width(30)
+        //.MsgTarget(Ext.Net.MessageTarget.Side)
+                                        .AllowBlank(false)
+                                        .BlankText("لطفا روز پلاک گذاری را وارد کنید.")
+                                            ,
+                                        X.Label().Text("/").ItemID("lblDate2").Listeners(l => l.Render.Handler = "hide('lblDate2');"),
+                                        X.TextField()
+                                            .ItemID("txtDatePM").Listeners(l => l.Change.Handler = "checkMonth2('txtDatePM')").MinLength(2).MaxLength(2).EnforceMaxLength(true).MaskRe("[0-9]")
+                                        .Listeners(l => l.Render.Handler = "hide('txtDatePM');")
+        //.FieldLabel("/")
+                                        .LabelSeparator(" ")
+                                        .Width(30)
+        //.MsgTarget(Ext.Net.MessageTarget.Side)
+                                        .AllowBlank(false)
+                                        .BlankText("لطفا ماه پلاک گذاری را وارد کنید.")
+                                            ,
+                                        X.Label().Text("/").ItemID("lblDate3").Listeners(l => l.Render.Handler = "hide('lblDate3');"),
+                                        X.TextField()
+                                        .ItemID("txtDateP").Listeners(l => l.Render.Handler = "hide('txtDateP');")
+        //.FieldLabel("/")
+                                        .LabelSeparator(" ")
+                                        .Width(50)
+                                        .MsgTarget(Ext.Net.MessageTarget.Side)
+                                        .AllowBlank(false)
+                                        .ReadOnly(true)
+                                        .BlankText("لطفا سال پلاک گذاری را وارد کنید.")
+                                        ,
+                                        X.ComboBox()
+                                        .MsgTarget(Ext.Net.MessageTarget.Side)
+                                        .Width(60)
+                                        .ItemID("cboFillYear")
+                                        .TypeAhead(true)
+                                            .Editable(false)
+                                        .QueryMode(DataLoadMode.Local)
+                                            .BlankText("لطفا سال پلاک گذاری را انتخاب کنید.")
+                                        .ForceSelection(true)
+                                        .TriggerAction(TriggerAction.All)
+                                        .DisplayField("Name")
+                                        .ValueField("ID")
+                                        .EmptyText("...")
+                                                .Store(X.Store()
+                                             .AutoLoad(false)
+                                            .Model(X.Model()
+                                            .IDProperty("fldId")
+                                            .Fields(
+                                                        new ModelField("ID", ModelFieldType.String) { Mapping = "ID" },
+                                                        new ModelField("Name", ModelFieldType.String) { Mapping = "Name" }
+                                                    )
+                                                        )
+                                            .Proxy(X.AjaxProxy()
+                                                        .Url(Url.Action("GetFillDate"))
+                                            .Reader(X.JsonReader().Root("data"))
+                                                        )
+                                                    .Parameters(ps => ps.Add(new StoreParameter("year", "App.NewParvandeKhodro.queryById('cboYear').getValue()", ParameterMode.Raw)))
+                                                    )
+                                        .AllowBlank(false)
+                                    )
+                                    ,
+                                            X.FieldSet()//.ColSpan(2)
+                                            .PaddingSpec("0 0 0 0")
+                                            .ItemID("fieldsetvin")
+                                            .Border(false)
+                                            .Layout(LayoutType.HBox)
+                                            .Defaults(new { Margin = 1 })
+                                            .Items(
+                                                    X.Label("lblVIN2").Text("VIN:").Margins("5px 0px 0px 78px"),
+                                                X.TextField()
+                                                    .ItemID("txtVinMatchShasi")
+                                                    .FieldStyle("direction:ltr;")
+                                                    .Width(195)
+                                                    ),
+                                        X.FieldSet()//.ColSpan(2)
+                                            .Border(false)
+                                            .ItemID("fieldsetvin2")
+                                            .Layout(LayoutType.HBox)
+                                            .Defaults(new { Margin = 1 })
+                                        .Items(
+                                            X.Label().Text("VIN:").ItemID("lblVIN1").Margins("5px 0px px 70px"),
+                                            X.TextField()
+                                            .ItemID("_charShasi")
+        // .FieldLabel("VIN")
+                                            .Width(55)
+        //.MsgTarget(Ext.Net.MessageTarget.Side)
+                                            .AllowBlank(false)
+                                            .BlankText("لطفا VIN را وارد کنید.")
+                                            .MinLength(6)
+                                            .MaxLength(6)
+                                            .EnforceMaxLength(true)
+                                            //.ReadOnly(true)
+                                            ,
+                                            X.TextField()
+                                            .MaxLength(5)
+                                            .EnforceMaxLength(true)
+                                            .MinLength(5)
+                                            .ItemID("_5char")
+                                            .Listeners(l => l.Change.Handler = "Change_5char()")
+                                            .Width(50)
+        //.MsgTarget(Ext.Net.MessageTarget.Side)
+                                            .AllowBlank(false)
+                                            .BlankText("لطفا VIN را وارد کنید.")
+                                            ,
+                                            X.TextField()
+                                            .MaxLength(2)
+                                            .EnforceMaxLength(true)
+                                            .MinLength(2)
+                                            //.MaskRe("[0-9]")
+                                            .ItemID("_charModel")
+                                            .Width(25)
+        //.MsgTarget(Ext.Net.MessageTarget.Side)
+                                            .AllowBlank(false)
+                                            .BlankText("لطفا VIN را وارد کنید.")
+                                            .Listeners(l => l.Change.Handler = "_charModel()")
+                                            ,
+                                            X.TextField()
+                                                .MaxLength(2)
+                                            .EnforceMaxLength(true)
+                                            .ItemID("_2char")
+                                                .MinLength(2)
+                                            .Width(25)
+        //.MsgTarget(Ext.Net.MessageTarget.Side)
+                                            .AllowBlank(false)
+                                                .BlankText("لطفا VIN را وارد کنید.")
+                                                .Listeners(l => l.Change.Handler = "Change_2char()")
+                                            ,
+                                            X.ComboBox()
+        //.MsgTarget(Ext.Net.MessageTarget.Side)
+                                            .Width(45)
+                                            .ItemID("cboShort")
+                                            .TypeAhead(true)
+                                                .Editable(false)
+                                            .QueryMode(DataLoadMode.Local)
+                                            .BlankText("لطفا کشور سازنده را انتخاب کنید.")
+                                            .ForceSelection(true)
+                                            .TriggerAction(TriggerAction.All)
+                                            .DisplayField("Name")
+                                            .ValueField("ID")
+                                            .EmptyText("...")
+                                             .Store(X.Store()
+                                         .AutoLoad(false)
+                                                .Model(X.Model()
+                                                .IDProperty("fldId")
+                                                .Fields(
+                                                            new ModelField("ID", ModelFieldType.String) { Mapping = "ID" },
+                                                            new ModelField("Name", ModelFieldType.String) { Mapping = "Name" }
+                                                        )
+                                                            )
+                                                .Proxy(X.AjaxProxy()
+                                                    .Url(Url.Action("GetShort"))
+                                                .Reader(X.JsonReader().Root("data"))
+                                                            )
+                                                                .Parameters(ps => ps.Add(new StoreParameter("cboCarMake", "App.NewParvandeKhodro.queryById('cboCarMake').getDisplayValue()", ParameterMode.Raw)))
+                                                        )
+                                                        .Listeners(l => l.Select.Handler = "ChangeShort();")
+                                            .AllowBlank(false)
+                                                    , X.Image().ID("UImage").ItemID("Image").ImageUrl("~/Content/images/Blank.jpg").Width(20).Height(20).Border(false)
+                                        ),
+                                            X.FieldSet()
+                                                .Border(false)
+                                                //.ColSpan(2)
+                                                .Layout(LayoutType.HBox)
+                                                .Items(
+                                            X.Label("مطابق با شاسی").ItemID("lblCheck"),
+                                            X.Checkbox()
+                                                .ItemID("checkbox1")
+                                                .Listeners(l => l.Change.Fn = "setVINshasi2"))
+                                        )
+                                        ,
+                                            
+                                                   X.FieldSet().Width(620)
+                                                       .Hidden(!(bool)ForceScan)
+                                                   .Border(true).Title("آپلود فایل های مربوطه").ItemID("uploadFieldset").Listeners(l => l.Render.Handler = "hide('uploadFieldset');")
+                                                   .Height(165)
+                                           .Layout(LayoutType.VBox)
+                                               .LayoutConfig(new VBoxLayoutConfig { Align = VBoxAlign.Right })
+                                    /*.LayoutConfig(new Ext.Net.TableLayoutConfig { Columns = 3, TDAttrs = { Cls="minwidthtd"} })*/.Items(
+                                            X.FieldSet().Border(false).Layout(LayoutType.HBox)
+                                                
+                                            .Items(
+                                        X.FileUploadField().Hidden(!(bool)ForceScan)
+                                        .ID("FileUploadField11")
+
+                                            .ButtonOnly(true).ButtonText("تصویر برگ سبز").PaddingSpec("0 0 0 35px")
+
+                                        .DirectEvents(l =>
+                                                {
+                                                    l.Change.Action = "Upload";
+                                                    l.Change.Success = "hideprogress1();";
+                                                }
+                                            )
+                                        .Listeners(l => l.Change.Fn = "FilenameshowFile1")
+                                        .Icon(Ext.Net.Icon.Attach)
+                                            , X.Button().Hidden(!(bool)ForceScan)
+                                            .ID("btnDownload1")
+                                                    .Text("دانلود فایل")
+
+                                                //.MarginSpec("0px 400px 0px 0px")
+
+                                            .Icon(Ext.Net.Icon.DiskDownload)
+                                            .Listeners
+                                            (l =>
+                                                {
+                                                    l.Click.Handler = "Download(1);";
+                                                }
+                                            )
+                                        , X.Container().Content(@<center><div id="fi-button-Dl1" style="width:300px;text-align:center;"></div></center>)
+                            //.Hidden(!(bool)ForceScan)
+                            )
+
+                                        ,
+                                            X.FieldSet().Border(false).Layout(LayoutType.HBox).Items(
+                                            X.FileUploadField().Hidden(!(bool)ForceScan)
+                                        .ID("FileUploadField22")
+                                                .ButtonOnly(true).ButtonText("تصویر کارت خودرو").PaddingSpec("0 0 0 23px")
+                                        .DirectEvents(l =>
+                                                {
+                                                    l.Change.Action = "Upload1";
+                                                    l.Change.Success = "hideprogress1();";
+                                                }
+                                            )
+                                        .Listeners(l => l.Change.Fn = "FilenameshowFile1")
+                                            .Icon(Ext.Net.Icon.Attach)
+                                        , X.Button()
+                                                .ID("btnDownload2").Hidden(!(bool)ForceScan)
+                                            .Text("دانلود فایل")
+        //.MarginSpec("0px 400px 0px 0px")
+
+                                            .Icon(Ext.Net.Icon.DiskDownload)
+                                            .Listeners
+                                            (l =>
+                                                {
+                                                    l.Click.Handler = "Download(2);";
+                                                }
+                                            )
+                                            , X.Container().Hidden(!(bool)ForceScan)
+                                            .Content(@<center><div id="fi-button-Dl2" style=" width: 300px; text-align: center;"></div></center>).ColSpan(2))
+,
+    X.FieldSet().Border(false).Layout(LayoutType.HBox).Items(
+                                        X.FileUploadField()
+                                            .ID("FileUploadField33").Hidden(!(bool)ForceScan)
+                                                .ButtonOnly(true).ButtonText("صفحه2 کارت خودرو").PaddingSpec("0 0 0 13px")
+                                        .DirectEvents(l =>
+                                                {
+                                                    l.Change.Action = "Upload3";
+                                                    l.Change.Success = "hideprogress1();";
+                                                }
+                                            )
+                                        .Listeners(l => l.Change.Fn = "FilenameshowFile1")
+                                            .Icon(Ext.Net.Icon.Attach)
+                                        , X.Button()
+                                                .ID("btnDownload3").Hidden(!(bool)ForceScan)
+                                            .Text("دانلود فایل")
+        //.MarginSpec("0px 400px 0px 0px")
+
+                                            .Icon(Ext.Net.Icon.DiskDownload)
+                                            .Listeners
+                                            (l =>
+                                                {
+                                                    l.Click.Handler = "Download(3);";
+                                                }
+                                            )
+                                            , X.Container().Hidden(!(bool)ForceScan)
+                                            .Content(@<center><div id="fi-button-Dl3" style=" width: 300px; text-align: center;"></div></center>).ColSpan(2))
+    
+                                            , X.FieldSet().Border(false).Layout(LayoutType.HBox).Items(
+                                            X.FileUploadField().Hidden(!(bool)ForceScan)
+                                        .ID("FileUploadField44")
+                                                .ButtonOnly(true).ButtonText("تصویر سند کارخانه").PaddingSpec("0 0 0 17px")
+                                        .DirectEvents(l =>
+                                                {
+                                                    l.Change.Action = "Upload2";
+                                                    l.Change.Success = "hideprogress1();";
+                                                }
+                                            )
+                                        .Listeners(l => l.Change.Fn = "FilenameshowFile1")
+                                            .Icon(Ext.Net.Icon.Attach)
+                                            , X.Button().Hidden(!(bool)ForceScan)
+                                                    .ID("btnDownload4").Listeners(l => l.Render.Handler = "hidee();")
+                                            .Text("دانلود فایل")
+        //.MarginSpec("0px 400px 0px 0px")
+
+                                            .Icon(Ext.Net.Icon.DiskDownload)
+                                            .Listeners
+                                            (l =>
+                                                {
+                                                    l.Click.Handler = "Download(4);";
+                                                }
+                                            )
+
+                                            , X.Container().Hidden(!(bool)ForceScan)
+                                            .Content(@<center><div id="fi-button-Dl4" style=" width: 300px; text-align: center;"></div></center>).ColSpan(2))
+                , X.Panel().Layout(Ext.Net.LayoutType.Fit).Height(20).Border(false).ColSpan(4).Items(
+                             X.Label().Cls("lbl2")//.Hidden(!(bool)ForceScan)
+                             .ItemID("lblInf").Text("ورود یکی از تصاویر فوق(تصویر برگ سبز، تصویر کارت خودرو، تصویر سند کارخانه) الزامی است."))
+                            ))
+
+                )
+                )
+)
+<script type="text/javascript">
+    var fldStatus = false;
+    var fldFileId1 = 0;
+    var fldFileId2 = 0;
+    var fldFileId3 = 0;
+    var fldFileId4 = 0;
+    var vin = "";
+
+    var fldCarPlaqueID = '@ViewBag.fldCarPlaqueID';
+    var state = '@ViewBag.state';
+
+    var Mojaz = 0;
+    var sizee = 0;
+    var EndUpload1 = false;
+
+    var setVINshasi2 = function (fieldd, valuee) {
+        if (valuee == true) {
+            var txtShasi = App.NewParvandeKhodro.queryById('txtShasi');
+            if (txtShasi.getValue().length == 17) {
+                App.NewParvandeKhodro.queryById('fieldsetvin').show();
+                App.NewParvandeKhodro.queryById('txtVinMatchShasi').setValue(txtShasi.getValue()).setReadOnly(true);
+                App.NewParvandeKhodro.queryById('fieldsetvin2').hide();
+            }
+            else {
+                Ext.MessageBox.show({
+                    title: "خطا",
+                    msg: "لطفا شماره شاسی را به درستی وارد نمایید.",
+                    icon: Ext.MessageBox.ERROR,
+                    buttons: Ext.MessageBox.OK
+                });
+                fieldd.setValue(false);
+            }
+        }
+        else {
+            App.NewParvandeKhodro.queryById('fieldsetvin').hide();
+            App.NewParvandeKhodro.queryById('txtVinMatchShasi').setValue("");
+            App.NewParvandeKhodro.queryById('fieldsetvin2').show();
+        }
+    };
+    
+    function ChangeCboPelakType() {
+        var CboPelakType = App.NewParvandeKhodro.queryById('CboPelakType');
+         var cboShort = App.NewParvandeKhodro.queryById('cboShort');
+        var _charShasi = App.NewParvandeKhodro.queryById('_charShasi');
+        var _charModel = App.NewParvandeKhodro.queryById('_charModel');
+        var _5char = App.NewParvandeKhodro.queryById('_5char');
+        var _2char = App.NewParvandeKhodro.queryById('_2char');
+
+        if (CboPelakType.getValue() == '0') {
+            cboShort.allowBlank = false;
+            _charShasi.allowBlank = false;
+            _charModel.allowBlank = false;
+            _5char.allowBlank = false;
+            _2char.allowBlank = false;
+            cboShort.validate();
+            _charShasi.validate();
+            _charModel.validate();
+            _5char.validate();
+            _2char.validate();
+            /* _5char.minLength = "5";
+            _5char.inputEl.set({ maxLength: 5 });
+            _charModel.minLength = "2";
+            _charModel.inputEl.set({ maxLength: 2 });
+            _2char.minLength = "2";
+            _2char.inputEl.set({ maxLength: 2 });*/
+        }
+        else {
+            cboShort.allowBlank = true;
+            _charShasi.allowBlank = true;
+            _charModel.allowBlank = true;
+            _5char.allowBlank = true;
+            _2char.allowBlank = true;
+            cboShort.validate();
+            _charShasi.validate();
+            _charModel.validate();
+            _5char.validate();
+            _2char.validate();
+        }
+      
+    }
+
+    function SetValueShort() {
+        var cboCarMake = App.NewParvandeKhodro.queryById('cboCarMake').getValue();
+        if (cboCarMake == "1") {/*داخلی*/
+            App.NewParvandeKhodro.queryById('checkbox1').show();
+            App.NewParvandeKhodro.queryById('checkbox1').setValue(false);
+            App.NewParvandeKhodro.queryById('lblCheck').show();
+            App.NewParvandeKhodro.queryById('fieldsetvin2').show();
+            App.NewParvandeKhodro.queryById('fieldsetvin').hide();
+            App.NewParvandeKhodro.queryById('_2char').setValue("");
+            App.NewParvandeKhodro.queryById('_5char').setValue("");
+            App.NewParvandeKhodro.queryById("cboFillYear").hide();
+            App.NewParvandeKhodro.queryById("txtDateP").show();
+            var cboShort = App.NewParvandeKhodro.queryById('cboShort');
+            /*cboShort.clearValue(); cboShort.getStore().load();*/
+            cboShort.setValue("101");
+            ChangeShort();
+        }
+        else {
+            App.NewParvandeKhodro.queryById('checkbox1').setValue(false);
+            App.NewParvandeKhodro.queryById('checkbox1').hide();
+            App.NewParvandeKhodro.queryById('lblCheck').hide();
+            App.NewParvandeKhodro.queryById('fieldsetvin2').show();
+            App.NewParvandeKhodro.queryById('fieldsetvin').hide();
+            App.NewParvandeKhodro.queryById('_2char').setValue("");
+            App.NewParvandeKhodro.queryById('_5char').setValue("");
+            App.NewParvandeKhodro.queryById("txtDateP").hide();
+            App.NewParvandeKhodro.queryById("cboFillYear").show();
+            var k = App.NewParvandeKhodro.queryById('Image');
+            k.setImageUrl("/Content/images/Blank.jpg");
+        }
+    }
+
+    function hideprogress1() {
+        if (Mojaz == 1 && sizee == 1) {
+            EndUpload1 = true;
+        }
+        Mojaz = 0;
+        sizee = 0;
+    }
+    var Check = setInterval(CheckEnd1, 500);
+
+    function CheckEnd1() {
+        if (EndUpload1 == true) {
+            Ext.MessageBox.hide();
+            Ext.Msg.alert('عملیات موفق', 'فایل با موفقیت آپلود شد.');
+            clearInterval(CheckEnd1);
+            EndUpload1 = false;
+        }
+    }
+    var FilenameshowFile1 = function (fb, v) {
+        id = fb.fileInputEl.dom.id;
+        var ElName = "fi-button-Dl" + id.substring(15, 16);
+        var el = Ext.get(ElName);
+        if (v) {
+            showProgressBar1();
+            if (v.split('.').pop().toLowerCase() == "jpeg" || v.split('.').pop().toLowerCase() == "jpg" || v.split('.').pop().toLowerCase() =="png"|| v.split('.').pop().toLowerCase() =="tiff" || v.split('.').pop().toLowerCase() =="tif") {
+                Mojaz = 1;
+                if (document.getElementById(id).files[0].size <= 5242880) {
+                    sizee = 1;
+                }
+                if (sizee == 1) {
+                    el.update('<b>فایل انتخاب شده:</b> ' + v);
+                }
+                else {
+                    el.update("");
+                }
+
+                if (!el.isVisible()) {
+                    el.slideIn('t', {
+                        duration: .2,
+                        easing: 'easeIn',
+                        callback: function () {
+                            el.highlight();
+                        }
+                    });
+                } else {
+                    el.highlight();
+                }
+            }
+            else {
+                el.update("");
+            }
+        }
+    };
+    function showProgressBar1() {
+        Ext.MessageBox.show({
+            msg: 'لطفاً منتظر باشید',
+            progressText: 'در حال آپلود فایل...',
+            width: 300,
+            wait: true,
+            waitConfig:
+            {
+                interval: 200,
+                text: 'در حال آپلود فایل...',
+                scope: this
+            }
+        });
+    }
+    function Download(ID) {
+        var FileId = fldFileId1;
+        if (ID == 2)
+            FileId = fldFileId2;
+        else if (ID == 3)
+            FileId = fldFileId3;
+        else if (ID == 4)
+            FileId = fldFileId4;
+        window.location.href = '@Url.Content("/NewVer/Parvande/Download?FileId=")' + FileId;
+    }
+
+    function hide(item) {
+        if ('@ViewBag.state' == 2) {
+            App.NewParvandeKhodro.queryById(String(item)).hide();
+        }
+    }
+
+    function hidee() {
+        if ('@ViewBag.state' == 2) {
+            App.FileUploadField11.hide();
+            App.btnDownload1.hide();
+            App.FileUploadField22.hide();
+            App.btnDownload2.hide();
+            App.FileUploadField33.hide();
+            App.btnDownload3.hide();
+            App.FileUploadField44.hide();
+            App.btnDownload4.hide();
+        }
+    }
+
+    function checkDay2(DayID) {
+        var objectD2 = App.NewParvandeKhodro.queryById(DayID);
+        if (objectD2.getValue() > 31) {
+            objectD2.setValue("");
+            Ext.MessageBox.show({
+                title: "خطا",
+                msg: "مقدار وارد شده معتبر نیست.",
+                icon: Ext.MessageBox.ERROR,
+                buttons: Ext.MessageBox.OK
+            });
+        }
+    }
+
+    function checkMonth2(MonthID) {
+        var objectM2 = App.NewParvandeKhodro.queryById(MonthID);
+        if (objectM2.getValue() > 12) {
+            objectM2.setValue("");
+            Ext.MessageBox.show({
+                title: "خطا",
+                msg: "مقدار وارد شده معتبر نیست.",
+                icon: Ext.MessageBox.ERROR,
+                buttons: Ext.MessageBox.OK
+            });
+        }
+    }
+
+    function ChangeTxtMotor() {
+        var txtMotor = App.NewParvandeKhodro.queryById('txtMotor');
+        chnageLag(txtMotor);
+        /*txtMotor.setValue(chnageLag(txtMotor.getValue()));*/
+    }
+    function _charModel() {
+        var _charModel = App.NewParvandeKhodro.queryById('_charModel');
+        chnageLag(_charModel);
+      /*  _charModel.setValue(chnageLag(_charModel.getValue()));*/
+    }
+    function Change_5char() {
+        var _5char = App.NewParvandeKhodro.queryById('_5char');
+        chnageLag(_5char);
+       /* _5char.setValue(chnageLag(_5char.getValue()));*/
+    }
+    function Change_2char() {
+        var _2char = App.NewParvandeKhodro.queryById('_2char');
+        chnageLag(_2char);
+       /* _2char.setValue(chnageLag(_2char.getValue()));*/
+    }
+    
+    function ChangeTxtShasi() {
+        var txtShasi = App.NewParvandeKhodro.queryById('txtShasi');
+        var _charShasi = App.NewParvandeKhodro.queryById('_charShasi');
+        chnageLag(txtShasi);
+        /*txtShasi.setValue(chnageLag(txtShasi.getValue()));*/
+        var id = txtShasi.getValue().toString();
+        _charShasi.setValue(id.substr(id.length - 6));
+    }
+    function ChangeShort() {
+        var cboShort = App.NewParvandeKhodro.queryById('cboShort');
+        var url = '/NewVer/Parvande/Image';
+        var g = url + '?id=' + cboShort.getValue();
+        var k = App.NewParvandeKhodro.queryById('Image');
+        k.setImageUrl(g);
+    }
+    function ChangeYear() {
+        App.NewParvandeKhodro.queryById('cboFillYear').clearValue();
+        App.NewParvandeKhodro.queryById('cboFillYear').getStore().load();
+        App.NewParvandeKhodro.queryById('cboFillYear').getStore().on('load', function () {
+            App.NewParvandeKhodro.queryById("cboFillYear").setValue(App.NewParvandeKhodro.queryById("cboFillYear").store.getAt(1));
+        });
+        var cboYear = App.NewParvandeKhodro.queryById('cboYear');
+        var _charModel = App.NewParvandeKhodro.queryById('_charModel');
+        if ('@ViewBag.fldPlaqueTypeName' == "ملی") {
+            var id = cboYear.getValue().toString();
+            if (id.length > 2 && id.length == 4)
+                _charModel.setValue(id.substring(2));
+            else
+                _charModel.setValue('');
+        }
+        Ext.net.DirectMethod.request({
+            url: '/NewVer/Parvande/FillDateText',
+            params: {
+                year: cboYear.getValue()
+            },
+            success: function (result) {
+                App.NewParvandeKhodro.queryById("txtDate").store.load();
+                App.NewParvandeKhodro.queryById("txtDate").setValue(result.date.substring(0, 4));
+                App.NewParvandeKhodro.queryById("txtDateM").setValue(result.date.substring(5, 7));
+                App.NewParvandeKhodro.queryById("txtDateD").setValue(result.date.substring(8, 10));
+                App.NewParvandeKhodro.queryById("txtDateP").setValue(result.date.substring(0, 4));
+                App.NewParvandeKhodro.queryById("txtDatePM").setValue(result.date.substring(5, 7));
+                App.NewParvandeKhodro.queryById("txtDatePD").setValue(result.date.substring(8, 10));                
+            }
+        });
+    }
+    function LoadNewParvandeKhodro() {
+        App.NewParvandeKhodro.queryById("cboFillYear").hide();
+        if ('@ForceScan' == 'False')
+            App.NewParvandeKhodro.setHeight(345);
+        if ('@ViewBag.fldPlaqueTypeName' != "ملی") {
+            var charshasi = App.NewParvandeKhodro.queryById('_charShasi');
+            var char5 = App.NewParvandeKhodro.queryById('_5char');
+            /*charshasi.setReadOnly(true);*/
+            /*char5.disable();*/
+        }
+        if ('@ViewBag.Id' != '0') {
+            App.NewParvandeKhodro.body.mask("در حال بارگذاری...");
+            Ext.net.DirectMethod.request({
+                url: '/NewVer/Parvande/Details',
+                params: {
+                    Id: '@ViewBag.Id'
+                },
+                success: function (data) {
+                    if (data.Err == 0) {
+                        if ('@ViewBag.state' == 1) {
+                            var cboCarMake = App.NewParvandeKhodro.queryById('cboCarMake');
+                            cboCarMake.setValue(data.CarMake);
+                            if (data.CarMake != 1) {/*وارداتی*/
+                                App.NewParvandeKhodro.queryById('checkbox1').hide();
+                                App.NewParvandeKhodro.queryById('lblCheck').hide();
+                            }
+                            var Id = App.NewParvandeKhodro.queryById('fldId');
+                            Id.setValue(data.fldId);
+
+                            var txtShasi = App.NewParvandeKhodro.queryById('txtShasi');
+                            txtShasi.setValue(data.fldShasiNumber);
+
+                            var fldCarId = App.NewParvandeKhodro.queryById('fldCarId');
+                            fldCarId.setValue(data.fldCarID);
+
+                            /*vin = data.VIN.toString();*/
+
+                            var _charModel = App.NewParvandeKhodro.queryById('_charModel');
+                            _charModel.setValue(data.fldModel.substr(2, 2));
+
+                            var txtMotor = App.NewParvandeKhodro.queryById('txtMotor');
+                            txtMotor.setValue(data.fldMotorNumber);
+                            
+                            
+                            var txtDateM = App.NewParvandeKhodro.queryById('txtDateM');
+                            txtDateM.setValue(data.fldStartDateInsurance.substring(5, 7));
+                            var txtDateD = App.NewParvandeKhodro.queryById('txtDateD');
+                            txtDateD.setValue(data.fldStartDateInsurance.substring(8, 10));
+
+
+                            var txtDateP = App.NewParvandeKhodro.queryById('txtDateP');
+                            txtDateP.setValue(data.fldDatePlaque.substring(0, 4));
+                            var txtDatePM = App.NewParvandeKhodro.queryById('txtDatePM');
+                            txtDatePM.setValue(data.fldDatePlaque.substring(5, 7));
+                            var txtDatePD = App.NewParvandeKhodro.queryById('txtDatePD');
+                            txtDatePD.setValue(data.fldDatePlaque.substring(8, 10));
+                            var cboColor = App.NewParvandeKhodro.queryById('cboColor');
+                            cboColor.setValue(data.fldCarColorID);                            
+
+                            var Account = App.NewParvandeKhodro.queryById('cboCarAccountTypes');
+                            Account.clearValue(); Account.getStore().load();
+                            Account.setValue(data.CarAccountId);
+
+                            var cboShort = App.NewParvandeKhodro.queryById('cboShort');
+                            /*cboShort.clearValue(); cboShort.getStore().load();*/
+
+                            if (App.NewParvandeKhodro.queryById('cboCarMake').getValue() != "1") {
+                                cboShort.setValue(data.sumbolid);
+                                var value = "data:image/gif;base64," + data.ShortIcon;
+                                App.NewParvandeKhodro.queryById('Image').setImageUrl(value);
+                            }
+
+                            var cboYear = App.NewParvandeKhodro.queryById('cboYear');
+                            cboYear.clearValue(); cboYear.getStore().load();
+                            cboYear.setValue(data.fldModel);
+
+                            var txtDate = App.NewParvandeKhodro.queryById('txtDate');
+                            txtDate.clearValue(); txtDate.store.load();
+                            txtDate.setValue(data.fldStartDateInsurance.substring(0, 4));
+
+                            var cboFillYear = App.NewParvandeKhodro.queryById('cboFillYear');
+                            cboFillYear.clearValue(); cboFillYear.getStore().load();
+                            cboFillYear.setValue(data.fldDatePlaque.substring(0, 4));
+
+                            var cboCarCabin = App.NewParvandeKhodro.queryById('cboCarCabin');
+                            cboCarCabin.clearValue(); cboCarCabin.getStore().load();
+                            cboCarCabin.setValue(data.CabinTypeId);
+
+                            var cboSystem = App.NewParvandeKhodro.queryById('cboSystem');
+                            cboSystem.clearValue(); cboSystem.getStore().load();
+                            cboSystem.setValue(data.CarSystemId);
+
+                            var cboModel = App.NewParvandeKhodro.queryById('cboModel');
+                            cboModel.clearValue(); cboModel.getStore().load();
+                            cboModel.setValue(data.CarModelId);
+
+                            var cboClass = App.NewParvandeKhodro.queryById('cboClass');
+                            cboClass.clearValue(); cboClass.getStore().load();
+                            cboClass.setValue(data.CarClassId);
+
+                            var CboPelakType = App.NewParvandeKhodro.queryById('CboPelakType');
+                            CboPelakType.setValue(data.fldTypeEntezami);
+
+                            if (data.fldMotabeghBaShasi == 0) {
+                                var _2char = App.NewParvandeKhodro.queryById('_2char');
+                                _2char.setValue(data.VIN.substr(2, 2));
+
+                                var _5char = App.NewParvandeKhodro.queryById('_5char');
+                                _5char.setValue(data.VIN.substr(6, 5));
+
+                                var _charShasi = App.NewParvandeKhodro.queryById('_charShasi');
+                                _charShasi.setValue(data.VIN.substring(11));
+
+                                var _charModel = App.NewParvandeKhodro.queryById('_charModel');
+                                _charModel.setValue(data.VIN.substr(4, 2));
+
+                                App.NewParvandeKhodro.queryById('fieldsetvin').hide();
+                                App.NewParvandeKhodro.queryById('fieldsetvin2').show();
+                            }
+                            else {
+                                var _charModel = App.NewParvandeKhodro.queryById('_charModel');
+                                _charModel.setValue(data.fldModel.substr(2, 2));
+                            }
+
+                            var checkbox1 = App.NewParvandeKhodro.queryById('checkbox1');
+                            checkbox1.setValue(data.fldMotabeghBaShasi);
+
+                            fldFileId1 = data.fldBargSabzFileId;
+                            fldFileId2 = data.fldCartFileId;
+                            fldFileId3 = data.fldCartBackFileId;
+                            fldFileId4 = data.fldSanadForoshFileId;
+
+                            if (data.fldBargSabzFileId == null)
+                                App.btnDownload1.setDisabled(true);
+                            if (data.fldCartFileId == null)
+                                App.btnDownload2.setDisabled(true);
+                            if (data.fldCartBackFileId == null) 
+                                App.btnDownload3.setDisabled(true);
+                            if (data.fldSanadForoshFileId == null)
+                                App.btnDownload4.setDisabled(true);
+                        }
+                        else {
+
+                            App.NewParvandeKhodro.setTitle("ویرایش مشخصات خودرو");
+                            App.NewParvandeKhodro.setHeight(315);
+                            var Id = App.NewParvandeKhodro.queryById('fldId');
+                            Id.setValue(data.fldId);
+                            var fldCarId = App.NewParvandeKhodro.queryById('fldCarId');
+                            fldCarId.setValue(data.fldCarID);
+
+                            vin = data.fldVIN.toString();
+                            var twoChar = vin.substr(2, 2);
+                            var year = vin.substr(4, 2);
+                            var fiveChar = vin.substr(6, 5);
+                            var shasi = vin.substring(11);
+                            var _2char = App.NewParvandeKhodro.queryById('_2char');
+                            _2char.setValue(twoChar);
+                            var _charModel = App.NewParvandeKhodro.queryById('_charModel');
+                            _charModel.setValue(year);
+                            var _5char = App.NewParvandeKhodro.queryById('_5char');
+                            _5char.setValue(fiveChar);
+                            var _charShasi = App.NewParvandeKhodro.queryById('_charShasi');
+                            _charShasi.setValue(shasi);
+                            var txtMotor = App.NewParvandeKhodro.queryById('txtMotor');
+                            txtMotor.setValue(data.fldMotorNumber);
+                            var txtShasi = App.NewParvandeKhodro.queryById('txtShasi');
+                            txtShasi.setValue(data.fldShasiNumber);
+                            
+                            var txtDateM = App.NewParvandeKhodro.queryById('txtDateM');
+                            txtDateM.setValue(data.fldStartDateInsurance.substring(5, 7));
+                            var txtDateD = App.NewParvandeKhodro.queryById('txtDateD');
+                            txtDateD.setValue(data.fldStartDateInsurance.substring(8, 10));
+                            var cboColor = App.NewParvandeKhodro.queryById('cboColor');
+                            cboColor.setValue(data.fldCarColorID);
+
+                            var cboCarMake = App.NewParvandeKhodro.queryById('cboCarMake');
+                            cboCarMake.setValue(data.CarMake);
+                            var Account = App.NewParvandeKhodro.queryById('cboCarAccountTypes');
+                            Account.clearValue(); Account.getStore().load();
+                            Account.setValue(data.CarAccountId);
+                            var cboShort = App.NewParvandeKhodro.queryById('cboShort');
+                            cboShort.clearValue(); cboShort.getStore().load();
+                            cboShort.setValue(data.sumbolid);
+                            var cboYear = App.NewParvandeKhodro.queryById('cboYear');
+                            cboYear.clearValue(); cboYear.getStore().load();
+                            cboYear.setValue(data.fldModel);
+
+                            var txtDate = App.NewParvandeKhodro.queryById('txtDate');
+                            /*txtDate.store.load();*/
+                            txtDate.setValue(data.fldStartDateInsurance.substring(0, 4));
+                            /* var cboFillYear = App.NewParvandeKhodro.queryById('cboFillYear');
+                             cboFillYear.clearValue(); cboFillYear.getStore().load();
+                             cboFillYear.setValue(data.fldDatePlaque.substring(0, 4));*/
+
+                            var cboCarCabin = App.NewParvandeKhodro.queryById('cboCarCabin');
+                            cboCarCabin.clearValue(); cboCarCabin.getStore().load();
+                            cboCarCabin.setValue(data.CabinTypeId);
+                            var cboSystem = App.NewParvandeKhodro.queryById('cboSystem');
+                            cboSystem.clearValue(); cboSystem.getStore().load();
+                            cboSystem.setValue(data.CarSystemId);
+                            var cboModel = App.NewParvandeKhodro.queryById('cboModel');
+                            cboModel.clearValue(); cboModel.getStore().load();
+                            cboModel.setValue(data.CarModelId);
+                            var cboClass = App.NewParvandeKhodro.queryById('cboClass');
+                            cboClass.clearValue(); cboClass.getStore().load();
+                            cboClass.setValue(data.CarClassId);
+                            var value = "data:image/gif;base64," + data.ShortIcon;
+                            App.NewParvandeKhodro.queryById('Image').setImageUrl(value);
+                        }
+                    }
+                    else
+                    {
+                        Ext.MessageBox.show({
+                            title: data.MsgTitle,
+                            msg: data.Msg,
+                            icon: Ext.MessageBox.ERROR,
+                            buttons: Ext.MessageBox.OK
+                        });
+                    }
+                    App.NewParvandeKhodro.body.mask().hide();
+                    ChangeCboPelakType();
+                }
+            });
+        }
+        else {
+            App.NewParvandeKhodro.queryById('btnDownload1').setDisabled(true);
+            App.NewParvandeKhodro.queryById('btnDownload2').setDisabled(true);
+            App.NewParvandeKhodro.queryById('btnDownload3').setDisabled(true);
+            App.NewParvandeKhodro.queryById('btnDownload4').setDisabled(true);
+            App.NewParvandeKhodro.queryById('fieldsetvin').hide();
+            App.NewParvandeKhodro.queryById('fieldsetvin2').show();
+
+            var Color = App.NewParvandeKhodro.queryById('cboColor').setValue("3");
+        }
+    }
+
+    function SaveParvandeKhodro() {
+        if ('@ViewBag.state' == 1) {
+            var _5char = App.NewParvandeKhodro.queryById('_5char');
+            var _2char = App.NewParvandeKhodro.queryById('_2char');
+            var cboShort = App.NewParvandeKhodro.queryById('cboShort');
+            var _charShasi = App.NewParvandeKhodro.queryById('_charShasi');
+            var _charModel = App.NewParvandeKhodro.queryById('_charModel');
+            var cboClass = App.NewParvandeKhodro.queryById('cboClass');
+            var cboModel = App.NewParvandeKhodro.queryById('cboModel');
+            var cboSystem = App.NewParvandeKhodro.queryById('cboSystem');
+            var cboCarCabin = App.NewParvandeKhodro.queryById('cboCarCabin');
+            var cboCarAccountTypes = App.NewParvandeKhodro.queryById('cboCarAccountTypes');
+            var cboCarMake = App.NewParvandeKhodro.queryById('cboCarMake');
+            var txtMotor = App.NewParvandeKhodro.queryById('txtMotor');
+            var txtShasi = App.NewParvandeKhodro.queryById('txtShasi');
+            var cboColor = App.NewParvandeKhodro.queryById('cboColor');
+            var cboYear = App.NewParvandeKhodro.queryById('cboYear');
+            var txtDate = App.NewParvandeKhodro.queryById('txtDate'); 
+            var cboFillYear = App.NewParvandeKhodro.queryById('cboFillYear');
+            var txtDateP = App.NewParvandeKhodro.queryById('txtDateP');
+            var txtDatePD = App.NewParvandeKhodro.queryById('txtDatePD');
+            var txtDatePM = App.NewParvandeKhodro.queryById('txtDatePM');
+            var txtDateD = App.NewParvandeKhodro.queryById('txtDateD');
+            var txtDateM = App.NewParvandeKhodro.queryById('txtDateM');
+            var CboPelakType = App.NewParvandeKhodro.queryById('CboPelakType');
+            var fldCarId = App.NewParvandeKhodro.queryById('fldCarId');
+            var Id = App.NewParvandeKhodro.queryById('fldId');
+            var CarFileId = App.NewParvandeKhodro.queryById('fldId').getValue();
+            var checkbox1 = App.NewParvandeKhodro.queryById('checkbox1');
+            var txtVinMatchShasi = App.NewParvandeKhodro.queryById('txtVinMatchShasi');
+
+            var er = false;
+
+            if (cboSystem.validate() == false) {
+                er = true;
+            }
+            if (cboCarAccountTypes.validate() == false) {
+                er = true;
+            }
+            if (cboCarMake.validate() == false) {
+                er = true;
+            }
+            if (cboCarCabin.validate() == false) {
+                er = true;
+            }
+            if (CboPelakType.getValue() == "0") {
+                if (checkbox1.getValue() == false) {
+                    if (_5char.validate() == false) {
+                        er = true;
+                    }
+                    if (_2char.validate() == false) {
+                        er = true;
+                    }
+                    if (cboShort.validate() == false) {
+                        er = true;
+                    }
+                    if (_charShasi.validate() == false) {
+                        er = true;
+                    }
+                    if (_charModel.validate() == false) {
+                        er = true;
+                    }
+                }
+            }
+            if (cboClass.validate() == false) {
+                er = true;
+            }
+            if (cboModel.validate() == false) {
+                er = true;
+            }
+            if (txtMotor.validate() == false) {
+                er = true;
+            }
+            if (txtShasi.validate() == false) {
+                er = true;
+            }
+            if (cboColor.validate() == false) {
+                er = true;
+            }
+            if (cboYear.validate() == false) {
+                er = true;
+            }
+            if (txtDateD.validate() == false) {
+                er = true;
+            }
+            if (txtDateM.validate() == false) {
+                er = true;
+            }
+            if (txtDatePM.validate() == false) {
+                er = true;
+            }
+            if (txtDatePD.validate() == false) {
+                er = true;
+            }
+            if (CboPelakType.validate() == false) {
+                er = true;
+            }
+            if (cboCarMake.getValue() == "2") {/*وارداتی*/                
+                if (cboFillYear.validate() == false) {
+                    er = true;
+                }
+            }
+
+            if ('ViewBag.fldPlaqueTypeName' == "ملی") {
+                if (_5char.getValue().length < 5) {
+                    alert('کد وارد شده کمتر از 5 رقم می باشد.');
+                    er = true;
+                }
+                else if (_2char.getValue().length < 2) {
+                    alert('کد وارد شده کمتر از 2 رقم می باشد.');
+                    er = true;
+                }
+            }
+
+            if (er == true)
+                return;
+
+            if (checkbox1.getValue() == false) {
+                var drop = cboShort.getDisplayValue();
+                var vin = drop + _2char.getValue().toString() + _charModel.getValue().toString() + _5char.getValue().toString() + _charShasi.getValue().toString();
+                if (vin.length < 17 && CboPelakType.getValue() == "1") {
+                    vin = '';
+                }
+                else if (vin.length < 17 && CboPelakType.getValue() == "0") {
+                    Ext.MessageBox.show({
+                        title: "خطا",
+                        msg: "لطفا VIN را وارد نمایید.",
+                        icon: Ext.MessageBox.ERROR,
+                        buttons: Ext.MessageBox.OK
+                    });
+                    return;
+                }
+            }
+            else {
+                vin = txtVinMatchShasi.getValue();
+            }
+            
+            var DatePM = txtDatePM.getValue(); var DatePD = txtDatePD.getValue();
+            if (DatePM.length < 2)
+                DatePM = 0 + txtDatePM.getValue();
+
+            if (DatePD.length < 2)
+                DatePD = 0 + txtDatePD.getValue();
+
+            var DateM = txtDateM.getValue(); var DateD = txtDateD.getValue();
+            if (DateM.length < 2)
+                DateM = 0 + txtDateM.getValue();
+            if (DateD.length < 2)
+                DateD = 0 + txtDateD.getValue();
+
+            var DatePelak2 = txtDateP.getValue() + "/" + DatePM + "/" + DatePD;
+            var TextDate = txtDateP.getValue() + "/" + DatePM + "/" + DatePD;
+            var DateInsurance2 = txtDate.getValue() + "/" + DateM + "/" + DateD;
+
+            if (cboCarMake.getValue() == "2") { /*وارداتی*/
+                DatePelak2 = cboFillYear.getValue() + "/" + DatePM + "/" + DatePD;
+                TextDate = cboFillYear.getValue() + "/" + DatePM + "/" + DatePD
+            }
+
+            if (DatePelak2 < DateInsurance2) {
+                Ext.MessageBox.show({
+                    title: "خطا",
+                    msg: "تاریخ پلاک گذاری نمی تواند قبل از تاریخ سند کارخانه باشد.",
+                    icon: Ext.MessageBox.ERROR,
+                    buttons: Ext.MessageBox.OK
+                });
+                return;
+            }
+            /*alert(fldFileId3);پشت کارت*/
+            /*alert(fldFileId2);روی کارت*/
+            
+            var pelakType = false;
+            if (CboPelakType.getValue() == "0")
+                pelakType = true;
+
+            if (vin != "")
+            {
+                App.NewParvandeKhodro.body.mask("در حال ذخیره سازی...");
+                Ext.net.DirectMethod.request({
+                    url: '/NewVer/Parvande/CheckVIN',
+                    params: {
+                        Id: fldCarId.getValue(),
+                        VIN:vin
+                    },
+                    success: function (data) {
+                        if (data.Er == "0") {
+                            Ext.net.DirectMethod.request({
+                                url: '/NewVer/Parvande/CheckMotorNumber',
+                                params: {
+                                    Id: fldCarId.getValue(),
+                                    CarSystem: cboSystem.getValue(),
+                                    fldMotorNumber: txtMotor.getValue()
+                                },
+                                success: function (data2) {
+                                    if (data2.Er == "0") {
+                                        /*Ext.net.Mask.show({ msg: 'در حال بارگذاری...' });*/
+                                        Ext.net.DirectMethod.request({
+                                            url: '/NewVer/Parvande/Save',
+                                            params: {
+                                                fldId: Id.getValue(),
+                                                fldCarPlaqueID: '@ViewBag.fldCarPlaqueID',
+                                                fldMotorNumber: txtMotor.getValue(),
+                                                fldShasiNumber: txtShasi.getValue(),
+                                                fldDatePlaque: TextDate,
+                                                fldVIN: vin,
+                                                fldCarModelID: cboModel.getValue(),
+                                                fldCarClassID: cboClass.getValue(),
+                                                fldCarColorID: cboColor.getValue(),
+                                                fldModel: cboYear.getValue(),
+                                                fldStartDateInsurance: txtDate.getValue() + "/" + DateM + "/" + DateD,
+                                                fldDesc: "",
+                                                fldCarID: fldCarId.getValue(),
+                                                fldBargSabzFileId: fldFileId1,
+                                                fldCartFileId: fldFileId2,
+                                                fldSanadForoshFileId: fldFileId4,
+                                                fldCartBackFileId: fldFileId3,
+                                                fldTypeEntezami: pelakType,
+                                                CarsystemName: cboSystem.getDisplayValue(),
+                                                CarMake: cboCarMake.getValue(),
+                                                Match: checkbox1.getValue()
+                                            },
+                                            success: function (data1) {
+                                                var ic = Ext.MessageBox.INFO;
+                                                if (data1.Err == 1)
+                                                    ic = Ext.MessageBox.ERROR;
+                                                Ext.MessageBox.show({
+                                                    title: data1.MsgTitle,
+                                                    msg: data1.Msg,
+                                                    icon: ic,
+                                                    buttons: Ext.MessageBox.OK,
+                                                    fn: function (btn) {
+                                                        if (btn == 'ok') {
+                                                            if (data1.Err != 1) {
+                                                                App.NewParvandeKhodro.destroy();
+                                                            }
+                                                        }
+                                                    }
+                                                });
+                                                ReloadGridParvande();
+                                                if (data1.Err != 1) {
+                                                    ClearParvandeKhodro();
+                                                }
+                                                else {
+                                                    Ext.get('fi-button-Dl1').update("");
+                                                    Ext.get('fi-button-Dl2').update("");
+                                                    Ext.get('fi-button-Dl3').update("");
+                                                    Ext.get('fi-button-Dl4').update("");
+                                                }
+                                                App.NewParvandeKhodro.body.mask().hide();
+                                                App.SearchParvande.queryById('GridSearch').store.load();
+                                            }
+
+                                        });
+                                    }
+                                    else {
+                                        Ext.MessageBox.show({
+                                            Name: data2.MsgTitle,
+                                            msg: data2.Msg,
+                                            icon: Ext.MessageBox.ERROR,
+                                            buttons: Ext.MessageBox.OK
+                                        });
+                                        App.NewParvandeKhodro.body.mask().hide();
+                                    }
+                                }
+                            });
+
+                        }
+                        else {
+                            Ext.MessageBox.show({
+                                Name: data.MsgTitle,
+                                msg: data.Msg,
+                                icon: Ext.MessageBox.ERROR,
+                                buttons: Ext.MessageBox.OK
+                            });
+                            App.NewParvandeKhodro.body.mask().hide();
+                        }
+                    }
+                        
+                });
+               
+            }
+            else
+            {
+                App.NewParvandeKhodro.body.mask("در حال ذخیره سازی...");
+                Ext.net.DirectMethod.request({
+                    url: '/NewVer/Parvande/CheckMotorNumber',
+                    params: {
+                        Id: fldCarId.getValue(),
+                        CarSystem: cboSystem.getValue(),
+                        fldMotorNumber: txtMotor.getValue()
+                    },
+                    success: function (data2) {
+                        if (data2.Er == "0") {
+
+                            /*Ext.net.Mask.show({ msg: 'در حال بارگذاری...' });*/
+                            Ext.net.DirectMethod.request({
+                                url: '/NewVer/Parvande/Save',
+                                params: {
+                                    fldId: Id.getValue(),
+                                    fldCarPlaqueID: '@ViewBag.fldCarPlaqueID',
+                                    fldMotorNumber: txtMotor.getValue(),
+                                    fldShasiNumber: txtShasi.getValue(),
+                                    fldDatePlaque: TextDate,
+                                    fldVIN: vin,
+                                    fldCarModelID: cboModel.getValue(),
+                                    fldCarClassID: cboClass.getValue(),
+                                    fldCarColorID: cboColor.getValue(),
+                                    fldModel: cboYear.getValue(),
+                                    fldStartDateInsurance: txtDate.getValue() + "/" + DateM + "/" + DateD,
+                                    fldDesc: "",
+                                    fldCarID: fldCarId.getValue(),
+                                    fldBargSabzFileId: fldFileId1,
+                                    fldCartFileId: fldFileId2,
+                                    fldSanadForoshFileId: fldFileId4,
+                                    fldCartBackFileId: fldFileId3,
+                                    fldTypeEntezami: pelakType,
+                                    CarsystemName: cboSystem.getDisplayValue(),
+                                    CarAccountName: cboCarAccountTypes.getDisplayValue(),
+                                    CarAccountId: cboCarAccountTypes.getValue(),
+                                    Match: checkbox1.getValue()
+                                },
+                                success: function (data1) {
+                                    var ic = Ext.MessageBox.INFO;
+                                    if (data1.Err == 1)
+                                        ic = Ext.MessageBox.ERROR;
+                                    Ext.MessageBox.show({
+                                        Name: data1.MsgName,
+                                        msg: data1.Msg,
+                                        icon: ic,
+                                        buttons: Ext.MessageBox.OK,
+                                        fn: function (btn) {
+                                            if (btn == 'ok') {
+                                                if (data1.Err != 1) {
+                                                    App.NewParvandeKhodro.destroy();
+                                                }
+                                            }
+                                        }
+                                    });
+                                    ReloadGridParvande();
+                                    if (data1.Err != 1) {
+                                        ClearParvandeKhodro();
+                                    }
+                                    else {
+                                        Ext.get('fi-button-Dl1').update("");
+                                        Ext.get('fi-button-Dl2').update("");
+                                        Ext.get('fi-button-Dl3').update("");
+                                        Ext.get('fi-button-Dl4').update("");
+                                    }
+                                    App.NewParvandeKhodro.body.mask().hide();
+                                    /* Ext.net.Mask.hide();*/
+                                }
+
+                            });
+                        }
+                        else {
+                            Ext.MessageBox.show({
+                                Name: data2.MsgTitle,
+                                msg: data2.Msg,
+                                icon: Ext.MessageBox.ERROR,
+                                buttons: Ext.MessageBox.OK
+                            });
+                            App.NewParvandeKhodro.body.mask().hide();
+                        }                        
+                        App.SearchParvande.queryById('GridSearch').store.load();
+                    }
+                });
+
+
+            }
+
+        }
+        
+
+    }
+    function ClearParvandeKhodro() {
+        App.NewParvandeKhodro.queryById('_5char').setValue("");
+        App.NewParvandeKhodro.queryById('_2char').setValue("");
+        App.NewParvandeKhodro.queryById('cboShort').setValue("");
+        App.NewParvandeKhodro.queryById('_charShasi').setValue("");
+        App.NewParvandeKhodro.queryById('_charModel').setValue("");
+        App.NewParvandeKhodro.queryById('cboClass').setValue("");
+        App.NewParvandeKhodro.queryById('cboModel').setValue("");
+        App.NewParvandeKhodro.queryById('txtMotor').setValue("");
+        App.NewParvandeKhodro.queryById('txtShasi').setValue("");
+        App.NewParvandeKhodro.queryById('cboColor').setValue("");
+        App.NewParvandeKhodro.queryById('cboYear').setValue("");
+        App.NewParvandeKhodro.queryById('txtDate').setValue("");
+        App.NewParvandeKhodro.queryById('txtDateP').setValue("");
+        App.NewParvandeKhodro.queryById('txtDatePD').setValue("");
+        App.NewParvandeKhodro.queryById('txtDatePM').setValue("");
+        App.NewParvandeKhodro.queryById('txtDateD').setValue("");
+        App.NewParvandeKhodro.queryById('txtDateM').setValue("");
+        App.NewParvandeKhodro.queryById('cboFillYear').setValue("");
+        App.NewParvandeKhodro.queryById('fldCarId').setValue(0);
+        App.NewParvandeKhodro.queryById('fldId').setValue(0);
+        App.NewParvandeKhodro.queryById('Image').setImageUrl("/Content/images/Blank.jpg");
+
+        App.NewParvandeKhodro.queryById('cboCarMake').setValue("");
+        App.NewParvandeKhodro.queryById('cboCarAccountTypes').setValue("");
+        App.NewParvandeKhodro.queryById('cboSystem').setValue("");
+        App.NewParvandeKhodro.queryById('cboCarCabin').setValue("");
+         fldFileId1 = 0;
+         fldFileId2 = 0;
+         fldFileId3 = 0;
+         fldFileId4 = 0;
+        App.btnDownload1.setDisabled(true);
+        App.btnDownload2.setDisabled(true);
+        App.btnDownload3.setDisabled(true);
+        App.btnDownload4.setDisabled(true);
+
+        Ext.get('fi-button-Dl1').update("");
+        Ext.get('fi-button-Dl2').update("");
+        Ext.get('fi-button-Dl3').update("");
+        Ext.get('fi-button-Dl4').update("");
+        if ('@ViewBag.state'==2) {
+            /*App.NewParvandeKhodro.destroy();*/
+        }
+    }
+    function SearchClass() {
+        App.NewParvandeKhodro.body.mask("در حال بارگذاری...");
+        Ext.net.DirectMethod.request({
+            url: '/NewVer/_SearchClass/Index',
+            params: {
+                State: 1
+            },
+            success: function (data) {
+                App.NewParvandeKhodro.body.mask().hide();
+            }
+        });
+    }
+    function EnterNext() {
+        var nextfld;
+        var keyfield = App.NewParvandeKhodro.queryById(Ext.getCmp((Ext.Element.getActiveElement()).name).itemId);
+        if (keyfield.itemId == "cboYear") {
+            nextfld = keyfield = App.NewParvandeKhodro.queryById("txtDateD");
+        }
+        else if (keyfield.itemId == "txtDateD" || keyfield.itemId == "txtDatePD")
+        {
+            nextfld = keyfield.nextSibling().nextSibling();
+        }
+        else if (keyfield.itemId == "txtDateM")  
+        {
+            if (App.NewParvandeKhodro.queryById("txtDatePD").hidden == true)
+                nextfld = App.NewParvandeKhodro.queryById("_charModel");
+            else {
+                nextfld = App.NewParvandeKhodro.queryById("txtDate");
+            }
+        }
+        else if (keyfield.itemId == "txtDatePM")
+        {
+            if (App.NewParvandeKhodro.queryById("cboCarMake").getValue() == "1") {
+                nextfld = App.NewParvandeKhodro.queryById("cboShort");
+            }
+            else {
+                nextfld = App.NewParvandeKhodro.queryById("cboFillYear");
+            }
+        }
+        else if (keyfield.itemId == "cboFillYear") {
+            nextfld = App.NewParvandeKhodro.queryById("cboShort");
+        }
+        else if (keyfield.itemId == "txtDate") {
+            nextfld = App.NewParvandeKhodro.queryById("txtDatePD");
+        }
+        else if (keyfield.itemId == 'txtDateP') {
+            nextfld = keyfield.nextNode();
+        }
+        else if (keyfield.itemId == "cboShort") {
+            nextfld = App.NewParvandeKhodro.queryById("_2char");
+        }
+        else if (keyfield.itemId == "_charModel") {
+            nextfld = App.NewParvandeKhodro.queryById("_5char");
+        }
+        else if (keyfield.itemId == "_2char") {
+            nextfld = App.NewParvandeKhodro.queryById("_charModel");
+        }
+        else if (keyfield.itemId == 'txtDateP') {
+            nextfld = keyfield.nextNode();
+        }
+        else {
+            if (keyfield.itemId == "_5char") {
+                return;
+            }
+            nextfld = keyfield.nextSibling();
+        }
+        nextfld.focus();
+        /*nextfld.selectText();*/
+    }
+
+    var addKeyMapNewParvandeKhodro = function (cmp) {
+        this.keyMap = new Ext.util.KeyMap({
+            target: cmp.getEl(),
+            binding: [{
+                key: Ext.EventObject.TAB,
+                fn: function (key, e) {
+                    e.stopEvent();
+                    var nextfld;
+                    var keyfield = App.NewParvandeKhodro.queryById(Ext.getCmp((Ext.Element.getActiveElement()).name).itemId);
+                    if (keyfield.itemId == "cboYear") {
+                        nextfld = keyfield = App.NewParvandeKhodro.queryById("txtDateD");
+                    }
+                    else if (keyfield.itemId == "txtDateD" || keyfield.itemId == "txtDatePD") {
+                        nextfld = keyfield.nextSibling().nextSibling();
+                    }
+                    else if (keyfield.itemId == "txtDateM") {
+                        if (App.NewParvandeKhodro.queryById("txtDatePD").hidden == true)
+                            nextfld = App.NewParvandeKhodro.queryById("_charModel");
+                        else {
+                            nextfld = App.NewParvandeKhodro.queryById("txtDate");
+                        }
+                    }
+                    else if (keyfield.itemId == "txtDatePM") {
+                        if (App.NewParvandeKhodro.queryById("cboCarMake").getValue() == "1") {
+                            nextfld = App.NewParvandeKhodro.queryById("cboShort");
+                        }
+                        else {
+                            nextfld = App.NewParvandeKhodro.queryById("cboFillYear");
+                        }
+                    }
+                    else if (keyfield.itemId == "cboFillYear") {
+                        nextfld = App.NewParvandeKhodro.queryById("cboShort");
+                    }
+                    else if (keyfield.itemId == "txtDate") {
+                        nextfld = App.NewParvandeKhodro.queryById("txtDatePD");
+                    }
+                    else if (keyfield.itemId == 'txtDateP') {
+                        nextfld = keyfield.nextNode();
+                    }
+                    else if (keyfield.itemId == "cboShort") {
+                        nextfld = App.NewParvandeKhodro.queryById("_2char");
+                    }
+                    else if (keyfield.itemId == "_charModel") {
+                        nextfld = App.NewParvandeKhodro.queryById("_5char");
+                    }
+                    else if (keyfield.itemId == "_2char") {
+                        nextfld = App.NewParvandeKhodro.queryById("_charModel");
+                    }
+                    else if (keyfield.itemId == 'txtDateP') {
+                        nextfld = keyfield.nextNode();
+                    }
+                    else {
+                        if (keyfield.itemId == "_5char") {
+                            return;
+                        }
+                        nextfld = keyfield.nextSibling();
+                    }
+                    nextfld.focus();
+                }
+            }]
+        });
+    };
+    /*function EnterNext() {
+        var keyfield = App.NewParvandeKhodro.queryById(Ext.getCmp((Ext.Element.getActiveElement()).name).itemId);
+        var nextfld = keyfield.nextSibling().nextSibling();*
+        var nextfld = keyfield.nextSibling();
+        nextfld.focus();
+        /*nextfld.selectText();
+    }*/
+</script>

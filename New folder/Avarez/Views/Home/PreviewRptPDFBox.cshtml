@@ -1,0 +1,15 @@
+﻿<div id="PreviewRptPDFBox">
+    @Avarez.Helper.winClass.windowHeader("", "پیش نمایش", 950, 580)
+    <span style="color:Red;">ممکن است نمایش گزارش کمی آهسته بارگذاری شود، لطفا تا نمایش کامل آن صبر کنید...</span>
+    <div id="pdf"></div>
+    @Avarez.Helper.winClass.windowFother()
+    <script type="text/javascript">
+        $(document).ready(function () {
+            
+            $('#PreviewRptPDFBox #btnClose').click(function () {
+                $("#PreviewRptPDFBox").remove();
+                isWinOpen = false;
+            });
+        });
+    </script>
+</div>

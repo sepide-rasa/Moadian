@@ -1,0 +1,592 @@
+﻿@using Kendo.Mvc.UI;
+<div class="modal" id="Owner">
+    <script src="@Url.Content("~/Content/Base.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Scripts/jquery.ui.datepicker-cc.all.min.js")" type="text/javascript"></script>
+    <div>
+    
+    
+        @if (ViewBag.State == 1)
+        {
+            <img src="@Url.Content("~/Content/images/NAV1_1.png")" alt="" style="width: 270px; height: 45px; border: 2px;"/>
+            <a href="@Url.Content("~/Helps/تعریف مالک.htm")" target="_blank" id="Help" title="راهنما" style="background-image:url('/Content/images/1381415123_help.png');background-repeat: no-repeat;height: 20px;float: left;top: 10px;left: 10px;"></a>
+   
+        }
+        else if (ViewBag.State == 2)
+        {
+            <img src="@Url.Content("~/Content/images/NAV1_2.png")" alt="" style="width: 270px; height: 45px; border: 2px;"/>
+            <a href="@Url.Content("~/Helps/تعریف پلاک.htm")" target="_blank" id="Help" title="راهنما" style="background-image:url('/Content/images/1381415123_help.png');background-repeat: no-repeat;height: 20px;float: left;top: 10px;left: 10px;"></a>
+   
+        }
+        else if (ViewBag.State == 3)
+        {
+            <img src="@Url.Content("~/Content/images/NAV1.png")" alt="" style="width: 270px; height: 45px; border: 2px;"/>
+        <a href="@Url.Content("~/Helps/تعریف پرونده خودرو.htm")" target="_blank" id="Help" title="راهنما" style="background-image:url('/Content/images/1381415123_help.png');background-repeat: no-repeat;height: 20px;float: left;top: 10px;left: 10px;"></a>
+   
+        }
+        else if (ViewBag.State == 4)
+        {
+            <img src="@Url.Content("~/Content/images/NAV4_1.png")" alt=""/>
+        }
+       
+        <br />
+        <div>
+            <table>
+                <tr>
+                    <td>
+                        فیلد جستجو:@Html.DropDownList("cboSearchFiald", new SelectList(new[] { new { ID = "1", Name = "کدملی/کداقتصادی" }, new { ID = "0", Name = "نام و نام خانوادگی" }, new { ID = "2", Name = "آدرس" } }, "ID", "Name"))
+                    </td>
+                    <td>
+                        نوع جستجو: @Html.DropDownList("cboSearchType", new SelectList(new[] { new { ID = "0", Name = "مشابه عبارت" }, new { ID = "1", Name = "مشابه عبارت از سمت راست" }, new { ID = "2", Name = "عین عبارت" } }, "ID", "Name"))
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        عبارت جستجو: @Avarez.Helper.winClass.textbox("txtSearch")
+                    </td>
+                    <td>
+                        نتیجه رکوردها: @Html.TextBox("txtTop", 30, new { @style = "width:30px;" }) رکورد
+                    </td>
+                </tr>
+            </table>
+            <br />
+        </div>
+        <center>
+            <div>
+                @Avarez.Helper.winClass.Buttons("BtnSearch", "جستجو", "search")
+                @if (ViewBag.State != 1)
+                {
+                    @Avarez.Helper.winClass.Buttons("next4", "ادامه", "Next")
+                }
+                @Avarez.Helper.winClass.Buttons("EditLink", "ویرایش", "Edit")
+            </div>
+        </center>
+        <div class="k-rtl demo-section">
+            @(Html.Kendo().Grid<Avarez.Models.sp_OwnerSelect>()
+                .Name("Grid")
+                .Columns(columns =>
+                {
+                    columns.Bound(p => p.fldID).Title("کد").Visible(false);
+                    columns.Bound(p => p.fldName).Title("نام و نام خانوادگی");
+                    columns.Bound(p => p.fldMelli_EconomicCode).Title("کدملی/کداقتصادی");
+                    columns.Bound(p => p.fldAddress).Title("آدرس");
+                })
+            .Selectable(selectable => selectable.Mode(GridSelectionMode.Single))
+            .Pageable()
+            .Scrollable()
+            .HtmlAttributes(new { @style="height:160px;"})
+            .DataSource(data =>
+                data.Ajax()
+                .PageSize(10)
+                .Read("Fill", "Owner")
+            )
+        )
+        </div>
+        @(Html.Kendo().PanelBar()
+        .Name("panelbar-images")
+        .Items(panelbar =>
+        {
+            panelbar.Add().Text("مشخصات مالک").Expanded(true)
+                .HtmlAttributes(new { id = "finde" })
+                .Content(@<div>
+                    <table>
+                        <tr>
+                            <td align="left">
+                                نوع مالکیت:
+                            </td>
+                            <td>
+                                @(Html.Kendo().DropDownList()
+                                  .Name("cboType")
+                                  .DataTextField("Text")
+                                  .DataValueField("Value")
+                                  .BindTo(new List<SelectListItem>() {
+                                      new SelectListItem() {
+                                          Text = "حقیقی",
+                                          Value = "true"
+                                      },
+                                     new SelectListItem() {
+                                         Text = "حقوقی",
+                                          Value = "false"
+                                      }
+                                  })
+                            )
+                                <span id="lblcboTypeError" style="color: Red;"></span>
+                            </td>
+                            <td align="left">
+                                @Html.Hidden("fldId")
+                                <span style="color: Red;">*</span> کد ملی / کد اقتصادی:
+                            </td>
+                            <td>
+                                @Html.TextBox("txtCode", null, new { @dir = "ltr", @style = "width: 112px;", @id = "txtCode", @maxlength = "12" })
+                                <span id="lblCodeError" style="color: Red;"></span>
+                                
+                            </td>
+                            
+                        </tr>
+                        <tr>
+                            <td align="left">
+                                <span style="color: Red;">*</span> تاریخ تولد / تاریخ ثبت :
+                            </td>
+                            <td align="right">
+                                @Avarez.Helper.winClass.textbox("txtTarikh")
+                                <span id="lblTarikhError" style="color: Red;"></span>
+                                <button id="estelam" style="width:40px;font-size: 10px;" title="استعلام از اداره ثبت احوال">...</button>
+                            </td>
+                            <td align="left">
+                                @Html.Hidden("fldId")
+                                <span style="color: Red;">*</span> نام و نام خانوادگی:
+                            </td>
+                            <td>
+                                @*@Avarez.Helper.winClass.textbox("txtName")*@
+                                @Html.TextBox("txtName", null, new { @dir = "rtl", @style = "width: 158px;", @id = "txtName", @readonly = "true" })
+                                <span id="lblNameError" style="color: Red;"></span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td align="left">
+                                <span style="color: Red;"></span>ایمیل:
+                            </td>
+                            <td>
+                                @Avarez.Helper.winClass.textbox("txtEmail")
+                            </td>
+                            <td align="left">
+                                <span style="color: Red;">*</span>موبایل:
+                            </td>
+                            <td>
+                                @Avarez.Helper.winClass.textbox("txtMobile")
+                                <span id="lblMobileError" style="color: Red;"></span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td align="left">
+                                <span style="color: Red;"></span>آدرس:
+                            </td>
+                            <td>
+                                @Avarez.Helper.winClass.textbox("txtAddress")
+                            </td>
+                            <td align="left">
+                                <span style="color: Red;"></span>کد پستی:
+                            </td>
+                            <td>
+                                @Avarez.Helper.winClass.textbox("txtPostal")
+                            </td>
+                        </tr>
+                        <tr>
+                            <td align="left">
+                                توضیحات:
+                            </td>
+                            <td>
+                                @Avarez.Helper.winClass.textbox("txtDesc")
+                            </td>
+                        </tr>
+                    </table>
+                    <center>
+                        <p>
+                            @Avarez.Helper.winClass.Buttons("AddLink", "ذخیره", "Save")
+                            @*@Avarez.Helper.winClass.Buttons("DelLink", "حذف", "Del")*@
+                        </p>
+                    </center>
+                    <br />
+                </div>);
+
+
+
+        })
+                                    )
+    </div>
+    <script type="text/javascript">
+        var fldType = false; 
+        $("document").ready(function () {
+            $("#AddLink").button();
+            $("#next4").button();
+            $("#EditLink").button();
+            $('#Help').button();
+            $("#DelLink").button();
+            $("#exit").button();
+            $("#BtnSearch").button();
+            $("#estelam").button();
+            
+            $("#exit").click(function () {
+                $("#CommonWin").remove();
+                $("#Owner").remove();
+                Dialog = 0;
+            });
+            $('#txtTarikh').datepicker({
+                showButtonPanel: true,
+                changeMonth: true,
+                changeYear: true
+            });
+            $("#estelam").click(function () {
+                $.ajax({
+                    type: "GET",
+                    url: '/owner/EstelamSabt?CodeMeli=' + $('#txtCode').val() + '&Tarikhtavalod=' + $('#txtTarikh').val(),
+                    success: function (data) {
+                        if (data.state == "0") {
+                            $('#txtName').attr("readonly", "true");
+                            $('#txtName').val(data.Name);
+                            fldType = true;
+                        }
+                        else {
+                            $('#txtName').removeAttr("readonly");
+                            alert('امکان دریافت مشخصات وجود ندارد. لطفا نام مودی را به صورت دستی وارد نمایید.');
+                            $('#txtName').val('');
+                            $('#txtName').focus();
+                        }
+                    },
+                    failure: function (data) {
+                        alert(data.data);
+                    }
+                });
+            });
+            $('#Owner #btnClose').click(function () {
+                $("#CommonWin").remove();
+                $("#Owner").remove();
+                Dialog = 0;
+            });
+            $('#Owner').on('keyup', 'input', function (event) {
+                if (event.which == 13) {
+                    //var inputs = $('#Owner').find(':input:visible');
+                    //inputs.eq(inputs.index(this) + 1).focus();
+                    var url = '@Url.Action("Reload", "Owner")';
+                    Reload(url, 'Grid', $("#cboSearchFiald").val(), $("#txtSearch").val(), $("#txtTop").val(), $("#cboSearchType").val());
+                }
+            });
+
+            $(document).keyup(function (event) {
+                if (event.which == 119) {
+                    SaveRecord();
+                }
+                else if (event.which == 113) {
+                    EditRecord();
+                }
+                else if (event.which == 115) {
+                    DeleteRecord();
+                }
+            });
+            $('#AddLink').attr('title', 'کلید میانبر (F8)'); //119
+            $('#EditLink').attr('title', 'کلید میانبر (F2)'); //113
+            $('#DelLink').attr('title', 'کلید میانبر (F4)'); //115
+
+            jQuery("#EditLink").click(function () {
+                EditRecord();
+            });
+
+            $('#DelLink').click(function () {
+                DeleteRecord();
+            });
+
+            $("#AddLink").click(function () {
+                SaveRecord();
+            });
+
+            $('#next4').click(function () {
+                var entityGrid = $("#Grid").data("kendoGrid");
+                var selectedItem = entityGrid.dataItem(entityGrid.select());
+                if (selectedItem) {
+                    var id = selectedItem.fldID;
+                    var URL = '@Url.Content("~/CarPlaque/Index")';
+                    URL = URL;
+                    var Win = "#win";
+                    if (Dialog == 1)
+                        Win = "#CommonContent";
+                    windows(Win, URL + "/?id=" + id + '&State=@ViewBag.State');
+                } else {
+                    alert('لطفا یک سطر را انتخاب کنید.');
+                }
+            });
+
+            $('#BtnSearch').click(function () {
+                var url = '@Url.Action("Reload", "Owner")';
+                Reload(url, 'Grid', $("#cboSearchFiald").val(), $("#txtSearch").val(), $("#txtTop").val(), $("#cboSearchType").val());
+            }); 
+
+            $("#txtName").keyup(function () {
+                if ($("#txtName").val() != '') {
+                    $("#txtName").removeClass("input-validation-error");
+                    $("#lblNameError").html("");
+                }
+                else {
+                    $("#txtName").addClass("input-validation-error");
+                    $('#lblNameError').html('لطفا نام و نام خانوادگی را وارد کنید.');
+                }
+            });
+            $("#cboType").change(function () {
+                var drop = $("#cboType").data("kendoDropDownList");
+                if (drop.text() == 'حقیقی') {
+                    $('#txtName').attr("readonly");
+                    $('#txtName').val('');
+                } else {
+                    $('#txtName').removeAttr("readonly");
+                    $('#txtName').val('');
+                }
+            });
+            $("#txtCode").keyup(function () {
+                var id = $("#txtCode").val().toString();
+                var drop = $("#cboType").data("kendoDropDownList");
+                if (drop.text() == 'حقیقی') {
+                    if (id.length < 10) {
+                        $("#txtCode").addClass("input-validation-error");
+                        $('#lblCodeError').html('کد ملی شامل 10 رقم می باشد.');
+                    }
+                    else if (id.length > 10) {
+                        $("#txtCode").addClass("input-validation-error");
+                        $('#lblCodeError').html('کد ملی بیشتر از 10 رقم شده است  .');
+                    }
+                    else {
+                        $("#txtCode").removeClass("input-validation-error");
+                        $('#lblCodeError').html('');
+
+                    }
+                }
+                else {
+                    if (id.length < 12) {
+                        $("#txtCode").addClass("input-validation-error");
+                        $('#lblCodeError').html('کد اقتصادی شامل 12 رقم می باشد.');
+                    }
+                    else {
+                        $("#txtCode").removeClass("input-validation-error");
+                        $('#lblCodeError').html('');
+                    }
+                }
+            });
+            $("#txtTarikh").keyup(function () {
+                var drop = $("#cboType").data("kendoDropDownList");
+                if (drop.text() == 'حقیقی') {
+                    if ($("#txtTarikh").val() != '') {
+                        $("#txtTarikh").removeClass("input-validation-error");
+                        $("#lblTarikhError").html("");
+                    }
+                    else {
+                        $("#txtTarikh").addClass("input-validation-error");
+                        $('#lblTarikhError').html('لطفا تاریخ تولد را وارد کنید.');
+                    }
+                }
+                else {
+                    if ($("#txtTarikh").val() != '') {
+                        $("#txtTarikh").removeClass("input-validation-error");
+                        $("#lblTarikhError").html("");
+                    }
+                    else {
+                        $("#txtTarikh").addClass("input-validation-error");
+                        $('#lblTarikhError').html('لطفا تاریخ ثبت را وارد کنید.');
+                    }
+                }
+            });
+
+        });
+        function Clear() {
+            $("#fldId").val(0);
+            $("#txtName").val('');
+            $('#txtCode').val('');
+            $('#txtEmail').val('');
+            $('#txtAddress').val('');
+            $('#txtPostal').val('');
+            $('#cboType').val('');
+            $("#txtDesc").val('');
+            $("#txtTarikh").val('');
+            fldType = false;
+        }
+        function EditRecord() {
+            var entityGrid = $("#Grid").data("kendoGrid");
+            var selectedItem = entityGrid.dataItem(entityGrid.select());
+            if (selectedItem) {
+                var id = selectedItem.fldID;
+                var URL = '@Url.Content("~/Owner/Details")';
+                URL = URL + "/" + id;
+                $.ajax({
+                    type: "GET",
+                    url: URL,
+                    success: function (data) {
+                        $('#txtName').val(data.fldName);
+                        $('#txtCode').val(data.fldMelli_EconomicCode);
+                        $('#txtEmail').val(data.fldEmail);
+                        $('#txtMobile').val(data.fldMobile);
+                        $('#txtAddress').val(data.fldAddress);
+                        $('#txtPostal').val(data.fldPostalCode);
+                        $('#fldId').val(data.fldId);
+                        $('#txtDesc').val(data.fldDesc);
+                        $('#txtTarikh').val(data.fldDateShamsi);
+                        var status = $("#cboType").data("kendoDropDownList");
+                        status.value(data.fldOwnerType);
+                    },
+                    failure: function (data) {
+                        alert(data.data);
+                    }
+                });
+            }
+            else {
+                alert('لطفا یک سطر را انتخاب کنید.');
+            }
+        }
+        function SaveRecord() {
+            var er = false;
+            if ($("#txtName").val() == '') {
+                $("#txtNamee").addClass("input-validation-error");
+                $('#lblNameError').html('لطفانام و نام خانوادگی خود را وارد کنید.');
+                er = true;
+            }
+            else
+                $('#lblNameError').html('');
+
+            if ($("#txtCode").val() == '' || $("#txtCode").val().length < 10) {
+                $("#txtCode").addClass("input-validation-error");
+                $('#lblCodeError').html('لطفا کد ملی را صحیح وارد کنید.');
+                er = true;
+            }
+            else {
+                $("#txtCode").removeClass("input-validation-error");
+                $('#lblCodeError').html('');
+            }
+
+            if ($("#txtMobile").val() == '' || $("#txtCode").val().length < 10) {
+                $("#txtMobile").addClass("input-validation-error");
+                $('#lblMobileError').html('لطفا تلفن را وارد کنید.');
+                er = true;
+            }
+            else {
+                $("#txtMobile").removeClass("input-validation-error");
+                $('#lblMobileError').html('');
+            }
+
+            if ($("#cboType").val() == '') {
+                $("#cboType").addClass("input-validation-error");
+                $('#lblcboTypeError').html('لطفا کد ملی خود را وارد کنید.');
+                er = true;
+            }
+            else {
+                $("#cboType").removeClass("input-validation-error");
+                $('#lblcboTypeError').html('');
+            }
+            var drop = $("#cboType").data("kendoDropDownList");
+            if (drop.text() == 'حقیقی') {
+                if ($("#txtTarikh").val() != '') {
+                    $("#txtTarikh").removeClass("input-validation-error");
+                    $("#lblTarikhError").html("");
+                }
+                else {
+                    $("#txtTarikh").addClass("input-validation-error");
+                    $('#lblTarikhError').html('لطفا تاریخ تولد را وارد کنید.');
+                    er = true;
+                }
+            }
+            else {
+                if ($("#txtTarikh").val() != '') {
+                    $("#txtTarikh").removeClass("input-validation-error");
+                    $("#lblTarikhError").html("");
+                }
+                else {
+                    $("#txtTarikh").addClass("input-validation-error");
+                    $('#lblTarikhError').html('لطفا تاریخ ثبت را وارد کنید.');
+                    er = true;
+                }
+            }
+            if (er)
+                return; 
+
+            var data = {
+                fldName: $("#txtName").val(),
+                fldMelli_EconomicCode: $('#txtCode').val(),
+                fldEmail: $('#txtEmail').val(),
+                fldMobile: $('#txtMobile').val(),
+                fldAddress: $('#txtAddress').val(),
+                fldPostalCode: $('#txtPostal').val(),
+                fldOwnerType: $('#cboType').val(),
+                fldUserID: 1, fldDesc: $("#txtDesc").val(),
+                fldId: $("#fldId").val(),
+                fldDateShamsi: $('#txtTarikh').val(),
+                fldType: fldType
+            };
+            if (data != '') {
+                PostForm(data, '@Url.Content("~/Owner/Save")', "#win");
+            }
+        }
+        function DeleteRecord() {
+            var entityGrid = $("#Grid").data("kendoGrid");
+            var selectedItem = entityGrid.dataItem(entityGrid.select());
+            if (selectedItem) {
+                var id = selectedItem.fldID;
+                var URL = '@Url.Content("~/metro/YesNomsg")';
+                URL = URL + "/?id=" + id + "&URL=" + '@Url.Content("~/Owner/Delete")';
+                windowAppend("body", URL);
+                $("#message").html('آیا مایل به حذف رکورد انتخاب شده هستید؟');
+            }
+            else {
+                alert('لطفا یک سطر را انتخاب کنید.');
+            }
+            Clear();
+        }
+        function Reload(Url, gridname, field, value, top, searchType) {
+            var grid = $('#' + gridname).data('kendoGrid');
+            $.ajax({
+                url: Url,
+                type: 'get',
+                datatype: 'json',
+                data: { field: field, value: value, top: top, searchtype: searchType },
+                error: function (xhr, status, error) {
+                    alert(xhr + status);
+                },
+                success: function (result) {
+                    $("#" + gridname).data("kendoGrid").dataSource.data(result);
+                    if (result.length == 0) {
+                        if ($("#cboSearchFiald").val() == 1) {
+                            $('#txtCode').val($('#txtSearch').val());
+                            $('#txtName').focus();
+                            $('#txtAddress').val('');
+                            $('#txtName').val('');
+
+                        }
+                            
+                        if ($("#cboSearchFiald").val() == 0) {
+                            $('#txtName').val($('#txtSearch').val());
+                            $('#txtCode').focus();
+                            $('#txtCode').val('');
+                            $('#txtAddress').val('');
+                        }
+                            
+                        if ($("#cboSearchFiald").val() == 2) {
+                            $('#txtAddress').val($('#txtSearch').val());
+                            $('#txtName').val('');
+                            $('#txtCode').val('');
+                            $('#txtCode').focus();
+                        }
+                            
+
+                        
+                    }
+                }
+
+            });
+        }
+
+        function PostForm(datas, url, id) {
+            var sendInfo = datas;
+            $('#Lock').show();
+            $.ajax({
+                type: "POST",
+                url: url,
+                data: sendInfo,
+                datatype: "json",
+                success: function (data) {
+                    var m = data;
+                    windowAppend("body", "/metro/error");
+                    $("#message").html(m.data);
+                    $("#fldId").val(m.id);
+                    switch (m.state) {
+                        case 0:
+                            $("#error .wintitle").html("ذخیره موفق");
+                            break;
+                        case 1:
+                            $("#error .wintitle").html("خطا");
+                            break;
+                    }
+                    var url = '@Url.Action("Reload", "Owner")';
+                    Reload(url, 'Grid', '0', '', 30, 1);
+                    $('#Lock').hide();
+
+                },
+                failure: function (data) {
+                    alert(data.data);
+                }
+            });
+        } 
+    </script>
+</div>

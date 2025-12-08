@@ -1,0 +1,212 @@
+﻿@model IEnumerable<Avarez.Models.sp_CarPatternModelSelect>
+@using Ext.Net.MVC;
+@{
+
+    var X = Html.X();
+}
+
+@(X.Panel()
+        //.Listeners(li => li.AfterRender.Handler = "CarPatternModelMap();")
+    .ID("CarPatternModel")
+    .Title("الگوی تیپ خودرو")
+    .Closable(true)
+    .Border(false)
+    .CloseAction(Ext.Net.CloseAction.Destroy)
+    .Layout(Ext.Net.LayoutType.Fit)
+    .Items(
+        X.Panel()
+            .ItemID("PnlGridCarPatternModel")
+            .Border(false)
+            .Layout(Ext.Net.LayoutType.Fit)
+            .Items(
+                X.GridPanel()
+                    .AutoScroll(true)
+                    .TopBar(
+                        Html.X().Toolbar()
+                            .Items(
+                                X.Button()
+                                    .Text("جدید")
+                                    .Icon(Ext.Net.Icon.Add)
+        //.ToolTip("کلید میانبر F8")
+                                .Listeners(li => li.Click.Handler = "NewCarPatternModel();"),
+                                X.Button()
+                                    .Text("ویرایش")
+                                    .Icon(Ext.Net.Icon.Pencil)
+        //.ToolTip("کلید میانبر F2")
+                                .Listeners(Li => Li.Click.Handler = "EditCarPatternModel();"),
+                                X.Button()
+                                    .Text("حذف")
+                                    .Icon(Ext.Net.Icon.Delete)
+        //.ToolTip("کلید میانبر F9")
+                                .Listeners(de => de.Click.Handler = "DeleteCarPatternModel();")
+                                , X.Button()
+                                .Text("راهنما")
+                                .Icon(Ext.Net.Icon.Help)
+                                .Listeners(de => de.Click.Handler = "")
+                                    )
+                                    )
+                            .ItemID("GridCarPatternModel")
+                    .BottomBar(X.PagingToolbar())
+                    .Store(
+                        Html.X().StoreForModel()
+                            .Proxy(Html.X().AjaxProxy()
+                                .Url(Url.Action("Read"))
+                                .Reader(Html.X().JsonReader().Root("data"))
+        )
+                    .PageSize(20)
+                    .RemoteFilter(true)
+                    .RemotePaging(true)
+                    .Listeners(l => l.DataChanged.Handler = "App.CarPatternModel.queryById('GridCarPatternModel').selModel.refresh();")
+    )
+                    .View(
+                        Html.X().GridView().LoadingText("در حال بارگذاری...").RTL(true)
+    )
+                    .Plugins(X.FilterHeader().Remote(true))
+                    .ColumnModel(
+                            Html.X().RowNumbererColumn(),
+                            Html.X().Column().DataIndex(Model, m => m.fldID).Text("کد").Hidden(true).Flex(1),
+                            Html.X().Column().DataIndex(Model, m => m.fldName).Text("نام الگو").Flex(3),
+                            Html.X().Column().DataIndex(Model, m => m.fldFuelTypeName).Text("نوع سوخت").Flex(3),
+                            Html.X().Column().DataIndex(Model, m => m.fldCylinderNumber).Text("تعداد سیلندر").Flex(1),
+                            Html.X().Column().DataIndex(Model, m => m.fldPivotNumber).Text("تعداد محور").Flex(1),
+                            Html.X().Column().DataIndex(Model, m => m.fldWheelNumber).Text("تعداد چرخ").Flex(1),
+                            Html.X().Column().DataIndex(Model, m => m.fldContentMotor).Text("حجم موتور").Flex(2),
+                            Html.X().Column().DataIndex(Model, m => m.fldDesc).Text("توضیحات").Wrap(true).Flex(7)
+    )
+                .SelectionModel(
+                    Html.X().RowSelectionModel()
+                        .Mode(Ext.Net.SelectionMode.Single)
+    )
+
+))
+)
+
+<script type="text/javascript">
+
+    function CarPatternModelMap() {
+        var k = new Ext.KeyMap(
+            document,
+            [{
+                target: Ext.get('CarPatternModel'),
+                scope: this,
+                key: [119],
+                fn: function (key, event) {
+                    if (App.CarPatternModel && App.NewCarPatternModel) {
+                        if (App.NewCarPatternModel.active == false)
+                            NewCarPatternModel();
+                    }
+                    else if (App.CarPatternModel && !App.NewCarPatternModel)
+                        NewCarPatternModel();
+                }
+            },
+            {
+                target: App.CarPatternModel.getTargetEl(),
+                scope: this,
+                key: [113],
+                fn: function (key, event) {
+                    if (App.CarPatternModel && App.NewCarPatternModel) {
+                        if (App.NewCarPatternModel.active == false)
+                            EditCarPatternModel();
+                    }
+                    else if (App.CarPatternModel && !App.NewCarPatternModel)
+                        EditCarPatternModel();
+                }
+            },
+            {
+                target: App.CarPatternModel.getTargetEl(),
+                scope: this,
+                key: [120],
+                fn: function (key, event) {
+                    if (App.CarPatternModel && App.NewCarPatternModel) {
+                        if (App.NewCarPatternModel.active == false)
+                            DeleteCarPatternModel();
+                    }
+                    else if (App.CarPatternModel && !App.NewCarPatternModel)
+                        DeleteCarPatternModel();
+                }
+            }]
+            )
+    }
+
+    function NewCarPatternModel() {
+        Ext.net.Mask.show({ msg: 'در حال بارگذاری...' });
+        Ext.net.DirectMethod.request({
+            url: '/NewVer/CarPatternModel_New/New',
+            params: {
+               Id: 0
+            },
+            success: function () {
+                Ext.net.Mask.hide();
+            }
+        });
+    }
+
+    function EditCarPatternModel() {
+        var SelectedRow = App.CarPatternModel.queryById('GridCarPatternModel').selModel.getLastSelected();
+        if (SelectedRow != null) {
+            Ext.net.Mask.show({ msg: 'در حال بارگذاری...' });
+            Ext.net.DirectMethod.request({
+                url: '/NewVer/CarPatternModel_New/New',
+                params: {
+                    Id: SelectedRow.data.fldID,
+                },
+                success: function () {
+                    Ext.net.Mask.hide();
+                }
+            });
+        }
+        else {
+            Ext.MessageBox.show({
+                title: "خطا",
+                msg: "لطفا یک سطر را انتخاب نمایید.",
+                icon: Ext.MessageBox.ERROR,
+                buttons: Ext.MessageBox.OK
+            });
+        }
+    }
+
+    function DeleteCarPatternModel() {
+        var SelectedRow = App.CarPatternModel.queryById('GridCarPatternModel').selModel.getLastSelected();
+        if (SelectedRow != null) {
+            Ext.MessageBox.show({
+                title: "هشدار",
+                msg: "آیا برای حذف مطمئن هستید؟",
+                icon: Ext.MessageBox.WARNING,
+                buttons: Ext.MessageBox.YESNO,
+                fn: function (btn) {
+                    if (btn == 'yes') {
+                        Ext.net.Mask.show({ msg: 'در حال انجام عملیات...' });
+                        Ext.net.DirectMethod.request({
+                            url: '/NewVer/CarPatternModel_New/Delete',
+                            params: {
+                                Id: SelectedRow.data.fldID
+                            },
+                            success: function (data) {
+                                var ic = Ext.MessageBox.INFO;
+                                if (data.Er == 1)
+                                    ic = Ext.MessageBox.ERROR;
+                                Ext.MessageBox.show({
+                                    title: data.MsgTitle,
+                                    msg: data.Msg,
+                                    icon: ic,
+                                    buttons: Ext.MessageBox.OK
+                                });
+                                Ext.net.Mask.hide();
+                                App.CarPatternModel.queryById('GridCarPatternModel').store.load();
+                            }
+                        });
+                    }
+                }
+            });
+        }
+        else {
+            Ext.MessageBox.show({
+                title: "خطا",
+                msg: "لطفا یک سطر را انتخاب نمایید.",
+                icon: Ext.MessageBox.ERROR,
+                buttons: Ext.MessageBox.OK
+            });
+        }
+    }
+
+</script>

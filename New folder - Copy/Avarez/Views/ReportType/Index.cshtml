@@ -1,0 +1,105 @@
+﻿@using Kendo.Mvc.UI;
+<div class="modal" id="ReportType">
+    <script src="@Url.Content("~/Content/Base.js")" type="text/javascript"></script> 
+    
+    <a href="@Url.Content("~/Helps/سفارشی سازی گزارشات.htm")" target="_blank" id="Help" title="راهنما" style="background-image:url('/Content/images/1381415123_help.png');background-repeat: no-repeat;height: 20px;float: left;top: 10px;left: 10px;"></a>
+        
+    <div>
+        <br />
+        <br />
+       
+    @(Html.Kendo().PanelBar()
+        .Name("panelbar-images")
+        .Items(panelbar =>
+        {
+            panelbar.Add().Text("جستجو")
+                .ImageUrl(Url.Content("~/Content/images/search.png"))
+                .Content(@<div>
+                    <table>
+                        <tr>
+                            <td>
+                                فیلد جستجو:@Html.DropDownList("cboSearchFiald", new SelectList(new[] { new { ID = "0", Name = "عنوان گزارش" } }, "ID", "Name"))
+                            </td>
+                            <td>
+                                نوع جستجو: @Html.DropDownList("cboSearchType", new SelectList(new[] { new { ID = "0", Name = "مشابه عبارت" }, new { ID = "1", Name = "مشابه عبارت از سمت راست" }, new { ID = "2", Name = "عین عبارت" } }, "ID", "Name"))
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                عبارت جستجو: @Avarez.Helper.winClass.textbox("txtSearch")
+                            </td>
+                            <td>
+                                نتیجه رکوردها: @Html.TextBox("txtTop", 30, new { @style = "width:30px;" }) رکورد
+                            </td>
+                        </tr>
+                    </table>
+                    <br />
+                </div>);
+        })
+        )
+    <div class="k-rtl demo-section">
+        @(Html.Kendo().Grid<Avarez.Models.sp_ReportTypeSelect>()
+                .Name("Grid")
+                .Columns(columns =>
+                {
+                    columns.Bound(p => p.fldID).Title("کد").Visible(false);
+                    columns.Bound(p => p.fldName).Title("عنوان گزارش");
+                    columns.Bound(p => p.fldDesc).Title("توضیحات");
+                })
+            .Selectable(selectable => selectable.Mode(GridSelectionMode.Single))
+            .Pageable()
+            .Scrollable()
+            .DataSource(data =>
+                data.Ajax()
+                .PageSize(10)
+                        .Read("Fill", "ReportType")
+            )
+        )
+    </div>
+    <center>
+        <div>@Avarez.Helper.winClass.Buttons("next", "ادامه", "Next")</div>
+    </center>
+    <script type="text/javascript">
+        $("document").ready(function () {
+            $("#next").button();
+            $("#Help").button();  
+            $('#next').click(function () {
+                var entityGrid = $("#Grid").data("kendoGrid");
+                var selectedItem = entityGrid.dataItem(entityGrid.select());
+                if (selectedItem) {
+                    var id = selectedItem.fldID;
+                    var URL = '@Url.Content("~/Reports/Index")';
+                    URL = URL;
+                    windows("#win", URL + "/" + id);
+                } else {
+                    alert('لطفا یک سطر را انتخاب کنید.');
+                }
+            });
+
+        });
+        $('#txtSearch').keyup(function () {
+            var url = '@Url.Action("Reload", "ReportType")';
+            Reload(url, 'Grid', $("#cboSearchFiald").val(), $("#txtSearch").val(), $("#txtTop").val(), $("#cboSearchType").val());
+        });
+
+
+
+
+        function Reload(Url, gridname, field, value, top, searchType) {
+            var grid = $('#' + gridname).data('kendoGrid');
+            $.ajax({
+                url: Url,
+                type: 'get',
+                datatype: 'json',
+                data: { field: field, value: value, top: top, searchtype: searchType },
+                error: function (xhr, status, error) {
+                    alert(xhr + status);
+                },
+                success: function (result) {
+                    $("#" + gridname).data("kendoGrid").dataSource.data(result);
+                }
+
+            });
+        }
+    </script>
+</div>

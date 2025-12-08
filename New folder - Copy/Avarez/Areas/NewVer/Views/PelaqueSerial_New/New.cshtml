@@ -1,0 +1,164 @@
+﻿@using Ext.Net.MVC
+@using Hogaf.ExtNet.UX
+@using Ext.Net;
+@{
+    var X = Html.X();
+}
+
+@(Html.X().Window()
+    .Modal(true)
+        // .Resizable(false)
+         .Resizable(false).Listeners(l => l.AfterRender.Handler = "LoadPlaqueSerial()")
+    .Width(330)
+    
+    .Title("تعریف سریال پلاک")
+    .Layout(LayoutType.Fit)
+            .ID("NewPlaqueSerial")
+    .Closable(true)
+    .ButtonAlign(Ext.Net.Alignment.Center)
+    .Buttons(
+        X.Button()
+            .Text("ذخیره")
+            .Icon(Ext.Net.Icon.Disk)
+        //.ToolTip("کلید میانبر F8")
+                    .Listeners(l => l.Click.Handler = "SavePlaqueSerial();"),
+        X.Button()
+            .Text("خروج")
+            .Icon(Ext.Net.Icon.DoorOut)
+        //.ToolTip("کلید میانبر Esc")
+                    .OnClientClick("App.NewPlaqueSerial.destroy();"))
+    .CloseAction(Ext.Net.CloseAction.Destroy)
+    .Items(
+        X.FormPanel()
+            .Border(false)
+            .Layout(LayoutType.Fit)
+            .Items(
+                X.Panel()
+                    .Border(false)
+                    .PaddingSpec("15px 0 0 0")
+                    .Layout(LayoutType.VBox)
+                    .LayoutConfig(new VBoxLayoutConfig { Align = VBoxAlign.Center })
+                    .Items(
+                        X.FieldSet().Height(120)
+                            .Border(true)
+                          
+                            .Defaults(new { Margin = 2 })
+                            .Layout(LayoutType.Table)
+                            .Title("سریال پلاک")
+                            .LayoutConfig(new TableLayoutConfig { Columns = 2 })
+                            .Items(
+                                X.Hidden()
+                                    .ItemID("fldId"),
+
+                                X.Label("سریال پلاک:"),
+                                X.TextField()
+                                            .ItemID("txtPlaqueSerial")
+                                    .Width(190)
+                                    .AllowBlank(false)
+                                    .EnforceMaxLength(true)
+                                    .MaxLength(15)
+                                    .BlankText("لطفا سریال پلاک را وارد نمایید.")
+                                    .MsgTarget(Ext.Net.MessageTarget.Side),
+
+                                X.Label("توضیحات:"),
+                                X.TextArea()
+                                    .ItemID("txtDesc")
+                                    //.ColSpan(2)
+                                    .Width(190)
+                            )
+
+
+                )
+            )
+        )
+)
+
+<script type="text/javascript">
+    function LoadPlaqueSerial() {
+        if ('@ViewBag.Id' != '0') {
+            App.NewPlaqueSerial.body.mask("در حال بارگذاری...");
+            Ext.net.DirectMethod.request({
+                url: '/NewVer/PelaqueSerial_New/Details',
+                params: {
+                    Id: '@ViewBag.Id'
+                },
+                success: function (data) {
+                    if (data.Er == 0) {
+                        var txtPlaqueSerial = App.NewPlaqueSerial.queryById('txtPlaqueSerial');
+                        txtPlaqueSerial.setValue(data.fldSerial);
+                        var txtDesc = App.NewPlaqueSerial.queryById('txtDesc');
+                        txtDesc.setValue(data.fldDesc);
+                        var Id = App.NewPlaqueSerial.queryById('fldId');
+                        Id.setValue(data.fldId);
+                    }
+                    else if (data.Er == 1) {
+                        Ext.MessageBox.show({
+                            title: data.MsgTitle,
+                            msg: data.Msg,
+                            icon: Ext.MessageBox.ERROR,
+                            buttons: Ext.MessageBox.OK
+                        });
+                    }
+                    App.NewPlaqueSerial.body.mask().hide();
+                }
+            });
+        }
+        else {
+            App.NewPlaqueSerial.queryById('txtPlaqueSerial').validate();
+        }
+    }
+
+
+    function SavePlaqueSerial() {
+        var txtPlaqueSerial = App.NewPlaqueSerial.queryById('txtPlaqueSerial');
+        var Id = App.NewPlaqueSerial.queryById('fldId');
+        var txtDesc = App.NewPlaqueSerial.queryById('txtDesc');
+
+        var er = false;
+
+        if (txtPlaqueSerial.validate() == false) {
+            er = true;
+        }
+        if (er == true)
+            return;
+        App.NewPlaqueSerial.body.mask("در حال ذخیره سازی...");
+        Ext.net.DirectMethod.request({
+            url: '/NewVer/PelaqueSerial_New/Save',
+            params: {
+                fldID: Id.getValue(),
+                fldSerial: txtPlaqueSerial.getValue(),
+                fldDesc: txtDesc.getValue()
+            },
+            success: function (data) {
+                var ic = Ext.MessageBox.INFO;
+                if (data.Er == 1)
+                    ic = Ext.MessageBox.ERROR;
+                Ext.MessageBox.show({
+                    title: data.MsgTitle,
+                    msg: data.Msg,
+                    icon: ic,
+                    buttons: Ext.MessageBox.OK
+                });
+                App.PlaqueSerial.queryById('GridPlaqueSerial').store.load();
+                if (data.Er != 1) {
+                    ClearPlaqueSerial();
+                }
+                App.NewPlaqueSerial.body.mask().hide();
+            }
+        });
+    }
+
+    function ClearPlaqueSerial() {
+        App.NewPlaqueSerial.queryById('txtDesc').setValue("");
+        App.NewPlaqueSerial.queryById('txtPlaqueSerial').setValue("");
+        App.NewPlaqueSerial.queryById('fldId').setValue(0);
+    }
+
+   /* function EnterNext() {
+        var keyfield = App.NewCustomer.queryById(Ext.getCmp((Ext.Element.getActiveElement()).name).itemId);
+        var nextfld = keyfield.nextSibling();
+        nextfld.focus();
+        nextfld.selectText();
+    }*/
+
+</script>

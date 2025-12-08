@@ -1,0 +1,567 @@
+﻿@using Ext.Net.MVC
+@using Hogaf.ExtNet.UX
+@using Ext.Net;
+@{
+    var X = Html.X();
+}
+
+<style>
+    .LblStyle {
+        height: auto;
+    }
+
+    .LblRed {
+        color: red;
+    }
+    .body{
+    position:absolute;
+    width:200px;
+    height:179px;
+    top:146px;
+    background:#9C0;
+}
+</style>
+
+@(Html.X().Window().Modal(true)
+.Width(750).Height(600)
+.Resizable(false)
+    .Title("تعریف تنظیمات ارسال پیامک")
+         .ID("NewSmsSending_New")
+        .Closable(true).ButtonAlign(Ext.Net.Alignment.Center)
+    .CloseAction(Ext.Net.CloseAction.Destroy)
+        .Layout(LayoutType.Fit)
+                   .Buttons(X.Button().Text("ذخیره").Icon(Ext.Net.Icon.Disk)//.ToolTip("کلید میانبر F8")
+                               .Listeners(l =>
+                               {
+                                   l.Click.Handler = "SaveSmsSending_New();";
+
+                               })
+                               .ItemID("btnSave")
+                                ,
+                                X.Button().Text("خروج").Icon(Ext.Net.Icon.DoorOut)//.ToolTip("کلید میانبر Esc")
+                                       .OnClientClick("App.NewSmsSending_New.destroy()"))
+    .Items(
+        X.FormPanel()
+        .Border(false)
+        //.Margin(5)
+            .DefaultButton("btn")
+        .TitleAlign(Ext.Net.TitleAlign.Center)
+           .Layout(LayoutType.Fit)
+                .Items(
+
+                X.Panel().Border(false).PaddingSpec("5px 0 10px 0")
+                    .Layout(Ext.Net.LayoutType.HBox)
+                    .LayoutConfig(new Ext.Net.HBoxLayoutConfig { Align = HBoxAlign.Middle })
+            .Items(
+            X.Panel().Layout(LayoutType.VBox).Border(false)//.Height(350)
+                .LayoutConfig(new Ext.Net.VBoxLayoutConfig { Align = VBoxAlign.Center })
+                      .Defaults(new { Margin = 5 }).Height(520)
+            .Items(
+                 X.FieldSet()
+                .Border(true)
+                    .Width(500)
+                .Defaults(new { Margin = 5 })
+                .Title("مشخصات ")
+               .LayoutConfig(new TableLayoutConfig { Columns = 4 })
+                .Items(
+                X.Hidden().ItemID("fldId"),
+                X.Hidden().ItemID("countryId"),
+                X.Hidden().ItemID("countrySID"),
+                X.Hidden().ItemID("countryNType"),
+            X.Label("آیتم ها:"),
+         X.ComboBox()
+            .ItemID("cboType")
+        .LabelAlign(Ext.Net.LabelAlign.Top)
+        .Editable(false)
+        .TypeAhead(true)
+        .QueryMode(DataLoadMode.Local)
+        .ForceSelection(true)
+        .TriggerAction(TriggerAction.All)
+        .DisplayField("Name")
+        .ValueField("ID")
+        .EmptyText("آیتم ها...")
+        .Width(190)
+        .Items(
+                    new ListItem("نوع خودرو", "CarTip"),
+                    new ListItem("مشخصه خودرو", "CarClass"),
+                    new ListItem("نام مالک", "Owner"),
+                    new ListItem("شماره پلاک", "Pelaqe"),
+                    new ListItem("مبلغ عوارض", "Price"),
+                    new ListItem("شماره موتور", "MotorNum"),
+                    new ListItem("شماره شاسی", "ShasiNum"),
+                    new ListItem("سال های بدهکاری", "BedYear"),
+                    new ListItem("شناسه قبض", "ShGhabz"),
+                    new ListItem("شناسه پرداخت", "ShPardakht"),
+                    new ListItem("شماره فیش", "ShFish")
+        )
+                .SelectedItems(new { Value = "CarTip" })
+        //.AllowBlank(false)
+        .MsgTarget(Ext.Net.MessageTarget.Side)
+        //.BlankText("لطفا یک آیتم را انتخاب نمایید."),
+         , X.FieldSet()
+        .Layout(LayoutType.VBox)
+        .LayoutConfig(new Ext.Net.VBoxLayoutConfig {Align=VBoxAlign.Right })
+        .Border(false)
+        .Items(
+         X.Button()
+        .ItemID("btnAdd")
+        .Text("اضافه").ColSpan(2)
+        .Icon(Ext.Net.Icon.Add)
+        .Listeners(l=>l.Click.Handler="btnAdd();")
+        ).ColSpan(2)
+         , X.Label("متن آزاد:"),
+                     X.TextField()
+                    .ItemID("txtFreeText")
+                    .MsgTarget(Ext.Net.MessageTarget.Side)
+        //.AllowBlank(false)
+                    .Width(190)
+        //.BlankText("لطفا متن آزاد را وارد نمایید.")
+                   , X.FieldSet()
+                    .Border(false)
+                    .Layout(LayoutType.VBox)
+                    .LayoutConfig(new Ext.Net.VBoxLayoutConfig {Align=VBoxAlign.Right })
+                    .Height(25)
+                    .Items(
+                    X.FieldSet()
+                    .Layout(LayoutType.HBox).PaddingSpec("0 0 0 0")
+                    .Border(false)
+                       // .Defaults(new { Margin = 3 })
+                    //.LayoutConfig(new Ext.Net.HBoxLayoutConfig {Align=HBoxAlign. })
+                    .Items(
+             X.Button()
+                
+            .ItemID("btnAddText")
+            .Icon(Ext.Net.Icon.Add)
+            .Text("اضافه")
+            .Listeners(l => l.Click.Handler = "btnAddText();")
+            , X.Button()//.PaddingSpec("0 2px 0 0")
+            .ItemID("btnEnter")
+            .IconCls("Enter")
+            .Text("Enter")
+            .Listeners(l => l.Click.Handler = "btnEnter();")
+            )
+            ).ColSpan(2)
+        //Icon(Ext.Net.Icon.)
+            , X.Label("نوع پیامک:"),
+             X.ComboBox()
+                .ItemID("cboSmsType")
+            .LabelAlign(Ext.Net.LabelAlign.Top)
+            .Editable(false)
+            .TypeAhead(true)
+            .QueryMode(DataLoadMode.Local)
+            .ForceSelection(true)
+            .TriggerAction(TriggerAction.All)
+            .DisplayField("Name")
+            .ValueField("ID")
+            .EmptyText("نوع پیامک...")
+            .Width(190)
+               .Items(
+                            new ListItem("پاسخ به استعلام", "1"),
+                            new ListItem("پس از تشکیل پرونده", "2"),
+                            new ListItem("پس از اعلام وصول", "3"),
+                            new ListItem("پس از صدور فیش", "4"),
+                            new ListItem("ارسال گروهی", "5")
+
+                    )
+            .SelectedItems(new { Value = "1" })
+        //.AllowBlank(false)
+            .MsgTarget(Ext.Net.MessageTarget.Side)
+        // .BlankText("لطفا جستجوی پیش فرض را انتخاب نمایید."),
+               , X.FieldSet()
+               .Width(180)
+                        .Border(false)
+                        .Layout(LayoutType.HBox)
+                        .Items(
+                            X.Checkbox()
+                                .ItemID("ChkState")
+                            .LabelAlign(Ext.Net.LabelAlign.Left)
+                                .PaddingSpec("0 0 0 2px")
+                            .LabelSeparator("")
+                                , X.Label("وضعیت")
+
+
+                  ).ColSpan(4)
+                  )
+        //          , X.Panel().ColSpan(4).Width(400).Layout(LayoutType.HBox).Border(false).Defaults(new { Margin = 5 })
+        //.Items(
+                               , X.FieldSet().ColSpan(4)
+                        .Border(true)
+                        .Title("موقعیت در تقسیمات کشوری")
+                            .Width(500)
+                        .Height(385)
+                        .Layout(LayoutType.VBox)
+                                .LayoutConfig(new Ext.Net.VBoxLayoutConfig { Align = VBoxAlign.Right })
+        // .LayoutConfig(new TableLayoutConfig { Columns = 1 })
+                        .Defaults(new { Margin = 2 })
+                        .Items(
+                                  X.TreePanel()
+                                    .ID("TreeCountrySmss")
+                                    .AutoScroll(true)
+                                    .Width(480)
+                                    .ColSpan(2)
+                                    .Expand(true)
+                                    .Height(300)
+                                    .Expand(true)
+                                    .UseArrows(true)
+                                    .Border(false)
+                                    .Listeners(a =>
+                                        {
+                                            a.Select.Handler = "GetTreeCountryIdSmss(record);";
+                                            a.AfterRender.Handler = "this.getRootNode().expand();";
+                                        })
+                                                    .Root(Html.X().Node().NodeID("1").DataPath("0").Cls("0").Text("جمهوری اسلامی ایران").IconFile("/Content/images/0.png"))
+                                                    .Listeners(l =>
+                                                    {
+                                                        l.BeforeLoad.Fn = "nodeLoadTreeCountrySmss";
+                                                    })
+                                    , X.Label()
+                                    .Cls("LblRed")
+                                    .Text("مورد انتخاب شده: ")
+                                    , X.Label()
+                                    .Border(false).Width(480)
+                                    .Cls("LblStyle")
+                                    .ItemID("lblTitleCountry")
+                                    )
+
+                                       // )
+                   )
+                        ,
+        //X.FieldSet()
+        //    .Border(true)
+        //    .Layout(LayoutType.VBox)
+        //    .LayoutConfig(new Ext.Net.VBoxLayoutConfig { Align = VBoxAlign.Right })
+        //    .Title("مشخصات الگو")
+        //        .Width(205)
+        //    .Items(
+        //,X.FieldSet()
+        //.Layout(LayoutType.VBox)
+                          X.FieldSet()
+                        .Border(false)
+                        .Layout(LayoutType.VBox)
+                        .Height(400)
+                        .LayoutConfig(new Ext.Net.VBoxLayoutConfig { Align = VBoxAlign.Center })
+        //.Width(250)
+                        .Items(
+                            X.Container().Content(@<table style="width: 140px;height: 190px;">
+                            <tr>
+                                <td colspan="2" align="center">
+                                     <img src="@Url.Content("~/Content/images/CellPhone.png")" width="170px" />
+                                    @*<textarea id="body" readonly="readonly" style="font-family: tornado tahoma; border:solid 1px red;
+                                                                                 "></textarea>*@
+            
+                                    <textarea id="body" readonly="readonly" style="font-family:RasaFont; width: 143px;border:solid 1px black;
+                                        height: 185px; top: 58px; position: absolute; left: 18px;"></textarea>
+
+                                </td>
+                                </tr>
+                                <tr>
+                                    <td align="center" style="text-align:center;" >
+                
+                                        @(  X.Button()
+                                                    .ItemID("btnClean")
+                                                    .Text("حذف")
+                                                    .Icon(Ext.Net.Icon.NoteDelete)
+                                                                .Listeners(l => l.Click.Handler = "btnClean();")
+                                                    )
+                                    </td>
+                            </tr>
+                        </table>)
+
+          )
+
+
+
+
+            )
+        )
+)
+)
+
+@(Html.X().KeyMap()
+                 .ID("NewSmsSending_NewMap")
+                 .Target("={App.NewSmsSending_New.getTargetEl()}")
+            .Binding(b =>
+            {
+                b.Add(Html.X().KeyBinding()
+                .KeysString(((int)Ext.Net.KeyCode.F8).ToString())
+                .Handler("SaveSmsSending_New(); ")
+                );
+
+            }))
+<script type="text/javascript">
+    var pattern1 = "";
+    function fillBody() {
+        var s = "";
+        var s1 = "";
+        if (pattern1 != "") {
+            var p = pattern1.split('*');
+            for (var i = 0; i < p.length; i++) {
+                var temp = p[i];
+                switch (temp) {
+                    case 'CarTip':
+                        s1 = s1 + 'داخلی سواری شخصی ';
+                        break;
+                    case 'CarClass':
+                        s1 = s1 + 'پژو 206 عادی ';
+                        break;
+                    case 'Owner':
+                        s1 = s1 + 'جواد ربیعی ';
+                        break;
+                    case 'Pelaqe':
+                        s1 = s1 + 'ایران|44|456~12 ';
+                        break;
+                    case 'Price':
+                        s1 = s1 + '260،000 ریال ';
+                        break;
+                    case 'MotorNum':
+                        s1 = s1 + '1554654 ';
+                        break;
+                    case 'ShasiNum':
+                        s1 = s1 + '1654654654 ';
+                        break;
+                    case 'BedYear':
+                        s1 = s1 + '90-92 ';
+                        break;
+                    case 'ShGhabz':
+                        s1 = s1 + '51565 ';
+                        break;
+                    case 'ShPardakht':
+                        s1 = s1 + '5584 ';
+                        break;
+                    case 'ShFish':
+                        s1 = s1 + '651235 ';
+                        break;
+
+                    default:
+                        s1 = s1 + p[i] + '';
+                        break;
+                }
+            }
+        }
+        /*s = s + $('#txtStart').val() + '\n' + s1 + '\n' + $('#txtEnd').val();*/
+        $('#body').val(s1);
+    }
+
+    function btnAdd() {
+       
+        var cboType = App.NewSmsSending_New.queryById('cboType');
+        pattern1 = pattern1 + cboType.getValue() + '*';
+       
+        fillBody();
+    }
+
+    function btnAddText() {
+        var txtFreeText = App.NewSmsSending_New.queryById('txtFreeText');
+        pattern1 = pattern1 + txtFreeText.getValue() + '*';
+        fillBody();
+        txtFreeText.setValue("");
+    }
+
+    function btnEnter() {
+        pattern1 = pattern1 + "\n";
+        fillBody();
+    }
+
+    function btnClean() {
+        pattern1 = "";
+        fillBody();
+    }
+    setTimeout("LoadSmsSending_New()", 700);
+    var nodeLoadTreeCountrySmss = function (store, operation, options) {
+        var node = operation.node;
+        Ext.net.DirectMethod.request({
+            url: '/NewVer/SmsSending_New/NodeLoadTreeCountry',
+            params: {
+                nod: node.getId()
+            },
+            success: function (result) {
+                node.set('loading', false);
+                node.set('loaded', true);
+                node.appendChild(result);
+                node.expand();
+            },
+
+            failure: function (errorMsg) {
+                Ext.Msg.alert('Failure', errorMsg);
+            }
+        });
+
+        return false;
+    };
+
+    function GetTreeCountryIdSmss(record) {
+        var path = record.getPath("text");
+        var Text = path.split('/').splice(1).join("-->");
+        App.NewSmsSending_New.queryById("countryId").setValue(record.getId());
+        App.NewSmsSending_New.queryById("countrySID").setValue(record.data.cls);
+        App.NewSmsSending_New.queryById("countryNType").setValue(record.data.dataPath);
+        if (App.NewSmsSending_New.queryById("countryNType").getValue() < 5) {
+            App.NewSmsSending_New.queryById("countryNType").setValue(-1);
+            App.NewSmsSending_New.queryById('lblTitleCountry').setText("شما مجاز به انتخاب موقعیت در تقسیمات کشوری انتخاب شده نیستید.");
+            return;
+        }
+        else {
+            App.NewSmsSending_New.queryById('lblTitleCountry').setText(Text);
+        }
+    };
+
+  
+    function SetDefault1() {
+        App.TreeCountrySmss.getSelectionModel().select(0);
+    }
+
+    function LoadSmsSending_New() {
+        if ('@ViewBag.Id' != '0') {
+            App.NewSmsSending_New.body.mask("در حال بارگذاری...");
+            Ext.net.DirectMethod.request({
+                url: '/NewVer/SmsSending_New/Details',
+                params: {
+                    id: '@ViewBag.Id'
+                },
+                success: function (data) {
+                    if (data.Er == 0) {
+                        pattern1 = data.fldText;
+                        fillBody();
+                        var ChkState = App.NewSmsSending_New.queryById('ChkState');
+                        ChkState.setValue(data.fldState);
+                         var cboSmsType = App.NewSmsSending_New.queryById('cboSmsType');
+                        cboSmsType.setValue(data.fldType);
+                        var Id = App.NewSmsSending_New.queryById('fldId');
+                        Id.setValue(data.fldId);
+                        App.NewSmsSending_New.queryById("countryId").setValue(data.countryId);
+                        App.NewSmsSending_New.queryById("countrySID").setValue(data.countrycode);
+                        App.NewSmsSending_New.queryById("countryNType").setValue(data.countryType);
+
+                        if (data.Path == "/1") {
+                            App.TreeCountrySmss.getSelectionModel().select(0);
+                        }
+                        else {
+                            Ext.net.DirectMethod.request({
+                                url: '/NewVer/SmsSending_New/LoadPath',
+                                params: {
+                                    Path: data.Path
+                                },
+                                success: function (result) {
+                                    if (result.length != 0) {
+                                        App.TreeCountrySmss.store.getNodeById(data.Path.split('/')[2]).appendChild(result);
+                                        var nodee = App.TreeCountrySmss.store.getNodeById(data.Path.split('/')[data.Path.split('/').length - 1]);
+                                        App.TreeCountrySmss.expandPath(data.Path);
+                                        App.TreeCountrySmss.selectPath(data.Path);
+                                    }
+                                    else {
+                                        App.TreeCountrySmss.selectPath(data.Path);
+                                    }
+                                },
+                                failure: function (errorMsg) {
+                                    Ext.Msg.alert('Failure', errorMsg);
+                                }
+                            });
+                        }
+
+
+                    }
+                    else if (data.Er == 1) {
+                        Ext.MessageBox.show({
+                            title: data.MsgTitle,
+                            msg: data.Msg,
+                            icon: Ext.MessageBox.ERROR,
+                            buttons: Ext.MessageBox.OK
+                        });
+                    }
+                    App.NewSmsSending_New.body.mask().hide();
+                }
+            });
+        }
+        else {
+
+            SetDefault();
+        }
+
+    }
+    function SaveSmsSending_New() {
+        if (App.TreeCountrySmss.getSelectionModel().getLastSelected() == undefined)
+        {
+            Ext.MessageBox.show({
+                Name: "خطا",
+                msg: "لطفا شهرداری مورد نظر را از قسمت تقسیمات کشوری انتخاب نمایید.",
+                icon: Ext.MessageBox.ERROR,
+                buttons: Ext.MessageBox.OK
+            });
+            return;
+        }
+        else if (App.NewSmsSending_New.queryById("countryNType").getValue() < 5) {
+            Ext.MessageBox.show({
+                Name: "خطا",
+                msg: "موقعیت انتخاب شده در تقسیمات کشوری مجاز نیست.",
+                icon: Ext.MessageBox.ERROR,
+                buttons: Ext.MessageBox.OK
+            });
+            return;
+        }
+        else {
+            var ChkState = App.NewSmsSending_New.queryById('ChkState');
+            var cboSmsType = App.NewSmsSending_New.queryById('cboSmsType');
+            var Id = App.NewSmsSending_New.queryById('fldId');
+            var er = false;
+
+            if (pattern1 == "") {
+                Ext.MessageBox.show({
+                    Name: "خطا",
+                    msg: "لطفا ابتدا الگو مورد نظر را تعریف کنید .",
+                    icon: Ext.MessageBox.ERROR,
+                    buttons: Ext.MessageBox.OK
+                });
+                er = true;
+            }
+            
+            if (er == true)
+                return;
+            App.NewSmsSending_New.body.mask("در حال ذخیره سازی...");
+            Ext.net.DirectMethod.request({
+                url: '/NewVer/SmsSending_New/Save',
+                params: {
+                    fldType: cboSmsType.getValue(),
+                    fldState: ChkState.getValue(),
+                    fldText: pattern1,
+                    type: App.NewSmsSending_New.queryById("countryNType").getValue(),
+                    code: App.NewSmsSending_New.queryById("countrySID").getValue(),
+                    fldId: Id.getValue()
+
+                },
+                success: function (data) {
+                    var ic = Ext.MessageBox.INFO;
+                    if (data.Er == 1)
+                        ic = Ext.MessageBox.ERROR;
+                    Ext.MessageBox.show({
+                        Name: data.MsgName,
+                        msg: data.Msg,
+                        icon: ic,
+                        buttons: Ext.MessageBox.OK
+                    });
+                    App.NewSmsSending_New.body.mask().hide();
+                    App.SmsSending_New.queryById('GridSmsSending_New').store.load();
+                    if (data.Er != 1)
+                        ClearSmsSending_New();
+                }
+
+            });
+        }
+    }
+    function ClearSmsSending_New() {
+        $('#body').val("");
+        pattern1 = "";
+        App.NewSmsSending_New.queryById("countryNType").setValue(0);
+        App.NewSmsSending_New.queryById("countrySID").setValue(0);
+        App.NewSmsSending_New.queryById("countryId").setValue(0);
+         App.NewSmsSending_New.queryById('txtFreeText').setValue("");
+         App.NewSmsSending_New.queryById('fldId').setValue(0);
+         App.TreeCountrySmss.getSelectionModel().select(0);
+    }
+   /* function EnterNext() {
+        var keyfield = App.NewSmsSending_New.queryById(Ext.getCmp((Ext.Element.getActiveElement()).name).itemId);
+        var nextfld = keyfield.nextSibling();
+        nextfld.focus();
+        nextfld.selectText();
+
+    }*/
+</script>

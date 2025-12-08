@@ -1,0 +1,165 @@
+﻿@using Ext.Net.MVC
+@using Hogaf.ExtNet.UX
+@using Ext.Net;
+@{
+    var X = Html.X();
+}
+
+@(Html.X().Window()
+    .Modal(true)
+        .Listeners(li => li.AfterRender.Handler = "LoadState();")
+    .Resizable(false)
+    .Width(300)
+    //.Height(185)
+        .Title("تعریف استان")
+    //.Layout(LayoutType.Fit)
+        .ID("NewState")
+    .Closable(true)
+    .ButtonAlign(Ext.Net.Alignment.Center)
+    .Buttons(
+        X.Button()
+            .Text("ذخیره")
+            .Icon(Ext.Net.Icon.Disk)
+        //.ToolTip("کلید میانبر F8")
+                .Listeners(l => l.Click.Handler = "SaveState();"),
+        X.Button()
+            .Text("خروج")
+            .Icon(Ext.Net.Icon.DoorOut)
+        //.ToolTip("کلید میانبر Esc")
+                .OnClientClick("App.NewState.destroy();"))
+    .CloseAction(Ext.Net.CloseAction.Destroy)
+    .Items(
+        X.FormPanel()
+            .Border(false)
+            .Layout(LayoutType.Fit)
+            .Items(
+                X.Panel()
+                    .Border(false)
+                    .PaddingSpec("15px 0 0 0")
+                           .Layout(LayoutType.VBox)
+                                    .LayoutConfig(new VBoxLayoutConfig { Align = VBoxAlign.Center })
+                    .Items(
+                        X.FieldSet().Height(118)
+                            .Border(true)
+                            .Title("استان")
+                            .Defaults(new { Margin = 2 })
+                            .Layout(LayoutType.Table)
+                            .LayoutConfig(new TableLayoutConfig { Columns = 2 })
+                            .Items(
+                                X.Hidden()
+                                    .ItemID("fldId"),
+                                   X.Label("نام استان:"),
+                                X.TextField()
+                                        .ItemID("txtName").EnforceMaxLength(true).MaxLength(50)
+                                    .Width(180)
+                                    .AllowBlank(false)
+                                    .BlankText("لطفا نام استان را وارد نمایید.")
+                                    .MsgTarget(Ext.Net.MessageTarget.Side),
+                                X.Label("توضیحات:"),
+                                X.TextArea()
+                                    .ItemID("txtDesc")
+                                    .Width(180)
+                            )
+                )
+            )
+        )
+)
+
+@(Html.X().KeyMap()
+                 .ID("NewStateMap")
+                 .Target("={App.NewState.getTargetEl()}")
+            .Binding(b =>
+            {
+                b.Add(Html.X().KeyBinding()
+                .KeysString(((int)Ext.Net.KeyCode.F8).ToString())
+                .Handler("SaveState(); ")
+                );
+
+            }))
+<script type="text/javascript">
+    function LoadState() {
+        if ('@ViewBag.Id' != '0') {
+            App.NewState.body.mask("در حال بارگذاری...");
+            Ext.net.DirectMethod.request({
+                url: '/NewVer/State_New/Details',
+                params: {
+                    Id: '@ViewBag.Id'
+                },
+                success: function (data) {
+                    if (data.Er == 0) {
+                        var txtName = App.NewState.queryById('txtName');
+                        txtName.setValue(data.fldName);
+                        var txtDesc = App.NewState.queryById('txtDesc');
+                        txtDesc.setValue(data.fldDesc);
+                        var Id = App.NewState.queryById('fldId');
+                        Id.setValue(data.fldID);
+                    }
+                    else if (data.Er == 1) {
+                        Ext.MessageBox.show({
+                            title: data.MsgTitle,
+                            msg: data.Msg,
+                            icon: Ext.MessageBox.ERROR,
+                            buttons: Ext.MessageBox.OK
+                        });
+                    }
+                    App.NewState.body.mask().hide();
+                }
+            });
+        }
+        else {
+            App.NewState.queryById('txtName').validate();
+        }
+
+    }
+
+    function SaveState() {
+        var txtName = App.NewState.queryById('txtName');
+        var txtDesc = App.NewState.queryById('txtDesc');
+        var Id = App.NewState.queryById('fldId');
+            var er = false;
+
+            if (txtName.validate() == false) {
+                er = true;
+            }
+            if (er == true)
+                return;
+
+            App.NewState.body.mask("در حال ذخیره سازی...");
+            Ext.net.DirectMethod.request({
+                url: '/NewVer/State_New/Save',
+                params: {
+                    fldID: Id.getValue(),
+                    fldName: txtName.getValue(),
+                    fldDesc: txtDesc.getValue()
+                },
+                success: function (data) {
+                    var ic = Ext.MessageBox.INFO;
+                    if (data.Er == 1)
+                        ic = Ext.MessageBox.ERROR;
+                    Ext.MessageBox.show({
+                        title: data.MsgTitle,
+                        msg: data.Msg,
+                        icon: ic,
+                        buttons: Ext.MessageBox.OK
+                    });
+                    App.State.queryById('GridState').store.load();
+                    if (data.Er != 1)
+                        ClearState();
+                    App.NewState.body.mask().hide();
+                }
+
+            });
+        }
+    function ClearState() {
+        App.NewState.queryById('txtName').setValue("");
+        App.NewState.queryById('txtDesc').setValue("");
+        App.NewState.queryById('fldId').setValue(0);
+    }
+  /*  function EnterNext() {
+        var keyfield = App.NewCustomer.queryById(Ext.getCmp((Ext.Element.getActiveElement()).name).itemId);
+        var nextfld = keyfield.nextSibling();
+        nextfld.focus();
+        nextfld.selectText();
+    }*/
+
+</script>

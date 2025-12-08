@@ -1,0 +1,142 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Report ReferencedAssemblies="System.dll&#13;&#10;System.Drawing.dll&#13;&#10;System.Windows.Forms.dll&#13;&#10;System.Data.dll&#13;&#10;System.Xml.dll&#13;&#10;MyLib.dll" ReportInfo.Created="11/15/2014 08:07:19" ReportInfo.Modified="08/30/2017 09:49:22" ReportInfo.CreatorVersion="1.2.47.0">
+  <ScriptText>using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Windows.Forms;
+using System.Drawing;
+using System.Data;
+using FastReport;
+using FastReport.Data;
+using FastReport.Dialog;
+using FastReport.Barcode;
+using FastReport.Table;
+using FastReport.Utils;
+
+namespace FastReport
+{ 
+  public class ReportScript
+  {
+
+    private void Data1_AfterData(object sender, EventArgs e)
+    {
+      
+    } 
+
+    private void GroupHeader1_AfterData(object sender, EventArgs e)
+    {
+      Text3.Text=MyLib.Shamsi.ShamsiMonthname(Convert.ToInt32(((string)Report.GetColumnValue(&quot;sp_RptMonthlyUser_CountWithDate_NotPay.fldMonth&quot;))));
+    }
+  }
+}
+</ScriptText>
+  <Styles>
+    <Style Name="Style1" Fill.Color="232, 244, 255"/>
+  </Styles>
+  <Dictionary>
+    <TableDataSource Name="sp_PictureSelect" ReferenceName="CarTaxDataSet.sp_PictureSelect" DataType="System.Int32" Enabled="true">
+      <Column Name="fldID" DataType="System.Int32"/>
+      <Column Name="fldPic" DataType="System.Byte[]" BindableControl="Picture"/>
+      <Column Name="fldMunicipalityPic" DataType="System.String"/>
+      <Column Name="fldMunicipalityPicID" DataType="System.Int32"/>
+      <Column Name="fldBankPic" DataType="System.String"/>
+      <Column Name="fldBankPicID" DataType="System.Int32"/>
+      <Column Name="fldUserPic" DataType="System.String"/>
+      <Column Name="fldUserPicID" DataType="System.Int64"/>
+      <Column Name="fldUserName" DataType="System.String"/>
+      <Column Name="fldUserID" DataType="System.Int64"/>
+      <Column Name="fldDesc" DataType="System.String"/>
+      <Column Name="fldDate" DataType="System.String"/>
+    </TableDataSource>
+    <TableDataSource Name="sp_RptMonthlyUser_CountWithDate_NotPay" ReferenceName="CarTaxDataSet.sp_RptMonthlyUser_CountWithDate_NotPay" DataType="System.Int32" Enabled="true">
+      <Column Name="fldCount" DataType="System.Int32"/>
+      <Column Name="fldUserID" DataType="System.Int64"/>
+      <Column Name="fldMonth" DataType="System.String"/>
+      <Column Name="UserName" DataType="System.String"/>
+    </TableDataSource>
+    <Parameter Name="sal" DataType="System.String"/>
+    <Parameter Name="date" DataType="System.String"/>
+    <Parameter Name="time" DataType="System.String"/>
+    <Parameter Name="StateName" DataType="System.String"/>
+    <Parameter Name="MunicipalityName" DataType="System.String"/>
+    <Parameter Name="AreaName" DataType="System.String"/>
+    <Parameter Name="OfficeName" DataType="System.String"/>
+    <Parameter Name="MyTablighat" DataType="System.String"/>
+  </Dictionary>
+  <ReportPage Name="Page1" FirstPageSource="15" OtherPagesSource="15">
+    <ReportTitleBand Name="ReportTitle1" Width="718.2"/>
+    <PageHeaderBand Name="PageHeader1" Top="4" Width="718.2" Height="123.83">
+      <TableObject Name="Table3" Left="4.61" Width="708.98" Height="99.81">
+        <TableColumn Name="Column59" Width="166.04"/>
+        <TableColumn Name="Column60" Width="384.96"/>
+        <TableColumn Name="Column61" Width="157.98"/>
+        <TableRow Name="Row4" Height="99.81">
+          <TableCell Name="Cell59" Text="تاریخ چاپ :[date]&#13;&#10;ساعت چاپ:[time]&#13;&#10;صفحه:[Page#] از [TotalPages#]" VertAlign="Center" RightToLeft="true" Font="RasaFont, 11pt"/>
+          <TableCell Name="Cell60" Text="[StateName]&#13;&#10;[MunicipalityName]&#13;&#10;[AreaName]&#13;&#10;[OfficeName]" AutoShrink="FontSize" HorzAlign="Center" VertAlign="Center" RightToLeft="true" Font="RasaFont, 12pt, style=Bold"/>
+          <TableCell Name="Cell61" AutoShrink="FontSize" HorzAlign="Right" VertAlign="Center" Font="RasaFont, 10pt">
+            <PictureObject Name="Picture1" Left="24.32" Top="12.1" Width="75.6" Height="75.6" DataColumn="sp_PictureSelect.fldPic"/>
+          </TableCell>
+        </TableRow>
+      </TableObject>
+      <TextObject Name="Text1" Left="144.57" Top="105.9" Width="429.07" Height="17.93" Text="گزارش تعداد فيش هاي صادر شده و پرداخت نشده به تفكيك كاربران" HorzAlign="Center" VertAlign="Center" RightToLeft="true" Font="RasaFont, 12pt, style=Bold"/>
+    </PageHeaderBand>
+    <GroupHeaderBand Name="GroupHeader1" Top="131.83" Width="718.2" Height="66.17" AfterDataEvent="GroupHeader1_AfterData" StartNewPage="true" Condition="[sp_RptMonthlyUser_CountWithDate_NotPay.fldMonth]">
+      <TableObject Name="Table1" Left="172.91" Top="41.61" Width="372.38" Height="24.56">
+        <TableColumn Name="Column65" Width="107.44"/>
+        <TableColumn Name="Column66" Width="118.8"/>
+        <TableColumn Name="Column67" Width="146.14"/>
+        <TableRow Name="Row6" Height="24.56">
+          <TableCell Name="Cell65" Border.Lines="All" Fill="Glass" Fill.Color="SkyBlue" Fill.Blend="0.2" Fill.Hatch="true" Text="تعداد" HorzAlign="Center" VertAlign="Center" Font="RasaFont, 11pt, style=Bold"/>
+          <TableCell Name="Cell66" Border.Lines="All" Fill="Glass" Fill.Color="SkyBlue" Fill.Blend="0.2" Fill.Hatch="true" Text="نام کاربر" HorzAlign="Center" VertAlign="Center" Font="RasaFont, 11pt, style=Bold" ColSpan="2"/>
+          <TableCell Name="Cell67" Border.Lines="All" Fill="Glass" Fill.Color="SkyBlue" Fill.Blend="0.2" Fill.Hatch="true" HorzAlign="Center" VertAlign="Center" Font="RasaFont, 11pt, style=Bold"/>
+        </TableRow>
+      </TableObject>
+      <TextObject Name="Text3" Left="291.05" Top="16.06" Width="136.09" Height="18.9" HorzAlign="Center" VertAlign="Center" Font="RasaFont, 12pt, style=Bold"/>
+      <DataBand Name="Data1" Top="202" Width="718.2" Height="24.56" AfterDataEvent="Data1_AfterData" DataSource="sp_RptMonthlyUser_CountWithDate_NotPay">
+        <TableObject Name="Table5" Left="172.93" Width="372.38" Height="24.56" EvenStyle="Style1">
+          <TableColumn Name="Column68" Width="107.44"/>
+          <TableColumn Name="Column69" Width="118.8"/>
+          <TableColumn Name="Column70" Width="146.14"/>
+          <TableRow Name="Row7" Height="24.56">
+            <TableCell Name="Cell68" Border.Lines="All" Text="[sp_RptMonthlyUser_CountWithDate_NotPay.fldCount]" HorzAlign="Center" VertAlign="Center" Font="RasaFont, 10pt, style=Bold"/>
+            <TableCell Name="Cell69" Border.Lines="All" Text="[sp_RptMonthlyUser_CountWithDate_NotPay.UserName]" HorzAlign="Center" VertAlign="Center" RightToLeft="true" Font="RasaFont, 10pt, style=Bold" ColSpan="2"/>
+            <TableCell Name="Cell70" Border.Lines="All" HorzAlign="Center" VertAlign="Center" Font="RasaFont, 10pt, style=Bold"/>
+          </TableRow>
+        </TableObject>
+        <Sort>
+          <Sort Expression="[sp_RptMonthlyUser_CountWithDate_NotPay.fldCount]" Descending="true"/>
+        </Sort>
+      </DataBand>
+      <GroupFooterBand Name="GroupFooter1" Top="230.56" Width="718.2"/>
+    </GroupHeaderBand>
+    <PageFooterBand Name="PageFooter1" Top="234.56" Width="718.2" Height="36.85" CanGrow="true">
+      <TextObject Name="Text4" Left="-4.57" Top="6.64" Width="722.92" Height="27.36" CanGrow="true" GrowToBottom="true" Text="[MyTablighat]" VertAlign="Center" RightToLeft="true" Font="RasaFont, 11pt, style=Bold"/>
+    </PageFooterBand>
+  </ReportPage>
+  <ReportPage Name="Page2" Landscape="true" PaperWidth="297" PaperHeight="210" FirstPageSource="15" OtherPagesSource="15">
+    <ReportTitleBand Name="ReportTitle2" Top="20" Width="1047.06"/>
+    <PageHeaderBand Name="PageHeader2" Top="40" Width="1047.06" Height="98.86">
+      <TableObject Name="Table4" Left="24.95" Top="-1.89" Width="997.17" Height="100.75">
+        <TableColumn Name="Column62" Width="262.14"/>
+        <TableColumn Name="Column63" Width="481.04"/>
+        <TableColumn Name="Column64" Width="253.99"/>
+        <TableRow Name="Row5" Height="100.75">
+          <TableCell Name="Cell62" Text="تاریخ چاپ :[date]&#13;&#10;ساعت چاپ:[time]&#13;&#10;صفحه:[Page#] از [TotalPages#]" VertAlign="Center" RightToLeft="true" Font="RasaFont, 12pt"/>
+          <TableCell Name="Cell63" HorzAlign="Center" VertAlign="Center" RightToLeft="true" Font="RasaFont, 12pt">
+            <TextObject Name="Text2" Left="131.28" Top="36.88" Width="227.83" Height="24.56" Text="گزارش تفکیکی در آمد به ماه و سال" HorzAlign="Center" VertAlign="Center" RightToLeft="true" Font="RasaFont, 12pt, style=Bold"/>
+          </TableCell>
+          <TableCell Name="Cell64" HorzAlign="Right" VertAlign="Center" Font="RasaFont, 10pt">
+            <PictureObject Name="Picture2" Left="89.78" Top="12.28" Width="75.6" Height="75.6" DataColumn="sp_PictureSelect.fldPic"/>
+          </TableCell>
+        </TableRow>
+      </TableObject>
+    </PageHeaderBand>
+    <DataBand Name="Data2" Top="158.86" Width="1047.06" Height="558.54">
+      <MSChartObject Name="MSChart1" Left="5.71" Top="2.89" Width="1035.73" Height="555.65" DataSource="sp_RptMonthlyUser_CountWithDate_NotPay" AutoSeriesColumn="" ChartData="PENoYXJ0IFBhbGV0dGU9IlNlYUdyZWVuIiBCYWNrQ29sb3I9IjIwMCwgMjE1LCAyMDAiIEJvcmRlcmxpbmVDb2xvcj0iTGlnaHRTbGF0ZUdyYXkiIEJvcmRlcmxpbmVEYXNoU3R5bGU9IlNvbGlkIj4NCiAgPFNlcmllcz4NCiAgICA8U2VyaWVzIE5hbWU9IltzYWxdIiBMZWdlbmQ9IkRlZmF1bHQiIFhWYWx1ZVR5cGU9IlN0cmluZyIgWVZhbHVlVHlwZT0iRG91YmxlIiBDaGFydEFyZWE9IkRlZmF1bHQiIExhYmVsPSIjVkFMWSIgRm9udD0iQiBaYXIsIDkuNzVwdCwgR2RpQ2hhclNldD0xNzgiIEN1c3RvbVByb3BlcnRpZXM9IkRyYXdpbmdTdHlsZT1DeWxpbmRlciI+DQogICAgICA8UG9pbnRzPg0KICAgICAgICA8RGF0YVBvaW50IFlWYWx1ZXM9IjEiIEF4aXNMYWJlbD0iQSIgLz4NCiAgICAgICAgPERhdGFQb2ludCBZVmFsdWVzPSIyIiBBeGlzTGFiZWw9IkIiIC8+DQogICAgICA8L1BvaW50cz4NCiAgICA8L1Nlcmllcz4NCiAgPC9TZXJpZXM+DQogIDxMZWdlbmRzPg0KICAgIDxMZWdlbmQgTmFtZT0iRGVmYXVsdCIgRW5hYmxlZD0iRmFsc2UiIEJhY2tDb2xvcj0iMjM3LCAyNDQsIDI0NyIgQm9yZGVyQ29sb3I9IkxpZ2h0U2xhdGVHcmF5Ij4NCiAgICA8L0xlZ2VuZD4NCiAgPC9MZWdlbmRzPg0KICA8VGl0bGVzPg0KICAgIDxUaXRsZSBOYW1lPSJUaXRsZTEiIFZpc2libGU9IkZhbHNlIj4NCiAgICA8L1RpdGxlPg0KICA8L1RpdGxlcz4NCiAgPENoYXJ0QXJlYXM+DQogICAgPENoYXJ0QXJlYSBCYWNrQ29sb3I9IjIyMCwgMjM1LCAyMjAiIEJhY2tTZWNvbmRhcnlDb2xvcj0iMjM3LCAyMzcsIDI0NyIgU2hhZG93T2Zmc2V0PSIxIiBCb3JkZXJDb2xvcj0iTGlnaHRTbGF0ZUdyYXkiIEJvcmRlckRhc2hTdHlsZT0iU29saWQiIE5hbWU9IkRlZmF1bHQiPg0KICAgICAgPEF4aXNZIElzTGFiZWxBdXRvRml0PSJGYWxzZSI+DQogICAgICAgIDxNYWpvckdyaWQgTGluZUNvbG9yPSIxMDAsIDAsIDAsIDAiIExpbmVEYXNoU3R5bGU9IkRhc2giIC8+DQogICAgICAgIDxNaW5vckdyaWQgTGluZUNvbG9yPSIyNSwgMCwgMCwgMCIgLz4NCiAgICAgICAgPExhYmVsU3R5bGUgRm9udD0iVGFob21hLCA4cHQiIC8+DQogICAgICA8L0F4aXNZPg0KICAgICAgPEF4aXNYIElzTGFiZWxBdXRvRml0PSJGYWxzZSIgVGl0bGVGb250PSJCIFphciwgOS43NXB0LCBHZGlDaGFyU2V0PTE3OCI+DQogICAgICAgIDxNYWpvckdyaWQgTGluZUNvbG9yPSIxMDAsIDAsIDAsIDAiIExpbmVEYXNoU3R5bGU9IkRhc2giIC8+DQogICAgICAgIDxNaW5vckdyaWQgTGluZUNvbG9yPSIyNSwgMCwgMCwgMCIgLz4NCiAgICAgICAgPExhYmVsU3R5bGUgRm9udD0iQiBaYXIsIDguMjVwdCwgR2RpQ2hhclNldD0xNzgiIC8+DQogICAgICA8L0F4aXNYPg0KICAgICAgPEF4aXNYMiBJc0xhYmVsQXV0b0ZpdD0iRmFsc2UiPg0KICAgICAgPC9BeGlzWDI+DQogICAgICA8QXhpc1kyIElzTGFiZWxBdXRvRml0PSJGYWxzZSI+DQogICAgICA8L0F4aXNZMj4NCiAgICA8L0NoYXJ0QXJlYT4NCiAgPC9DaGFydEFyZWFzPg0KICA8Qm9yZGVyU2tpbiBTa2luU3R5bGU9IkVtYm9zcyIgLz4NCjwvQ2hhcnQ+">
+        <MSChartSeries Name="Series1" SortBy="XValue" XValue="[sp_RptMonthlyUser_CountWithDate_NotPay.UserName]" YValue1="[sp_RptMonthlyUser_CountWithDate_NotPay.fldCount]"/>
+      </MSChartObject>
+    </DataBand>
+    <PageFooterBand Name="PageFooter2" Top="737.4" Width="1047.06" Height="18.9"/>
+  </ReportPage>
+</Report>

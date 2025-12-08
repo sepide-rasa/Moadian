@@ -1,0 +1,398 @@
+﻿@*@using Ext.Net.MVC
+@using Hogaf.ExtNet.UX
+@using Ext.Net;
+@{
+    var X = Html.X();
+}
+
+
+<style>
+    .LblStyle {
+        height: auto;
+    }
+    .LblRed {
+        color: red;
+    }
+</style>
+
+@(Html.X().Window()
+    .Modal(true)
+      //  .Listeners(li => li.AfterRender.Handler = "LoadchangeMogheiat();")
+    .Width(500).Height(600)
+    .Title("تغییر موقعیت")
+    .Resizable(false)
+    .ID("NewchangeMogheiat")
+    .Closable(true)
+    .CloseAction(Ext.Net.CloseAction.Destroy)
+    .Layout(LayoutType.Fit)
+    .ButtonAlign(Ext.Net.Alignment.Center)
+    .Buttons(
+        X.Button()
+            .Text("ذخیره")
+            .Icon(Ext.Net.Icon.Disk)
+                .Hidden(!Avarez.Controllers.Users.Permossions.haveAccess(Convert.ToInt32(Session["UserId"]), 227))
+        //.ToolTip("کلید میانبر F8")
+            .Listeners(l =>
+            {
+                l.Click.Handler = "SavechangeMogheiat();";
+            })
+            .ItemID("btnSavePerson"),
+        X.Button()
+            .Text("خروج")
+            .Icon(Ext.Net.Icon.BulletCross)
+            .ToolTip("کلید میانبر Esc")
+            .OnClientClick("App.NewchangeMogheiat.destroy()"))
+    .Items(
+        X.FormPanel()
+            .Border(false)
+            .PaddingSpec("10px 0 10px 0")
+            .Layout(LayoutType.VBox)
+            .LayoutConfig(new VBoxLayoutConfig { Align = VBoxAlign.Center })
+            .Items(
+                    X.FieldSet()
+                    .Border(false)
+                    .Width(495)
+                    .Layout(LayoutType.Column)
+                    //.LayoutConfig(new Ext.Net.TableLayoutConfig { Columns = 1 })
+                    .Defaults(new { Margin = 2 })
+                    .Items(
+                              X.TreePanel()
+                                .ID("TreeStructure")
+                                .AutoScroll(true)
+                                .Width(470)
+                                .ColSpan(2)
+                                .Expand(true)
+                                .Height(450)
+                                .Expand(true)
+                                .UseArrows(true)
+                                .Border(false)
+                                .Store(
+                                Html.X().TreeStore()
+                                    .Proxy(
+                                                        Html.X().AjaxProxy().Url(Url.Action("nodeLoadTreeStructure"))
+                                            )
+                                        )
+
+                                    .Listeners(a =>
+                                    {
+                                        a.ItemClick.Handler = "GetTreeStructureId(record);";
+                                        a.AfterRender.Handler = "this.getRootNode().expand();";
+                                    })
+                 .Root(Html.X().Node().NodeID("0").Text("تقسیمات کشوری").Cls("0").DataPath("0"))
+                                            //.Root(Html.X().Node().NodeID("1").IconFile("/Content/images/0.png").Cls("0").DataPath("0").Text("جمهوری اسلامی ایران"))
+                                                .Listeners(l =>
+                                                {
+                                                    l.BeforeLoad.Fn = "nodeLoadTreeStructure";
+                                                })
+                                , X.Label()
+                                .Cls("LblRed")
+                                .Text("مورد انتخاب شده: ")
+                                
+                                , X.Label()                                
+                                .Cls("LblStyle")
+                                .ItemID("lblTitle")
+                                )
+
+                )
+                )
+)
+<script type="text/javascript">
+    var countryid;
+    var countrySID;
+    var countryNType = -1;
+    var nodeLoadTreeStructure = function (store, operation, options) {
+        var node = operation.node;
+       node.data.id = '@ViewBag.NodeId';
+        node.data.text = '@ViewBag.RootNameTree';
+        Ext.net.DirectMethod.request({
+            url: '/NewVer/First/NodeLoadTreeStructure',
+            params: {
+                nod: node.getId()
+            },
+            success: function (result) {
+                node.set('loading', false);
+                node.set('loaded', true);
+                node.appendChild(result);
+                node.expand();
+            },
+
+            failure: function (errorMsg) {
+                Ext.Msg.alert('Failure', errorMsg);
+            }
+        });
+
+        return false;
+    };
+    function GetTreeStructureId(record) {
+        NodeId = record.getId();
+
+       /* var path = record.getPath("text");
+        var Text = path.split('/').splice(1).join("-->");
+       
+        App.NewchangeMogheiat.queryById('lblTitle').setText(Text);*/
+        countryid = record.getId();
+        countrySID = record.data.cls;
+        countryNType = record.data.dataPath;
+        Ext.net.DirectMethod.request({
+            url: '/NewVer/First/CountryPosition',
+            params: {
+                id: record.getId()
+            },
+            success: function (data) {
+                if (countryNType < 5) {
+                    countryid = 0;
+                    countryNType = -1;
+                    countrySID = 0;
+                    App.NewchangeMogheiat.queryById('lblTitle').setText("شما مجاز به انتخاب این گزینه نمی باشید.");
+                    return;
+                }
+                else {
+                    App.NewchangeMogheiat.queryById('lblTitle').setText(data.Position);
+                }
+                
+               
+                Ext.net.Mask.hide();
+                
+            }
+
+        });
+        
+       
+    };
+    function SavechangeMogheiat() {
+        if (countryNType < 5) {
+            alert('شما مجاز به انتخاب موقعیت انتخاب شده نیستید.');
+            return;
+        }
+        else {
+            Ext.net.Mask.show({ msg: 'در حال انجام عملیات...' });
+            Ext.net.DirectMethod.request({
+                url: '/NewVer/First/SelectLocation',
+                params: {
+                    id: NodeId
+                },
+                success: function (data) {
+                    Ext.net.Mask.hide();
+                    App.NewchangeMogheiat.destroy();
+                    if (data.Er == 1) {
+                        Ext.MessageBox.show({
+                            title: data.MsgTitle,
+                            msg: data.Msg,
+                            icon: Ext.MessageBox.ERROR,
+                            buttons: Ext.MessageBox.OK
+                        });
+                    }
+                    else {
+                        Ext.MessageBox.show({
+                            title: "عملیات موفق",
+                            msg: "تغییر موقعیت با موفقیت انجام شد.",
+                            icon: Ext.MessageBox.INFO,
+                            buttons: Ext.MessageBox.OK
+                        });
+                        App.lblLocation.setText(data.Location);
+                    }
+                }
+            });
+        }
+    }
+</script>*@
+
+@using Ext.Net.MVC
+@using Hogaf.ExtNet.UX
+@using Ext.Net;
+@{
+    var X = Html.X();
+}
+
+
+<style>
+    .LblStyle {
+        height: auto;
+    }
+
+    .LblRed {
+        color: red;
+    }
+</style>
+
+@(Html.X().Window()
+    .Modal(true)
+        //  .Listeners(li => li.AfterRender.Handler = "LoadchangeMogheiat();")
+    .Width(500).Height(600)
+    .Title("تغییر موقعیت")
+    .Resizable(false)
+    .ID("NewchangeMogheiat")
+    .Closable(true)
+    .CloseAction(Ext.Net.CloseAction.Destroy)
+    .Layout(LayoutType.Fit)
+    .ButtonAlign(Ext.Net.Alignment.Center)
+    .Buttons(
+        X.Button()
+            .Text("ذخیره")
+            .Icon(Ext.Net.Icon.Disk)
+                .Hidden(!Avarez.Controllers.Users.Permossions.haveAccess(Convert.ToInt32(Session["UserId"]), 227))
+        //.ToolTip("کلید میانبر F8")
+            .Listeners(l =>
+            {
+                l.Click.Handler = "SavechangeMogheiat();";
+            })
+            .ItemID("btnSavePerson"),
+        X.Button()
+            .Text("خروج")
+            .Icon(Ext.Net.Icon.BulletCross)
+            .ToolTip("کلید میانبر Esc")
+            .OnClientClick("App.NewchangeMogheiat.destroy()"))
+    .Items(
+        X.FormPanel()
+            .Border(false)
+            .PaddingSpec("10px 0 10px 0")
+            .Layout(LayoutType.VBox)
+            .LayoutConfig(new VBoxLayoutConfig { Align = VBoxAlign.Center })
+            .Items(
+                    X.FieldSet()
+                    .Border(false)
+                    .Width(495)
+                    .Layout(LayoutType.Column)
+        //.LayoutConfig(new Ext.Net.TableLayoutConfig { Columns = 1 })
+                    .Defaults(new { Margin = 2 })
+                    .Items(
+                              X.TreePanel()
+                                .ID("TreeStructure")
+                                .AutoScroll(true)
+                                .Width(470)
+                                .ColSpan(2)
+                                .Expand(true)
+                                .Height(450)
+                                .Expand(true)
+                                .UseArrows(true)
+                                .Border(false)
+                                .Store(
+                                Html.X().TreeStore()
+                                    .Proxy(
+                                                        Html.X().AjaxProxy().Url(Url.Action("nodeLoadTreeStructure"))
+                                            )
+                                        )
+
+                                    .Listeners(a =>
+                                    {
+                                        a.ItemClick.Handler = "GetTreeStructureId(record);";
+                                        a.AfterRender.Handler = "this.getRootNode().expand();";
+                                    })
+                 .Root(Html.X().Node().NodeID("0").Text("تقسیمات کشوری").Cls("0").DataPath("0"))
+        //.Root(Html.X().Node().NodeID("1").IconFile("/Content/images/0.png").Cls("0").DataPath("0").Text("جمهوری اسلامی ایران"))
+                                                .Listeners(l =>
+                                                {
+                                                    l.BeforeLoad.Fn = "nodeLoadTreeStructure";
+                                                })
+                                , X.Label()
+                                .Cls("LblRed")
+                                .Text("مورد انتخاب شده: ")
+
+                                , X.Label()
+                                .Cls("LblStyle")
+                                .ItemID("lblTitle")
+                                )
+
+                )
+                )
+)
+<script type="text/javascript">
+    var countryid;
+    var countrySID;
+    var countryNType = -1;
+    var nodeLoadTreeStructure = function (store, operation, options) {
+        var node = operation.node;
+       @*node.data.id = '@ViewBag.NodeId';
+        node.data.text = '@ViewBag.RootNameTree';*@
+        Ext.net.DirectMethod.request({
+            url: '/NewVer/First/NodeLoadTreeStructure',
+            params: {
+                nod: node.getId()
+            },
+            success: function (result) {
+                node.set('loading', false);
+                node.set('loaded', true);
+                node.appendChild(result);
+                node.expand();
+            },
+
+            failure: function (errorMsg) {
+                Ext.Msg.alert('Failure', errorMsg);
+            }
+        });
+
+        return false;
+    };
+    function GetTreeStructureId(record) {
+        NodeId = record.getId();
+
+        /* var path = record.getPath("text");
+         var Text = path.split('/').splice(1).join("-->");
+
+         App.NewchangeMogheiat.queryById('lblTitle').setText(Text);*/
+        countryid = record.getId();
+        countrySID = record.data.cls;
+        countryNType = record.data.dataPath;
+        Ext.net.DirectMethod.request({
+            url: '/NewVer/First/CountryPosition',
+            params: {
+                id: record.getId()
+            },
+            success: function (data) {
+                if (countryNType < 5) {
+                    countryid = 0;
+                    countryNType = -1;
+                    countrySID = 0;
+                    App.NewchangeMogheiat.queryById('lblTitle').setText("شما مجاز به انتخاب این گزینه نمی باشید.");
+                    return;
+                }
+                else {
+                    App.NewchangeMogheiat.queryById('lblTitle').setText(data.Position);
+                }
+
+
+                Ext.net.Mask.hide();
+
+            }
+
+        });
+
+
+    };
+    function SavechangeMogheiat() {
+        if (countryNType < 5) {
+            alert('شما مجاز به انتخاب موقعیت انتخاب شده نیستید.');
+            return;
+        }
+        else {
+            Ext.net.Mask.show({ msg: 'در حال انجام عملیات...' });
+            Ext.net.DirectMethod.request({
+                url: '/NewVer/First/SelectLocation',
+                params: {
+                    id: NodeId
+                },
+                success: function (data) {
+                    Ext.net.Mask.hide();
+                    App.NewchangeMogheiat.destroy();
+                    if (data.Er == 1) {
+                        Ext.MessageBox.show({
+                            title: data.MsgTitle,
+                            msg: data.Msg,
+                            icon: Ext.MessageBox.ERROR,
+                            buttons: Ext.MessageBox.OK
+                        });
+                    }
+                    else {
+                        Ext.MessageBox.show({
+                            title: "عملیات موفق",
+                            msg: "تغییر موقعیت با موفقیت انجام شد.",
+                            icon: Ext.MessageBox.INFO,
+                            buttons: Ext.MessageBox.OK
+                        });
+                        App.lblLocation.setText(data.Location);
+                    }
+                }
+            });
+        }
+    }
+</script>

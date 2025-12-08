@@ -1,0 +1,66 @@
+﻿<div class="modal" id="change">@using Kendo.Mvc.UI;
+<link href="@Url.Content("~/Content/web/kendo.common.min.css")" rel="stylesheet" type="text/css" />
+<link href="@Url.Content("~/Content/web/kendo.default.min.css")" rel="stylesheet" type="text/css" />
+<link href="@Url.Content("~/Content/web/kendo.rtl.min.css")" rel="stylesheet" type="text/css" />
+<script src="@Url.Content("~/Scripts/console.min.js")" type="text/javascript"></script>
+<script src="@Url.Content("~/Scripts/kendo.web.min.js")" type="text/javascript"></script>
+<script src="@Url.Content("~/Scripts/prettify.min.js")" type="text/javascript"></script>
+<script src="@Url.Content("~/Scripts/kendo.aspnetmvc.min.js")" type="text/javascript"></script>
+<script src="@Url.Content("~/Scripts/kendo.splitter.min.js")" type="text/javascript"></script>
+<link href="@Url.Content("~/Content/style.css")" rel="stylesheet" type="text/css" />
+<script src="@Url.Content("~/Content/js/jQueryRotate.2.2.js")" type="text/javascript"></script>
+<script src="@Url.Content("~/Scripts/cultures/kendo.fa-IR.js")" type="text/javascript"></script>
+<script src="@Url.Content("~/Content/Base.js")" type="text/javascript"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        windows("#win", "/Home/ChLocation");
+        $('#Exit').button();
+        $('#Exit').click(function () {
+            window.location.href = '/Account/LogOff';
+        });
+        $('#HomePage').button();
+        $('#HomePage').click(function () {
+            window.location.href = '/Home/Home';
+        });
+    });
+</script>
+@{
+        Avarez.Models.cartaxEntities p = new Avarez.Models.cartaxEntities();
+        var user = p.sp_UserSelect("fldUserName", User.Identity.Name, 1, "", 1, "").FirstOrDefault();
+        var state = p.sp_StateSelect("fldId", Session["UserState"].ToString(), 1, Convert.ToInt32(Session["UserId"]), Session["UserPass"].ToString()).FirstOrDefault();
+        var Mnu = p.sp_MunicipalitySelect("fldId", Session["UserMnu"].ToString(), 1, Convert.ToInt32(Session["UserId"]), Session["UserPass"].ToString()).FirstOrDefault();
+        var Location = state.fldName + " --> " + Mnu.fldName + Session["Location"];
+    }
+@(Html.Kendo().Splitter()
+      .Name("vertical")
+      .Orientation(SplitterOrientation.Vertical)
+          .HtmlAttributes(new { style = "height: 500px;" })
+      .Panes(verticalPanes =>
+      {
+          verticalPanes.Add()
+          .Size("30px")
+          .Collapsible(false)
+          .Resizable(false)
+          .Content(@<div dir="rtl" style="text-align: center;">
+              <span style="font-weight: bold; color: #127AA3; font-size: 11px;">موقعیت فعلی شما: @Location
+              </span>              
+              <button id="Exit" style="font-size: 11px; float: left; text-align: left; background-image: url('/Content/images/1377957633_exit.png');
+                  background-repeat: no-repeat; background-position: right; width: 70px; background-size: 14px;
+                  background-position-x: 50px;">
+                  خروج</button>
+                  <button id="HomePage" style="float: right; font-size: 11px; text-align: left; background-image: url('/Content/images/1377958371_Home.png');
+                    background-repeat: no-repeat; background-position: right; width: 100px; background-size: 16px;
+                    background-position-x: 80px;">
+                    صفحه اصلی</button>
+          </div>
+            );
+          verticalPanes.Add()
+          .Size("500px")
+          .Collapsible(false)
+          .Resizable(false)
+          .Content(@<div id="win">              
+          </div>
+            );
+      }
+))
+</div>

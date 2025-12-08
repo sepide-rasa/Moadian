@@ -1,0 +1,179 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+
+    <title>سامانه مودیان</title>
+
+    <link href="~/Content/Site1.css" rel="stylesheet" />
+    <script src="~/Scripts/jquery-1.11.3.min.js"></script>
+    <a href="~/Scripts/pdf/web/locale/locale.properties"></a>
+    <style type="text/css">
+        input[type=text]:focus {
+            background: Yellow repeat-x 0 0;
+        }
+
+        textarea:focus {
+            background: Yellow repeat-x 0 0;
+        }
+
+        td {
+            text-align: left;
+        }
+    </style>
+    @using Ext.Net.MVC;
+    @Html.X().ResourceManager().RTL(true).Locale("fa-ir").Theme((Ext.Net.Theme.Default))
+
+</head>
+<body dir='rtl'>
+    @{
+    //TrainCautionRol.Models.TrainCoutionRolDBEntities hh = new TrainCautionRol.Models.TrainCoutionRolDBEntities();
+    //var ThemeId = 1;
+    //if (Session["UserId"] != null)
+    //{
+    //    var user = hh.sp_tblUserSelect("fldId", Session["UserId"].ToString(), 1, "").FirstOrDefault();
+    //    ThemeId = user.fldThemeId;
+    //}
+    }
+
+    @(Html.X().KeyNav()
+        .ID("NewNav")
+        .Target("={Ext.getBody()}")
+        .Enter(a => a.Handler = "EnterNext();")
+    )
+
+    <script>
+
+        Ext.define("Ext.locale.fa.toolbar.Paging", {
+            override: "Ext.PagingToolbar",
+            beforePageText: "صفحه",
+            afterPageText: "از {0}",
+            firstText: "صفحه اول",
+            prevText: "صفحه قبل",
+            nextText: "صفحه بعد",
+            lastText: "صفحه آخر",
+            refreshText: "بازخوانی",
+            displayMsg: "نمایش {0} - {1} از {2}",
+            emptyMsg: 'داده ای برای نمایش وجود ندارد'
+        });
+
+        Ext.define("Ext.locale.fa.picker.Month", {
+            override: "Ext.picker.Month",
+            okText: "تایید",
+            cancelText: "انصراف"
+        })
+
+        function EnterNext() {
+        }
+
+        function Save() { }
+
+        var isWinOpen = false;
+        function ReplaceArabic() {
+            $("input:text").keyup(function () {
+                var str = $(this).val();
+                str = str.replace('ك', 'ک');
+                str = str.replace('ي', 'ی');
+                $(this).val(str);
+            });
+            $("textarea").keyup(function () {
+                var str = $(this).val();
+                str = str.replace('ك', 'ک');
+                str = str.replace('ي', 'ی');
+                $(this).val(str);
+            });
+        }
+        function changeLagToEn(str) {
+            var tt = str;
+            tt = tt.replace('ش', 'a');
+            tt = tt.replace('ذ', 'b');
+            tt = tt.replace('ز', 'c');
+            tt = tt.replace('ی', 'd');
+            tt = tt.replace('ث', 'e');
+            tt = tt.replace('ب', 'f');
+            tt = tt.replace('ل', 'g');
+            tt = tt.replace('ا', 'h');
+            tt = tt.replace('ه', 'i');
+            tt = tt.replace('ت', 'j');
+            tt = tt.replace('ن', 'k');
+            tt = tt.replace('م', 'l');
+            tt = tt.replace('ئ', 'm');
+            tt = tt.replace('د', 'n');
+            tt = tt.replace('خ', 'o');
+            tt = tt.replace('ح', 'p');
+            tt = tt.replace('ض', 'q');
+            tt = tt.replace('ف', 't');
+            tt = tt.replace('ق', 'r');
+            tt = tt.replace('س', 's');
+            tt = tt.replace('ع', 'u');
+            tt = tt.replace('ر', 'v');
+            tt = tt.replace('ص', 'w');
+            tt = tt.replace('ط', 'x');
+            tt = tt.replace('غ', 'y');
+            tt = tt.replace('ظ', 'z');
+            tt = tt.replace('ک', ';');
+            tt = tt.replace('ج', '[');
+            tt = tt.replace('چ', ']');
+            tt = tt.replace('ژ', 'C');
+            return tt;
+        }
+        function FaLangAlert(str) {
+            var IsFa = false;
+            var FaId = 0;
+            for (var i = 0; i < str.length ; i++) {
+                var c = str.codePointAt(i);
+                if (c >= 0x0600 && c <= 0x06FF || c == 0xFB8A || c == 0x067E || c == 0x0686 || c == 0x06AF) {
+                    IsFa = true;
+                    FaId = i;
+                }
+            }
+            if (IsFa) {
+                alert("زبان سیستم را به En تغییر دهید.");
+                return str.replace(str[FaId], "");
+            }
+            else
+                return str;
+        }
+        function changeLagToFa(str) {
+            var tt = str;
+            tt = tt.replace('a', 'ش');
+            tt = tt.replace('b', 'ذ');
+            tt = tt.replace('c', 'ز');
+            tt = tt.replace('d', 'ی');
+            tt = tt.replace('e', 'ث');
+            tt = tt.replace('f', 'ب');
+            tt = tt.replace('g', 'ل');
+            tt = tt.replace('h', 'ا');
+            tt = tt.replace('H', 'آ');
+            tt = tt.replace('i', 'ه');
+            tt = tt.replace('j', 'ت');
+            tt = tt.replace('k', 'ن');
+            tt = tt.replace('l', 'م');
+            tt = tt.replace('m', 'ئ');
+            tt = tt.replace('n', 'د');
+            tt = tt.replace('o', 'خ');
+            tt = tt.replace('p', 'ح');
+            tt = tt.replace('q', 'ض');
+            tt = tt.replace('t', 'ف');
+            tt = tt.replace('r', 'ق');
+            tt = tt.replace('s', 'س');
+            tt = tt.replace('u', 'ع');
+            tt = tt.replace('v', 'ر');
+            tt = tt.replace('w', 'ص');
+            tt = tt.replace('x', 'ط');
+            tt = tt.replace('y', 'غ');
+            tt = tt.replace('z', 'ظ');
+            tt = tt.replace(';', 'ک');
+            tt = tt.replace("'", 'گ');
+            tt = tt.replace('[', 'ج');
+            tt = tt.replace(']', 'چ');
+            tt = tt.replace(',', 'و');
+            return tt;
+        }
+    </script>
+    @RenderBody()
+
+
+
+</body>
+</html>

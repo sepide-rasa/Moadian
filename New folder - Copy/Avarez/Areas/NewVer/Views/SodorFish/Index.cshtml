@@ -1,0 +1,792 @@
+﻿@model IEnumerable<Avarez.Models.prs_newCarFileCalc_Result>
+@using Ext.Net.MVC
+@using Hogaf.ExtNet.UX
+@using Ext.Net;
+@using Ext.Net.Utilities;
+@{
+    var X = Html.X();
+    Avarez.Models.cartaxEntities car = new Avarez.Models.cartaxEntities();
+    var picmnu = car.sp_SelectNameBankAndMunForBankInformation(Convert.ToInt32(Session["CountryCode"]), Convert.ToInt32(Session["CountryType"])).ToList();
+    var HaveBank=false;
+    if (picmnu.Count != 0) { 
+        HaveBank = true;
+    }
+}
+<script src="@Url.Content("~/Scripts/accounting.js")" type="text/javascript"></script>
+
+@(Html.X().Panel()
+    .Border(false)
+    .ID("SodoorFish")
+    .Title("صورتحساب")
+    .Listeners(l=>l.AfterRender.Handler="LoadFishForm()")
+    .AutoScroll(true)
+    .Closable(true)
+    .CloseAction(CloseAction.Destroy)
+    //.Height(620)
+    //.Width(1000)
+   .Layout(LayoutType.Fit)
+    //.ButtonAlign(Alignment.Center)
+    //.Buttons(
+    //    X.Button()
+    //        .Text("چاپ جزئیات")
+    //        .Icon(Ext.Net.Icon.PrinterStart)
+    //        .Listeners(l =>
+    //        {
+    //            l.Click.Handler = "PrintDetails();";
+    //        }),
+    //    X.Button()
+    //        .Text("پرداخت با Pos")
+    //        .Icon(Ext.Net.Icon.Money)
+    //        .ItemID("btnPos")
+    //        .Listeners(l =>
+    //        {
+    //            l.Click.Handler = "PayPos();";
+    //            l.Render.Handler = "showHideM();";
+    //        }),
+    //    X.Button()
+    //        .Text("ادامه")
+    //        .Icon(Ext.Net.Icon.BulletGo)
+    //        .Listeners(l =>
+    //        {
+    //            l.Click.Handler = "Next1();";
+    //        }),
+    //    X.Button()
+    //        .Text("فیش")
+    //        .Icon(Ext.Net.Icon.Page)
+    //        .Listeners(l =>
+    //        {
+    //            l.Click.Handler = "Fish1();";
+    //        }),
+    //    X.Button()
+    //        .Text("مفاصا")
+    //        .Icon(Ext.Net.Icon.Page)
+    //        .Listeners(l =>
+    //        {
+    //            l.Click.Handler = "Mafasa1();";
+    //        }),
+    //    X.Button()
+    //        .Text("رسید دفتر")
+    //        .Icon(Ext.Net.Icon.Page)
+    //        .Listeners(l =>
+    //        {
+    //            l.Click.Handler = "OfficeRecipt1();";
+    //        }),
+    //    X.Button()
+    //        .Text("خروج")
+    //        .Icon(Ext.Net.Icon.DoorOut)
+    //        .OnClientClick("App.SodoorFish.destroy();"))
+    .Items(
+    X.Panel()
+        .Border(false).AutoScroll(true)
+         .Layout(Ext.Net.LayoutType.VBox)
+        .LayoutConfig(new VBoxLayoutConfig { Align = VBoxAlign.Center })
+    .Items(
+        X.FieldSet()
+            .Title("")
+            .MarginSpec("20px 0 0 0")
+            //.PaddingSpec("10px 0 0 0")
+            .AutoScroll(true)
+            .Border(true)
+            //.Width(600)
+            .Height(65)
+            .ItemID("EditFieldset")
+            .Title("محاسبه عوارض")
+            .Defaults(new { Margin = 10 })
+            .Layout(LayoutType.HBox)
+           // .LayoutConfig(new TableLayoutConfig { Columns = 3 })
+            .Items(
+                X.Button()
+                    .Text("محاسبه مجدد")
+                    .Icon(Ext.Net.Icon.Calculator)
+                    .Listeners(l =>
+                    {
+                        l.Click.Handler = "Calculate();";
+                    }),
+                X.Label("مبلغ عوارض:"),
+                X.Label()
+                    .ItemID("AvarezMablagh")
+                    .Width(115)
+                    ),
+                         X.Container().Height(80).Hidden(!HaveBank).Content(@<center><div align="center" id="fi-button-Dl4" style="text-align:center;">
+    <br />
+                                <table style="width: 150px;">
+                                    <tr style="align-content:center;text-align:center;">
+                                        @for (var i = 0; i < picmnu.Count; i++)
+                                        {
+                                            <td style="text-align: center; vertical-align: middle; "><img src="@Url.Content("~/Bank_New/Image/"+picmnu[i].BankId)" title='@picmnu[i].fldBankName' style="height:40px;width:40px;" /></td>
+                                        }
+                                    </tr>
+                                    <tr style="align-content:center">
+                                        @for (var i = 0; i < picmnu.Count; i++)
+                                        {
+                                            <td style="text-align: center; vertical-align: middle; ">
+                                                @*@Html.RadioButton("Bank", picmnu[i].BankId)*@
+                                                <input id="Bank" name="Bank" type="radio" value='@picmnu[i].BankId' style="height:20px;">
+                                            </td>
+                                        }
+                                    </tr>
+                                </table>
+                        </div></center>),
+        X.FieldSet()
+            .Border(false)
+                .PaddingSpec("20px 0 0 0")
+            .Defaults(new { Margin = 5 })
+        .Items(
+            X.Button()
+                .Text("چاپ جزئیات")
+                .Icon(Ext.Net.Icon.PrinterStart)
+                .Listeners(l =>
+                {
+                    l.Click.Handler = "PrintDetails();";
+                }),
+            X.Button()
+                .Text("پرداخت با Pos")
+                .Icon(Ext.Net.Icon.Money)
+                .ItemID("btnPos")
+                .Listeners(l =>
+                {
+                    l.Click.Handler = "PayPos();";
+                    l.Render.Handler = "showHideM();";
+                }),
+            X.Button()
+                .Text("ادامه")
+                .Icon(Ext.Net.Icon.ArrowLeft)
+                .Hidden(!HaveBank)
+                .Listeners(l =>
+                {
+                    l.Click.Handler = "Next1();";
+                }),
+            X.Button()
+                .Text("فیش")
+                    .Hidden(!Avarez.Controllers.Users.Permossions.haveAccess(Convert.ToInt32(Session["UserId"]), 248))
+                .Icon(Ext.Net.Icon.Page)
+                .Listeners(l =>
+                {
+                    l.Click.Handler = "Fish1();";
+                }),
+            X.Button()
+                .Text("مفاصا")
+                    .Hidden(!Avarez.Controllers.Users.Permossions.haveAccess(Convert.ToInt32(Session["UserId"]), 249))
+                .Icon(Ext.Net.Icon.Page)
+                .Listeners(l =>
+                {
+                    l.Click.Handler = "Mafasa1();";
+                }),
+            X.Button()
+                .Text("رسید دفتر")
+                .Hidden(!Avarez.Controllers.Users.Permossions.haveAccess(Convert.ToInt32(Session["UserId"]), 387))
+                .Icon(Ext.Net.Icon.Page)
+                .Listeners(l =>
+                {
+                    l.Click.Handler = "OfficeRecipt1();";
+                }),
+            X.Button()
+                .Text("راهنما")
+                .Icon(Ext.Net.Icon.Help)
+                .Listeners(l =>
+                {
+                    l.Click.Handler = "HelpSodorFish();";
+                }),
+            X.Button()
+                .Text("خروج")
+                .Icon(Ext.Net.Icon.DoorOut)
+                .OnClientClick("App.SodoorFish.destroy();")
+        )
+        ,
+        X.Panel()
+            .Border(false)
+            .Layout(LayoutType.Fit).AutoScroll(true)
+            .Height(430)
+            .PaddingSpec("0px 0 0 0")
+            .Width(1200)
+            //.Listeners(l => l.AfterRender.Handler = "setSizeGrid()")
+            .ID("pnlGridFish")
+            .Items(
+                X.GridPanel()
+                    .ItemID("GridFish")
+                    .BottomBar(X.PagingToolbar().HideRefresh(true))
+                    .Frame(true)
+                    .AutoScroll(true)
+                    .Store(
+                        X.StoreForModel()
+                            //.Parameters(new { CarId = @ViewBag.CarId })
+                            //.Proxy(
+                            //    Html.X().AjaxProxy()
+                            //        .Url(Url.Action("Read"))
+                            //        .Reader(Html.X().JsonReader().Root("data"))
+                            //        )
+                            //.Listeners(l => l.DataChanged.Handler = "App.SabtVarizi.queryById('GridVarizi').selModel.refresh();")
+                            .PageSize(20)
+                            .RemoteFilter(true)
+                            .RemotePaging(true)
+                    )
+                    .View(
+                        Html.X().GridView().LoadingText("در حال بارگذاری...")
+                    )
+                 //   .Plugins(X.FilterHeader().Remote(false))
+                    .SelectionModel(
+                        Html.X().RowSelectionModel()
+                            .Mode(SelectionMode.Single))
+                    .ColumnModel(
+                        Html.X().RowNumbererColumn(),
+                        Html.X().Column().DataIndex(Model, m => m.fldYear).Text("سال").Flex(2),
+                        Html.X().Column().DataIndex(Model, m => m.fldPrice).Text("عوارض").Renderer("seperate").Flex(4),
+                        Html.X().Column().DataIndex(Model, m => m.fldMablaghMoaser).Text("مبلغ موثر").Flex(4).Renderer("seperate"),
+                        Html.X().Column().DataIndex(Model, m => m.fldValueAdded).Text("تبصره ب ماده43").Flex(4).Renderer("seperate"),
+                        Html.X().Column().DataIndex(Model, m => m.fldFinalPrice).Text("مبلغ نهایی").Flex(4).Renderer("seperate"),
+                        Html.X().Column().DataIndex(Model, m => m.fldNoMashmol).Text("غیر مشمول").Flex(4).Renderer("seperate"),
+                        Html.X().Column().DataIndex(Model, m => m.fldMashmol).Text("مشمول جریمه").Flex(4).Renderer("seperate"),
+                        Html.X().Column().DataIndex(Model, m => m.fldMablaghJarime).Text("جریمه").Flex(4).Renderer("seperate"),
+                        Html.X().Column().DataIndex(Model, m => m.fldTedadJarime).Text("تعداد ماه/روز").Flex(3),
+                        Html.X().Column().DataIndex(Model, m => m.fldDiscount).Text("تخفیف").Flex(4).Renderer("seperate"),
+                        Html.X().Column().DataIndex(Model, m => m.fldDept).Text("جمع کل").Flex(6).Renderer("seperate")
+                                )
+                        )
+            )
+)
+)
+
+<script type="text/javascript">
+    var PosIPId = '@ViewBag.PosIPId';
+    var Mablagh = 0;
+
+    var fldFine;
+    var fldValueAddPrice;
+    var fldPrice;
+    var Years;
+    var Bed;
+    var fldOtherPrice;
+    var fldMainDiscount;
+    var fldFineDiscount;
+    var fldValueAddDiscount;
+    var fldOtherDiscount;
+
+    function showHideM() {
+        if ('@ViewBag.PosIPId' != 0) {
+            App.SodoorFish.queryById('btnPos').show();
+        }
+        else {
+            App.SodoorFish.queryById('btnPos').hide();
+        }
+    }
+    var seperate = function (value, metadata, record, rowIndex, colIndex, store) {
+        return value.toLocaleString();
+    };
+
+    function setSizeGrid() {
+        App.pnlGridVarizi.setSize(App.SabtVarizi.getWidth() - 10, App.SabtVarizi.getHeight() - 310);
+    }
+    function LoadFishForm() {
+        /*Ext.net.Mask.show({ msg: 'در حال بارگذاری...' });*/
+        App.SodoorFish.body.mask("در حال بارگذاری...");
+        Ext.net.DirectMethod.request({
+            url: '/NewVer/SodorFish/calc',
+            params: {
+                carid: '@ViewBag.CarId'
+            },
+            success: function (data) {
+                
+                if (data.State == 2) {
+                    Ext.net.DirectMethod.request({
+                        url: '/NewVer/SodorFish/SendToSupporter',
+                        params: {
+                            msg: data.msg,
+                            Year: data.Year,
+                            CarClassId: 0,
+                            carid: '@ViewBag.CarId'
+                        },
+                        success: function (data) {
+
+                            /*   Ext.MessageBox.show({
+                                   title: "هشدار",
+                                   msg: data.msg,
+                                   icon: Ext.MessageBox.INFO,
+                                   buttons: Ext.MessageBox.OK*/
+                        }
+                    });
+                    Years = data.Year;
+                }
+                else {
+                    App.SodoorFish.queryById('GridFish').getStore().loadData(data.bedehi);
+                    App.SodoorFish.queryById('AvarezMablagh').setText(accounting.formatNumber(data.mablagh).toString() + ' ریال');
+                    Mablagh = data.mablagh;
+                    barcode = data.barcode;
+
+                    fldFine = data.fldFine;
+                    fldValueAddPrice = data.fldValueAddPrice;
+                    fldPrice = data.fldPrice;
+                    Years = data.Years;
+                    Bed = data.Bed;
+                    fldOtherPrice = data.fldOtherPrice;
+                    fldMainDiscount = data.fldMainDiscount;
+                    fldFineDiscount = data.fldFineDiscount;
+                    fldValueAddDiscount = data.fldValueAddDiscount;
+                    fldOtherDiscount = data.fldOtherDiscount;
+
+                    if (data.msg != '') {
+                        Ext.net.DirectMethod.request({
+                            url: '/NewVer/SodorFish/SendToSupporter',
+                            params: {
+                                msg: data.msg,
+                                Year: data.Year,
+                                CarClassId: 0,
+                                carid: '@ViewBag.CarId'
+                            },
+                            success: function (data) {
+                              /*  Ext.MessageBox.show({
+                                    title: "هشدار",
+                                    msg: data.msg,
+                                    icon: Ext.MessageBox.INFO,
+                                    buttons: Ext.MessageBox.OK
+                                });*/
+                            }
+                        });
+                    }
+                    Ext.net.DirectMethod.request({
+                        url: '/NewVer/SodorFish/CheckExistFish',
+                        params: {
+                            carid: '@ViewBag.CarId',
+                            showmoney: Mablagh
+                        },
+                        success: function (result) {
+                            if (result.state != 0)
+                                Ext.MessageBox.show({
+                                    title: "هشدار",
+                                    msg: 'برای پرونده انتخابی فیش صادر و پرداخت نگردیده است.',
+                                    icon: Ext.MessageBox.WARNING,
+                                    buttons: Ext.MessageBox.OK
+                                });
+                            App.SodoorFish.body.mask().hide();
+                        }
+                    });
+                }
+            }
+        });
+    }
+
+    function Mafasa1() {
+        Ext.net.Mask.show({ msg: 'در حال بارگذاری...' });
+        Ext.net.DirectMethod.request({
+            url: '/NewVer/SodorFish/GetPicStatus',
+            params: {
+                id: '@ViewBag.CarId'
+            },
+            success: function (result) {
+                Ext.net.Mask.hide();
+                if (result.status == false) {
+                    var str = "";
+                    if (result.carfile == 1)
+                        str += " پرونده خودرو(برگ سبز، کارت خودرو، سند کارخانه) ";
+                    if (result.carext == 1)
+                        str += " انتقال سوابق ";
+                    if (result.coll == 1)
+                        str += " واریزی علی الحساب ";
+                    Ext.MessageBox.show({
+                        title: "خطا",
+                        msg: "تصاویر مربوط به " + str + " بارگذاری نشده است",
+                        icon: Ext.MessageBox.ERROR,
+                        buttons: Ext.MessageBox.OK
+                    });
+                    /*alert("تصاویر مربوط به " + str + " بارگذاری نشده است");*/
+                }
+                else {
+                    if (shasi_motor_vin != "") {
+                        Ext.MessageBox.show({
+                            title: "خطا",
+                            msg: shasi_motor_vin,
+                            icon: Ext.MessageBox.ERROR,
+                            buttons: Ext.MessageBox.OK
+                        });
+                    }
+                    else {
+                        if (Mablagh <= 10000) {
+                            Ext.net.Mask.show({ msg: 'در حال بارگذاری...' });
+                            Ext.net.DirectMethod.request({
+                                url: '/NewVer/SodorFish/ShowMafasa',
+                                params: {
+                                    containerId: "SearchParvande",
+                                    CarId: '@ViewBag.CarId',
+                                    CarFileId: '@ViewBag.CarFileId'
+                                },
+                                success: function (data) {
+                                    Ext.net.Mask.hide();
+                                }
+                            });
+                        }
+                        else {
+                            Ext.MessageBox.show({
+                                title: "خطا",
+                                msg: 'خودرو انتخاب شده بدهکار است و امکان صدور مفاصا وجود ندارد.',
+                                icon: Ext.MessageBox.ERROR,
+                                buttons: Ext.MessageBox.OK
+                            });
+                        }
+
+                    }
+                }
+            }
+        });
+
+
+    }
+    function OfficeRecipt1() {
+        Ext.net.Mask.show({ msg: 'در حال بارگذاری...' });
+        Ext.net.DirectMethod.request({
+            url: '/NewVer/SodorFish/GetPicStatus',
+            params: {
+                id: '@ViewBag.CarId'
+            },
+            success: function (result) {
+                Ext.net.Mask.hide();
+                if (result.status == false) {
+                    var str = "";
+                    if (result.carfile == 1)
+                        str += " پرونده خودرو(برگ سبز، کارت خودرو، سند کارخانه) ";
+                    if (result.carext == 1)
+                        str += " انتقال سوابق ";
+                    if (result.coll == 1)
+                        str += " واریزی علی الحساب ";
+                    Ext.MessageBox.show({
+                        title: "خطا",
+                        msg: "تصاویر مربوط به " + str + " بارگذاری نشده است",
+                        icon: Ext.MessageBox.ERROR,
+                        buttons: Ext.MessageBox.OK
+                    });
+                   /* alert("تصاویر مربوط به " + str + " بارگذاری نشده است");*/
+                }
+                else {
+                    if (shasi_motor_vin != "") {
+                        Ext.MessageBox.show({
+                            title: "خطا",
+                            msg: shasi_motor_vin,
+                            icon: Ext.MessageBox.ERROR,
+                            buttons: Ext.MessageBox.OK
+                        });
+                    }
+                    else {
+                        Ext.net.DirectMethod.request({
+                            url: '/NewVer/SodorFish/PrintResidDaftar',
+                            params: {
+                                carid: '@ViewBag.CarId'
+                            },
+                            success: function () {
+                            }
+                        });
+
+                    }
+                }
+            }
+        });
+    }
+
+    function PrintDetails() {
+        Ext.net.Mask.show({ msg: 'در حال بارگذاری...' });
+        Ext.net.DirectMethod.request({
+            url: '/NewVer/SodorFish/PrintJoziyatAvarez',
+            params: {
+                CarId: '@ViewBag.CarId'
+            },
+            success: function () {
+                Ext.net.Mask.hide();
+            }
+        });
+    }
+    function Fish1() {
+        if (App.SodoorFish.queryById("AvarezMablagh").text == "" || parseInt(App.SodoorFish.queryById("AvarezMablagh").text) == 0) {
+            Ext.MessageBox.show({
+                title: "خطا",
+                msg: "مبلغ عوارض 0 ریال است.",
+                icon: Ext.MessageBox.ERROR,
+                buttons: Ext.MessageBox.OK
+            });
+        }
+        else {
+            Ext.net.Mask.show({ msg: 'در حال بارگذاری...' });
+            Ext.net.DirectMethod.request({
+                url: '/NewVer/SodorFish/GetPicStatus',
+                params: {
+                    id: '@ViewBag.CarId'
+                },
+                success: function (result1) {
+                    Ext.net.Mask.hide();
+                    if (result1.status == false) {
+                        var str = "";
+                        if (result1.carfile == 1)
+                            str += " پرونده خودرو(برگ سبز، کارت خودرو، سند کارخانه) ";
+                        if (result1.carext == 1)
+                            str += " انتقال سوابق ";
+                        if (result1.coll == 1)
+                            str += " واریزی علی الحساب ";
+                        Ext.MessageBox.show({
+                            title: "خطا",
+                            msg: "تصاویر مربوط به " + str + " بارگذاری نشده است.",
+                            icon: Ext.MessageBox.ERROR,
+                            buttons: Ext.MessageBox.OK
+                        });
+                        /*alert("تصاویر مربوط به " + str + " بارگذاری نشده است");*/
+                    }
+                    else {
+                        Ext.net.DirectMethod.request({
+                            url: '/NewVer/SodorFish/CheckExistFish',
+                            params: {
+                                carid: '@ViewBag.CarId',
+                                showmoney: Mablagh
+                            },
+                            success: function (result) {
+                                if (result.state == 0) {
+                                    Ext.net.Mask.show({ msg: 'در حال بارگذاری...' });
+                                    Ext.net.DirectMethod.request({
+                                        url: '/NewVer/SodorFish/FishReport',
+                                        params: {
+                                            carid: '@ViewBag.CarId',
+                                            mablagh: Mablagh,
+                                            fldFine: fldFine,
+                                            fldValueAddPrice: fldValueAddPrice,
+                                            fldPrice: fldPrice,
+                                            Years: Years,
+                                            Bed: Bed,
+                                            fldOtherPrice: fldOtherPrice,
+                                            fldMainDiscount: fldMainDiscount,
+                                            fldFineDiscount: fldFineDiscount,
+                                            fldValueAddDiscount: fldValueAddDiscount,
+                                            fldOtherDiscount: fldOtherDiscount
+                                        },
+                                        success: function () {
+                                            Ext.net.Mask.hide();
+                                        }
+                                    });
+                                }
+                                else {
+                                    Ext.MessageBox.show({
+                                        title: "هشدار",
+                                        msg: "آیا مایل به چاپ فیش المثنی هستید؟",
+                                        icon: Ext.MessageBox.WARNING,
+                                        buttons: Ext.MessageBox.YESNO,
+                                        fn: function (btn) {
+                                            if (btn == 'yes') {
+                                                Ext.net.Mask.show({ msg: 'در حال بارگذاری...' });
+                                                Ext.net.DirectMethod.request({
+                                                    url: '/NewVer/SodorFish/_FishReport',
+                                                    params: {
+                                                        PeacockeryId: result.PeacockeryId,
+                                                        mablagh: Mablagh,
+                                                        fldFine: fldFine,
+                                                        fldValueAddPrice: fldValueAddPrice,
+                                                        fldPrice: fldPrice,
+                                                        Years: Years,
+                                                        Bed: Bed,
+                                                        fldOtherPrice: fldOtherPrice,
+                                                        fldMainDiscount: fldMainDiscount,
+                                                        fldFineDiscount: fldFineDiscount,
+                                                        fldValueAddDiscount: fldValueAddDiscount,
+                                                        fldOtherDiscount: fldOtherDiscount
+                                                    },
+                                                    success: function () {
+                                                        Ext.net.Mask.hide();
+                                                    }
+                                                });
+                                            } else {
+                                                Ext.net.Mask.show({ msg: 'در حال بارگذاری...' });
+                                                Ext.net.DirectMethod.request({
+                                                    url: '/NewVer/SodorFish/FishReport',
+                                                    params: {
+                                                        carid: '@ViewBag.CarId',
+                                                        mablagh: Mablagh,
+                                                        fldFine: fldFine,
+                                                        fldValueAddPrice: fldValueAddPrice,
+                                                        fldPrice: fldPrice,
+                                                        Years: Years,
+                                                        Bed: Bed,
+                                                        fldOtherPrice: fldOtherPrice,
+                                                        fldMainDiscount: fldMainDiscount,
+                                                        fldFineDiscount: fldFineDiscount,
+                                                        fldValueAddDiscount: fldValueAddDiscount,
+                                                        fldOtherDiscount: fldOtherDiscount
+                                                    },
+                                                    success: function () {
+                                                        Ext.net.Mask.hide();
+                                                    }
+                                                });
+                                            }
+                                        }
+                                    });
+                                }
+                            }
+                        });
+                    }
+                }
+            });
+        }
+    }
+    function Next1() {
+        Ext.net.Mask.show({ msg: 'در حال بارگذاری...' });
+        Ext.net.DirectMethod.request({
+            url: '/NewVer/SodorFish/GetPicStatus',
+            params: {
+                id: '@ViewBag.CarId'
+            },
+            success: function (result) {
+                Ext.net.Mask.hide();
+                if (result.status == false) {
+                    var str = "";
+                    if (result.carfile == 1)
+                        str += " پرونده خودرو(برگ سبز، کارت خودرو، سند کارخانه) ";
+                    if (result.carext == 1)
+                        str += " انتقال سوابق ";
+                    if (result.coll == 1)
+                        str += " واریزی علی الحساب ";
+                    Ext.MessageBox.show({
+                        title: "خطا",
+                        msg: "تصاویر مربوط به " + str + " بارگذاری نشده است",
+                        icon: Ext.MessageBox.ERROR,
+                        buttons: Ext.MessageBox.OK
+                    });
+                    /*alert("تصاویر مربوط به " + str + " بارگذاری نشده است");*/
+                }
+                else {
+                    if (shasi_motor_vin != "") {
+                        Ext.MessageBox.show({
+                            title: "خطا",
+                            msg: shasi_motor_vin,
+                            icon: Ext.MessageBox.ERROR,
+                            buttons: Ext.MessageBox.OK
+                        });
+                    }
+                    else {
+                        var bankid=0;
+                        var h = document.getElementsByName('Bank');
+                        for (var i = 0; i < h.length; i++) {
+                            if (h[i].checked == true)
+                                bankid = h[i].value;
+                        }
+                        if (Mablagh >= 1000) {
+                            if (bankid == 0) {
+                                Ext.MessageBox.show({
+                                    title: "خطا",
+                                    msg: "ابتدا بانک مورد نظر را انتخاب کنید.",
+                                    icon: Ext.MessageBox.ERROR,
+                                    buttons: Ext.MessageBox.OK
+                                });
+                            }
+                            else {
+                                Ext.net.Mask.show({ msg: 'در حال بارگذاری...' });
+                                Ext.net.DirectMethod.request({
+                                    url: '/NewVer/SodorFish/GoToOnlinePay',
+                                    params: {
+                                        Amount: Mablagh,
+                                        CarId: '@ViewBag.CarId',
+                                        BankId: bankid,
+                                        fldFine: fldFine,
+                                        fldValueAddPrice: fldValueAddPrice,
+                                        fldPrice: fldPrice,
+                                        Years: Years,
+                                        Bed: Bed,
+                                        fldOtherPrice: fldOtherPrice,
+                                        fldMainDiscount: fldMainDiscount,
+                                        fldFineDiscount: fldFineDiscount,
+                                        fldValueAddDiscount: fldValueAddDiscount,
+                                        fldOtherDiscount: fldOtherDiscount
+                                    },
+                                    success: function (data1) {
+                                        Ext.net.Mask.hide();
+                                        Ext.net.DirectMethod.request({
+                                            url: data1
+                                        });
+                                    }
+                                });
+                            }
+                        }
+                        else
+                            Ext.MessageBox.show({
+                                title: "خطا",
+                                msg: "مبلغ پرداخت کمتر از میزان مجاز برای پرداخت اینترنتی است.",
+                                icon: Ext.MessageBox.ERROR,
+                                buttons: Ext.MessageBox.OK
+                            });
+                            /*alert('مبلغ پرداخت کمتر از میزان مجاز برای پرداخت اینترنتی است.');*/
+
+                    }
+                }
+            }
+        });
+    }
+    function EditCarView() {
+
+    }
+
+    function EditSavabegh() {
+
+    }
+
+    function EditPicture() {
+
+    }
+
+    function ChangeMalek() {
+
+    }
+
+    function Calculate() {
+        Ext.net.DirectMethod.request({
+            url: '/NewVer/SelectParvande/Fill',
+            params: {
+                CarId: '@ViewBag.CarId'
+            },
+            success: function (data1) {
+                shasi_motor_vin = "";
+                var shasi = ""; var motor = ""; var vin = "";
+                if (data1.shasi == "" || data1.motor == "" || data1.vin == "") {
+                    if (data1.shasi == "")
+                        shasi = " شماره شاسی،";
+                    if (data1.motor == "")
+                        motor = " شماره موتور،";
+                    if (data1.vin == "")
+                        vin = " VIN،";
+
+                    shasi_motor_vin = "ثبت " + shasi + motor + vin + " ضروری می باشد.";
+                }
+            }
+        });
+        
+        Ext.net.DirectMethod.request({
+            url: '/NewVer/SodorFish/GetPicStatus',
+            params: {
+                id: '@ViewBag.CarId'
+            },
+            success: function (result) {
+                Ext.net.Mask.hide();
+                if (result.status == false) {
+                    var str = "";
+                    if (result.carfile == 1)
+                        str += " پرونده خودرو(برگ سبز، کارت خودرو، سند کارخانه) ";
+                    if (result.carext == 1)
+                        str += " انتقال سوابق ";
+                    if (result.coll == 1)
+                        str += " واریزی علی الحساب ";
+                    Ext.MessageBox.show({
+                        title: "خطا",
+                        msg: "تصاویر مربوط به " + str + " بارگذاری نشده است",
+                        icon: Ext.MessageBox.ERROR,
+                        buttons: Ext.MessageBox.OK
+                    });
+                    /*alert("تصاویر مربوط به " + str + " بارگذاری نشده است");*/
+                }
+            }
+        });
+        LoadFishForm();
+    }
+
+    
+    function HelpSodorFish() {
+        Ext.net.Mask.show({ msg: 'در حال بارگذاری...' });
+        Ext.net.DirectMethod.request({
+            url: '/NewVer/SodorFish/HelpSodorFish',
+            params: {
+
+            },
+            success: function (data) {
+                Ext.net.Mask.hide();
+            }
+        });
+    }
+</script>

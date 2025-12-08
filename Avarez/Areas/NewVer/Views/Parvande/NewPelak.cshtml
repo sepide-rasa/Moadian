@@ -1,0 +1,649 @@
+﻿@using Ext.Net.MVC
+@using Hogaf.ExtNet.UX
+@using Ext.Net;
+@{
+    var X = Html.X();
+}
+
+
+<style>
+    .fontlbl {
+        font-size: 11px;
+    }
+</style>
+
+@(Html.X().Window()
+    .Modal(true)
+        //.Listeners(li => li.AfterRender.Handler = "LoadPelak();")
+    .Width(680)//.Height(300)
+    .Title("ثبت پلاک جدید")
+    .Resizable(false)
+    .ID("NewPelak")
+    .Closable(true)
+    .Listeners(l => l.AfterRender.Fn = "addKeyMapNewPelak")
+    .CloseAction(Ext.Net.CloseAction.Destroy)
+    .Layout(LayoutType.Fit)
+    .ButtonAlign(Ext.Net.Alignment.Center)
+    .Buttons(
+        X.Button()
+            .Text("ذخیره")
+            .Icon(Ext.Net.Icon.Disk)
+        //.ToolTip("کلید میانبر F8")
+             .Hidden(!Avarez.Controllers.Users.Permossions.haveAccess(Convert.ToInt32(Session["UserId"]), 230))
+            .Listeners(l =>
+            {
+                l.Click.Handler = "SavePelak();";
+            })
+            .ItemID("btnSavePerson"),
+        X.Button()
+            .Text("خروج")
+            .Icon(Ext.Net.Icon.BulletCross)
+            .ToolTip("کلید میانبر Esc")
+            .OnClientClick("App.NewPelak.destroy()"))
+    .Items(
+        X.FormPanel()
+            .Border(false)
+            .PaddingSpec("10px 0 10px 0")
+            .Layout(LayoutType.VBox)
+            .LayoutConfig(new VBoxLayoutConfig { Align = VBoxAlign.Center })
+            .Items(
+                    X.FieldSet()
+                    .Border(true)
+                    .Title("مشخصات پلاک")
+                    .Height(145)
+                    .Layout(LayoutType.Table)
+                    .LayoutConfig(new Ext.Net.TableLayoutConfig { Columns = 2 })
+                    .Defaults(new { Margin = 2 })
+                    .Items(
+                            X.Hidden().ItemID("fldId").Value(0)
+                            ,
+                            X.ComboBox()
+                                .MsgTarget(Ext.Net.MessageTarget.Side)
+                                .Width(300)
+                            .FieldLabel("نوع پلاک")
+                            .ItemID("cboTypeP")
+                            .TypeAhead(true)
+                            .Editable(false)
+                            .AutoFocus(true)
+                            .QueryMode(DataLoadMode.Local)
+                            .BlankText("لطفا نوع پلاک را انتخاب کنید.")
+                            .ForceSelection(true)
+                            .TriggerAction(TriggerAction.All)
+                            .DisplayField("Name")
+                            .ValueField("ID")
+                            //.EmptyText("...")
+                            .Listeners(ls =>
+                                    ls.Change.Handler = " App.NewPelak.queryById('cboCityP').getStore().load();ChangeCboType();"
+                                )
+                             .Store(X.Store()
+                                 .Listeners(l => l.Load.Handler = "LoadPelak()")
+                                .Model(X.Model()
+                                .IDProperty("fldId")
+                                .Fields(
+                                            new ModelField("ID", ModelFieldType.String) { Mapping = "ID" },
+                                            new ModelField("Name", ModelFieldType.String) { Mapping = "Name" }
+                                        )
+                                            )
+                                .Proxy(X.AjaxProxy()
+                                                .Url(Url.Action("GetTypeP"))
+                                .Reader(X.JsonReader().Root("data"))
+                                        )
+                                        )
+                            .AllowBlank(false)
+                           ,
+                            X.ComboBox()
+                                .Width(300)
+                            .FieldLabel("شهر پلاک")
+                                .MsgTarget(Ext.Net.MessageTarget.Side)
+                            .ItemID("cboCityP")
+                            .TypeAhead(true)
+                            .Editable(false)
+                            .ForceSelection(true)
+                            .QueryMode(DataLoadMode.Local)
+                                .AllowBlank(false)
+                                .BlankText("لطفا شهر پلاک را انتخاب کنید.")
+                            .TriggerAction(TriggerAction.All)
+                            .DisplayField("Name")
+                            .ValueField("ID")
+                            //.EmptyText("...")
+                            .Store(X.Store()
+                            .AutoLoad(false)
+                            .Model(X.Model()
+                            .IDProperty("fldId")
+                            .Fields(
+                                        new ModelField("ID", ModelFieldType.String) { Mapping = "ID" },
+                                        new ModelField("Name", ModelFieldType.String) { Mapping = "Name" }
+                                    )
+                                        )
+                            .Proxy(X.AjaxProxy()
+                                    .Url(Url.Action("GetCityP"))
+                                .Reader(X.JsonReader().Root("data")))
+                                                        .Parameters(ps => ps.Add(new StoreParameter("cboTypeP", "App.NewPelak.queryById('cboTypeP').getDisplayValue()", ParameterMode.Raw)))
+                                            )
+                            ,
+                            X.ComboBox()
+                            .FieldLabel("سریال پلاک")
+                            .Width(300)
+                            .MsgTarget(Ext.Net.MessageTarget.Side)
+                            .ItemID("cboSerialP")
+                            .TypeAhead(true)
+                            .Editable(false)
+                            .ForceSelection(true)
+                            .QueryMode(DataLoadMode.Local)
+                            .BlankText("لطفا سریال پلاک را انتخاب کنید.")
+                            .TriggerAction(TriggerAction.All)
+                            .DisplayField("Name")
+                            .ValueField("ID")
+                            //.EmptyText("...")
+                            .Store(X.Store()
+                            .Model(X.Model()
+                            .IDProperty("fldId")
+                            .Fields(
+                                        new ModelField("ID", ModelFieldType.String) { Mapping = "ID" },
+                                        new ModelField("Name", ModelFieldType.String) { Mapping = "Name" }
+                                    )
+                                        )
+                            .Proxy(X.AjaxProxy()
+                                                .Url(Url.Action("GetSerialP"))
+                            .Reader(X.JsonReader().Root("data"))
+                                    )
+                                    )
+                            .AllowBlank(false)
+
+                            ,
+                            X.ComboBox()
+                                .FieldLabel("وضعیت پلاک")
+                                    .Width(300)
+                                .MsgTarget(Ext.Net.MessageTarget.Side)
+                                .ItemID("cboStatusP")
+                            .TypeAhead(true)
+                                .Editable(false)
+                            .QueryMode(DataLoadMode.Local)
+                                    .BlankText("لطفا وضعیت پلاک را انتخاب کنید.")
+                            .ForceSelection(true)
+                            .TriggerAction(TriggerAction.All)
+                            .DisplayField("Name")
+                            .ValueField("ID")
+                            //.EmptyText("...")
+                            .Store(X.Store()
+                            .Model(X.Model()
+                            .IDProperty("fldId")
+                            .Fields(
+                                        new ModelField("ID", ModelFieldType.String) { Mapping = "ID" },
+                                        new ModelField("Name", ModelFieldType.String) { Mapping = "Name" }
+                                    )
+                                        )
+                            .Proxy(X.AjaxProxy()
+                                        .Url(Url.Action("GetStatusP"))
+                            .Reader(X.JsonReader().Root("data"))
+                                    )
+                                    )
+                            .AllowBlank(false)
+                            ,
+                                X.FieldSet()//.ColSpan(2)
+                                            .Border(false)
+                                                .Layout(LayoutType.HBox)
+                                                .Defaults(new { Margin = 1 })
+                                                .ItemID("f")
+                            .Items(
+                                        X.Label().Text("شماره پلاک:").Margins("0px 0px 0px 29px"),//.MarginSpec("0px 0px 40px 0px"),
+                                X.TextField()
+                                //.FieldLabel()
+                                .ItemID("_3char")
+                                    .EmptyText("3 رقم")
+                                .Width(60)
+                             //   .MaxLength(3)
+                             
+                                .EnforceMaxLength(true)
+                                //.MsgTarget(Ext.Net.MessageTarget.Side)
+                                .AllowBlank(false)
+                                .BlankText("لطفا شماره پلاک را وارد کنید.")
+                                .Listeners(l => l.Change.Handler = "_3charChange();"),
+                                X.ComboBox()
+                                .Width(50)
+                                .LabelAlign(Ext.Net.LabelAlign.Top)
+                                .ItemID("cboCharP")
+                                .TypeAhead(true)
+                                    .Editable(false)
+                                .QueryMode(DataLoadMode.Local)
+                                .BlankText("لطفا کاراکتر پلاک را انتخاب کنید.")
+                                .ForceSelection(true)
+                                .TriggerAction(TriggerAction.All)
+                                .DisplayField("Name")
+                                .ValueField("ID")
+                                //.EmptyText("...")
+                                .Store(X.Store()
+                                .Model(X.Model()
+                                .IDProperty("fldId")
+                                .Fields(
+                                            new ModelField("ID", ModelFieldType.String) { Mapping = "ID" },
+                                            new ModelField("Name", ModelFieldType.String) { Mapping = "Name" }
+                                        )
+                                            )
+                                .Proxy(X.AjaxProxy()
+                                        .Url(Url.Action("GetCharP"))
+                                .Reader(X.JsonReader().Root("data"))
+                                        )
+                                        )
+                                .AllowBlank(false)
+                                ,
+                                X.TextField()
+                                .ItemID("_2char")
+                                .EmptyText("2 رقم")
+                                .Width(38)
+                                .MaxLength(2)
+                                .MinLength(2)
+                                .EnforceMaxLength(true)
+                                //.MsgTarget(Ext.Net.MessageTarget.Side)
+                                .AllowBlank(false)
+                                .BlankText("لطفا شماره پلاک را وارد کنید.")
+                                .Listeners(l=>l.Change.Handler="_2charChange();")
+                            )
+                            ,
+                            X.TextArea()
+                                .Width(300)
+                            .FieldLabel("توضیحات")
+                            .ItemID("txtDesc")
+                                        )
+
+                )
+                )
+)
+<script type="text/javascript">
+    var Malekid = '@ViewBag.Malekid';
+    var PlaqueNumberOld = "";
+    function ChangeCboType() {
+        var cboTypeP = App.NewPelak.queryById('cboTypeP');
+        var cboCharP = App.NewPelak.queryById('cboCharP');
+        var _2char = App.NewPelak.queryById('_2char');
+        var _3char = App.NewPelak.queryById('_3char');
+
+        if (cboTypeP.getDisplayValue() == 'ملی') {
+            _2char.show(true);
+            cboCharP.show(true);
+            _3char.minLength = "3";
+            _3char.emptyText = ['3رقم'];
+            _3char.applyEmptyText();
+            _3char.inputEl.set({ maxLength: 3});
+            _3char.setWidth(30);
+            cboCharP.enable(true);
+        }
+        else {
+            _2char.hide(true);
+            cboCharP.hide(true);
+            _3char.inputEl.set({ maxLength: 10 });
+            _3char.minLength = "";
+            _3char.emptyText = [''];
+            _3char.applyEmptyText();
+            _3char.setWidth(193);
+            cboCharP.disable(true);
+        }
+        _2char.setValue('');
+        _3char.setValue('');
+    }
+    function LoadPelak() {
+        
+        if ('@ViewBag.Id' != '0') {
+            App.NewPelak.body.mask("در حال بارگذاری...");
+            Ext.net.DirectMethod.request({
+                url: '/NewVer/Parvande/DetailsPelak',
+                params: {
+                    Id: '@ViewBag.Id'
+                },
+                success: function (data) {
+                    if (data.Err == 0) {
+                        var cboTypeP = App.NewPelak.queryById('cboTypeP');
+                        cboTypeP.setValue(data.fldPlaqueTypeID);
+                        var cboCharP = App.NewPelak.queryById('cboCharP');
+                        cboCharP.setValue(data.charId);
+                        var cboSerialP = App.NewPelak.queryById('cboSerialP');
+                        cboSerialP.setValue(data.fldPlaqueSerialID);
+                        var cboStatusP = App.NewPelak.queryById('cboStatusP');
+                        cboStatusP.setValue(data.fldStatusPlaqeID);
+                        var cboCityP = App.NewPelak.queryById('cboCityP');
+                        cboCityP.clearValue(); cboCityP.getStore().load();
+                        cboCityP.setValue(data.fldPlaqueCityID);
+                        var _3char = App.NewPelak.queryById('_3char');
+                        _3char.setValue(data.Three);
+                        var _2char = App.NewPelak.queryById('_2char');
+                        _2char.setValue(data.Two);
+                        var txtDesc = App.NewPelak.queryById('txtDesc');
+                        txtDesc.setValue(data.fldDesc);
+                        var Id = App.NewPelak.queryById('fldId');
+                        Id.setValue(data.fldId);
+                        Malekid = data.fldOwnerID;
+                        App.NewPelak.body.mask().hide();
+                        PlaqueNumberOld = data.fldPlaqueNumber;
+                    }
+                    else {
+                        Ext.MessageBox.show({
+                            title: data.MsgTitle,
+                            msg: data.Msg,
+                            icon: Ext.MessageBox.ERROR,
+                            buttons: Ext.MessageBox.OK
+                        });
+                    }
+                }
+            });
+        }
+        else {
+            Ext.net.DirectMethod.request({
+                url: '/NewVer/Parvande/DetailSubSetting',
+                success: function (data) {
+                    if (data.fldDefaultPelakChar != 0) {
+                        var cboCharP = App.NewPelak.queryById('cboCharP');
+                        cboCharP.setValue(String(data.fldDefaultPelakChar));
+                    }
+                    if (data.fldDefaultPelakSerial != 0) {
+                        var cboSerialP = App.NewPelak.queryById('cboSerialP');
+                        cboSerialP.setValue(String(data.fldDefaultPelakSerial));
+                    }
+                }
+            });
+
+            var cboTypeP = App.NewPelak.queryById('cboTypeP');
+            cboTypeP.setValue("2");
+            var cboStatusP = App.NewPelak.queryById('cboStatusP');
+            cboStatusP.setValue("1");
+            var cboCityP = App.NewPelak.queryById('cboCityP');
+            cboCityP.clearValue(); cboCityP.getStore().load();
+            cboCityP.setValue("2");
+        }
+    }
+    function SavePelak() {
+        var cboCharP = App.NewPelak.queryById('cboCharP');
+        var _3char = App.NewPelak.queryById('_3char');
+        var _2char = App.NewPelak.queryById('_2char');
+        var cboCityP = App.NewPelak.queryById('cboCityP');
+        var cboSerialP = App.NewPelak.queryById('cboSerialP');
+        var cboTypeP = App.NewPelak.queryById('cboTypeP');
+        var cboStatusP = App.NewPelak.queryById('cboStatusP');
+        var txtDesc = App.NewPelak.queryById('txtDesc');
+        var Id = App.NewPelak.queryById('fldId');
+        /*var PelaqId = App.NewPelak.queryById('fldId').getValue();*/
+        var er = false;
+
+        if (cboCharP.validate() == false) {
+            er = true;
+        }
+        if (_3char.validate() == false) {
+            er = true;
+        }
+        if (cboCityP.validate() == false) {
+            er = true;
+        }
+        if (cboSerialP.validate() == false) {
+            er = true;
+        }
+        if (cboTypeP.validate() == false) {
+            er = true;
+        }
+        if (cboStatusP.validate() == false) {
+            er = true;
+        }
+        var charr = '';
+        if (cboTypeP.getDisplayValue() == 'ملی') {
+            charr = cboCharP.getDisplayValue();
+            if (_2char.validate() == false) {
+                er = true;
+            }
+            /*if (_3char.getValue().length < 3) {
+                alert("کد باید شامل 3 رقم باشد");
+                er = true;
+                return;
+            }
+            if (_2char.getValue().length < 2) {
+                alert("کد باید شامل 2 رقم باشد");
+                er = true;
+                return;
+            }*/
+        }
+        if (er == true)
+            return;
+
+
+
+        var plaquenum;
+        plaquenum = _3char.getValue().toString() + charr + _2char.getValue().toString();
+
+            /*   Ext.net.Mask.show({ msg
+        /* Ext.net.Mask.show({ msg: 'در حال بارگذاری...' });*/
+            if (cboTypeP.getDisplayValue() != 'فاقدپلاک') {
+                App.NewPelak.body.mask("در حال ذخیره سازی...");
+                Ext.net.DirectMethod.request({
+                    url: '/NewVer/Parvande/CheckPelakNumber',
+                    params: {
+                        Id: Id.getValue(),
+                        fldPlaqueCityID: cboCityP.getValue(),
+                        fldPlaqueSerialID: cboSerialP.getValue(),
+                        fldPelakNumber: plaquenum,
+                        fldPlaqueTypeName: cboTypeP.getDisplayValue()
+                    },
+                    success: function (data) {
+                        if (data.Er == "0") {
+                            Ext.net.DirectMethod.request({
+                                url: '/NewVer/Parvande/SavePelak',
+                                params: {
+                                    fldId: Id.getValue(),
+                                    fldPlaqueNumber: plaquenum,
+                                    fldPlaqueCityID: cboCityP.getValue(),
+                                    fldPlaqueSerialID: cboSerialP.getValue(),
+                                    fldPlaqueTypeID: cboTypeP.getValue(),
+                                    fldOwnerID: '@ViewBag.Malekid',
+                                    fldCharacterPersianPlaqueID: cboCharP.getValue(),
+                                    fldStatusPlaqeID: cboStatusP.getValue(),
+                                    fldDesc: txtDesc.getValue(),
+                                    PlaqueNumberOld: PlaqueNumberOld
+                                },
+                                success: function (data1) {
+                                    var ic = Ext.MessageBox.INFO;
+                                    if (data1.Err == 1)
+                                        ic = Ext.MessageBox.ERROR;
+                                    Ext.MessageBox.show({
+                                        title: data1.MsgTitle,
+                                        msg: data1.Msg,
+                                        icon: ic,
+                                        buttons: Ext.MessageBox.OK,
+                                        fn: function (btn) {
+                                            if (btn == 'ok') {
+                                                if (data1.Err != 1) {
+                                                    App.NewPelak.destroy();
+                                                }
+                                            }
+                                        }
+                                    });
+                                    ReloadGridPelak();
+                                    if (data1.Err != 1) {
+                                        ClearPelak();
+                                    }
+                                    /* Ext.net.Mask.hide();*/
+                                }
+
+                            });
+                        }
+                        else {
+                            if (Id.getValue() == 0) {
+                                if (data.Edit == true) {
+                                    Ext.MessageBox.show({
+                                        title: data.MsgTitle,
+                                        msg: data.Msg,
+                                        icon: Ext.MessageBox.ERROR,
+                                        buttons: Ext.MessageBox.YESNO,
+                                        fn: function (btn) {
+                                            if (btn == 'yes') {
+                                                App.NewPelak.body.mask("در حال بارگذاری...");
+                                                Ext.net.DirectMethod.request({
+                                                    url: '/NewVer/Parvande/changeOwnerofRPlaque',
+                                                    params: {
+                                                        PlaqueId: data.plaqeID,
+                                                        NewOwnerId: '@ViewBag.Malekid',
+                                                        Accept: data.acc
+                                                    },
+                                                    success: function () {
+                                                        App.NewPelak.body.mask().hide();
+                                                    }
+                                                });
+                                            }
+                                        }
+                                    });
+                                }
+                                else {
+                                    Ext.MessageBox.show({
+                                        title: data.MsgTitle,
+                                        msg: data.Msg,
+                                        icon: Ext.MessageBox.ERROR,
+                                        buttons: Ext.MessageBox.OK
+                                    });
+                                }
+                            }
+                            else {
+                                Ext.MessageBox.show({
+                                    title: "خطا",
+                                    msg: "پلاک وارد شده تکراری می باشد.",
+                                    icon: Ext.MessageBox.ERROR,
+                                    buttons: Ext.MessageBox.OK
+                                });
+                            }
+                        }
+                        App.NewPelak.body.mask().hide();
+                        App.SearchParvande.queryById('GridSearch').store.load();
+                    }
+                });
+            }
+            else {
+                App.NewPelak.body.mask("در حال ذخیره سازی...");
+                Ext.net.DirectMethod.request({
+                    url: '/NewVer/Parvande/SavePelak',
+                    params: {
+                        fldId: Id.getValue(),
+                        fldPlaqueNumber: plaquenum,
+                        fldPlaqueCityID: cboCityP.getValue(),
+                        fldPlaqueSerialID: cboSerialP.getValue(),
+                        fldPlaqueTypeID: cboTypeP.getValue(),
+                        fldOwnerID: '@ViewBag.Malekid',
+                        fldCharacterPersianPlaqueID: cboCharP.getValue(),
+                        fldStatusPlaqeID: cboStatusP.getValue(),
+                        fldDesc: txtDesc.getValue(),
+                        PlaqueNumberOld: PlaqueNumberOld
+                    },
+                    success: function (data1) {
+                        var ic = Ext.MessageBox.INFO;
+                        if (data1.Err == 1)
+                            ic = Ext.MessageBox.ERROR;
+                        Ext.MessageBox.show({
+                            title: data1.MsgTitle,
+                            msg: data1.Msg,
+                            icon: ic,
+                            buttons: Ext.MessageBox.OK
+                        });
+                        ReloadGridPelak();
+                        if (data1.Err != 1) {
+                            ClearPelak();
+                        }
+                        /* Ext.net.Mask.hide();*/
+                        App.NewPelak.body.mask().hide();
+                        App.SearchParvande.queryById('GridSearch').store.load();
+                    }
+
+                });
+            }
+    }
+        function ClearPelak() {
+            App.NewPelak.queryById('cboCharP').setValue("");
+            App.NewPelak.queryById('_3char').setValue("");
+            App.NewPelak.queryById('_2char').setValue("");
+            /*App.NewPelak.queryById('cboCityP').setValue("");*/
+            App.NewPelak.queryById('cboSerialP').setValue("");
+            /*App.NewPelak.queryById('cboTypeP').setValue("");
+            App.NewPelak.queryById('cboStatusP').setValue("");*/
+            App.NewPelak.queryById('txtDesc').setValue("");
+            App.NewPelak.queryById('fldId').setValue(0);
+            var cboTypeP = App.NewPelak.queryById('cboTypeP');
+            cboTypeP.setValue("2");
+            var cboStatusP = App.NewPelak.queryById('cboStatusP');
+            cboStatusP.setValue("1");
+            var cboCityP = App.NewPelak.queryById('cboCityP');
+            cboCityP.clearValue(); cboCityP.getStore().load();
+            cboCityP.setValue("2");
+        }
+        
+        function _3charChange() {
+            var _3char = App.NewPelak.queryById("_3char").getValue();
+            if ((_3char.length) == 3)
+            {
+                if (App.NewPelak.queryById("cboTypeP").getDisplayValue() == 'ملی') {
+                    App.NewPelak.queryById("txtDesc").focus();
+                }
+            }
+                
+        }
+        function _2charChange() {
+            var _2char = App.NewPelak.queryById("_2char").getValue();
+            if (_2char.length == 2) {
+                App.NewPelak.queryById("cboCharP").focus();
+            }
+        }
+        function EnterNext() {
+            var cboTypeP = App.NewPelak.queryById('cboTypeP');
+            var nextfld;
+            var keyfield = App.NewPelak.queryById(Ext.getCmp((Ext.Element.getActiveElement()).name).itemId);
+            if (keyfield.itemId == "cboStatusP")
+            {
+                if (cboTypeP.getDisplayValue() == 'ملی') {
+                    nextfld = App.NewPelak.queryById("_2char");
+                }
+                else {
+                    nextfld = App.NewPelak.queryById("_3char");
+                }
+            }
+            else if ( keyfield.itemId == '_2char') {
+                nextfld = App.NewPelak.queryById("cboCharP");
+            }
+            else if (keyfield.itemId == 'cboCharP') {
+                nextfld = App.NewPelak.queryById("_3char");
+            }
+            else if (keyfield.itemId == '_3char') {
+                nextfld = App.NewPelak.queryById("txtDesc");
+            }
+            else
+            {
+                nextfld = keyfield.nextSibling();
+            }
+            nextfld.focus();
+        }
+        var addKeyMapNewPelak = function (cmp) {
+            this.keyMap = new Ext.util.KeyMap({
+                target: cmp.getEl(),
+                binding: [{
+                    key: Ext.EventObject.TAB,
+                    fn: function (key, e) {
+                        e.stopEvent();
+                        var cboTypeP = App.NewPelak.queryById('cboTypeP');
+                        var nextfld;
+                        var keyfield = App.NewPelak.queryById(Ext.getCmp((Ext.Element.getActiveElement()).name).itemId);
+                        if (keyfield.itemId == "cboStatusP") {
+                            if (cboTypeP.getDisplayValue() == 'ملی') {
+                                nextfld = App.NewPelak.queryById("_2char");
+                            }
+                            else {
+                                nextfld = App.NewPelak.queryById("_3char");
+                            }
+                        }
+                        else if (keyfield.itemId == '_2char') {
+                            nextfld = App.NewPelak.queryById("cboCharP");
+                        }
+                        else if (keyfield.itemId == 'cboCharP') {
+                            nextfld = App.NewPelak.queryById("_3char");
+                        }
+                        else if (keyfield.itemId == '_3char') {
+                            nextfld = App.NewPelak.queryById("txtDesc");
+                        }
+                        else {
+                            nextfld = keyfield.nextSibling();
+                        }
+                        nextfld.focus();
+                    }
+                }]
+            });
+        };
+</script>

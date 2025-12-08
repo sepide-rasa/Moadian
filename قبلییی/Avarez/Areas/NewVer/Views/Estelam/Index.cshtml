@@ -1,0 +1,175 @@
+﻿@using Ext.Net.MVC
+@using Hogaf.ExtNet.UX
+@using Ext.Net;
+@using Ext.Net.Utilities;
+@model Avarez.Models.clsEstelam
+    @{
+        var X = Html.X();
+    }
+    @(Html.X().Window().Width(100).Title("استعلام سوابق خودرو")
+    .Height(100).Maximized(true).AutoScroll(true)
+    .Items(
+        Html.X().FormPanel().BodyStyle("background-color:#dfe8f6;")
+        .DefaultButton("btn")
+        .ItemID("FormPanel1")
+        .Border(false)
+        .Layout(Ext.Net.LayoutType.VBox)
+        .LayoutConfig(new VBoxLayoutConfig { Align = VBoxAlign.Center })
+            .Defaults(new { Margin = 2 })
+        .Items(
+            X.FieldSet().Defaults(new { Margin = 2 }).LayoutConfig(new Ext.Net.TableLayoutConfig { Columns = 6 })
+            .Items(Html.X().TextField().FieldLabel("شناسه VIN").ID("VIN")
+            ,
+    X.Label("کد امنیتی:")
+    , X.Container().Content(@<div><input id='txtCapthalogin' class='text' style='direction:ltr;font-family:sans-serif;width: 100px;height: 22px;' /></div>),
+    X.Container().Content(@<div><img id="Captchalogin" src="~/NewVer/Account_New/generateCaptcha" style="width:100px;height:40px" /></div>)
+
+            , X.Button().Icon(Ext.Net.Icon.ArrowRefresh)
+            .Handler("LoadCaptha")
+            ,
+                    Html.X().Button().Listeners(l => l.Click.Handler = "click();").Text("استعلام")),
+                    Html.X().FieldSet().Title("مشخصات خودرو").LayoutConfig(new Ext.Net.TableLayoutConfig { Columns = 3 })
+                    .Defaults(new { Margin = 2 })
+                    .Items(
+                        X.TextField().FieldLabel("نوع خودرو").ReadOnly(true).ID("carType"),
+                        X.TextField().FieldLabel("شماره موتور").ReadOnly(true).ID("Motor"),
+                        X.TextField().FieldLabel("شماره شاسی").ReadOnly(true).ID("Shasi"),
+                        X.TextField().FieldLabel("مدل").Width(150).ReadOnly(true).ID("Model")
+                    ),
+                    X.GridPanel().BodyStyle("background-color:#dfe8f6;").Height(200)
+                    .Width(788).Title("واریزی ها")
+                    .AutoScroll(true)
+                    .ID("GridVarizi")
+                    .BottomBar(X.PagingToolbar())
+                            .Store(
+                                    X.StoreFor(Model.Pay).AutoLoad(false)
+                                                        .PageSize(10)
+                                                        .RemoteFilter(true)
+                                                        .RemotePaging(true)
+                                                )
+                    .View(
+                        Html.X().GridView().LoadingText("در حال بارگذاری...").RTL(true)
+                    )
+                    .ColumnModel(
+                            Html.X().RowNumbererColumn().Flex(1),
+                            Html.X().Column().DataIndex(Model.Pay, m => m.PayDate).Text("تاریخ واریز").Flex(4),
+                            Html.X().Column().DataIndex(Model.Pay, m => m.Price).Text("مبلغ").Flex(4).Renderer("seperate"),
+                            Html.X().Column().DataIndex(Model.Pay, m => m.MunName).Text("شهرداری").Flex(4)
+                        ),
+                        X.GridPanel().BodyStyle("background-color:#dfe8f6;").Height(200)
+                        .Width(788).Title("سوابق")
+                        .AutoScroll(true)
+                        .ID("GridSavabegh")
+                        .BottomBar(X.PagingToolbar())
+                                .Store(
+                                                                X.StoreFor(Model.Exp).AutoLoad(false)
+
+                                                        .PageSize(10)
+                                                        .RemoteFilter(true)
+                                                        .RemotePaging(true)
+                                                )
+                        .View(
+                            Html.X().GridView().LoadingText("در حال بارگذاری...").RTL(true)
+                        )
+                        .ColumnModel(
+                                Html.X().RowNumbererColumn().Flex(1),
+                                Html.X().Column().DataIndex(Model.Exp, m => m.FromDate).Text("ازتاریخ").Flex(4),
+                                Html.X().Column().DataIndex(Model.Exp, m => m.ToDate).Text("تا تاریخ").Flex(4),
+                                Html.X().Column().DataIndex(Model.Exp, m => m.MunName).Text("شهرداری").Flex(4)
+                            ),
+                        X.GridPanel().BodyStyle("background-color:#dfe8f6;").Height(200)
+                            .Width(788).Title("مفاصا حساب ها")
+                        .AutoScroll(true)
+                        .ID("GridMafasa")
+                        .BottomBar(X.PagingToolbar())
+                                .Store(
+                                                        X.StoreFor(Model.Mafasa).AutoLoad(false)
+
+                                                        .PageSize(10)
+                                                        .RemoteFilter(true)
+                                                        .RemotePaging(true)
+                                                )
+                        .View(
+                            Html.X().GridView().LoadingText("در حال بارگذاری...").RTL(true)
+                        )
+                        .ColumnModel(
+                                Html.X().RowNumbererColumn().Flex(1),
+                                Html.X().Column().DataIndex(Model.Mafasa, m => m.Date).Text("تاریخ").Flex(4),
+                                Html.X().Column().DataIndex(Model.Mafasa, m => m.MunName).Text("شهرداری").Flex(4),
+                                Html.X().Column().DataIndex(Model.Mafasa, m => m.RefCode).Text("کد رهگیری").Flex(4),
+                                Html.X().CommandColumn().Listeners(ls => ls.Command.Handler = "ShowMafasa(record);")
+                                    .Commands(
+                                            Html.X().GridCommand()
+                                                .CommandName("ShowMafasa")
+                                                .StandOut(true)
+                                                .MinWidth(60)
+                                                .Text("مشاهده")
+                                                .ToolTip(tt => tt.Text = "مشاهده")
+                                            )
+                        )
+                )
+    )
+    )
+    <script type="text/javascript">
+        function ShowMafasa(record) {
+            var myWindow = window.open("", "MsgWindow", "width=1000,height=600");
+            myWindow.document.write("<center><object class='se-pre-con' id='PrintTabFishReport' style='width: 1000px;height: 600px;border: 1px solid #ccc;' type='application/pdf' data='/NewVer/query/getMafasaRpt/" + record.data.RefCode + "'></object></center>");              
+        }
+        var LoadCaptha = function () {
+            var originalSrc = '@Url.Content("/NewVer/Account_New/generateCaptcha")';
+            var antiCachePart = (new Date()).getTime();
+            var newSrc = originalSrc + '?dc=' + antiCachePart;
+            $("#Captchalogin").attr('src', newSrc);
+
+        }
+        var seperate = function (value, metadata, record, rowIndex, colIndex, store) {
+            return value.toLocaleString();
+        };
+        function click() {
+            var vin = App.VIN.getValue();
+            var txtCaptcha = $('#txtCapthalogin').val();
+            if (vin == "") {
+                Ext.MessageBox.show({
+                    title: 'خطا',
+                    msg: "لطفا VIN را وارد کنید.",
+                    icon: Ext.MessageBox.ERROR,
+                    buttons: Ext.MessageBox.OK
+                });
+                return;
+            }
+            if (txtCaptcha == "") {
+                Ext.MessageBox.show({
+                    title: 'خطا',
+                    msg: "لطفا کد امنیتی را وارد کنید.",
+                    icon: Ext.MessageBox.ERROR,
+                    buttons: Ext.MessageBox.OK
+                });
+                return;
+            }
+            $.ajax({
+                url: '/newver/estelam/getcar',
+                data: { vin: vin, captcha: txtCaptcha },
+                method: 'post',
+                success: function (res) {
+                    if (res.Err == "0") {
+                        App.carType.setValue(res.car.CarType);
+                        App.Motor.setValue(res.car.MotorNum);
+                        App.Shasi.setValue(res.car.ChasiNum);
+                        App.Model.setValue(res.car.Model);
+                        App.GridVarizi.getStore().loadData(res.car.Pay);
+                        App.GridSavabegh.getStore().loadData(res.car.Exp);
+                        App.GridMafasa.getStore().loadData(res.car.Mafasa);
+                    }else
+                    {
+                        Ext.MessageBox.show({
+                            title: 'خطا',
+                            msg: res.msg,
+                            icon: Ext.MessageBox.ERROR,
+                            buttons: Ext.MessageBox.OK
+                        });
+                        LoadCaptha();
+                    }
+                }
+            });
+        }
+    </script>

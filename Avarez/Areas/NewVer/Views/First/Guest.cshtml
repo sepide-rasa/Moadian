@@ -1,0 +1,221 @@
+﻿@{
+    var Img = "";
+    Avarez.Models.cartaxEntities Car = new Avarez.Models.cartaxEntities();
+    var pic = Car.sp_PictureSelect("fldMunicipalityPic", Session["UserMnu"].ToString(), 1, 1, "").FirstOrDefault();
+    if (pic != null)
+    {
+        Img = "data:image/gif;base64," + Convert.ToBase64String(pic.fldPic);
+    }
+    var mun = Car.sp_MunicipalitySelect("fldid", Session["UserMnu"].ToString(), 0, 1, "").FirstOrDefault();
+    var state = Car.sp_StateSelect("fldid", Session["UserState"].ToString(), 0, 1, "").FirstOrDefault();
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <link rel="apple-touch-icon" sizes="76x76" href="../scripts/bootstrap/assets/img/apple-icon.png">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <title>سامانه جامع تشخیص و وصول عوارض خودرو</title>
+    <meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, shrink-to-fit=no' name='viewport' />
+    <!--     Fonts and icons     -->
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700,200" rel="stylesheet" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css" />
+    <!-- CSS Files -->
+    <link href="../scripts/bootstrap/assets/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="../scripts/bootstrap/assets/css/light-bootstrap-dashboard.css?v=2.0.0 " rel="stylesheet" />
+    <!-- CSS Just for demo purpose, don't include it in your project -->
+    <link href="../scripts/bootstrap/assets/css/demo.css" rel="stylesheet" />
+</head>
+<body dir="rtl">
+    <div class="wrapper">
+        <div class="sidebar" data-image="../scripts/bootstrap/assets/img/sidebar-5.jpg">
+            <!--
+                Tip 1: You can change the color of the sidebar using: data-color="purple | blue | green | orange | red"
+
+                Tip 2: you can also add an image using data-image tag
+            -->
+            <div class="sidebar-wrapper">
+                <div class="logo">
+                    <center><img src="@Img" class="rounded-circle" /> </center>
+                </div>
+                <ul class="nav">
+                    <li class="nav-item active">
+                        <a class="nav-link" href="./table.html">
+                            <i class="nc-icon nc-notes"></i>
+                            <p>اطلاعات پرونده</p>
+                        </a>
+                    </li>
+                    <li>
+                        <a class="nav-link" href="./typography.html">
+                            <i class="nc-icon nc-paper-2"></i>
+                            <p>محاسبات سرانگشتی</p>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="main-panel">
+            <!-- Navbar -->
+            <nav class="navbar navbar-expand-lg " color-on-scroll="500">
+                <div class="container-fluid">
+                    <a class="navbar-brand" href=""> @mun.fldName </a>
+                    <button href="" class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" aria-controls="navigation-index" aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-bar burger-lines"></span>
+                        <span class="navbar-toggler-bar burger-lines"></span>
+                        <span class="navbar-toggler-bar burger-lines"></span>
+                    </button>
+                    <div class="collapse navbar-collapse justify-content-end" id="navigation">
+
+                        <ul class="navbar-nav ml-auto">
+                            <li class="nav-item">
+                                <a class="nav-link" href="">
+                                    <span class="no-icon">کاربر مهمان</span>
+                                </a>
+                            </li>
+
+                            <li class="nav-item">
+                                <a class="nav-link" href="">
+                                    <span class="no-icon">خروج</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </nav>
+            <!-- End Navbar -->
+            <div class="content">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="card ">
+                                <div class="container" dir="rtl">
+                                    <ul class="breadcrumb">
+                                        <li class="breadcrumb-item">اطلاعات پرونده</li>
+                                        <li class="breadcrumb-item active">جستجوی پرونده</li>
+                                    </ul>
+                                </div>
+                                <div class="card-body">
+                                    <div class="row">
+                                        <div class="col-sm">
+                                            <span class="text-body align-self-center">فیلد جستجو: </span>
+                                            <select id="searchField" class="custom-select custom-select-sm mb-3">
+                                                <option selected value="VIN">VIN</option>
+                                                <option value="motorChasi">شماره موتور و شاسی</option>
+                                            </select>
+                                        </div>
+                                        <div class="col-sm">
+                                            <span class="text-body align-self-center">نوع جستجو: </span>
+                                            <select class="custom-select custom-select-sm mb-3">
+                                                <option selected value="1">مشابه عبارت</option>
+                                                <option value="2">مشابه عبارت از سمت راست</option>
+                                                <option value="3">عین عبارت</option>
+                                            </select>
+                                        </div>
+                                        <div id="VIN" class="col-sm">
+                                            <span class="text-body align-self-center">VIN:</span>
+                                            <input type="text" class="form-control-sm mb-3" id="vin" placeholder="لطفا vin را وارد کنید" name="vin">
+                                        </div>
+                                        <div id="txtmotor" class="col-sm" style="display:none;">
+                                            <span class="text-body align-self-center">ش. موتور:</span>
+                                            <input type="text" class="form-control-sm mb-3" id="vin" placeholder="لطفا ش.موتور را وارد کنید" name="vin">
+                                        </div>
+                                        <div id="txtshasi" class="col-sm" style="display:none;">
+                                            <span class="text-body align-self-center">شاسی:</span>
+                                            <input type="text" class="form-control-sm mb-3" id="vin" placeholder="لطفا شاسی را وارد کنید" name="vin">
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-sm">
+                                            <center><button type="button" class="btn btn-primary btn-sm">جستجو</button></center>
+                                        </div>
+                                    </div>
+                                    <br />
+                                    <div class="table-full-width">
+                                        <table class="table table-bordered">
+                                            <tbody>
+                                                <tr>
+                                                    <th>ش. موتور</th>
+                                                    <th>شاسی</th>
+                                                    <th>VIN</th>
+                                                    <th>مدل</th>
+                                                    <th>تیپ</th>
+                                                    <th>کلاس</th>
+                                                    <th></th>
+                                                </tr>
+                                                <tr>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td class="td-actions">
+                                                        <button type="button" rel="tooltip" title="انتخاب و ادامه" class="btn btn-info btn-simple btn-link">
+                                                            <i class="fa fa-edit"></i>
+                                                        </button>                                                        
+                                                    </td>
+                                                </tr>
+                                                
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+            <footer class="footer">
+                <div class="container-fluid">
+                    <nav>
+                        <p class="copyright text-center">
+                            ©
+                            <script>
+                                document.write(new Date().getFullYear())
+                            </script>
+                            طراحی و توسعه: <a href="http://rasa-system.com">رسا سیستم البرز</a>
+                        </p>
+                    </nav>
+                </div>
+            </footer>
+        </div>
+    </div>
+
+</body>
+<!--   Core JS Files   -->
+<script src="../scripts/bootstrap/assets/js/core/jquery.3.2.1.min.js" type="text/javascript"></script>
+<script src="../scripts/bootstrap/assets/js/core/popper.min.js" type="text/javascript"></script>
+<script src="../scripts/bootstrap/assets/js/core/bootstrap.min.js" type="text/javascript"></script>
+<!--  Plugin for Switches, full documentation here: http://www.jque.re/plugins/version3/bootstrap.switch/ -->
+<script src="../scripts/bootstrap/assets/js/plugins/bootstrap-switch.js"></script>
+<!--  Chartist Plugin  -->
+<script src="../scripts/bootstrap/assets/js/plugins/chartist.min.js"></script>
+<!--  Notifications Plugin    -->
+<script src="../scripts/bootstrap/assets/js/plugins/bootstrap-notify.js"></script>
+<!-- Control Center for Light Bootstrap Dashboard: scripts for the example pages etc -->
+<script src="../scripts/bootstrap/assets/js/light-bootstrap-dashboard.js?v=2.0.0 " type="text/javascript"></script>
+<!-- Light Bootstrap Dashboard DEMO methods, don't include it in your project! -->
+<script src="../scripts/bootstrap/assets/js/demo.js"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+
+        demo.showAlert('info', 'به پنل کاربری مهمان خوش آمدید', 'کاربر مهمان');
+        $('#searchField').change(function () {
+            var s = $('#searchField').val();
+            if (s == 'VIN') {
+                $('#txtmotor').attr('style', 'display:none;');
+                $('#txtshasi').attr('style', 'display:none;');
+                $('#VIN').attr('style', 'display:initial;');
+            } else {
+                $('#txtmotor').attr('style', 'display:initial;');
+                $('#txtshasi').attr('style', 'display:initial;');
+                $('#VIN').attr('style', 'display:none;');
+            }
+        });
+    });
+</script>
+</html>

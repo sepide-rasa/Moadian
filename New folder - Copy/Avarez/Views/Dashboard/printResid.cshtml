@@ -1,0 +1,11 @@
+﻿@using Ext.Net.MVC;
+
+@(
+ Html.X().Panel().Height(560)
+    .Title("پیش نمایش")
+    .AutoScroll(true)
+    .Closable(true)
+    .CloseAction(Ext.Net.CloseAction.Destroy)
+       .Html("<center><object style='width: 1200px;height: 550px;border: 1px solid #ccc;' type='application/pdf' data='RptResid?CollId=" + ViewBag.CollId + "'></object></center>")
+
+)

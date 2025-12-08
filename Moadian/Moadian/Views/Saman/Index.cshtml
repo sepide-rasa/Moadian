@@ -1,0 +1,50 @@
+﻿<form action="https://sep.shaparak.ir/Publicbillpg" method="post">
+    <img src="@Url.Content("~/Content/images/GeustNAV3.png")" />
+    <table>
+        <tr>
+            <td>
+                <div class="tag">
+                    کد تراکنش
+                </div>
+            </td>
+            <td>
+                <div class="tag">
+                    @Session["Tax"].ToString()
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <div class="tag">
+                    مبلغ پرداخت
+                </div>
+            </td>
+            <td>
+                <div class="tag">
+                    @Convert.ToDouble(Session["Amount"]).ToString("#,###")
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="2">
+                لطفا کد تراکنش را جهت پیگیری های بعدی یادداشت فرمائید.
+                <br />
+            </td>
+        </tr>
+        <tr>
+            <td colspan="4">
+                <input type="submit" id="Run" name="Run" value="پرداخت" class="run" />
+            </td>
+        </tr>
+    </table>
+    <input type="hidden" value="@Session["Tax"]" name="ResNum" />
+    <input type="hidden" value="@ViewBag.TerminalId" name="TerminalId" />
+    <input type="hidden" value="@ViewBag.RedirectUrl" name="RedirectUrl" />
+    <input type="hidden" value="@Session["shGhabz"]" name="Bills[0].BillId" />
+    <input type="hidden" value="@Session["shPardakht"]" name="Bills[0].PayId" />
+</form>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('#Run').button();
+    });
+</script>

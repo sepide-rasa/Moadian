@@ -1,0 +1,137 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Report ScriptLanguage="CSharp" ReportInfo.Created="06/11/2014 16:48:33" ReportInfo.Modified="09/21/2017 10:49:32" ReportInfo.CreatorVersion="2015.1.2.0">
+  <ScriptText>using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Windows.Forms;
+using System.Drawing;
+using System.Data;
+using FastReport;
+using FastReport.Data;
+using FastReport.Dialog;
+using FastReport.Barcode;
+using FastReport.Table;
+using FastReport.Utils;
+
+namespace FastReport
+{
+  public class ReportScript
+  {
+
+    private void MSChart1_AfterData(object sender, EventArgs e)
+    {
+      
+    }
+  }
+} 
+</ScriptText>
+  <Styles>
+    <Style Name="Style1" Fill.Color="232, 244, 255"/>
+  </Styles>
+  <Dictionary>
+    <TableDataSource Name="sp_MonthlyCollectionTipChart" ReferenceName="dataSet1.sp_MonthlyCollectionTipChart" DataType="System.Int32" Enabled="true">
+      <Column Name="fldPrice" DataType="System.Int32"/>
+      <Column Name="tedad" DataType="System.Int32"/>
+      <Column Name="fldName" DataType="System.String"/>
+      <Column Name="fldMonth" DataType="System.String"/>
+      <Column Name="fldMonthName" DataType="System.String"/>
+    </TableDataSource>
+    <TableDataSource Name="sp_PictureSelect" ReferenceName="dataSet1.sp_PictureSelect" DataType="System.Int32" Enabled="true">
+      <Column Name="fldID" DataType="System.Int32"/>
+      <Column Name="fldPic" DataType="System.Byte[]" BindableControl="Picture"/>
+      <Column Name="fldMunicipalityPic" DataType="System.String"/>
+      <Column Name="fldMunicipalityPicID" DataType="System.Int32"/>
+      <Column Name="fldBankPic" DataType="System.String"/>
+      <Column Name="fldBankPicID" DataType="System.Int32"/>
+      <Column Name="fldUserPic" DataType="System.String"/>
+      <Column Name="fldUserPicID" DataType="System.Int64"/>
+      <Column Name="fldUserName" DataType="System.String"/>
+      <Column Name="fldUserID" DataType="System.Int64"/>
+      <Column Name="fldDesc" DataType="System.String"/>
+      <Column Name="fldDate" DataType="System.String"/>
+    </TableDataSource>
+    <Parameter Name="year" DataType="System.String"/>
+    <Parameter Name="date" DataType="System.String"/>
+    <Parameter Name="time" DataType="System.String"/>
+    <Parameter Name="StateName" DataType="System.String"/>
+    <Parameter Name="MunicipalityName" DataType="System.String"/>
+    <Parameter Name="AreaName" DataType="System.String"/>
+    <Parameter Name="OfficeName" DataType="System.String"/>
+    <Parameter Name="MyTablighat" DataType="System.String"/>
+    <Total Name="Tedad" Expression="[sp_MonthlyCollectionTipChart.tedad]" Evaluator="Data1" PrintOn="GroupFooter2"/>
+    <Total Name="mablagh" Expression="[sp_MonthlyCollectionTipChart.fldPrice]" Evaluator="Data1" PrintOn="GroupFooter2"/>
+  </Dictionary>
+  <ReportPage Name="Page1" RawPaperSize="9" LeftMargin="5" RightMargin="5">
+    <ReportTitleBand Name="ReportTitle1" Width="756"/>
+    <PageHeaderBand Name="PageHeader1" Top="4" Width="756" Height="172.59">
+      <TableObject Name="Table3" Left="2.85" Top="9.45" Width="740.84" Height="94.14">
+        <TableColumn Name="Column59" Width="189.2"/>
+        <TableColumn Name="Column60" Width="389.59"/>
+        <TableColumn Name="Column61" Width="162.05"/>
+        <TableRow Name="Row3" Height="94.14">
+          <TableCell Name="Cell59" VertAlign="Center" RightToLeft="true" Font="Microsoft Sans Serif, 10pt">
+            <TextObject Name="Text6" Top="18.9" Width="189" Height="18.9" Fill="Glass" Fill.Color="White" Fill.Blend="0.2" Fill.Hatch="true" Text="تاریخ چاپ :[date]" VertAlign="Center" RightToLeft="true" Font="RasaFont, 11pt"/>
+            <TextObject Name="Text4" Top="37.8" Width="189" Height="18.9" Fill="Glass" Fill.Color="White" Fill.Blend="0.2" Fill.Hatch="true" Text="ساعت چاپ:[time]" VertAlign="Center" RightToLeft="true" Font="RasaFont, 11pt"/>
+            <TextObject Name="Text5" Top="56.7" Width="189" Height="18.9" Fill="Glass" Fill.Color="White" Fill.Blend="0.2" Fill.Hatch="true" Text="صفحه:[Page#] از [TotalPages#]" VertAlign="Center" RightToLeft="true" Font="RasaFont, 11pt"/>
+          </TableCell>
+          <TableCell Name="Cell60" Text="[StateName]&#13;&#10;[MunicipalityName]&#13;&#10;[AreaName]&#13;&#10;[OfficeName]" HorzAlign="Center" VertAlign="Center" RightToLeft="true" Font="RasaFont, 11pt"/>
+          <TableCell Name="Cell61" HorzAlign="Right" VertAlign="Center" Font="Microsoft Sans Serif, 10pt">
+            <PictureObject Name="Picture1" Left="39.83" Top="17.78" Width="75.6" Height="75.6" DataColumn="sp_PictureSelect.fldPic"/>
+          </TableCell>
+        </TableRow>
+      </TableObject>
+      <TextObject Name="Text2" Left="230.09" Top="121.9" Width="333.62" Height="39.7" Text="درآمد سال [year] به تفکیک ماه و نوع خودرو" HorzAlign="Center" VertAlign="Center" RightToLeft="true" Font="RasaFont, 14pt, style=Bold"/>
+    </PageHeaderBand>
+    <GroupHeaderBand Name="GroupHeader2" Top="180.59" Width="756" Height="78.42" StartNewPage="true" Condition="[sp_MonthlyCollectionTipChart.fldMonth]">
+      <TextObject Name="Text1" Left="120.93" Top="30.22" Width="585.86" Height="18.9" Text="[sp_MonthlyCollectionTipChart.fldMonthName] ماه [year]" VertAlign="Center" RightToLeft="true" Font="RasaFont, 11pt, style=Bold"/>
+      <TableObject Name="Table1" Left="109.5" Top="51.99" Width="597.4" Height="26.43">
+        <TableColumn Name="Column62" Width="178.72"/>
+        <TableColumn Name="Column63" Width="106.76"/>
+        <TableColumn Name="Column64" Width="245.77"/>
+        <TableColumn Name="Column65"/>
+        <TableRow Name="Row4" Height="26.43">
+          <TableCell Name="Cell62" Border.Lines="All" Fill="Glass" Fill.Color="SkyBlue" Fill.Blend="0.2" Fill.Hatch="true" Text="مبلغ" HorzAlign="Center" VertAlign="Center" RightToLeft="true" Font="RasaFont, 12pt, style=Bold"/>
+          <TableCell Name="Cell63" Border.Lines="All" Fill="Glass" Fill.Color="SkyBlue" Fill.Blend="0.2" Fill.Hatch="true" Text="تعداد" HorzAlign="Center" VertAlign="Center" RightToLeft="true" Font="RasaFont, 12pt, style=Bold"/>
+          <TableCell Name="Cell66" Border.Lines="All" Fill="Glass" Fill.Color="SkyBlue" Fill.Blend="0.2" Fill.Hatch="true" Text="نوع خودرو" HorzAlign="Center" VertAlign="Center" RightToLeft="true" Font="RasaFont, 12pt, style=Bold"/>
+          <TableCell Name="Cell67" Border.Lines="All" Fill="Glass" Fill.Color="SkyBlue" Fill.Blend="0.2" Fill.Hatch="true" Text="ردیف" HorzAlign="Center" VertAlign="Center" RightToLeft="true" Font="RasaFont, 12pt, style=Bold"/>
+        </TableRow>
+      </TableObject>
+      <DataBand Name="Data1" Top="263.01" Width="756" Height="26.43" DataSource="sp_MonthlyCollectionTipChart">
+        <TableObject Name="Table4" Left="109.5" Width="597.4" Height="26.43" EvenStyle="Style1">
+          <TableColumn Name="Column66" Width="178.72"/>
+          <TableColumn Name="Column67" Width="106.76"/>
+          <TableColumn Name="Column68" Width="245.77"/>
+          <TableColumn Name="Column69"/>
+          <TableRow Name="Row5" Height="26.43">
+            <TableCell Name="Cell68" Border.Lines="All" Text="[sp_MonthlyCollectionTipChart.fldPrice]" Format="Number" Format.UseLocale="false" Format.DecimalDigits="0" Format.DecimalSeparator="." Format.GroupSeparator="," Format.NegativePattern="1" HorzAlign="Center" VertAlign="Center" RightToLeft="true" Font="RasaFont, 11pt, style=Bold"/>
+            <TableCell Name="Cell69" Border.Lines="All" Text="[sp_MonthlyCollectionTipChart.tedad]" HorzAlign="Center" VertAlign="Center" RightToLeft="true" Font="RasaFont, 11pt, style=Bold"/>
+            <TableCell Name="Cell70" Border.Lines="All" Text="[sp_MonthlyCollectionTipChart.fldName]" VertAlign="Center" RightToLeft="true" Font="RasaFont, 11pt, style=Bold"/>
+            <TableCell Name="Cell71" Border.Lines="All" Text="[Row#]" HorzAlign="Center" VertAlign="Center" RightToLeft="true" Font="RasaFont, 11pt, style=Bold"/>
+          </TableRow>
+        </TableObject>
+        <Sort>
+          <Sort Expression="[sp_MonthlyCollectionTipChart.fldMonth]"/>
+          <Sort Expression="[sp_MonthlyCollectionTipChart.fldName]"/>
+        </Sort>
+      </DataBand>
+      <GroupFooterBand Name="GroupFooter2" Top="293.44" Width="756" Height="53.85">
+        <TableObject Name="Table5" Left="109.5" Width="597.4" Height="26.43">
+          <TableColumn Name="Column70" Width="178.72"/>
+          <TableColumn Name="Column71" Width="106.76"/>
+          <TableColumn Name="Column72" Width="245.77"/>
+          <TableColumn Name="Column73"/>
+          <TableRow Name="Row6" Height="26.43">
+            <TableCell Name="Cell72" Border.Lines="All" Text="[mablagh]" Format="Number" Format.UseLocale="false" Format.DecimalDigits="0" Format.DecimalSeparator="." Format.GroupSeparator="," Format.NegativePattern="1" HorzAlign="Center" VertAlign="Center" RightToLeft="true" Font="RasaFont, 12pt, style=Bold"/>
+            <TableCell Name="Cell73" Border.Lines="All" Text="[Tedad]" HorzAlign="Center" VertAlign="Center" RightToLeft="true" Font="RasaFont, 12pt, style=Bold"/>
+            <TableCell Name="Cell74" Border.Lines="All" Text="جمع کل:" HorzAlign="Center" VertAlign="Center" RightToLeft="true" Font="RasaFont, 12pt, style=Bold" ColSpan="2"/>
+            <TableCell Name="Cell75" Border.Lines="All" HorzAlign="Right" VertAlign="Center" RightToLeft="true" Font="RasaFont, 12pt, style=Bold"/>
+          </TableRow>
+        </TableObject>
+      </GroupFooterBand>
+    </GroupHeaderBand>
+    <PageFooterBand Name="PageFooter1" Top="351.29" Width="756" Height="31.15" CanGrow="true">
+      <TextObject Name="Text3" Left="0.95" Top="1.9" Width="746.53" Height="26.44" CanGrow="true" GrowToBottom="true" Text="[MyTablighat]" VertAlign="Center" RightToLeft="true" Font="RasaFont, 11pt, style=Bold"/>
+    </PageFooterBand>
+  </ReportPage>
+</Report>

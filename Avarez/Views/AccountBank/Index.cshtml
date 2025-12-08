@@ -1,0 +1,475 @@
+﻿@using Kendo.Mvc.UI;
+<div class="modal" id="AccountBank">
+    <script src="@Url.Content("~/Content/Base.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Scripts/jquery.ui.datepicker-cc.all.min.js")" type="text/javascript"></script>
+    <div>
+     <a href="@Url.Content("~/Helps/تعریف شماره حساب.htm")" target="_blank" id="Help" title="راهنما" style="background-image:url('/Content/images/1381415123_help.png');background-repeat: no-repeat;height: 20px;float: left;top: 10px;left: 10px;"></a>
+        <br />
+        <center>
+            <table>
+                <tr>
+                    <td align="left">
+                        بانک:
+                    </td>
+                    <td>
+                        @Html.TextBox("cboBank")
+                    </td>
+                    <td>
+                    </td>
+                </tr>
+                <tr>
+                    <td align="left">
+                        <span style="color: Red;">*</span> شعبه:
+                    </td>
+                    <td>
+                        @Html.TextBox("cboBranch")
+                        <span id="lblcboBranchError" style="color: Red;"></span>
+                    </td>
+                </tr>
+                <tr>
+                    <td align="left">
+                        <span style="color: Red;">*</span> شماره حساب:
+                    </td>
+                    <td>
+                        @Avarez.Helper.winClass.textbox("txtNumber") 
+                        <span id="lblNumberError" style="color: Red;">
+                        </span>
+                    </td>
+                </tr>
+                <tr>
+                    <td align="left">
+                        موقعیت در تقسیمات کشوری:
+                    </td>
+                    <td colspan="2" dir="rtl" id="countryLocation" align="right">
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="3" align="center" style="height: 30px;">
+                        @Html.Label("مورد انتخاب شده: ", new { @id = "CountryPosition" })
+                    </td>
+                </tr>
+                <tr>
+                    @Html.Hidden("fldId")
+                </tr>
+            </table>
+            <p>
+                @Avarez.Helper.winClass.Buttons("AddLink", "ذخیره", "Save")
+                @Avarez.Helper.winClass.Buttons("EditLink", "ویرایش", "Edit")
+                @Avarez.Helper.winClass.Buttons("DelLink", "حذف", "Del")
+                @Avarez.Helper.winClass.Buttons("exit", "خروج", "Exit")
+            </p>
+        </center>
+        @(Html.Kendo().PanelBar()
+        .Name("panelbar-images")
+        .Items(panelbar =>
+        {
+            panelbar.Add().Text("جستجو")
+                .ImageUrl(Url.Content("~/Content/images/search.png"))
+                .Content(@<div>
+                    <table>
+                        <tr>
+                            <td>
+                                فیلد جستجو:@Html.DropDownList("cboSearchFiald", new SelectList(new[] { new { ID = "1", Name = "شعبه " }, new { ID = "2", Name = "شماره حساب" } }, "ID", "Name"))
+                            </td>
+                            <td>
+                                نوع جستجو: @Html.DropDownList("cboSearchType", new SelectList(new[] { new { ID = "0", Name = "مشابه عبارت" }, new { ID = "1", Name = "مشابه عبارت از سمت راست" }, new { ID = "2", Name = "عین عبارت" } }, "ID", "Name"))
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                عبارت جستجو: @Avarez.Helper.winClass.textbox("txtSearch")
+                            </td>
+                            <td>
+                                نتیجه رکوردها: @Html.TextBox("txtTop", 30, new { @style = "width:30px;" }) رکورد
+                            </td>
+                        </tr>
+                    </table>
+                    <br />
+                </div>);
+        })
+        )
+        <div class="k-rtl demo-section">
+            @(Html.Kendo().Grid<Avarez.Models.sp_AccountBankSelect>()
+                .Name("Grid")
+                .Columns(columns =>
+                {
+                    columns.Bound(p => p.fldID).Title("کد").Visible(false);
+                    columns.Bound(p => p.fldAccountNumber).Title("شماره حساب");
+                    columns.Bound(p => p.fldBankName).Title("بانک");
+                    columns.Bound(p => p.fldBranchName).Title("شعبه");
+                    columns.Bound(p => p.fldCountryDivisionsName).Title("تقسیمات کشوری");
+                    columns.Bound(p => p.fldDesc).Title("توضیحات");
+
+                })
+                .Selectable(selectable => selectable.Mode(GridSelectionMode.Single))
+                .Pageable()
+                .Scrollable()
+                .DataSource(data =>
+                data.Ajax()
+                .PageSize(10)
+                .Read("Fill", "AccountBank")
+            )
+        )
+        </div>
+    </div>
+    <script type="text/javascript">
+        function selectCity() {
+
+            return {
+                cboBank: $("#cboBank").val()
+            };
+        }
+        function select(e) {
+            var dataItem = this.dataItem(e.node);
+            countryid = dataItem.id;
+            countrySID = dataItem.fldSid;
+            countryNType = dataItem.fldNodeType;
+            var url = '@Url.Content("~/AccountBank/CountryPosition")';
+            $.ajax({
+                type: "post",
+                url: url,
+                data: { id: countryid },
+                datatype: "json",
+                success: function (data) {
+                    var m = data;
+                    $('#CountryPosition').html('مورد انتخاب شده: ' + m.Position);
+                    var treeview = $("#treeview").data("kendoTreeView");
+                    treeview.collapse(".k-item");
+                },
+                failure: function (data) {
+                    alert(data.data);
+                }
+            });
+        }
+
+        var countryid;
+        var countrySID;
+        var countryNType;
+
+        function carselect(e) {
+            var dataItem = this.dataItem(e.node);
+            carid = dataItem.id;
+            carSID = dataItem.fldSid;
+            carNType = dataItem.fldNodeType;
+            var url = '@Url.Content("~/AccountBank/CarPosition")';
+            $.ajax({
+                type: "post",
+                url: url,
+                data: { id: carid },
+                datatype: "json",
+                success: function (data) {
+                    var m = data;
+                    $('#carPosition').html('مورد انتخاب شده: ' + m.Position);
+                    var treeview = $("#cartreeview").data("kendoTreeView");
+                    treeview.collapse(".k-item");
+                },
+                failure: function (data) {
+                    alert(data.data);
+                }
+            });
+        }
+
+        var carid;
+        var carSID;
+        var carNType;
+        $("document").ready(function () {
+
+            //            var url = '@Url.Action("Reload", "AccountBank")';
+            //            Reload(url, 'Grid', 0, '@ViewBag.fldReport', 30, 1);
+
+            $("#txtDate").datepicker({
+                showButtonPanel: true
+            });
+
+            $('#countryLocation').html($('#LocationDiv').valueOf());
+            $('#carLocation').html($('#carLocationDiv').valueOf());
+            $("#AddLink").button();
+            $("#EditLink").button();
+            $("#DelLink").button();
+            $("#Next").button();
+            $("#exit").button();
+            $("#btnBrowse").button();
+            $("#btnRemove").button();
+            $("#Help").button();
+            $("#exit").click(function () {
+                $("#AccountBank").remove();
+            });
+
+            $('#AccountBank').on('keyup', 'input', function (event) {
+                if (event.which == 13) {
+                    var inputs = $('#AccountBank').find(':input:visible');
+                    inputs.eq(inputs.index(this) + 1).focus();
+                }
+            });
+
+            $(document).keyup(function (event) {
+                if (event.which == 119) {
+                    SaveRecord();
+                }
+                else if (event.which == 113) {
+                    EditRecord();
+                }
+                else if (event.which == 115) {
+                    DeleteRecord();
+                }
+            });
+            $('#AddLink').attr('title', 'کلید میانبر (F8)'); //119
+            $('#EditLink').attr('title', 'کلید میانبر (F2)'); //113
+            $('#DelLink').attr('title', 'کلید میانبر (F4)'); //115
+
+            jQuery("#EditLink").click(function () {
+                EditRecord();
+            });
+
+            $('#DelLink').click(function () {
+                DeleteRecord();
+            });
+
+            $("#AddLink").click(function () {
+                SaveRecord();
+            });
+
+            $('#txtSearch').keyup(function () {
+                var url = '@Url.Action("Reload", "AccountBank")';
+                Reload(url, 'Grid', $("#cboSearchFiald").val(), $("#txtSearch").val(), $("#txtTop").val(), $("#cboSearchType").val());
+            });
+
+            $("#btnBrowse").click(function () {
+                performClick(document.getElementById('image'));
+            });
+
+            function performClick(node) {
+                var evt = document.createEvent("MouseEvents");
+                evt.initEvent("click", true, false);
+                node.dispatchEvent(evt);
+            }
+
+            $("#txtNumber").keyup(function () {
+                if ($("#txtNumber").val() != '') {
+                    $("#txtNumber").removeClass("input-validation-error");
+                    $("#lblNumberError").html("");
+                }
+                else {
+                    $("#txtNumber").addClass("input-validation-error");
+                    $('#lblNumberError').html('لطفا شماره حساب را وارد کنید.');
+                }
+            });
+
+            $("#cboBranch").change(function () {
+                if ($("#cboBranch").val() != '') {
+                    $("#cboBranch").removeClass("input-validation-error");
+                    $("#lblcboBranchError").html("");
+                }
+                else {
+                    $("#cboBranch").addClass("input-validation-error");
+                    $('#lblcboBranchError').html('لطفا شعبه بانکی را انتخاب کنید.');
+                }
+            });
+  
+        });
+
+        function Clear() {
+            $('#fldId').val('');
+            $('#txtDesc').val('');
+            $('#txtNumber').val('');
+        }
+        function SaveRecord() {
+            var er = false;
+
+            if ($("#txtNumber").val() == '') {
+                $("#txtNumber").addClass("input-validation-error");
+                $('#lblNumberError').html('لطفا شماره حساب را وارد کنید.');
+                er = true;
+            }
+            else
+                $('#lblNumberError').html('');
+
+            if ($("#cboBranch").val() == '') {
+                $("#cboBranch").addClass("input-validation-error");
+                $('#lblcboBranchError').html('لطفا شعبه بانکی را انتخاب کنید.');
+                er = true;
+            }
+            else
+                $('#lblcboBranchError').html('');
+
+            if (er)
+                return;
+
+            var data = {
+                fldTypeCountryDivisions: countryNType,
+                fldCodeCountryDivisions: countrySID,
+                fldAccountNumber: $("#txtNumber").val(),
+                fldBranchID: $("#cboBranch").val(),
+                fldId: $("#fldId").val(),
+                fldDesc: $("#fldDesc").val()
+            };
+            if (data != '') {
+                PostForm(data, '@Url.Content("~/AccountBank/Save")', "#win");
+            }
+            Clear();
+        }
+        function EditRecord() {
+
+            var entityGrid = $("#Grid").data("kendoGrid");
+            var selectedItem = entityGrid.dataItem(entityGrid.select());
+            if (selectedItem) {
+                var id = selectedItem.fldID;
+                var URL = '@Url.Content("~/AccountBank/Details")';
+                var countyid = 0;
+                URL = URL + "/" + id;
+                $.ajax({
+                    type: "GET",
+                    url: URL,
+                    success: function (data) {
+                        $('#txtNumber').val(data.fldAccountNumber);
+                        $('#fldId').val(data.fldId);
+                        $('#txtDesc').val(data.fldDesc);
+                        var bank = $("#cboBank").data("kendoDropDownList");
+                        var branch = $("#cboBranch").data("kendoDropDownList");
+                        bank.value(data.fldBankID);
+                        branch.enable(true);
+                        branch.dataSource.read();
+                        branch.value(data.fldBranchID);
+
+                    },
+                    failure: function (data) {
+                        alert(data.data);
+                    }
+                });
+
+
+            }
+            else {
+                alert('لطفا یک سطر را انتخاب کنید.');
+            }
+        }
+        function DeleteRecord() {
+                var entityGrid = $("#Grid").data("kendoGrid");
+                var selectedItem = entityGrid.dataItem(entityGrid.select());
+                if (selectedItem) {
+                    var id = selectedItem.fldID;
+                    var URL = '@Url.Content("~/metro/YesNomsg")';
+                    URL = URL + "/?id=" + id + "&URL=" + '@Url.Content("~/AccountBank/Delete")';
+                    windowAppend("body", URL);
+                    $("#message").html('آیا مایل به حذف رکورد انتخاب شده هستید؟');
+                }
+                else {
+                    alert('لطفا یک سطر را انتخاب کنید.');
+                }
+                Clear();
+            }
+        function Reload(Url, gridname, field, value, top, searchType) {
+            var grid = $('#' + gridname).data('kendoGrid');
+            $.ajax({
+                url: Url,
+                type: 'get',
+                datatype: 'json',
+                data: { field: field, value: value, top: top, searchtype: searchType },
+                error: function (xhr, status, error) {
+                    alert(xhr + status);
+                },
+                success: function (result) {
+                    $("#" + gridname).data("kendoGrid").dataSource.data(result);
+                }
+
+            });
+        }
+
+        function PostForm(datas, url, id) {
+            var sendInfo = datas;
+            $('#Lock').show();
+            $.ajax({
+                type: "POST",
+                url: url,
+                data: sendInfo,
+                datatype: "json",
+                success: function (data) {
+                    var m = data;
+                    windowAppend("body", "/metro/error");
+                    $("#message").html(m.data);
+                    switch (m.state) {
+                        case 0:
+                            $("#error .wintitle").html("ذخیره موفق");
+                            break;
+                        case 1:
+                            $("#error .wintitle").html("خطا");
+                            break;
+                    }
+                    var url = '@Url.Action("Reload", "AccountBank")';
+                    Reload(url, 'Grid', '0', '@ViewBag.fldReport', 30, 1);
+                    $('#Lock').hide();
+                },
+                failure: function (data) {
+                    alert(data.data);
+                }
+            });
+        }
+        
+    </script>
+</div>
+<div class="treeview-back  k-rtl" dir="rtl" id="LocationDiv">
+    @(Html.Kendo().TreeView()
+        .Name("treeview")
+        .DataImageUrlField("image")
+        .DataTextField("Name")
+        .Checkboxes(chkbxs =>
+        {
+            chkbxs.Enabled(false).CheckChildren(false);
+        })
+            .DataSource(dataSource => dataSource
+            .Read(read => read
+                    .Action("_CountryTree", "AccountBank")
+        )
+        )
+        .Events(events =>
+        events.Select("select"))
+    )
+</div>
+<style type="text/css">
+    .treeview-back
+    {
+        width: 400px;
+        margin: 30px;
+        padding: 20px;
+        -moz-box-shadow: 0 1px 2px rgba(0,0,0,0.45), inset 0 0 30px rgba(0,0,0,0.07);
+        -webkit-box-shadow: 0 1px 2px rgba(0,0,0,0.45), inset 0 0 30px rgba(0,0,0,0.07);
+        box-shadow: 0 1px 2px rgba(0,0,0,0.45), inner 0 0 30px rgba(0,0,0,0.07);
+        -webkit-border-radius: 8px;
+        -moz-border-radius: 8px;
+        border-radius: 8px;
+    }
+</style>
+<div class="k-rtl">
+    @(Html.Kendo().DropDownList()
+          .Name("cboBank")
+          .OptionLabel("نام بانک...")
+          .DataTextField("fldName")
+          .DataValueField("fldID")
+          .DataSource(source =>
+          {
+              source.Read(read =>
+              {
+                  read.Action("GetCascadeState", "AccountBank");
+              });
+          }).HtmlAttributes(new { @style = "display: none;width:105px;" })
+    )
+    @(Html.Kendo().DropDownList()
+          .Name("cboBranch")
+          .OptionLabel("نام شعبه...")
+                  .DataTextField("fldName")
+                  .DataValueField("fldID")
+          .DataSource(source =>
+          {
+              source.Read(read =>
+              {
+                  read.Action("GetCascadeCounty", "AccountBank")
+                      .Data("selectCity");
+              })
+              .ServerFiltering(true);
+          })
+          .Enable(true)
+          .AutoBind(false)
+          .CascadeFrom("cboBank")
+          .HtmlAttributes(new { @style = "display: none;width:105px;" })
+    )
+</div>

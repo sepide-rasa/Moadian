@@ -1,0 +1,205 @@
+﻿@using Kendo.Mvc.UI;
+<div class="modal" id="AnnouncementAttach">
+    <meta name="viewport" content="width=device-width" />
+    <script src="@Url.Content("~/Content/Base.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Scripts/jquery.uploadify-3.1.min.js")" type="text/javascript"></script>
+    <link href="@Url.Content("~/Content/uploadify.css")" rel="stylesheet" type="text/css" />    
+    <script type="text/javascript">            
+        var path, f, r;
+        $(function () {
+            $('#file_upload').uploadify({
+                'swf': '@Url.Content("~/Content/uploadify.swf")',
+                //this is where the file posts when it uploads.
+                'uploader': '@Url.Action("Upload", "AnnouncementAttach")',
+                'onUploadSuccess': function (file, data, response) {
+                    path = data;
+                    f = file;
+                    r = response;
+                }
+            });
+        });
+        $("document").ready(function () {
+            $("#AddLink").button();
+            $("#DelLink").button();
+            $("#exit").button();
+
+            $("#exit").click(function () {
+                $("#AnnouncementAttach").remove();
+            });
+
+            $(document).keyup(function (event) {
+                if (event.which == 119) {
+                    SaveRecord();
+                }
+                else if (event.which == 113) {
+                    EditRecord();
+                }
+                else if (event.which == 115) {
+                    DeleteRecord();
+                }
+            });
+            $('#AddLink').attr('title', 'کلید میانبر (F8)'); //119
+            $('#EditLink').attr('title', 'کلید میانبر (F2)'); //113
+            $('#DelLink').attr('title', 'کلید میانبر (F4)'); //115
+
+            $('#DelLink').click(function () {
+                DeleteRecord();
+            });
+
+            $("#AddLink").click(function () {
+                SaveRecord();
+            });
+
+            $('#AnnouncementAttach').on('keyup', 'input', function (event) {
+                if (event.which == 13) {
+                    var inputs = $('#AnnouncementAttach').find(':input:visible');
+                    inputs.eq(inputs.index(this) + 1).focus();
+                }
+            });       
+        });
+
+        function Clear() {
+            $('#txtDesc').val('');
+        }
+
+        function SaveRecord() {
+            var er = false;
+            if (er)
+                return;
+
+            var data = { fldAnnouncementID: '@ViewBag.fldAnnouncementID',
+                fldUserID: 1, fldDesc: $("#txtDesc").val(),
+                fldId: $("#fldId").val()
+            };
+            if (data != '') {
+                PostForm(data, '@Url.Content("~/AnnouncementAttach/Save")', "#win");
+            }
+            Clear();
+        }
+        function DeleteRecord() {
+                var entityGrid = $("#Grid").data("kendoGrid");
+                var selectedItem = entityGrid.dataItem(entityGrid.select());
+                if (selectedItem) {
+                    var id = selectedItem.fldID;
+                    var URL = '@Url.Content("~/metro/YesNomsg")';
+                    URL = URL + "/?id=" + id + "&URL=" + '@Url.Content("~/AnnouncementAttach/Delete")';
+                    windowAppend("body", URL);
+                    $("#message").html('آیا مایل به حذف رکورد انتخاب شده هستید؟');
+                }
+                else {
+                    alert('لطفا یک سطر را انتخاب کنید.');
+                }
+                Clear();
+            }
+
+        function Reload(Url, gridname, field, value, top, searchType) {
+            var grid = $('#' + gridname).data('kendoGrid');
+            $.ajax({
+                url: Url,
+                type: 'get',
+                datatype: 'json',
+                data: { field: field, value: value, top: top, searchtype: searchType },
+                error: function (xhr, status, error) {
+                    alert(xhr + status);
+                },
+                success: function (result) {
+                    $("#" + gridname).data("kendoGrid").dataSource.data(result);
+                }
+
+            });
+        }
+
+        function PostForm(datas, url, id) {
+            var sendInfo = datas;
+            $('#Lock').show();
+            $.ajax({
+                type: "POST",
+                url: url,
+                data: sendInfo,
+                datatype: "json",
+                success: function (data) {
+                    var m = data;
+                    windowAppend("body", "/metro/error");
+                    $("#message").html(m.data);
+                    switch (m.state) {
+                        case 0:
+                            $("#error .wintitle").html("ذخیره موفق");
+                            break;
+                        case 1:
+                            $("#error .wintitle").html("خطا");
+                            break;
+                    }
+                    var url = '@Url.Action("Reload", "AnnouncementAttach")';
+                    Reload(url, 'Grid', '0', '@ViewBag.fldAnnouncementID', 30, 1);
+                    $('#Lock').hide();
+                },
+                failure: function (data) {
+                    alert(data.data);
+                }
+            });
+        }    
+    </script>
+
+    <div>
+        <br />
+        <div class="k-rtl demo-section">
+            @(Html.Kendo().Grid<Avarez.Models.sp_AnnouncementManagerAttachmentSelect>()
+                .Name("Grid")
+                .Columns(columns =>
+                {
+                    columns.Bound(p => p.fldID).Title("کد");
+                    columns.Bound(p => p.fldDesc).Title("توضیحات");                    
+                })
+            .Selectable(selectable => selectable.Mode(GridSelectionMode.Single))
+            .Pageable()
+            .Scrollable()
+            .DataSource(data =>
+                 data.Ajax()
+                .PageSize(10)
+                .Read("Fill", "AnnouncementAttach")
+            )
+        )
+        </div>
+        <center>
+            <div>
+                @Avarez.Helper.winClass.Buttons("DelLink", "حذف", "Del")
+                @Avarez.Helper.winClass.Buttons("exit", "خروج", "Exit")
+            </div>
+        </center>
+        @(Html.Kendo().PanelBar()
+        .Name("panelbar-images")
+        .Items(panelbar =>
+        {
+            panelbar.Add().Text("انتخاب فایل ضمیمه")                
+                .Content(@<div>
+                    <center>
+                        @Html.Hidden("fldId")
+                        <table>                            
+                            <tr>
+                                <td align="left">
+                                    فایل ضمیمه:
+                                </td>
+                                <td>
+                                    <input type="file" name="file_upload" id="file_upload" />
+                                    <span style="color:Red;">نکته: حجم فایل ضمیمه بایستی کمتر از 200 کیلوبایت باشد.</span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td align="left">
+                                    توضیحات:
+                                </td>
+                                <td>
+                                    @Avarez.Helper.winClass.textArea("txtDesc", 4, 30)
+                                </td>
+                            </tr>
+                        </table>
+                        <p>
+                            @Avarez.Helper.winClass.Buttons("AddLink", "ذخیره", "Save")
+                        </p>
+                    </center>
+                    <br />
+                </div>);
+        })
+        )
+    </div>
+</div>

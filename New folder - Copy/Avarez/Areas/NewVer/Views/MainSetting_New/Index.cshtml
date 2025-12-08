@@ -1,0 +1,174 @@
+﻿@model IEnumerable<Avarez.Models.sp_MainSettingSelect>
+@using Ext.Net;
+@using Ext.Net.MVC;
+@{
+
+    var X = Html.X();
+}
+
+@(X.Panel()
+        //.Listeners(li => li.AfterRender.Handler = "CityMap();")
+        .ID("MainSetting")
+    .Title("تنظیمات اصلی")
+    .Closable(true)
+    .Border(false)
+    .CloseAction(Ext.Net.CloseAction.Destroy)
+    .Layout(Ext.Net.LayoutType.Fit)
+    .Items(
+        X.Panel()
+            .ItemID("PnlMainSetting")
+            .Border(false)
+            .Layout(Ext.Net.LayoutType.Fit)
+            .Items(
+                X.GridPanel()
+                    .AutoScroll(true)
+                    .TopBar(
+                        Html.X().Toolbar()
+                            .Items(
+                                X.Button()
+                                    .Text("جدید")
+                                    .Icon(Ext.Net.Icon.Add)
+                                        .Listeners(li => li.Click.Handler = "NewMainSetting();"),
+                                    X.Button()
+                                        .Text("ویرایش")
+                                        .Icon(Ext.Net.Icon.Pencil)
+                                            .Listeners(Li => Li.Click.Handler = "EditMainSetting();"),
+                                X.Button()
+                                    .Text("حذف")
+                                    .Icon(Ext.Net.Icon.Delete)
+                                        .Listeners(de => de.Click.Handler = "DeleteMainSetting();")
+
+                                                 , X.Button()
+                                            .Text("راهنما")
+                                            .Icon(Ext.Net.Icon.Help)
+                                                 .Listeners(de => de.Click.Handler = "HelpMainSetting();")
+                                    )
+                                    )
+                        .ItemID("GridMainSetting")
+                    .BottomBar(X.PagingToolbar())
+                    .Store(
+                        Html.X().StoreForModel()
+                            .Proxy(Html.X().AjaxProxy()
+                                .Url(Url.Action("Read"))
+                                .Reader(Html.X().JsonReader().Root("data"))
+        )
+                    .PageSize(20)
+                    .RemoteFilter(true)
+                    .RemotePaging(true)
+                            .Listeners(l => l.DataChanged.Handler = "App.MainSetting.queryById('GridMainSetting').selModel.refresh();")
+    )
+                    .View(
+                        Html.X().GridView().LoadingText("در حال بارگذاری...").RTL(true)
+    )
+                    .Plugins(X.FilterHeader().Remote(true))
+                    .ColumnModel(
+                            Html.X().RowNumbererColumn(),
+                            Html.X().Column().DataIndex(Model, m => m.fldID).Text("کد").Hidden(true).Flex(1),
+                            Html.X().Column().DataIndex(Model, m => m.fldCarSeriesName).Text("سری خودرو").Flex(3),
+                            Html.X().Column().DataIndex(Model, m => m.fldCountryDivisionsName).Text("تقسیمات کشوری").Flex(3),
+                            Html.X().Column().DataIndex(Model, m => m.fldCountryDivisionsTreeApply).Text("اعمال تقسیمات کشوری").Flex(3),
+                            Html.X().Column().DataIndex(Model, m => m.fldCarSeriesTreeApply).Text("اعمال سری خودرو").Flex(3),
+                            Html.X().Column().DataIndex(Model, m => m.fldImplementationDate).Text("تاریخ پیاده سازی").Flex(3)
+    )
+                .SelectionModel(
+                    Html.X().RowSelectionModel()
+                        .Mode(Ext.Net.SelectionMode.Single)
+    )
+
+))
+)
+
+<script type="text/javascript">
+
+   
+    function NewMainSetting() {
+        Ext.net.Mask.show({ msg: 'در حال بارگذاری...' });
+        Ext.net.DirectMethod.request({
+            url: '/NewVer/MainSetting_New/New',
+            params: {
+               Id: 0
+            },
+            success: function () {
+                Ext.net.Mask.hide();
+            }
+        });
+    }
+
+    function EditMainSetting() {
+        var SelectedRow = App.MainSetting.queryById('GridMainSetting').selModel.getLastSelected();
+        if (SelectedRow != null) {
+            Ext.net.Mask.show({ msg: 'در حال بارگذاری...' });
+            Ext.net.DirectMethod.request({
+                url: '/NewVer/MainSetting_New/New',
+                params: {
+                    id: SelectedRow.data.fldID,
+                },
+                success: function () {
+                    Ext.net.Mask.hide();
+                }
+            });
+        }
+        else {
+            Ext.MessageBox.show({
+                title: "خطا",
+                msg: "لطفا یک سطر را انتخاب نمایید.",
+                icon: Ext.MessageBox.ERROR,
+                buttons: Ext.MessageBox.OK
+            });
+        }
+    }
+
+    function DeleteMainSetting() {
+        var SelectedRow = App.MainSetting.queryById('GridMainSetting').selModel.getLastSelected();
+        if (SelectedRow != null) {
+            Ext.MessageBox.show({
+                title: "هشدار",
+                msg: "آیا برای حذف مطمئن هستید؟",
+                icon: Ext.MessageBox.WARNING,
+                buttons: Ext.MessageBox.YESNO,
+                fn: function (btn) {
+                    if (btn == 'yes') {
+                        Ext.net.Mask.show({ msg: 'در حال انجام عملیات...' });
+                        Ext.net.DirectMethod.request({
+                            url: '/NewVer/MainSetting_New/Delete',
+                            params: {
+                                Id: SelectedRow.data.fldID
+                            },
+                            success: function (data) {
+                                var ic = Ext.MessageBox.INFO;
+                                if (data.Er == 1)
+                                    ic = Ext.MessageBox.ERROR;
+                                Ext.MessageBox.show({
+                                    title: data.MsgTitle,
+                                    msg: data.Msg,
+                                    icon: ic,
+                                    buttons: Ext.MessageBox.OK
+                                });
+                                Ext.net.Mask.hide();
+                                App.MainSetting.queryById('GridMainSetting').store.load();
+                            }
+                        });
+                    }
+                }
+            });
+        }
+        else {
+            Ext.MessageBox.show({
+                title: "خطا",
+                msg: "لطفا یک سطر را انتخاب نمایید.",
+                icon: Ext.MessageBox.ERROR,
+                buttons: Ext.MessageBox.OK
+            });
+        }
+    }
+
+    function HelpMainSetting() {
+        Ext.net.Mask.show({ msg: 'در حال بارگذاری...' });
+        Ext.net.DirectMethod.request({
+            url: '/NewVer/MainSetting_New/Help',
+            success: function (data) {
+                Ext.net.Mask.hide();
+            }
+        });
+    }
+</script>

@@ -1,0 +1,628 @@
+﻿@using Kendo.Mvc.UI;
+<div class="modal" id="CarPlaque">
+    <script src="@Url.Content("~/Content/Base.js")" type="text/javascript"></script>
+    <div>
+        @if (ViewBag.State == 3)
+        {
+            <img src="@Url.Content("~/Content/images/NAV2.png")" alt="" style="width: 270px; height: 45px; border: 2px;"/>
+        }        
+        else if(ViewBag.State==4){
+            <img src="@Url.Content("~/Content/images/NAV4_2.png")" alt="" />
+        }
+        else
+        {
+            <img src="@Url.Content("~/Content/images/NAV2_2.png")" alt="" style="width: 270px; height: 45px; border: 2px;"/>
+        }
+        <br />
+        <center>
+            <table>
+                @Html.Hidden("fldId")
+                <tr>
+                    <td align="left">
+                        <span style="color: Red;">*</span> نوع پلاک:
+                    </td>
+                    <td>
+                        @Html.TextBox("cboTypeP")
+                        <span id="lblcboTypePError" style="color: Red;"></span>
+                    </td>
+                    <td>
+                    </td>
+                </tr>
+                <tr>
+                    <td align="left">
+                        <span style="color: Red;">*</span> شهر پلاک:
+                    </td>
+                    <td>
+                        @Html.TextBox("cboCityP")
+
+                        <span id="lblcboCityPError" style="color: Red;"></span>
+                    </td>
+                    <td>
+                    </td>
+                </tr>
+                <tr>
+                    <td align="left">
+                        <span style="color: Red;">*</span> سریال پلاک:
+                    </td>
+                    <td>
+                        @(Html.Kendo().DropDownList()
+                              .Name("cboSerialP")
+                              .OptionLabel("...")
+                              .DataTextField("fldName")
+                              .DataValueField("fldID")
+                              .DataSource(source =>
+                              {
+                                  source.Read(read =>
+                                  {
+                                      read.Action("GetCascadecboSerialP", "CarPlaque");
+                                  });
+                              })
+                                          .HtmlAttributes(new { @style = "display: none;width:125px;" })
+                        )
+                        <span id="lblcboSerialPError" style="color: Red;"></span>
+                    </td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td align="left">
+                        <span style="color: Red;">*</span> شماره پلاک:
+                    </td>
+                    <td>
+                        @Html.TextBox("_3char", null, new { @dir = "ltr", @style = "width:30px;", @id = "_3char", @maxlength = "3", @placeholder = "رقم3" })
+                        <span id="lbl3charError" style="color: Red;"></span>
+                        @(Html.Kendo().DropDownList()
+                              .Name("cboCharP")
+                              .OptionLabel("...")
+                              .DataTextField("fldName")
+                              .DataValueField("fldID")
+                              .DataSource(source =>
+                              {
+                                  source.Read(read =>
+                                  {
+                                      read.Action("GetCascadeChar", "CarPlaque");
+                                  });
+                              })
+                                  .HtmlAttributes(new { @style = "width:50px;", @id = "cboCharP" })
+                            )
+                        @Html.TextBox("_2char", null, new { @dir = "ltr", @style = "width:30px;", @id = "_2char", @maxlength = "2", @placeholder = "رقم2" })
+                        <span id="lbl2charError" style="color: Red;"></span>
+                        <span id="lblcboCharPError" style="color: Red;">
+                        </span>
+                    </td>
+                    <td>
+                    </td>
+                </tr>
+                <tr>
+                    <td align="left">
+                        <span style="color: Red;">*</span> وضعیت پلاک:
+                    </td>
+                    <td>
+                        @(Html.Kendo().DropDownList()
+                              .Name("cboStatusP")
+                              .OptionLabel("...")
+                              .DataTextField("fldName")
+                              .DataValueField("fldID")
+                              .SelectedIndex(5)
+                              .DataSource(source =>
+                              {
+                                  source.Read(read =>
+                                  {
+                                      read.Action("GetCascadeStatus", "CarPlaque");
+                                  });
+                              })
+                                          .HtmlAttributes(new { @style = "display: none;width:125px;" })
+                            )
+                        <span id="lblcboStatusPError" style="color: Red;"></span>
+                    </td>
+                    <td>
+                    </td>
+                </tr>
+                
+                <tr>
+                    <td align="left">
+                        توضیحات:
+                    </td>
+                    <td>
+                        @Avarez.Helper.winClass.textArea("txtDesc", 4, 30)
+                    </td>
+                    <td>
+                    </td>
+                </tr>
+            </table>
+            <p>
+                @if (ViewBag.State != 2)
+                {
+                    @Avarez.Helper.winClass.Buttons("next", "ادامه", "Next")
+                }
+                @Avarez.Helper.winClass.Buttons("AddLink", "ذخیره", "Save")
+                @Avarez.Helper.winClass.Buttons("EditLink", "ویرایش", "Edit")
+                @Avarez.Helper.winClass.Buttons("DelLink", "حذف", "Del")
+                @Avarez.Helper.winClass.Buttons("exit", "خروج", "Exit")                
+            </p>
+        </center>
+        <div class="k-rtl demo-section">
+            @(Html.Kendo().Grid<Avarez.Models.sp_CarPlaqueSelect>()
+                .Name("Grid")
+                .Columns(columns =>
+                {
+                    columns.Bound(p => p.fldID).Title("کد").Visible(false);
+                    columns.Bound(p => p.fldOwnerName).Title("نام مالک");
+                    columns.Bound(p => p.fldPlaqueNumber).Title("شماره پلاک");
+                    columns.Bound(p => p.fldPlaqueCityName).Title("شهر");
+                    columns.Bound(p => p.fldPlaqueSerial).Title("شماره سریال");
+                    columns.Bound(p => p.fldDesc).Title("توضیحات");
+                })
+            .Selectable(selectable => selectable.Mode(GridSelectionMode.Single))
+            .Pageable()
+            .Scrollable()
+            .DataSource(data =>
+                data.Ajax()
+                        .PageSize(200).Read("Fill", "CarPlaque")
+            )
+        )
+        </div>
+    </div>
+    <script type="text/javascript">
+        function selectPlaque() {
+
+            return {
+                cboTypeP: $("#cboTypeP").data("kendoDropDownList").text()
+            };
+        }
+        $("document").ready(function () {
+            $("#AddLink").button();
+            $("#next").button();
+            $("#EditLink").button();
+            $("#DelLink").button();
+            $("#exit").button();
+
+            $("#_3char").focus();
+
+//            var url = '@Url.Action("Reload", "CarPlaque")';
+//            Reload(url, 'Grid', '0', '@ViewBag.Owner', 30, 1);
+            //var Mnu = $("#cboSerialP").data("kendoDropDownList");
+            //Mnu.value('63');
+            $("#_3char").keyup(function () {
+                if ($("#_3char").val().length == 3)
+                    $("#_2char").focus();
+            });
+            $("#_2char").keyup(function () {
+                if ($("#_2char").val().length == 2)
+                    $("#AddLink").focus();
+            });
+            $("#exit").click(function () {
+                $("#CommonWin").remove();
+                $("#CarPlaque").remove();
+                Dialog = 0;
+            });
+            $('#CarPlaque #btnClose').click(function () {
+                $("#CommonWin").remove();
+                $("#CarPlaque").remove();
+                Dialog = 0;
+            });
+            $('#CarPlaque').on('keyup', 'input', function (event) {
+                if (event.which == 13) {
+                    var inputs = $('#CarPlaque').find(':input:visible');
+                    inputs.eq(inputs.index(this) + 1).focus();
+                }
+            });
+            var URL = '@Url.Content("~/CarPlaque/DetailSubSetting")';
+            $.ajax({
+                type: "GET",
+                url: URL,
+                success: function (data) {
+                    if (data.fldDefaultPelakChar != 0) {
+                        var ch = $("#cboCharP").data("kendoDropDownList");
+                        ch.value(data.fldDefaultPelakChar);
+                    }
+                    if (data.fldDefaultPelakSerial != 0) {
+                        var seri = $("#cboSerialP").data("kendoDropDownList");
+                        seri.value(data.fldDefaultPelakSerial);
+                    }                    
+                },
+                failure: function (data) {
+                    alert(data.data);
+                }
+            });
+            $(document).keyup(function (event) {
+                if (event.which == 119) {
+                    SaveRecord();
+                }
+                else if (event.which == 113) {
+                    EditRecord();
+                }
+                else if (event.which == 115) {
+                    DeleteRecord();
+                }
+            });
+            $('#AddLink').attr('title', 'کلید میانبر (F8)'); //119
+            $('#EditLink').attr('title', 'کلید میانبر (F2)'); //113
+            $('#DelLink').attr('title', 'کلید میانبر (F4)'); //115
+
+            jQuery("#EditLink").click(function () {
+                EditRecord();
+            });
+
+            $('#DelLink').click(function () {
+                DeleteRecord();
+            });
+
+            $("#AddLink").click(function () {
+                SaveRecord();
+            });
+
+            $('#next').click(function () {
+                var entityGrid = $("#Grid").data("kendoGrid");
+                var selectedItem = entityGrid.dataItem(entityGrid.select());
+                if (selectedItem) {
+                    var id = selectedItem.fldID;
+                    var URL = '@Url.Content("~/CarFile/Index")';
+                    URL = URL;
+                    var Win = "#win";
+                    if (Dialog == 1)
+                        Win = "#CommonContent";
+                    windows(Win, URL + "/?id=" + id+'&state=@ViewBag.State');
+                } else {
+                    alert('لطفا یک سطر را انتخاب کنید.');
+                }
+            });
+            
+
+            $('#txtSearch').keyup(function () {
+                var url = '@Url.Action("Reload", "CarPlaque")';
+                Reload(url, 'Grid', $("#cboSearchFiald").val(), $("#txtSearch").val(), $("#txtTop").val(), $("#cboSearchType").val());
+            });
+
+            $("#cboCharP").change(function () {
+                if ($("#cboCharP").val() != '') {
+                    $("#cboCharP").removeClass("input-validation-error");
+                    $("#lblcboCharPError").html("");
+                }
+                else {
+                    $("#cboCharP").addClass("input-validation-error");
+                    $('#lblcboCharPError').html('لطفا کاراکتر وسط پلاک را انتخاب کنید.');
+                }
+
+            });
+
+            $("#cboTypeP").change(function () {
+                if ($("#cboTypeP").val() != '') {
+                    $("#cboTypeP").removeClass("input-validation-error");
+                    $("#lblcboTypePError").html("");
+                }
+                else {
+                    $("#cboTypeP").addClass("input-validation-error");
+                    $('#lblcboTypePError').html('لطفا نوع پلاک را انتخاب کنید.');
+                }
+                var drop = $("#cboTypeP").data("kendoDropDownList");
+                var f = document.getElementById('_3char');
+                var char = $("#cboCharP").data("kendoDropDownList");
+                if (drop.text() == 'ملی') {
+                    document.getElementById('_2char').hidden = false;
+                    document.getElementById('cboCharP').hidden = false;
+                    f.maxLength = 3;
+                    f.placeholder = '3رقم';
+                    f.style.width = '30px';
+                    char.enable(true);
+                }
+                else {
+                    document.getElementById('_2char').hidden = true;
+                    document.getElementById('cboCharP').hidden = true;
+                    f.maxLength = 10;
+                    f.placeholder = '';
+                    f.style.width = '119px';
+                    char.enable(false);
+                }
+                $('#_2char').val('');
+                $('#_3char').val('');
+
+            });
+
+            $("#cboCityP").change(function () {
+                if ($("#cboCityP").val() != '') {
+                    $("#cboCityP").removeClass("input-validation-error");
+                    $("#lblcboCityPError").html("");
+                }
+                else {
+                    $("#cboCityP").addClass("input-validation-error");
+                    $('#lblcboCityPError').html('لطفا شهر پلاک را انتخاب کنید.');
+                }
+            });
+            $("#cboStatusP").change(function () {
+                if ($("#cboStatusP").val() != '') {
+                    $("#cboStatusP").removeClass("input-validation-error");
+                    $("#lblcboStatusPError").html("");
+                }
+                else {
+                    $("#cboStatusP").addClass("input-validation-error");
+                    $('#lblcboStatusPError').html('لطفا وضعیت پلاک را انتخاب کنید.');
+                }
+            });
+            $("#cboSerialP").change(function () {
+                if ($("#cboSerialP").val() != '') {
+                    $("#cboSerialP").removeClass("input-validation-error");
+                    $("#lblcboSerialPError").html("");
+                }
+                else {
+                    $("#cboSerialP").addClass("input-validation-error");
+                    $('#lblcboSerialPError').html('لطفا سریال پلاک را انتخاب کنید.');
+                }
+            });
+            $("#_3char").keyup(function () {
+                var id = $("#_3char").val().toString();
+                if (id.length < 3) {
+                    $("#_3char").addClass("input-validation-error");
+                    $('#lbl3charError').html('کد  شامل 3 رقم می باشد.');
+                }
+                else {
+                    $("#_3char").removeClass("input-validation-error");
+                    $('#lbl3charError').html('');
+                }
+            });
+            $("#_2char").keyup(function () {
+                var id = $("#_2char").val().toString();
+                if (id.length < 2) {
+                    $("#_2char").addClass("input-validation-error");
+                    $('#lbl2charError').html('کد  شامل 2 رقم می باشد.');
+                }
+                else {
+                    $("#_2char").removeClass("input-validation-error");
+                    $('#lbl2charError').html('');
+                }
+            });
+
+          
+        });
+        function Clear() {
+            //$('#txtName').val('');
+            //$('#fldId').val(0);
+            //$('#txtDesc').val('');
+        }
+        function DeleteRecord() {
+            var entityGrid = $("#Grid").data("kendoGrid");
+            var selectedItem = entityGrid.dataItem(entityGrid.select());
+            if (selectedItem) {
+                var id = selectedItem.fldID;
+                var URL = '@Url.Content("~/metro/YesNomsg")';
+                URL = URL + "/?id=" + id + "&URL=" + '@Url.Content("~/CarPlaque/Delete")';
+                windowAppend("body", URL);
+                $("#message").html('آیا مایل به حذف رکورد انتخاب شده هستید؟');
+            }
+            else {
+                alert('لطفا یک سطر را انتخاب کنید.');
+            }
+            Clear();
+        }
+         function SaveRecord() {
+                var er = false;
+                var charr;
+                var drop = $("#cboCharP").data("kendoDropDownList");
+
+                if ($("#_3char").val() == '') {
+                    $("#_3char").addClass("input-validation-error");
+                    $('#lbl3charError').html('لطفا کد سه کاراکتر را انتخاب کنید.');
+                    er = true;
+                }
+                else {
+                    $("#_3char").removeClass("input-validation-error");
+                    $('#lbl3charError').html('');
+                }
+
+                if ($("#cboTypeP").val() == '') {
+                    $("#cboTypeP").addClass("input-validation-error");
+                    $('#lblcboTypePError').html('لطفا نوع پلاک را انتخاب کنید.');
+                    er = true;
+                }
+                else {
+                    $("#cboTypeP").removeClass("input-validation-error");
+                    $('#lblcboTypePError').html('');
+
+                }
+
+                if ($("#cboCityP").val() == '') {
+                    $("#cboCityP").addClass("input-validation-error");
+                    $('#lblcboCityPError').html('لطفا شهر پلاک را انتخاب کنید.');
+                    er = true;
+                }
+                else {
+                    $("#cboCityP").removeClass("input-validation-error");
+                    $('#lblcboCityPError').html('');
+                }
+
+                if ($("#cboStatusP").val() == '') {
+                    $("#cboStatusP").addClass("input-validation-error");
+                    $('#lblcboStatusPError').html('لطفا وضعیت پلاک را انتخاب کنید.');
+                    er = true;
+                }
+                else {
+                    $("#cboStatusP").removeClass("input-validation-error");
+                    $('#lblcboStatusPError').html('');
+                }
+
+                if ($("#cboSerialP").val() == '') {
+                    $("#cboSerialP").addClass("input-validation-error");
+                    $('#lblcboSerialPError').html('لطفا وضعیت پلاک را انتخاب کنید.');
+                    er = true;
+                }
+                else {
+                    $("#cboSerialP").removeClass("input-validation-error");
+                    $('#lblcboSerialPError').html('');
+                }
+
+                if ($("#cboTypeP").data("kendoDropDownList").text() == 'ملی') {
+
+                    charr = drop.text();
+                    if ($("#_2char").val() == '') {
+                        $("#_2char").addClass("input-validation-error");
+                        $('#lbl2charError').html('لطفا کد دو کاراکتری را انتخاب کنید.');
+                        er = true;
+                    }
+                    else {
+                        $("#_2char").removeClass("input-validation-error");
+                        $('#lbl2charError').html('');
+                    }
+
+                    if ($("#cboCharP").val() == '') {
+                        $("#cboCharP").addClass("input-validation-error");
+                        $('#lblcboCharPError').html('لطفا کاراکتر وسط پلاک را انتخاب کنید.');
+                        er = true;
+                    }
+                    else {
+                        $("#cboCharP").removeClass("input-validation-error");
+                        $('#lblcboCharPError').html('');
+                    }
+
+                }
+                else {
+                    charr = '';
+
+                }
+
+
+                if (er)
+                    return;
+                var plaquenum;
+                plaquenum = $("#_3char").val().toString() + charr + $("#_2char").val().toString();
+
+                var data = { fldPlaqueNumber: plaquenum, fldPlaqueCityID: $("#cboCityP").val(),
+                    fldPlaqueSerialID: $("#cboSerialP").val(), fldPlaqueTypeID: $("#cboTypeP").val(),
+                    fldOwnerID: '@ViewBag.Owner', fldCharacterPersianPlaqueID: $("#cboCharP").val(),
+                    fldStatusPlaqeID: $("#cboStatusP").val(), fldUserID: 1, fldDesc: $("#txtDesc").val(),
+                    fldId: $("#fldId").val()
+                };
+                if (data != '') {
+                    PostForm(data, '@Url.Content("~/CarPlaque/Save")', "#win");
+                }
+                Clear();
+            }
+        function EditRecord() {
+                var entityGrid = $("#Grid").data("kendoGrid");
+                var selectedItem = entityGrid.dataItem(entityGrid.select());
+                if (selectedItem) {
+                    var id = selectedItem.fldID;
+                    var URL = '@Url.Content("~/CarPlaque/Details")';
+                    URL = URL + "/" + id;
+                    $.ajax({
+                        type: "GET",
+                        url: URL,
+                        success: function (data) {
+
+
+                            $('#_2char').val(data.Two);
+                            $('#_3char').val(data.Three);
+
+
+                            var ch = $("#cboCharP").data("kendoDropDownList");
+                            ch.value(data.charId);
+
+                            var status = $("#cboStatusP").data("kendoDropDownList");
+                            status.value(data.fldStatusPlaqeID);
+
+                            var seri = $("#cboSerialP").data("kendoDropDownList");
+                            seri.value(data.fldPlaqueSerialID);
+
+
+
+                            var type = $("#cboTypeP").data("kendoDropDownList");
+                            type.value(data.fldPlaqueTypeID);
+
+                            var city = $("#cboCityP").data("kendoDropDownList");
+                            city.value(data.fldPlaqueCityID);
+
+                            $('#fldId').val(data.fldId);
+                            $('#txtDesc').val(data.fldDesc);
+                        },
+                        failure: function (data) {
+                            alert(data.data);
+                        }
+                    });
+                }
+                else {
+                    alert('لطفا یک سطر را انتخاب کنید.');
+                }
+            }
+        function Reload(Url, gridname, field, value, top, searchType) {
+            var grid = $('#' + gridname).data('kendoGrid');
+            $.ajax({
+                url: Url,
+                type: 'get',
+                datatype: 'json',
+                data: { field: field, value: value, top: top, searchtype: searchType },
+                error: function (xhr, status, error) {
+                    alert(xhr + status);
+                },
+                success: function (result) {
+                    $("#" + gridname).data("kendoGrid").dataSource.data(result);
+                }
+
+            });
+        }
+
+        function PostForm(datas, url, id) {
+            var sendInfo = datas;
+            $('#Lock').show();
+            $.ajax({
+                type: "POST",
+                url: url,
+                data: sendInfo,
+                datatype: "json",
+                success: function (data) {
+                    var m = data;
+                    windowAppend("body", "/metro/error");
+                    $("#message").html(m.data);
+                    $("#fldId").val(m.id);
+                    switch (m.state) {
+                        case 0:
+                            $("#error .wintitle").html("ذخیره موفق");
+                            break;
+                        case 1:
+                            $("#error .wintitle").html("خطا");
+                            break;
+                    }
+                    var url = '@Url.Action("Reload", "CarPlaque")';
+                    Reload(url, 'Grid', '0', '@ViewBag.Owner', 30, 1);
+                    $('#Lock').hide();
+                },
+                failure: function (data) {
+                    alert(data.data);
+                }
+            });
+        }    
+    </script>
+</div>
+<div class="k-rtl">
+        @(Html.Kendo().DropDownList()
+                .Name("cboTypeP")
+                .OptionLabel("نوع پلاک...")
+                .DataTextField("fldName")
+                .DataValueField("fldID")
+                .SelectedIndex(4)
+                .DataSource(source =>
+                {
+                    source.Read(read =>
+                    {
+                        read.Action("GetCascadeType", "CarPlaque");
+                    });
+                })
+                    .HtmlAttributes(new { @style = "display: none;width:125px;", @id = "cboTypeP" })
+            )
+            @(Html.Kendo().DropDownList()
+                .Name("cboCityP")
+                .OptionLabel("شهر پلاک...")
+                .DataTextField("fldName")
+                .DataValueField("fldID")
+                 .SelectedIndex(1)
+                .DataSource(source =>
+                {
+                    source.Read(read =>
+                    {
+                        read.Action("GetCascadePlaque", "CarPlaque").Data("selectPlaque");
+                    })
+                    .ServerFiltering(true);
+                })
+                    .Enable(true)
+                    .AutoBind(false)
+                    .HtmlAttributes(new { @style = "display: none;width:125px;" })
+                    .CascadeFrom("cboTypeP")
+            )
+    </div>

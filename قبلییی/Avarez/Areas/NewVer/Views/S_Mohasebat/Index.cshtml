@@ -1,0 +1,761 @@
+﻿@model IEnumerable<Avarez.Models.sp_jCalcSingleBaze>
+@using Ext.Net.MVC
+@using Hogaf.ExtNet.UX
+@using Ext.Net;
+@using Ext.Net.Utilities;
+@{
+
+    var X = Html.X();
+}
+<script src="~/Scripts/accounting.min.js"></script>
+@(X.Panel().Title("محاسبات سرانگشتی").Border(false).Height(500)//.Listeners(l => l.AfterRender.Handler = "FormLoad();")
+            .ID("S_Mohasebat")
+                .AutoScroll(true).Closable(false)
+                .Layout(LayoutType.Fit)
+                .Items(
+        //    X.FieldSet().Border(true).Width(500)
+        //  .Layout(Ext.Net.LayoutType.VBox)
+        //                    .LayoutConfig(new Ext.Net.VBoxLayoutConfig { Align = Ext.Net.VBoxAlign.Center })
+        //.Items(
+        X.Panel()
+
+
+                .Layout(Ext.Net.LayoutType.VBox)
+                .LayoutConfig(new Ext.Net.VBoxLayoutConfig { Align = Ext.Net.VBoxAlign.Center })
+        .Border(false).ButtonAlign(Ext.Net.Alignment.Center)
+        .AutoScroll(true)
+
+        .Items(
+                X.Panel().Border(false)
+                    .Margins("20px 0px 0px 0px")
+                .Center()
+                     .Layout(Ext.Net.LayoutType.VBox)
+                    .LayoutConfig(new Ext.Net.VBoxLayoutConfig { Align = Ext.Net.VBoxAlign.Center })
+                    .AutoScroll(true)
+        //.Defaults(new { Margin = 2 })
+                .Items(
+        //X.Button().ItemID("btnSearchClass").Text("جستجوی کلاس").Icon(Ext.Net.Icon.Find).Listeners(l =>
+        //             {
+        //                 l.Click.Handler = "SearchClass()";
+        //             })
+                         X.Panel()
+                        .Listeners(l => l.Render.Fn = "addKeyMapS_Mohasebat")
+                            .ButtonAlign(Ext.Net.Alignment.Center)
+            .Buttons(
+                        X.Button().Text("محاسبه").Icon(Ext.Net.Icon.Calculator).Margin(5)
+                        .Listeners(l =>
+                        {
+                            l.Click.Handler = "Calculate_S();";
+
+                        })
+                        , X.Button().Text("چاپ").Icon(Ext.Net.Icon.Printer).Margin(5)
+                        .Listeners(l =>
+                        {
+                            l.Click.Handler = "Print_S();";
+
+                        })
+                        , X.Button().Text("راهنما").Icon(Ext.Net.Icon.Help).Margin(5)
+                        .Listeners(l =>
+                        {
+                            l.Click.Handler = "HelpCal_S();";
+
+                        })
+                        ,
+                        X.Button().Text("خروج").Icon(Ext.Net.Icon.DoorOut).ToolTip("کلید میانبر Esc")
+                                    .OnClientClick("App.AvarezWin.destroy();"))
+                        .Border(false)
+                        .Layout(LayoutType.VBox)
+                        .LayoutConfig(new Ext.Net.VBoxLayoutConfig { Align = VBoxAlign.Center })
+                        .Defaults(new { Margin = 2 })
+                        .Items(
+                         X.FieldSet()
+                            .Width(700)
+                            .Layout(LayoutType.Table)
+                            .LayoutConfig(new Ext.Net.TableLayoutConfig { Columns = 2 })
+                        .Title("مشخصات خودرو")
+                        .Items(
+                                X.Hidden().ItemID("fldId")
+                                   ,
+                                        X.FieldSet().Width(650).Border(false)
+                            .Layout(LayoutType.VBox)
+                                .LayoutConfig(new Ext.Net.VBoxLayoutConfig { Align = VBoxAlign.Center })
+
+                        .Items(
+                                    X.Button().ItemID("btnSearchClass").Text("جستجوی کلاس").Icon(Ext.Net.Icon.Find).Listeners(l =>
+                                   {
+                                       l.Click.Handler = "SearchClass1()";
+                                   })
+                                       ).ColSpan(2),
+                                       X.PDateField()
+                                        .ItemID("txtDateCalc")
+                                        .FieldLabel("تاریخ محاسبه")
+                                        .AllowBlank(false)
+                                        .ColSpan(2)
+                                        .Width(300)
+                                        .BlankText("لطفا تاریخ محاسبه را وارد نمایید.")
+                                        .Editable(true)
+                                            .Listeners(l => { l.Render.Handler = "setDefaultDate()"; l.Change.Handler = "calcDateChange()"; })
+                                        , X.ComboBox()
+                                        .AutoFocus(true)
+                                        .MsgTarget(Ext.Net.MessageTarget.Side)
+                                        .Width(300)
+                                        .FieldLabel("نوع مدل")
+                                        .ItemID("cboCarMake1")
+                                        .TypeAhead(true)
+                                        .Editable(false)
+                                        .QueryMode(DataLoadMode.Local)
+                                        .BlankText("لطفا نوع ساخت را انتخاب کنید.")
+                                        .ForceSelection(true)
+                                        .TriggerAction(TriggerAction.All)
+                                        .DisplayField("Name")
+                                        .ValueField("ID")
+                                        .EmptyText("...")
+                                        .Listeners(ls =>
+                                        {
+                                            ls.Select.Handler = " App.S_Mohasebat.queryById('cboCarAccountTypes1').clearValue();App.S_Mohasebat.queryById('cboCarAccountTypes1').getStore().load();App.S_Mohasebat.queryById('cboYear1').clearValue();App.S_Mohasebat.queryById('cboYear1').getStore().load();";
+                                        }
+                                            )
+                                         .Store(X.Store()
+                                            .Model(X.Model()
+                                            .IDProperty("fldId")
+                                            .Fields(
+                                                        new ModelField("ID", ModelFieldType.String) { Mapping = "ID" },
+                                                        new ModelField("Name", ModelFieldType.String) { Mapping = "Name" }
+                                                    )
+                                                        )
+                                            .Proxy(X.AjaxProxy()
+                                                .Url(Url.Action("GetCascadeMake"))
+                                            .Reader(X.JsonReader().Root("data"))
+                                                    )
+        // .Listeners(li => li.Load.Handler = "LoadS_Mohasebat();")
+                                                    )
+                                        .AllowBlank(false)
+                                        ,
+                                        X.ComboBox()
+                                        .MsgTarget(Ext.Net.MessageTarget.Side)
+                                        .Width(300)
+                                        .FieldLabel("نوع کاربری")
+                                        .ItemID("cboCarAccountTypes1")
+                                        .TypeAhead(true)
+                                        .Editable(true)
+                                        .QueryMode(DataLoadMode.Local)
+                                        .BlankText("لطفا نوع کاربری را انتخاب کنید.")
+                                        .ForceSelection(true)
+                                        .TriggerAction(TriggerAction.All)
+                                        .DisplayField("Name")
+                                        .ValueField("ID")
+                                        .EmptyText("...")
+                                        .Listeners(li => li.Select.Handler = "App.S_Mohasebat.queryById('cboCarCabin1').clearValue(); App.S_Mohasebat.queryById('cboCarCabin1').getStore().load();")
+
+                                         .Store(X.Store()
+                                         .AutoLoad(false)
+                                            .Model(X.Model()
+                                            .IDProperty("fldId")
+                                            .Fields(
+                                                        new ModelField("ID", ModelFieldType.String) { Mapping = "ID" },
+                                                        new ModelField("Name", ModelFieldType.String) { Mapping = "Name" }
+                                                    )
+                                                        )
+                                            .Proxy(X.AjaxProxy()
+                                                    .Url(Url.Action("GetAccount"))
+                                            .Reader(X.JsonReader().Root("data"))
+                                                        )
+                                                                .Parameters(ps => ps.Add(new StoreParameter("cboCarMake", "App.S_Mohasebat.queryById('cboCarMake1').getValue()", ParameterMode.Raw)))
+                                                    )
+                                        .AllowBlank(false)
+                                        ,
+                                        X.ComboBox()
+                                        .MsgTarget(Ext.Net.MessageTarget.Side)
+                                        .Width(300)
+                                        .FieldLabel("نوع کابین")
+                                        .ItemID("cboCarCabin1")
+                                        .TypeAhead(true)
+                                            .Editable(true)
+                                        .QueryMode(DataLoadMode.Local)
+                                        .BlankText("لطفا نوع کابین را انتخاب کنید.")
+                                        .ForceSelection(true)
+                                        .TriggerAction(TriggerAction.All)
+                                        .DisplayField("Name")
+                                        .ValueField("ID")
+                                        .EmptyText("...")
+                                        .Listeners(ls =>
+                                        {
+                                            ls.Select.Handler = "App.S_Mohasebat.queryById('cboSystem1').clearValue(); App.S_Mohasebat.queryById('cboSystem1').getStore().load();";
+                                        }
+                                            )
+                                                .Store(X.Store()
+                                             .AutoLoad(false)
+                                            .Model(X.Model()
+                                            .IDProperty("fldId")
+                                            .Fields(
+                                                        new ModelField("ID", ModelFieldType.String) { Mapping = "ID" },
+                                                        new ModelField("Name", ModelFieldType.String) { Mapping = "Name" }
+                                                    )
+                                                        )
+                                            .Proxy(X.AjaxProxy()
+                                                .Url(Url.Action("GetCabin"))
+                                            .Reader(X.JsonReader().Root("data"))
+                                                        )
+                                                                    .Parameters(ps => ps.Add(new StoreParameter("cboCarAccountTypes", "App.S_Mohasebat.queryById('cboCarAccountTypes1').getValue()", ParameterMode.Raw)))
+                                                    )
+                                        .AllowBlank(false)
+                                        ,
+                                        X.ComboBox()
+                                        .MsgTarget(Ext.Net.MessageTarget.Side)
+                                        .Width(300)
+                                        .FieldLabel("سیستم خودرو")
+                                        .ItemID("cboSystem1")
+                                        .TypeAhead(true)
+                                            .Editable(true)
+                                        .QueryMode(DataLoadMode.Local)
+                                        .BlankText("لطفا سیستم خودرو را انتخاب کنید.")
+                                        .ForceSelection(true)
+                                        .TriggerAction(TriggerAction.All)
+                                        .DisplayField("Name")
+                                        .ValueField("ID")
+                                        .EmptyText("...")
+                                        .Listeners(ls =>
+                                        {
+                                            ls.Select.Handler = " App.S_Mohasebat.queryById('cboModel1').clearValue();App.S_Mohasebat.queryById('cboModel1').getStore().load();";
+                                        }
+                                            )
+                                                .Store(X.Store()
+                                             .AutoLoad(false)
+                                            .Model(X.Model()
+                                            .IDProperty("fldId")
+                                            .Fields(
+                                                        new ModelField("ID", ModelFieldType.String) { Mapping = "ID" },
+                                                        new ModelField("Name", ModelFieldType.String) { Mapping = "Name" }
+                                                    )
+                                                        )
+                                            .Proxy(X.AjaxProxy()
+                                                    .Url(Url.Action("GetSystem"))
+                                            .Reader(X.JsonReader().Root("data"))
+                                                        )
+                                                                    .Parameters(ps => ps.Add(new StoreParameter("cboCarCabin", "App.S_Mohasebat.queryById('cboCarCabin1').getValue()", ParameterMode.Raw)))
+                                                    )
+                                        .AllowBlank(false)
+                                        ,
+                                        X.ComboBox()
+                                        .MsgTarget(Ext.Net.MessageTarget.Side)
+                                        .Width(300)
+                                        .FieldLabel("تیپ خودرو")
+                                        .ItemID("cboModel1")
+                                        .TypeAhead(true)
+                                            .Editable(true)
+                                        .QueryMode(DataLoadMode.Local)
+                                        .BlankText("لطفا تیپ خودرو را انتخاب کنید.")
+                                        .ForceSelection(true)
+                                        .TriggerAction(TriggerAction.All)
+                                        .DisplayField("Name")
+                                        .ValueField("ID")
+                                        .EmptyText("...")
+                                        .Listeners(ls =>
+                                        {
+                                            ls.Select.Handler = " App.S_Mohasebat.queryById('cboClass1').clearValue();App.S_Mohasebat.queryById('cboClass1').getStore().load();";
+                                        }
+                                            )
+                                                .Store(X.Store()
+                                             .AutoLoad(false)
+                                            .Model(X.Model()
+                                            .IDProperty("fldId")
+                                            .Fields(
+                                                        new ModelField("ID", ModelFieldType.String) { Mapping = "ID" },
+                                                        new ModelField("Name", ModelFieldType.String) { Mapping = "Name" }
+                                                    )
+                                                        )
+                                            .Proxy(X.AjaxProxy()
+                                                    .Url(Url.Action("GetModel"))
+                                            .Reader(X.JsonReader().Root("data"))
+                                                        )
+                                                                    .Parameters(ps => ps.Add(new StoreParameter("cboSystem", "App.S_Mohasebat.queryById('cboSystem1').getValue()", ParameterMode.Raw)))
+                                                    )
+                                        .AllowBlank(false)
+                                        ,
+                                        X.ComboBox()
+                                        .MsgTarget(Ext.Net.MessageTarget.Side)
+                                        .Width(300)
+                                        .FieldLabel("کلاس خودرو")
+                                        .ItemID("cboClass1")
+                                        .TypeAhead(true)
+                                         .Editable(true)
+                                        .QueryMode(DataLoadMode.Local)
+                                        .BlankText("لطفا کلاس خودرو را انتخاب کنید.")
+                                        .ForceSelection(true)
+                                        .TriggerAction(TriggerAction.All)
+                                        .DisplayField("Name")
+                                        .ValueField("ID")
+                                        .EmptyText("...")
+                                                .Store(X.Store()
+                                             .AutoLoad(false)
+                                            .Model(X.Model()
+                                            .IDProperty("fldId")
+                                            .Fields(
+                                                        new ModelField("ID", ModelFieldType.String) { Mapping = "ID" },
+                                                        new ModelField("Name", ModelFieldType.String) { Mapping = "Name" }
+                                                    )
+                                                        )
+                                            .Proxy(X.AjaxProxy()
+                                                    .Url(Url.Action("GetClass"))
+                                            .Reader(X.JsonReader().Root("data"))
+                                                        )
+                                                                    .Parameters(ps => ps.Add(new StoreParameter("cboModel", "App.S_Mohasebat.queryById('cboModel1').getValue()", ParameterMode.Raw)))
+                                                    )
+                                        .AllowBlank(false)
+                                        ,
+                                        X.ComboBox()
+                                        .MsgTarget(Ext.Net.MessageTarget.Side)
+                                        .Width(300)
+                                        .FieldLabel("مدل")
+                                        .ItemID("cboYear1")
+                                        .TypeAhead(true)
+                                            .Editable(true)
+                                        .QueryMode(DataLoadMode.Local)
+                                        .BlankText("لطفا مدل را انتخاب کنید.")
+                                        .ForceSelection(true)
+                                        .TriggerAction(TriggerAction.All)
+                                        .DisplayField("Name")
+                                        .ValueField("ID")
+                                        .EmptyText("...")
+                                        .Listeners(ls =>
+                                    {
+                                        ls.Select.Handler = "App.S_Mohasebat.queryById('cboAzSal1').getStore().load();FillDate();";
+                                    }
+                                    )
+                                                .Store(X.Store()
+                                             .AutoLoad(false)
+                                            .Model(X.Model()
+                                            .IDProperty("fldId")
+                                            .Fields(
+                                                        new ModelField("ID", ModelFieldType.String) { Mapping = "ID" },
+                                                        new ModelField("Name", ModelFieldType.String) { Mapping = "Name" }
+                                                    )
+                                                        )
+                                            .Proxy(X.AjaxProxy()
+                                                    .Url(Url.Action("GetYear"))
+                                            .Reader(X.JsonReader().Root("data"))
+                                                        )
+                                                .Parameters(ps => { 
+                                                    ps.Add(new StoreParameter("Noo", "App.S_Mohasebat.queryById('cboCarMake1').getValue()", ParameterMode.Raw));
+                                                    ps.Add(new StoreParameter("calcDate", "App.S_Mohasebat.queryById('txtDateCalc').rawValue", ParameterMode.Raw));
+                                                })
+                                                    )
+        // .Listeners(l => l.Select.Handler = "ChangeYear();")
+                                        .AllowBlank(false)
+                                    ,
+                                    X.PDateField()
+                                    .FieldLabel("تاریخ سند کارخانه")
+                                    .ItemID("txtTarikh1")
+                                    .Width(300)
+                                    .MsgTarget(Ext.Net.MessageTarget.Side)
+                                    .AllowBlank(false)
+                                    .BlankText("لطفا تاریخ سند کارخانه را وارد کنید.")
+                                    ,
+                                    X.ComboBox()
+                                    .MsgTarget(Ext.Net.MessageTarget.Side)
+                                    .Width(300)
+                                    .FieldLabel("ازسال")
+                                    .ItemID("cboAzSal1")
+                                    .TypeAhead(true)
+                                        .Editable(true)
+                                    .QueryMode(DataLoadMode.Local)
+                                    .BlankText("لطفا سال را انتخاب کنید.")
+                                    .ForceSelection(true)
+                                    .TriggerAction(TriggerAction.All)
+                                    .DisplayField("Name")
+                                    .ValueField("ID")
+                                    .EmptyText("...")
+                                    .Listeners(ls =>
+                                    {
+                                        ls.Change.Handler = "App.S_Mohasebat.queryById('cboTaSal1').getStore().load();";
+                                    }
+                                        )
+                                            .Store(X.Store().Listeners(l => l.Load.Handler = "App.S_Mohasebat.queryById('cboAzSal1').setValue(App.S_Mohasebat.queryById('cboAzSal1').store.getAt(0));")
+                                            .AutoLoad(false)
+                                        .Model(X.Model()
+                                        .IDProperty("fldId")
+                                        .Fields(
+                                                    new ModelField("ID", ModelFieldType.String) { Mapping = "ID" },
+                                                    new ModelField("Name", ModelFieldType.String) { Mapping = "Name" }
+                                                )
+                                                    )
+                                        .Proxy(X.AjaxProxy()
+                                                        .Url(Url.Action("GetFromYear"))
+                                        .Reader(X.JsonReader().Root("data"))
+                                                    )
+                                            .Parameters(ps =>
+                                            {
+                                                ps.Add(new StoreParameter("Noo", "App.S_Mohasebat.queryById('cboCarMake1').getValue()", ParameterMode.Raw));
+                                                ps.Add(new StoreParameter("value", "App.S_Mohasebat.queryById('cboYear1').getValue()", ParameterMode.Raw));
+                                            })
+                                                )
+                                    .AllowBlank(false)
+                                    ,
+                                    X.ComboBox()
+                                    .MsgTarget(Ext.Net.MessageTarget.Side)
+                                    .Width(300)
+                                    .FieldLabel("تاسال")
+                                    .ItemID("cboTaSal1")
+                                    .TypeAhead(true)
+                                        .Editable(true)
+                                    .QueryMode(DataLoadMode.Local)
+                                    .BlankText("لطفا سال را انتخاب کنید.")
+                                    .ForceSelection(true)
+                                    .TriggerAction(TriggerAction.All)
+                                    .DisplayField("Name")
+                                    .ValueField("ID")
+                                    .EmptyText("...")
+                                            .Store(X.Store()
+                                                    .AutoLoad(false).Listeners(l => l.Load.Handler = "App.S_Mohasebat.queryById('cboTaSal1').setValue(App.S_Mohasebat.queryById('cboTaSal1').store.getAt(App.S_Mohasebat.queryById('cboTaSal1').store.count()-1))")
+                                        .Model(X.Model()
+                                        .IDProperty("fldId")
+                                        .Fields(
+                                                    new ModelField("ID", ModelFieldType.String) { Mapping = "ID" },
+                                                    new ModelField("Name", ModelFieldType.String) { Mapping = "Name" }
+                                                )
+                                                    )
+                                        .Proxy(X.AjaxProxy()
+                                                    .Url(Url.Action("GetToYear"))
+                                        .Reader(X.JsonReader().Root("data"))
+                                                    )
+                                            .Parameters(ps =>
+                                            {
+                                                ps.Add(new StoreParameter("CalcDate", "App.S_Mohasebat.queryById('txtDateCalc').rawValue", ParameterMode.Raw));
+                                                ps.Add(new StoreParameter("value", "App.S_Mohasebat.queryById('cboAzSal1').getValue()", ParameterMode.Raw));
+                                            })
+                                                )
+                                    .AllowBlank(false)
+                                    )
+                                    ,
+                                    X.FieldSet().ItemID("FieldSet1")
+                                        .ColSpan(2)
+        .MarginSpec("20px 0px 0px 150px")
+                                        .Border(false)
+                                        .Width(400)
+                            .Layout(LayoutType.Table)
+                            .LayoutConfig(new Ext.Net.TableLayoutConfig { Columns = 2 })
+                                .Defaults(new { Margin = 10 })
+                            .Items(
+                                        X.Label().ItemID("price"),
+                                        X.Label().ItemID("Avarez"),
+                                        X.Label().ItemID("Mablagh"),
+                                        X.Label().ItemID("ArzeshAfzode"),
+                                        X.Label().ItemID("MablaghNahai"),
+                                        X.Label().ItemID("Jarime")
+                                    )
+                                )
+                                , X.Panel()
+                        .Margins("20px 0px 0px 0px")
+                .Height(250)
+                .Width(900)
+                            .Border(false)
+                            .AutoScroll(true)
+                            .ID("PnlGridCalce")
+                            .Layout(Ext.Net.LayoutType.Fit)
+                    .Items(
+                        X.GridPanel()
+                            .AutoScroll(true)
+                                .ItemID("GridCalc")
+        //.BottomBar(X.PagingToolbar())
+                            .Store(
+                                            X.StoreForModel()
+             .AutoLoad(false)
+        //.Proxy(Html.X().AjaxProxy()
+        //    .Url(Url.Action("Read"))
+        //    .Reader(Html.X().JsonReader().Root("data"))
+        //)
+                                    .PageSize(20)
+                                    .RemoteFilter(true)
+                                    .RemotePaging(true)
+                            )
+                            .View(
+                                Html.X().GridView().LoadingText("در حال بارگذاری...").RTL(true)
+                            )
+        // .Plugins(X.FilterHeader().Remote(true))
+                            .ColumnModel(
+                                 Html.X().RowNumbererColumn().Flex(1),
+                                Html.X().Column().DataIndex(Model, m => m.fldYear).Text("سال").Flex(2),
+                                Html.X().Column().DataIndex(Model, m => m.fldPrice).Text("عوارض").Renderer("seperate").Flex(5),
+                                Html.X().Column().DataIndex(Model, m => m.fldMablaghMoaser).Text("مبلغ موثر").Renderer("seperate").Flex(5),
+                                Html.X().Column().DataIndex(Model, m => m.fldValueAdded).Text("تبصره ب ماده43").Renderer("seperate").Flex(5),
+                                Html.X().Column().DataIndex(Model, m => m.fldFinalPrice).Text("مبلغ نهایی").Renderer("seperate").Flex(5),
+                                Html.X().Column().DataIndex(Model, m => m.fldMablaghJarime).Text("جریمه").Renderer("seperate").Flex(5),
+                                Html.X().Column().DataIndex(Model, m => m.fldTedadJarime).Text("تعداد ماه/روز").Flex(5),
+                                Html.X().Column().DataIndex(Model, m => m.fldDiscount).Text("تخفیف ").Renderer("seperate").Flex(5),
+                                Html.X().Column().DataIndex(Model, m => m.fldDept).Text("جمع کل").Renderer("seperate").Flex(5)
+                                        )
+                            )
+                )
+            )
+                )
+)
+<script type="text/javascript">
+    var _calc = 0;
+    function SearchClass1() {
+        Ext.net.Mask.show({ msg: 'در حال بارگذاری...' });
+        Ext.net.DirectMethod.request({
+            url: '/NewVer/_SearchClass/Index',
+            params: {
+                State: 2
+            },
+            success: function (data) {
+                Ext.net.Mask.hide();
+            }
+        });
+    }
+    function calcDateChange() {
+        App.S_Mohasebat.queryById('cboYear1').getStore().load();
+    }
+    function setDefaultDate() {
+        var txtDateCalc = App.S_Mohasebat.queryById('txtDateCalc');
+        @{
+            Avarez.Models.cartaxEntities Car = new Avarez.Models.cartaxEntities();
+            var nowdate = Car.sp_GetDate().FirstOrDefault().CurrentDateTime.ToString("yyyy-MM-dd");
+        }
+        var date = new Date('@nowdate');
+        txtDateCalc.setMaxValue(date);
+        txtDateCalc.maxText = "تاریخ محاسبه نمی تواند بزرگتر از امروز باشد.";
+        txtDateCalc.setValue(date);
+    }
+
+    var seperate = function (value, metadata, record, rowIndex, colIndex, store) {
+        return value.toLocaleString();
+    };
+    function FillDate() {
+        var txtTarikh1 = App.S_Mohasebat.queryById('txtTarikh1');
+        var cboYear1 = App.S_Mohasebat.queryById('cboYear1');
+        Ext.net.Mask.show({ msg: 'در حال بررسی...' });
+        Ext.net.DirectMethod.request({
+            url: '/NewVer/S_Mohasebat/FillDateText',
+            params: {
+                year: cboYear1.getValue()
+            },
+            success: function (data) {
+                Ext.net.Mask.hide();
+                txtTarikh1.setValue(data.date);
+                txtTarikh1.setMinValue(txtTarikh1.rawValue);
+            }
+        });
+    }
+    function Calculate_S() {
+        _calc = 1;
+        var cboCarMake1 = App.S_Mohasebat.queryById('cboCarMake1');
+        var cboCarAccountTypes1 = App.S_Mohasebat.queryById('cboCarAccountTypes1');
+        var cboCarCabin1 = App.S_Mohasebat.queryById('cboCarCabin1');
+        var cboSystem1 = App.S_Mohasebat.queryById('cboSystem1');
+        var cboModel1 = App.S_Mohasebat.queryById('cboModel1');
+        var cboClass1 = App.S_Mohasebat.queryById('cboClass1');
+        var cboYear1 = App.S_Mohasebat.queryById('cboYear1');
+        var txtTarikh1 = App.S_Mohasebat.queryById('txtTarikh1');
+        var cboAzSal1 = App.S_Mohasebat.queryById('cboAzSal1');
+        var cboTaSal1 = App.S_Mohasebat.queryById('cboTaSal1');
+        var txtDateCalc = App.S_Mohasebat.queryById('txtDateCalc');
+
+
+        var er = false;
+        if (cboCarMake1.validate() == false) {
+            er = true;
+        }
+        if (cboCarAccountTypes1.validate() == false) {
+            er = true;
+        }
+        if (cboCarCabin1.validate() == false) {
+            er = true;
+        }
+        if (cboSystem1.validate() == false) {
+            er = true;
+        }
+        if (cboModel1.validate() == false) {
+            er = true;
+        }
+        if (cboClass1.validate() == false) {
+            er = true;
+        }
+        if (cboYear1.validate() == false) {
+            er = true;
+        }
+        if (txtTarikh1.validate() == false) {
+            er = true;
+        }
+        if (cboAzSal1.validate() == false) {
+            er = true;
+        }
+        if (cboTaSal1.validate() == false) {
+            er = true;
+        }
+        if (txtDateCalc.validate() == false) {
+            er = true;
+        }
+
+        if (er == true)
+            return;
+
+        Ext.net.Mask.show({ msg: 'در حال بارگذاری...' });
+        Ext.net.DirectMethod.request({
+            url: '/NewVer/S_Mohasebat/Calc',
+            params: {
+                carCode: cboClass1.getValue(),
+                fromYear: cboAzSal1.getValue(),
+                toYear: cboTaSal1.getValue(),
+                model: cboYear1.getValue(),
+                Date: txtTarikh1.rawValue,
+                CalcDate: txtDateCalc.getRawValue()
+            },
+            success: function (result) {
+                Ext.net.Mask.hide();
+                App.S_Mohasebat.queryById('FieldSet1').setBorder(true);
+                if (result.flag == 0) {
+                    App.S_Mohasebat.queryById('GridCalc').getStore().loadData(result.data);
+                    var SelectedRow = App.S_Mohasebat.queryById('GridCalc');
+                    var Account = 0; var Avarez = 0; var Mablagh = 0; var ArzeshAfzode = 0; var MablaghNahai = 0; var Jarime = 0;
+                    for (var i = 0; i < SelectedRow.selModel.store.count() ; i++) {
+                        row = SelectedRow.selModel.store.data.items[i];
+                        Account = Account + parseInt(row.data.fldDept.toString().replace(',', '').replace(',', '').replace(',', ''));
+                        Avarez = Avarez + parseInt(row.data.fldPrice.toString().replace(',', '').replace(',', '').replace(',', ''));
+                        Mablagh = Mablagh + parseInt(row.data.fldMablaghMoaser.toString().replace(',', '').replace(',', '').replace(',', ''));
+                        ArzeshAfzode = ArzeshAfzode + parseInt(row.data.fldValueAdded.toString().replace(',', '').replace(',', '').replace(',', ''));
+                        MablaghNahai = MablaghNahai + parseInt(row.data.fldFinalPrice.toString().replace(',', '').replace(',', '').replace(',', ''));
+                        Jarime = Jarime + parseInt(row.data.fldMablaghJarime.toString().replace(',', '').replace(',', '').replace(',', ''));
+                    } 
+                    App.S_Mohasebat.queryById('price').setText('جمع کل: ' + accounting.formatNumber(Account.toString()) + ' ریال');
+                    App.S_Mohasebat.queryById('Avarez').setText('جمع عوارض: ' + accounting.formatNumber(Avarez.toString()) + ' ریال');
+                    App.S_Mohasebat.queryById('Mablagh').setText('جمع مبلغ موثر: ' + accounting.formatNumber(Mablagh.toString()) + ' ریال');
+                    App.S_Mohasebat.queryById('ArzeshAfzode').setText('جمع تبصره ب ماده43: ' + accounting.formatNumber(ArzeshAfzode.toString()) + ' ریال');
+                    App.S_Mohasebat.queryById('MablaghNahai').setText('جمع مبلغ نهایی: ' + accounting.formatNumber(MablaghNahai.toString()) + ' ریال');
+                    App.S_Mohasebat.queryById('Jarime').setText('جمع جریمه: ' + accounting.formatNumber(Jarime.toString()) + ' ریال');
+                }
+                else {
+                    App.S_Mohasebat.queryById('price').setText('جمع کل: 0' + ' ریال');
+                    App.S_Mohasebat.queryById('Avarez').setText('جمع عوارض: 0' + ' ریال');
+                    App.S_Mohasebat.queryById('Mablagh').setText('جمع مبلغ موثر: 0' + ' ریال');
+                    App.S_Mohasebat.queryById('ArzeshAfzode').setText('جمع تبصره ب ماده43: 0' + ' ریال');
+                    App.S_Mohasebat.queryById('MablaghNahai').setText('جمع مبلغ نهایی: 0' + ' ریال');
+                    App.S_Mohasebat.queryById('Jarime').setText('جمع جریمه: 0' + ' ریال');
+                    Ext.net.DirectMethod.request({
+                        url: '/NewVer/SelectParvande/SendToSupporter',
+                        params: {
+                            msg: result.msg,
+                            Year: result.Year,
+                            CarClassId: cboClass1.getValue(),
+                            carFileID: 0
+                        },
+                        success: function (data) {
+                            Ext.net.Mask.hide();
+                            /*  Ext.MessageBox.show({
+                                  title: "هشدار",
+                                  msg: data.msg,
+                                  icon: Ext.MessageBox.INFO,
+                                  buttons: Ext.MessageBox.OK
+                              });*/
+                        }
+                    });
+                }
+            }
+
+        });
+    }
+    function Print_S() {
+        var cboCarMake1 = App.S_Mohasebat.queryById('cboCarMake1');
+        var cboCarAccountTypes1 = App.S_Mohasebat.queryById('cboCarAccountTypes1');
+        var cboCarCabin1 = App.S_Mohasebat.queryById('cboCarCabin1');
+        var cboSystem1 = App.S_Mohasebat.queryById('cboSystem1');
+        var cboModel1 = App.S_Mohasebat.queryById('cboModel1');
+        var cboClass1 = App.S_Mohasebat.queryById('cboClass1');
+        var cboYear1 = App.S_Mohasebat.queryById('cboYear1');
+        var txtTarikh1 = App.S_Mohasebat.queryById('txtTarikh1');
+        var cboAzSal1 = App.S_Mohasebat.queryById('cboAzSal1');
+        var cboTaSal1 = App.S_Mohasebat.queryById('cboTaSal1');
+        var txtDateCalc = App.S_Mohasebat.queryById('txtDateCalc');
+
+        if (_calc == 1) {
+            Ext.net.Mask.show({ msg: 'در حال بارگذاری...' });
+            Ext.net.DirectMethod.request({
+                url: '/NewVer/S_Mohasebat/PrintMohasebat',
+                params: {
+                    carCode: cboClass1.getValue(),
+                    fromYear: cboAzSal1.getValue(),
+                    toYear: cboTaSal1.getValue(),
+                    model: cboYear1.getValue(),
+                    Date: txtTarikh1.rawValue,
+                    CarMake: cboCarMake1.getDisplayValue(),
+                    CarAccountTypes: cboCarAccountTypes1.getDisplayValue(),
+                    CarCabin: cboCarCabin1.getDisplayValue(),
+                    System: cboSystem1.getDisplayValue(),
+                    Model1: cboModel1.getDisplayValue(),
+                    Class: cboClass1.getDisplayValue(),
+                    ModelNum: cboYear1.getValue(),
+                    AzYear: cboAzSal1.getValue(),
+                    Tasal: cboTaSal1.getValue(),
+                    DateBime: txtTarikh1.rawValue,
+                    CalcDate: txtDateCalc.getRawValue()
+                },
+                success: function () {
+                    Ext.net.Mask.hide();
+                }
+            });
+        } else
+            alert('لطفا ابتدا دكمه محاسبه را انتخاب كنيد.');
+    }
+    
+    function HelpCal_S() {
+        Ext.net.Mask.show({ msg: 'در حال بارگذاری...' });
+        Ext.net.DirectMethod.request({
+            url: '/NewVer/S_Mohasebat/HelpCal',
+            params: {
+
+            },
+            success: function (data) {
+                Ext.net.Mask.hide();
+            }
+        });
+    }
+    /*function EnterNext() {
+        var nextfld;
+    
+         if (App.AvarezTab.activeTab.id == "S_Mohasebat") {
+            var keyfield = App.S_Mohasebat.queryById(Ext.getCmp((Ext.Element.getActiveElement()).name).itemId);
+
+            nextfld = keyfield.nextSibling();
+            nextfld.focus();
+        }
+         else if (App.AvarezTab.activeTab.id == "SearchParvande" && App.SearchParvande.activeTab.id == "Parvande") {
+             var keyfield = App.SearchParvande.queryById(Ext.getCmp((Ext.Element.getActiveElement()).name).itemId);
+             if (keyfield.itemId == "txtSearch") {
+                 FnSearchParvande();
+             }
+             else {
+                 nextfld = keyfield.nextSibling();
+                 nextfld.focus();
+             }
+         }
+         else if (App.AvarezTab.activeTab.id == "SearchParvande" && App.SearchParvande.activeTab.id == "SabtVarizi") {
+             var keyfield = App.SabtVarizi.queryById(Ext.getCmp((Ext.Element.getActiveElement()).name).itemId);
+             var nextfld = keyfield.nextSibling();
+             if (nextfld != null) {
+                 if (nextfld.hidden == true && nextfld.itemId == "txtSerial")
+                     nextfld = nextfld.nextSibling();
+
+                 if (nextfld.hidden == true && nextfld.itemId == "txtMun")
+                     nextfld = nextfld.nextSibling().nextSibling();
+
+                 nextfld.focus();
+                 nextfld.selectText();
+             }
+         }
+    }*/
+    var addKeyMapS_Mohasebat = function (cmp) {
+        this.keyMap = new Ext.util.KeyMap({
+            target: cmp.getEl(),
+            binding: [{
+                key: Ext.EventObject.ENTER,
+                fn: function () {
+                    var keyfield = App.S_Mohasebat.queryById(Ext.getCmp((Ext.Element.getActiveElement()).name).itemId);
+
+                    nextfld = keyfield.nextSibling();
+                    nextfld.focus();
+
+                }
+            }]
+        });
+    };
+</script>

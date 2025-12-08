@@ -1,0 +1,25 @@
+﻿@using Ext.Net;
+@using Ext.Net.MVC;
+@using Ext.Net.Utilities;
+@{
+    var X = Html.X();
+}
+@(
+ Html.X().Panel().Height(560)
+     .Listeners(l => l.AfterRender.Handler = "SetSizeAllJoziyatAvarez()")
+        //.Title("پیش نمایش")
+        .ID("PrintAllJoziyatAvarez")
+        .AutoScroll(true)
+        .Closable(false)
+        .CloseAction(Ext.Net.CloseAction.Destroy)
+        .Html("<center><object class='se-pre-con' id='PrintTabAllJoziyatAvarez' style='width: 1000px;height: 600px;border: 1px solid #ccc;' type='application/pdf' data='/NewVer/SelectParvande/RptAllJoziyatAvarez?carId=" + @ViewBag.Id + "&Year=" + @ViewBag.Year + "&Price=" + @ViewBag.Price + "'></object></center>")
+)
+
+
+<script type="text/javascript">
+    function SetSizeAllJoziyatAvarez() {
+        App.PrintAllJoziyatAvarez.setHeight(Ext.getBody().getViewSize().height);
+        $('#PrintTabAllJoziyatAvarez').height(Ext.getBody().getViewSize().height - 10);
+    }
+
+</script>

@@ -1,0 +1,198 @@
+﻿@model IEnumerable<Avarez.Models.sp_AnnouncementManagerSelect>
+@using Ext.Net.MVC;
+@{
+
+    var X = Html.X();
+}
+
+@(X.Panel()
+        //.Listeners(li => li.AfterRender.Handler = "BankMap();")
+            .ID("Announcement")
+    .Title("ثبت اطلاعیه")
+    .Closable(true)
+    .Border(false)
+    .CloseAction(Ext.Net.CloseAction.Destroy)
+    .Layout(Ext.Net.LayoutType.Fit)
+    .Items(
+        X.Panel()
+                    .ItemID("PnlAnnouncement")
+            .Border(false)
+            .Layout(Ext.Net.LayoutType.Fit)
+            .Items(
+                X.GridPanel()
+                    .AutoScroll(true)
+                    .TopBar(
+                        Html.X().Toolbar()
+                            .Items(
+                                X.Button()
+                                    .Text("جدید")
+                                    .Icon(Ext.Net.Icon.Add)
+                                            .Listeners(li => li.Click.Handler = "NewAnnouncement();"),
+                                X.Button()
+                                    .Text("ویرایش")
+                                    .Icon(Ext.Net.Icon.Pencil)
+                                            .Listeners(Li => Li.Click.Handler = "EditAnnouncement();"),
+                                X.Button()
+                                    .Text("حذف")
+                                    .Icon(Ext.Net.Icon.Delete)
+                                            .Listeners(de => de.Click.Handler = "DeleteAnnouncement();"),
+                                   X.Button()
+                                        .Text("ادامه")
+                                        .Icon(Ext.Net.Icon.ArrowRedo)
+                                            .Listeners(de => de.Click.Handler = "NextAnnouncement();"),             
+                                X.Button()
+                                    .Text("راهنما")
+                                    .Icon(Ext.Net.Icon.Help)
+                                            .Listeners(de => de.Click.Handler = "HelpAnnouncement();")
+                                    )
+                                    )
+                            .ItemID("GridAnnouncement")
+                    .BottomBar(X.PagingToolbar())
+                    .Store(
+                        Html.X().StoreForModel()
+                            .Proxy(Html.X().AjaxProxy()
+                                .Url(Url.Action("Read"))
+                                .Reader(Html.X().JsonReader().Root("data"))
+        )
+                    .PageSize(20)
+                    .RemoteFilter(true)
+                    .RemotePaging(true)
+                                    .Listeners(l => l.DataChanged.Handler = "App.Announcement.queryById('GridAnnouncement').selModel.refresh();")
+    )
+                    .View(
+                        Html.X().GridView().LoadingText("در حال بارگذاری...").RTL(true)
+    )
+                    .Plugins(X.FilterHeader().Remote(true))
+                    .ColumnModel(
+                        Html.X().RowNumbererColumn(),
+                        Html.X().Column().DataIndex(Model, m => m.fldID).Text("کد").Hidden(true).Hideable(true).Flex(1),
+                        Html.X().Column().DataIndex(Model, m => m.fldSubject).Text("عنوان").Wrap(true).Flex(3),
+                        Html.X().Column().DataIndex(Model, m => m.fldShowStatusName).Text("وضعیت").Wrap(true).Flex(3),
+                        Html.X().Column().DataIndex(Model, m => m.fldDateInsert).Text("تاریخ").Wrap(true).Flex(3),
+                        Html.X().Column().DataIndex(Model, m => m.fldCountryDivisonTempName).Text("تقسیمات کشوری").Wrap(true).Flex(3),
+                        Html.X().Column().DataIndex(Model, m => m.fldDesc).Text("توضیحات").Flex(6).Wrap(true)
+    )
+                .SelectionModel(
+                    Html.X().RowSelectionModel()
+                        .Mode(Ext.Net.SelectionMode.Single)
+    )
+
+))
+)
+
+<script type="text/javascript">
+
+    function NewAnnouncement() {
+        Ext.net.Mask.show({ msg: 'در حال بارگذاری...' });
+        Ext.net.DirectMethod.request({
+            url: '/NewVer/Announcement_New/New',
+            params: {
+                Id: 0
+            },
+            success: function () {
+                Ext.net.Mask.hide();
+            }
+        });
+    }
+
+    function EditAnnouncement() {
+        var SelectedRow = App.Announcement.queryById('GridAnnouncement').selModel.getLastSelected();
+        if (SelectedRow != null) {
+            Ext.net.Mask.show({ msg: 'در حال بارگذاری...' });
+            Ext.net.DirectMethod.request({
+                url: '/NewVer/Announcement_New/New',
+                params: {
+                    Id: SelectedRow.data.fldID,
+                },
+                success: function () {
+                    Ext.net.Mask.hide();
+                }
+            });
+        }
+        else {
+            Ext.MessageBox.show({
+                title: "خطا",
+                msg: "لطفا یک سطر را انتخاب نمایید.",
+                icon: Ext.MessageBox.ERROR,
+                buttons: Ext.MessageBox.OK
+            });
+        }
+    }
+    function NextAnnouncement() {
+        var SelectedRow = App.Announcement.queryById('GridAnnouncement').selModel.getLastSelected();
+        if (SelectedRow != null) {
+            Ext.net.Mask.show({ msg: 'در حال بارگذاری...' });
+            Ext.net.DirectMethod.request({
+                url: '/NewVer/Announcement_New/AnnouncementAttach',
+                params: {
+                    Id: SelectedRow.data.fldID,
+                },
+                success: function () {
+                    Ext.net.Mask.hide();
+                }
+            });
+        }
+        else {
+            Ext.MessageBox.show({
+                title: "خطا",
+                msg: "لطفا یک سطر را انتخاب نمایید.",
+                icon: Ext.MessageBox.ERROR,
+                buttons: Ext.MessageBox.OK
+            });
+        }
+    }
+        function DeleteAnnouncement() {
+            var SelectedRow = App.Announcement.queryById('GridAnnouncement').selModel.getLastSelected();
+            if (SelectedRow != null) {
+                Ext.MessageBox.show({
+                    title: "هشدار",
+                    msg: "آیا برای حذف مطمئن هستید؟",
+                    icon: Ext.MessageBox.WARNING,
+                    buttons: Ext.MessageBox.YESNO,
+                    fn: function (btn) {
+                        if (btn == 'yes') {
+                            Ext.net.Mask.show({ msg: 'در حال انجام عملیات...' });
+                            Ext.net.DirectMethod.request({
+                                url: '/NewVer/Announcement_New/Delete',
+                                params: {
+                                    Id: SelectedRow.data.fldID
+                                },
+                                success: function (data) {
+                                    var ic = Ext.MessageBox.INFO;
+                                    if (data.Er == 1)
+                                        ic = Ext.MessageBox.ERROR;
+                                    Ext.MessageBox.show({
+                                        title: data.MsgTitle,
+                                        msg: data.Msg,
+                                        icon: ic,
+                                        buttons: Ext.MessageBox.OK
+                                    });
+                                    App.Announcement.queryById('GridAnnouncement').store.load();
+                                    Ext.net.Mask.hide();
+                                }
+                            });
+                        }
+                    }
+                });
+            }
+            else {
+                Ext.MessageBox.show({
+                    title: "خطا",
+                    msg: "لطفا یک سطر را انتخاب نمایید.",
+                    icon: Ext.MessageBox.ERROR,
+                    buttons: Ext.MessageBox.OK
+                });
+            }
+        }
+
+        function HelpAnnouncement() {
+            Ext.net.Mask.show({ msg: 'در حال بارگذاری...' });
+            Ext.net.DirectMethod.request({
+                url: '/NewVer/Announcement_New/Help',
+                success: function (data) {
+                    Ext.net.Mask.hide();
+                }
+            });
+        }
+
+</script>

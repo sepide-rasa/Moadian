@@ -1,0 +1,105 @@
+﻿<div id="User" dir="rtl">
+    <script src="@Url.Content(" ~ />Scripts/jquery.ui.datepicker-cc.all.min.js")" type="text/javascript"></script>
+    <center>
+        <br />
+        <br />
+        <br />
+        <table>
+            <tr>
+                <td align="left">
+                    موقعیت کاربر:
+                </td>
+                <td colspan="3" dir="rtl" id="Location" align="right"></td>
+            </tr>
+            <tr>
+                <td colspan="4" align="center" style="height: 30px;">
+                    @Html.Label("موقعیت انتخاب شده: ", new { @id = "Position" })
+                </td>
+            </tr>
+            <td colspan="2" align="center">
+                <br />
+                @Avarez.Helper.winClass.Buttons("Preview", "نمایش", "yes")
+            </td>
+            </tr>
+        </table>
+    </center>
+    <script type="text/javascript">
+    function select(e) {
+        var dataItem = this.dataItem(e.node);
+        id = dataItem.id;
+        SID = dataItem.fldSid;
+        NType = dataItem.fldNodeType;
+        var url = '@Url.Content("~/user/Position")';
+        $.ajax({
+            type: "post",
+            url: url,
+            data: { id: id },
+            datatype: "json",
+            success: function (data) {
+                var m = data;
+                $('#Position').html('موقعیت انتخاب شده: ' + m.Position);
+                var treeview = $("#treeview").data("kendoTreeView");
+                treeview.collapse(".k-item");
+            },
+            failure: function (data) {
+                alert(data.data);
+            }
+        });
+    }
+    var id = 0;
+    var SID;
+    var NType = 0;
+    $(document).ready(function () {
+        $('#Location').html($('#LocationDiv').valueOf());
+        $('#Preview').button();
+        $('#Preview').click(function () {
+            //window.open('@Url.Content("~/AppReports/RptUser")' + '?SDate=' + $('#txtStart').val() + '&EDate=' + $('#txtEnd').val());
+                if (id == 0) {
+                    alert("لطفا موقعیت کاربر را انتخاب نمایید.");
+                    return;
+                }
+                else {
+                    var Url = '@Url.Content("~/AppReports/IDCountryDivisions")' + '?Code=' + SID + '&NType=' + NType;
+                    $.ajax({
+                        type: "post",
+                        url: Url,
+                        datatype: "json",
+                        success: function (data) {
+                            if (isWinOpen == false) {
+                                isWinOpen = true;
+                                windowAppend('body', '/Home/PreviewRptPDFBox');
+                                var t = '@Url.Content("~/AppReports/RptUser")' + '?IdCountryDivisions=' + data.IdCountryDivisions;
+                            $('#pdf').html("<br/><object style='width: 900px;height: 500px;border: 1px solid #ccc;' id='pdfbox' type='application/pdf' data='" + t + "'></object> ");
+                        }
+                    },
+                    failure: function (data) {
+                        alert(data.data);
+                    }
+                });
+
+
+            }
+        });
+    });
+    </script>
+    @using Kendo.Mvc.UI;
+    <div class="treeview-back  k-rtl" dir="rtl" id="LocationDiv">
+        @(Html.Kendo().TreeView()
+        .Name("treeview")
+        .DataImageUrlField("image")
+        .DataTextField("Name")
+        .Checkboxes(chkbxs =>
+        {
+            chkbxs.Enabled(false).CheckChildren(false);
+        })
+        .DataSource(dataSource => dataSource
+        .Read(read => read
+        .Action("_Tree", "AppReports")
+        )
+        )
+        .Events(events =>
+        events.Select("select")
+        )
+        )
+    </div>
+</div>

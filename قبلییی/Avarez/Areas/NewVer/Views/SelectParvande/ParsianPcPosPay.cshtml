@@ -1,0 +1,160 @@
+﻿@using Ext.Net
+@using Ext.Net.MVC
+@{
+    var mablagh = ViewBag.mablagh.ToString("#,#");/*Convert.ToString(ViewBag.mablagh);*/
+}
+
+@(Html.X()
+    .Window()
+    .Width(250)
+    .Height(150)
+    .CloseAction(CloseAction.Destroy)
+        .ID("ParsianPcpos")
+    .Title("پرداخت توسط pcpos").Modal(true)
+    .Content(@<div>
+        <br />
+        <br />
+        <center>
+            <input type="text" id="saman_fishid" value="@ViewBag.fishid" style="display:none;" />
+            <textarea id="txtAdd" rows="4" cols="50" style="display:none;"></textarea>
+            مبلغ: <span>@mablagh</span> ریال
+            <br />
+            <br />
+            <button style="font-family:Tahoma;font-size:12px;" class="btn btn-success pull-right" type="button" id="btnSendAmountPCStart">ارسال به دستگاه کارتخوان</button>
+        </center>
+    </div>
+        //.Items(
+        //    Html.X().Label().Text("مبلغ:"),
+        //        Html.X().Label().Text(mablagh),
+        //            Html.X().Button().Text("پرداخت").Listeners(l => l.Click.Handler = "SamanPay();"),
+        //        Html.X().Label().ID("SamanResult")
+        )
+)
+
+<script>
+
+    var ShenaseGhabz = '@ViewBag.ShGhabz';
+    var ShenasePardakht = '@ViewBag.ShPardakht';
+    var Mablagh = [];
+    var Sheba = [];
+    var pcpos_url = '@ViewBag.pcpos_url';
+    var fishid = '@ViewBag.fishid';
+    var PayMethodVal = '@ViewBag.PayMethodVal';
+    var parsian_state = '@ViewBag.state';
+    var req_params = new Object();
+
+    var s = '@ViewBag.mablagh';
+    for (i = 0; i < 9; i++) {
+        if (s == undefined || s == "")
+            Mablagh[i] = "";
+        else if (i == 0) Mablagh[i] = s;
+        else Mablagh[i] = "";
+    }
+    
+    var h = '@ViewBag.Sheba';
+    for (i = 0; i < 9; i++) {
+        if (i == 0) Sheba[i] = h;
+        else Sheba[i] = "";
+        if (h == undefined)
+            Sheba[i] = "";
+    }
+
+    $('#btnSendAmountPCStart').click(function () {
+        
+        App.ParsianPcpos.body.mask("در حال انجام عملیات...");
+
+        
+        if (PayMethodVal == "0") {/*خرید*/
+            req_params.PR = "000000";
+            req_params.AM = Mablagh;/*[$('#amount1').val(), $('#amount2').val(), $('#amount3').val(), $('#amount4').val(), $('#amount5').val(), $('#amount6').val(), $('#amount7').val(), $('#amount8').val(), $('#amount9').val()];*/
+            req_params.CU = "364";/* $('#currency').val();*/
+            req_params.R1 = "عوارض خودرو";/* $('#r_cardholder').val();*/
+            req_params.R2 = "عوارض خودرو";/*$('#r_merchant').val();*/
+            req_params.T1 = "عوارض خودرو";/* $('#t_cardholder').val();*/
+            req_params.T2 = "عوارض خودرو"; /*$('#t_merchant').val();*/
+
+        }
+        else {/*پرداخت با شناسه قبض و پرداخت*/
+req_params.PR = "170000";
+req_params.AM = s;
+            req_params.SV = ShenaseGhabz;
+            req_params.SG = ShenasePardakht;
+req_params.CU = "364";/* $('#currency').val();*/
+            req_params.R1 = "عوارض خودرو";/* $('#r_cardholder').val();*/
+            req_params.R2 = "عوارض خودرو";/*$('#r_merchant').val();*/
+            req_params.T1 = "عوارض خودرو";/* $('#t_cardholder').val();*/
+            req_params.T2 = "عوارض خودرو"; /*$('#t_merchant').val();*/
+        }
+        
+
+        req_params.AD = "";
+        req_params.PD = "1";
+
+        var settel_str = "";
+        var keyval_str = "";
+        for (i = 0; i < 9; i++)
+            if (Mablagh[i].length > 0) {
+                settel_str += (i + 1) + "=" + Mablagh[i] + ",";
+                keyval_str += Mablagh[i] + "=" + Sheba[i] + "=" + Sheba[i] + ",";
+            }
+
+        var settelment = settel_str.slice(0, -1);
+        req_params.ST = settelment.split(",");
+        var key_value = keyval_str.slice(0, -1);
+        req_params.AV = key_value.split(",");
+
+        $.ajax({
+            type: "POST",
+            url: pcpos_url,
+            data: JSON.stringify(req_params),
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            timeout: 120 * 1000,
+            success: doSuccess,
+            failure: function (errMsg) {
+                alert(errMsg);
+            }
+        });
+
+    });
+    var ttt;
+    var doSuccess = function (data) {
+        ttt = data;
+        /*$('#result').empty();
+        $('#result').append(JSON.stringify(data, null, "\t"));*/
+
+
+        Ext.net.DirectMethod.request({
+            url: '/newver/selectParvande/ParsianPcPosVerify',
+            params: {
+                TerminalID: data.tM,
+                ResponseCode: data.resp_code,
+                SerialId: data.sR,
+                RRN: data.tR,
+                ResponseDescription: data.resp_msg,
+                TxnDate: data.tI,
+                fishid: fishid,
+                state: parsian_state
+            },
+            success: function (result) {
+                var ic = Ext.MessageBox.INFO;
+                if (result.Er == 1) {
+                    ic = Ext.MessageBox.ERROR;
+                }
+                Ext.MessageBox.show({
+                    title: "وضعیت پرداخت",
+                    msg: result.Msg,
+                    icon: ic,
+                    buttons: Ext.MessageBox.OK,
+                    fn: function (btn) {
+                        if (btn == 'ok') {
+                            App.ParsianPcpos.destroy();
+                        }
+                    }
+                });
+                Ext.net.Mask.hide();
+                App.ParsianPcpos.body.mask().hide();
+            }
+        });
+    }
+</script>

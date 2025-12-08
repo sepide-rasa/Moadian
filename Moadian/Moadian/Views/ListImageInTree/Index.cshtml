@@ -1,0 +1,183 @@
+﻿@using Kendo.Mvc.UI;
+<div id="ListImageInTree">
+   @Avarez.Helper.winClass.windowHeader("", "مشاهده بایگانی دیجیتال", 800,600)
+    <div>
+        <br />
+        <center>
+        <h3>ساختار درختی بایگانی دیجیتال</h3>
+            <table>
+                    @Html.Hidden("fldId")
+                
+                <tr>
+                    <td align="center" colspan="2">
+                        <p>
+                            
+                            @Avarez.Helper.winClass.Buttons("exita", "خروج", "Exit")
+                        </p>
+                    </td>
+                </tr>
+                <tr>
+                    <td align="left">ساختار درختی بایگانی دیجیتال:
+                    </td>
+                    <td colspan="2" dir="rtl" id="P_Tree" align="right"></td>
+
+                </tr>
+                <tr>
+              <td></td>
+                    <td  dir="rtl" id="Location" style="color: red;"  align="center">
+                    </td>
+                </tr>
+                
+            </table>
+            <div id="listImage">
+            </div>
+        </center>
+        
+        <script type="text/javascript">
+            var isWinOpen = false;
+            var dataItem = '';
+            var Pid = null;
+            var Pid2 = null;
+            var Win = 0;
+
+            function select(e) {
+                dataItem = this.dataItem(e.node);
+                Pid = dataItem.id;
+                Pid2 = Pid;
+                $.ajax({ url: '/ListImageInTree/listImage?id=' + Pid+'&carid='+'@ViewBag.carid', cache: false, async: false, type: "GET" })
+                .done(function (e) {
+                    $('#listImage').html(e);
+                    $(".preview").click(function () {
+                        windowAppend("body", "/ListImageInTree/preview/" + this.id.toString().substring(3));
+                    });
+                })
+                .fail(function (e) { console.log(e); });
+            }
+
+            function expand() {
+                var treeview = $("#treeview").data("kendoTreeView");
+                treeview.expand(".k-item");
+            }
+
+            $("document").ready(function () {
+
+                $('#P_Tree').html($('#LocationDiv').valueOf());
+                $("#exita").button();
+
+                var carid = '@ViewBag.carid';
+
+                $('#ListImageInTree').on('keyup', 'input', function (event) {
+                    if (event.which == 13) {
+                        var inputs = $('#ListImageInTree').find(':input:visible');
+                        inputs.eq(inputs.index(this) + 1).focus();
+                    }
+                });
+                
+                $("#exita").click(function () {
+                    $("#ListImageInTree").remove();
+                    isWinOpen = false;
+                });
+                $('#ListImageInTree #btnClose').click(function () {
+                    $("#ListImageInTree").remove();
+                    isWinOpen = false;
+                });
+
+            });
+            function Clear() {
+               
+                $('#fldId').val('0');
+                Pid = 0;
+               
+            }
+            function SaveRecord() {
+                var er = false;
+               
+
+                if (er)
+                    return;
+
+                var z = false;
+                if (Addable.checked)
+                    z = true;
+
+                var data = {
+                    fldName: $("#txtName").val(),
+                    fldAddable: z,
+                    PId: Pid,
+                    fldId: $("#fldId").val()
+                };
+                if (data != '') {
+                    PostForm(data, '@Url.Content("~/ListImageInTree/Save")', "#win");
+                }
+                Clear();
+            }
+           
+            function PostForm(datas, url, id) {
+                var sendInfo = datas;
+                $('#Lock').show();
+                $.ajax({
+                    type: "POST",
+                    url: url,
+                    data: JSON.stringify(sendInfo),
+                    datatype: "json",
+                    contentType: 'application/json',
+                    success: function (data) {
+                        var m = data;
+                        windowAppend("body", "/metro/error");
+                        $("#message").html(m.data);
+                        switch (m.state) {
+                            case 0:
+                                $("#error .wintitle").html("ذخیره موفق");
+                                break;
+                            case 1:
+                                $("#error .wintitle").html("خطا");
+                                break;
+                        }
+
+                        var tree = $('#treeview').data("kendoTreeView");
+                        tree.dataSource.read();
+                        $('#Lock').hide();
+
+                    },
+                    failure: function (data) {
+                        alert(data.data);
+                    }
+                });
+            }
+
+        </script>
+    </div>
+    <div class="treeview-back  k-rtl" dir="rtl" id="LocationDiv">
+        @(Html.Kendo().TreeView()
+                        .Name("treeview")
+                        .DataTextField("Name")
+                        
+                        .DataSource(dataSource => dataSource
+                        .Read(read => read
+                                 .Action("_ProductTree", "ListImageInTree")
+                        )
+                        )
+                        .Events(events =>
+                        {
+                            events.Select("select");
+                            events.DataBound("expand");
+                        })
+                        )
+    </div>
+    <style type="text/css">
+    .treeview-back
+    {
+        width: 400px;
+        margin: 30px;
+        padding: 20px;
+        -moz-box-shadow: 0 1px 2px rgba(0,0,0,0.45), inset 0 0 30px rgba(0,0,0,0.07);
+        -webkit-box-shadow: 0 1px 2px rgba(0,0,0,0.45), inset 0 0 30px rgba(0,0,0,0.07);
+        box-shadow: 0 1px 2px rgba(0,0,0,0.45), inner 0 0 30px rgba(0,0,0,0.07);
+        -webkit-border-radius: 8px;
+        -moz-border-radius: 8px;
+        border-radius: 8px;
+    }
+</style>
+ @Avarez.Helper.winClass.windowFother()
+</div>
+

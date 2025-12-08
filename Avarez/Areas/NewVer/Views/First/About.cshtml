@@ -1,0 +1,59 @@
+﻿@using Ext.Net.MVC
+@using Hogaf.ExtNet.UX
+@using Ext.Net;
+@{
+    var X = Html.X();
+}
+
+
+@(Html.X().Window().Modal(true).Listeners(li => li.AfterRender.Handler = "LoadAbout();")
+.Width(550)
+    .Title("تماس با ما")
+                     .ID("About")
+    .Closable(true)
+    .CloseAction(Ext.Net.CloseAction.Destroy)
+    .Items(
+        X.FormPanel().Border(false)
+        .Border(false).ButtonAlign(Ext.Net.Alignment.Center)
+
+            .DefaultButton("btn")
+        .TitleAlign(Ext.Net.TitleAlign.Center)
+               .Buttons(
+                            X.Button().Text("خروج").Icon(Ext.Net.Icon.DoorOut).ToolTip("کلید میانبر Esc")
+                                               .OnClientClick("App.About.destroy()"))
+
+                .Items(
+                X.Panel().Border(false)
+
+            .Items(
+                X.FieldSet().Border(false)
+                .Center()
+                .LayoutConfig(new Ext.Net.TableLayoutConfig { Columns = 3 })
+                .Defaults(new { Margin = 2 })
+                .Items(
+        X.FieldSet().Border(false)
+            .LayoutConfig(new Ext.Net.TableLayoutConfig { Columns = 3 })
+                .Defaults(new { Margin = 2 })
+        .Items(
+                       X.Label().ItemID("lblAbout")
+                             )
+
+                        )
+
+                )
+                    .Layout(Ext.Net.LayoutType.VBox)
+                    .LayoutConfig(new Ext.Net.VBoxLayoutConfig { Align = Ext.Net.VBoxAlign.Center })
+            )
+        )
+)
+<script type="text/javascript">
+    function LoadAbout() {
+        var lblAbout = App.About.queryById('lblAbout');
+        Ext.net.DirectMethod.request({
+            url: '/First/MohtavaAbout',
+            success: function (data) {
+                lblAbout.setText(data.MohtavaAbout, false);
+            }
+        });
+    }
+</script>

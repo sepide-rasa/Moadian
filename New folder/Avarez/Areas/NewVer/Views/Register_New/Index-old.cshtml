@@ -1,0 +1,446 @@
+﻿@using Ext.Net.MVC
+@using Hogaf.ExtNet.UX
+@using Ext.Net;
+@{
+    var X = Html.X();
+}
+<style>
+    .trheight {
+        width: 30px;
+    }
+</style>
+@(Html.X().Window()//آخرین تغییرات
+    .Modal(true)
+        //.Listeners(li => li.AfterRender.Handler = "LoadCaptha();LoadRegister();")
+    .Resizable(false)
+    .Width(700)
+    .Height(385)
+        .Title("ثبت نام کاربران دفاتر پیشخوان")
+    .Layout(LayoutType.Fit)
+            .ID("Register")
+    .Closable(true)
+    .ButtonAlign(Ext.Net.Alignment.Center)
+    .Buttons(
+        X.Button()
+            .Text("ثبت نام")
+            .Icon(Ext.Net.Icon.Disk)
+        //.ToolTip("کلید میانبر F8")
+                    .Listeners(l => l.Click.Handler = "SaveRegister();"),
+        X.Button()
+            .Text("خروج")
+            .Icon(Ext.Net.Icon.DoorOut)
+        //.ToolTip("کلید میانبر Esc")
+                    .OnClientClick("App.Register.destroy();"))
+    .CloseAction(Ext.Net.CloseAction.Destroy)
+    .Items(
+        X.FormPanel()
+            .Border(false)
+            .Layout(LayoutType.Fit)
+            .Items(
+                X.Panel()
+                    .Border(false)
+                    .PaddingSpec("15px 0 0 0")
+                    .Layout(Ext.Net.LayoutType.VBox)
+                     .LayoutConfig(new Ext.Net.VBoxLayoutConfig { Align = Ext.Net.VBoxAlign.Center })
+                    .Items(
+                        X.FieldSet().Height(290)
+                            .Border(true).Title("اطلاعات کاربران دفاتر پیشخوان")
+
+                                         .Layout(Ext.Net.LayoutType.VBox)
+                         .LayoutConfig(new Ext.Net.VBoxLayoutConfig { Align = Ext.Net.VBoxAlign.Center })
+                            .Items(
+                                X.Hidden()
+                                    .ItemID("fldId"),
+                                 X.FieldSet().Border(false)
+                                    .Defaults(new { Margin = 2 })
+                                    .Layout(LayoutType.Table)
+                                        .LayoutConfig(new TableLayoutConfig { Columns = 4 })
+                                        .Items(
+                                             X.Label("استان:"),
+                                    X.ComboBox()
+                                    .ItemID("cboState")
+                                    .LabelAlign(Ext.Net.LabelAlign.Left)
+                                    .Editable(false)
+                                    .TypeAhead(true)
+                                    .AllowBlank(false)
+                                    .QueryMode(DataLoadMode.Local)
+                                    .ForceSelection(true)
+                                    .TriggerAction(TriggerAction.All)
+        //.AllowBlank(false)
+        //.SelectedItems(new { Value = "11" })
+        //.BlankText("لطفا استان را انتخاب نمایید.")
+                                    .MsgTarget(Ext.Net.MessageTarget.Side)
+                                    .DisplayField("fldName")
+                                    .ValueField("fldID")
+                                    .EmptyText("استان...")
+                                    .Width(190)
+                                                .Listeners(ls => ls.Change.Handler = " App.Register.queryById('cboMnu').getStore().load();")
+                                            .Store(X.Store()//.AutoLoad(false)
+                                        .Model(X.Model()
+                                                    .IDProperty("fldID")
+                                            .Fields(
+                                                new ModelField("fldID", ModelFieldType.String) { Mapping = "fldID" },
+                                                new ModelField("fldName", ModelFieldType.String) { Mapping = "fldName" }
+                                            )
+                                        )
+                                            .Proxy(X.AjaxProxy()
+                                                .Url(Url.Action("GetCascadeState"))
+                                                .Reader(X.JsonReader().Root("data"))
+                                            )
+                            .Listeners(li => li.Load.Handler = "LoadCaptha();LoadRegister();")
+                                ).PaddingSpec("0 0 0 30px")
+                                   ,
+                                X.Label("شهرداری:"),
+                                X.ComboBox()
+                                .ItemID("cboMnu")
+                                .EmptyText("نام شهرداری...")
+                                .LabelAlign(Ext.Net.LabelAlign.Left)
+                                .TypeAhead(true)
+                                .Editable(false)
+                                .AllowBlank(false)
+                                .BlankText("لطفا نام شهرداری مورد نظر را انتخاب نمایید.")
+                                .MsgTarget(Ext.Net.MessageTarget.Side)
+                                .QueryMode(DataLoadMode.Local)
+                                .ForceSelection(true)
+                                .Width(190)
+                                .TriggerAction(TriggerAction.All)
+                                    .DisplayField("fldName")
+                                    .ValueField("fldID")
+                                    .Store(X.Store().AutoLoad(false)
+                                    .Model(X.Model()
+                                    .IDProperty("fldID")
+                                        .Fields(
+                                                new ModelField("fldID", ModelFieldType.String) { Mapping = "fldID" },
+                                                new ModelField("fldName", ModelFieldType.String) { Mapping = "fldName" })
+                                            )
+                                    .Proxy(X.AjaxProxy()
+                                                .Url(Url.Action("GetCascadeCounty"))
+                                        .Reader(X.JsonReader().Root("data")))
+                                            .Parameters(ps => ps.Add(new StoreParameter("cboState", "App.Register.queryById('cboState').getValue()", ParameterMode.Raw)))
+                                                    )
+                                            .Listeners(l => l.Change.Handler = "ChangecboMnu()")),
+        //X.FieldSet().Border(false)
+        //    .PaddingSpec("0 220px 0 0")
+        // .Defaults(new { Margin = 2 })
+        // .Layout(LayoutType.Table)
+        // .LayoutConfig(new TableLayoutConfig { Columns = 4 })
+        // .Items(
+
+                                          // , X.Label("7216(کد 4رقمی)")
+        // ),
+                                   X.FieldSet().Border(false)
+                                           .PaddingSpec("0 28px 0 0")
+                                        .Defaults(new { Margin = 2 })
+                                        .Layout(LayoutType.Table)
+                                        .LayoutConfig(new TableLayoutConfig { Columns = 5 })
+                                        .Items(
+                                        X.Label("کد ملی:"),
+                                X.TextField()
+                                    .ItemID("codeMeli")
+                                    .Width(190)
+                                    .AllowBlank(false)
+                                    .EnforceMaxLength(true)
+                                    .MaxLength(10)
+                                    .MinLength(10)
+                                    .MaskRe("/[0-9]/")
+                                    .BlankText("لطفا کد  ملی را وارد نمایید.")
+                                        .MsgTarget(Ext.Net.MessageTarget.Side).PaddingSpec("0 0 0 32px")
+                                    , X.Label("تاریخ تولد:")
+                                    , X.PDateField()
+                                        .AllowBlank(false)
+                                        .BlankText("لطفا تاریخ تولد را وارد نمایید.")
+                                        .MsgTarget(Ext.Net.MessageTarget.Side)
+                                    .ItemID("txtTarikhB")
+                                    /*, X.Button().Text("...")
+                                    .ItemID("btnSabtAhval")
+                                    .ToolTip("بارگذاری از سرور")
+                                        .Listeners(li =>
+                                            {
+                                                li.Click.Handler = "EstelamSabtAhval()";
+                                            })*/
+                                      )//.ColSpan(4)
+                                , X.FieldSet().Border(false)
+                                    .Defaults(new { Margin = 2 })
+                                    .Layout(LayoutType.Table)
+                                        .PaddingSpec("0 50px 0 0")
+                                        .LayoutConfig(new TableLayoutConfig { Columns = 4 })
+                                        .Items(
+                                X.Label("نام مسئول دفتر:"),
+                                X.TextField()
+                                    .ItemID("modirDaftar")
+                                    .Width(190)
+                                    .AllowBlank(false)
+                                    .EnforceMaxLength(true)
+                                    .MaxLength(50)
+                                    .BlankText("لطفا نام مسئول دفتر را وارد نمایید.")
+                                        .MsgTarget(Ext.Net.MessageTarget.Side).PaddingSpec("0 0 0 15px")
+                                    ,
+                                X.Label("نام خانوادگی:"),
+                                X.TextField()
+                                    .ItemID("modirFamily")
+                                    .Width(190)
+                                    .AllowBlank(false)
+                                    .EnforceMaxLength(true)
+                                    .MaxLength(50)
+                                    .BlankText("لطفا نام خانوادگی را وارد نمایید.")
+                                    .MsgTarget(Ext.Net.MessageTarget.Side)
+                                         )
+                                            , X.FieldSet().Border(false)
+                                        .Defaults(new { Margin = 2 })
+                                        .Layout(LayoutType.Table)
+                                            .PaddingSpec("0 30px 0 0")
+                                            .LayoutConfig(new TableLayoutConfig { Columns = 4 })
+                                        .Items(
+                                X.Label("شماره مجوز:"),
+                                    X.TextField()
+                                        .ItemID("codeDaftar")
+                                        .Width(190)
+                                            .MaskRe("/[0-9]/")
+                                        .AllowBlank(false)
+                                        .EnforceMaxLength(true)
+                                        .MaxLength(10)
+                                        .BlankText("لطفا شماره مجوز را وارد نمایید.")
+                                        .MsgTarget(Ext.Net.MessageTarget.Side)
+                                            .PaddingSpec("0 0 0 55px")
+                                        ,
+                                    X.Label("تلفن:"),
+                                X.TextField()
+                                    .ItemID("txtTel")
+                                    .Width(190)
+                                    .AllowBlank(false)
+                                        .MaskRe("/[0-9]/")
+                                    .EnforceMaxLength(true)
+                                    .MaxLength(8)
+                                       .PaddingSpec("0 0 0 10px")
+                                    .BlankText("لطفا تلفن را وارد نمایید.")
+                                    .MsgTarget(Ext.Net.MessageTarget.Side))//.ColSpan(3),
+                                , X.FieldSet().Border(false)
+                                .PaddingSpec("0 180px 0 0")
+                                    .Defaults(new { Margin = 1 })
+                                    .Layout(LayoutType.Table)
+                                    .LayoutConfig(new TableLayoutConfig { Columns = 4 })
+                                .Items(
+                                X.Label("آدرس:"),
+                                X.Label().ItemID("lblAddress"),
+                                X.TextField()
+                                    .ItemID("Address")
+                                    .Width(290)
+                                    .AllowBlank(false)
+        //.EnforceMaxLength(true)
+        //.MaxLength(50)
+                                    .BlankText("لطفا آدرس را وارد نمایید.")
+                                    .MsgTarget(Ext.Net.MessageTarget.Side)
+                                )//.ColSpan(4)
+                                        , X.FieldSet().PaddingSpec("0 109px 0 0")
+                                    .Defaults(new { Margin = 2 })
+                                    .Layout(LayoutType.Table).Border(false)
+                                        .LayoutConfig(new TableLayoutConfig { Columns = 4 })
+                                        .Items(
+                                    X.Label("کد امنیتی:")
+                                        , X.TextField()
+                                        .ItemID("txtCaptha")
+                                        .Width(190)
+                                        .AllowBlank(false)
+                                        .EnforceMaxLength(true)
+                                        .MaxLength(50)
+                                        .BlankText("لطفا کد امنیتی را وارد نمایید.")
+                                        .MsgTarget(Ext.Net.MessageTarget.Side),
+                                    X.Label()
+                               , X.Container().Content(@<center><div style="text-align:center;"><img id="captchaRegister" style="width:190px;height:50px;text-align: left" /></div></center>)//.ColSpan(3)
+                                 )
+                                @* ,X.Container().Content(@<div><input id='txtCapthalogin' class='text' style='direction:ltr;font-family:sans-serif;width: 190px;height: 22px;' /></div>)  *@
+)
+                    )
+                )
+            )
+)
+
+<script type="text/javascript">
+    var AddressTxt = "";
+    function EstelamSabtAhval() {
+        var codeMeli = App.Register.queryById('codeMeli');
+        var modirDaftar = App.Register.queryById('modirDaftar');
+        var modirFamily = App.Register.queryById('modirFamily');
+        var txtTarikhB = App.Register.queryById('txtTarikhB');
+
+        var er = false;
+        if (codeMeli.validate() == false) {
+            er = true;
+        }
+        if (txtTarikhB.validate() == false) {
+            er = true;
+        }
+        if (er == true) {
+            Ext.MessageBox.show({
+                title: 'خطا',
+                msg: 'جهت استعلام وارد نمودن کد ملی و تاریخ تولد الزامی است.',
+                icon: Ext.MessageBox.ERROR,
+                buttons: Ext.MessageBox.OK
+            });
+            return;
+        }
+        App.Register.body.mask("در حال انجام عملیات...");
+        Ext.net.DirectMethod.request({
+            url: '/NewVer/SelectParvande/checks',
+            params: {
+                codec: codeMeli.getValue()
+            },
+            success: function (data1) {
+                if (data1.data == 1) {
+                    Ext.net.DirectMethod.request({
+                        url: '/NewVer/Parvande/EstelamSabt',
+                        params: {
+                            CodeMeli: codeMeli.getValue(),
+                            Tarikhtavalod: txtTarikhB.getRawValue()
+                        },
+                        success: function (data) {
+                            App.Register.queryById("modirDaftar").focus();
+                            if (data.Error == "") {
+                                modirDaftar.setReadOnly(true);
+                                modirDaftar.setValue(data.FirstName);
+                                modirFamily.setReadOnly(true);
+                                modirFamily.setValue(data.LastName);
+                            }
+                            else {
+                                modirDaftar.setReadOnly(false);
+                                modirFamily.setReadOnly(false);
+                                /* alert('امکان دریافت مشخصات وجود ندارد. لطفا نام مودی را به صورت دستی وارد نمایید.');*/
+                                Ext.MessageBox.show({
+                                    title: 'خطا',
+                                    msg: data.Error,
+                                    icon: Ext.MessageBox.ERROR,
+                                    buttons: Ext.MessageBox.OK
+                                });
+                                modirDaftar.setValue('');
+                                modirFamily.setValue('');
+                            }
+                            App.Register.body.mask().hide();
+                        }
+                    });
+                }
+                else {
+                    App.Register.body.mask().hide();
+                    Ext.MessageBox.show({
+                        title: "خطا",
+                        msg: "کد ملی وارد شده اشتباه است.",
+                        icon: Ext.MessageBox.ERROR,
+                        buttons: Ext.MessageBox.OK
+                    });
+                }
+            }
+        });
+    }
+    var LoadCaptha = function () {
+        var originalSrc = '@Url.Content("/NewVer/Register_New/generateCaptcha")';
+        var antiCachePart = (new Date()).getTime();
+        var newSrc = originalSrc + '?dc=' + antiCachePart;
+        $("#captchaRegister").attr('src', newSrc);
+
+    };
+    function ChangecboMnu() {
+        var cboMnu = App.Register.queryById('cboMnu');
+        var er = false;
+        if (cboMnu.validate() == false)
+            er = true;
+        if (er == true)
+            return;
+        AddressTxt = (App.Register.queryById('cboState').getDisplayValue() + "،" + App.Register.queryById('cboMnu').getDisplayValue() + "،").replace("شهرداری", "شهر");
+        App.Register.queryById('lblAddress').setText(AddressTxt);
+    }
+    function LoadRegister() {
+        var ImageSettingF='@ViewBag.ImageSetting';
+        if (ImageSettingF == 1)
+        {
+            App.Register.queryById('cboState').setValue("11");
+            App.Register.queryById('cboState').disable();
+        }
+        else if (ImageSettingF == 2)
+        {
+            App.Register.queryById('cboState').disable();
+            App.Register.queryById('cboState').setValue("3");
+        }
+
+        App.Register.queryById('cboMnu').validate();
+        App.Register.queryById('cboState').validate();
+        App.Register.queryById('codeDaftar').validate();
+        App.Register.queryById('modirDaftar').validate();
+        App.Register.queryById('modirFamily').validate();
+        App.Register.queryById('codeMeli').validate();
+        App.Register.queryById('Address').validate();
+        App.Register.queryById('txtTel').validate();
+        App.Register.queryById('txtCaptha').validate();
+    }
+    function SaveRegister() {
+        var cboMnu = App.Register.queryById('cboMnu');
+        var codeDaftar = App.Register.queryById('codeDaftar');
+        var modirDaftar = App.Register.queryById('modirDaftar');
+        var modirFamily = App.Register.queryById('modirFamily');
+        var codeMeli = App.Register.queryById('codeMeli');
+        var Address = App.Register.queryById('Address');
+        var txtTel = App.Register.queryById('txtTel');
+        var txtCaptha = App.Register.queryById('txtCaptha');
+        var er = false;
+        if (cboMnu.validate() == false)
+            er = true;
+        if (codeDaftar.validate() == false)
+            er = true;
+        if (modirDaftar.validate() == false)
+            er = true;
+        if (modirFamily.validate() == false)
+            er = true;
+        if (codeMeli.validate() == false)
+            er = true;
+        if (Address.validate() == false)
+            er = true;
+        if (txtTel.validate() == false)
+            er = true;
+        if (txtCaptha.validate() == false)
+            er = true;
+        if (er == true)
+            return;
+        App.Register.body.mask("در حال ذخیره سازی...");
+        Ext.net.DirectMethod.request({
+            url: '/NewVer/Register_New/Save',
+            params: {
+                fldCodeDaftar: codeDaftar.getValue(),
+                fldAddress: AddressTxt + Address.getValue(),
+                fldTel: txtTel.getValue(),
+                fldMunId: cboMnu.getValue(),
+                fldmodirDaftar: modirDaftar.getValue(),
+                fldmodirFamily: modirFamily.getValue(),
+                fldcodeMeli: codeMeli.getValue(),
+                Captcha: txtCaptha.getValue()
+            },
+            success: function (data) {
+                var ic = Ext.MessageBox.INFO;
+                if (data.Er == 1)
+                    ic = Ext.MessageBox.ERROR;
+                Ext.MessageBox.show({
+                    title: data.MsgTitle,
+                    msg: data.Msg,
+                    icon: ic,
+                    buttons: Ext.MessageBox.OK
+                });
+                LoadCaptha();
+                if (data.Er == 0)
+                    ClearRegister();
+                App.Register.body.mask().hide();
+            }
+
+        });
+
+    }
+    function ClearRegister() {
+        App.Register.queryById('cboMnu').setValue("");
+        App.Register.queryById('codeDaftar').setValue("");
+        App.Register.queryById('modirDaftar').setValue("");
+        App.Register.queryById('modirFamily').setValue("");
+        App.Register.queryById('codeMeli').setValue("");
+        App.Register.queryById('Address').setValue("");
+        App.Register.queryById('txtTarikhB').setValue("");
+        App.Register.queryById('txtTel').setValue("");
+        App.Register.queryById('txtCaptha').setValue("");
+        App.Register.queryById('lblAddress').setText("");
+        App.Register.queryById('lblAddress').hide();
+    }
+</script>

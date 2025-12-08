@@ -1,0 +1,166 @@
+﻿@using Ext.Net.MVC
+@using Hogaf.ExtNet.UX
+@using Ext.Net;
+@{
+    var X = Html.X();
+}
+@(Html.X().Window()
+    .Modal(true)
+            .Listeners(li => li.AfterRender.Handler = "LoadStatusPelaque();")
+    .Resizable(false)
+    .Width(285)
+    //.Height(185)
+            .Title("تعریف وضعیت پلاک")
+             .ID("NewStatusPelaque")
+    .Layout(LayoutType.Fit)
+    .Closable(true)
+    .ButtonAlign(Ext.Net.Alignment.Center)
+    .Buttons(
+        X.Button()
+            .Text("ذخیره")
+            .Icon(Ext.Net.Icon.Disk)
+        //.ToolTip("کلید میانبر F8")
+                    .Listeners(l => l.Click.Handler = "SaveStatusPelaque();"),
+        X.Button()
+            .Text("خروج")
+            .Icon(Ext.Net.Icon.DoorOut)
+        //.ToolTip("کلید میانبر Esc")
+                    .OnClientClick("App.NewStatusPelaque.destroy();"))
+    .CloseAction(Ext.Net.CloseAction.Destroy)
+    .Items(
+        X.FormPanel()
+            .Border(false)
+            .Layout(LayoutType.Fit)
+            .Items(
+                X.Panel()
+                    .Border(false)
+                    .PaddingSpec("15px 0 0 0")
+                         .Layout(LayoutType.VBox)
+                                        .LayoutConfig(new VBoxLayoutConfig { Align = VBoxAlign.Center })
+                    .Items(
+                        X.FieldSet()
+                        .Height(120)
+                            .Border(true)
+                            .Title("وضعیت پلاک")
+                            .Defaults(new { Margin = 2 })
+                            .Layout(LayoutType.Table)
+                            .LayoutConfig(new TableLayoutConfig { Columns = 2 })
+                            .Items(
+                                X.Hidden()
+                                    .ItemID("fldId"),
+                                       X.Label("عنوان:"),
+                                X.TextField()
+                                        .ItemID("txtName")
+                                        .EnforceMaxLength(true)
+                                        .MaxLength(50)
+                                    .Width(180)
+                                    .AllowBlank(false)
+                                        .BlankText("لطفا عنوان را وارد نمایید.")
+                                    .MsgTarget(Ext.Net.MessageTarget.Side),
+                                X.Label("توضیحات:"),
+                                X.TextArea()
+                                    .ItemID("txtDesc")
+                                    .Width(180)
+                            )
+                )
+            )
+        )
+)
+@(Html.X().KeyMap()
+                 .ID("NewStatusPelaqueMap")
+                 .Target("={App.NewStatusPelaque.getTargetEl()}")
+            .Binding(b =>
+            {
+                b.Add(Html.X().KeyBinding()
+                .KeysString(((int)Ext.Net.KeyCode.F8).ToString())
+                .Handler("SaveStatusPelaque(); ")
+                );
+
+            }))
+<script type="text/javascript">
+    function LoadStatusPelaque() {
+        if ('@ViewBag.Id' != '0') {
+            App.NewStatusPelaque.body.mask("در حال بارگذاری...");
+            Ext.net.DirectMethod.request({
+                url: '/NewVer/StatusPelaque_New/Details',
+                params: {
+                    Id: '@ViewBag.Id'
+                },
+                success: function (data) {
+                    if (data.Er == 0) {
+                        Ext.net.Mask.hide();
+                        var txtName = App.NewStatusPelaque.queryById('txtName');
+                        txtName.setValue(data.fldName);
+                        var txtDesc = App.NewStatusPelaque.queryById('txtDesc');
+                        txtDesc.setValue(data.fldDesc);
+                        var Id = App.NewStatusPelaque.queryById('fldId');
+                        Id.setValue(data.fldID);
+                    }
+                    else if (data.Er == 1) {
+                        Ext.MessageBox.show({
+                            title: data.MsgTitle,
+                            msg: data.Msg,
+                            icon: Ext.MessageBox.ERROR,
+                            buttons: Ext.MessageBox.OK
+                        });
+                    }
+                    App.NewStatusPelaque.body.mask().hide();
+                }
+            });
+        }
+        else {
+            App.NewStatusPelaque.queryById('txtName').validate();
+        }
+
+    }
+
+    function SaveStatusPelaque() {
+        var txtName = App.NewStatusPelaque.queryById('txtName');
+        var txtDesc = App.NewStatusPelaque.queryById('txtDesc');
+        var Id = App.NewStatusPelaque.queryById('fldId');
+            var er = false;
+
+            if (txtName.validate() == false) {
+                er = true;
+            }
+            if (er == true)
+                return;
+
+            App.NewStatusPelaque.body.mask("در حال ذخیره سازی...");
+            Ext.net.DirectMethod.request({
+                url: '/NewVer/StatusPelaque_New/Save',
+                params: {
+                    fldID: Id.getValue(),
+                    fldName: txtName.getValue(),
+                    fldDesc: txtDesc.getValue()
+                },
+                success: function (data) {
+                    var ic = Ext.MessageBox.INFO;
+                    if (data.Er == 1)
+                        ic = Ext.MessageBox.ERROR;
+                    Ext.MessageBox.show({
+                        title: data.MsgTitle,
+                        msg: data.Msg,
+                        icon: ic,
+                        buttons: Ext.MessageBox.OK
+                    });
+                    App.StatusPelaque.queryById('GridStatusPelaque').store.load();
+                    if (data.Er != 1)
+                        ClearStatusPelaque();
+                    App.NewStatusPelaque.body.mask().hide();
+                }
+
+            });
+        }
+    function ClearStatusPelaque() {
+        App.NewStatusPelaque.queryById('txtName').setValue("");
+        App.NewStatusPelaque.queryById('txtDesc').setValue("");
+        App.NewStatusPelaque.queryById('fldId').setValue(0);
+    }
+  /*  function EnterNext() {
+        var keyfield = App.NewCustomer.queryById(Ext.getCmp((Ext.Element.getActiveElement()).name).itemId);
+        var nextfld = keyfield.nextSibling();
+        nextfld.focus();
+        nextfld.selectText();
+    }*/
+</script>

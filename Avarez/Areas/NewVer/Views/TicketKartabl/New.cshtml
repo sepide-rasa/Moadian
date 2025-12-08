@@ -1,0 +1,614 @@
+﻿@using Ext.Net.MVC
+@using Hogaf.ExtNet.UX
+@using Ext.Net;
+@{
+    var X = Html.X();
+}
+
+<style>
+    body {
+        background-color: #f3f3f3;
+        font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    }
+
+    section {
+        width: 500px;
+        margin: 60px auto;
+        background-color: #fff;
+        padding: 10px 15px 20px 15px;
+    }
+
+    .chat ul {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+    }
+
+    .chat ul li {
+        margin: 45px 0 0 0;
+        font-weight: 300;
+        border: none;
+    }
+
+    .chat ul li a.user {
+        margin: -30px 0 0 0;
+        display: block;
+        color: #333;
+    }
+
+    .chat ul li a.user img {
+        width: 65px;
+        height: 65px;
+        border-radius: 50%;
+        background-color: #f3f3f3;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+    }
+
+    .chat ul li .date {
+        font-size: 14px;
+        color: #a6a6a6;
+    }
+
+    .chat ul li .message {
+        display: block;
+        padding: 10px;
+        position: relative;
+        color: #333;
+        font-size: 15px;
+        background-color: #dae6f3;
+        border-radius: 3px;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+    }
+
+    .chat ul li .message:before {
+        content: '';
+        position: absolute;
+        border-top: 16px solid rgba(0, 0, 0, 0.15);
+        border-left: 16px solid transparent;
+        border-right: 16px solid transparent;
+    }
+
+    .chat ul li .message:after {
+        content: '';
+        position: absolute;
+        top: 0;
+        border-top: 17px solid #dae6f3;
+        border-left: 17px solid transparent;
+        border-right: 17px solid transparent;
+    }
+
+    .chat ul li .message.blur p {
+        -webkit-filter: blur(3px);
+        -moz-filter: blur(3px);
+        -o-filter: blur(3px);
+        -ms-filter: blur(3px);
+        filter: blur(3px);
+    }
+
+    .chat ul li .message.blur .hider {
+        opacity: 1;
+        z-index: 1;
+    }
+
+    .chat ul li .message p {
+        margin: 0;
+        padding: 0;
+        transition: all 0.1s;
+    }
+
+    .chat ul li .message .hider {
+        opacity: 0;
+        z-index: -1;
+        position: absolute;
+        height: 100%;
+        width: 100%;
+        margin: -10px;
+        text-align: center;
+        cursor: pointer;
+        transform-style: preserve-3d;
+        transition: all 0.1s;
+    }
+
+    .chat ul li .message .hider span {
+        display: block;
+        position: relative;
+        top: 50%;
+        font-size: 16px;
+        transform: translateY(-50%);
+    }
+
+    .chat ul li.other a.user {
+        float: right;
+    }
+
+    .chat ul li.other .date {
+        float: right;
+        margin: -20px 10px 0 0;
+    }
+
+    .chat ul li.other .message {
+        margin: 0 90px 0 0;
+    }
+
+    .chat ul li.other .message:before {
+        margin: -9px -16px 0 0;
+        right: 0;
+    }
+
+    .chat ul li.other .message:after {
+        content: '';
+        right: 0;
+        margin: 0 -15px 0 0;
+    }
+
+    .chat ul li.you1 a.user {
+        float: left;
+    }
+
+    .chat ul li.you1 .date {
+        float: left;
+        margin: -20px 0 0 10px;
+    }
+
+    .chat ul li.you1 .message {
+        margin: 0 0 0 90px;
+    }
+
+    .chat ul li.you1 .message:before {
+        margin: -9px 0 0 -16px;
+        left: 0;
+    }
+
+    .chat ul li.you1 .message:after {
+        content: '';
+        left: 0;
+        margin: 0 0 0 -15px;
+    }
+
+    /*.x-panel-body {
+        background-color: white;
+        border: none;
+    }*/
+    .Attach {
+        background-image: url("/Content/1379792081_attachment.png");
+        background-size: contain !important;
+    }
+
+    .seen {
+        position: absolute;
+        right: 10px;
+        bottom: 0px;
+        /*border: 3px solid green;*/
+    }
+
+    .SeenP {
+        /*border: 3px solid red;*/
+        width: 17px;
+        height: 17px;
+    }
+</style>
+
+@(Html.X().Window()
+    .Modal(true)
+    //.Listeners(li => li.AfterRender.Handler = "LoadTicketKartabl();")
+    .Width(470)
+    .Height(610)
+    .Title("چت")
+    .ID("NewTicketKartabl4")
+    .Closable(true)
+    .CloseAction(Ext.Net.CloseAction.Destroy)
+    .Listeners(l => l.BeforeClose.Handler = "OpenedChat=false;")
+    .Items(
+        X.FormPanel()
+            .Border(false)
+            .Margin(5)
+            .BodyStyle("background-color: white")
+            .Items(
+                X.Panel()
+                    .Border(false)
+                    .Layout(Ext.Net.LayoutType.VBox)
+                    .LayoutConfig(new Ext.Net.VBoxLayoutConfig { Align = Ext.Net.VBoxAlign.Center })
+                    .Items(
+                        X.Panel()
+                            .Border(false)
+                            .LayoutConfig(new Ext.Net.TableLayoutConfig { Columns = 2 })
+                            .Items(
+                                X.Label("موضوع گفتگو:")
+                                    .RTL(false),
+                                X.ComboBox()
+                                    .ItemID("CboCategory")
+                                    .EmptyText("موضوع")
+                                    .Listeners(l => { l.Select.Handler = "RealodFormAdmin()"; })
+                                    .Width(300)
+                                    .PaddingSpec("5px 0px 0 0px")
+                                    .TypeAhead(true)
+                                    .Editable(false)
+                                    .AllowBlank(false)
+                                    .BlankText("لطفا موضوع مورد نظر را انتخاب نمایید.")
+                                    .QueryMode(DataLoadMode.Local)
+                                    .ForceSelection(true)
+                                    .TriggerAction(TriggerAction.All)
+                                    .DisplayField("Name")
+                                    .ValueField("ID")
+                                    .Store(
+                                        X.Store()
+                                            .Listeners(l => { l.Load.Handler = "SetDefault()"; })
+                                            .Model(X.Model()
+                                                .IDProperty("tblCategory")
+                                                .Fields(
+                                                    new ModelField("ID", ModelFieldType.String) { Mapping = "ID" },
+                                                    new ModelField("Name", ModelFieldType.String) { Mapping = "Name" })
+                                            )
+                                            .Proxy(X.AjaxProxy()
+                                                .Url(Url.Action("GetCategory"))
+                                                .Reader(X.JsonReader().Root("data"))
+                                            )
+                                            .Parameters(new { TypeMsg = @ViewBag.Type })
+                                     )
+                              )
+                              ),
+                X.Panel()
+                    .Border(false)
+                    .AutoScroll(true)
+                    .ID("pnlScroll")
+                    .Height(430)
+                    .Layout(Ext.Net.LayoutType.VBox)
+                    .LayoutConfig(new Ext.Net.VBoxLayoutConfig { Align = Ext.Net.VBoxAlign.Center })
+                    .Items(
+                        X.FieldSet()
+                            .Border(false)
+                            .Center()
+                            .LayoutConfig(new Ext.Net.TableLayoutConfig { Columns = 1 })
+                            .Defaults(new { Margin = 2 })
+                            .Items(
+                                X.Container()
+                                    .ID("Contain1"
+                                    ).Width(400)
+                                    .Border(false)//.Listeners(l => l.AfterRender.Handler = "LoadChat()")
+                                    .Content(
+                                        @<html></html>
+                                    )
+                            )
+                    ),
+                X.Panel()
+                    .Border(false)
+                    .AutoScroll(true)
+                    .Layout(Ext.Net.LayoutType.VBox)
+                    .LayoutConfig(new Ext.Net.VBoxLayoutConfig { Align = Ext.Net.VBoxAlign.Center })
+                    .Defaults(new { Margin = 5 })
+                    .Items(
+                         X.FieldSet()
+                            .Border(false)
+                            .Center()
+                            .LayoutConfig(new Ext.Net.TableLayoutConfig { Columns = 2 })
+                            .Defaults(new { Margin = 2 })
+                            .Items(
+                                X.HtmlEditor()
+                                    .ItemID("txtMatn")
+                                    //.ColSpan(4)
+                                    .Width(300)
+                                    .Height(80)
+                                        .RTL(true),
+                                X.FieldSet()
+                                    .Border(false)
+                                    .Center()
+                                    .LayoutConfig(new Ext.Net.TableLayoutConfig { Columns = 1 })
+                                    .Defaults(new { Margin = 2 }).Height(100)
+                                    .Items(
+                                        X.Button()
+                                            .ItemID("btn1")
+                                            .Text("ارسال")
+                                            .Width(75)
+                                            .Height(45)
+                                            .Listeners(l => l.Click.Handler = "SendMsgTicket()"),//X.Button().ItemID("btn2").Text("فایل").IconCls("Attach").Width(75).Height(45)
+                                        X.FieldSet()
+                                            .Border(false)
+                                            .PaddingSpec("1px 0px 0px 0px")
+                                            .Center()
+                                            .LayoutConfig(new Ext.Net.TableLayoutConfig { Columns = 2 })
+                                            .Defaults(new { Margin = 1 })
+                                            .Items(
+                                                X.FileUploadField()
+                                                    .ID("FileUploadField1")
+                                                    .ButtonOnly(true)
+                                                    .ButtonText("فایل")
+                                                    .DirectEvents(l =>
+                                                    {
+                                                        l.Change.Action = "Upload";
+                                                        l.Change.Success = "hideprogress();";
+                                                    })
+                                                    .Listeners(l => l.Change.Fn = "showFile")
+                                                    .Icon(Ext.Net.Icon.DiskUpload),
+                                                X.Button()
+                                                    .ItemID("btn2")
+                                                    .Icon(Ext.Net.Icon.Delete)
+                                                    .Listeners(l=>l.Click.Handler="ClearFile()")//.Width(75).Height(45)
+                                            ),
+                                        X.Container().Content(@<div id="fi-button-msg" style="display:none; width:94px;height:20px;color: blue;"></div>)
+                                                                )
+                                                )
+                        )
+                )
+            )
+)
+
+<script type="text/javascript">
+    var Type='@ViewBag.Type';
+    var SetadUserId = '@ViewBag.SetadUserId';
+    var HaveFile = false;
+    var EndUpload = false;
+
+    var Check = setInterval(CheckEnd, 500);
+
+    function SetDefault() {
+        var CboCategory = App.NewTicketKartabl4.queryById('CboCategory');
+        CboCategory.setValue(CboCategory.store.getAt(0));
+        RealodFormAdmin();
+    }
+
+    function CheckEnd() {
+        if (EndUpload == true) {
+            Ext.MessageBox.hide();
+            /* Ext.Msg.alert('عملیات موفق', 'فایل با موفقیت آپلود شد.');*/
+            clearInterval(CheckEnd);
+            EndUpload = false;
+        }
+    }
+
+    function showProgressBar() {
+        Ext.MessageBox.show({
+            msg: 'لطفاً منتظر باشید',
+            progressText: 'در حال آپلود فایل...',
+            width: 300,
+            wait: true,
+            waitConfig:
+            {
+                interval: 200,
+                text: 'در حال آپلود فایل...',
+                scope: this
+            }
+        });
+    }
+
+    function hideprogress() {
+        EndUpload = true;
+    }
+
+    var showFile = function (fb, v) {
+        if (v) {
+            HaveFile = true;
+            showProgressBar();
+            var el = Ext.get('fi-button-msg');
+            el.update(v);
+
+            if (!el.isVisible()) {
+                el.slideIn('t', {
+                    duration: .2,
+                    easing: 'easeIn',
+                    callback: function () {
+                        el.highlight();
+                    }
+                });
+            } else {
+                el.highlight();
+            }
+        }
+    };
+
+    function ClearFile() {
+        Ext.get('fi-button-msg').update('');
+        HaveFile = false;
+    }
+
+    function RealodFormAdmin() {
+        App.NewTicketKartabl4.body.mask('در حال بارگذاری...');
+        var CboCategory = App.NewTicketKartabl4.queryById('CboCategory');
+        category = CboCategory.getValue();
+        OpenedChat = true;  
+        Ext.net.DirectMethod.request({
+            url: '/newver/TicketKartabl/RealodFormAdmin',
+            success: function (data) {
+                App.NewTicketKartabl4.body.mask().hide();
+            }
+        });
+    }
+
+    var html_content = "";
+    var category = 0;
+    function LoadChatAdmin() {
+        App.NewTicketKartabl4.body.mask("در حال بارگذاری...");
+        OpenedChat = true;
+
+        var CboCategory = App.NewTicketKartabl4.queryById('CboCategory');
+        category = CboCategory.getValue();
+        var c = App.Contain1;
+        Ext.net.DirectMethod.request({
+            url: '/newver/TicketKartabl/LoadChat',
+            params: {
+                id: SetadUserId,
+                CategoryId: CboCategory.getValue()
+            },
+            success: function (data) {
+                if (data.ReplyPermission == false) {
+                    App.NewTicketKartabl4.queryById('txtMatn').setDisabled(true);
+                    App.NewTicketKartabl4.queryById('btn1').setDisabled(true);
+                }
+                else {
+                        App.NewTicketKartabl4.queryById('txtMatn').setDisabled(false);
+                        App.NewTicketKartabl4.queryById('btn1').setDisabled(false);
+                }
+                if (data.ReadPermission == false) {
+                    Ext.MessageBox.show({
+                        title: "خطا",
+                        msg: "شما مجاز به دسترسی نمی باشید.",
+                        icon: Ext.MessageBox.ERROR,
+                        buttons: Ext.MessageBox.OK
+                    });
+                    App.NewTicketKartabl4.body.mask().hide();
+                    c.update({ html: "" });
+                }
+                else {
+                    var s = data.att;
+                    var at = s.split('|');
+                    var z = data.type;
+                    var t = z.split('|');
+                    var k = data.matn;
+                    var m = k.split('|');
+                    var ti = data.time;
+                    var time = ti.split('|');
+                    var seen = data.seen.split('|');
+                    html_content = "";
+                    if (t.length == 1) {
+                        c.update({ html: html_content });
+                    }
+
+                    for (var i = 0; i < t.length - 1; i++) {
+                        if (t[i] == "1") {
+                            if (at[i] == "0") {
+                                if (seen[i] == "1")
+                                    html_content = html_content + '<div class="chat"><ul><li class="other"><a class="user" href="#"><img alt="" src="@Url.Action("ShowPic", "TicketKartabl", new { id = 0, Type = @ViewBag.Type })" /></a><div class="date">' + time[i] + '</div><div class="message"><p>' + m[i] + '</p><p class="SeenP"><img class="seen" src="@Url.Content("~/content/Tick2.png")" style="width:15px;"  /></p></div></li></ul></div>';
+                                else
+                                    html_content = html_content + '<div class="chat"><ul><li class="other"><a class="user" href="#"><img alt="" src="@Url.Action("ShowPic", "TicketKartabl", new { id = 0, Type = @ViewBag.Type })" /></a><div class="date">' + time[i] + '</div><div class="message"><p>' + m[i] + '</p><p class="SeenP"><img class="seen" src="@Url.Content("~/content/Tick1.png")" style="width:10px;"  /></p></div></li></ul></div>';
+                            }
+                            else {
+                                if (seen[i] == "1")
+                                    html_content = html_content + '<div class="chat"><ul><li class="other"><a class="user" href="#"><img alt="" src="@Url.Action("ShowPic", "TicketKartabl", new { id = 0, Type = @ViewBag.Type })" /></a><div class="date">' + time[i] + '</div><div class="message"><p>' + m[i] + '</p><p><a href="/TicketKartabl/DownloadAttach?Id=' + at[i] + '"><img src="@Url.Content("~/content/1379792081_attachment.png")" style="width:20px;" title="ضمیمه " /></a></p><p class="SeenP"><img class="seen" src="@Url.Content("~/content/Tick2.png")" style="width:15px;"  /></p></div></li></ul></div>';
+                                else
+                                    html_content = html_content + '<div class="chat"><ul><li class="other"><a class="user" href="#"><img alt="" src="@Url.Action("ShowPic", "TicketKartabl", new { id = 0, Type = @ViewBag.Type })" /></a><div class="date">' + time[i] + '</div><div class="message"><p>' + m[i] + '</p><p><a href="/TicketKartabl/DownloadAttach?Id=' + at[i] + '"><img src="@Url.Content("~/content/1379792081_attachment.png")" style="width:20px;" title="ضمیمه " /></a></p><p class="SeenP"><img class="seen" src="@Url.Content("~/content/Tick1.png")" style="width:10px;"  /></p></div></li></ul></div>';
+                            }
+                        }
+                        else if (t[i] == "2") {
+                            if (at[i] == "0") {
+                                html_content = html_content + '<div class="chat"><ul><li class="you1"><a class="user" href="#"><img alt="" src="@Url.Action("ShowPic", "TicketKartabl", new { id = @ViewBag.SetadUserId, Type = @ViewBag.Type })" /></a><div class="date">' + time[i] + '</div><div class="message"><p>' + m[i] + '</p></div></li></ul></div>';
+                            }
+                            else {
+                                html_content = html_content + '<div class="chat"><ul><li class="you1"><a class="user" href="#"><img alt="" src="@Url.Action("ShowPic", "TicketKartabl", new { id = @ViewBag.SetadUserId, Type = @ViewBag.Type })" /></a><div class="date">' + time[i] + '</div><div class="message"><p>' + m[i] + '</p><p><a href="/TicketKartabl/DownloadAttach?Id=' + at[i] + '"><img src="@Url.Content("~/content/1379792081_attachment.png")" style="width:20px;" title="ضمیمه " /></a></p></div></li></ul></div>';
+                            }
+                        }
+                        c.update({ html: html_content });
+                    }
+                    var ElUserTicket = document.getElementsByClassName("shortcut_SendTicket");
+                    var ElAdminTicket = document.getElementsByClassName("shortcut-Ticketing");
+                    if (data.CountUser == 0) {
+                        if (ElUserTicket[0]) {
+                            ElUserTicket[0].classList.remove("badge");
+                        }
+                    }
+                    else {
+                        var countt = "'" + data.CountUser + "'";
+                        Ext.util.CSS.updateRule('.badge::after', 'content', countt);
+                        if (ElUserTicket[0]) {
+                            ElUserTicket[0].classList.add("badge");
+                        }
+                    }
+
+                    if (data.CountAdmin == 0) {
+                        if (ElAdminTicket[0]) {
+                            ElAdminTicket[0].classList.remove("badgeA");
+                        }
+                    }
+                    else {
+                        var countt1 = "'" + data.CountAdmin + "'";
+                        Ext.util.CSS.updateRule('.badgeA::after', 'content', countt1);
+                        if (ElAdminTicket[0]) {
+                            ElAdminTicket[0].classList.add("badgeA");
+                        }
+                    }
+                    /*for (var i = 0; i < t.length - 1; i++) {
+                        if (t[i] == "1") {
+                            if (at[i] == "0") {
+                                html_content = html_content + '<div class="chat"><ul><li class="other"><a class="user" href="#"><img alt="" src="Url.Action("ShowPic", "TicketKartabl", new { id = 0 })" /></a><div class="date">' + time[i] + '</div><div class="message"><p>' + m[i] + '</p></div></li></ul></div>';
+                            }
+                            else {
+                                html_content = html_content + '<div class="chat"><ul><li class="other"><a class="user" href="#"><img alt="" src="Url.Action("ShowPic", "TicketKartabl", new { id = 0 })" /></a><div class="date">' + time[i] + '</div><div class="message"><p>' + m[i] + '</p><p><a href="/TicketKartabl/DownloadAttach?Id=' + at[i] + '"><img src="Url.Content("~/content/1379792081_attachment.png")" style="width:20px;" title="ضمیمه " /></a></p></div></li></ul></div>';
+                            }
+                        }
+                        else if (t[i] == "2") {
+                            if (at[i] == "0") {
+                                html_content = html_content + '<div class="chat"><ul><li class="you1"><a class="user" href="#"><img alt="" src="Url.Action("ShowPic", "TicketKartabl", new { id = ViewBag.SetadUserId })" /></a><div class="date">' + time[i] + '</div><div class="message"><p>' + m[i] + '</p></div></li></ul></div>';
+                            }
+                            else {
+                                html_content = html_content + '<div class="chat"><ul><li class="you1"><a class="user" href="#"><img alt="" src="Url.Action("ShowPic", "TicketKartabl", new { id = ViewBag.SetadUserId })" /></a><div class="date">' + time[i] + '</div><div class="message"><p>' + m[i] + '</p><p><a href="/TicketKartabl/DownloadAttach?Id=' + at[i] + '"><img src="Url.Content("~/content/1379792081_attachment.png")" style="width:20px;" title="ضمیمه " /></a></p></div></li></ul></div>';
+                            }
+                        }
+                        c.update({ html: html_content });
+                    }*/
+                    App.pnlScroll.body.scroll('b', 1000000);
+                    App.NewTicketKartabl4.body.mask().hide();
+                    var CboType = App.TicketKartabl.queryById("CboType").getValue();
+                    App.TicketKartabl.queryById("GridTicketKartabl").getStore().getProxy().setExtraParam("TypeMsg", CboType);
+                    App.TicketKartabl.queryById("GridTicketKartabl").getStore().load();
+                }
+            }
+        });
+    }
+
+    function SendMsgTicket() {
+         App.NewTicketKartabl4.body.mask('در حال بارگذاری...');
+        var txtMatn = App.NewTicketKartabl4.queryById('txtMatn');
+        var CboCategory = App.NewTicketKartabl4.queryById('CboCategory');
+        var er = false;
+        if (HaveFile == false && Ext.util.Format.trim(txtMatn.getEditorBody().textContent) == "") {
+            alert("لطفا متن را وارد کنید.");
+            return;
+        }
+
+        if (er == true)
+            return;
+
+
+        App.NewTicketKartabl4.queryById('btn1').disable();
+        var data1 = {
+            fldHTML: txtMatn.getValue(),
+            fldSetadUserId: SetadUserId,
+            HaveFile: HaveFile,
+            fldTicketCategoryId: CboCategory.getValue()
+        };
+
+        $.ajax({
+            type: "POST",
+            url: '/newver/TicketKartabl/Save',
+            contentType: "application/json; charset=utf-8",
+            data: JSON.stringify(data1),
+            datatype: "json",
+            success: function (data) {
+                App.NewTicketKartabl4.queryById('btn1').enable();
+                if (data.Err == 0) {
+                    var c = App.Contain1;
+                    if (HaveFile == false)
+                        html_content = html_content + '<div class="chat"><ul><li class="other"><a class="user" href="#"><img alt="" src="@Url.Action("ShowPic", "TicketKartabl", new { id = 0 })" /></a><div class="date">' + data.time + '</div><div class="message"><p>' + txtMatn.getValue() + '</p><p class="SeenP"><img class="seen" src="@Url.Content("~/content/Tick1.png")" style="width:10px;"  /></p></div></li></ul></div>';
+                    else
+                        html_content = html_content + '<div class="chat"><ul><li class="other"><a class="user" href="#"><img alt="" src="@Url.Action("ShowPic", "TicketKartabl", new { id = 0 })" /></a><div class="date">' + data.time + '</div><div class="message"><p>' + txtMatn.getValue() + '</p><p><a href="/TicketKartabl/DownloadAttach?Id=' + data.FileId + '"><img src="@Url.Content("~/content/1379792081_attachment.png")" style="width:20px;" title="ضمیمه " /></a></p><p class="SeenP"><img class="seen" src="@Url.Content("~/content/Tick1.png")" style="width:10px;"  /></p></div></li></ul></div>';
+                    c.update({ html: html_content });
+                    ClearHelpUsers();
+                    App.pnlScroll.body.scroll('b', 1000000);
+                    chat.invoke("send", html_content);
+                }
+                else {
+                    Ext.MessageBox.show({
+                        Name: data.MsgName,
+                        msg: data.Msg,
+                        icon: Ext.MessageBox.ERROR,
+                        buttons: Ext.MessageBox.OK
+                    });
+                }
+                  App.NewTicketKartabl4.body.mask().hide();
+            },
+            failure: function (data) {
+                App.NewTicketKartabl4.queryById('btn1').enable();
+            }
+        });
+    }
+
+    function ClearHelpUsers() {
+        App.NewTicketKartabl4.queryById('txtMatn').setValue("");
+        ClearFile();
+    }
+
+
+    /* chat.client.LoadTickets = function () {
+         alert();
+     };*/
+
+
+</script>

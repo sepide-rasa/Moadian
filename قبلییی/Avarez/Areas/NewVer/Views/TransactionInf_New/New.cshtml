@@ -1,0 +1,349 @@
+﻿@using Ext.Net.MVC
+@using Hogaf.ExtNet.UX
+@using Ext.Net;
+@{
+    var X = Html.X();
+}
+<style>
+    .LblStyle {
+        height: auto;
+    }
+
+    .LblRed {
+        color: red;
+    }
+
+    }
+</style>
+@(Html.X().Window().Modal(true)
+.Width(560)
+.Resizable(false)
+    .Title("اطلاعات وب سرویس تراکنش")
+         .ID("NewTransactionInf_New")
+        .Closable(true).ButtonAlign(Ext.Net.Alignment.Center)
+    .CloseAction(Ext.Net.CloseAction.Destroy)
+        .Layout(LayoutType.Fit)
+                   .Buttons(X.Button().Text("ذخیره").Icon(Ext.Net.Icon.Disk)//.ToolTip("کلید میانبر F8")
+                               .Listeners(l =>
+                               {
+                                   l.Click.Handler = "SaveTransactionInf_New();";
+
+                               })
+                               .ItemID("btnSave")
+                                ,
+                                X.Button().Text("خروج").Icon(Ext.Net.Icon.DoorOut)//.ToolTip("کلید میانبر Esc")
+                                       .OnClientClick("App.NewTransactionInf_New.destroy()"))
+    .Items(
+        X.FormPanel()
+        .Border(false)
+            .DefaultButton("btn")
+        .TitleAlign(Ext.Net.TitleAlign.Center)
+           .Layout(LayoutType.Fit)
+                .Items(
+
+                X.Panel().Border(false)
+                .PaddingSpec("5px 0 10px 0")
+                    .Layout(Ext.Net.LayoutType.VBox)
+                    .LayoutConfig(new Ext.Net.VBoxLayoutConfig { Align = VBoxAlign.Center })
+            .Items(
+            X.Panel().Layout(LayoutType.HBox).Border(false)
+                .LayoutConfig(new Ext.Net.HBoxLayoutConfig { Align = HBoxAlign.Middle })
+                  .Defaults(new { Margin = 5 })
+            .Items(
+                 X.FieldSet()
+                        .Border(true)
+                        .Layout(LayoutType.Table)
+                             .LayoutConfig(new Ext.Net.TableLayoutConfig { Columns = 2 })
+        // .LayoutConfig(new Ext.Net.VBoxLayoutConfig { Align = VBoxAlign.Left })
+                            .Title("اطلاعات وب سرویس تراکنش")
+                            .Width(400)
+                        .Items(
+        //X.FieldSet()
+
+                       // .Border(false)
+        // .Layout(LayoutType.HBox)
+        // .Items(
+
+                             X.Hidden().ItemID("fldId"),
+                                 X.Hidden().ItemID("countryId"),
+                    X.Hidden().ItemID("countrySID"),
+                    X.Hidden().ItemID("countryNType"),
+
+                                   X.Label("نام کاربری:"),
+                     X.TextField()
+                     .EnforceMaxLength(true)
+        // .MaxLength(20)
+                             .ItemID("txtUserName")
+
+                    .MsgTarget(Ext.Net.MessageTarget.Side)
+                    .AllowBlank(false)
+                    .Width(190)
+        // .MaskRe("/[0-9,-]/")
+                    .BlankText("لطفا نام کاربری را وارد نمایید.")
+
+                             , X.Label("رمز عبور :"),
+                     X.TextField()
+                     .EnforceMaxLength(true)
+        // .MaxLength(20)
+
+                             .ItemID("txtPass")
+                             .InputType(Ext.Net.InputType.Password)
+                    .MsgTarget(Ext.Net.MessageTarget.Side)
+                    .AllowBlank(false)
+                    .Width(190)
+        //.MaskRe("/[0-9,-]/")
+                    .BlankText("لطفا رمز عبور را وارد نمایید."),
+
+             //X.FieldSet()
+               X.Label("توضیحات:"),
+                        X.TextArea()
+                        .ItemID("txtDesc")
+                        .Width(190),
+             //           .Border(false)
+        //           .Layout(LayoutType.HBox)
+        //           .Items(
+             X.Checkbox()
+                                                        .ItemID("chInherit")
+                                                   .LabelAlign(Ext.Net.LabelAlign.Left) 
+                                                  // X.Label("وضعیت:")
+                                                    .MarginSpec("0 0 0 100px")
+                                                   //.PaddingSpec("0 200px 0 3px")
+                                              
+                    
+                      
+        //)
+                        )
+                        ),
+                              X.Panel().Layout(LayoutType.HBox).Border(false).Defaults(new { Margin = 5 })
+            .Items(
+                        X.FieldSet()
+                    .Border(true)
+                    .Title("موقعیت در تقسیمات کشوری")
+                    .Width(400)
+                    .Height(400)
+                    .Layout(LayoutType.Column)
+                    .Defaults(new { Margin = 2 })
+                        .Items(
+                                                    X.TreePanel()
+                                                        .ID("TreeCountryTr")
+                                                        .AutoScroll(true)
+                                                        .Width(305)
+                                                        .Height(300)
+                                                        .Expand(true)
+                                                        .UseArrows(true)
+                                                        .Border(false)
+        //.Store(
+        //    Html.X().TreeStore()
+        //        .Listeners(l => l.Load.Handler = "alert('test');")
+        //            .Proxy(
+        //                Html.X().AjaxProxy()
+        //                    .Url(Url.Action("nodeLoadTreeCountry"))
+        //                    )
+        //            )
+                                                        .Listeners(a =>
+                                                        {
+                                                            a.Select.Handler = "GetTreeCountryIdTr(record);";
+                                                            a.AfterRender.Handler = "this.getRootNode().expand();";
+                                                            a.BeforeLoad.Fn = "nodeLoadTreeCountryTr";
+                                                        })
+                                                            .Root(Html.X().Node().NodeID("1").DataPath("0").Cls("0").Text("جمهوری اسلامی ایران").IconFile("/Content/images/0.png")),
+                                                    X.Label()
+                                                        .Cls("LblRed")
+                                                        .Text("مورد انتخاب شده: "),
+                                                    X.Label()
+        //.Cls("LblStyle")
+                                                        .ItemID("lblTitleCountryD")
+                                                    )
+                                    )
+                                    )
+
+            )
+        )
+)
+
+
+<script type="text/javascript">
+    setTimeout("LoadTransactionInf_New()", 700);
+
+    var nodeLoadTreeCountryTr = function (store, operation, options) {
+        var node = operation.node;
+        Ext.net.DirectMethod.request({
+            url: '/NewVer/TransactionInf_New/NodeLoadTreeCountry',
+            params: {
+                nod: node.getId()
+            },
+            success: function (result) {
+                node.set('loading', false);
+                node.set('loaded', true);
+                node.appendChild(result);
+                node.expand();
+                /*if (node.getId() == "1") {
+                    SetDefault1();
+                }*/
+            },
+            failure: function (errorMsg) {
+                Ext.Msg.alert('Failure', errorMsg);
+            }
+        });
+
+        return false;
+    };
+
+    function SetDefault1() {
+        App.TreeCountryTr.getSelectionModel().select(0);
+    }
+    function GetTreeCountryIdTr(record) {
+        var pathCountry = record.getPath("text");
+        var TextCountry = pathCountry.split('/').splice(1).join("-->");
+        App.NewTransactionInf_New.queryById("countryId").setValue(record.getId());
+        App.NewTransactionInf_New.queryById("countrySID").setValue(record.data.cls);
+        App.NewTransactionInf_New.queryById("countryNType").setValue(record.data.dataPath);
+        App.NewTransactionInf_New.queryById('lblTitleCountryD').setText(TextCountry);
+    };
+
+
+
+    function LoadTransactionInf_New() {
+        if ('@ViewBag.Id' != '0') {
+            App.NewTransactionInf_New.body.mask("در حال بارگذاری...");
+            Ext.net.DirectMethod.request({
+                url: '/NewVer/TransactionInf_New/Details',
+                params: {
+                    Id: '@ViewBag.Id'
+                },
+                success: function (data) {
+                    if (data.Er == 0) {
+
+                    var txtUserName = App.NewTransactionInf_New.queryById('txtUserName');
+                    txtUserName.setValue(data.fldUserName);
+                    var txtPass = App.NewTransactionInf_New.queryById('txtPass');
+                    txtPass.setValue(data.fldPass);
+                    var txtDesc = App.NewTransactionInf_New.queryById('txtDesc');
+                    txtDesc.setValue(data.fldDesc);
+                    var Id = App.NewTransactionInf_New.queryById('fldId');
+                    Id.setValue(data.fldId);
+                    App.NewTransactionInf_New.queryById("countryId").setValue(data.CountryId);
+                    App.NewTransactionInf_New.queryById("countrySID").setValue(data.CountryCode);
+                    App.NewTransactionInf_New.queryById("countryNType").setValue(data.CountryType);
+
+                    if (data.fldInherit == true) {
+                        App.NewTransactionInf_New.queryById('chInherit').setValue(true);
+                    }
+                    if (data.Path == "/1") {
+                        App.TreeCountryTr.getSelectionModel().select(0);
+                    }
+                    else {
+                        Ext.net.DirectMethod.request({
+                            url: '/NewVer/TransactionInf_New/LoadPath',
+                            params: {
+                                Path: data.Path
+                            },
+                            success: function (result) {
+                                if (result.length != 0) {
+                                    var idd = data.Path.split('/')[2];
+                                    App.TreeCountryTr.store.getNodeById(idd).appendChild(result);
+                                    var nodee = App.TreeCountryTr.store.getNodeById(data.Path.split('/')[data.Path.split('/').length - 1]);
+                                    App.TreeCountryTr.expandPath(data.Path);
+                                    App.TreeCountryTr.selectPath(data.Path);
+                                }
+                                else {
+                                    App.TreeCountryTr.selectPath(data.Path);
+                                }
+                            },
+                            failure: function (errorMsg) {
+                                Ext.Msg.alert('Failure', errorMsg);
+                            }
+                        });
+                    }
+
+
+                }
+            else if (data.Er == 1) {
+                Ext.MessageBox.show({
+                    title: data.MsgTitle,
+                    msg: data.Msg,
+                    icon: Ext.MessageBox.ERROR,
+                    buttons: Ext.MessageBox.OK
+                });
+            }
+                    App.NewTransactionInf_New.body.mask().hide();
+                }
+            });
+        }
+        else {
+
+            App.NewTransactionInf_New.queryById('txtUserName').validate();
+            App.NewTransactionInf_New.queryById('txtPass').validate();
+
+            SetDefault1();
+        }
+
+    }
+
+    function SaveTransactionInf_New() {
+        var txtUserName = App.NewTransactionInf_New.queryById('txtUserName');
+        var txtPass = App.NewTransactionInf_New.queryById('txtPass');
+        var chInherit = App.NewTransactionInf_New.queryById('chInherit');
+        var Id = App.NewTransactionInf_New.queryById('fldId');
+        var txtDesc = App.NewTransactionInf_New.queryById('txtDesc');
+        var er = false;
+
+        if (txtUserName.validate() == false) {
+            er = true;
+        }
+        if (txtPass.validate() == false) {
+            er = true;
+        }
+       
+        if (er == true)
+            return;
+        App.NewTransactionInf_New.body.mask("در حال ذخیره سازی...");
+        Ext.net.DirectMethod.request({
+            url: '/NewVer/TransactionInf_New/Save',
+            params: {
+                CountryType: App.NewTransactionInf_New.queryById("countryNType").getValue(),
+                CountryCode: App.NewTransactionInf_New.queryById("countrySID").getValue(),
+                fldUserName: txtUserName.getValue(),
+                fldPass: txtPass.getValue(),
+                fldInherit: chInherit.getValue(),
+                fldId: Id.getValue(),
+                fldDesc:txtDesc.getValue()
+            },
+            success: function (data) {
+                var ic = Ext.MessageBox.INFO;
+                if (data.Err == 1)
+                    ic = Ext.MessageBox.ERROR;
+                Ext.MessageBox.show({
+                    Name: data.MsgName,
+                    msg: data.Msg,
+                    icon: ic,
+                    buttons: Ext.MessageBox.OK
+                });
+                App.NewTransactionInf_New.body.mask().hide();
+                App.TransactionInf.queryById('GridTransactionInf').store.load();
+                if (data.Err != 1)
+                    ClearTransactionInf_New();
+            }
+
+        });
+    }
+    function ClearTransactionInf_New() {
+        App.NewTransactionInf_New.queryById('txtUserName').setValue("");
+        App.NewTransactionInf_New.queryById('txtPass').setValue("");
+        App.NewTransactionInf_New.queryById('chInherit').setValue(false);
+        App.NewTransactionInf_New.queryById('lblTitleCountryD').setText("");
+        App.NewTransactionInf_New.queryById('txtDesc').setValue("");
+        App.TreeCountryTr.getSelectionModel().select(0);
+        App.NewTransactionInf_New.queryById("countryId").setValue(0);
+        App.NewTransactionInf_New.queryById("countrySID").setValue(0);
+        App.NewTransactionInf_New.queryById("countryNType").setValue(0);
+         App.NewTransactionInf_New.queryById('fldId').setValue(0);
+    }
+  /*  function EnterNext() {
+        var keyfield = App.NewTransactionInf_New.queryById(Ext.getCmp((Ext.Element.getActiveElement()).name).itemId);
+        var nextfld = keyfield.nextSibling();
+        nextfld.focus();
+        nextfld.selectText();
+        
+    }*/
+</script>

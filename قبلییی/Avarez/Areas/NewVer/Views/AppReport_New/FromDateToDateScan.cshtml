@@ -1,0 +1,388 @@
+﻿@*@using Ext.Net.MVC
+@using Hogaf.ExtNet.UX
+@using Ext.Net;
+@{
+    var X = Html.X();
+}
+
+
+@(Html.X().Panel()
+    .Border(false)
+    .Title("گزارش پرونده های اسکن شده")
+    .ID("FromDateToDate_Scan")
+    .Closable(true)
+    .CloseAction(Ext.Net.CloseAction.Destroy)
+    .Items(
+        X.TabPanel()
+            .Border(false)
+            .ID("FromDateToDate_ScanTab")
+            .Items(
+                X.Panel()
+                    .Border(false)
+                    .Title("گزارش پرونده های اسکن شده")
+                    .ID("InnerTab")
+                    .ButtonAlign(Ext.Net.Alignment.Center)
+                    .DefaultButton("btn")
+                    .TitleAlign(Ext.Net.TitleAlign.Center)
+                    .Buttons(
+                        X.Button()
+                            .Text("چاپ").Icon(Ext.Net.Icon.Printer).Margin(10)
+                               .Listeners(l =>
+                               {
+                                   l.Click.Handler = "Print_NotPaid()";
+
+                               })
+                               .ItemID("btnSave")
+                                ,
+                                X.Button().Text("خروج").Icon(Ext.Net.Icon.DoorOut).ToolTip("کلید میانبر Esc")
+                                               .OnClientClick("App.FromDateToDate_NotPaid.destroy()"))
+                .Items(
+
+                X.FieldSet().Border(false)
+                .Center()
+                .LayoutConfig(new Ext.Net.TableLayoutConfig { Columns = 2 })
+                .Defaults(new { Margin = 2 })
+                .Items(
+                        X.Label().Text("از تاریخ:")
+
+                    , X.PDateField()
+                        .ItemID("txtAzTarikh")
+                        .Width(160)
+
+                        .Editable(false)
+                        .MsgTarget(Ext.Net.MessageTarget.Side)
+                        .AllowBlank(false)
+                        .MaskRe("/[0-9,/]/")
+                        .BlankText("لطفا تاریخ را انتخاب نمایید.")
+                        .Listeners(l => l.Change.Handler = "AzTarikh()")
+                        .LabelAlign(Ext.Net.LabelAlign.Top)
+                    , X.Label().Text("تا تاریخ:")
+                    , X.PDateField()
+                                .ItemID("txtTaTarikh")//.PaddingSpec("0 0 9px 0")
+                        .Width(160)
+                        .MsgTarget(Ext.Net.MessageTarget.Side)
+                        .AllowBlank(false)
+                        .Editable(false)
+                        .MaskRe("/[0-9,/]/")
+                        .BlankText("لطفا تاریخ را انتخاب نمایید.")
+                        .LabelAlign(Ext.Net.LabelAlign.Top)
+                        .Listeners(l => l.Change.Handler = "TaTarikh()")
+
+                            , X.Label("کاربر:"),
+                        X.ComboBox()
+                        .ItemID("cboUser")
+                        .Editable(false)
+                        .TypeAhead(true)
+                        .QueryMode(DataLoadMode.Local)
+                        .ForceSelection(true)
+                        .TriggerAction(TriggerAction.All)
+                        .DisplayField("fldName")
+                        .ValueField("fldID")
+                        .EmptyText(" کاربر...")
+                        .Width(160)
+                            .Store(X.Store()//.AutoLoad(false)
+                                .Listeners(l => l.Load.Handler = "FormLoad_NotPaid()")
+                            .Model(X.Model()
+                            .IDProperty("fldID")
+                                .Fields(
+                                    new ModelField("fldID", ModelFieldType.String) { Mapping = "fldID" },
+                                    new ModelField("fldName", ModelFieldType.String) { Mapping = "fldName" }
+                                )
+                            )
+                                .Proxy(X.AjaxProxy()
+                                    .Url(Url.Action("GetUsers"))
+                                .Reader(X.JsonReader().Root("data"))
+                                ))
+                ).ColSpan(3)
+
+                       )
+                            .Layout(Ext.Net.LayoutType.VBox)
+                            .LayoutConfig(new Ext.Net.VBoxLayoutConfig { Align = Ext.Net.VBoxAlign.Center })
+                    )
+
+                )
+)
+
+
+<script type="text/javascript">
+    var state = '@ViewBag.state';
+    function FormLoad_NotPaid() {
+      /*  if (state == "1") {
+            App.FromDateToDate_NotPaid.setTitle("گزارش فیش های صادر شده و پرداخت شده");
+            App.InnerTab.setTitle("گزارش فیش های صادر شده و پرداخت شده");
+        }
+        else if (state == "2") {
+            App.FromDateToDate_NotPaid.setTitle("گزارش فیش های صادر شده و پرداخت نشده");
+            App.InnerTab.setTitle("گزارش فیش های صادر شده و پرداخت نشده");
+        }*/
+        App.FromDateToDate_NotPaid.queryById('cboUser').setValue('@ViewBag.User');
+    }
+    function showBargozary() {
+        Ext.MessageBox.show({
+            msg: 'لطفاً منتظر باشید',
+            progressText: 'در حال بارگذاری...',
+            width: 300,
+            wait: true,
+            waitConfig:
+            {
+                /*duration: 10000,*/
+                interval: 200,
+                /*increment: 15,*/
+                text: 'در حال بارگذاری...',
+                scope: this
+                /*fn: function () {
+                    Ext.MessageBox.hide();
+                    Ext.Msg.alert('Status', 'Saved successfully!');
+                }*/
+            }
+        });
+    }
+    function AzTarikh() {
+        var txtAzTarikh = App.FromDateToDate_NotPaid.queryById('txtAzTarikh');
+        var txtTaTarikh = App.FromDateToDate_NotPaid.queryById('txtTaTarikh');
+        txtTaTarikh.setMinValue(txtAzTarikh.getValue());
+        txtTaTarikh.minText = "تاریخ شروع نباید از تاریخ پایان بزرگتر باشد.";
+    }
+    function TaTarikh() {
+        var txtAzTarikh = App.FromDateToDate_NotPaid.queryById('txtAzTarikh');
+        var txtTaTarikh = App.FromDateToDate_NotPaid.queryById('txtTaTarikh');
+        txtAzTarikh.setMaxValue(txtTaTarikh.getValue());
+        txtAzTarikh.maxText = "تاریخ شروع نباید از تاریخ پایان بزرگتر باشد.";
+    }
+    function Print_NotPaid() {
+        var cboUser = App.FromDateToDate_NotPaid.queryById('cboUser');
+        var txtAzTarikh = App.FromDateToDate_NotPaid.queryById('txtAzTarikh');
+        var txtTaTarikh = App.FromDateToDate_NotPaid.queryById('txtTaTarikh');
+        var er = false;
+        if (txtAzTarikh.validate() == false) {
+            er = true;
+        }
+        if (txtTaTarikh.validate() == false) {
+            er = true;
+        }
+        if (cboUser.validate() == false) {
+            er = true;
+        }
+        if (er == true)
+            return;
+
+       /* if (state == "1") {
+            showBargozary();
+            Ext.net.DirectMethod.request({
+                url: '/NewVer/AppReport_New/PrintPaid',
+                params: {
+                    containerId: "FromDateToDate_NotPaidTab",
+                    SDate: txtAzTarikh.rawValue,
+                    EDate: txtTaTarikh.rawValue,
+                    User: cboUser.getValue()
+                },
+                success: function () {
+                    Ext.MessageBox.hide();
+                }
+            });
+        }*/
+        /*  else if (state == "2") {*/
+            showBargozary();
+            Ext.net.DirectMethod.request({
+                url: '/NewVer/AppReport_New/PrintNotPaid',
+                params: {
+                    containerId: "FromDateToDate_NotPaidTab",
+                    SDate: txtAzTarikh.rawValue,
+                    EDate: txtTaTarikh.rawValue,
+                    User: cboUser.getValue()
+                },
+                success: function () {
+                    Ext.MessageBox.hide();
+                }
+            });
+        }
+
+  /*  }*/
+</script>*@
+
+@model IEnumerable<Avarez.Models.sp_RptCarFile_Scan>
+@using Ext.Net.MVC
+@using Hogaf.ExtNet.UX
+@using Ext.Net;
+@{
+    var X = Html.X();
+}
+
+@(X.Panel()
+    .ID("FileWithScan")
+    .Title("پرونده های اسکن شده")
+    .Closable(true)
+    .Border(false)
+    .CloseAction(Ext.Net.CloseAction.Destroy)
+    .Layout(Ext.Net.LayoutType.Fit)
+    .Items(
+        X.Panel()
+            .Border(false)
+            //.Layout(LayoutType.VBox)
+            //.LayoutConfig(new VBoxLayoutConfig{Align=VBoxAlign.Center})
+            .Items(
+                X.Panel()
+                    .Border(false)
+                    .Layout(LayoutType.Table)
+                    .Padding(10)
+                    .Defaults(new { Margin = 5 })
+                    .LayoutConfig(new TableLayoutConfig{Columns=7})
+                    .Items(
+                        X.Label()
+                            .Text("از تاریخ:"),
+                        X.PDateField()
+                            .ItemID("txtAzTarikh")
+                            .Width(160)
+                            .Editable(false)
+                            .MsgTarget(Ext.Net.MessageTarget.Side)
+                            .AllowBlank(false)
+                            .MaskRe("/[0-9,/]/")
+                            .BlankText("لطفا تاریخ را انتخاب نمایید.")
+                            .Listeners(l => l.Change.Handler = "AzTarikhScan()")
+                            .LabelAlign(Ext.Net.LabelAlign.Top),
+                        X.Label()
+                            .Text("تا تاریخ:"),
+                        X.PDateField()
+                            .ItemID("txtTaTarikh")
+                            .Width(160)
+                            .MsgTarget(Ext.Net.MessageTarget.Side)
+                            .AllowBlank(false)
+                            .Editable(false)
+                            .MaskRe("/[0-9,/]/")
+                            .BlankText("لطفا تاریخ را انتخاب نمایید.")
+                            .LabelAlign(Ext.Net.LabelAlign.Top)
+                            .Listeners(l => l.Change.Handler = "TaTarikhScan()"),
+                        X.Label("کاربر:"),
+                        X.ComboBox()
+                            .ItemID("cboUser")
+                            .Editable(false)
+                            .TypeAhead(true)
+                            .QueryMode(DataLoadMode.Local)
+                            .ForceSelection(true)
+                            .TriggerAction(TriggerAction.All)
+                            .DisplayField("fldName")
+                            .ValueField("fldID")
+                            .EmptyText(" کاربر...")
+                            .Width(160)
+                            .Store(X.Store()
+                                .Model(X.Model()
+                                    .IDProperty("fldID")
+                                    .Fields(
+                                        new ModelField("fldID", ModelFieldType.String) { Mapping = "fldID" },
+                                        new ModelField("fldName", ModelFieldType.String) { Mapping = "fldName" }
+                                    )
+                                )
+                                .Proxy(X.AjaxProxy()
+                                    .Url(Url.Action("GetUsers"))
+                                    .Reader(X.JsonReader().Root("data"))
+                                        )),
+                                X.Button()
+                                    .Text("جستجو")
+                                    .Listeners(l=>l.Click.Handler="LoadGrid()")),
+                        X.Panel()
+                            .Border(false)  
+                            .Layout(LayoutType.Fit)
+                            .Items(
+                X.GridPanel()
+                    .AutoScroll(true)
+                    .ItemID("GridFileWithScan")
+                    .Listeners(l=>l.Render.Handler="setHeightForGrid()")
+                    .BottomBar(X.PagingToolbar())
+                    .Store(
+                        Html.X().StoreForModel().AutoLoad(false)
+                            .Proxy(Html.X().AjaxProxy()
+                                .Url(Url.Action("Read"))
+                                .Reader(Html.X().JsonReader().Root("data"))
+                            )
+                            .PageSize(20)
+                            .RemoteFilter(true)
+                            .RemotePaging(true)
+                            )
+                            .View(
+                                Html.X().GridView().LoadingText("در حال بارگذاری...").RTL(true)
+                            )
+                            .Plugins(X.FilterHeader().Remote(true))
+                            .ColumnModel(
+                                Html.X().RowNumbererColumn(),
+                                Html.X().Column().DataIndex(Model, m => m.fldID).Text("کد").Hidden(true).Flex(1),
+                                Html.X().Column().DataIndex(Model, m => m.fldMotorNumber).Text("شماره موتور").Wrap(true).Flex(4),
+                                    Html.X().Column().DataIndex(Model, m => m.fldShasiNumber).Text("شماره شاسی").Wrap(true).Flex(4),
+                                Html.X().Column().DataIndex(Model, m => m.fldVIN).Text("VIN").Wrap(true).Flex(4),
+                                Html.X().Column().DataIndex(Model, m => m.fldName).Text("نام مالک").Wrap(true).Flex(5),
+                                Html.X().Column().DataIndex(Model, m => m.fldPlaqueNumber).Text("شماره پلاک").Wrap(true).Flex(3),
+                                Html.X().Column().DataIndex(Model, m => m.NameCar).Text("نام خودرو").Wrap(true).Flex(5),
+                                Html.X().Column().DataIndex(Model, m => m.fldBargSabzFileId).Hidden(true).Flex(1),
+                                Html.X().Column().DataIndex(Model, m => m.fldCartFileId).Hidden(true).Flex(1),
+                                Html.X().Column().DataIndex(Model, m => m.fldSanadForoshFileId).Hidden(true).Flex(1),
+                                Html.X().Column().DataIndex(Model, m => m.fldCartBackFileId).Hidden(true).Flex(1),
+                                Html.X().CommandColumn().Flex(2).Listeners(ls => ls.Command.Handler = "ShowFiles(record);")
+                                .Commands(
+                                    Html.X().GridCommand()
+                                        .CommandName("buttonScanFile")
+                                        .StandOut(true)
+                                        .MinWidth(60)
+                                        .Text("مشاهده تصاویر")
+                                        .ToolTip(tt => tt.Text = "مشاهده تصاویر")
+                                )
+
+            )
+                        .SelectionModel(
+                            Html.X().RowSelectionModel()
+                                .Mode(Ext.Net.SelectionMode.Single)
+            )
+
+)
+)
+))
+
+<script type="text/javascript">
+    function AzTarikhScan() {
+        var txtAzTarikh = App.FileWithScan.queryById('txtAzTarikh');
+        var txtTaTarikh = App.FileWithScan.queryById('txtTaTarikh');
+        txtTaTarikh.setMinValue(txtAzTarikh.getValue());
+        txtTaTarikh.minText = "تاریخ شروع نباید از تاریخ پایان بزرگتر باشد.";
+    }
+
+    function TaTarikhScan() {
+        var txtAzTarikh = App.FileWithScan.queryById('txtAzTarikh');
+        var txtTaTarikh = App.FileWithScan.queryById('txtTaTarikh');
+        txtAzTarikh.setMaxValue(txtTaTarikh.getValue());
+        txtAzTarikh.maxText = "تاریخ شروع نباید از تاریخ پایان بزرگتر باشد.";
+    }
+
+    function LoadGrid() {
+        var txtAzTarikh = App.FileWithScan.queryById('txtAzTarikh');
+        var txtTaTarikh = App.FileWithScan.queryById('txtTaTarikh');
+        var er = false;
+        if (txtAzTarikh.validate() == false) {
+            er = true;
+        }
+        if (txtTaTarikh.validate() == false) {
+            er = true;
+        }
+        if (er == true)
+            return;
+        App.FileWithScan.queryById('GridFileWithScan').getStore().getProxy().setExtraParam("AzTarikh", App.FileWithScan.queryById('txtAzTarikh').getRawValue());
+        App.FileWithScan.queryById('GridFileWithScan').getStore().getProxy().setExtraParam("TaTarikh", App.FileWithScan.queryById('txtTaTarikh').getRawValue());
+        App.FileWithScan.queryById('GridFileWithScan').getStore().getProxy().setExtraParam("UserId", App.FileWithScan.queryById('cboUser').getValue());
+        App.FileWithScan.queryById('GridFileWithScan').getStore().load();
+    }
+
+    function setHeightForGrid() {
+        App.FileWithScan.queryById('GridFileWithScan').setHeight(Ext.getBody().getViewSize().height - 160);
+    }
+
+    function ShowFiles(record) {
+        App.AppReport.body.mask("در حال بارگذاری...");
+        Ext.net.DirectMethod.request({
+            url: '/NewVer/SelectParvande/ImageGallery',
+            params: {
+                CarFileId: record.data.fldID
+            },
+            success: function () {
+                App.AppReport.body.mask().hide();
+            }
+        });
+    }
+
+</script>

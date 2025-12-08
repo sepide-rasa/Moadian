@@ -1,0 +1,112 @@
+﻿<div id="Config">
+    @using Kendo.Mvc.UI;
+    <link href="@Url.Content("~/Content/web/kendo.common.min.css")" rel="stylesheet" type="text/css" />
+    <link href="@Url.Content("~/Content/web/kendo.default.min.css")" rel="stylesheet" type="text/css" />
+    <link href="@Url.Content("~/Content/web/kendo.rtl.min.css")" rel="stylesheet" type="text/css" />
+    <script src="@Url.Content("~/Scripts/console.min.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Scripts/kendo.web.min.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Scripts/prettify.min.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Scripts/kendo.aspnetmvc.min.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Scripts/kendo.splitter.min.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Scripts/cultures/kendo.fa-IR.js")" type="text/javascript"></script>
+    <script type="text/javascript">
+        $("document").ready(function () {
+            //windows("#win", "/Helps/راهنمای کاربران.htm");
+            $('#Exit').button();
+            $('#Exit').click(function () {
+                window.location.href = '/home';
+            });
+
+            $("#FastCalc").click(function () {
+                windows("#win", "/FastCalc/Index");
+            });
+            $("#SearchFile").click(function () {
+                windows("#win", "/SearchFile/Index");
+            });
+
+        });
+    </script>
+    @{Avarez.Models.cartaxEntities p = new Avarez.Models.cartaxEntities();
+      var state = p.sp_StateSelect("fldId", Session["UserState"].ToString(), 1, 1, "").FirstOrDefault();
+      var Mnu = p.sp_MunicipalitySelect("fldId", Session["UserMnu"].ToString(), 1, 1, "").FirstOrDefault();
+      var Location = state.fldName + " --> " + Mnu.fldName;}
+    @(Html.Kendo().Splitter()
+      .Name("vertical")
+      .Orientation(SplitterOrientation.Vertical)
+          .HtmlAttributes(new { style = "height: 750px;" })
+      .Panes(verticalPanes =>
+      {
+          verticalPanes.Add()
+            .Size("30px")
+            .Collapsible(false)
+            .Resizable(false)
+            .Content(@<div dir="rtl" style="text-align: center;">
+                <span style="font-weight: bold; color: #127AA3; font-size: 11px;">موقعیت فعلی شما: @Location
+                </span>                
+                <button id="Exit" style="font-size: 11px; float: left; text-align: left; background-image: url('/Content/images/1377957633_exit.png');
+                        background-repeat: no-repeat; background-position: right; width: 70px; background-size: 14px;
+                        background-position-x: 50px;">
+                        خروج</button>
+                </div>);
+          verticalPanes.Add()
+              .HtmlAttributes(new { id = "top-pane" })
+              .Scrollable(false)
+              .Collapsible(false)
+              .Content(
+                Html.Kendo().Splitter()
+                    .Name("horizontal")
+                    .HtmlAttributes(new { style = "height: 100%;" })
+                    .Panes(horizontalPanes =>
+                    {
+                        horizontalPanes.Add()
+                            .HtmlAttributes(new { id = "left-pane" })
+                            .Size("688px")
+                            .Content(@<div id="win" class="pane-content">
+                                          <center style="font-family:RasaFont;">
+                                              <h1>راهنمای کاربران</h1>
+                                              با انتخاب اطلاعات پرونده پنجره ای به شکل زیر نمایان خواهد شد:
+                                              <br />
+                                              <br />
+                                              <img src="@Url.Content("~/Helps/راهنمای کاربران_files/image001.jpg")" />
+                                              <br />
+                                              <br />
+                                              در این قسمت می توانید بر اساس VIN و یا ترکیب شماره موتور و شاسی پرونده مورد نظر را جستجو کنید. پس از جستجو در صورتی که پرونده شما در سامانه وجود داشته باشد در جدول نمایش داده می شود و در غیر این صورت شما می بایست جهت تشکیل پرونده به شهرداری یا دفاتر پیشخوان دولت مراجعه فرمایید. توجه داشته باشید که تشکیل پرونده شما فقط یکبار به صورت حضوری انجام خواهد شد و پس از این شما می توانید توسط همین سامانه نسبت به پرداخت عوارض و دریافت رسید و مفاصا حساب اقدام فرمایید.پس از این که پرونده شما در جدول نمایش داده شد دکمه ادامه را انتخاب نمایید و به مرحله بعدی مراجعه فرمایید.
+                                              <br />
+                                              <br />
+                                              <img src="@Url.Content("~/Helps/راهنمای کاربران_files/image002.jpg")" />
+                                              <br />
+                                              <br />
+                                              در این مرحله شما می توانید مبلغ بدهی خود را به صورت اینترنتی پرداخت کنید و همچنین در صورت تسویه می توانید با انتخاب مفاصا حساب، تصویر مفاصا حساب خود را دریافت کنید.
+                                              <br />
+                                              <br />                                      
+                            </center></div>);
+                        horizontalPanes.Add()
+                            .HtmlAttributes(new { id = "right-pane" })
+                            .Size("210px")
+                            .Content(@<div class="pane-content">
+                                @(Html.Kendo().PanelBar()
+                                    .Name("panelbar-images")
+                                    .Items(panelbar =>
+                                    {
+                                        panelbar.Add().Text("منوی اصلی")
+                                            .Expanded(true)
+                                            .ImageUrl(Url.Content("~/Content/images/1376570677_my_documents.png"))
+                                            .Items(Setting =>
+                                            {
+                                                Setting.Add().Text("اطلاعات پرونده")
+                                                    .HtmlAttributes(new { id = "SearchFile" })
+                                                    .ImageUrl(Url.Content("~/Content/images/اطلاعات پرونده.png"));
+                                                Setting.Add().Text("محاسبه سرانگشتی")
+                                                    .HtmlAttributes(new { id = "FastCalc" })
+                                                    .ImageUrl(Url.Content("~/Content/images/محاسبات سرانگشتی.png"));
+                                            });
+                                    })
+                                )
+                            </div>);
+                    }).ToHtmlString()
+              );
+
+
+      })
+)
+</div>

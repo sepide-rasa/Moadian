@@ -1,0 +1,14 @@
+﻿<body>
+    <form name="TSaman" action="https://sep.shaparak.ir/OnlinePG/OnlinePG" method="post">
+        <input type="hidden" value="@Session["Token"]" name="Token" />
+        <input type="text" value="false" name="GetMethod" />
+    </form>
+</body>
+
+<script type="text/javascript">
+
+    $(document).ready(function () {
+        document.TSaman.submit();
+    });
+
+</script>

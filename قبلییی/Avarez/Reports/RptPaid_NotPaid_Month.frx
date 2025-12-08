@@ -1,0 +1,167 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Report ScriptLanguage="CSharp" ReportInfo.Created="12/28/2015 10:55:14" ReportInfo.Modified="09/27/2017 12:03:41" ReportInfo.CreatorVersion="2015.1.2.0">
+  <ScriptText>using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Windows.Forms;
+using System.Drawing;
+using System.Data; 
+using FastReport;
+using FastReport.Data;
+using FastReport.Dialog;
+using FastReport.Barcode;
+using FastReport.Table;
+using FastReport.Utils;
+
+namespace FastReport
+{
+  public class ReportScript 
+  {
+     
+      
+       
+       
+ 
+  }
+}
+</ScriptText>
+  <Dictionary>
+    <TableDataSource Name="sp_PictureSelect" ReferenceName="carTaxDataSet.sp_PictureSelect" DataType="System.Int32" Enabled="true">
+      <Column Name="fldID" DataType="System.Int32"/>
+      <Column Name="fldPic" DataType="System.Byte[]" BindableControl="Picture"/>
+      <Column Name="fldMunicipalityPic" DataType="System.String"/>
+      <Column Name="fldMunicipalityPicID" DataType="System.Int32"/>
+      <Column Name="fldBankPic" DataType="System.String"/>
+      <Column Name="fldBankPicID" DataType="System.Int32"/>
+      <Column Name="fldUserPic" DataType="System.String"/>
+      <Column Name="fldUserPicID" DataType="System.Int64"/>
+      <Column Name="fldUserName" DataType="System.String"/>
+      <Column Name="fldUserID" DataType="System.Int64"/>
+      <Column Name="fldDesc" DataType="System.String"/>
+      <Column Name="fldDate" DataType="System.String"/>
+    </TableDataSource>
+    <TableDataSource Name="Sp_RptPaid_NotPaid_Month" ReferenceName="carTaxDataSet.Sp_RptPaid_NotPaid_Month" DataType="System.Int32" Enabled="true">
+      <Column Name="name" DataType="System.String"/>
+      <Column Name="sumMoney" DataType="System.Int64"/>
+      <Column Name="CountMoney" DataType="System.Int64"/>
+      <Column Name="namemah" DataType="System.String"/>
+      <Column Name="divid" DataType="System.Int32"/>
+      <Column Name="idMah" DataType="System.Int32"/>
+    </TableDataSource>
+    <TableDataSource Name="Sp_RptPaid_NotPaid_Month1" ReferenceName="carTaxDataSet.Sp_RptPaid_NotPaid_Month1" DataType="System.Int32" Enabled="true">
+      <Column Name="name" DataType="System.String"/>
+      <Column Name="sumMoney" DataType="System.Int64"/>
+      <Column Name="CountMoney" DataType="System.Int64"/>
+      <Column Name="namemah" DataType="System.String"/>
+      <Column Name="divid" DataType="System.Int32"/>
+      <Column Name="idMah" DataType="System.Int32"/>
+    </TableDataSource>
+    <Parameter Name="StateName" DataType="System.String"/>
+    <Parameter Name="MunicipalityName" DataType="System.String"/>
+    <Parameter Name="AreaName" DataType="System.String"/>
+    <Parameter Name="OfficeName" DataType="System.String"/>
+    <Parameter Name="date" DataType="System.String"/>
+    <Parameter Name="time" DataType="System.String"/>
+    <Parameter Name="Sal" DataType="System.String"/>
+  </Dictionary>
+  <ReportPage Name="Page1">
+    <PageHeaderBand Name="PageHeader1" Width="718.2" Height="106">
+      <TableObject Name="Table3" Left="0.67" Top="3.74" Width="716.86" Height="102.26">
+        <TableColumn Name="Column10" Width="191.24"/>
+        <TableColumn Name="Column11" Width="334.27"/>
+        <TableColumn Name="Column12" Width="191.35"/>
+        <TableRow Name="Row3" Height="102.26">
+          <TableCell Name="Cell10" Text="تاریخ صدور: [date]&#13;&#10;ساعت صدور: [time]" HorzAlign="Center" VertAlign="Center" RightToLeft="true" Font="RasaFont, 10pt"/>
+          <TableCell Name="Cell11" Text="[StateName]&#13;&#10;[MunicipalityName]&#13;&#10;[AreaName]&#13;&#10;[OfficeName]&#13;&#10;گزارش فیش های صادر شده و پرداخت شده به تفکیک ماه و توابع" HorzAlign="Center" VertAlign="Center" RightToLeft="true" Font="RasaFont, 10pt, style=Bold"/>
+          <TableCell Name="Cell12" HorzAlign="Center" VertAlign="Center" RightToLeft="true" Font="RasaFont, 10pt">
+            <PictureObject Name="Picture1" Left="60.85" Top="13.23" Width="75.6" Height="75.6" DataColumn="sp_PictureSelect.fldPic"/>
+          </TableCell>
+        </TableRow>
+      </TableObject>
+    </PageHeaderBand>
+    <GroupHeaderBand Name="GroupHeader1" Top="110" Width="718.2" Height="75.02" StartNewPage="true" Condition="[Sp_RptPaid_NotPaid_Month.name]">
+      <TextObject Name="Text1" Left="72.21" Top="7.65" Width="572.65" Height="32.5" Border.Lines="All" VertAlign="Center" RightToLeft="true" Font="RasaFont, 12pt, style=Bold"/>
+      <TableObject Name="Table5" Left="72.15" Top="48.39" Width="573.91" Height="26.63">
+        <TableColumn Name="Column1" Width="166.18"/>
+        <TableColumn Name="Column2" Width="175.35"/>
+        <TableColumn Name="Column36" Width="150.96"/>
+        <TableColumn Name="Column37" Width="81.42"/>
+        <TableRow Name="Row1" Height="26.63">
+          <TableCell Name="Cell1" Border.Lines="All" Fill="Glass" Fill.Color="SkyBlue" Fill.Blend="0.2" Fill.Hatch="true" Text="تعداد" HorzAlign="Center" VertAlign="Center" RightToLeft="true" Font="RasaFont, 11pt, style=Bold"/>
+          <TableCell Name="Cell22" Border.Lines="All" Fill="Glass" Fill.Color="SkyBlue" Fill.Blend="0.2" Fill.Hatch="true" Text="مبلغ" HorzAlign="Center" VertAlign="Center" RightToLeft="true" Font="RasaFont, 11pt, style=Bold"/>
+          <TableCell Name="Cell48" Border.Lines="All" Fill="Glass" Fill.Color="SkyBlue" Fill.Blend="0.2" Fill.Hatch="true" Text="ماه" HorzAlign="Center" VertAlign="Center" RightToLeft="true" Font="RasaFont, 11pt, style=Bold"/>
+          <TableCell Name="Cell49" Border.Lines="All" Fill="Glass" Fill.Color="SkyBlue" Fill.Blend="0.2" Fill.Hatch="true" Text="ردیف" HorzAlign="Center" VertAlign="Center" RightToLeft="true" Font="RasaFont, 11pt, style=Bold"/>
+        </TableRow>
+      </TableObject>
+      <TextObject Name="Text3" Left="283.89" Top="11.34" Width="358.24" Height="25.33" Text="[Sp_RptPaid_NotPaid_Month.name]" VertAlign="Center" RightToLeft="true" Font="RasaFont, 12pt, style=Bold"/>
+      <TextObject Name="Text4" Left="74.85" Top="11.35" Width="106.15" Height="25.33" Text="سال: [Sal]" VertAlign="Center" RightToLeft="true" Font="RasaFont, 12pt, style=Bold"/>
+      <DataBand Name="Data1" Top="189.02" Width="718.2" Height="28.52" DataSource="Sp_RptPaid_NotPaid_Month">
+        <TableObject Name="Table6" Left="72.15" Width="573.91" Height="28.52">
+          <TableColumn Name="Column38" Width="166.18"/>
+          <TableColumn Name="Column39" Width="175.35"/>
+          <TableColumn Name="Column40" Width="150.96"/>
+          <TableColumn Name="Column41" Width="81.42"/>
+          <TableRow Name="Row5" Height="28.52">
+            <TableCell Name="Cell50" Border.Lines="All" Text="[Sp_RptPaid_NotPaid_Month.CountMoney]" HorzAlign="Center" VertAlign="Center" RightToLeft="true" Font="RasaFont, 11pt"/>
+            <TableCell Name="Cell51" Border.Lines="All" Text="[Sp_RptPaid_NotPaid_Month.sumMoney]" Format="Number" Format.UseLocale="false" Format.DecimalDigits="0" Format.DecimalSeparator="." Format.GroupSeparator="," Format.NegativePattern="1" HorzAlign="Center" VertAlign="Center" RightToLeft="true" Font="RasaFont, 11pt"/>
+            <TableCell Name="Cell52" Border.Lines="All" Text="[Sp_RptPaid_NotPaid_Month.namemah]" HorzAlign="Center" VertAlign="Center" RightToLeft="true" Font="RasaFont, 11pt"/>
+            <TableCell Name="Cell53" Border.Lines="All" Text="[Row#]" HorzAlign="Center" VertAlign="Center" RightToLeft="true" Font="RasaFont, 11pt"/>
+          </TableRow>
+        </TableObject>
+        <Sort>
+          <Sort Expression="[Sp_RptPaid_NotPaid_Month.idMah]"/>
+        </Sort>
+      </DataBand>
+    </GroupHeaderBand>
+  </ReportPage>
+  <ReportPage Name="Page2">
+    <PageHeaderBand Name="PageHeader2" Width="718.2" Height="105.35">
+      <TableObject Name="Table4" Left="0.67" Top="4.6" Width="716.86" Height="100.75">
+        <TableColumn Name="Column13" Width="191.24"/>
+        <TableColumn Name="Column14" Width="334.27"/>
+        <TableColumn Name="Column15" Width="191.35"/>
+        <TableRow Name="Row4" Height="100.75">
+          <TableCell Name="Cell13" Text="تاریخ صدور: [date]&#13;&#10;ساعت صدور: [time]" HorzAlign="Center" VertAlign="Center" RightToLeft="true" Font="RasaFont, 10pt"/>
+          <TableCell Name="Cell14" Text="[StateName]&#13;&#10;[MunicipalityName]&#13;&#10;[AreaName]&#13;&#10;[OfficeName]&#13;&#10;گزارش فیش های صادر شده و پرداخت نشده به تفکیک ماه و توابع" HorzAlign="Center" VertAlign="Center" RightToLeft="true" Font="RasaFont, 10pt, style=Bold"/>
+          <TableCell Name="Cell15" HorzAlign="Center" VertAlign="Center" RightToLeft="true" Font="RasaFont, 10pt">
+            <PictureObject Name="Picture2" Left="60.85" Top="11.7" Width="75.6" Height="75.6" DataColumn="sp_PictureSelect.fldPic"/>
+          </TableCell>
+        </TableRow>
+      </TableObject>
+    </PageHeaderBand>
+    <GroupHeaderBand Name="GroupHeader2" Top="109.35" Width="718.2" Height="77.28" StartNewPage="true" Condition="[Sp_RptPaid_NotPaid_Month1.name]">
+      <TextObject Name="Text2" Left="72.21" Top="9.91" Width="572.65" Height="32.5" Border.Lines="All" Text="[Sp_RptPaid_NotPaid_Month1.name]" VertAlign="Center" RightToLeft="true" Font="RasaFont, 12pt, style=Bold"/>
+      <TableObject Name="Table7" Left="72.15" Top="50.65" Width="573.91" Height="26.63">
+        <TableColumn Name="Column42" Width="166.18"/>
+        <TableColumn Name="Column43" Width="175.35"/>
+        <TableColumn Name="Column44" Width="150.96"/>
+        <TableColumn Name="Column45" Width="81.42"/>
+        <TableRow Name="Row6" Height="26.63">
+          <TableCell Name="Cell54" Border.Lines="All" Fill="Glass" Fill.Color="SkyBlue" Fill.Blend="0.2" Fill.Hatch="true" Text="تعداد" HorzAlign="Center" VertAlign="Center" RightToLeft="true" Font="RasaFont, 11pt, style=Bold"/>
+          <TableCell Name="Cell55" Border.Lines="All" Fill="Glass" Fill.Color="SkyBlue" Fill.Blend="0.2" Fill.Hatch="true" Text="مبلغ" HorzAlign="Center" VertAlign="Center" RightToLeft="true" Font="RasaFont, 11pt, style=Bold"/>
+          <TableCell Name="Cell56" Border.Lines="All" Fill="Glass" Fill.Color="SkyBlue" Fill.Blend="0.2" Fill.Hatch="true" Text="ماه" HorzAlign="Center" VertAlign="Center" RightToLeft="true" Font="RasaFont, 11pt, style=Bold"/>
+          <TableCell Name="Cell57" Border.Lines="All" Fill="Glass" Fill.Color="SkyBlue" Fill.Blend="0.2" Fill.Hatch="true" Text="ردیف" HorzAlign="Center" VertAlign="Center" RightToLeft="true" Font="RasaFont, 11pt, style=Bold"/>
+        </TableRow>
+      </TableObject>
+      <DataBand Name="Data3" Top="190.63" Width="718.2" Height="28.35" DataSource="Sp_RptPaid_NotPaid_Month1">
+        <ShapeObject Name="Shape3" Left="31.24" Top="105.81" Width="0.94" Height="0.94" Shape="RoundRectangle"/>
+        <TableObject Name="Table8" Left="72.15" Width="573.91" Height="28.52">
+          <TableColumn Name="Column46" Width="166.18"/>
+          <TableColumn Name="Column47" Width="175.35"/>
+          <TableColumn Name="Column48" Width="150.96"/>
+          <TableColumn Name="Column49" Width="81.42"/>
+          <TableRow Name="Row7" Height="28.52">
+            <TableCell Name="Cell58" Border.Lines="All" Text="[Sp_RptPaid_NotPaid_Month1.CountMoney]" HorzAlign="Center" VertAlign="Center" RightToLeft="true" Font="RasaFont, 11pt"/>
+            <TableCell Name="Cell59" Border.Lines="All" Text="[Sp_RptPaid_NotPaid_Month1.sumMoney]" Format="Number" Format.UseLocale="false" Format.DecimalDigits="0" Format.DecimalSeparator="." Format.GroupSeparator="," Format.NegativePattern="1" HorzAlign="Center" VertAlign="Center" RightToLeft="true" Font="RasaFont, 11pt"/>
+            <TableCell Name="Cell60" Border.Lines="All" Text="[Sp_RptPaid_NotPaid_Month1.namemah]" HorzAlign="Center" VertAlign="Center" RightToLeft="true" Font="RasaFont, 11pt"/>
+            <TableCell Name="Cell61" Border.Lines="All" Text="[Row#]" HorzAlign="Center" VertAlign="Center" RightToLeft="true" Font="RasaFont, 11pt"/>
+          </TableRow>
+        </TableObject>
+        <Sort>
+          <Sort Expression="[Sp_RptPaid_NotPaid_Month1.idMah]"/>
+        </Sort>
+      </DataBand>
+    </GroupHeaderBand>
+  </ReportPage>
+</Report>

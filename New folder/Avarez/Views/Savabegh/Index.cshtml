@@ -1,0 +1,527 @@
+﻿@using Kendo.Mvc.UI;
+<div class="modal" id="Savabegh">
+    <script type="text/javascript">
+        var carfile;
+        var carID;
+        function selectFromYear() {
+            return {
+                carid: carID
+            };
+        }
+        function selectToYear() {
+            return {
+                value: $('#cboFromYear').val()
+            };
+        }
+        function ExMadrak() {
+            var entityGrid = $("#Grid").data("kendoGrid");
+            var selectedItem = entityGrid.dataItem(entityGrid.select());
+            if (selectedItem) {
+                var id = selectedItem.fldID;
+                windowAppend('body', '/home/PreviewFile');
+                $('#image').html("<br/><img src='/Home/showFile?id=" + id + "&type=CarEx'/> ");
+            }
+        }
+    </script>
+    @{
+        Avarez.Models.cartaxEntities car = new Avarez.Models.cartaxEntities();
+        var q = car.sp_StateSelect("", "", 0, 1, "").ToList();
+        var subSett = car.sp_SelectSubSetting(0, 0, Convert.ToInt32(Session["CountryType"]), Convert.ToInt32(Session["CountryCode"]), car.sp_GetDate().FirstOrDefault().CurrentDateTime).FirstOrDefault();
+        bool? ForceScan = true;
+        if (subSett != null)
+        {
+            ForceScan = subSett.fldHaveScan;
+        }
+    }
+    <script src="@Url.Content("~/Content/Base.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~//Scripts/jquery.ui.datepicker-cc.all.min.js")" type="text/javascript"></script>
+    <div>
+        @if (ViewBag.state == 1)
+        {
+            <img src="@Url.Content("~/Content/images/SabegheNAV2.png")" alt=""/>
+        }
+        @*else
+        {
+            <img src="@Url.Content("~/Content/images/NAV4_5.png")" alt=""/>
+        }*@
+        <br />
+         <a href="@Url.Content("~/Helps/انتقال%20سوابق.htm")" target="_blank" id="Help" title="راهنما" style="background-image:url('/Content/images/1381415123_help.png');background-repeat: no-repeat;height: 20px;float: left;top: 10px;left: 10px;"></a>
+        <center>
+            <table>
+                <tr>
+                    <td align="left">
+                        @Html.Hidden("fldId")
+                        استان:
+                    </td>
+                    <td>
+                        @Html.DropDownList("cboState", new SelectList(q, "", ""))
+                    </td>
+                </tr>
+                <tr>
+                    <td align="left">
+                        <span style="color: Red;">*</span> شهرداری:
+                    </td>
+                    <td>
+                        @Html.TextBox("cboMnu")
+                        <span id="lblcboMnuError" style="color: Red;"></span>
+                        @Avarez.Helper.winClass.Buttons("btnSearchMun", "جستجو شهرداری", "search")
+                    </td>
+                </tr>
+                <tr>
+                    <td align="left">
+                        <span style="color: Red;">*</span>از سال:
+                    </td>
+                    <td>                       
+                        @Html.TextBox("cboFromYear", "", new { @style = "width:85px;" })
+                        <span id="lblFromDateError" style="color: Red;"></span>
+                    </td>
+                </tr>
+                <tr>
+                    <td align="left">
+                        <span style="color: Red;">*</span>تا سال:
+                    </td>
+                    <td>
+                      @(Html.Kendo().DropDownList()
+                          .Name("cboToYear")
+                          .OptionLabel("تا سال...")
+                                  .DataTextField("fldName")
+                                  .DataValueField("fldID")
+                          .DataSource(source =>
+                          {
+                              source.Read(read =>
+                              {
+                                  read.Action("GetToYear", "Savabegh")
+                                      .Data("selectToYear");
+                              })
+                              .ServerFiltering(true);
+                          })
+                          .Enable(true)
+                          .AutoBind(false)
+                          .CascadeFrom("cboFromYear")
+                          .HtmlAttributes(new { @style = "display: none;width:85px;" })
+                        )
+                        <span id="lblToDateError" style="color: Red;"></span>
+                    </td>
+                </tr>
+                @*<tr>
+                    <td align="left">
+                        <span style="color: Red;">*</span> از تاریخ:
+                    </td>
+                    <td>
+                        @Html.TextBox("txtFromDate", null, new { @style = "width:70px;" })
+                        <span id="lblFromDateError" style="color: Red;"></span>
+                    </td>
+                </tr>
+                <tr>
+                    <td align="left">
+                        <span style="color: Red;">*</span> تا تاریخ:
+                    </td>
+                    <td>
+                        @Html.TextBox("txtToDate", null, new { @style = "width:70px;"})
+                        <span id="lblToDateError" style="color: Red;"></span>
+                    </td>
+                </tr>*@
+                <tr>
+                    <td align="left">
+                        <span style="color: Red;">*</span> شماره نامه:
+                    </td>
+                    <td>
+                        @Html.TextBox("txtPaperNum")
+                        <span id="lblPaperNumError" style="color: Red;"></span>
+                    </td>
+                </tr>
+                <tr>
+                    <td align="left">
+                        توضیحات:
+                    </td>
+                    <td>
+                        @Avarez.Helper.winClass.textArea("txtDesc", 4, 30)
+                    </td>
+                </tr>
+                @if(ForceScan==true){<tr>
+                    <td align="left">
+                        <span style="color: Red;">*</span>
+                        تصویر مدرک:(حداکثر 5MB)
+                    </td>
+                    <td>
+                        @(Html.Kendo().Upload()
+                            .Name("UptContent")
+                            .Multiple(false)
+                            .Async(a => a
+                                    .Save("UploadContent", "Savabegh")
+                                    .Remove("RemoveContent", "Savabegh")
+                                .AutoUpload(true)
+                                )
+                                //.Events(ev => ev.Complete("upload"))
+                        )
+                    </td>@Html.Hidden("fileid")
+                </tr>
+                <tr>
+                   <td></td>
+                    <td><div id="_image"></div></td>
+                </tr>}
+            </table>
+            <p>
+                
+                @Avarez.Helper.winClass.Buttons("AddLink", "ذخیره", "Save")
+                @Avarez.Helper.winClass.Buttons("EditLink", "ویرایش", "Edit")
+                @Avarez.Helper.winClass.Buttons("DelLink", "حذف", "Del")
+                @Avarez.Helper.winClass.Buttons("btnNext", "صورتحساب", "next")
+                @Avarez.Helper.winClass.Buttons("exits", "خروج", "Exit")
+            </p>
+        </center>
+        <div class="k-rtl demo-section">
+            @(Html.Kendo().Grid<Avarez.Models.sp_CarExperienceSelect>()
+                .Name("Grid")
+                .Columns(columns =>
+                {
+                    columns.Bound(p => p.fldID).Title("کد").Visible(false);
+                    columns.Bound(p => p.fldName).Title("شهرداری");
+                    columns.Bound(p => p.fldStartDate).Title("از تاریخ");
+                    columns.Bound(p => p.fldEndDate).Title("تا تاریخ");
+                    columns.Bound(p => p.fldLetterNumber).Title("ش. نامه");
+                    columns.Bound(p => p.fldUserName).Title("كاربر");
+                    columns.Bound(p => p.fldDesc).Title("توضیحات");
+                    columns.Command(c => c.Custom("ExMadrak").Click("ExMadrak").HtmlAttributes(new { @style = "Color:Black;" }).Text("مدرک"));
+                })
+            .Selectable(selectable => selectable.Mode(GridSelectionMode.Single))
+            .Pageable()
+            .Scrollable()
+            .DataSource(data =>
+                data.Ajax()
+                .PageSize(10)
+                        .Read("Fill", "Savabegh")
+            )
+        )
+        </div>
+    </div>
+    <script type="text/javascript">
+        function selectCity() {
+            return {
+                cboState: $("#cboState").val()
+            };
+        }
+       
+        
+        $("document").ready(function () {
+            $("#AddLink").button();
+            $("#EditLink").button();
+            $("#DelLink").button();
+            $("#exits").button();
+            $('#Help').button();
+            $('#btnNext').button();
+            $('#next').button();
+            $('#btnSearchMun').button();
+
+            @*$("#cboFromYear").change(function () {
+                if ($("#cboFromYear").val()!='')
+                $.ajax({
+                    type: "GET",
+                    url: '@Url.Content("/Savabegh/GetFromDate")',
+                    data: { FromYear: $("#cboFromYear").val() },
+                    success: function (data) {
+                        $("#txtFromDate").val(data);
+                    },
+                    failure: function (data) {
+                        alert(data.data);
+                    }
+                });
+            });*@
+            @*$("#cboToYear").change(function () {
+                $.ajax({
+                    type: "GET",
+                    url: '@Url.Content("/Savabegh/GetToDate")',
+                    data: { ToYear: $("#cboToYear").val() },
+                    success: function (data) {
+                        $('#txtToDate').val(data);
+                    },
+                    failure: function (data) {
+                        alert(data.data);
+                    }
+                });
+            });*@
+            $("#txtFromDate").datepicker({
+                showButtonPanel: true,
+                changeMonth: true,
+                changeYear: true
+            });
+            $('#btnSearchMun').click(function () {
+                if (isWinOpen == false) {
+                    windowAppend('#Savabegh', '/MnuSearch/index/1');
+                    isWinOpen = true;
+                }
+            });
+            $("#txtToDate").datepicker({
+                showButtonPanel: true,
+                changeMonth: true,
+                changeYear: true
+            });
+
+            
+
+            carfile = '@ViewBag.CarFileId';
+            carID = '@ViewBag.CarId';
+            var URL = '@Url.Content("/Savabegh/DateFill")';
+            URL = URL + "?carID=" + carID;
+            $.ajax({
+                type: "GET",
+                url: URL,
+                success: function (data) {
+                    $("#txtFromDate").val(data.fldStartDate);
+                    //$('#txtToDate').val(data.fldEndDate);
+                },
+                failure: function (data) {
+                    alert(data.data);
+                }
+            });
+            $('#btnNext').click(function () {
+                var URL = '@Url.Content("~/infacture/Index")';
+                windows("#win", URL + "/" + carID);
+                $("#CommonWin").remove();
+                $("#Savabegh").remove();
+                Dialog = 0;
+            });
+            $("#cboZone").change(function () {
+                var url = '@Url.Action("Reload", "City")';
+                Reload(url, 'Grid', 2, $("#cboZone").val(), 0, 2);
+            });
+            $("#exits").click(function () {
+                $("#CommonWin").remove();
+                $("#CommonWin1").remove();
+                $("#Savabegh").remove();
+                Dialog = 0;
+                Dialog1 = 0;
+            });
+
+            $('#Savabegh').on('keyup', 'input', function (event) {
+                if (event.which == 13) {
+                    var inputs = $('#Savabegh').find(':input:visible');
+                    inputs.eq(inputs.index(this) + 1).focus();
+                }
+            });
+
+            
+
+            $(document).keyup(function (event) {
+                if (event.which == 119) {
+                    SaveRecord();
+                }
+                else if (event.which == 113) {
+                    EditRecord();
+                }
+                else if (event.which == 115) {
+                    DeleteRecord();
+                }
+            });
+            $('#AddLink').attr('title', 'کلید میانبر (F8)'); //119
+            $('#EditLink').attr('title', 'کلید میانبر (F2)'); //113
+            $('#DelLink').attr('title', 'کلید میانبر (F4)'); //115
+
+            jQuery("#EditLink").click(function () {
+                EditRecord();
+            });
+
+            $('#DelLink').click(function () {
+                DeleteRecord();
+            });
+
+            $("#AddLink").click(function () {
+                SaveRecord();
+            });
+
+            $("#cboMnu").change(function () {
+                if ($("#cboMnu").val() != '') {
+                    $("#cboMnu").removeClass("input-validation-error");
+                    $("#lblcboMnuError").html("");
+                }
+                else {
+                    $("#cboMnu").addClass("input-validation-error");
+                    $('#lblcboMnuError').html('لطفا شهرداری را انتخاب کنید.');
+                }
+            });
+
+        });
+        function Clear() {
+            $('#fldId').val(0);
+            //$("#txtPaperNum").val('');
+            $("#txtFromDate").val('');
+            $('#txtToDate').val('');
+            $('#txtDesc').val('');
+        }
+        function SaveRecord() {
+            var er = false;
+
+
+            if ($("#cboMnu").val() == '') {
+                $("#cboMnu").addClass("input-validation-error");
+                $('#lblcboMnuError').html('لطفا شهرداری را انتخاب کنید.');
+                er = true;
+            }
+            else
+                $('#lblcboMnuError').html('');
+
+            if (er)
+                return;
+
+            var data = {
+                fldCarFileID: carfile, fldFromYear: $("#cboFromYear").val(),
+                fldToYear: $("#cboToYear").val(), fldMunicipalityID: $("#cboMnu").val(),
+                fldDesc: $("#txtDesc").val(), fldLetterNumber: $("#txtPaperNum").val(),
+                fldId: $("#fldId").val(), fldFileId: $("#fileid").val()
+            };
+            if (data != '') {
+                PostForm(data, '@Url.Content("~/Savabegh/Save")', "#win");
+            }
+            Clear();
+        }
+        function EditRecord() {
+                var entityGrid = $("#Grid").data("kendoGrid");
+                var selectedItem = entityGrid.dataItem(entityGrid.select());
+                if (selectedItem) {
+                    var id = selectedItem.fldID;
+                    var URL = '@Url.Content("~/Savabegh/Details")';
+                    URL = URL + "/" + id;
+                    $.ajax({
+                        type: "GET",
+                        url: URL,
+                        success: function (data) {
+                            $('#fldId').val(data.fldId);
+                            $("#txtPaperNum").val(data.fldLetterNumber);
+                            var cboFrom = $("#cboFromYear").data("kendoDropDownList");
+                            var cboTo = $("#cboToYear").data("kendoDropDownList");
+                            cboFrom.value(data.fldFromYear);
+                            cboTo.value(data.fldToYear);
+                            $('#txtDesc').val(data.fldDesc);
+                            var State = $("#cboState").data("kendoDropDownList");
+                            var mun = $("#cboMnu").data("kendoDropDownList");
+                            State.value(data.fldStateId);
+                            mun.enable(true);
+                            mun.value(data.fldMunID);
+                            $("#fileid").val(data.fldFileId);
+                            $('#_image').html("<br/><img src='/Savabegh/showFile/" + data.fldFileId + "' width='100px'/> ");
+                        },
+                        failure: function (data) {
+                            alert(data.data);
+                        }
+                    });
+                }
+                else {
+                    alert('لطفا یک سطر را انتخاب کنید.');
+                }
+            }
+            function DeleteRecord() {
+                var entityGrid = $("#Grid").data("kendoGrid");
+                var selectedItem = entityGrid.dataItem(entityGrid.select());
+                if (selectedItem) {
+                    var id = selectedItem.fldID;
+                    var URL = '@Url.Content("~/metro/YesNomsg")';
+                    URL = URL + "/?id=" + id + "&URL=" + '@Url.Content("~/Savabegh/Delete")';
+                    windowAppend("body", URL);
+                    $("#message").html('آیا مایل به حذف رکورد انتخاب شده هستید؟');
+                }
+                else {
+                    alert('لطفا یک سطر را انتخاب کنید.');
+                }
+                Clear();
+            }
+        function Reload(Url, gridname, field, value, top, searchType) {
+            var grid = $('#' + gridname).data('kendoGrid');
+            $.ajax({
+                url: Url,
+                type: 'get',
+                datatype: 'json',
+                data: { field: field, value: value, top: top, searchtype: searchType },
+                error: function (xhr, status, error) {
+                    alert(xhr + status);
+                },
+                success: function (result) {
+                    $("#" + gridname).data("kendoGrid").dataSource.data(result);
+                }
+
+            });
+        }
+
+        function PostForm(datas, url, id) {
+            var sendInfo = datas;
+            $('#Lock').show();
+            $.ajax({
+                type: "POST",
+                url: url,
+                data: sendInfo,
+                datatype: "json",
+                success: function (data) {
+                    var m = data;
+                    windowAppend("body", "/metro/error");
+                    $("#message").html(m.data);
+                    switch (m.state) {
+                        case 0:
+                            $("#error .wintitle").html("ذخیره موفق");
+                            break;
+                        case 1:
+                            $("#error .wintitle").html("خطا");
+                            break;
+                    }
+                    var url = '@Url.Action("Reload", "Savabegh")';
+                    Reload(url, 'Grid', '0', carID, 30, 2);
+                    $('#Lock').hide();
+                },
+                failure: function (data) {
+                    alert(data.data);
+                }
+            });
+        }    
+    </script>
+</div>
+<div class="k-rtl">
+    @(Html.Kendo().DropDownList()
+          .Name("cboState")
+          .OptionLabel("نام استان...")
+          .DataTextField("fldName")
+          .DataValueField("fldID")
+          .DataSource(source =>
+          {
+              source.Read(read =>
+              {
+                  read.Action("GetCascadeState", "Home");
+              });
+          }).HtmlAttributes(new { @style = "display: none;width:105px;" })
+    )
+    @(Html.Kendo().DropDownList()
+          .Name("cboMnu")
+          .OptionLabel("نام شهرداری...")
+                  .DataTextField("fldName")
+                  .DataValueField("fldID")
+          .DataSource(source =>
+          {
+              source.Read(read =>
+              {
+                  read.Action("GetCascadeCounty", "Home")
+                      .Data("selectCity");
+              })
+              .ServerFiltering(true);
+          })
+          .Enable(true)
+          .AutoBind(false)
+          .CascadeFrom("cboState")
+          .HtmlAttributes(new { @style = "display: none;width:105px;" })
+    )
+    @(Html.Kendo().DropDownList()
+                          .Name("cboFromYear")
+                          .OptionLabel("از سال...")
+                                  .DataTextField("fldName")
+                                  .DataValueField("fldID").SelectedIndex(1)
+                          .DataSource(source =>
+                          {
+                              source.Read(read =>
+                              {
+                                  read.Action("GetFromYear", "Savabegh")
+                                      .Data("selectFromYear");
+                              })
+                              .ServerFiltering(true);
+                          })
+                          .Enable(true)
+                          .AutoBind(true)
+            //.CascadeFrom("cboModelNum")
+                          .HtmlAttributes(new { @style = "display: none;width:105px;" })
+    )
+</div>

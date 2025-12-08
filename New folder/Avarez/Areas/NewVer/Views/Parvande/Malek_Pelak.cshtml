@@ -1,0 +1,502 @@
+﻿@model Avarez.Models.Parvande
+@using Ext.Net.MVC
+@using Hogaf.ExtNet.UX
+@using Ext.Net;
+@using Ext.Net.Utilities;
+@{
+
+    var X = Html.X();
+}
+@(Html.X().Window().Modal(true)//.Listeners(l => l.AfterRender.Handler = "ReplaceArabic();")
+            .Height(500)
+            .Title("تعریف مالک و پلاک ")
+            .ID("NewMalek_Pelak")
+            .Resizable(false)
+            .Maximized(true)
+            .Layout(LayoutType.Fit)
+            .Closable(true)
+            .CloseAction(Ext.Net.CloseAction.Destroy)
+                .Items(
+        //    X.FieldSet().Border(true).Width(500)
+        //  .Layout(Ext.Net.LayoutType.VBox)
+        //                    .LayoutConfig(new Ext.Net.VBoxLayoutConfig { Align = Ext.Net.VBoxAlign.Center })
+        //.Items(
+        X.Panel()
+
+                        .ButtonAlign(Ext.Net.Alignment.Center)
+                        .Buttons(
+                                    X.Button().Text("ادامه").Icon(Ext.Net.Icon.Disk).Margin(10)
+                                    .Listeners(l =>
+                                    {
+                                        l.Click.Handler = "FnNextPlaque();";
+
+                                    })
+                                    ,
+                                    X.Button().Text("خروج").Icon(Ext.Net.Icon.DoorOut).ToolTip("کلید میانبر Esc")
+                                                .OnClientClick("App.AvarezWin.destroy();"))
+                                .Layout(Ext.Net.LayoutType.VBox)
+                                .LayoutConfig(new Ext.Net.VBoxLayoutConfig { Align = Ext.Net.VBoxAlign.Center })
+        .Border(false).ButtonAlign(Ext.Net.Alignment.Center)
+        .AutoScroll(true)
+
+        .Items(
+                X.Panel().Border(false)
+                    .Margins("20px 0px 0px 0px")
+                .Center()
+                     .Layout(Ext.Net.LayoutType.VBox)
+                    .LayoutConfig(new Ext.Net.VBoxLayoutConfig { Align = Ext.Net.VBoxAlign.Center })
+                    .AutoScroll(true)
+        //.Defaults(new { Margin = 2 })
+                .Items(
+                    X.Panel()
+                        .Margins("20px 0px 0px 0px")
+                        .Title("مالک")
+                        .Height(300)
+                        .Width(1000)
+                        .Border(true)
+                        .AutoScroll(true)
+                        .ID("PnlGridPanelMalek")
+                        .Layout(Ext.Net.LayoutType.Fit)
+                    .Items(
+                        X.GridPanel()
+                            .AutoScroll(true)
+                        .Listeners(l => l.ItemClick.Handler = "ReloadGridPelak();")
+                                .TopBar(
+                            Html.X().Toolbar()
+                                .Items(
+                                    X.Button()
+                                        .Text("جدید")
+                                        .Icon(Ext.Net.Icon.Add)
+                                        .ItemID("AddPersonal")
+        // .ToolTip("کلید میانبر F8")
+                                        .Listeners(li => li.Click.Handler = "NewMalek();"),
+                                    X.Button()
+                                        .Text("ویرایش")
+                                        .ItemID("UpdatePersonal")
+                                        .Icon(Ext.Net.Icon.Pencil)
+        //.ToolTip("کلید میانبر F2")
+                                        .Listeners(Li => Li.Click.Handler = "EditMalek();"),
+                                    X.Button()
+                                        .Text("حذف")
+                                        .ItemID("PersonalDe")
+                                        .Icon(Ext.Net.Icon.Delete)
+        // .ToolTip("کلید میانبر F9")
+                                        .Listeners(de =>
+                                        {
+                                            de.Click.Handler = "if (App.NewMalek_Pelak.queryById('GridMalek').selModel.getLastSelected() == null) {Ext.MessageBox.show({ title: 'خطا', msg: 'لطفا یک سطر را انتخاب کنید',icon: Ext.MessageBox.ERROR,buttons: Ext.MessageBox.OK});return false;}else DeleteMalek();";
+                                        })
+                                    )
+                                )
+                            .ItemID("GridMalek")
+                                .BottomBar(X.PagingToolbar().HideRefresh(true))
+                                .Store(
+                                            X.StoreFor(Model.Owner)
+                                .Proxy(
+                                        Html.X().AjaxProxy()
+                                            .Url(Url.Action("ReadMalek"))
+                                            .Reader(Html.X().JsonReader().Root("data"))
+                                        )
+                                        .PageSize(20)
+                                        .RemoteFilter(true)
+                                        .RemotePaging(true)
+                                )
+                            .View(
+                                Html.X().GridView().LoadingText("در حال بارگذاری...").RTL(true)
+                            )
+                            .Plugins(X.FilterHeader().Remote(true))
+                            .ColumnModel(
+                                 Html.X().RowNumbererColumn().Flex(1),
+                                    Html.X().Column().DataIndex(Model.Owner, m => m.fldID).Text("کد").Flex(2).Hidden(true),
+                                    Html.X().Column().DataIndex(Model.Owner, m => m.fldName).Text("نام و نام خانوادگی").Flex(5),
+                                    Html.X().Column().DataIndex(Model.Owner, m => m.fldMelli_EconomicCode).Text("کدملی/کداقتصادی").Flex(5),
+                                    Html.X().Column().DataIndex(Model.Owner, m => m.fldAddress).Text("آدرس").Flex(10)
+
+                                        )
+                            )
+                                    ,
+                                    X.Panel()
+                                    .Title("پلاک")
+                                    .Height(300)
+                                    .Width(1000)
+                                    .Border(true)
+                                    .AutoScroll(true)
+                                    .ID("PnlGridPanelPelak")
+                                    .Layout(Ext.Net.LayoutType.Fit)
+                                .Items(
+                                        X.GridPanel()
+                                     //   .Listeners(l => l.ItemClick.Handler = "ReloadGridParvande();")
+                                        .AutoScroll(true)
+                                            .TopBar(
+                                        Html.X().Toolbar()
+                                            .Items(
+                                                X.Button()
+                                                    .Text("جدید")
+                                                    .Icon(Ext.Net.Icon.Add)
+                                                    .ItemID("AddPelak")
+        // .ToolTip("کلید میانبر F8")
+                                                        .Listeners(li => li.Click.Handler = "NewPelak();"),
+                                                X.Button()
+                                                    .Text("ویرایش")
+                                                        .ItemID("UpdatePelak")
+                                                    .Icon(Ext.Net.Icon.Pencil)
+        //.ToolTip("کلید میانبر F2")
+                                                        .Listeners(Li => Li.Click.Handler = "EditPelak();"),
+                                                X.Button()
+                                                    .Text("حذف")
+                                                        .ItemID("DelPelak")
+                                                    .Icon(Ext.Net.Icon.Delete)
+        // .ToolTip("کلید میانبر F9")
+                                                    .Listeners(de =>
+                                                    {
+                                                        de.Click.Handler = "if (App.NewMalek_Pelak.queryById('GridPelak').selModel.getLastSelected() == null) {Ext.MessageBox.show({ title: 'خطا', msg: 'لطفا یک سطر را انتخاب کنید',icon: Ext.MessageBox.ERROR,buttons: Ext.MessageBox.OK});return false;}else DeletePelak();";
+                                                    })
+                                                )
+                                            )
+                                            .ItemID("GridPelak")
+                                        .BottomBar(X.PagingToolbar())
+                                            .Store(
+                                                                X.StoreFor(Model.CarPlaque).Listeners(l => l.DataChanged.Handler = "App.NewMalek_Pelak.queryById('GridPelak').selModel.refresh();")
+        //.AutoLoad(false)
+        //.Proxy(Html.X().AjaxProxy()
+        //        .Url(Url.Action("ReadPelak"))
+        //    .Reader(Html.X().JsonReader().Root("data"))
+        //)
+                                                    .PageSize(20)
+                                                    .RemoteFilter(true)
+                                                    .RemotePaging(true)
+                                            )
+                                        .View(
+                                            Html.X().GridView().LoadingText("در حال بارگذاری...").RTL(true)
+                                        )
+                 .Plugins(X.FilterHeader())
+                                        .ColumnModel(
+                                             Html.X().RowNumbererColumn().Flex(1),
+                                                   Html.X().Column().DataIndex(Model.CarPlaque, m => m.fldID).Text("کد").Flex(2).Hidden(true),
+                                                            Html.X().Column().DataIndex(Model.CarPlaque, m => m.fldOwnerName).Text("نام مالک").Flex(5),
+                                                            Html.X().Column().DataIndex(Model.CarPlaque, m => m.fldPlaqueNumber).Text("شماره پلاک").Flex(5),
+                                                            Html.X().Column().DataIndex(Model.CarPlaque, m => m.fldPlaqueCityName).Text("شهر").Flex(5),
+                                                            Html.X().Column().DataIndex(Model.CarPlaque, m => m.fldPlaqueSerial).Text("شماره سریال").Flex(5),
+                                                            Html.X().Column().DataIndex(Model.CarPlaque, m => m.fldDesc).Text("توضیحات").Flex(5)
+
+                                                    )
+                                        )
+        //                                    ,
+        //                                X.Panel()
+        //                                .Title("پرونده خودرو")
+        //                                .Height(300)
+        //                                .Width(1000)
+        //                                .Border(false)
+        //                                .AutoScroll(true)
+        //                                .ID("PnlGridPanelParvande")
+        //                                .Layout(Ext.Net.LayoutType.Fit)
+        //                            .Items(
+        //                                X.GridPanel()
+        //                                    .AutoScroll(true)
+        //                                        .TopBar(
+        //                                    Html.X().Toolbar()
+        //                                        .Items(
+        //                                            X.Button()
+        //                                                .Text("جدید")
+        //                                                .Icon(Ext.Net.Icon.Add)
+        //                                                        .ItemID("AddParvandeKhodro")
+        //// .ToolTip("کلید میانبر F8")
+        //                                                        .Listeners(li => li.Click.Handler = "NewMalek_PelakKhodro();"),
+        //                                            X.Button()
+        //                                                .Text("ویرایش")
+        //                                                        .ItemID("UpdateParvande")
+        //                                                .Icon(Ext.Net.Icon.Pencil)
+        ////.ToolTip("کلید میانبر F2")
+        //                                                        .Listeners(Li => Li.Click.Handler = "EditParvande();"),
+        //                                            X.Button()
+        //                                                .Text("حذف")
+        //                                                        .ItemID("DelParvande")
+        //                                                .Icon(Ext.Net.Icon.Delete)
+        //// .ToolTip("کلید میانبر F9")
+        //                                                .Listeners(de =>
+        //                                                {
+        //                                                    de.Click.Handler = "if (App.NewMalek_Pelak.queryById('GridParvande').selModel.getLastSelected() == null) {Ext.MessageBox.show({ title: 'خطا', msg: 'لطفا یک سطر را انتخاب کنید',icon: Ext.MessageBox.ERROR,buttons: Ext.MessageBox.OK});return false;}else DeleteParvande();";
+        //                                                })
+        //                                            )
+        //                                        )
+        //                                            .ItemID("GridParvande")
+        //                                    .BottomBar(X.PagingToolbar())
+        //                                        .Store(
+        //                                                        X.StoreFor(Model.CarFile).Listeners(l => l.DataChanged.Handler = "App.NewMalek_Pelak.queryById('GridParvande').selModel.refresh();")
+        ////.AutoLoad(false)
+        ////.Proxy(Html.X().AjaxProxy()
+        ////        .Url(Url.Action("ReadPelak"))
+        ////    .Reader(Html.X().JsonReader().Root("data"))
+        ////)
+        //                                                .PageSize(20)
+        //                                                .RemoteFilter(true)
+        //                                                .RemotePaging(true)
+        //                                        )
+        //                                    .View(
+        //                                        Html.X().GridView().LoadingText("در حال بارگذاری...").RTL(true)
+        //                                    )
+        //         .Plugins(X.FilterHeader())
+        //                                    .ColumnModel(
+        //                                         Html.X().RowNumbererColumn().Flex(1),
+        //                                            Html.X().Column().DataIndex(Model.CarFile, m => m.fldID).Text("کد").Flex(2).Hidden(true),
+        //                                            Html.X().Column().DataIndex(Model.CarFile, m => m.fldOwnerName).Text("نام مالک").Flex(5),
+        //                                            Html.X().Column().DataIndex(Model.CarFile, m => m.fldPlaqueNumber).Text("شماره پلاک").Flex(5),
+        //                                            Html.X().Column().DataIndex(Model.CarFile, m => m.fldMotorNumber).Text("شماره موتور").Flex(5),
+        //                                            Html.X().Column().DataIndex(Model.CarFile, m => m.fldVIN).Text("VIN").Flex(5),
+        //                                            Html.X().Column().DataIndex(Model.CarFile, m => m.fldShasiNumber).Text("شماره شاسی").Flex(5),
+        //                                            Html.X().Column().DataIndex(Model.CarFile, m => m.fldDesc).Text("توضیحات").Flex(5),
+        //                                            Html.X().Column().DataIndex(Model.CarFile, m => m.fldCarID).Text("کد ").Flex(5).Hidden(true)
+
+        //                                                )
+        //                                    )
+
+
+
+
+                )
+            )
+                )
+
+)
+<script type="text/javascript">
+    function NewMalek() {
+        Ext.net.Mask.show({ msg: 'در حال بارگذاری...' });
+        Ext.net.DirectMethod.request({
+            url: '/NewVer/Parvande/NewMalek',
+            params: {
+                id: 0,
+                State: 1
+            },
+            success: function () {
+                Ext.net.Mask.hide();
+            }
+        });
+    }
+    function NewPelak() {
+        var SelectedHeaderRow = App.NewMalek_Pelak.queryById('GridMalek').selModel.getLastSelected();
+        if (SelectedHeaderRow != null) {
+            Ext.net.Mask.show({ msg: 'در حال بارگذاری...' });
+            Ext.net.DirectMethod.request({
+                url: '/NewVer/Parvande/NewPelak',
+                params: {
+                    id: 0,
+                    Malekid: SelectedHeaderRow.data.fldID,
+                    state: 1
+                },
+                success: function () {
+                    Ext.net.Mask.hide();
+                }
+            });
+        }
+        else {
+            Ext.MessageBox.show({
+                title: "خطا",
+                msg: "لطفا یک مالک را انتخاب کنید",
+                icon: Ext.MessageBox.ERROR,
+                buttons: Ext.MessageBox.OK
+            });
+        }
+    }
+    function NewMalek_PelakKhodro() {
+        var SelectedHeaderRow = App.NewMalek_Pelak.queryById('GridPelak').selModel.getLastSelected();
+        if (SelectedHeaderRow != null) {
+            Ext.net.Mask.show({ msg: 'در حال بارگذاری...' });
+            Ext.net.DirectMethod.request({
+                url: '/NewVer/Parvande/NewMalek_PelakKhodro',
+                params: {
+                    id: 0,
+                    Pelakid: SelectedHeaderRow.data.fldID,
+                    state: 1
+                },
+                success: function () {
+                    Ext.net.Mask.hide();
+                }
+            });
+        }
+        else {
+            Ext.MessageBox.show({
+                title: "خطا",
+                msg: "لطفا یک پلاک را انتخاب کنید",
+                icon: Ext.MessageBox.ERROR,
+                buttons: Ext.MessageBox.OK
+            });
+        }
+    }
+    function ReloadGridPelak() {
+        var SelectedRow = App.NewMalek_Pelak.queryById("GridMalek").getSelectionModel().getLastSelected();
+        Ext.net.Mask.show({ msg: 'در حال بارگذاری...' });
+        Ext.net.DirectMethod.request({
+            url: '/NewVer/Parvande/ReloadPelak',
+            params: {
+                MalekId: SelectedRow.data.fldID,
+            },
+            success: function (result) {
+                App.NewMalek_Pelak.queryById('GridPelak').getStore().loadData(result);
+
+                Ext.net.Mask.hide();
+            }
+        });
+    }
+
+
+    function EditMalek() {
+        var SelectedRow = App.NewMalek_Pelak.queryById('GridMalek').selModel.getLastSelected();
+
+        if (SelectedRow != null) {
+            Ext.net.Mask.show({ msg: 'در حال بارگذاری...' });
+            Ext.net.DirectMethod.request({
+                url: '/NewVer/Parvande/NewMalek',
+                params: {
+                    id: SelectedRow.data.fldID,
+                    state: 1
+                },
+                success: function () {
+                    Ext.net.Mask.hide();
+                }
+            });
+        }
+        else {
+            Ext.MessageBox.show({
+                title: "خطا",
+                msg: "لطفا یک سطر را انتخاب کنید",
+                icon: Ext.MessageBox.ERROR,
+                buttons: Ext.MessageBox.OK
+            });
+        }
+    }
+    function EditPelak() {
+        var SelectedHeaderRow = App.NewMalek_Pelak.queryById('GridPelak').selModel.getLastSelected();
+        if (SelectedHeaderRow != null) {
+            var SelectedRow1 = App.NewMalek_Pelak.queryById('GridMalek').selModel.getLastSelected();
+            Ext.net.Mask.show({ msg: 'در حال بارگذاری...' });
+            Ext.net.DirectMethod.request({
+                url: '/NewVer/Parvande/NewPelak',
+                params: {
+                    id: SelectedHeaderRow.data.fldID,
+                    Malekid: SelectedRow1.data.fldID,
+                    state: 1
+                },
+                success: function () {
+                    Ext.net.Mask.hide();
+                }
+            });
+        }
+        else {
+            Ext.MessageBox.show({
+                title: "خطا",
+                msg: "لطفا یک سطر را انتخاب کنید",
+                icon: Ext.MessageBox.ERROR,
+                buttons: Ext.MessageBox.OK
+            });
+        }
+    }
+
+    function DeleteMalek() {
+        var SelectedHeaderRow = App.NewMalek_Pelak.queryById('GridMalek').selModel.getLastSelected();
+        if (SelectedHeaderRow != null) {
+            Ext.MessageBox.show({
+                title: "هشدار",
+                msg: "آیا برای حذف مطمئن هستید؟",
+                icon: Ext.MessageBox.WARNING,
+                buttons: Ext.MessageBox.YESNO,
+                fn: function (btn) {
+                    if (btn == 'yes') {
+                        Ext.net.DirectMethod.request({
+                            url: '/NewVer/Parvande/DeleteMalek',
+                            params: {
+                                id: SelectedHeaderRow.data.fldID
+                            },
+                            success: function (data) {
+                                var ic = Ext.MessageBox.INFO;
+                                if (data.Er == 1)
+                                    ic = Ext.MessageBox.ERROR;
+                                Ext.MessageBox.show({
+                                    title: data.MsgTitle,
+                                    msg: data.Msg,
+                                    icon: ic,
+                                    buttons: Ext.MessageBox.OK
+                                });
+                                App.NewMalek_Pelak.queryById('GridMalek').store.load();
+                            }
+                        });
+                    }
+                }
+            });
+        }
+        else {
+            Ext.MessageBox.show({
+                title: "خطا",
+                msg: "لطفا یک سطر را انتخاب کنید",
+                icon: Ext.MessageBox.ERROR,
+                buttons: Ext.MessageBox.OK
+            });
+        }
+    }
+    function DeletePelak() {
+        var SelectedHeaderRow = App.NewMalek_Pelak.queryById('GridPelak').selModel.getLastSelected();
+        if (SelectedHeaderRow != null) {
+            Ext.MessageBox.show({
+                title: "هشدار",
+                msg: "آیا برای حذف مطمئن هستید؟",
+                icon: Ext.MessageBox.WARNING,
+                buttons: Ext.MessageBox.YESNO,
+                fn: function (btn) {
+                    if (btn == 'yes') {
+                        Ext.net.DirectMethod.request({
+                            url: '/NewVer/Parvande/DeletePelak',
+                            params: {
+                                id: SelectedHeaderRow.data.fldID
+                            },
+                            success: function (data) {
+                                var ic = Ext.MessageBox.INFO;
+                                if (data.Er == 1)
+                                    ic = Ext.MessageBox.ERROR;
+                                Ext.MessageBox.show({
+                                    title: data.MsgTitle,
+                                    msg: data.Msg,
+                                    icon: ic,
+                                    buttons: Ext.MessageBox.OK
+                                });
+                                ReloadGridPelak();
+                            }
+                        });
+                    }
+                }
+            });
+        }
+        else {
+            Ext.MessageBox.show({
+                title: "خطا",
+                msg: "لطفا یک سطر را انتخاب کنید",
+                icon: Ext.MessageBox.ERROR,
+                buttons: Ext.MessageBox.OK
+            });
+        }
+    }
+    function FnNextPlaque() {
+        var SelectedRow = App.NewMalek_Pelak.queryById('GridPelak').selModel.getLastSelected();
+
+        if (SelectedRow != null) {
+            Ext.net.Mask.show({ msg: 'در حال بارگذاری...' });
+            Ext.net.DirectMethod.request({
+                url: '/NewVer/ChCarFile_/Index',
+                params: {
+                    PlaquId: SelectedRow.data.fldID,
+                    CarID: '@ViewBag.CarID'
+                },
+                success: function (result) {
+                    Ext.net.Mask.hide();
+                }
+            });
+            App.NewMalek_Pelak.destroy();
+            App.ChCarFilePelaquSearch_.destroy();
+        }
+        else {
+            Ext.MessageBox.show({
+                title: "خطا",
+                msg: "لطفا یک پلاک را انتخاب کنید",
+                icon: Ext.MessageBox.ERROR,
+                buttons: Ext.MessageBox.OK
+            });
+        }
+    }
+</script>

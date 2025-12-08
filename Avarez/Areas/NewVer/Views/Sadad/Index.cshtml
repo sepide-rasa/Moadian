@@ -1,0 +1,84 @@
+﻿@using Ext.Net.MVC
+@using Hogaf.ExtNet.UX
+@using Ext.Net;
+@{
+    var X = Html.X();
+}
+
+@(Html.X().Window()
+    .Modal(true)
+    .Width(370)
+    .Height(180)
+    .Title("پرداخت")
+    .Resizable(false)
+    .ID("Sadad")
+    .Closable(true)
+    .CloseAction(Ext.Net.CloseAction.Destroy)
+    .Layout(LayoutType.Fit)
+    .ButtonAlign(Ext.Net.Alignment.Center)
+    .Items(
+        X.FormPanel()
+            .Border(false)
+            .PaddingSpec("10px 0 10px 0")
+            .Layout(LayoutType.VBox)
+            .LayoutConfig(new VBoxLayoutConfig { Align = VBoxAlign.Center })
+            .Items(
+                X.FieldSet()
+                    .Border(true)
+                    .Title("مشخصات پرداخت")
+                    .Layout(LayoutType.Table)
+                    .LayoutConfig(new Ext.Net.TableLayoutConfig { Columns = 2 })
+                    .Defaults(new { Margin = 2 })
+                    .Items(
+                        X.Container().Content(
+                            @<div align="center" style="text-align:center;">
+                                <br />
+                                 <form action="@Url.Content("http://ecartax.ir/NewVer/Sadad/PaymentReq")" method="post">
+                                     <table>
+                                         <tr>
+                                             <td style="text-align:right;">
+                                                 <div>
+                                                     کد تراکنش:
+                                                 </div>
+                                             </td>
+                                             <td style="text-align:right;">
+                                                 <div>
+                                                     @Session["Tax"].ToString()
+                                                 </div>
+                                             </td>
+                                         </tr>
+                                         <tr>
+                                             <td>
+                                                 <div style="text-align:right;">
+                                                     مبلغ پرداخت:
+                                                 </div>
+                                             </td>
+                                             <td>
+                                                 <div style="text-align:right;">
+                                                     @Convert.ToDouble(Session["Amount"]).ToString("#,###") ریال
+                                                 </div>
+                                             </td>
+                                         </tr>
+                                         <tr>
+                                             <td colspan="2" style="text-align:right;font-weight:bold;color:red;">
+                                                 لطفا کد تراکنش را جهت پیگیری های بعدی یادداشت فرمائید.
+                                             </td>
+                                         </tr>
+                                         <tr>
+                                             <td colspan="2"></td>
+                                         </tr>
+                                         <tr>
+                                             <td colspan="2" align="center" style="text-align:center;">
+                                                 <input style=" font-family:tahoma" type="submit" id="Run" name="Run" value="پرداخت" class="run" />
+                                             </td>
+                                         </tr>
+                                     </table>
+                                     <input type="hidden" value="@Session["SadadInfo"]" name="SerializedPay" />
+                                 </form>
+
+                            </div>
+                        )
+                    )
+            )   
+    )
+)

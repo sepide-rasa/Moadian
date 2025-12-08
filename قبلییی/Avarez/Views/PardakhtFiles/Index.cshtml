@@ -1,0 +1,315 @@
+﻿<div id="PardakhtFile" dir="rtl">
+    @Avarez.Helper.winClass.windowHeader("", "ورود فایل", 900, 560)
+    <script src="@Url.Content("~/Scripts/jquery.uploadify-3.1.min.js")" type="text/javascript"></script>
+    <link href="@Url.Content("~/Content/uploadify.css")" rel="stylesheet" type="text/css" />
+    <link href="@Url.Content("~/Content/web/kendo.common.min.css")" rel="stylesheet" type="text/css" />
+    <link href="@Url.Content("~/Content/web/kendo.default.min.css")" rel="stylesheet" type="text/css" />
+    <link href="@Url.Content("~/Content/web/kendo.rtl.min.css")" rel="stylesheet" type="text/css" />
+    <script src="@Url.Content("~/Scripts/console.min.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Scripts/kendo.web.min.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Scripts/prettify.min.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Scripts/kendo.aspnetmvc.min.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Scripts/kendo.splitter.min.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Scripts/cultures/kendo.fa-IR.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Scripts/jquery.ui.datepicker-cc.all.min.js")" type="text/javascript"></script>
+    <br />
+    <script type="text/javascript">
+        function name() {
+            $.ajax({
+                type: "GET",
+                url: '/PardakhtFiles/GetFileInf',
+                success: function (data) {
+                    $('#BankName').html(data);
+                },
+                failure: function (data) {
+                    alert(data.data);
+                }
+            });
+        }
+    </script>
+    <table>
+        <tr>
+            <td align="left">
+                انتخاب فایل:
+            </td>
+            <td>
+                @*<input type="file" name="file_upload" id="file_upload" /><br />*@
+                @(Html.Kendo().Upload()
+                    .Name("UptContent")
+                    .Multiple(false)
+                    .Async(a => a
+                             .Save("UploadContent", "PardakhtFiles")
+                            .Remove("RemoveContent", "PardakhtFiles")
+                        .AutoUpload(true)
+                        )
+                                .Events(ev => ev.Complete("name"))
+                )
+                نام بانک: <span id="BankName"></span>
+            </td>
+        </tr>
+    </table>
+    @Avarez.Helper.winClass.Buttons("btnSave", "ذخیره", "yes")
+    @Avarez.Helper.winClass.Buttons("btnExit", "خروج", "exit")
+    <br />
+    <br />
+    @using Kendo.Mvc.UI;
+    @(Html.Kendo().PanelBar()
+        .Name("panelbar-images")
+        .Items(panelbar =>
+        {
+            panelbar.Add().Text("جستجو").Expanded(true)
+                .ImageUrl(Url.Content("~/Content/images/search.png"))
+                .Content(@<div>
+                    <table>
+                        <tr>
+                            <td>
+                                فیلد جستجو:@Html.DropDownList("cboSearchFiald", new SelectList(new[] { new { ID = "0", Name = "شناسه قبض" }, new { ID = "1", Name = "شناسه پرداخت" }, new { ID = "2", Name = "تاریخ پرداخت" }, new { ID = "3", Name = "کد رهگیری" }, new { ID = "4", Name = "نام بانک" }, new { ID = "5", Name = "شماره قبض" }, new { ID = "6", Name = "بازه زمانی" } }, "ID", "Name"))
+                            </td>
+                            <td>
+                                نوع جستجو: @Html.DropDownList("cboSearchType", new SelectList(new[] { new { ID = "0", Name = "مشابه عبارت" }, new { ID = "1", Name = "مشابه عبارت از سمت راست" }, new { ID = "2", Name = "عین عبارت" } }, "ID", "Name"))
+                            </td>
+                        </tr>
+                        <tr>
+                            <td id="Search">
+                                عبارت جستجو: @Avarez.Helper.winClass.textbox("txtSearch")
+                            </td>
+                            <td id="Search2">
+                                از تاریخ @Html.TextBox("txtSearch1", "", new { @style = "width:70px;" }) 
+                                تا تاریخ @Html.TextBox("txtSearch2", "", new { @style = "width:70px;" }) 
+                            </td>
+                            <td>
+                                تعداد نمایش رکوردها برای جستجو: @Html.TextBox("txtTop", 30, new { @style = "width:30px;" }) رکورد
+                            </td>
+                        </tr>
+                    </table>
+                              @Avarez.Helper.winClass.Buttons("btnSearch", "جستجو", "yes")
+                              @Avarez.Helper.winClass.Buttons("btnprint", "چاپ", "yes")
+                    <br />
+                </div>);
+        })
+        )
+    @(Html.Kendo().Grid<Avarez.Models.sp_PardakhtFiles_DetailSelect>()
+                .Name("Grid")
+                .Columns(columns =>
+                {
+                    columns.Bound(p => p.fldId).Title("کد").Hidden();
+                    columns.Bound(p => p.fldShenaseGhabz).Title("شناسه قبض");
+                    columns.Bound(p => p.fldGhabzNumber).Title("شماره قبض");
+                    columns.Bound(p => p.fldShomarePardakht).Title("شناسه پرداخت");
+                    columns.Bound(p => p.fldNahvePardakhtName).Title("نحوه پرداخت");
+                    columns.Bound(p => p.fldCodeRahgiry).Title("کد رهگیری");
+                    columns.Bound(p => p.fldBankName).Title("نام بانک");
+                    columns.Bound(p => p.fldTarikhPardakht).Title("تاریخ پرداخت");
+                })
+            .Selectable(selectable => selectable.Mode(GridSelectionMode.Single))
+            .Pageable()
+            .Scrollable()
+            .DataSource(data =>
+                 data.Ajax()
+                .PageSize(10)
+                .Read("Fill", "PardakhtFiles")
+            )
+        )
+    <script type="text/javascript">
+    var path, f, r;
+    $(function () {
+        $('#file_upload').uploadify({
+            //'swf': '@Url.Content("~/Content/uploadify.swf")',
+            //this is where the file posts when it uploads.
+            'uploader': '@Url.Action("Upload", "PardakhtFiles")',
+            'onUploadSuccess': function (file, data, response) {
+                path = data;
+                f = file;
+                r = response;
+                if (r == true) {
+                    $.ajax({
+                        type: "GET",
+                        url: '/PardakhtFiles/GetFileInf',
+                        success: function (data) {
+                            $('#BankName').html(data);
+                        },
+                        failure: function (data) {
+                            alert(data.data);
+                        }
+                    });
+                }
+            }
+        });
+    });
+    $(document).ready(function () {
+        $('#Search2').hide();
+        $('#btnSave').button();
+        $('#btnExit').button();
+        $('#btnprint').button();
+        $('#btnSearch').button();
+        $('#btnExit').click(function () {
+            $('#PardakhtFile').remove();
+        });
+        $("#txtSearch1").datepicker({
+            onSelect: function (dateText, inst) {
+                $('#txtSearch2').datepicker('option', 'minDate', new JalaliDate(inst['selectedYear'], inst['selectedMonth'], inst['selectedDay']));
+            },
+            showButtonPanel: true,
+            changeMonth: true,
+            changeYear: true
+        });
+        $("#txtSearch2").datepicker({
+            showButtonPanel: true,
+            changeMonth: true,
+            changeYear: true
+        });
+        $('#btnClose').click(function () {
+            $('#PardakhtFile').remove();
+        });
+
+        $('#btnSave').click(function () {
+            CheckName();
+        });
+        $('#txtSearch').keyup(function () {
+            var url = '@Url.Action("Reload", "PardakhtFiles")';
+            Reload(url, 'Grid', $("#cboSearchFiald").val(), $("#txtSearch").val(), "", $("#txtTop").val(), $("#cboSearchType").val());
+        });
+        $('#cboSearchFiald').change(function () {
+            if ($("#cboSearchFiald").val() == '6') {
+                $('#Search2').show();
+                $('#Search').hide();
+            }
+            else {
+                $('#Search2').hide();
+                $('#txtSearch1').val('');
+                $('#txtSearch2').val('');
+                $('#Search').show();
+            }
+        });
+        $('#txtSearch2').change(function () {
+            var url = '@Url.Action("Reload", "PardakhtFiles")';
+            if ($("#txtSearch1").val() != "" && $("#txtSearch2").val() != "")
+                Reload(url, 'Grid', $("#cboSearchFiald").val(), $("#txtSearch1").val(), $("#txtSearch2").val(), $("#txtTop").val(), 2);
+        });
+        $('#txtSearch1').change(function () {
+            var url = '@Url.Action("Reload", "PardakhtFiles")';
+            if ($("#txtSearch1").val() != "" && $("#txtSearch2").val() != "")
+                Reload(url, 'Grid', $("#cboSearchFiald").val(), $("#txtSearch1").val(), $("#txtSearch2").val(), $("#txtTop").val(), 2);
+        });
+        $('#btnSearch').click(function () {
+            var url = '@Url.Action("Reload", "PardakhtFiles")';
+            if ($("#txtSearch1").val() != "" && $("#txtSearch2").val() != "")
+                Reload(url, 'Grid', $("#cboSearchFiald").val(), $("#txtSearch1").val(), $("#txtSearch2").val(), $("#txtTop").val(), 2);
+        });
+        $('#btnprint').click(function () {
+            if (isWinOpen == false) {
+                isWinOpen = true;
+                windowAppend('body', '/Home/PreviewRptPDFBox');
+
+                var SearchFiald=$('#cboSearchFiald').val();
+                var value1 = $("#txtSearch").val();
+                var value2 = "";
+                var searchtype = $("#cboSearchType").val();
+                var SearchFilter = "";
+
+                if ($("#txtSearch").val() == "") {
+                    SearchFiald = '7';
+                }
+
+                if ($("#cboSearchFiald").val() == '6') {
+                    value1 = $('#txtSearch1').val();
+                    value2 = $('#txtSearch2').val();
+                    searchtype = 2;
+                    SearchFilter = "جستجو از تاریخ: " + value1 + " تا تاریخ " + value2;
+                }
+
+                var t = '@Url.Content("~/PardakhtFiles/Rptprint")' + '?field=' + SearchFiald + '&value=' + value1 + '&value2=' + value2 + '&top=' + $("#txtTop").val() + '&searchtype=' + searchtype + '&SearchFilter=' + SearchFilter;
+                $('#pdf').html("<br/><object style='width: 900px;height: 500px;border: 1px solid #ccc;' id='pdfbox' type='application/pdf' data='" + t + "'></object> ");
+            }
+        });
+    });
+    function CheckName() {
+        var URL = '@Url.Content("~/PardakhtFiles/CheckName")';
+        $.ajax({
+            type: "GET",
+            url: URL,
+            success: function (data) {
+                if (data.IsNew)
+                    save();
+                else {
+                    var URL = '@Url.Content("~/metro/YesNomsg")';
+                    URL = URL + "/?id= " + "&URL=" + '@Url.Content("~/PardakhtFiles/save")';
+                    windowAppend("body", URL);
+                    $("#message").html('فایل مورد نظر قبلا ثبت شده، آیا مایل به ثبت مجددآن هستید؟');
+                }
+            },
+            failure: function (data) {
+                alert(data.data);
+            }
+        });
+    }
+    function save() {
+        $('#Lock').show();
+        $.ajax({
+            type: "get",
+            url: '/PardakhtFiles/save',
+            success: function (data) {
+                $('#Lock').hide();
+                var m = data;
+                windowAppend("body", "/metro/error");
+                $("#message").html(m.data);
+                switch (m.state) {
+                    case 0:
+                        $("#error .wintitle").html("ذخیره موفق");
+                        break;
+                    case 1:
+                        $("#error .wintitle").html("خطا");
+                        break;
+                }
+            },
+            failure: function (data) {
+                alert(data.data);
+            }
+        });
+    }
+    function Reload(Url, gridname, field, value, value2, top, searchType) {
+        var grid = $('#' + gridname).data('kendoGrid');
+        $.ajax({
+            url: Url,
+            type: 'get',
+            datatype: 'json',
+            data: { field: field, value: value, value2: value2, top: top, searchtype: searchType },
+            error: function (xhr, status, error) {
+                alert(xhr + status);
+            },
+            success: function (result) {
+                $("#" + gridname).data("kendoGrid").dataSource.read();
+            }
+
+        });
+    }
+    function PostForm(datas, url, id) {
+        var sendInfo = datas;
+        $('#Lock').show();
+        $.ajax({
+            type: "POST",
+            url: url,
+            data: sendInfo,
+            datatype: "json",
+            success: function (data) {
+                var m = data;
+                windowAppend("body", "/metro/error");
+                $("#message").html(m.data);
+                switch (m.state) {
+                    case 0:
+                        $("#error .wintitle").html("ذخیره موفق");
+                        break;
+                    case 1:
+                        $("#error .wintitle").html("خطا");
+                        break;
+                }
+                $('#Lock').hide();
+            },
+            failure: function (data) {
+                alert(data.data);
+            }
+        });
+    }
+    </script>
+    @Avarez.Helper.winClass.windowFother()
+</div>

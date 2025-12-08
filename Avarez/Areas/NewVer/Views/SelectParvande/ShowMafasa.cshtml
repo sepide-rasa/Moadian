@@ -1,0 +1,51 @@
+﻿@using Ext.Net.MVC;
+
+@(
+ Html.X().Window().ID("MafasaWin").IDMode(Ext.Net.IDMode.Static).Height(560).Width(1200)
+        .Title("پیش نمایش")
+        .AutoScroll(true)
+        .Layout(Ext.Net.LayoutType.Fit)
+        .Closable(true)
+        .CloseAction(Ext.Net.CloseAction.Destroy)
+        .Items(
+            Html.X().Panel().ID("window")
+        //.DirectEvents(l =>
+        //    {
+        //        l.AfterRender.Action = "Mafasa";
+        //        l.AfterRender.ExtraParams.Add(new { id = ViewBag.id });
+        //        l.AfterRender.Success = "App.MafasaWin.destroy();";
+        //        l.AfterRender.Failure = "test()";
+        //    }
+        //)
+            .Listeners(L => L.AfterRender.Handler = "test()")
+        )
+        //.Html("<center><object style='width: 1200px;height: 550px;border: 1px solid #ccc;' type='application/pdf' data='/NewVer/SodorFish/Mafasa?id="+@ViewBag.id + "'></object></center>")
+)
+<script>
+
+    function test() {
+        Ext.net.Mask.show({ msg: 'در حال بارگذاری...' });
+        Ext.net.DirectMethod.request({
+            url: '/NewVer/SelectParvande/Mafasa',
+            params: {
+                id: '@ViewBag.id',
+            },
+            success: function (result) {
+                if(result.Er == 1) {
+                    Ext.MessageBox.show({
+                        title: result.MsgTitle,
+                        msg: result.Msg,
+                        icon: Ext.MessageBox.ERROR,
+                        buttons: Ext.MessageBox.OK
+                    });
+                    App.MafasaWin.destroy();
+                }
+                else {
+                    Ext.getCmp('window').update("<center><object style='width: 1200px;height: 550px;border: 1px solid #ccc;' type='application/pdf' data='/NewVer/SelectParvande/ShowMafasaPdf?id=" + result.IdMafasa + "'></object></center>");
+                }
+            }
+        });
+       /* Ext.net.DirectMethod.request({ url: 'NewVer/SodorFish/Mafasa?id=' + 'ViewBag.id' });*/
+        /*Ext.getCmp('window').update("<center><object style='width: 1200px;height: 550px;border: 1px solid #ccc;' type='application/pdf' data='/NewVer/SodorFish/Mafasa?id=" +'ViewBag.id' + "'></object></center>");*/
+    }
+</script>

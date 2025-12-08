@@ -1,0 +1,62 @@
+﻿@using Ext.Net.MVC
+@using Hogaf.ExtNet.UX
+@using Ext.Net;
+@using Ext.Net.Utilities;
+@{
+    var X = Html.X();
+}
+@(Html.X().Window().Title("تصویر").Listeners(l=>l.AfterRender.Handler="LoadImage()")
+    .ID("PreviewFile")
+.Height(450).Width(800)
+.Layout(LayoutType.Border)
+.AutoScroll(true)
+.Closable(true)
+.Modal(true)
+.CloseAction(CloseAction.Destroy)
+//.Layout(Ext.Net.LayoutType.VBox)
+//.LayoutConfig(new VBoxLayoutConfig { Align = VBoxAlign.Center })
+  .Items(
+      X.Image().ItemID("Image").Border(true)
+  //.Width(700).Height(400)
+  //.ImageUrl("~/Content/iran.png")
+  )      
+)
+<script type="text/javascript">
+    var State = '@ViewBag.State';
+    function LoadImage() {
+        var id = '@ViewBag.Id';
+        var url = '/NewVer/PreviewFile/showFile';
+        var currentdate = (new Date()).getTime().toString();
+
+        if (State == "1") {
+            var g = url +'?dc='+currentdate+ '&id=' + id + '&type=' + "CarEx";
+            var k = App.PreviewFile.queryById("Image");
+            k.setImageUrl(g);
+        }
+        else if (State == "2") {
+            var g = url + '?dc=' + currentdate + '&id=' + id + '&type=' + "Collection";
+            var k = App.PreviewFile.queryById("Image");
+            k.setImageUrl(g);            
+        }
+        else if (State == "3") {
+            var g = url + '?dc=' + currentdate + '&id=' + id + '&type=' + "Bargsabz";
+            var k = App.PreviewFile.queryById("Image");
+            k.setImageUrl(g);
+        }
+        else if (State == "4") {
+            var g = url + '?dc=' + currentdate + '&id=' + id + '&type=' + "Cart";
+            var k = App.PreviewFile.queryById("Image");
+            k.setImageUrl(g);
+        }
+        else if (State == "5") {
+            var g = url + '?dc=' + currentdate + '&id=' + id + '&type=' + "CartBack";
+            var k = App.PreviewFile.queryById("Image");
+            k.setImageUrl(g);
+        }
+        else if (State == "6") {
+            var g = url + '?dc=' + currentdate + '&id=' + id + '&type=' + "Sanad";
+            var k = App.PreviewFile.queryById("Image");
+            k.setImageUrl(g);
+        }
+    }
+</script>

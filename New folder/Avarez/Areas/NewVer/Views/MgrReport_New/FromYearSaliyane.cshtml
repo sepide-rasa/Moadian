@@ -1,0 +1,126 @@
+﻿@using Ext.Net.MVC
+@using Hogaf.ExtNet.UX
+@using Ext.Net;
+@{
+    var X = Html.X();
+}
+
+
+@(Html.X().Panel().Border(false)//.Modal(true)
+        //.Listeners(l => l.AfterRender.Handler = "FormLoadYear()")
+        //.Width(500)//.Height(300)
+        .Title("گزارش درآمد سالیانه")
+                 .ID("FromYearSaliyane")
+    .Closable(true)
+    .CloseAction(Ext.Net.CloseAction.Destroy)
+    .Items(
+                X.TabPanel().Border(false).ID("FromYearSaliyaneTab")
+                .Items(
+
+                    X.Panel().Border(false).Title("گزارش درآمد سالیانه")
+                    .ButtonAlign(Ext.Net.Alignment.Center)
+                .DefaultButton("btn")
+            .TitleAlign(Ext.Net.TitleAlign.Center)
+                   .Buttons(X.Button().Text("چاپ").Icon(Ext.Net.Icon.Printer).Margin(10)
+                               .Listeners(l =>
+                               {
+                                   l.Click.Handler = "PrintSaliyane()";
+
+                               })
+                               .ItemID("btnSave")
+                                ,
+                                X.Button().Text("خروج").Icon(Ext.Net.Icon.DoorOut).ToolTip("کلید میانبر Esc")
+                                               .OnClientClick("App.FromYearSaliyane.destroy()"))
+                .Items(
+
+                X.FieldSet().Border(false)
+                .Center()
+                .LayoutConfig(new Ext.Net.TableLayoutConfig { Columns = 4 })
+                .Defaults(new { Margin = 2 })
+                .Items(
+                    X.Label("سال:"),
+                    X.ComboBox()
+                    .ItemID("cboYear")
+                    .Editable(false)
+                    .TypeAhead(true)
+                    .QueryMode(DataLoadMode.Local)
+                    .ForceSelection(true)
+                    .TriggerAction(TriggerAction.All)
+                    .DisplayField("fldName")
+                    .ValueField("fldID")
+                    .EmptyText("سال...")
+                    .Width(140)
+                        .Store(X.Store()//.AutoLoad(false)
+                                .Listeners(l => l.Load.Handler = "FormLoadYearSaliyane()")
+                        .Model(X.Model()
+                        .IDProperty("fldID")
+                            .Fields(
+                                new ModelField("fldID", ModelFieldType.String) { Mapping = "fldID" },
+                                new ModelField("fldName", ModelFieldType.String) { Mapping = "fldName" }
+                            )
+                        )
+                            .Proxy(X.AjaxProxy()
+                            .Url(Url.Action("GetYear"))
+                            .Reader(X.JsonReader().Root("data"))
+                            ))
+
+                ).ColSpan(3)
+
+                       )
+                            .Layout(Ext.Net.LayoutType.VBox)
+                            .LayoutConfig(new Ext.Net.VBoxLayoutConfig { Align = Ext.Net.VBoxAlign.Center })
+                    )
+
+                )
+)
+
+
+<script type="text/javascript">
+    function FormLoadYearSaliyane() {
+        App.FromYearSaliyane.queryById('cboYear').setValue('@ViewBag.salYS');
+    }
+    function showBargozary() {
+        Ext.MessageBox.show({
+            msg: 'لطفاً منتظر باشید',
+            progressText: 'در حال بارگذاری...',
+            width: 300,
+            wait: true,
+            waitConfig:
+            {
+                /*duration: 10000,*/
+                interval: 200,
+                /*increment: 15,*/
+                text: 'در حال بارگذاری...',
+                scope: this
+                /*fn: function () {
+                    Ext.MessageBox.hide();
+                    Ext.Msg.alert('Status', 'Saved successfully!');
+                }*/
+            }
+        });
+    }
+
+    function PrintSaliyane() {
+        var cboYear = App.FromYearSaliyane.queryById('cboYear');
+        var er = false;
+        if (cboYear.validate() == false) {
+            er = true;
+        }
+        if (er == true)
+            return;
+
+        
+            showBargozary();
+            Ext.net.DirectMethod.request({
+                url: '/NewVer/MgrReport_New/PrintMounthlyTipCollection',
+                params: {
+                    containerId: "FromYearSaliyaneTab",
+                    Year: cboYear.getValue()
+                },
+                success: function () {
+                    Ext.MessageBox.hide();
+                }
+            });
+
+    }
+</script>

@@ -1,0 +1,304 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:http="http://www.w3.org/2003/05/soap/bindings/HTTP/" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:tnx="http://www.wso2.org/php/xsd" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:wsaw="http://www.w3.org/2006/05/addressing/wsdl" xmlns:tns="http://www.wso2.org/php" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns="http://schemas.xmlsoap.org/wsdl/" targetNamespace="http://www.wso2.org/php" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:types>
+    <xsd:schema elementFormDefault="qualified" targetNamespace="http://www.wso2.org/php/xsd">
+      <xsd:element name="serviceRefund">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="pass" type="xsd:string" />
+            <xsd:element name="parent_pkhref" type="xsd:int" />
+            <xsd:element name="parent_refnum" type="xsd:string" />
+            <xsd:element name="parent_service_id" type="xsd:int" />
+            <xsd:element name="amount" type="xsd:int" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="serviceRefundResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="pkhref" type="xsd:int" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="verify">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="pass" type="xsd:string" />
+            <xsd:element name="serial" type="xsd:int" />
+            <xsd:element name="refnum" type="xsd:string" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="verifyResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="pkhref" type="xsd:int" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="serviceCancel">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="pass" type="xsd:string" />
+            <xsd:element name="parent_pkhref" type="xsd:int" />
+            <xsd:element name="parent_refnum" type="xsd:int" />
+            <xsd:element name="parent_service_id" type="xsd:int" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="serviceCancelResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="pkhref" type="xsd:int" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="validate">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="pass" type="xsd:string" />
+            <xsd:element name="ver_code" type="xsd:string" />
+            <xsd:element name="user_key" type="xsd:int" />
+            <xsd:element name="service_id" type="xsd:int" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="validateResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="result" type="xsd:int" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="validateToken">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="pass" type="xsd:string" />
+            <xsd:element name="token" type="xsd:string" />
+            <xsd:element name="user_key" type="xsd:int" />
+            <xsd:element name="service_id" type="xsd:int" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="validateTokenResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="result" type="xsd:string" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="servicePay">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="pass" type="xsd:string" />
+            <xsd:element name="ver_code" type="xsd:string" />
+            <xsd:element name="user_key" type="xsd:int" />
+            <xsd:element name="service_id" type="xsd:int" />
+            <xsd:element name="amount" type="xsd:int" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="servicePayResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="serial" type="xsd:int" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="info">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="pass" type="xsd:string" />
+            <xsd:element name="user_key" type="xsd:int" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="infoResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element maxOccurs="unbounded" name="office" type="xsd:string" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="serviceCall">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="pass" type="xsd:string" />
+            <xsd:element name="ver_code" type="xsd:string" />
+            <xsd:element name="user_key" type="xsd:int" />
+            <xsd:element name="service_id" type="xsd:int" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="serviceCallResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="serial" type="xsd:int" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+    </xsd:schema>
+  </wsdl:types>
+  <wsdl:message name="serviceRefund">
+    <wsdl:part name="parameters" element="tnx:serviceRefund" />
+  </wsdl:message>
+  <wsdl:message name="serviceRefundResponse">
+    <wsdl:part name="parameters" element="tnx:serviceRefundResponse" />
+  </wsdl:message>
+  <wsdl:message name="verify">
+    <wsdl:part name="parameters" element="tnx:verify" />
+  </wsdl:message>
+  <wsdl:message name="verifyResponse">
+    <wsdl:part name="parameters" element="tnx:verifyResponse" />
+  </wsdl:message>
+  <wsdl:message name="serviceCancel">
+    <wsdl:part name="parameters" element="tnx:serviceCancel" />
+  </wsdl:message>
+  <wsdl:message name="serviceCancelResponse">
+    <wsdl:part name="parameters" element="tnx:serviceCancelResponse" />
+  </wsdl:message>
+  <wsdl:message name="validate">
+    <wsdl:part name="parameters" element="tnx:validate" />
+  </wsdl:message>
+  <wsdl:message name="validateResponse">
+    <wsdl:part name="parameters" element="tnx:validateResponse" />
+  </wsdl:message>
+  <wsdl:message name="validateToken">
+    <wsdl:part name="parameters" element="tnx:validateToken" />
+  </wsdl:message>
+  <wsdl:message name="validateTokenResponse">
+    <wsdl:part name="parameters" element="tnx:validateTokenResponse" />
+  </wsdl:message>
+  <wsdl:message name="servicePay">
+    <wsdl:part name="parameters" element="tnx:servicePay" />
+  </wsdl:message>
+  <wsdl:message name="servicePayResponse">
+    <wsdl:part name="parameters" element="tnx:servicePayResponse" />
+  </wsdl:message>
+  <wsdl:message name="info">
+    <wsdl:part name="parameters" element="tnx:info" />
+  </wsdl:message>
+  <wsdl:message name="infoResponse">
+    <wsdl:part name="parameters" element="tnx:infoResponse" />
+  </wsdl:message>
+  <wsdl:message name="serviceCall">
+    <wsdl:part name="parameters" element="tnx:serviceCall" />
+  </wsdl:message>
+  <wsdl:message name="serviceCallResponse">
+    <wsdl:part name="parameters" element="tnx:serviceCallResponse" />
+  </wsdl:message>
+  <wsdl:portType name="dev.pishkhan.nwsv1PortType">
+    <wsdl:operation name="serviceRefund">
+      <wsdl:input message="tns:serviceRefund" />
+      <wsdl:output message="tns:serviceRefundResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="verify">
+      <wsdl:input message="tns:verify" />
+      <wsdl:output message="tns:verifyResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="serviceCancel">
+      <wsdl:input message="tns:serviceCancel" />
+      <wsdl:output message="tns:serviceCancelResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="validate">
+      <wsdl:input message="tns:validate" />
+      <wsdl:output message="tns:validateResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="validateToken">
+      <wsdl:input message="tns:validateToken" />
+      <wsdl:output message="tns:validateTokenResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="servicePay">
+      <wsdl:input message="tns:servicePay" />
+      <wsdl:output message="tns:servicePayResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="info">
+      <wsdl:input message="tns:info" />
+      <wsdl:output message="tns:infoResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="serviceCall">
+      <wsdl:input message="tns:serviceCall" />
+      <wsdl:output message="tns:serviceCallResponse" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="dev.pishkhan.nwsv1SOAPBinding" type="tns:dev.pishkhan.nwsv1PortType">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation xmlns:default="http://schemas.xmlsoap.org/wsdl/soap/" name="serviceRefund">
+      <default:operation soapAction="http://dev.epishkhan.ir/nwsv1/index.php/serviceRefund" style="document" />
+      <wsdl:input>
+        <default:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <default:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation xmlns:default="http://schemas.xmlsoap.org/wsdl/soap/" name="verify">
+      <default:operation soapAction="http://dev.epishkhan.ir/nwsv1/index.php/verify" style="document" />
+      <wsdl:input>
+        <default:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <default:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation xmlns:default="http://schemas.xmlsoap.org/wsdl/soap/" name="serviceCancel">
+      <default:operation soapAction="http://dev.epishkhan.ir/nwsv1/index.php/serviceCancel" style="document" />
+      <wsdl:input>
+        <default:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <default:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation xmlns:default="http://schemas.xmlsoap.org/wsdl/soap/" name="validate">
+      <default:operation soapAction="http://dev.epishkhan.ir/nwsv1/index.php/validate" style="document" />
+      <wsdl:input>
+        <default:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <default:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation xmlns:default="http://schemas.xmlsoap.org/wsdl/soap/" name="validateToken">
+      <default:operation soapAction="http://dev.epishkhan.ir/nwsv1/index.php/validateToken" style="document" />
+      <wsdl:input>
+        <default:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <default:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation xmlns:default="http://schemas.xmlsoap.org/wsdl/soap/" name="servicePay">
+      <default:operation soapAction="http://dev.epishkhan.ir/nwsv1/index.php/servicePay" style="document" />
+      <wsdl:input>
+        <default:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <default:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation xmlns:default="http://schemas.xmlsoap.org/wsdl/soap/" name="info">
+      <default:operation soapAction="http://dev.epishkhan.ir/nwsv1/index.php/info" style="document" />
+      <wsdl:input>
+        <default:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <default:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation xmlns:default="http://schemas.xmlsoap.org/wsdl/soap/" name="serviceCall">
+      <default:operation soapAction="http://dev.epishkhan.ir/nwsv1/index.php/serviceCall" style="document" />
+      <wsdl:input>
+        <default:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <default:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="dev.pishkhan.nwsv1">
+    <wsdl:port xmlns:default="http://schemas.xmlsoap.org/wsdl/soap/" name="dev.pishkhan.nwsv1SOAPPort_Http" binding="tns:dev.pishkhan.nwsv1SOAPBinding">
+      <default:address location="http://dev.epishkhan.ir/nwsv1/index.php" />
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

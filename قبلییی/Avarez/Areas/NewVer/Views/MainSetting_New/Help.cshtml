@@ -1,0 +1,13 @@
+﻿@using Ext.Net.MVC
+@using Hogaf.ExtNet.UX
+@using Ext.Net;
+@{
+    var X = Html.X();
+}
+
+@(Html.X().Window().Modal(true).Loader(new ComponentLoader { Url = Url.Content("~/Help/تنظیمات اصلی.htm"), Mode = LoadMode.Frame })
+    .Width(800).Height(600)
+            .Title("تنظیمات اصلی ")
+    .Closable(true)
+    .CloseAction(Ext.Net.CloseAction.Destroy)
+)

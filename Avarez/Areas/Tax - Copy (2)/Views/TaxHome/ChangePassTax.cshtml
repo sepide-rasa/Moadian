@@ -1,0 +1,142 @@
+﻿@using Ext.Net.MVC
+@using Hogaf.ExtNet.UX
+@using Ext.Net;
+@{
+    var X = Html.X();
+}
+
+@(Html.X().Window().Modal(true)
+.Width(370).Height(290)
+    .Title("تغییر رمز عبور")
+    .ID("ChangePassTax")
+    .Closable(true)
+    .CloseAction(Ext.Net.CloseAction.Destroy)
+    .Items(
+        X.FormPanel().Border(false)
+        .KeyMap(Html.X().KeyMap()
+                .ID("ChangePassTaxMap")
+            .Target("={Ext.isGecko ? Ext.getDoc() : Ext.getBody()}")
+            .Binding(b =>
+            {
+                b.Add(Html.X().KeyBinding()
+                .KeysString(((int)Ext.Net.KeyCode.F8).ToString())
+                .Handler("SaveChangePassTax(); ")
+                );
+
+            }))
+        .DefaultButton("btn")
+        .Buttons(
+                X.Button().Text("ذخیره").Icon(Ext.Net.Icon.Disk).ToolTip("کلید میانبر F8")
+               .Listeners(l =>
+               {
+                   l.Click.Handler = "SaveChangePassTax();";
+
+               })
+                   .ItemID("btnSave")
+
+            ,
+            X.Button().Text("خروج").Icon(Ext.Net.Icon.DoorOut).ToolTip("کلید میانبر Esc")
+                .OnClientClick("App.ChangePassTax.destroy()")
+        ).Border(false).ButtonAlign(Ext.Net.Alignment.Center)
+        .TitleAlign(Ext.Net.TitleAlign.Center)
+        .Items(
+                X.Panel().Border(false)
+
+            .Items(
+                X.Panel().Border(false)
+
+                .Items(
+                                X.TextField()
+                                .ItemID("txtPass")
+                                .FieldLabel("رمز عبور فعلی ")
+                                .InputType(Ext.Net.InputType.Password)
+                                .MsgTarget(Ext.Net.MessageTarget.Side)
+                                .AllowBlank(false)
+                                .BlankText("لطفا رمز عبور فعلی را وارد کنید.")
+                                .LabelAlign(Ext.Net.LabelAlign.Top)
+                                .AutoFocus(true)
+                                , X.TextField()
+                                .ItemID("txtNewPass")
+                                .FieldLabel("رمز عبور جدید")
+                                .MsgTarget(Ext.Net.MessageTarget.Side)
+                                .AllowBlank(false)
+                                .InputType(Ext.Net.InputType.Password)
+                                .BlankText("لطفا رمز عبور جدید را وارد کنید.")
+                                .LabelAlign(Ext.Net.LabelAlign.Top)
+                                , X.TextField()
+                                .ItemID("txtConfirmPass")
+                                .FieldLabel("تکرار رمز عبور")
+                                .LabelAlign(Ext.Net.LabelAlign.Top)
+                                .AllowBlank(false)
+                                .InputType(Ext.Net.InputType.Password)
+                                .BlankText("لطفا تکرار رمز عبور جدید را وارد کنید.")
+                                .MsgTarget(Ext.Net.MessageTarget.Side)
+
+
+                    )
+
+            )
+                    .Layout(Ext.Net.LayoutType.VBox)
+                    .LayoutConfig(new Ext.Net.VBoxLayoutConfig { Align = Ext.Net.VBoxAlign.Center })
+            )
+        )
+)
+
+<script type="text/javascript">
+    function SaveChangePassTax() {
+          var txtPass = App.ChangePassTax.queryById('txtPass');
+          var txtNewPass = App.ChangePassTax.queryById('txtNewPass');
+          var txtConfirmPass = App.ChangePassTax.queryById('txtConfirmPass');
+        var er = false;
+
+        if (txtPass.validate() == false) {
+            er = true;
+        }
+        if (txtNewPass.validate() == false) {
+            er = true;
+        }
+        if (txtConfirmPass.validate() == false) {
+            er = true;
+        }
+
+        if (txtNewPass.getValue() != txtConfirmPass.getValue()) {
+            alert("رمز عبور و تکرار رمز عبور یکسان نیست. ");
+            er = true;
+        }
+
+        if (er == true)
+            return;
+
+        Ext.net.DirectMethod.request({
+            url: '/Tax/TaxHome/SaveChangePass',
+            params: {
+                fldPass: txtPass.getValue(),
+                fldNewPass: txtNewPass.getValue(),
+                fldConfirmPass: txtConfirmPass.getValue()
+            },
+            success: function (data) {
+                Ext.MessageBox.show({
+                    title: data.MsgTitle,
+                    msg: data.Msg,
+                    icon: Ext.MessageBox.INFO,
+                    buttons: Ext.MessageBox.OK
+                });
+            }
+
+        });
+    }
+
+    function ClearChangePass() {
+        App.ChangePassTax.queryById('txtPass').setValue("");
+        App.ChangePassTax.queryById('txtNewPass').setValue("");
+        App.ChangePassTax.queryById('txtConfirmPass').setValue("");
+
+    }
+
+    function EnterNext() {
+        var keyfield = App.ChangePassTax.queryById(Ext.getCmp((Ext.Element.getActiveElement()).name).itemId);
+        var nextfld = keyfield.nextSibling();
+        nextfld.focus();
+        nextfld.selectText();
+    }
+</script>

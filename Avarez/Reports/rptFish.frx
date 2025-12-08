@@ -1,0 +1,314 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Report ScriptLanguage="CSharp" ReferencedAssemblies="System.dll&#13;&#10;System.Drawing.dll&#13;&#10;System.Windows.Forms.dll&#13;&#10;System.Data.dll&#13;&#10;System.Xml.dll&#13;&#10;MyLib.dll" ReportInfo.Created="08/22/2013 12:59:48" ReportInfo.Modified="09/21/2017 10:43:59" ReportInfo.CreatorVersion="2015.1.2.0">
+  <ScriptText>using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Windows.Forms;
+using System.Drawing;
+using System.Data;
+using FastReport;
+using FastReport.Data;
+using FastReport.Dialog;
+using FastReport.Barcode;
+using FastReport.Table;
+using FastReport.Utils;
+
+namespace FastReport
+{
+  public class ReportScript
+  { 
+
+    private void Data1_AfterData(object sender, EventArgs e)     
+    {
+      Cell30.Text=Cell84.Text=Cell141.Text=&quot;جمع کل به حروف: &quot;+MyLib.NumberTool.Num2Str(Convert.ToUInt64((Int32)Report.GetColumnValue(&quot;sp_PeacockerySelect.fldShowMoney&quot;)),1)+&quot; ریال&quot;;
+    }
+  }
+}
+</ScriptText>
+  <Dictionary>
+    <TableDataSource Name="sp_PictureSelect" ReferenceName="complicationsCarDBDataSet.sp_PictureSelect" DataType="System.Int32" Enabled="true">
+      <Column Name="fldID" DataType="System.Int32"/>
+      <Column Name="fldPic" DataType="System.Byte[]" BindableControl="Picture"/>
+      <Column Name="fldMunicipalityPic" DataType="System.String"/>
+      <Column Name="fldMunicipalityPicID" DataType="System.Int32"/>
+      <Column Name="fldBankPic" DataType="System.String"/>
+      <Column Name="fldBankPicID" DataType="System.Int32"/>
+      <Column Name="fldUserPic" DataType="System.String"/>
+      <Column Name="fldUserPicID" DataType="System.Int64"/>
+      <Column Name="fldUserName" DataType="System.String"/>
+      <Column Name="fldUserID" DataType="System.Int64"/>
+      <Column Name="fldDesc" DataType="System.String"/>
+      <Column Name="fldDate" DataType="System.String"/>
+    </TableDataSource>
+    <TableDataSource Name="sp_PictureSelect1" ReferenceName="complicationsCarDBDataSet.sp_PictureSelect1" DataType="System.Int32" Enabled="true">
+      <Column Name="fldID" DataType="System.Int32"/>
+      <Column Name="fldPic" DataType="System.Byte[]" BindableControl="Picture"/>
+      <Column Name="fldMunicipalityPic" DataType="System.String"/>
+      <Column Name="fldMunicipalityPicID" DataType="System.Int32"/>
+      <Column Name="fldBankPic" DataType="System.String"/>
+      <Column Name="fldBankPicID" DataType="System.Int32"/>
+      <Column Name="fldUserPic" DataType="System.String"/>
+      <Column Name="fldUserPicID" DataType="System.Int64"/>
+      <Column Name="fldUserName" DataType="System.String"/>
+      <Column Name="fldUserID" DataType="System.Int64"/>
+      <Column Name="fldDesc" DataType="System.String"/>
+      <Column Name="fldDate" DataType="System.String"/>
+    </TableDataSource>
+    <TableDataSource Name="sp_PeacockerySelect" ReferenceName="complicationsCarDBDataSet.sp_PeacockerySelect" DataType="System.Int32" Enabled="true">
+      <Column Name="fldID" DataType="System.Int64"/>
+      <Column Name="fldCarFileID" DataType="System.Int64"/>
+      <Column Name="fldIssuanceDate" DataType="System.String"/>
+      <Column Name="fldAccountBankID" DataType="System.Int32"/>
+      <Column Name="fldPeacockeryCode" DataType="System.String"/>
+      <Column Name="fldMainComplications" DataType="System.Int32"/>
+      <Column Name="fldFine" DataType="System.Int32"/>
+      <Column Name="fldValueAdded" DataType="System.Int32"/>
+      <Column Name="fldOther" DataType="System.Int32"/>
+      <Column Name="fldShowMoney" DataType="System.Int32"/>
+      <Column Name="fldAccountNumber" DataType="System.String"/>
+      <Column Name="fldName" DataType="System.String"/>
+      <Column Name="fldBankName" DataType="System.String"/>
+      <Column Name="fldMotorNumber" DataType="System.String"/>
+      <Column Name="fldShasiNumber" DataType="System.String"/>
+      <Column Name="fldVIN" DataType="System.String"/>
+      <Column Name="fldModel" DataType="System.Int16"/>
+      <Column Name="fldStartDateInsurance" DataType="System.String"/>
+      <Column Name="fldColor" DataType="System.String"/>
+      <Column Name="fldPlaqueNumber" DataType="System.String"/>
+      <Column Name="fldSerial" DataType="System.String"/>
+      <Column Name="fldPlaqueTypeName" DataType="System.String"/>
+      <Column Name="fldPlaqueCityName" DataType="System.String"/>
+      <Column Name="fldFromDate" DataType="System.String"/>
+      <Column Name="fldToDate" DataType="System.String"/>
+      <Column Name="fldDatePlaque" DataType="System.String"/>
+      <Column Name="fldUserID" DataType="System.Int64"/>
+      <Column Name="fldDesc" DataType="System.String"/>
+      <Column Name="fldDate" DataType="System.String"/>
+      <Column Name="fldDiscountedAmount" DataType="System.Int32"/>
+      <Column Name="fldDiscountedValue" DataType="System.Int32"/>
+      <Column Name="fldDiscountsOther" DataType="System.Int32"/>
+      <Column Name="fldCarMake" DataType="System.String"/>
+      <Column Name="fldCarSystem" DataType="System.String"/>
+      <Column Name="fldBankId" DataType="System.Int32"/>
+      <Column Name="OwnerName" DataType="System.String"/>
+      <Column Name="fldMelli_EconomicCode" DataType="System.String"/>
+      <Column Name="PlaquNumber" DataType="System.String"/>
+      <Column Name="fldCylinderNumber" DataType="System.Byte"/>
+      <Column Name="fldUserName" DataType="System.String"/>
+      <Column Name="fldMobile" DataType="System.String"/>
+      <Column Name="Column" Alias="fldDiscountsFine" DataType="System.Int32" Calculated="true" Expression=""/>
+    </TableDataSource>
+    <Parameter Name="MunicipalityName" DataType="System.String"/>
+    <Parameter Name="Barcode" DataType="System.String"/>
+    <Parameter Name="ShGhabz" DataType="System.String"/>
+    <Parameter Name="ShPardakht" DataType="System.String"/>
+    <Parameter Name="Horof" DataType="System.String"/>
+    <Parameter Name="Mohlat" DataType="System.String"/>
+    <Parameter Name="SalAvarez" DataType="System.String"/>
+  </Dictionary>
+  <ReportPage Name="Page1" LeftMargin="6.3" TopMargin="6.3" RightMargin="6.3" BottomMargin="6.3">
+    <ReportTitleBand Name="ReportTitle1" Width="746.17"/>
+    <PageHeaderBand Name="PageHeader1" Top="4" Width="746.17"/>
+    <DataBand Name="Data1" Top="8" Width="746.17" Height="1056.13" AfterDataEvent="Data1_AfterData">
+      <LineObject Name="Line1" Left="19.84" Top="323.18" Width="709.67" Border.Style="Dash" Diagonal="true"/>
+      <LineObject Name="Line2" Left="19.84" Top="694.59" Width="709.51" Border.Style="Dash" Diagonal="true"/>
+      <TableObject Name="Table1" Left="53.86" Top="2.85" Width="641.58" Height="193.5">
+        <TableColumn Name="Column1" Width="213.86"/>
+        <TableColumn Name="Column2" Width="213.86"/>
+        <TableColumn Name="Column3" Width="213.86"/>
+        <TableRow Name="Row1" Height="21.5">
+          <TableCell Name="Cell1" Border.Lines="All" Text="سریال قبض: [sp_PeacockerySelect.fldID]" AutoShrink="FontSize" RightToLeft="true" Font="Microsoft Sans Serif, 10pt, style=Bold"/>
+          <TableCell Name="Cell2" Border.Lines="All" Text="شماره پرونده: [sp_PeacockerySelect.fldCarFileID]" AutoShrink="FontSize" RightToLeft="true" Font="Microsoft Sans Serif, 10pt, style=Bold" ColSpan="2"/>
+          <TableCell Name="Cell3" Border.Lines="All" AutoShrink="FontSize" RightToLeft="true" Font="Microsoft Sans Serif, 10pt, style=Bold"/>
+        </TableRow>
+        <TableRow Name="Row2" Height="21.5">
+          <TableCell Name="Cell6" Border.Lines="All" Text="کد ملی: [sp_PeacockerySelect.fldMelli_EconomicCode]" AutoShrink="FontSize" RightToLeft="true" Font="Microsoft Sans Serif, 10pt"/>
+          <TableCell Name="Cell7" Border.Lines="All" Text="تلفن همراه : [sp_PeacockerySelect1.fldMobile]" AutoShrink="FontSize" RightToLeft="true" Font="Microsoft Sans Serif, 10pt"/>
+          <TableCell Name="Cell8" Border.Lines="All" Text="نام مالک: [sp_PeacockerySelect.OwnerName]" AutoShrink="FontSize" RightToLeft="true" Font="Microsoft Sans Serif, 10pt"/>
+        </TableRow>
+        <TableRow Name="Row3" Height="21.5">
+          <TableCell Name="Cell11" Border.Lines="All" Text="VIN: [sp_PeacockerySelect.fldVIN]" AutoShrink="FontSize" Font="Microsoft Sans Serif, 10pt"/>
+          <TableCell Name="Cell12" Border.Lines="All" Text="نوع خودرو: [sp_PeacockerySelect.fldCarMake]" AutoShrink="FontSize" RightToLeft="true" Font="Microsoft Sans Serif, 10pt"/>
+          <TableCell Name="Cell13" Border.Lines="All" Text="نام خودرو: [sp_PeacockerySelect.fldCarSystem]" AutoShrink="FontSize" RightToLeft="true" Font="Microsoft Sans Serif, 10pt"/>
+        </TableRow>
+        <TableRow Name="Row4" Height="21.5">
+          <TableCell Name="Cell16" Border.Lines="All" Text="نوع پلاک: [sp_PeacockerySelect.fldPlaqueTypeName]" AutoShrink="FontSize" RightToLeft="true" Font="Microsoft Sans Serif, 10pt"/>
+          <TableCell Name="Cell17" Border.Lines="All" Text="شماره شاسی: [sp_PeacockerySelect.fldShasiNumber]" AutoShrink="FontSize" RightToLeft="true" Font="Microsoft Sans Serif, 10pt"/>
+          <TableCell Name="Cell18" Border.Lines="All" Text="شماره موتور: [sp_PeacockerySelect.fldMotorNumber]" AutoShrink="FontSize" RightToLeft="true" Font="Microsoft Sans Serif, 10pt"/>
+        </TableRow>
+        <TableRow Name="Row5" Height="21.5">
+          <TableCell Name="Cell21" Border.Lines="All" Text="تعداد سیلندر: [sp_PeacockerySelect.fldCylinderNumber]" AutoShrink="FontSize" RightToLeft="true" Font="Microsoft Sans Serif, 10pt"/>
+          <TableCell Name="Cell22" Border.Lines="All" Text="رنگ خودرو: [sp_PeacockerySelect.fldColor]" AutoShrink="FontSize" RightToLeft="true" Font="Microsoft Sans Serif, 10pt"/>
+          <TableCell Name="Cell23" Border.Lines="All" Text="پلاک: [sp_PeacockerySelect.PlaquNumber]" AutoShrink="FontSize" RightToLeft="true" Font="Microsoft Sans Serif, 10pt"/>
+        </TableRow>
+        <TableRow Name="Row6" Height="21.5">
+          <TableCell Name="Cell24" Border.Lines="All" Text="تاریخ صدور: [sp_PeacockerySelect.fldIssuanceDate]" AutoShrink="FontSize" RightToLeft="true" Font="Microsoft Sans Serif, 10pt"/>
+          <TableCell Name="Cell25" Border.Lines="All" Text="بابت عوارض سالهای: [SalAvarez]" AutoShrink="FontSize" RightToLeft="true" Font="Microsoft Sans Serif, 10pt"/>
+          <TableCell Name="Cell26" Border.Lines="All" Text="مدل: [sp_PeacockerySelect.fldModel]" AutoShrink="FontSize" RightToLeft="true" Font="Microsoft Sans Serif, 10pt"/>
+        </TableRow>
+        <TableRow Name="Row7" Height="21.5">
+          <TableCell Name="Cell27" Border.Lines="All" Fill.Color="LightGray" Text="مهلت پرداخت: [Mohlat]" AutoShrink="FontSize" RightToLeft="true" Font="Microsoft Sans Serif, 10pt"/>
+          <TableCell Name="Cell28" Border.Lines="All" Fill.Color="LightGray" Text="شماره حساب: [sp_PeacockerySelect.fldAccountNumber]" AutoShrink="FontSize" RightToLeft="true" Font="Microsoft Sans Serif, 10pt"/>
+          <TableCell Name="Cell29" Border.Lines="All" Fill.Color="LightGray" Text="جمع کل قابل پرداخت: [sp_PeacockerySelect.fldShowMoney]" Format="Number" Format.UseLocale="false" Format.DecimalDigits="0" Format.DecimalSeparator="." Format.GroupSeparator="," Format.NegativePattern="0" AutoShrink="FontSize" RightToLeft="true" Font="Microsoft Sans Serif, 10pt"/>
+        </TableRow>
+        <TableRow Name="Row8" Height="21.5">
+          <TableCell Name="Cell30" Border.Lines="All" Fill.Color="LightGray" AutoShrink="FontSize" RightToLeft="true" Font="Microsoft Sans Serif, 10pt" ColSpan="3"/>
+          <TableCell Name="Cell31" Border.Lines="All" Fill.Color="LightGray" AutoShrink="FontSize" RightToLeft="true" Font="Microsoft Sans Serif, 10pt"/>
+          <TableCell Name="Cell32" Border.Lines="All" Fill.Color="LightGray" AutoShrink="FontSize" RightToLeft="true" Font="Microsoft Sans Serif, 10pt"/>
+        </TableRow>
+        <TableRow Name="Row9" Height="21.5">
+          <TableCell Name="Cell33" Border.Lines="All" Fill.Color="LightGray" AutoShrink="FontSize" RightToLeft="true" Font="Microsoft Sans Serif, 10pt"/>
+          <TableCell Name="Cell34" Border.Lines="All" Fill.Color="LightGray" Text="شناسه پرداخت: [ShPardakht]" AutoShrink="FontSize" RightToLeft="true" Font="Microsoft Sans Serif, 10pt"/>
+          <TableCell Name="Cell35" Border.Lines="All" Fill.Color="LightGray" Text="شناسه قبض: [ShGhabz]" AutoShrink="FontSize" RightToLeft="true" Font="Microsoft Sans Serif, 10pt"/>
+        </TableRow>
+      </TableObject>
+      <ShapeObject Name="Shape1" Left="54.81" Top="204.09" Width="639.71" Height="110.53" Border.Width="2" Shape="RoundRectangle"/>
+      <BarcodeObject Name="Barcode1" Left="7.57" Top="55.74" Width="37.33" Height="98.75" Angle="90" Expression="[Barcode]" ShowText="false" Barcode="Code128" Barcode.AutoEncode="true"/>
+      <PictureObject Name="Picture1" Left="7.57" Top="1.88" Width="37.8" Height="37.8" DataColumn="sp_PictureSelect.fldPic"/>
+      <TableObject Name="Table2" Left="53.86" Top="330.76" Width="641.58" Height="260.58">
+        <TableColumn Name="Column4" Width="213.86"/>
+        <TableColumn Name="Column5" Width="213.86"/>
+        <TableColumn Name="Column6" Width="213.86"/>
+        <TableRow Name="Row10" Height="21.5">
+          <TableCell Name="Cell90" Border.Lines="All" Text="[MunicipalityName] - قبض عوارض سالیانه وسائط نقلیه موتوری" AutoShrink="FontSize" HorzAlign="Center" RightToLeft="true" Font="Microsoft Sans Serif, 10pt, style=Bold" ColSpan="3"/>
+          <TableCell Name="Cell91" Border.Lines="All" AutoShrink="FontSize" RightToLeft="true"/>
+          <TableCell Name="Cell92" Border.Lines="All" AutoShrink="FontSize" RightToLeft="true"/>
+        </TableRow>
+        <TableRow Name="Row11" Height="21.5">
+          <TableCell Name="Cell93" Border.Lines="All" Text="سریال قبض: [sp_PeacockerySelect.fldID]" AutoShrink="FontSize" RightToLeft="true" Font="Microsoft Sans Serif, 10pt, style=Bold"/>
+          <TableCell Name="Cell94" Border.Lines="All" Text="شماره پرونده: [sp_PeacockerySelect.fldCarFileID]" AutoShrink="FontSize" RightToLeft="true" Font="Microsoft Sans Serif, 10pt, style=Bold" ColSpan="2"/>
+          <TableCell Name="Cell95" Border.Lines="All" AutoShrink="FontSize" RightToLeft="true" Font="Microsoft Sans Serif, 10pt, style=Bold"/>
+        </TableRow>
+        <TableRow Name="Row12" Height="21.5">
+          <TableCell Name="Cell96" Border.Lines="All" Text="کد ملی: [sp_PeacockerySelect.fldMelli_EconomicCode]" AutoShrink="FontSize" RightToLeft="true" Font="Microsoft Sans Serif, 10pt"/>
+          <TableCell Name="Cell97" Border.Lines="All" Text="تلفن همراه : [sp_PeacockerySelect1.fldMobile]" AutoShrink="FontSize" RightToLeft="true" Font="Microsoft Sans Serif, 10pt"/>
+          <TableCell Name="Cell98" Border.Lines="All" Text="نام مالک: [sp_PeacockerySelect.OwnerName]" AutoShrink="FontSize" RightToLeft="true" Font="Microsoft Sans Serif, 10pt"/>
+        </TableRow>
+        <TableRow Name="Row13" Height="21.5">
+          <TableCell Name="Cell99" Border.Lines="All" Text="VIN: [sp_PeacockerySelect.fldVIN]" AutoShrink="FontSize" Font="Microsoft Sans Serif, 10pt"/>
+          <TableCell Name="Cell100" Border.Lines="All" Text="نوع خودرو: [sp_PeacockerySelect.fldCarMake]" AutoShrink="FontSize" RightToLeft="true" Font="Microsoft Sans Serif, 10pt"/>
+          <TableCell Name="Cell101" Border.Lines="All" Text="نام خودرو: [sp_PeacockerySelect.fldCarSystem]" AutoShrink="FontSize" RightToLeft="true" Font="Microsoft Sans Serif, 10pt"/>
+        </TableRow>
+        <TableRow Name="Row14" Height="21.5">
+          <TableCell Name="Cell102" Border.Lines="All" Text="نوع پلاک: [sp_PeacockerySelect.fldPlaqueTypeName]" AutoShrink="FontSize" RightToLeft="true" Font="Microsoft Sans Serif, 10pt"/>
+          <TableCell Name="Cell103" Border.Lines="All" Text="شماره شاسی: [sp_PeacockerySelect.fldShasiNumber]" AutoShrink="FontSize" RightToLeft="true" Font="Microsoft Sans Serif, 10pt"/>
+          <TableCell Name="Cell104" Border.Lines="All" Text="شماره موتور: [sp_PeacockerySelect.fldMotorNumber]" AutoShrink="FontSize" RightToLeft="true" Font="Microsoft Sans Serif, 10pt"/>
+        </TableRow>
+        <TableRow Name="Row15" Height="21.5">
+          <TableCell Name="Cell105" Border.Lines="All" Text="تعداد سیلندر: [sp_PeacockerySelect.fldCylinderNumber]" AutoShrink="FontSize" RightToLeft="true" Font="Microsoft Sans Serif, 10pt"/>
+          <TableCell Name="Cell106" Border.Lines="All" Text="رنگ خودرو: [sp_PeacockerySelect.fldColor]" AutoShrink="FontSize" RightToLeft="true" Font="Microsoft Sans Serif, 10pt"/>
+          <TableCell Name="Cell107" Border.Lines="All" Text="پلاک: [sp_PeacockerySelect.PlaquNumber]" AutoShrink="FontSize" RightToLeft="true" Font="Microsoft Sans Serif, 10pt"/>
+        </TableRow>
+        <TableRow Name="Row16" Height="21.5">
+          <TableCell Name="Cell108" Border.Lines="All" Text="تاریخ صدور: [sp_PeacockerySelect.fldIssuanceDate]" AutoShrink="FontSize" RightToLeft="true" Font="Microsoft Sans Serif, 10pt"/>
+          <TableCell Name="Cell109" Border.Lines="All" Text="بابت عوارض سالهای: [SalAvarez]" AutoShrink="FontSize" RightToLeft="true" Font="Microsoft Sans Serif, 10pt"/>
+          <TableCell Name="Cell110" Border.Lines="All" Text="مدل: [sp_PeacockerySelect.fldModel]" AutoShrink="FontSize" RightToLeft="true" Font="Microsoft Sans Serif, 10pt"/>
+        </TableRow>
+        <TableRow Name="Row17" Height="21.5">
+          <TableCell Name="Cell75" Border.Lines="All" AutoShrink="FontSize" RightToLeft="true" Font="Microsoft Sans Serif, 10pt"/>
+          <TableCell Name="Cell76" Border.Lines="All" Text="دیرکرد: [sp_PeacockerySelect.fldFine]" Format="Number" Format.UseLocale="false" Format.DecimalDigits="0" Format.DecimalSeparator="." Format.GroupSeparator="," Format.NegativePattern="0" AutoShrink="FontSize" RightToLeft="true" Font="Microsoft Sans Serif, 10pt"/>
+          <TableCell Name="Cell77" Border.Lines="All" Text="مبلغ عوارض: [sp_PeacockerySelect.fldMainComplications]" Format="Number" Format.UseLocale="false" Format.DecimalDigits="0" Format.DecimalSeparator="." Format.GroupSeparator="," Format.NegativePattern="0" AutoShrink="FontSize" RightToLeft="true" Font="Microsoft Sans Serif, 10pt"/>
+        </TableRow>
+        <TableRow Name="Row18" Height="21.5">
+          <TableCell Name="Cell78" Border.Lines="All" Text="کاربر: [sp_PeacockerySelect.fldUserID]" AutoShrink="FontSize" RightToLeft="true" Font="Microsoft Sans Serif, 10pt"/>
+          <TableCell Name="Cell79" Border.Lines="All" Text="ارزش افزوده: [sp_PeacockerySelect.fldValueAdded]" Format="Number" Format.UseLocale="false" Format.DecimalDigits="0" Format.DecimalSeparator="." Format.GroupSeparator="," Format.NegativePattern="0" AutoShrink="FontSize" RightToLeft="true" Font="Microsoft Sans Serif, 10pt"/>
+          <TableCell Name="Cell80" Border.Lines="All" Text="سایر: [sp_PeacockerySelect.fldOther]" Format="Number" Format.UseLocale="false" Format.DecimalDigits="0" Format.DecimalSeparator="." Format.GroupSeparator="," Format.NegativePattern="0" AutoShrink="FontSize" RightToLeft="true" Font="Microsoft Sans Serif, 10pt"/>
+        </TableRow>
+        <TableRow Name="Row19" Height="21.73">
+          <TableCell Name="Cell81" Border.Lines="All" Fill.Color="LightGray" Text="مهلت پرداخت: [Mohlat]" AutoShrink="FontSize" RightToLeft="true" Font="Microsoft Sans Serif, 10pt"/>
+          <TableCell Name="Cell82" Border.Lines="All" Fill.Color="LightGray" Text="شماره حساب: [sp_PeacockerySelect.fldAccountNumber]" AutoShrink="FontSize" RightToLeft="true" Font="Microsoft Sans Serif, 10pt"/>
+          <TableCell Name="Cell83" Border.Lines="All" Fill.Color="LightGray" Text="جمع کل قابل پرداخت: [sp_PeacockerySelect.fldShowMoney]" Format="Number" Format.UseLocale="false" Format.DecimalDigits="0" Format.DecimalSeparator="." Format.GroupSeparator="," Format.NegativePattern="0" AutoShrink="FontSize" RightToLeft="true" Font="Microsoft Sans Serif, 10pt"/>
+        </TableRow>
+        <TableRow Name="Row20" Height="22.67">
+          <TableCell Name="Cell84" Border.Lines="All" Fill.Color="LightGray" Text="جمع کل به حروف: [Horof]" AutoShrink="FontSize" RightToLeft="true" Font="Microsoft Sans Serif, 10pt" ColSpan="3"/>
+          <TableCell Name="Cell85" Border.Lines="All" Fill.Color="LightGray" AutoShrink="FontSize" RightToLeft="true" Font="Microsoft Sans Serif, 10pt"/>
+          <TableCell Name="Cell86" Border.Lines="All" Fill.Color="LightGray" AutoShrink="FontSize" RightToLeft="true" Font="Microsoft Sans Serif, 10pt"/>
+        </TableRow>
+        <TableRow Name="Row21" Height="22.68">
+          <TableCell Name="Cell87" Border.Lines="All" Fill.Color="LightGray" AutoShrink="FontSize" RightToLeft="true" Font="Microsoft Sans Serif, 10pt"/>
+          <TableCell Name="Cell88" Border.Lines="All" Fill.Color="LightGray" Text="شناسه پرداخت: [ShPardakht]" AutoShrink="FontSize" RightToLeft="true" Font="Microsoft Sans Serif, 10pt"/>
+          <TableCell Name="Cell89" Border.Lines="All" Fill.Color="LightGray" Text="شناسه قبض: [ShGhabz]" AutoShrink="FontSize" RightToLeft="true" Font="Microsoft Sans Serif, 10pt"/>
+        </TableRow>
+      </TableObject>
+      <BarcodeObject Name="Barcode2" Left="7.57" Top="394.07" Width="37.33" Height="98.75" Angle="90" Expression="[Barcode]" ShowText="false" Barcode="Code128" Barcode.AutoEncode="true"/>
+      <PictureObject Name="Picture2" Left="7.57" Top="336.38" Width="37.8" Height="37.8" DataColumn="sp_PictureSelect.fldPic"/>
+      <BarcodeObject Name="Barcode3" Left="7.57" Top="766.4" Width="37.33" Height="98.75" Angle="90" Expression="[Barcode]" ShowText="false" Barcode="Code128" Barcode.AutoEncode="true"/>
+      <PictureObject Name="Picture3" Left="7.57" Top="702.15" Width="37.8" Height="37.8" DataColumn="sp_PictureSelect.fldPic"/>
+      <ShapeObject Name="Shape2" Left="51.04" Top="601.02" Width="647.29" Height="86.93" Border.Width="2" Shape="RoundRectangle"/>
+      <TableObject Name="Table3" Left="53.86" Top="703.09" Width="641.58" Height="260.58">
+        <TableColumn Name="Column7" Width="213.86"/>
+        <TableColumn Name="Column8" Width="213.86"/>
+        <TableColumn Name="Column9" Width="213.86"/>
+        <TableRow Name="Row22" Height="21.5">
+          <TableCell Name="Cell111" Border.Lines="All" Text="[MunicipalityName] - قبض عوارض سالیانه وسائط نقلیه موتوری" AutoShrink="FontSize" HorzAlign="Center" RightToLeft="true" Font="Microsoft Sans Serif, 10pt, style=Bold" ColSpan="3"/>
+          <TableCell Name="Cell112" Border.Lines="All" AutoShrink="FontSize" RightToLeft="true"/>
+          <TableCell Name="Cell113" Border.Lines="All" AutoShrink="FontSize" RightToLeft="true"/>
+        </TableRow>
+        <TableRow Name="Row23" Height="21.5">
+          <TableCell Name="Cell114" Border.Lines="All" Text="سریال قبض: [sp_PeacockerySelect.fldID]" AutoShrink="FontSize" RightToLeft="true" Font="Microsoft Sans Serif, 10pt, style=Bold"/>
+          <TableCell Name="Cell115" Border.Lines="All" Text="شماره پرونده: [sp_PeacockerySelect.fldCarFileID]" AutoShrink="FontSize" RightToLeft="true" Font="Microsoft Sans Serif, 10pt, style=Bold" ColSpan="2"/>
+          <TableCell Name="Cell116" Border.Lines="All" AutoShrink="FontSize" RightToLeft="true" Font="Microsoft Sans Serif, 10pt, style=Bold"/>
+        </TableRow>
+        <TableRow Name="Row24" Height="21.5">
+          <TableCell Name="Cell117" Border.Lines="All" Text="کد ملی: [sp_PeacockerySelect.fldMelli_EconomicCode]" AutoShrink="FontSize" RightToLeft="true" Font="Microsoft Sans Serif, 10pt"/>
+          <TableCell Name="Cell118" Border.Lines="All" Text="تلفن همراه : [sp_PeacockerySelect1.fldMobile]" AutoShrink="FontSize" RightToLeft="true" Font="Microsoft Sans Serif, 10pt"/>
+          <TableCell Name="Cell119" Border.Lines="All" Text="نام مالک: [sp_PeacockerySelect.OwnerName]" AutoShrink="FontSize" RightToLeft="true" Font="Microsoft Sans Serif, 10pt"/>
+        </TableRow>
+        <TableRow Name="Row25" Height="21.5">
+          <TableCell Name="Cell120" Border.Lines="All" Text="VIN: [sp_PeacockerySelect.fldVIN]" AutoShrink="FontSize" Font="Microsoft Sans Serif, 10pt"/>
+          <TableCell Name="Cell121" Border.Lines="All" Text="نوع خودرو: [sp_PeacockerySelect.fldCarMake]" AutoShrink="FontSize" RightToLeft="true" Font="Microsoft Sans Serif, 10pt"/>
+          <TableCell Name="Cell122" Border.Lines="All" Text="نام خودرو: [sp_PeacockerySelect.fldCarSystem]" AutoShrink="FontSize" RightToLeft="true" Font="Microsoft Sans Serif, 10pt"/>
+        </TableRow>
+        <TableRow Name="Row26" Height="21.5">
+          <TableCell Name="Cell123" Border.Lines="All" Text="نوع پلاک: [sp_PeacockerySelect.fldPlaqueTypeName]" AutoShrink="FontSize" RightToLeft="true" Font="Microsoft Sans Serif, 10pt"/>
+          <TableCell Name="Cell124" Border.Lines="All" Text="شماره شاسی: [sp_PeacockerySelect.fldShasiNumber]" AutoShrink="FontSize" RightToLeft="true" Font="Microsoft Sans Serif, 10pt"/>
+          <TableCell Name="Cell125" Border.Lines="All" Text="شماره موتور: [sp_PeacockerySelect.fldMotorNumber]" AutoShrink="FontSize" RightToLeft="true" Font="Microsoft Sans Serif, 10pt"/>
+        </TableRow>
+        <TableRow Name="Row27" Height="21.5">
+          <TableCell Name="Cell126" Border.Lines="All" Text="تعداد سیلندر: [sp_PeacockerySelect.fldCylinderNumber]" AutoShrink="FontSize" RightToLeft="true" Font="Microsoft Sans Serif, 10pt"/>
+          <TableCell Name="Cell127" Border.Lines="All" Text="رنگ خودرو: [sp_PeacockerySelect.fldColor]" AutoShrink="FontSize" RightToLeft="true" Font="Microsoft Sans Serif, 10pt"/>
+          <TableCell Name="Cell128" Border.Lines="All" Text="پلاک: [sp_PeacockerySelect.PlaquNumber]" AutoShrink="FontSize" RightToLeft="true" Font="Microsoft Sans Serif, 10pt"/>
+        </TableRow>
+        <TableRow Name="Row28" Height="21.5">
+          <TableCell Name="Cell129" Border.Lines="All" Text="تاریخ صدور: [sp_PeacockerySelect.fldIssuanceDate]" AutoShrink="FontSize" RightToLeft="true" Font="Microsoft Sans Serif, 10pt"/>
+          <TableCell Name="Cell130" Border.Lines="All" Text="بابت عوارض سالهای: [SalAvarez]" AutoShrink="FontSize" RightToLeft="true" Font="Microsoft Sans Serif, 10pt"/>
+          <TableCell Name="Cell131" Border.Lines="All" Text="مدل: [sp_PeacockerySelect.fldModel]" AutoShrink="FontSize" RightToLeft="true" Font="Microsoft Sans Serif, 10pt"/>
+        </TableRow>
+        <TableRow Name="Row29" Height="21.5">
+          <TableCell Name="Cell132" Border.Lines="All" AutoShrink="FontSize" RightToLeft="true" Font="Microsoft Sans Serif, 10pt"/>
+          <TableCell Name="Cell133" Border.Lines="All" Text="دیرکرد: [sp_PeacockerySelect.fldFine]" Format="Number" Format.UseLocale="false" Format.DecimalDigits="0" Format.DecimalSeparator="." Format.GroupSeparator="," Format.NegativePattern="0" AutoShrink="FontSize" RightToLeft="true" Font="Microsoft Sans Serif, 10pt"/>
+          <TableCell Name="Cell134" Border.Lines="All" Text="مبلغ عوارض: [sp_PeacockerySelect.fldMainComplications]" Format="Number" Format.UseLocale="false" Format.DecimalDigits="0" Format.DecimalSeparator="." Format.GroupSeparator="," Format.NegativePattern="0" AutoShrink="FontSize" RightToLeft="true" Font="Microsoft Sans Serif, 10pt"/>
+        </TableRow>
+        <TableRow Name="Row30" Height="21.5">
+          <TableCell Name="Cell135" Border.Lines="All" Text="کاربر: [sp_PeacockerySelect.fldUserID]" AutoShrink="FontSize" RightToLeft="true" Font="Microsoft Sans Serif, 10pt"/>
+          <TableCell Name="Cell136" Border.Lines="All" Text="ارزش افزوده: [sp_PeacockerySelect.fldValueAdded]" Format="Number" Format.UseLocale="false" Format.DecimalDigits="0" Format.DecimalSeparator="." Format.GroupSeparator="," Format.NegativePattern="0" AutoShrink="FontSize" RightToLeft="true" Font="Microsoft Sans Serif, 10pt"/>
+          <TableCell Name="Cell137" Border.Lines="All" Text="سایر: [sp_PeacockerySelect.fldOther]" Format="Number" Format.UseLocale="false" Format.DecimalDigits="0" Format.DecimalSeparator="." Format.GroupSeparator="," Format.NegativePattern="0" AutoShrink="FontSize" RightToLeft="true" Font="Microsoft Sans Serif, 10pt"/>
+        </TableRow>
+        <TableRow Name="Row31" Height="21.73">
+          <TableCell Name="Cell138" Border.Lines="All" Fill.Color="LightGray" Text="مهلت پرداخت: [Mohlat]" AutoShrink="FontSize" RightToLeft="true" Font="Microsoft Sans Serif, 10pt"/>
+          <TableCell Name="Cell139" Border.Lines="All" Fill.Color="LightGray" Text="شماره حساب: [sp_PeacockerySelect.fldAccountNumber]" AutoShrink="FontSize" RightToLeft="true" Font="Microsoft Sans Serif, 10pt"/>
+          <TableCell Name="Cell140" Border.Lines="All" Fill.Color="LightGray" Text="جمع کل قابل پرداخت: [sp_PeacockerySelect.fldShowMoney]" Format="Number" Format.UseLocale="false" Format.DecimalDigits="0" Format.DecimalSeparator="." Format.GroupSeparator="," Format.NegativePattern="0" AutoShrink="FontSize" RightToLeft="true" Font="Microsoft Sans Serif, 10pt"/>
+        </TableRow>
+        <TableRow Name="Row32" Height="22.67">
+          <TableCell Name="Cell141" Border.Lines="All" Fill.Color="LightGray" Text="جمع کل به حروف: [Horof]" AutoShrink="FontSize" RightToLeft="true" Font="Microsoft Sans Serif, 10pt" ColSpan="3"/>
+          <TableCell Name="Cell142" Border.Lines="All" Fill.Color="LightGray" AutoShrink="FontSize" RightToLeft="true" Font="Microsoft Sans Serif, 10pt"/>
+          <TableCell Name="Cell143" Border.Lines="All" Fill.Color="LightGray" AutoShrink="FontSize" RightToLeft="true" Font="Microsoft Sans Serif, 10pt"/>
+        </TableRow>
+        <TableRow Name="Row33" Height="22.68">
+          <TableCell Name="Cell144" Border.Lines="All" Fill.Color="LightGray" AutoShrink="FontSize" RightToLeft="true" Font="Microsoft Sans Serif, 10pt"/>
+          <TableCell Name="Cell145" Border.Lines="All" Fill.Color="LightGray" Text="شناسه پرداخت: [ShPardakht]" AutoShrink="FontSize" RightToLeft="true" Font="Microsoft Sans Serif, 10pt"/>
+          <TableCell Name="Cell146" Border.Lines="All" Fill.Color="LightGray" Text="شناسه قبض: [ShGhabz]" AutoShrink="FontSize" RightToLeft="true" Font="Microsoft Sans Serif, 10pt"/>
+        </TableRow>
+      </TableObject>
+      <PictureObject Name="Picture4" Left="701.18" Top="1.88" Width="37.8" Height="37.8" DataColumn="sp_PictureSelect1.fldPic"/>
+      <PictureObject Name="Picture5" Left="701.18" Top="336.38" Width="37.8" Height="37.8" DataColumn="sp_PictureSelect1.fldPic"/>
+      <PictureObject Name="Picture6" Left="700.28" Top="702.15" Width="37.8" Height="37.8" DataColumn="sp_PictureSelect1.fldPic"/>
+      <TextObject Name="Text1" Left="706.86" Top="422.38" Width="26.46" Height="153.94" Border.Lines="All" Fill.Color="Gainsboro" Text="نسخه مخصوص شهرداری" HorzAlign="Center" Angle="270" Font="Microsoft Sans Serif, 10pt"/>
+      <TextObject Name="Text2" Left="706.86" Top="776.78" Width="26.48" Height="153.94" Border.Lines="All" Fill.Color="Gainsboro" Text="نسخه مخصوص مودی" HorzAlign="Center" Angle="270" Font="Microsoft Sans Serif, 10pt"/>
+      <TextObject Name="Text3" Left="706.86" Top="71.81" Width="26.46" Height="153.94" Border.Lines="All" Fill.Color="Gainsboro" Text="نسخه مخصوص بانک" HorzAlign="Center" Angle="270" Font="Microsoft Sans Serif, 10pt"/>
+      <ShapeObject Name="Shape3" Left="51.04" Top="971.46" Width="647.29" Height="83.15" Border.Width="2" Shape="RoundRectangle"/>
+    </DataBand>
+    <PageFooterBand Name="PageFooter1" Top="1068.13" Width="746.17"/>
+  </ReportPage>
+</Report>

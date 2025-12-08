@@ -1,0 +1,220 @@
+﻿@model IEnumerable<Avarez.Models.sp_PardakhtFiles_DetailSelect>
+@using Ext.Net.MVC
+@using Hogaf.ExtNet.UX
+@using Ext.Net;
+@using Ext.Net.Utilities;
+@{
+
+    var X = Html.X();
+    var user=Session["UserId"].ToString();
+}
+
+@(X.Window().Height(600)//آخرین تغییرات
+        //.Listeners(li => li.AfterRender.Handler = "PardakhtFilesMap();")
+        .ID("PardakhtFiles")
+    .Title("ورود فایل پرداخت الکترونیک")
+    //.Listeners(l=>l.AfterRender.Handler="checcck()")
+        .Closable(true).Maximized(true)
+    .Border(false)
+    .Maximized(true)
+    .CloseAction(Ext.Net.CloseAction.Destroy)
+        .Layout(Ext.Net.LayoutType.VBox)
+        .LayoutConfig(new VBoxLayoutConfig { Align = VBoxAlign.Stretch })
+   // .Layout(Ext.Net.LayoutType.Fit)
+    .Items(
+         X.Panel()
+                .Border(false)
+                .Layout(LayoutType.VBox)
+                .LayoutConfig(new VBoxLayoutConfig { Align = VBoxAlign.Center })
+                .Items(
+                    X.FieldSet()
+                        .Border(false)
+                        .Height(30)
+                        .LayoutConfig(new Ext.Net.TableLayoutConfig { Columns = 5 })
+                        .Defaults(new { Margin = 5 })
+                        .Items(
+                            X.PDateField()
+                                .Listeners(l =>
+                                {
+                                    l.AfterRender.Handler = "load();";
+                                    l.Change.Handler = "setDateAz();";
+                                })
+                                .Editable(false)
+                                .FieldLabel("از تاریخ")
+                                .ItemID("txtAzTarikh")
+        //.FieldLabel("از تاریخ")
+                                .MsgTarget(Ext.Net.MessageTarget.Side)
+                                .AllowBlank(false)
+                                .MaskRe("/[0-9,/]/")
+                                .BlankText("لطفا تاریخ را وارد کنید.")
+                                .AutoFocus(true),
+        //X.Label()
+        //    .Text("تا تاریخ:"),
+                            X.PDateField()
+                                .Editable(false)
+                                .FieldLabel("تا تاریخ")
+                                .ItemID("txtTaTarikh")
+                                .Listeners(l =>
+                                {
+                                    /*l.AfterRender.Handler = "load();";*/
+                                    l.Change.Handler = "setDateTa();";
+                                })
+        //.FieldLabel("تا تاریخ")
+                                .MaskRe("/[0-9,/]/")
+                                .MsgTarget(Ext.Net.MessageTarget.Side)
+                                .AllowBlank(false)
+                                .BlankText("لطفا تاریخ را وارد کنید."),
+                            X.Button()
+                                .Text("جستجو")
+                                .Icon(Ext.Net.Icon.Find)
+                                .Listeners(li => li.Click.Handler = "load();"))),
+        X.Panel()
+                    .ID("PnlGridPardakhtFiles")
+                        .Listeners(l => l.AfterRender.Handler = "App.PnlGridPardakhtFiles.setHeight(Ext.getBody().getViewSize().height-73)")
+            .Border(false)
+            .Layout(Ext.Net.LayoutType.Fit)
+            .Items(
+                X.GridPanel()
+                    .AutoScroll(true)
+                    .TopBar(
+                        Html.X().Toolbar()
+                            .Items(
+                                X.Button()
+                                    .Text("جدید")
+                                    .Icon(Ext.Net.Icon.Add)
+        //.ToolTip("کلید میانبر F8")
+                                    .Listeners(li => li.Click.Handler = "NewPardakhtFiles();"),
+                                        X.Button()
+                                    .Text("چاپ")
+                                    .Icon(Ext.Net.Icon.Printer)
+                                        .Listeners(de => de.Click.Handler = "PrintPardakhtFiles();"),
+                                 X.Button()
+                                .Text("راهنما")
+                                .Icon(Ext.Net.Icon.Help)
+                                    .Listeners(de => de.Click.Handler = "HelpPardakhtFiles();")
+                                    )
+                                    )
+                                    .ItemID("GridPardakhtFiles")
+                                                
+                    .BottomBar(X.PagingToolbar())
+                    .Store(
+                        Html.X().StoreForModel()
+                        .AutoLoad(false)
+                            .Proxy(Html.X().AjaxProxy()
+                                .Url(Url.Action("Read"))
+                                .Reader(Html.X().JsonReader().Root("data"))
+        )
+                    .PageSize(20)
+                    .RemoteFilter(true)
+                    .RemotePaging(true)
+                                //.Listeners(l => l.DataChanged.Handler = "App.PardakhtFiles.queryById('GridPardakhtFiles').selModel.refresh();")
+    )
+                    .View(
+                        Html.X().GridView().LoadingText("در حال بارگذاری...").RTL(true)
+    )
+                    .Plugins(X.FilterHeader().Remote(true))
+                    .ColumnModel(
+                        Html.X().RowNumbererColumn(),
+                        Html.X().Column().DataIndex(Model, m => m.fldId).Text("کد").Hidden(true).Flex(1),
+                        Html.X().Column().DataIndex(Model, m => m.fldShenaseGhabz).Text("شناسه قبض").Wrap(true).Flex(3),
+                        Html.X().Column().DataIndex(Model, m => m.fldGhabzNumber).Text("شماره قبض").Wrap(true).Flex(3),
+                        Html.X().Column().DataIndex(Model, m => m.fldShomarePardakht).Text("شناسه پرداخت").Wrap(true).Flex(3),
+                        Html.X().Column().DataIndex(Model, m => m.fldNahvePardakhtName).Text("نحوه پرداخت").Wrap(true).Flex(3),
+                        Html.X().Column().DataIndex(Model, m => m.fldCodeRahgiry).Text("کد رهگیری").Wrap(true).Flex(3),
+                        Html.X().Column().DataIndex(Model, m => m.fldBankName).Text("نام بانک").Wrap(true).Flex(3),
+                        Html.X().Column().DataIndex(Model, m => m.fldTarikhPardakht).Text("تاریخ پرداخت").Filterable(false).Wrap(true).Flex(3),
+                        Html.X().Column().DataIndex(Model, m => m.fldMotorNumber).Text("شماره موتور").Filterable(false).Wrap(true).Flex(2),
+                        Html.X().Column().DataIndex(Model, m => m.fldVIN).Text("VIN").Filterable(false).Wrap(true).Flex(3)
+                        
+    )
+                .SelectionModel(
+                    Html.X().RowSelectionModel()
+                        .Mode(Ext.Net.SelectionMode.Single)
+    )
+
+))
+)
+
+<script type="text/javascript">
+    function checcck() {
+        alert(@user);
+    }
+
+    function NewPardakhtFiles() {
+        Ext.net.Mask.show({ msg: 'در حال بارگذاری...' });
+        Ext.net.DirectMethod.request({
+            url: '/NewVer/PardakhtFiles_New/New',
+            params: {
+               Id: 0
+            },
+            success: function () {
+                Ext.net.Mask.hide();
+            }
+        });
+    }
+
+        function HelpPardakhtFiles() {
+            Ext.net.Mask.show({ msg: 'در حال بارگذاری...' });
+            Ext.net.DirectMethod.request({
+                url: '/NewVer/PardakhtFiles_New/Help',
+                success: function (data) {
+                    Ext.net.Mask.hide();
+                }
+            });
+        }
+        function load() {
+            var DateStart = new Date('@ViewBag.fldTarikhE');
+            var txtAzTarikh = App.PardakhtFiles.queryById('txtAzTarikh');
+            var txtTaTarikh = App.PardakhtFiles.queryById('txtTaTarikh');
+            txtAzTarikh.maxValue = DateStart;
+            txtTaTarikh.maxValue = DateStart;
+            txtAzTarikh.maxText = "تاریخ باید قبل از" + '@ViewBag.fldTarikh_Sh' + "باشد";
+            txtTaTarikh.maxText = "تاریخ باید قبل از" + '@ViewBag.fldTarikh_Sh' + "باشد";
+            App.PardakhtFiles.queryById('GridPardakhtFiles').getStore().getProxy().setExtraParam("AzTarikh", App.PardakhtFiles.queryById("txtAzTarikh").rawValue);
+            App.PardakhtFiles.queryById('GridPardakhtFiles').getStore().getProxy().setExtraParam("TaTarikh", App.PardakhtFiles.queryById("txtTaTarikh").rawValue);
+            App.PardakhtFiles.queryById('GridPardakhtFiles').getStore().load();
+
+            /*App.PardakhtFiles.queryById('GridPardakhtFiles').getStore().getProxy().setExtraParam("AzTarikh", App.PardakhtFiles.queryById("txtAzTarikh").rawValue);
+            App.PardakhtFiles.queryById('GridPardakhtFiles').getStore().getProxy().setExtraParam("TaTarikh", App.PardakhtFiles.queryById("txtTaTarikh").rawValue);
+            App.PardakhtFiles.queryById('GridPardakhtFiles').getStore().load();*/
+        }
+    function setDateAz() {
+        var txtAzTarikh = App.PardakhtFiles.queryById('txtAzTarikh'); 
+        var txtTaTarikh = App.PardakhtFiles.queryById('txtTaTarikh'); 
+        txtTaTarikh.setMinValue(txtAzTarikh.getValue());
+        txtTaTarikh.minText = "تاریخ شروع نباید از تاریخ پایان بزرگتر باشد.";
+    }
+    function setDateTa() {
+        var txtAzTarikh = App.PardakhtFiles.queryById('txtAzTarikh');
+        var txtTaTarikh = App.PardakhtFiles.queryById('txtTaTarikh');
+        txtAzTarikh.setMaxValue(txtTaTarikh.getValue());
+        txtAzTarikh.maxText = "تاریخ شروع نباید از تاریخ پایان بزرگتر باشد.";
+    }
+
+    function PrintPardakhtFiles() {
+        var txtAzTarikh = App.PardakhtFiles.queryById('txtAzTarikh');
+        var txtTaTarikh = App.PardakhtFiles.queryById('txtTaTarikh');
+        var er = false;
+        if (txtAzTarikh.validate() == false)
+            er = true;
+        if (txtTaTarikh.validate() == false)
+            er = true;
+        if (er == true)
+            return;
+        Ext.net.Mask.show({ msg: 'در حال بارگذاری...' });
+        Ext.net.DirectMethod.request({
+            url: '/NewVer/PardakhtFiles_New/PrintPardakhtFiles',
+            params: {
+                AzTarikh: txtAzTarikh.rawValue,
+                TaTarikh: txtTaTarikh.rawValue,
+            },
+            success: function (data) {
+                Ext.net.Mask.hide();
+            }
+        });
+    }
+
+    var someHandler = function () {
+        alert("Hello!");
+    };
+</script>

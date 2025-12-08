@@ -1,0 +1,216 @@
+﻿@model IEnumerable<Avarez.Models.sp_ReportsSelect>
+@using Ext.Net.MVC;
+@{
+
+    var X = Html.X();
+}
+@(Html.X().Window().Modal(true)
+            .Width(900).Height(450)
+            .Title("گزارشات")
+                        .ID("Reports")
+            .Closable(true)
+            .CloseAction(Ext.Net.CloseAction.Destroy)
+            .Items(
+                X.Panel().Border(false)
+                .Border(false)
+                .AutoScroll(true)
+                .Items(
+
+                    X.GridPanel().AutoScroll(true).Border(false)
+                        .TopBar(
+                            Html.X().Toolbar()
+                                .Items(
+                                    X.Button().Text("جدید").Icon(Ext.Net.Icon.Add)
+                                        .Listeners(li => li.Click.Handler = "NewReport();"),
+                                    X.Button().Text("ویرایش").Icon(Ext.Net.Icon.Pencil)
+                                        .Listeners(li => li.Click.Handler = "EditReport();"),
+                                    X.Button().Text("حذف").Icon(Ext.Net.Icon.Delete)
+                                        .Listeners(li => li.Click.Handler = "DelReport();"),
+                                    X.Button().Text("ادامه").Icon(Ext.Net.Icon.PreviousGreen)
+                                        .Listeners(li => li.Click.Handler = "NextStepReport();")
+                                                 , X.Button()
+                                                .Text("راهنما")
+                                                .Icon(Ext.Net.Icon.Help)
+                                                             .Listeners(de => de.Click.Handler = "HelpReportType();")
+
+                            )
+                        )
+                                    .ItemID("GridReports").Flex(2)
+                   // .BottomBar(X.PagingToolbar())
+                    .Height(420)
+                    .ColumnWidth(0.6)
+                    .Layout(Ext.Net.LayoutType.Column)
+                    .Store(
+                        X.StoreForModel()
+                        .Proxy(Html.X().AjaxProxy()
+                            .Url(Url.Action("ReadReports"))
+                            .Reader(Html.X().JsonReader().Root("data"))
+                                .ExtraParams(x => x.Add(new { ReportId = @ViewBag.ReportId }))
+                        )
+                        .PageSize(30)
+                        .RemoteFilter(true)
+                        .RemotePaging(true)
+
+                    )
+                    .View(
+                        Html.X().GridView().LoadingText("در حال بارگذاری...").RTL(true)
+                    )
+                   // .Plugins(X.FilterHeader().Remote(true))
+                    .ColumnModel(
+                        Html.X().RowNumbererColumn(),
+                                Html.X().Column().DataIndex(Model, m => m.fldID).Text("کد").Flex(1).Hidden(true),
+                                Html.X().Column().DataIndex(Model, m => m.fldreportTypeName).Text("نام ").Flex(3),
+                                Html.X().Column().DataIndex(Model, m => m.fldDesc).Text("توضیحات").Flex(7),
+                                Html.X().ComponentColumn().Flex(1).ItemID("buttonPre").Flex(1)
+                                    .Component(Html.X().Button().ItemID("btnbindPre").Text("پیش نمایش").Listeners(l => l.Click.Handler = "GotoPreview()")).Filterable(false),
+                                Html.X().ComponentColumn().Flex(1).ItemID("buttonDe").Flex(1)
+                                    .Component(Html.X().Button().ItemID("btnbindDe").Text("طراحی").Listeners(l => l.Click.Handler = "GotoDesign()")).Filterable(false),
+                                Html.X().ComponentColumn().Flex(1).ItemID("buttonFile").Flex(1)
+                                    .Component(Html.X().Button().ItemID("btnbindFile").Text("فایل گزارش").Listeners(l => l.Click.Handler = "GotoFile()")).Filterable(false)
+                    )
+                    .SelectionModel(
+                        Html.X().RowSelectionModel()
+                            .Mode(Ext.Net.SelectionMode.Single)
+                    )
+
+            )
+        )
+)
+
+<script type="text/javascript">
+    function DelReport() {
+        var SelectedRow = App.Reports.queryById('GridReports').selModel.getLastSelected();
+        if (SelectedRow != null) {
+            Ext.MessageBox.show({
+                title: "هشدار",
+                msg: "آیا برای حذف مطمئن هستید؟",
+                icon: Ext.MessageBox.WARNING,
+                buttons: Ext.MessageBox.YESNO,
+                fn: function (btn) {
+                    if (btn == 'yes') {
+                        App.Reports.body.mask("در حال انجام عملیات...");
+                        Ext.net.DirectMethod.request({
+                            url: '/NewVer/ReportType_New/Delete',
+                            params: {
+                                Id: SelectedRow.data.fldID
+                            },
+                            success: function (data) {
+                                var ic = Ext.MessageBox.INFO;
+                                if (data.Er == 1)
+                                    ic = Ext.MessageBox.ERROR;
+                                Ext.MessageBox.show({
+                                    title: data.MsgTitle,
+                                    msg: data.Msg,
+                                    icon: ic,
+                                    buttons: Ext.MessageBox.OK
+                                });
+                                App.Reports.body.mask().hide();
+                                App.Reports.queryById('GridReports').store.load();
+                            }
+                        });
+                    }
+                }
+            });
+        }
+        else {
+            Ext.MessageBox.show({
+                title: "خطا",
+                msg: "لطفا یک سطر را انتخاب نمایید.",
+                icon: Ext.MessageBox.ERROR,
+                buttons: Ext.MessageBox.OK
+            });
+        }
+    }
+    function GotoPreview() {
+        var record = App.Reports.queryById("buttonPre").activeRecord.record;
+        App.Reports.body.mask("در حال بارگذاری...");
+        Ext.net.DirectMethod.request({
+            url: '/NewVer/ReportType_New/Preview',
+            params: {
+                ReportId: record.data.fldID
+            },
+            success: function () {
+                App.Reports.body.mask().hide();
+            }
+        });
+    }
+    function GotoFile() {
+        var record = App.Reports.queryById("buttonFile").activeRecord.record;
+        window.location.href = '@Url.Content("/NewVer/ReportType_New/Download?ReportId=")' + record.data.fldID;
+    }
+    function GotoDesign() {
+        var record = App.Reports.queryById("buttonDe").activeRecord.record;
+        window.open("/NewVer/ReportType_New/ReportIndex?Id=" + record.data.fldID, "_blank");
+   
+    }
+    function EditReport() {
+        var SelectedRow = App.Reports.queryById('GridReports').selModel.getLastSelected();
+        if (SelectedRow != null) {
+            App.Reports.body.mask("در حال بارگذاری...");
+            Ext.net.DirectMethod.request({
+                url: '/NewVer/ReportType_New/NewReport',
+                params: {
+                    Id: SelectedRow.data.fldID,
+                    ReportId : '@ViewBag.ReportId'
+                },
+                success: function () {
+                    App.Reports.body.mask().hide();
+                }
+            });
+        }
+        else {
+            Ext.MessageBox.show({
+                title: "خطا",
+                msg: "لطفا یک سطر را انتخاب نمایید.",
+                icon: Ext.MessageBox.ERROR,
+                buttons: Ext.MessageBox.OK
+            });
+        }
+    }
+    function NewReport() {
+        App.Reports.body.mask("در حال بارگذاری...");
+            Ext.net.DirectMethod.request({
+                url: '/NewVer/ReportType_New/NewReport',
+                params: {
+                    Id: 0,
+                    ReportId: '@ViewBag.ReportId'
+                },
+                success: function () {
+                    App.Reports.body.mask().hide();
+                }
+            });
+    }
+    function NextStepReport() {
+        var SelectedRow = App.Reports.queryById('GridReports').selModel.getLastSelected();
+        if (SelectedRow != null) {
+            App.Reports.body.mask("در حال بارگذاری...");
+            Ext.net.DirectMethod.request({
+                url: '/NewVer/ReportType_New/SelectCountryDivision',
+                params: {
+                    ReportId: SelectedRow.data.fldID
+                },
+                success: function () {
+                    App.Reports.body.mask().hide();
+                }
+            });
+        }
+        else {
+            Ext.MessageBox.show({
+                title: "خطا",
+                msg: "لطفا یک سطر را انتخاب نمایید.",
+                icon: Ext.MessageBox.ERROR,
+                buttons: Ext.MessageBox.OK
+            });
+        }
+    }
+
+    function HelpReportType(record) {
+        Ext.net.Mask.show({ msg: 'در حال بارگذاری...' });
+        Ext.net.DirectMethod.request({
+            url: '/NewVer/ReportType_New/Help',
+            success: function (data) {
+                Ext.net.Mask.hide();
+            }
+        });
+    }
+</script>

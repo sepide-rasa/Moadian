@@ -1,0 +1,86 @@
+﻿@using Ext.Net
+@using Ext.Net.MVC
+@{
+    var X = Html.X();
+}
+
+@(Html.X().Window().Title("استعلام اصالت مفاصا حساب")
+.ID("mafasa")
+    .Listeners(l => l.AfterRender.Handler = "LoadCaptha")
+.Width(100).Height(100).Maximized(true)
+    .Layout(LayoutType.VBox)
+    .LayoutConfig(new VBoxLayoutConfig { Align = VBoxAlign.Center })
+.Items(
+        X.FieldSet().Title("ورود اطلاعات").Width(650).Layout(LayoutType.VBox)
+        .LayoutConfig(new VBoxLayoutConfig { Align = VBoxAlign.Center })
+    .Items(
+            X.Panel().Border(false).Defaults(new { Margin = 2 }).LayoutConfig(new Ext.Net.TableLayoutConfig { Columns = 5 }).Items(
+    X.TextField()
+    .ItemID("txtCode")
+    .FieldLabel("کد رهگیری:"),
+    X.Label("کد امنیتی:")
+    ,X.Container().Content(@<div><input id='txtCapthalogin' class='text' style='direction:ltr;font-family:sans-serif;width: 100px;height: 22px;' /></div>),
+    X.Container().Content(@<div><img id="Captchalogin" src="~/NewVer/Account_New/generateCaptcha" style="width:100px;height:40px" /></div>)
+    
+    , X.Button().Icon(Ext.Net.Icon.ArrowRefresh)
+    .Handler("LoadCaptha"))
+    ,
+    X.Button().Text("استعلام")
+    .Listeners(m => m.Click.Handler = "getMafasa()")
+    .Icon(Ext.Net.Icon.BellGo)),
+            X.Panel().Layout(LayoutType.VBox)
+            .LayoutConfig(new VBoxLayoutConfig { Align = VBoxAlign.Center })
+            .Width(1000).Border(false).Height(900).Html(@<div id='mafasa1'></div>)
+)
+)
+
+<script type="text/javascript">
+    var LoadCaptha = function () {
+        var originalSrc = '@Url.Content("/NewVer/Account_New/generateCaptcha")';
+        var antiCachePart = (new Date()).getTime();
+        var newSrc = originalSrc + '?dc=' + antiCachePart;
+        $("#Captchalogin").attr('src', newSrc);
+
+    }
+    function getMafasa() {
+        var txtcode = App.mafasa.queryById('txtCode');
+        var txtCaptcha = $('#txtCapthalogin').val();
+        if (txtcode.getValue() == "") {
+            Ext.MessageBox.show({
+                title: 'خطا',
+                msg: "لطفا کد رهگیری را وارد کنید.",
+                icon: Ext.MessageBox.ERROR,
+                buttons: Ext.MessageBox.OK
+            });
+            return;
+        }
+        if (txtCaptcha == "") {
+            Ext.MessageBox.show({
+                title: 'خطا',
+                msg: "لطفا کد امنیتی را وارد کنید.",
+                icon: Ext.MessageBox.ERROR,
+                buttons: Ext.MessageBox.OK
+            });
+            return;
+        }
+        $.ajax({
+            url: '/NewVer/query/getMafasa',
+            method:'post',
+            data: { id: txtcode.getValue(), captcha: txtCaptcha },
+            success: function (data) {
+                if(data.haveMafasa=="1")
+                {
+                    $('#mafasa1').html("<center><object class='se-pre-con' id='PrintTabFishReport' style='width: 1000px;height: 600px;border: 1px solid #ccc;' type='application/pdf' data='/NewVer/query/getMafasaRpt/" + txtcode.getValue() + "'></object></center>")
+                } else {
+                    Ext.MessageBox.show({
+                        title: 'خطا',
+                        msg: data.msg,
+                        icon: Ext.MessageBox.ERROR,
+                        buttons: Ext.MessageBox.OK
+                    });
+                    LoadCaptha();
+                }
+            }
+        });
+    }
+</script>

@@ -1,0 +1,98 @@
+﻿@using Ext.Net.MVC
+@using Hogaf.ExtNet.UX
+@using Ext.Net;
+@{
+    var X = Html.X();
+}
+
+<style>
+    .fontlbl {
+        font-size: 11px;
+    }
+
+    .tagg {
+        text-align: right;
+    }
+</style>
+
+@(Html.X().Window()
+    .Modal(true)
+    .Width(400)
+    .Height(150)
+    .Title("پرداخت")
+    .Resizable(false)
+    .ID("NewIndexSaman")
+    .Closable(true)
+    .CloseAction(Ext.Net.CloseAction.Destroy)
+    .Layout(LayoutType.Fit)
+    .ButtonAlign(Ext.Net.Alignment.Center)
+    .Items(
+        X.FormPanel()
+            .Border(false)
+            .PaddingSpec("10px 0 10px 0")
+            .Layout(LayoutType.VBox)
+            .LayoutConfig(new VBoxLayoutConfig { Align = VBoxAlign.Center })
+            .Items(
+                X.FieldSet()
+                    .Border(false)
+                    .Layout(LayoutType.Table)
+                    .LayoutConfig(new Ext.Net.TableLayoutConfig { Columns = 2 })
+                    .Defaults(new { Margin = 2 })
+                    .Items(
+                  X.Container().Height(180).Content(@<div align="center" id="fi-button-Dl4" style="text-align:center;">
+                        <br />
+                        <form action="https://sep.shaparak.ir/payment.aspx" method="post">
+                            <table>
+                                <tr>
+                                    <td style="text-align:right;">
+                                        <div class=" tag">
+                                            کد تراکنش
+                                        </div>
+                                    </td>
+                                    <td style="text-align:right;">
+                                        <div class="tag">
+                                            @Session["Tax"].ToString()
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <div style="text-align:right;" class="tag">
+                                            مبلغ پرداخت
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="tag" style="text-align:right;">
+                                            @Convert.ToDouble(Session["Amount"]).ToString("#,###")
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2" style="text-align:right;">
+                                        لطفا کد تراکنش را جهت پیگیری های بعدی یادداشت فرمائید.
+                                        <br />
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td align="center" style="text-align:center;">
+                                        <input style=" font-family:tahoma" type="submit" id="Run" name="Run" value="پرداخت" class="run" />
+                                    </td>
+                                </tr>
+                            </table>
+                            <input type="hidden" value="@Session["Tax"]" name="ResNum" />
+                            <input type="hidden" value="@ViewBag.TerminalId" name="MID" />
+                            <input type="hidden" value="@ViewBag.RedirectUrl" name="RedirectURL" />
+                            <input type="hidden" value="@Session["Amount"]" name="Amount" />
+                        </form>
+
+                    </div>)
+
+                                )
+
+                )
+                )
+)
+
+<script type="text/javascript">
+
+</script>

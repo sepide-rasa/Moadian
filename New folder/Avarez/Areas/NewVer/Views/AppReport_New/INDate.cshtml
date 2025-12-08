@@ -1,0 +1,128 @@
+﻿@using Ext.Net.MVC
+@using Hogaf.ExtNet.UX
+@using Ext.Net;
+@{
+    var X = Html.X();
+}
+
+
+@(Html.X().Panel()
+    .Border(false)
+    .Title("")
+    .ID("INDate")
+    .Listeners(l=>l.AfterRender.Handler="Fromloadd()")
+    .Closable(true)
+    .CloseAction(Ext.Net.CloseAction.Destroy)
+    .Items(
+        X.TabPanel()
+            .Border(false)
+            .ID("FromDateTabs")
+            .Items(
+                X.Panel()
+                    .Border(false)
+                    .Title("")
+                    .ID("InnerTabs")
+                    .ButtonAlign(Ext.Net.Alignment.Center)
+                    .DefaultButton("btn")
+                    .TitleAlign(Ext.Net.TitleAlign.Center)
+                    .Buttons(
+                        X.Button()
+                            .Text("چاپ")
+                            .Icon(Ext.Net.Icon.Printer)
+                            .Margin(10)
+                            .Listeners(l =>
+                            {
+                                l.Click.Handler = "PrintINDate()";
+                            })
+                            .ItemID("btnSaves"),
+                        X.Button()
+                            .Text("خروج")
+                            .Icon(Ext.Net.Icon.DoorOut)
+                            .ToolTip("کلید میانبر Esc")
+                                .OnClientClick("App.INDate.destroy()"))
+                            .Items(
+                                X.FieldSet()
+                                    .Border(false)
+                                    .Center()
+                                    .LayoutConfig(new Ext.Net.TableLayoutConfig { Columns = 4 })
+                                    .Defaults(new { Margin = 2 })
+                                    .Items(
+                                        X.Label()
+                                            .Text("تاریخ:"),
+                                        X.PDateField()
+                                            .ItemID("txtAzTarikhIn")
+                                            .Width(160)
+                                            .Editable(false)
+                                            .MsgTarget(Ext.Net.MessageTarget.Side)
+                                            .AllowBlank(false)
+                                            .MaskRe("/[0-9,/]/")
+                                            .BlankText("لطفا تاریخ را انتخاب نمایید.")
+                                            .Listeners(l => l.Render.Handler = "AzTarikhIn()")
+                                            .LabelAlign(Ext.Net.LabelAlign.Top)
+                ).ColSpan(3)
+
+                       )
+                            .Layout(Ext.Net.LayoutType.VBox)
+                            .LayoutConfig(new Ext.Net.VBoxLayoutConfig { Align = Ext.Net.VBoxAlign.Center })
+                    )
+
+                )
+)
+
+
+<script type="text/javascript">
+    function Fromloadd() {
+        App.INDate.setTitle("گزارش تعداد مفاصاهای صادر شده در روز");
+        App.InnerTabs.setTitle("گزارش تعداد مفاصاهای صادر شده در روز");
+    }
+
+    function showBargozary() {
+        Ext.MessageBox.show({
+            msg: 'لطفاً منتظر باشید',
+            progressText: 'در حال بارگذاری...',
+            width: 300,
+            wait: true,
+            waitConfig:
+            {
+                /*duration: 10000,*/
+                interval: 200,
+                /*increment: 15,*/
+                text: 'در حال بارگذاری...',
+                scope: this
+                /*fn: function () {
+                    Ext.MessageBox.hide();
+                    Ext.Msg.alert('Status', 'Saved successfully!');
+                }*/
+            }
+        });
+    }
+
+    function AzTarikhIn() {
+        var txtAzTarikhIn = App.FromDateTabs.queryById('txtAzTarikhIn');
+        var D = new Date();
+        txtAzTarikhIn.setMaxValue(D);
+        txtAzTarikhIn.maxText = "تاریخ انتخاب شده نمی تواند از تاریخ روز بزرگتر باشد.";
+    }
+
+    function PrintINDate() {
+        var txtAzTarikhIn = App.FromDateTabs.queryById('txtAzTarikhIn');
+        var er = false;
+        if (txtAzTarikhIn.validate() == false) {
+            er = true;
+        }
+        if (er == true)
+            return;
+
+        showBargozary();
+        Ext.net.DirectMethod.request({
+            url: '/NewVer/AppReport_New/PrintCountMafasa',
+            params: {
+                containerId: "FromDateTabs",
+                Tarikh: txtAzTarikhIn.rawValue
+            },
+            success: function () {
+                Ext.MessageBox.hide();
+            }
+        });
+    }
+</script>

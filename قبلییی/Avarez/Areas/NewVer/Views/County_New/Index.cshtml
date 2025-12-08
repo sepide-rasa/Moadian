@@ -1,0 +1,220 @@
+﻿@model IEnumerable<Avarez.Models.sp_CountySelect>
+@using Ext.Net.MVC;
+@{
+
+    var X = Html.X();
+}
+
+@(X.Panel()
+        //.Listeners(li => li.AfterRender.Handler = "CountyMap();")
+        .ID("County")
+        .Title("شهرستان")
+    .Closable(true)
+    .Border(false)
+    .CloseAction(Ext.Net.CloseAction.Destroy)
+    .Layout(Ext.Net.LayoutType.Fit)
+    .Items(
+        X.Panel()
+                .ItemID("PnlGridCounty")
+            .Border(false)
+            .Layout(Ext.Net.LayoutType.Fit)
+            .Items(
+                X.GridPanel()
+                    .AutoScroll(true)
+                    .TopBar(
+                        Html.X().Toolbar()
+                            .Items(
+                                X.Button()
+                                    .Text("جدید")
+                                    .Icon(Ext.Net.Icon.Add)
+        //.ToolTip("کلید میانبر F8")
+                                        .Listeners(li => li.Click.Handler = "NewCounty();"),
+                                X.Button()
+                                    .Text("ویرایش")
+                                    .Icon(Ext.Net.Icon.Pencil)
+        //.ToolTip("کلید میانبر F2")
+                                        .Listeners(Li => Li.Click.Handler = "EditCounty();"),
+                                X.Button()
+                                    .Text("حذف")
+                                    .Icon(Ext.Net.Icon.Delete)
+        //.ToolTip("کلید میانبر F9")
+                                        .Listeners(de => de.Click.Handler = "DeleteCounty();")
+                                , X.Button().Text("راهنما").Icon(Ext.Net.Icon.Help)
+                                .Listeners(de =>
+                                    {
+                                        de.Click.Handler = "HelpCounty();";
+                                    })
+                                    )
+                                    )
+                        .ItemID("GridCounty")
+                    .BottomBar(X.PagingToolbar())
+                    .Store(
+                        Html.X().StoreForModel()
+                            .Proxy(Html.X().AjaxProxy()
+                                .Url(Url.Action("Read"))
+                                .Reader(Html.X().JsonReader().Root("data"))
+        )
+                    .PageSize(20)
+                    .RemoteFilter(true)
+                    .RemotePaging(true)
+                        .Listeners(l => l.DataChanged.Handler = "App.County.queryById('GridCounty').selModel.refresh();")
+    )
+                    .View(
+                        Html.X().GridView().LoadingText("در حال بارگذاری...").RTL(true)
+    )
+                    .Plugins(X.FilterHeader().Remote(true))
+                    .ColumnModel(
+                        Html.X().RowNumbererColumn(),
+                             Html.X().Column().DataIndex(Model, m => m.fldID).Text("کد").Hidden(true).Flex(1),
+                                Html.X().Column().DataIndex(Model, m => m.fldStateName).Text("نام استان").Wrap(true).Flex(2),
+                                Html.X().Column().DataIndex(Model, m => m.fldName).Text("نام شهرستان").Wrap(true).Flex(2),
+                               Html.X().Column().DataIndex(Model, m => m.fldDesc).Text("توضیحات").Wrap(true).Flex(10)
+    )
+                .SelectionModel(
+                    Html.X().RowSelectionModel()
+                        .Mode(Ext.Net.SelectionMode.Single)
+    )
+
+))
+)
+
+
+<script type="text/javascript">
+
+    function CountyMap() {
+        var k = new Ext.KeyMap(
+            document,
+            [{
+                target: Ext.get('County'),
+                scope: this,
+                key: [119],
+                fn: function (key, event) {
+                    if (App.County && App.NewCounty) {
+                        if (App.NewCounty.active == false)
+                            NewCounty();
+                    }
+                    else if (App.County && !App.NewCounty)
+                        NewCounty();
+                }
+            },
+            {
+                target: App.County.getTargetEl(),
+                scope: this,
+                key: [113],
+                fn: function (key, event) {
+                    if (App.County && App.NewCounty) {
+                        if (App.County.active == false)
+                            EditCounty();
+                    }
+                    else if (App.County && !App.NewCounty)
+                        EditCounty();
+                }
+            },
+            {
+                target: App.County.getTargetEl(),
+                scope: this,
+                key: [120],
+                fn: function (key, event) {
+                    if (App.County && App.NewCounty) {
+                        if (App.NewCounty.active == false)
+                            DeleteCounty();
+                    }
+                    else if (App.County && !App.NewCounty)
+                        DeleteCounty();
+                }
+            }]
+            )
+    }
+    function NewCounty() {
+        Ext.net.Mask.show({ msg: 'در حال بارگذاری...' });
+        Ext.net.DirectMethod.request({
+            url: '/NewVer/County_New/New',
+            params: {
+                id: 0
+            },
+            success: function () {
+                Ext.net.Mask.hide();
+            }
+        });
+    }
+    function EditCounty() {
+        var SelectedRow = App.County.queryById('GridCounty').selModel.getLastSelected();
+
+        if (SelectedRow != null) {
+            Ext.net.Mask.show({ msg: 'در حال بارگذاری...' });
+            Ext.net.DirectMethod.request({
+                url: '/NewVer/County_New/New',
+                params: {
+                    id: SelectedRow.data.fldID
+                },
+                success: function () {
+                    Ext.net.Mask.hide();
+                }
+            });
+        }
+        else {
+            Ext.MessageBox.show({
+                title: "خطا",
+                msg: "لطفا یک سطر را انتخاب نمایید.",
+                icon: Ext.MessageBox.ERROR,
+                buttons: Ext.MessageBox.OK
+            });
+        }
+    }
+
+    function DeleteCounty() {
+        var SelectedHeaderRow = App.County.queryById('GridCounty').selModel.getLastSelected();
+        if (SelectedHeaderRow != null) {
+            Ext.MessageBox.show({
+                title: "هشدار",
+                msg: "آیا برای حذف مطمئن هستید؟",
+                icon: Ext.MessageBox.WARNING,
+                buttons: Ext.MessageBox.YESNO,
+                fn: function (btn) {
+                    if (btn == 'yes') {
+                        Ext.net.Mask.show({ msg: 'در حال انجام عملیات...' });
+                        Ext.net.DirectMethod.request({
+                            url: '/NewVer/County_New/Delete',
+                            params: {
+                                id: SelectedHeaderRow.data.fldID
+                            },
+                            success: function (data) {
+                                Ext.net.Mask.hide();
+                                var ic = Ext.MessageBox.INFO;
+                                if (data.Er == 1)
+                                    ic = Ext.MessageBox.ERROR;
+                                Ext.MessageBox.show({
+                                    title: data.MsgTitle,
+                                    msg: data.Msg,
+                                    icon: ic,
+                                    buttons: Ext.MessageBox.OK
+                                });
+                                App.County.queryById('GridCounty').store.load();
+                                Ext.net.Mask.hide();
+                            }
+                        });
+                    }
+                }
+            });
+        }
+        else {
+            Ext.MessageBox.show({
+                title: "خطا",
+                msg: "لطفا یک سطر را انتخاب نمایید.",
+                icon: Ext.MessageBox.ERROR,
+                buttons: Ext.MessageBox.OK
+            });
+        }
+    }
+    function HelpCounty() {
+        Ext.net.Mask.show({ msg: 'در حال بارگذاری...' });
+        Ext.net.DirectMethod.request({
+            url: '/NewVer/County_New/Help',
+            success: function (data) {
+                Ext.net.Mask.hide();
+            }
+        });
+    }
+</script>
+
+

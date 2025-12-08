@@ -1,0 +1,98 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Report ScriptLanguage="CSharp" ReportInfo.Created="06/11/2014 16:48:33" ReportInfo.Modified="01/15/2018 11:27:34" ReportInfo.CreatorVersion="2016.1.0.0">
+  <ScriptText>using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Windows.Forms;
+using System.Drawing;
+using System.Data;
+using FastReport;
+using FastReport.Data;
+using FastReport.Dialog;
+using FastReport.Barcode;
+using FastReport.Table;
+using FastReport.Utils;
+
+namespace FastReport
+{
+  public class ReportScript
+  { 
+
+    private void MSChart1_AfterData(object sender, EventArgs e)
+    {
+      
+    } 
+  } 
+}
+</ScriptText>
+  <Dictionary>
+    <TableDataSource Name="sp_PictureSelect" ReferenceName="CarTaxDataSet.sp_PictureSelect" DataType="System.Int32" Enabled="true">
+      <Column Name="fldID" DataType="System.Int32"/>
+      <Column Name="fldPic" DataType="System.Byte[]" BindableControl="Picture"/>
+      <Column Name="fldMunicipalityPic" DataType="System.String"/>
+      <Column Name="fldMunicipalityPicID" DataType="System.Int32"/>
+      <Column Name="fldBankPic" DataType="System.String"/>
+      <Column Name="fldBankPicID" DataType="System.Int32"/>
+      <Column Name="fldUserPic" DataType="System.String"/>
+      <Column Name="fldUserPicID" DataType="System.Int64"/>
+      <Column Name="fldUserName" DataType="System.String"/>
+      <Column Name="fldUserID" DataType="System.Int64"/>
+      <Column Name="fldDesc" DataType="System.String"/>
+      <Column Name="fldDate" DataType="System.String"/>
+    </TableDataSource>
+    <TableDataSource Name="sp_RptChart" ReferenceName="CarTaxDataSet.sp_RptChart" DataType="System.Int32" Enabled="true">
+      <Column Name="fldID" DataType="System.Int64"/>
+      <Column Name="fldCarFileID" DataType="System.Int64"/>
+      <Column Name="fldCollectionDate" DataType="System.DateTime"/>
+      <Column Name="fldPrice" DataType="System.Int32"/>
+      <Column Name="SettleType" DataType="System.String"/>
+      <Column Name="fldModel" DataType="System.Int16"/>
+      <Column Name="fldUserID" DataType="System.Int64"/>
+      <Column Name="fldUserName" DataType="System.String"/>
+      <Column Name="CarModelTip" DataType="System.String"/>
+      <Column Name="fldStart" DataType="System.String"/>
+      <Column Name="fldEnd" DataType="System.String"/>
+    </TableDataSource>
+    <Parameter Name="MyTablighat" DataType="System.String"/>
+    <Parameter Name="AzTarikh" DataType="System.String"/>
+    <Parameter Name="TaTarikh" DataType="System.String"/>
+    <Parameter Name="date" DataType="System.String"/>
+    <Parameter Name="time" DataType="System.String"/>
+    <Parameter Name="StateName" DataType="System.String"/>
+    <Parameter Name="MunicipalityName" DataType="System.String"/>
+    <Parameter Name="OfficeName" DataType="System.String"/>
+    <Parameter Name="AreaName" DataType="System.String"/>
+  </Dictionary>
+  <ReportPage Name="Page1" RawPaperSize="9" LeftMargin="5" RightMargin="5">
+    <ReportTitleBand Name="ReportTitle1" Width="756"/>
+    <PageHeaderBand Name="PageHeader1" Top="4" Width="756"/>
+    <DataBand Name="Data1" Top="8" Width="756" Height="869.84">
+      <MSChartObject Name="MSChart1" Left="39.22" Top="183.8" Width="696.46" Height="685.24" AfterDataEvent="MSChart1_AfterData" DataSource="sp_RptChart" AlignXValues="true" AutoSeriesColumn="" ChartData="PENoYXJ0IFNpemU9IjI4OCwgMjMyIiBCb3JkZXJsaW5lQ29sb3I9IkRhcmtHcmF5IiBCb3JkZXJsaW5lV2lkdGg9IjIiIEJvcmRlcmxpbmVEYXNoU3R5bGU9IlNvbGlkIj4NCiAgPFNlcmllcz4NCiAgICA8U2VyaWVzIE5hbWU9IlNlcmllczEiIExlZ2VuZD0iRGVmYXVsdCIgWFZhbHVlVHlwZT0iU3RyaW5nIiBZVmFsdWVUeXBlPSJEb3VibGUiIENoYXJ0VHlwZT0iUGllIiBDaGFydEFyZWE9IkRlZmF1bHQiIExhYmVsPSIjVkFMWDogI1ZBTFkg2LHbjNin2YQiIEN1c3RvbVByb3BlcnRpZXM9IlBpZUxhYmVsU3R5bGU9RGlzYWJsZWQiPg0KICAgICAgPFBvaW50cz4NCiAgICAgICAgPERhdGFQb2ludCBZVmFsdWVzPSIxIiBBeGlzTGFiZWw9IkEiIC8+DQogICAgICAgIDxEYXRhUG9pbnQgWVZhbHVlcz0iMyIgQXhpc0xhYmVsPSJCIiAvPg0KICAgICAgPC9Qb2ludHM+DQogICAgPC9TZXJpZXM+DQogIDwvU2VyaWVzPg0KICA8TGVnZW5kcz4NCiAgICA8TGVnZW5kIE5hbWU9IkRlZmF1bHQiIElzVGV4dEF1dG9GaXQ9IkZhbHNlIiBCYWNrR3JhZGllbnRTdHlsZT0iTGVmdFJpZ2h0IiBGb250PSJSYXNhRm9udCwgOXB0LCBHZGlDaGFyU2V0PTAiPg0KICAgIDwvTGVnZW5kPg0KICA8L0xlZ2VuZHM+DQogIDxUaXRsZXM+DQogICAgPFRpdGxlIE5hbWU9IlRpdGxlMSIgVmlzaWJsZT0iRmFsc2UiIEZvbnQ9IlRhaG9tYSwgMTBwdCwgc3R5bGU9Qm9sZCI+DQogICAgPC9UaXRsZT4NCiAgPC9UaXRsZXM+DQogIDxDaGFydEFyZWFzPg0KICAgIDxDaGFydEFyZWEgTmFtZT0iRGVmYXVsdCI+DQogICAgICA8QXhpc1kgSXNMYWJlbEF1dG9GaXQ9IkZhbHNlIj4NCiAgICAgICAgPE1ham9yR3JpZCBMaW5lQ29sb3I9IjY0LCA2NCwgNjQsIDY0IiAvPg0KICAgICAgICA8TGFiZWxTdHlsZSBGb250PSJUYWhvbWEsIDhwdCIgLz4NCiAgICAgIDwvQXhpc1k+DQogICAgICA8QXhpc1ggSXNMYWJlbEF1dG9GaXQ9IkZhbHNlIj4NCiAgICAgICAgPE1ham9yR3JpZCBMaW5lQ29sb3I9IjY0LCA2NCwgNjQsIDY0IiAvPg0KICAgICAgICA8TGFiZWxTdHlsZSBGb250PSJUYWhvbWEsIDhwdCIgLz4NCiAgICAgIDwvQXhpc1g+DQogICAgICA8QXhpc1gyIElzTGFiZWxBdXRvRml0PSJGYWxzZSI+DQogICAgICAgIDxNYWpvckdyaWQgTGluZUNvbG9yPSI2NCwgNjQsIDY0LCA2NCIgLz4NCiAgICAgICAgPExhYmVsU3R5bGUgRm9udD0iVGFob21hLCA4cHQiIC8+DQogICAgICA8L0F4aXNYMj4NCiAgICAgIDxBeGlzWTIgSXNMYWJlbEF1dG9GaXQ9IkZhbHNlIj4NCiAgICAgICAgPE1ham9yR3JpZCBMaW5lQ29sb3I9IjY0LCA2NCwgNjQsIDY0IiAvPg0KICAgICAgICA8TGFiZWxTdHlsZSBGb250PSJUYWhvbWEsIDhwdCIgLz4NCiAgICAgIDwvQXhpc1kyPg0KICAgICAgPEFyZWEzRFN0eWxlIElzUmlnaHRBbmdsZUF4ZXM9IkZhbHNlIiBJbmNsaW5hdGlvbj0iMTIiIFJvdGF0aW9uPSIzMyIgV2FsbFdpZHRoPSIzMCIgLz4NCiAgICA8L0NoYXJ0QXJlYT4NCiAgPC9DaGFydEFyZWFzPg0KICA8Qm9yZGVyU2tpbiBTa2luU3R5bGU9IkVtYm9zcyIgLz4NCjwvQ2hhcnQ+">
+        <MSChartSeries Name="Series1" GroupBy="XValue" XValue="[sp_RptChart.CarModelTip]" YValue1="[sp_RptChart.fldPrice]"/>
+      </MSChartObject>
+      <TableObject Name="Table3" Left="12.3" Top="19.27" Width="712.49" Height="94.14">
+        <TableColumn Name="Column59" Width="176.6"/>
+        <TableColumn Name="Column60" Width="367.54"/>
+        <TableColumn Name="Column61" Width="168.35"/>
+        <TableRow Name="Row3" Height="94.14">
+          <TableCell Name="Cell59" VertAlign="Center" RightToLeft="true" Font="Microsoft Sans Serif, 10pt">
+            <TextObject Name="Text6" Top="18.9" Width="170.1" Height="18.9" Fill="Glass" Fill.Color="White" Fill.Blend="0.2" Fill.Hatch="true" Text="تاریخ چاپ :[date]" VertAlign="Center" RightToLeft="true" Font="RasaFont, 11pt"/>
+            <TextObject Name="Text7" Top="37.8" Width="170.1" Height="18.9" Fill="Glass" Fill.Color="White" Fill.Blend="0.2" Fill.Hatch="true" Text="ساعت چاپ:[time]" VertAlign="Center" RightToLeft="true" Font="RasaFont, 11pt"/>
+            <TextObject Name="Text5" Top="56.7" Width="170.1" Height="18.9" Fill="Glass" Fill.Color="White" Fill.Blend="0.2" Fill.Hatch="true" Text="صفحه:[Page#] از [TotalPages#]" VertAlign="Center" RightToLeft="true" Font="RasaFont, 11pt"/>
+          </TableCell>
+          <TableCell Name="Cell60" Text="[StateName]&#13;&#10;[MunicipalityName]&#13;&#10;[AreaName]&#13;&#10;[OfficeName]" HorzAlign="Center" VertAlign="Center" RightToLeft="true" Font="RasaFont, 11pt"/>
+          <TableCell Name="Cell61" HorzAlign="Right" VertAlign="Center" Font="Microsoft Sans Serif, 10pt">
+            <PictureObject Name="Picture1" Left="77.63" Top="17.78" Width="75.6" Height="75.6" DataColumn="sp_PictureSelect.fldPic"/>
+          </TableCell>
+        </TableRow>
+      </TableObject>
+      <TextObject Name="Text2" Left="248.91" Top="115.29" Width="258.18" Height="26.44" Text="گزارش آماری (ریالی)" HorzAlign="Center" VertAlign="Center" RightToLeft="true" Font="RasaFont, 14pt, style=Bold"/>
+      <TextObject Name="Text3" Left="509.33" Top="156.89" Width="224.13" Height="24.56" Text="از تاریخ:[AzTarikh]" VertAlign="Center" RightToLeft="true" Font="RasaFont, 12pt"/>
+      <TextObject Name="Text4" Left="281.65" Top="156.84" Width="218.45" Height="24.56" Text="تا تاریخ:[TaTarikh]" VertAlign="Center" RightToLeft="true" Font="RasaFont, 12pt"/>
+    </DataBand>
+    <PageFooterBand Name="PageFooter1" Top="881.84" Width="756" Height="32.12" CanGrow="true">
+      <TextObject Name="Text1" Left="11.84" Top="1.88" Width="732.32" Height="28.34" CanGrow="true" GrowToBottom="true" Text="[MyTablighat]" VertAlign="Center" RightToLeft="true" Font="RasaFont, 11pt, style=Bold"/>
+    </PageFooterBand>
+  </ReportPage>
+</Report>

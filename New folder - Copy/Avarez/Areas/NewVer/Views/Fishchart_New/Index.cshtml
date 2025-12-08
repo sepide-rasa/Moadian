@@ -1,0 +1,148 @@
+﻿@model List<Avarez.Models.sp_RptMonthlyUser_CountWithDate>
+@using Ext.Net.MVC;
+@using Ext.Net;
+@{
+    ViewBag.Title = "Bar Chart - Ext.NET MVC Examples";
+    var X = Html.X();
+    string mah = MyLib.Shamsi.Miladi2ShamsiString(DateTime.Now).Substring(5, 2);
+}
+
+<script>
+        var saveChart = function (btn) {
+            Ext.MessageBox.confirm('دانلود نمودار', 'آیا مایل به دانلود فایل نمودار هستید؟', function (choice) {
+                if (choice == 'yes') {
+                    btn.up('panel').down('chart').save({
+                        type: 'image/png'
+                    });
+                }
+            });
+        }
+</script>
+@(X.Panel()
+    .ID("Fishchart")
+    .Title("نمودار فیش های  ماه جاری")
+    .Closable(true)
+    .Border(false)
+    .CloseAction(Ext.Net.CloseAction.Destroy)
+    .Layout(Ext.Net.LayoutType.Fit)
+.Items(
+        X.Panel()
+        .Layout(LayoutType.Fit)
+        .Width(1000)
+        .Height(580)
+            .AutoScroll(true)
+        .TopBar(X.Toolbar()
+            .Items(
+            X.Label("ماه:"),
+            X.ComboBox()
+                .Width(150)
+                .LabelAlign(Ext.Net.LabelAlign.Top)
+                //.FieldLabel("ماه")
+                .ID("CboMah1")
+                .TypeAhead(true)
+                .BlankText("لطفا ماه را انتخاب کنید.")
+                .QueryMode(DataLoadMode.Local)
+                .ForceSelection(true)
+                    .SelectedItems(mah)
+                .TriggerAction(TriggerAction.All)
+                    .Listeners(l => l.Select.Handler = "App.Chart1.getStore().reload({params:{mah: App.CboMah1.getValue()}});")
+                .Items(
+                    new ListItem("فروردین", "01"),
+                    new ListItem("اردیبهشت", "02"),
+                    new ListItem("خرداد", "03"),
+                    new ListItem("تیر", "04"),
+                    new ListItem("مرداد", "05"),
+                    new ListItem("شهریور", "06"),
+                    new ListItem("مهر", "07"),
+                    new ListItem("آبان", "08"),
+                    new ListItem("آذر", "09"),
+                    new ListItem("دی", "10"),
+                    new ListItem("بهمن", "11"),
+                    new ListItem("اسفند", "12")
+                    )
+                    ,
+                X.Button()
+                    .Text("بروز رسانی")
+                    .Icon(Icon.ArrowRefresh)
+                            .Handler("#{Chart1}.getStore().reload({params:{mah: App.CboMah1.getValue()}});"),
+                X.Button()
+                    .Text("ذخیره نمودار")
+                    .Icon(Icon.Disk)
+                    .Handler("saveChart")
+            )
+        )
+        .Items(
+            X.Chart().RTL(false)
+                .ID("Chart1")
+                    .AutoScroll(true)
+                .Shadow(true)
+                //.Theme("White")
+                .Animate(true)
+                .Background(X.DrawBackground()
+                    .Gradient(X.Gradient()
+                        .GradientID("backgroundGradient")
+                        .Angle(45)
+                        .Stops(s =>
+                        {
+                            s.Add(X.GradientStop()
+                                .Offset(0)
+                                .Color("#ffffff"));
+                            s.Add(X.GradientStop()
+                                .Offset(100)
+                                .Color("#eaf1f8"));
+                        })
+                    )
+                    )
+                .Store(X.Store()
+                    .Data(Model)
+                    .Model(X.Model()
+                        .Fields(
+                                    X.ModelField().Name("UserName"),
+                                    X.ModelField().Name("fldCount")
+                        )
+                    )
+                    .Proxy(X.AjaxProxy()
+                        .Url(Url.Action("FishGetData"))
+                        .Reader(X.JsonReader().Root("data"))
+
+                    )
+                )
+                .Axes(
+
+                    X.CategoryAxis()
+                        .Position(Position.Left)
+                                .Fields("UserName").Width(200),
+                                    X.NumericAxis()
+                                    .Fields("fldCount")
+                            .Position(Position.Bottom)
+                            .Grid(true)
+                            .Title("تعداد فیش")
+                            .Minimum(0)
+                            .Label(X.AxisLabel()
+                                //.Renderer(r => r.Handler = "return Ext.util.Format.number(value, '0,0');")
+                            )
+
+                )
+                .Series(X.BarSeries()
+                    .Axis(Position.Bottom)
+                    .Highlight(true)
+                            .XField("UserName")
+                            .YField("fldCount")
+                    .Tips(X.ChartTip()
+                        .TrackMouse(true)
+                        .Width(240)
+                        .Height(28)
+                        .Renderer(r => r.Handler = "this.setTitle(storeItem.get('UserName') + ': ' + storeItem.get('fldCount'));")
+                    )
+                    .Label(X.SeriesLabel()
+                        .Display(SeriesLabelDisplay.InsideEnd)
+                                        .Field(new[] { "fldCount" })
+                        .Orientation(Orientation.Horizontal)
+                        .Color("#333")
+                        .TextAnchor("middle")
+                    )
+                )
+        )
+)
+)
+

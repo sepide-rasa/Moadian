@@ -1,0 +1,124 @@
+﻿@model IEnumerable<Avarez.Models.sp_CarExperienceSelect>
+@using Ext.Net.MVC
+@using Hogaf.ExtNet.UX
+@using Ext.Net;
+@using Ext.Net.Utilities;
+@{
+    var X = Html.X();
+}
+
+@(Html.X().Window()
+    .Border(false)
+    .Modal(true)
+        .ID("SendToSuport")
+        .Listeners(l => l.AfterRender.Handler = "loadSendToSuport();")
+    .Title("ارسال به پشتیبان")
+    .AutoScroll(true)
+    .Closable(true)
+    .CloseAction(CloseAction.Destroy)
+    .Height(140)
+    .Width(500)
+        .ButtonAlign(Alignment.Center)
+                .Buttons(
+                    X.Button()
+                        .Text("ارسال به پشتیبان")
+                        .Icon(Ext.Net.Icon.Disk)
+                        .MarginSpec("10px 0 0 0")
+                        .Listeners(l =>
+                        {
+                            l.Click.Handler = "SendSuporter();";
+
+                        })
+                    .ItemID("btnSave"),
+                    X.Button()
+                    .Text("دریافت از سرور")
+                    .Icon(Ext.Net.Icon.Disk)
+                    .MarginSpec("10px 0 0 0")
+                    .Hidden(Session["UserId"] == null && Session["GeustId"] != null)
+                    .Listeners(l =>
+                    {
+                        l.Click.Handler = "Recieve();";
+
+                    }),
+                    X.Button()
+                        .Text("خروج")
+                        .Icon(Ext.Net.Icon.DoorOut)
+                        .ToolTip("کلید میانبر Esc")
+                            .OnClientClick("App.SendToSuport.destroy();"))
+    .Layout(Ext.Net.LayoutType.VBox)
+    .LayoutConfig(new VBoxLayoutConfig { Align = VBoxAlign.Center })
+    .Items(
+                   X.Label()
+                   .ItemID("LblMsg")
+                   .Width(460)
+                   .Text("")
+                   )
+              
+            
+)
+
+<script type="text/javascript">
+    var Year = '@ViewBag.Year';
+
+    function loadSendToSuport() {
+        App.SendToSuport.queryById('LblMsg').setText('@ViewBag.msg');
+    }
+
+    function SendSuporter() {
+        Ext.net.Mask.show({ msg: 'در حال ارسال درخواست...' });
+        Ext.net.DirectMethod.request({
+            url: '/NewVer/SodorFish/InsertInSuporter',
+            params: {
+                Year: '@ViewBag.Year',
+                fldCarClassId: '@ViewBag.fldCarClassId',
+                fldCarModelId: '@ViewBag.fldCarModelId',
+                fldCarSystemId: '@ViewBag.fldCarSystemId',
+                fldCabinTypeId: '@ViewBag.fldCabinTypeId',
+                fldCarAccountTypeId: '@ViewBag.fldCarAccountTypeId',
+                fldCarMakeId: '@ViewBag.fldCarMakeId'
+            },
+            success: function (result) {
+                Ext.net.Mask.hide();
+                Ext.MessageBox.show({
+                    title: "ارسال موفق",
+                    msg: result.msg,
+                    icon: Ext.MessageBox.INFO,
+                    buttons: Ext.MessageBox.OK
+                });
+            }
+        });
+    }
+    function Recieve() {
+        Ext.net.Mask.show({ msg: 'در حال دریافت...' });
+        Ext.net.DirectMethod.request({
+            url: '/NewVer/SodorFish/Update',
+            params: {
+                FromYear: '@ViewBag.Year',
+                ToYear: "",
+                CarClass: '@ViewBag.fldCarClassId',
+                CarTip: '@ViewBag.fldCarModelId',
+                CarSystem: '@ViewBag.fldCarSystemId',
+                CarCabin: '@ViewBag.fldCabinTypeId',
+                CarAccountType: '@ViewBag.fldCarAccountTypeId',
+                CarMakeType: '@ViewBag.fldCarMakeId'
+            },
+            success: function (result) {
+                var ic = Ext.MessageBox.INFO;
+                if (result.Er == 1) {
+                    ic = Ext.MessageBox.ERROR;
+                }
+                Ext.net.Mask.hide();
+                Ext.MessageBox.show({
+                    title: result.MsgTitle,
+                    msg: result.Msg,
+                    icon: ic,
+                    buttons: Ext.MessageBox.OK
+                });
+            }
+
+        });
+    }
+
+
+
+</script>

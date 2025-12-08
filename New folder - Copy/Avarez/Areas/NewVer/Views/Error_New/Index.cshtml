@@ -1,0 +1,55 @@
+﻿@model IEnumerable<Avarez.Models.sp_ErrorProgramSelect>
+@using Ext.Net.MVC;
+@{
+
+    var X = Html.X();
+}
+
+@(X.Panel()
+        //.Listeners(li => li.AfterRender.Handler = "BankMap();")
+        .ID("Error")
+    .Title("مدیریت خطاها")
+    .Closable(true)
+    .Border(false)
+    .CloseAction(Ext.Net.CloseAction.Destroy)
+    .Layout(Ext.Net.LayoutType.Fit)
+    .Items(
+        X.Panel()
+                .ItemID("PnlError")
+            .Border(false)
+            .Layout(Ext.Net.LayoutType.Fit)
+            .Items(
+                X.GridPanel()
+                    .AutoScroll(true)
+                        .ItemID("GridError")
+                    .BottomBar(X.PagingToolbar())
+                    .Store(
+                        Html.X().StoreForModel()
+                            .Proxy(Html.X().AjaxProxy()
+                                .Url(Url.Action("Read"))
+                                .Reader(Html.X().JsonReader().Root("data"))
+        )
+                    .PageSize(20)
+                    .RemoteFilter(true)
+                    .RemotePaging(true)
+                            .Listeners(l => l.DataChanged.Handler = "App.Error.queryById('GridError').selModel.refresh();")
+    )
+                    .View(
+                        Html.X().GridView().LoadingText("در حال بارگذاری...").RTL(true)
+    )
+                    .Plugins(X.FilterHeader().Remote(true))
+                    .ColumnModel(
+                        Html.X().RowNumbererColumn(),
+                        Html.X().Column().DataIndex(Model, m => m.fldID).Text("کد تاریخ").Flex(1),
+                        Html.X().Column().DataIndex(Model, m => m.fldUserName).Text("نام کاربر").Wrap(true).Flex(1),
+                        Html.X().Column().DataIndex(Model, m => m.fldDate).Text("تاریخ").Wrap(true).Flex(1),
+                        Html.X().Column().DataIndex(Model, m => m.fldText).Text("متن خطا").Wrap(true).Flex(7),
+                        Html.X().Column().DataIndex(Model, m => m.fldDesc).Text("توضیحات").Wrap(true).Flex(5).Wrap(true)
+    )
+                .SelectionModel(
+                    Html.X().RowSelectionModel()
+                        .Mode(Ext.Net.SelectionMode.Single)
+    )
+
+))
+)

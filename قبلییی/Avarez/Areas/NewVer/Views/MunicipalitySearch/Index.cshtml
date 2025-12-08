@@ -1,0 +1,121 @@
+﻿@model IEnumerable<Avarez.Models.sp_MunicipalitySelect>
+@using Ext.Net.MVC;
+@{
+
+    var X = Html.X();
+}
+@(Html.X().Window()
+    .Modal(true)
+    .Width(700)
+    .Height(390)
+    .Title("جستجوی شهرداری")
+    .Border(false)
+    .ID("SearchMunicipality")
+    .Closable(true)
+    .CloseAction(Ext.Net.CloseAction.Destroy)
+    .Layout(Ext.Net.LayoutType.Fit)
+    .Items(
+        X.GridPanel()
+            .AutoScroll(true)
+            .TopBar(
+                Html.X().Toolbar()
+                    .Items(
+                        X.Button()
+                            .Text("انتخاب")
+                            .Icon(Ext.Net.Icon.ArrowRedo)
+                            .Listeners(li => li.Click.Handler = "SelMun();")
+                )
+            )
+            .ItemID("MunsGrid")
+            .BottomBar(X.PagingToolbar())
+            .Store(
+                X.StoreForModel()
+                    .Proxy(Html.X().AjaxProxy()
+                        .Url(Url.Action("Read"))
+                    .Reader(Html.X().JsonReader().Root("data"))
+//.ExtraParams(ex => ex.Add(new { Value = @ViewBag.Value }))
+                )
+                .PageSize(12)
+                .RemoteFilter(true)
+                .RemotePaging(true)
+            )
+            .View(
+                Html.X().GridView().LoadingText("در حال بارگذاری...").RTL(true)
+            )
+            .Plugins(X.FilterHeader().Remote(true))
+            .ColumnModel(
+                Html.X().RowNumbererColumn(),
+                Html.X().Column().DataIndex(Model, m => m.fldID).Text("کد").Flex(1).Hidden(true).Hideable(false),
+                Html.X().Column().DataIndex(Model, m => m.fldName).Text("نام شهرداری").Flex(5),
+                Html.X().Column().DataIndex(Model, m => m.fldCityName).Text("نام شهر").Flex(5)
+            )
+            .Listeners(a => a.CellDblClick.Handler = "SelMun();")
+            .SelectionModel(
+                Html.X().RowSelectionModel()
+                    .Mode(Ext.Net.SelectionMode.Single)
+            )
+    )
+    )
+
+<script type="text/javascript">
+    var State = '@ViewBag.State';
+
+    function SelMun() {
+        var SelectedRow = App.SearchMunicipality.queryById('MunsGrid').selModel.getLastSelected();
+
+        if (SelectedRow != null) {
+            if (State == "1") {
+                Ext.net.DirectMethod.request({
+                    url: '/NewVer/MunicipalitySearch/GetMunInf',
+                    params:{
+                        id: SelectedRow.data.fldID
+                    },
+                    success: function (data) {
+                        var tabId = App.SearchParvande.activeTab.id;
+                        var cboState = Ext.getCmp(tabId).queryById('cboState');
+                        cboState.clearValue();
+                        cboState.setValue(data.State);
+                        var cboMun = Ext.getCmp(tabId).queryById('cboMun');
+                        cboMun.clearValue(); cboMun.getStore().load({
+                            params: {
+                                cboState: Ext.getCmp(tabId).queryById('cboState').getValue()
+                            }
+                        });
+                        cboMun.setValue(data.MunId);
+                    }
+                });
+            }
+            if (State == "2") {
+                MunId = SelectedRow.data.fldID;
+                var tabId = App.SearchParvande.activeTab.id;
+                Ext.getCmp(tabId).queryById('txtMun').setValue(SelectedRow.data.fldName);
+                Ext.getCmp(tabId).queryById('fldIdMunVarizi').setValue(SelectedRow.data.fldID);
+            }
+            if (State == "3") {
+                Ext.net.DirectMethod.request({
+                    url: '/NewVer/MunicipalitySearch/GetMunInf',
+                    params: {
+                        id: SelectedRow.data.fldID
+                    },
+                    success: function (data) {
+                        var cboState = App.EnteghalSavabegh1.queryById('cboState');
+                        cboState.setValue(data.State);
+                        var cboMun = App.EnteghalSavabegh1.queryById('cboMun');
+                        cboMun.clearValue(); cboMun.getStore().load();
+                        cboMun.setValue(data.MunId);
+                    }
+                });
+            }
+            App.SearchMunicipality.destroy();
+        }
+        else {
+            Ext.MessageBox.show({
+                title: "خطا",
+                msg: "لطفا یک سطر را انتخاب کنید",
+                icon: Ext.MessageBox.ERROR,
+                buttons: Ext.MessageBox.OK
+            });
+        }
+    }
+
+</script>

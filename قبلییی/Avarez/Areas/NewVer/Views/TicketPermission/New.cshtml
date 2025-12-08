@@ -1,0 +1,143 @@
+﻿@model IEnumerable<Avarez.Models.prs_tblTicketCategorySelect_Result>
+@using Ext.Net.MVC
+@using Hogaf.ExtNet.UX
+@using Ext.Net;
+@{
+    var X = Html.X();
+}
+
+@(X.Window()
+    .Modal(true)
+    .Resizable(false)
+    .Title("تعیین دسترسی کاربر")
+    .Border(false)
+    .ID("NewTicketPermission")
+    .Closable(true)
+    .AutoScroll(true)
+    .CloseAction(Ext.Net.CloseAction.Destroy)
+    .Height(350)
+    .Width(500)
+    .Layout(LayoutType.Fit)    
+    .Items(
+        X.Panel()
+            .Border(false)
+            .Layout(LayoutType.Fit)
+            .Items(
+                X.GridPanel()
+                    .Listeners(l => l.AfterRender.Handler = "App.NewTicketPermission.queryById('GridGroup').setHeight(App.NewTicketPermission.getHeight()-50)")
+                    .AutoScroll(true)
+                    .ItemID("GridGroup")
+                    .BottomBar(X.PagingToolbar())
+                    .TopBar(
+                        Html.X().Toolbar()
+                            .Items(
+                                X.Button()
+                                    .Text("ذخیره")
+                                    .Icon(Ext.Net.Icon.Disk)
+                                    .Listeners(l => l.Click.Handler = "SaveTicketPermission();")
+                                )
+                    )
+                    .View(
+                        Html.X().GridView().LoadingText("در حال بارگذاری...").RTL(true)
+                    )
+                    .Store(
+                        X.StoreForModel()
+                            .Proxy(Html.X().AjaxProxy()
+                                .Url(Url.Action("ReadChat"))
+                                .ExtraParams(l => l.Add(new { UserId = @ViewBag.Id }))
+                                .Reader(Html.X().JsonReader().Root("data"))
+                            )
+                            .PageSize(10)
+                            .RemoteFilter(true)
+                            .RemotePaging(true)
+                        )
+                    .ColumnModel(
+                        Html.X().RowNumbererColumn(),
+                        Html.X().Column().DataIndex(Model, m => m.fldId).Text("کد ").Hidden(true).Flex(1),
+                        Html.X().ComponentColumn().Text("مشاهده").ID("ColSee").Align(Alignment.Center).DataIndex(Model, m => m.fldSee).Flex(1).Editor(true).Component(X.Checkbox().Listeners(l => l.Change.Fn = "CheckAnswer").ItemID("See")),
+                        Html.X().ComponentColumn().Text("پاسخ").ID("ColAnswer").Align(Alignment.Center).DataIndex(Model, m => m.fldAnswer).Flex(1).Editor(true).Component(X.Checkbox().Listeners(l => l.Change.Fn = "CheckSee").ItemID("Answer")),
+                        Html.X().Column().DataIndex(Model, m => m.fldTitle).Text("شاخه گفتگو").Flex(4),
+                        Html.X().Column().DataIndex(Model, m => m.fldTypeName).Text("نوع").Flex(2)
+                    )
+                    .SelectionModel(
+                        Html.X().RowSelectionModel()
+                    )
+                )
+        )
+)
+<script type="text/javascript">
+    var CheckAnswer = function (checkField, newValue, oldValue) {
+        if (newValue == false) {
+            App.ColAnswer.getComponent(checkField.record.index).setValue(false);
+        }
+    };
+
+    var CheckSee = function (checkField, newValue, oldValue) {
+        if (newValue == true) {
+            App.ColSee.getComponent(checkField.record.index).setValue(true);
+        }
+    };
+
+    function SaveTicketPermission() {
+        var ChatVal = new Array();
+        var checkedSee = false;
+        var checkedAnswer = false;
+        var SelectedRows = App.NewTicketPermission.queryById('GridGroup');
+
+        for (var i = 0; i < SelectedRows.selModel.store.count() ; i++) {
+            ChatGroup = SelectedRows.selModel.store.data.items[i];
+            checkedSee = ChatGroup.data.fldSee;
+            checkedAnswer = ChatGroup.data.fldAnswer;
+            if (checkedAnswer == true || checkedSee == true) {
+                ChatVal.push({
+                    'fldAnswer': ChatGroup.data.fldAnswer,
+                    'fldSee': ChatGroup.data.fldSee,
+                    'fldId': ChatGroup.data.fldId,
+                    'fldName': ChatGroup.data.fldName
+
+                });
+            }
+        }
+        if (ChatVal.length == 0) {
+            Ext.MessageBox.show({
+                title: "خطا",
+                msg: "هیچ سطری برای ذخیره انتخاب نشده است.",
+                icon: Ext.MessageBox.ERROR,
+                buttons: Ext.MessageBox.OK
+            });
+            return;
+        }
+
+        var data = {
+            Chat: ChatVal,
+            userId: '@ViewBag.Id',
+        };
+        Ext.net.Mask.show({ msg: 'در حال ذخیره سازی...' });
+        $.ajax({
+            type: "POST",
+            url: '/newver/TicketPermission/Save',
+            datatype: "json",
+            data: JSON.stringify(data),
+            contentType: 'application/json',
+            success: function (data1) {
+                var ic = Ext.MessageBox.INFO;
+                var result = data1;
+                if (result.Err == 1)
+                    ic = Ext.MessageBox.ERROR;
+                Ext.MessageBox.show({
+                    title: result.MsgTitle,
+                    msg: result.Msg,
+                    icon: ic,
+                    buttons: Ext.MessageBox.OK
+                });
+                Ext.net.Mask.hide();
+            },
+            failure: function (data) {
+                alert(data.data);
+            }
+        });
+    }
+</script>
+
+
+

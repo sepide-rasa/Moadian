@@ -1,0 +1,125 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Report ScriptLanguage="CSharp" ReportInfo.Created="06/11/2014 16:48:33" ReportInfo.Modified="09/21/2017 10:28:38" ReportInfo.CreatorVersion="2015.1.2.0">
+  <ScriptText>using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Windows.Forms;
+using System.Drawing;
+using System.Data;
+using FastReport;
+using FastReport.Data;
+using FastReport.Dialog;
+using FastReport.Barcode;
+using FastReport.Table;
+using FastReport.Utils;
+
+namespace FastReport
+{
+  public class ReportScript
+  { 
+
+    private void MSChart1_AfterData(object sender, EventArgs e)
+    {
+       
+    }
+    
+  }
+}
+</ScriptText>
+  <Styles>
+    <Style Name="Style1" Fill.Color="Gainsboro"/>
+  </Styles>
+  <Dictionary>
+    <TableDataSource Name="sp_PictureSelect" ReferenceName="CarTaxDataSet.sp_PictureSelect" DataType="System.Int32" Enabled="true">
+      <Column Name="fldID" DataType="System.Int32"/>
+      <Column Name="fldPic" DataType="System.Byte[]" BindableControl="Picture"/>
+      <Column Name="fldMunicipalityPic" DataType="System.String"/>
+      <Column Name="fldMunicipalityPicID" DataType="System.Int32"/>
+      <Column Name="fldBankPic" DataType="System.String"/>
+      <Column Name="fldBankPicID" DataType="System.Int32"/>
+      <Column Name="fldUserPic" DataType="System.String"/>
+      <Column Name="fldUserPicID" DataType="System.Int64"/>
+      <Column Name="fldUserName" DataType="System.String"/>
+      <Column Name="fldUserID" DataType="System.Int64"/>
+      <Column Name="fldDesc" DataType="System.String"/>
+      <Column Name="fldDate" DataType="System.String"/>
+    </TableDataSource>
+    <TableDataSource Name="sp_Car_Mafasa" ReferenceName="CarTaxDataSet.sp_Car_Mafasa" DataType="System.Int32" Enabled="true">
+      <Column Name="fldMotorNumber" DataType="System.String"/>
+      <Column Name="fldShasiNumber" DataType="System.String"/>
+      <Column Name="fldVIN" DataType="System.String"/>
+      <Column Name="fldModel" DataType="System.Int16"/>
+      <Column Name="AzTarikh" DataType="System.String"/>
+      <Column Name="TaTarikh" DataType="System.String"/>
+      <Column Name="fldCarSystemName" DataType="System.String"/>
+      <Column Name="fldCarClassName" DataType="System.String"/>
+      <Column Name="fldCarModelName" DataType="System.String"/>
+    </TableDataSource>
+    <Parameter Name="MyTablighat" DataType="System.String"/>
+    <Total Name="Total" Expression="[sp_RptChart.fldPrice]" ResetOnReprint="true"/>
+  </Dictionary>
+  <ReportPage Name="Page1">
+    <ReportTitleBand Name="ReportTitle1" Width="718.2"/>
+    <PageHeaderBand Name="PageHeader1" Top="4" Width="718.2" Height="214.54">
+      <TableObject Name="Table3" Left="12.3" Top="7.07" Width="693.59" Height="94.14">
+        <TableColumn Name="Column59" Width="160.85"/>
+        <TableColumn Name="Column60" Width="380.14"/>
+        <TableColumn Name="Column61" Width="152.6"/>
+        <TableRow Name="Row3" Height="94.14">
+          <TableCell Name="Cell59" Text="تاریخ چاپ :[date]&#13;&#10;ساعت چاپ:[time]&#13;&#10;صفحه:[Page#] از [TotalPages#]" VertAlign="Center" RightToLeft="true" Font="Microsoft Sans Serif, 10pt"/>
+          <TableCell Name="Cell60" Text="[StateName]&#13;&#10;[MunicipalityName]&#13;&#10;[AreaName]&#13;&#10;[OfficeName]" HorzAlign="Center" VertAlign="Center" RightToLeft="true" Font="Microsoft Sans Serif, 10pt"/>
+          <TableCell Name="Cell61" HorzAlign="Right" VertAlign="Center" Font="Microsoft Sans Serif, 10pt">
+            <PictureObject Name="Picture1" Left="39.83" Top="8.33" Width="75.6" Height="75.6" DataColumn="sp_PictureSelect.fldPic"/>
+          </TableCell>
+        </TableRow>
+      </TableObject>
+      <TextObject Name="Text2" Left="147.79" Top="105.67" Width="422.62" Height="51.01" Text="گزارش مفاصا از تاریخ [sp_Car_Mafasa.AzTarikh] تا تاریخ [sp_Car_Mafasa.TaTarikh]" HorzAlign="Center" VertAlign="Center" RightToLeft="true" Font="RasaFont, 13pt, style=Bold"/>
+      <TableObject Name="Table1" Left="3.79" Top="189.04" Width="710.62" Height="25.5" Fill.Color="Silver">
+        <TableColumn Name="Column62" Width="149.34"/>
+        <TableColumn Name="Column63" Width="79.38"/>
+        <TableColumn Name="Column64" Width="92.6"/>
+        <TableColumn Name="Column65" Width="85.99"/>
+        <TableColumn Name="Column66" Width="59.55"/>
+        <TableColumn Name="Column67" Width="97.32"/>
+        <TableColumn Name="Column68" Width="102.99"/>
+        <TableColumn Name="Column69" Width="43.45"/>
+        <TableRow Name="Row4" Height="25.5">
+          <TableCell Name="Cell62" Border.Lines="All" Text="شناسه خودرو" HorzAlign="Center" VertAlign="Center" RightToLeft="true" Font="RasaFont, 12pt, style=Bold"/>
+          <TableCell Name="Cell63" Border.Lines="All" Text="تیپ خودرو" HorzAlign="Center" VertAlign="Center" RightToLeft="true" Font="RasaFont, 12pt, style=Bold"/>
+          <TableCell Name="Cell64" Border.Lines="All" Text="نوع خودرو" HorzAlign="Center" VertAlign="Center" RightToLeft="true" Font="RasaFont, 12pt, style=Bold"/>
+          <TableCell Name="Cell65" Border.Lines="All" Text="سیستم" HorzAlign="Center" VertAlign="Center" RightToLeft="true" Font="RasaFont, 12pt, style=Bold"/>
+          <TableCell Name="Cell66" Border.Lines="All" Text="مدل" HorzAlign="Center" VertAlign="Center" RightToLeft="true" Font="RasaFont, 12pt, style=Bold"/>
+          <TableCell Name="Cell87" Border.Lines="All" Text="شماره شاسی" HorzAlign="Center" VertAlign="Center" RightToLeft="true" Font="RasaFont, 12pt, style=Bold"/>
+          <TableCell Name="Cell88" Border.Lines="All" Text="شماره موتور" HorzAlign="Center" VertAlign="Center" RightToLeft="true" Font="RasaFont, 12pt, style=Bold"/>
+          <TableCell Name="Cell89" Border.Lines="All" Text="ردیف" HorzAlign="Center" VertAlign="Center" RightToLeft="true" Font="RasaFont, 12pt, style=Bold"/>
+        </TableRow>
+      </TableObject>
+    </PageHeaderBand>
+    <DataBand Name="Data1" Top="222.54" Width="718.2" Height="40.6" DataSource="sp_Car_Mafasa">
+      <TableObject Name="Table4" Left="3.79" Width="710.63" Height="40.6" EvenStyle="Style1">
+        <TableColumn Name="Column70" Width="149.34"/>
+        <TableColumn Name="Column71" Width="79.38"/>
+        <TableColumn Name="Column72" Width="92.6"/>
+        <TableColumn Name="Column73" Width="85.99"/>
+        <TableColumn Name="Column74" Width="59.55"/>
+        <TableColumn Name="Column75" Width="97.32"/>
+        <TableColumn Name="Column76" Width="102.99"/>
+        <TableColumn Name="Column77" Width="43.46"/>
+        <TableRow Name="Row5" Height="40.6">
+          <TableCell Name="Cell90" Border.Lines="All" Text="[sp_Car_Mafasa.fldVIN]" HorzAlign="Center" VertAlign="Center" Font="Times New Roman, 10pt"/>
+          <TableCell Name="Cell91" Border.Lines="All" Text="[sp_Car_Mafasa.fldCarModelName]" HorzAlign="Center" VertAlign="Center" RightToLeft="true" Font="RasaFont, 10pt"/>
+          <TableCell Name="Cell92" Border.Lines="All" Text="[sp_Car_Mafasa.fldCarClassName]" HorzAlign="Center" VertAlign="Center" RightToLeft="true" Font="RasaFont, 10pt"/>
+          <TableCell Name="Cell93" Border.Lines="All" Text="[sp_Car_Mafasa.fldCarSystemName]" HorzAlign="Center" VertAlign="Center" RightToLeft="true" Font="RasaFont, 10pt"/>
+          <TableCell Name="Cell94" Border.Lines="All" Text="[sp_Car_Mafasa.fldModel]" HorzAlign="Center" VertAlign="Center" RightToLeft="true" Font="RasaFont, 10pt"/>
+          <TableCell Name="Cell95" Border.Lines="All" Text="[sp_Car_Mafasa.fldShasiNumber]" HorzAlign="Center" VertAlign="Center" Font="Times New Roman, 10pt"/>
+          <TableCell Name="Cell96" Border.Lines="All" Text="[sp_Car_Mafasa.fldMotorNumber]" HorzAlign="Center" VertAlign="Center" Font="Times New Roman, 10pt"/>
+          <TableCell Name="Cell97" Border.Lines="All" Text="[Row#]" HorzAlign="Center" VertAlign="Center" RightToLeft="true" Font="RasaFont, 10pt"/>
+        </TableRow>
+      </TableObject>
+    </DataBand>
+    <PageFooterBand Name="PageFooter1" Top="267.14" Width="718.2" Height="45.35" CanGrow="true">
+      <TextObject Name="Text1" Left="2.9" Width="712.54" Height="39.67" CanGrow="true" GrowToBottom="true" Text="[MyTablighat]" RightToLeft="true" Font="RasaFont, 11pt, style=Bold"/>
+    </PageFooterBand>
+  </ReportPage>
+</Report>

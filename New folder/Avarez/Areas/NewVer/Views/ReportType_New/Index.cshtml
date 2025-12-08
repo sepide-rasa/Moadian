@@ -1,0 +1,73 @@
+﻿@model IEnumerable<Avarez.Models.sp_ReportTypeSelect>
+@using Ext.Net.MVC;
+@{
+
+    var X = Html.X();
+}
+
+@(X.Panel()
+        //.Listeners(li => li.AfterRender.Handler = "ReportTypeMap();")
+            .ID("ReportType")
+    .Title("سفارشی سازی گزارشات")
+    .Closable(true)
+    .Border(false)
+    .CloseAction(Ext.Net.CloseAction.Destroy)
+    .Layout(Ext.Net.LayoutType.Fit)
+    .Items(
+        X.Panel()
+                    .ItemID("PnlGridReportType")
+            .Border(false)
+            .Layout(Ext.Net.LayoutType.Fit)
+            .Items(
+                X.GridPanel()
+                    .AutoScroll(true)
+                            .ItemID("GridReportType")
+                    .BottomBar(X.PagingToolbar())
+                    .Store(
+                        Html.X().StoreForModel()
+                            .Proxy(Html.X().AjaxProxy()
+                                .Url(Url.Action("Read"))
+                                .Reader(Html.X().JsonReader().Root("data"))
+        )
+                    .PageSize(20)
+                    .RemoteFilter(true)
+                    .RemotePaging(true)
+                                    .Listeners(l => l.DataChanged.Handler = "App.ReportType.queryById('GridReportType').selModel.refresh();")
+    )
+                    .View(
+                        Html.X().GridView().LoadingText("در حال بارگذاری...").RTL(true)
+    )
+                    .Plugins(X.FilterHeader().Remote(true))
+                    .ColumnModel(
+                    Html.X().RowNumbererColumn(),
+                        Html.X().Column().DataIndex(Model, m => m.fldID).Text("کد").Hidden(true).Flex(1),
+                        Html.X().Column().DataIndex(Model, m => m.fldName).Text("عنوان گزارش").Wrap(true).Flex(13),
+                       // Html.X().Column().DataIndex(Model, m => m.fldDesc).Text("توضیحات").Flex(6),
+                        Html.X().ComponentColumn().Flex(1).ItemID("buttonNext")
+                                .Component(Html.X().Button().ItemID("btnbindNext").Text("ادامه...").Listeners(l => l.Click.Handler = "GotoNextStep()")).Filterable(false)
+    )
+                .SelectionModel(
+                    Html.X().RowSelectionModel()
+                        .Mode(Ext.Net.SelectionMode.Single)
+    )
+
+))
+)
+
+<script type="text/javascript">
+
+    function GotoNextStep(record) {
+        var record = App.ReportType.queryById("buttonNext").activeRecord.record;
+        Ext.net.Mask.show({ msg: 'در حال بارگذاری...' });
+        Ext.net.DirectMethod.request({
+            url: '/NewVer/ReportType_New/New',
+            params: {
+                ReportId: record.data.fldID
+            },
+            success: function () {
+                Ext.net.Mask.hide();
+            }
+        });
+    }    
+
+</script>

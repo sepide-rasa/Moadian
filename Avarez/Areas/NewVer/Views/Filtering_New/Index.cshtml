@@ -1,0 +1,394 @@
+﻿@model List<Avarez.Models.sp_KolParvandeHaByUserId>
+@using Ext.Net.MVC;
+@using Ext.Net;
+@using Hogaf.ExtNet.UX;
+@{
+
+    var X = Html.X();
+}
+<style>
+    .redtd{
+        color:red;
+    }
+    .greentd{
+        color:green;
+    }
+</style>
+<script>
+    Ext.net.FilterHeader.behaviour.string[0].match = function (recordValue, matchValue) {
+        return (Ext.net.FilterHeader.behaviour.getStrValue(recordValue) || "").indexOf(matchValue) > -1;
+    };
+
+    Ext.net.FilterHeader.behaviour.string[0].getStrValue = function (value) {
+        return value.toString();
+    };
+
+
+    Ext.net.FilterHeader.behaviour.string[0].serialize = function (value) {
+        return {
+            type: "string",
+            op: "*",
+            value: value
+        };
+    };
+
+    var AccT = function (value, meta, record) {
+        if (record.data.haveArchive == "ندارد") {
+            return "_";re
+        }
+        else {
+            if (value == "تایید شده") {
+                meta.tdCls = "greentd";
+                return value;
+            }
+            else {
+                meta.tdCls = "redtd";
+                return value;
+            }
+        }
+    };
+
+    var AccT1 = function (value, meta, record) {
+        if (value == "تایید شده") {
+            meta.tdCls = "greentd";
+            return value;
+        }
+        else {
+            meta.tdCls = "redtd";
+            return value;
+        }
+    };
+
+    var AccT2 = function (value, meta, record) {
+        if (value == "تایید شده") {
+            meta.tdCls = "greentd";
+            return value;
+        }
+        else {
+            meta.tdCls = "redtd";
+            return value;
+        }
+    };
+</script>
+@(X.Panel()
+            .ID("Filtering")
+        .Title("پرونده")
+    .Closable(true)
+    .Border(false)
+    .CloseAction(Ext.Net.CloseAction.Destroy)
+    .Layout(Ext.Net.LayoutType.Fit)
+    .Items(
+    //X.Panel().Border(false)
+    //            .Border(false)
+    //            .AutoScroll(true)
+    //            .Items(
+                    X.TabPanel().ID("FilterTab")
+                    .AutoScroll(true)
+                    //.Items(
+        //X.Panel()
+        //.ItemID("GridPanel")
+            .Border(false)
+            .Layout(Ext.Net.LayoutType.Fit)
+            .Items(
+                    X.GridPanel()
+                            .Title("فیلترینگ")
+                    .AutoScroll(true)
+                    .TopBar(
+                        Html.X().Toolbar()
+                                .Items(
+                                X.Label().Text("از تاریخ"),
+                                    X.PDateField().Width(120).ItemID("txtAzTarikh").Listeners(l => l.Change.Handler = "AzTarikh()")
+                                .AllowBlank(false).BlankText("لطفا از تاریخ را انتخاب نمایید"),
+                                    X.Label().Text("تا تاریخ"),
+                                        X.PDateField().Width(120).ItemID("txtTaTarikh").Listeners(l => l.Change.Handler = "TaTarikh()")
+                                        .AllowBlank(false).BlankText("لطفا تا تاریخ را انتخاب نمایید"),
+                                X.Button().Text("بارگزاری").Icon(Ext.Net.Icon.PageRefresh).ToolTip("بارگزاری اطلاعات پرونده ها")
+                                .Listeners(Li => Li.Click.Handler = "ReloadDashboard();"),
+                                X.Button().Text("فیش ها").Icon(Ext.Net.Icon.Table).ToolTip("نمایش تمام فیش های صادر شده پرونده انتخاب شده")
+                                .Listeners(de => { de.Click.Handler = "Fishes();"; }),
+                                X.Button().Text("پرداخت ها").Icon(Ext.Net.Icon.Coins).ToolTip("نمایش تمام پرداختی های پرونده انتخاب شده")
+                                .Listeners(Li => Li.Click.Handler = "Pardakhtha();"),
+                                X.Button().Text("سوابق ثبت شده").Icon(Ext.Net.Icon.PageSave).ToolTip("نمایش تمام سوابق پرونده انتخاب شده")
+                                .Listeners(Li => Li.Click.Handler = "Savabegh();"),
+                                X.Button().Text("مفاصا حساب ها").Icon(Ext.Net.Icon.TextListBullets).ToolTip("نمایش تمام مفاصا حساب های پرونده انتخاب شده")
+                                .Listeners(de => de.Click.Handler = "Mafasa();")
+                                /*, X.Button().Text("بایگانی دیجیتال").Icon(Ext.Net.Icon.Picture).ToolTip("نمایش آرشیو الکترونیکی پرونده انتخاب شده")
+                                .Listeners(de => de.Click.Handler = "Archive();")*/
+                                , X.Button().Text("تصاویر").Icon(Ext.Net.Icon.Picture).ToolTip("نمایش آرشیو مدارک خودرو")
+                                .Listeners(de => de.Click.Handler = "PicCar();")
+                                //, X.Button().Text("لیست سیاه").Icon(Ext.Net.Icon.TextAlignJustify).ToolTip("نمایش آرشیو الکترونیکی پرونده انتخاب شده")
+                                //.Listeners(de => de.Click.Handler = "BlackList();")
+                            )
+                                    )
+                            .ItemID("Grid")
+                    .BottomBar(X.PagingToolbar())
+                       .Store(
+                            X.StoreForModel()                               
+                                .AutoLoad(false)
+                                .Proxy(Html.X().AjaxProxy()
+                                .Url(Url.Action("Read"))
+                                .Reader(Html.X().JsonReader().Root("data"))
+
+                            )
+                            .PageSize(20)
+                            .RemoteFilter(true)
+                            .RemotePaging(false)
+                            //.Parameters(l => l.Add(new { start=App.Filtering.queryById("txtAzTarikh").rawValue,end=App.Filtering.queryById("txtTaTarikh").rawValue}))
+        //.Listeners(l => l.DataChanged.Handler = "App.EdaratKol.queryById('GridEdaratKol').selModel.refresh();")
+                        )
+                        .View(
+                            Html.X().GridView().LoadingText("در حال بارگذاری...").RTL(true)
+                        )
+                        
+                    .Plugins(X.FilterHeader().Remote(false))
+                        .ColumnModel(
+                        Html.X().RowNumbererColumn(),
+                        Html.X().Column().DataIndex(Model, m => m.fldID).Hidden(true),
+                        Html.X().Column().DataIndex(Model, m => m.fldCarID).Hidden(true),
+                        Html.X().Column().DataIndex(Model, m => m.fldAcceptName).Renderer("AccT").Flex(3).Text("تصاویر"),
+                        Html.X().Column().DataIndex(Model, m => m.fldAcceptCarExperienceName).Renderer("AccT1").Flex(3).Text("سوابق"),
+                        Html.X().Column().DataIndex(Model, m => m.fldAcceptCollectionName).Flex(3).Renderer("AccT2").Text("پرداخت ها"),
+                        Html.X().Column().DataIndex(Model, m => m.fldName).Text("نام مالک").Flex(5),
+                        Html.X().Column().DataIndex(Model, m => m.fldMobile).Text("شماره موبايل").Flex(3),
+                        Html.X().Column().DataIndex(Model, m => m.fldMotorNumber).Text("شماره موتور").Flex(5),
+                        Html.X().Column().DataIndex(Model, m => m.fldShasiNumber).Text("شماره شاسی").Flex(5),
+                        Html.X().Column().DataIndex(Model, m => m.fldVIN).Text("VIN").Flex(5),
+                        Html.X().Column().DataIndex(Model, m => m.carModel).Text("تیپ").Flex(5),
+                        Html.X().Column().DataIndex(Model, m => m.CarClass).Text("کلاس").Flex(4),
+                        Html.X().Column().DataIndex(Model, m => m.fldModel).Text("مدل").Flex(2),
+                        Html.X().Column().DataIndex(Model, m => m.fldUserName).Text("نام كاربر").Flex(3).Wrap(true),
+                        Html.X().Column().DataIndex(Model, m => m.haveArchive).Filterable(false).Text("آرشیو").Flex(2)
+                        )
+                .SelectionModel(
+                    Html.X().RowSelectionModel()
+                        .Mode(Ext.Net.SelectionMode.Single)
+    )
+    //))
+))
+)
+
+<script type="text/javascript">
+    function AzTarikh() {
+        var txtAzTarikh = App.Filtering.queryById('txtAzTarikh');
+        var txtTaTarikh = App.Filtering.queryById('txtTaTarikh');
+        txtTaTarikh.setMinValue(txtAzTarikh.getValue());
+        txtTaTarikh.minText = "تاریخ شروع نباید از تاریخ پایان بزرگتر باشد.";
+    }
+    function TaTarikh() {
+        var txtAzTarikh = App.Filtering.queryById('txtAzTarikh');
+        var txtTaTarikh = App.Filtering.queryById('txtTaTarikh');
+        txtAzTarikh.setMaxValue(txtTaTarikh.getValue());
+        txtAzTarikh.maxText = "تاریخ شروع نباید از تاریخ پایان بزرگتر باشد.";
+    }
+    function PicCar() {
+        var SelectedRow = App.Filtering.queryById('Grid').selModel.getLastSelected();
+
+        if (SelectedRow != null) {
+            Ext.net.Mask.show({ msg: 'در حال بارگذاری...' });
+            Ext.net.DirectMethod.request({
+                url: '/NewVer/Filtering_New/PicCar',
+                params: {
+                    CarID: SelectedRow.data.fldCarID,
+                    carFileId: SelectedRow.data.fldID
+                },
+                success: function () {
+                    Ext.net.Mask.hide();
+                }
+            });
+        }
+        else {
+            Ext.MessageBox.show({
+                title: "خطا",
+                msg: "لطفا یک سطر را انتخاب کنید",
+                icon: Ext.MessageBox.ERROR,
+                buttons: Ext.MessageBox.OK
+            });
+        }
+    }
+    function ReloadDashboard() {
+        var txtAzTarikh = App.Filtering.queryById('txtAzTarikh');
+        var txtTaTarikh = App.Filtering.queryById('txtTaTarikh');
+        var er = false;
+        if (txtAzTarikh.validate() == false) {
+            er = true;
+        }
+        if (txtTaTarikh.validate() == false) {
+            er = true;
+        }
+        if (er == true) {
+            return;
+        }
+
+        App.Filtering.queryById("Grid").getStore().getProxy().setExtraParam("startDate",txtAzTarikh.rawValue);
+        App.Filtering.queryById("Grid").getStore().getProxy().setExtraParam("endDate", txtTaTarikh.rawValue);
+        App.Filtering.queryById("Grid").store.load();
+
+        /*var txtAzTarikh = App.Filtering.queryById('txtAzTarikh');
+        var txtTaTarikh = App.Filtering.queryById('txtTaTarikh');
+        Ext.net.DirectMethod.request({
+            url: '/NewVer/Filtering_New/Read',
+            params: {
+                start: txtAzTarikh.rawValue,
+                end: txtTaTarikh.rawValue
+            },
+            success: function (data) {
+                App.Filtering.queryById('Grid').getStore().loadData(data);
+            }
+        });*/
+    }
+
+    function Fishes() {
+        var SelectedRow = App.Filtering.queryById('Grid').selModel.getLastSelected();
+
+        if (SelectedRow != null) {
+            Ext.net.Mask.show({ msg: 'در حال بارگذاری...' });
+            Ext.net.DirectMethod.request({
+                url: '/NewVer/Filtering_New/Fishes',
+                params: {
+                    CarFileId: SelectedRow.data.fldID,
+                    containerId: "FilterTab"
+                },
+                success: function () {
+                    /*Ext.net.Mask.hide();*/
+                }
+            });
+        }
+        else {
+            Ext.MessageBox.show({
+                title: "خطا",
+                msg: "لطفا یک سطر را انتخاب کنید",
+                icon: Ext.MessageBox.ERROR,
+                buttons: Ext.MessageBox.OK
+            });
+        }
+    }
+
+    function Pardakhtha() {
+        var SelectedRow = App.Filtering.queryById('Grid').selModel.getLastSelected();
+
+        if (SelectedRow != null) {
+            Ext.net.Mask.show({ msg: 'در حال بارگذاری...' });
+            Ext.net.DirectMethod.request({
+                url: '/NewVer/Filtering_New/Pardakhtha',
+                params: {
+                    CarFileId: SelectedRow.data.fldID,
+                    containerId: "FilterTab"
+                },
+                success: function () {
+                    /*Ext.net.Mask.hide();*/
+                }
+            });
+        }
+        else {
+            Ext.MessageBox.show({
+                title: "خطا",
+                msg: "لطفا یک سطر را انتخاب کنید",
+                icon: Ext.MessageBox.ERROR,
+                buttons: Ext.MessageBox.OK
+            });
+        }
+    }
+
+    function Savabegh() {
+        var SelectedRow = App.Filtering.queryById('Grid').selModel.getLastSelected();
+
+        if (SelectedRow != null) {
+            Ext.net.Mask.show({ msg: 'در حال بارگذاری...' });
+            Ext.net.DirectMethod.request({
+                url: '/NewVer/Filtering_New/Svabegh',
+                params: {
+                    CarFileId: SelectedRow.data.fldID,
+                    containerId: "FilterTab"
+                },
+                success: function () {
+                   /* Ext.net.Mask.hide();*/
+                }
+            });
+        }
+        else {
+            Ext.MessageBox.show({
+                title: "خطا",
+                msg: "لطفا یک سطر را انتخاب کنید",
+                icon: Ext.MessageBox.ERROR,
+                buttons: Ext.MessageBox.OK
+            });
+        }
+    }
+
+    function Mafasa() {
+        var SelectedRow = App.Filtering.queryById('Grid').selModel.getLastSelected();
+
+        if (SelectedRow != null) {
+            Ext.net.Mask.show({ msg: 'در حال بارگذاری...' });
+            Ext.net.DirectMethod.request({
+                url: '/NewVer/Filtering_New/Mafasa',
+                params: {
+                    CarFileId: SelectedRow.data.fldID,
+                    containerId: "FilterTab"
+                },
+                success: function () {
+                    /*Ext.net.Mask.hide();*/
+                }
+            });
+        }
+        else {
+            Ext.MessageBox.show({
+                title: "خطا",
+                msg: "لطفا یک سطر را انتخاب کنید",
+                icon: Ext.MessageBox.ERROR,
+                buttons: Ext.MessageBox.OK
+            });
+        }
+    }
+
+    function Archive() {
+        var SelectedRow = App.Filtering.queryById('Grid').selModel.getLastSelected();
+
+        if (SelectedRow != null) {
+            Ext.net.Mask.show({ msg: 'در حال بارگذاری...' });
+            Ext.net.DirectMethod.request({
+                url: '/NewVer/Filtering_New/Archive',
+                params: {
+                    CarFileId: SelectedRow.data.fldID
+                },
+                success: function () {
+                    Ext.net.Mask.hide();
+                }
+            });
+        }
+        else {
+            Ext.MessageBox.show({
+                title: "خطا",
+                msg: "لطفا یک سطر را انتخاب کنید",
+                icon: Ext.MessageBox.ERROR,
+                buttons: Ext.MessageBox.OK
+            });
+        }
+    }
+
+    function BlackList() {
+        var SelectedRow = App.Filtering.queryById('Grid').selModel.getLastSelected();
+
+        if (SelectedRow != null) {
+            Ext.net.Mask.show({ msg: 'در حال بارگذاری...' });
+            Ext.net.DirectMethod.request({
+                url: '/NewVer/Filtering_New/BlackList',
+                params: {
+                    CarFileId: SelectedRow.data.fldID,
+                    containerId: "FilterTab"
+                },
+                success: function () {
+                    Ext.net.Mask.hide();
+                }
+            });
+        }
+        else {
+            Ext.MessageBox.show({
+                title: "خطا",
+                msg: "لطفا یک سطر را انتخاب کنید",
+                icon: Ext.MessageBox.ERROR,
+                buttons: Ext.MessageBox.OK
+            });
+        }
+    }
+</script>

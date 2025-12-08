@@ -1,0 +1,375 @@
+﻿@using Kendo.Mvc.UI;
+<div class="modal" id="Reports">
+    <meta name="viewport" content="width=device-width" />
+    <script src="@Url.Content("~/Content/Base.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Scripts/jquery.uploadify-3.1.min.js")" type="text/javascript"></script>
+    <link href="@Url.Content("~/Content/uploadify.css")" rel="stylesheet" type="text/css" />
+    <script type="text/x-kendo-template" id="template">
+        <div id="details-container">
+        
+        </div>
+
+    </script>
+    <script type="text/javascript">
+        var detailsTemplate = kendo.template($("#template").html());
+
+        function showDetails(e) {
+            e.preventDefault();
+            var entityGrid = $("#Grid").data("kendoGrid");
+            var selectedItem = entityGrid.dataItem(entityGrid.select());
+            if (selectedItem) {
+                var id = selectedItem.fldID;
+                var wnd = $("#Details").data("kendoWindow");
+                var k = '@Url.Content("~/Reports/Image/")' + id;
+                wnd.content('<img id="PreviewImage" src="' + k + '" alt="" style="width: 600px; height: 600px; border: 2px;" />');
+                wnd.center().open();
+            }
+            else {
+                alert('لطفا یک سطر را انتخاب کنید.');
+            }
+        } 
+        function FileReport(e) {
+            var entityGrid = $("#Grid").data("kendoGrid");
+            var selectedItem = entityGrid.dataItem(entityGrid.select());
+            if (selectedItem) {
+                var id = selectedItem.fldID;
+                window.location.href= '@Url.Content("~/Reports/FileReport/")' + id;
+            }
+            else {
+                alert('لطفا یک سطر را انتخاب کنید.');
+            }
+        }
+        function showReport(e) {
+            var entityGrid = $("#Grid").data("kendoGrid");
+            var selectedItem = entityGrid.dataItem(entityGrid.select());
+            if (selectedItem) {
+                window.open("/Reports/ReportIndex?Id=" + selectedItem.fldID, "_blank");
+            }
+            else {
+                alert('لطفا یک سطر را انتخاب کنید.');
+            }
+        }
+        
+        var path, f, r;
+        $(function () {
+            $('#file_upload').uploadify({
+                'swf': '@Url.Content("~/Content/uploadify.swf")',
+                //this is where the file posts when it uploads.
+                'uploader': '@Url.Action("Upload", "Reports")',
+                'onUploadSuccess': function (file, data, response) {
+                    path = data;
+                    f = file;
+                    r = response;
+                }
+            });
+        });
+        function _load() {
+            var f = $('.k-button');
+            f.removeAttr('href');
+        }
+        $("document").ready(function () {                       
+            $("#next").button();
+            $("#AddLink").button();
+            $("#EditLink").button();
+            $("#DelLink").button();
+            $("#exit").button();
+            $("#btnBrowse").button();
+            $("#btnRemove").button();
+           
+            $("#exit").click(function () {
+                $("#Reports").remove();
+            });
+
+            $('#Reports').on('keyup', 'input', function (event) {
+                if (event.which == 13) {
+                    var inputs = $('#Reports').find(':input:visible');
+                    inputs.eq(inputs.index(this) + 1).focus();
+                }
+            });
+
+            $('#next').click(function () {
+                var entityGrid = $("#Grid").data("kendoGrid");
+                var selectedItem = entityGrid.dataItem(entityGrid.select());
+                if (selectedItem) {
+                    var id = selectedItem.fldID;
+                    var URL = '@Url.Content("~/ReportDiv/Index")'+'/'+id;
+                    URL = URL;
+                    windows("#win", URL);
+                } else {
+                    alert('لطفا یک سطر را انتخاب کنید.');
+                }
+            });
+
+            $("#btnRemove").click(function () {
+                $('#PreviewImage').attr('src', '@Url.Content("~/Content/images/Blank.jpg")');
+            });
+
+            $(document).keyup(function (event) {
+                if (event.which == 119) {
+                    SaveRecord();
+                }
+                else if (event.which == 113) {
+                    EditRecord();
+                }
+                else if (event.which == 115) {
+                    DeleteRecord();
+                }
+            });
+            $('#AddLink').attr('title', 'کلید میانبر (F8)'); //119
+            $('#EditLink').attr('title', 'کلید میانبر (F2)'); //113
+            $('#DelLink').attr('title', 'کلید میانبر (F4)'); //115
+
+            jQuery("#EditLink").click(function () {
+                EditRecord();
+            });
+
+            $('#DelLink').click(function () {
+                DeleteRecord();
+            });
+
+            $("#AddLink").click(function () {
+                SaveRecord();
+            });
+
+            $('#txtSearch').keyup(function () {
+                var url = '@Url.Action("Reload", "Reports")';
+                Reload(url, 'Grid', $("#cboSearchFiald").val(), $("#txtSearch").val(), $("#txtTop").val(), $("#cboSearchType").val());
+            });
+
+            $("#btnBrowse").click(function () {
+                performClick(document.getElementById('image'));
+            });
+
+            function performClick(node) {
+                var evt = document.createEvent("MouseEvents");
+                evt.initEvent("click", true, false);
+                node.dispatchEvent(evt);
+            }
+        });
+
+        function Clear() {
+
+            $('#txtDesc').val('');
+            $('#PreviewImage').attr('src', '@Url.Content("~/Content/images/Blank.jpg")');
+        }
+         function SaveRecord() {
+                var er = false;
+                if (er)
+                    return;
+                var image = document.getElementById('PreviewImage');
+                var c = image.attributes[1];
+                var imgData = "";
+                if (c.value != "")
+                    imgData = getBase64Image(image);
+                var data = { fldReportTypeId: '@ViewBag.typeId',
+                    fldUserID: 1, fldDesc: $("#txtDesc").val(), fldReportPic: imgData,
+                    fldId: $("#fldId").val()
+                };
+                if (data != '') {
+                    PostForm(data, '@Url.Content("~/Reports/Save")', "#win");
+                }
+                Clear();
+            }
+         function EditRecord() {
+                var entityGrid = $("#Grid").data("kendoGrid");
+                var selectedItem = entityGrid.dataItem(entityGrid.select());
+                if (selectedItem) {
+                    var id = selectedItem.fldID;
+                    var URL = '@Url.Content("~/Reports/Details")';
+                    URL = URL + "/" + id;
+                    $.ajax({
+                        type: "GET",
+                        url: URL,
+                        success: function (data) {
+                            $('#fldId').val(data.fldId);
+                            $('#txtDesc').val(data.fldDesc);
+                            var g = '@Url.Content("~/Reports/Image/")' + data.fldId;
+                            $('#PreviewImage').attr('src', g);
+                        },
+                        failure: function (data) {
+                            alert(data.data);
+                        }
+                    });
+                }
+                else {
+                    alert('لطفا یک سطر را انتخاب کنید.');
+                }
+            }
+            function DeleteRecord() {
+                var entityGrid = $("#Grid").data("kendoGrid");
+                var selectedItem = entityGrid.dataItem(entityGrid.select());
+                if (selectedItem) {
+                    var id = selectedItem.fldID;
+                    var URL = '@Url.Content("~/metro/YesNomsg")';
+                    URL = URL + "/?id=" + id + "&URL=" + '@Url.Content("~/Reports/Delete")';
+                    windowAppend("body", URL);
+                    $("#message").html('آیا مایل به حذف رکورد انتخاب شده هستید؟');
+                }
+                else {
+                    alert('لطفا یک سطر را انتخاب کنید.');
+                }
+                Clear();
+            }
+        function readURL(input) {
+            if (input.files && input.files[0]) {//Check if input has files.
+                if (input.files[0].size > 102400) {
+                    alert('حجم فایل بزرگتر از 100 کیلو بایت است.');
+                }
+                else {
+                    var reader = new FileReader(); //Initialize FileReader.
+
+                    reader.onload = function (e) {
+                        $('#PreviewImage').attr('src', e.target.result);
+                    };
+                    reader.readAsDataURL(input.files[0]);
+                }
+            }
+        }
+
+        function getBase64Image(imgElem) {
+            // imgElem must be on the same server otherwise a cross-origin error will be thrown "SECURITY_ERR: DOM Exception 18"
+            var canvas = document.createElement("canvas");
+            canvas.width = 600;
+            canvas.height = 600;
+            var ctx = canvas.getContext("2d");
+            ctx.drawImage(imgElem, 0, 0, 600, 600);
+            var dataURL = canvas.toDataURL("image/jpg");
+            return dataURL.replace(/^data:image\/(png|jpg);base64,/, "");
+        }
+
+        function Reload(Url, gridname, field, value, top, searchType) {
+            var grid = $('#' + gridname).data('kendoGrid');
+            $.ajax({
+                url: Url,
+                type: 'get',
+                datatype: 'json',
+                data: { field: field, value: value, top: top, searchtype: searchType },
+                error: function (xhr, status, error) {
+                    alert(xhr + status);
+                },
+                success: function (result) {
+                    $("#" + gridname).data("kendoGrid").dataSource.data(result);
+                }
+
+            });
+        }
+
+        function PostForm(datas, url, id) {
+            var sendInfo = datas;
+            $('#Lock').show();
+            $.ajax({
+                type: "POST",
+                url: url,
+                data: sendInfo,
+                datatype: "json",
+                success: function (data) {
+                    var m = data;
+                    windowAppend("body", "/metro/error");
+                    $("#message").html(m.data);
+                    switch (m.state) {
+                        case 0:
+                            $("#error .wintitle").html("ذخیره موفق");
+                            break;
+                        case 1:
+                            $("#error .wintitle").html("خطا");
+                            break;
+                    }
+                    var url = '@Url.Action("Reload", "Reports")';
+                    Reload(url, 'Grid', '0', '@ViewBag.typeId', 30, 1);
+                    $('#Lock').hide();
+                },
+                failure: function (data) {
+                    alert(data.data);
+                }
+            });
+        }    
+    </script>
+
+    <div>
+    
+        <br />
+        <div class="k-rtl demo-section">
+            @(Html.Kendo().Grid<Avarez.Models.sp_ReportsSelect>()
+                .Name("Grid")
+                .Columns(columns =>
+                {
+                    columns.Bound(p => p.fldID).Title("کد");
+                    columns.Bound(p => p.fldreportTypeName).Title("نوع گزارش");
+                    columns.Bound(p => p.fldDesc).Title("توضیحات");
+                    columns.Command(command => command.Custom("ViewDetails").Click("showDetails").Text("پیش نمایش").HtmlAttributes(new { @style = "color: #000000;" }));
+                    columns.Command(command => command.Custom("ViewReport").Click("showReport").Text("طراحی").HtmlAttributes(new { @style = "color: #000000;" }));
+                    columns.Command(command => command.Custom("ViewFile").Click("FileReport").Text("فایل گزارش").HtmlAttributes(new { @style = "color: #000000;" }));
+                })
+            .Selectable(selectable => selectable.Mode(GridSelectionMode.Single))
+            .Pageable()
+            .Scrollable()
+            .DataSource(data =>
+                 data.Ajax()
+                .PageSize(10)
+                .Read("Fill", "Reports")
+            )
+            .Events(events=>events.DataBound("_load"))
+        )
+        @(Html.Kendo().Window().Name("Details")
+            .Title("Customer Details")
+            .Visible(false)
+            .Modal(true)
+            .Width(600)
+        )
+        </div>
+        <center>
+            <div>
+                @Avarez.Helper.winClass.Buttons("EditLink", "ویرایش", "Edit")
+                @Avarez.Helper.winClass.Buttons("DelLink", "حذف", "Del")
+                @Avarez.Helper.winClass.Buttons("next", "ادامه", "Next")
+                @Avarez.Helper.winClass.Buttons("exit", "خروج", "Exit")
+            </div>
+        </center>
+        @(Html.Kendo().PanelBar()
+        .Name("panelbar-images")
+        .Items(panelbar =>
+        {
+            panelbar.Add().Text("انتخاب گزارش")
+                .ImageUrl(Url.Content("~/Content/images/search.png"))
+                .Content(@<div>
+                    <center>
+                        @Html.Hidden("fldId")
+                        <table>
+                            <tr>
+                                <td align="left">
+                                    تصویر گزارش:
+                                </td>
+                                <td>
+                                    <img id="PreviewImage" src="@Url.Content("~/Content/images/Blank.jpg")" alt="" style="width: 80px; height: 80px; border: 2px;" />
+                                    @Avarez.Helper.winClass.Buttons("btnBrowse", "انتخاب عکس", "search")
+                                    @Avarez.Helper.winClass.Buttons("btnRemove", "برچیدن عکس", "del")
+                                    <input style="display: none;" type="file" accept=".jpg" id="image" name="image" onchange="readURL(this)" />
+                                </td>
+                            </tr>
+                            <tr>
+                                <td align="left">
+                                    فایل گزارش:
+                                </td>
+                                <td>
+                                    <input type="file" name="file_upload" id="file_upload" />
+                                </td>
+                            </tr>
+                            <tr>
+                                <td align="left">
+                                    توضیحات:
+                                </td>
+                                <td>
+                                    @Avarez.Helper.winClass.textArea("txtDesc", 4, 30)
+                                </td>
+                            </tr>
+                        </table>
+                        <p>
+                            @Avarez.Helper.winClass.Buttons("AddLink", "ذخیره", "Save")
+                        </p>
+                    </center>
+                    <br />
+                </div>);
+        })
+        )
+    </div>
+</div>

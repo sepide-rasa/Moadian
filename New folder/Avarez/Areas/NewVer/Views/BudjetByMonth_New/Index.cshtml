@@ -1,0 +1,245 @@
+﻿@model IEnumerable<Avarez.Models.sp_BudgetByMonth_DetailSelect>
+@using Ext.Net.MVC;
+@using Ext.Net;
+<script src="~/Scripts/accounting.min.js"></script>
+@{
+
+    var X = Html.X();
+}
+
+@(X.Panel()
+    .ID("BudjetByMonth")
+    .Title("مقایسه درآمد")
+    .Closable(true)
+    .Border(false)
+    .CloseAction(Ext.Net.CloseAction.Destroy)
+    .Layout(Ext.Net.LayoutType.Fit)    
+    .Items(
+        X.Panel()
+            .ButtonAlign(Alignment.Center)
+            .Buttons(
+                X.Button()
+                    .Text("ذخیره")
+                    .Icon(Ext.Net.Icon.Disk)
+                    .Listeners(l =>
+                    {
+                        l.Click.Handler = "SaveBudjetByMonth();";
+                    }),
+                X.Button()
+                    .Text("خروج")
+                    .Icon(Ext.Net.Icon.DoorOut)
+                    .OnClientClick("App.BudjetByMonth.destroy()"))
+            .ItemID("PnlBudjetByMonth")
+            .Border(false)
+            .Items(
+                X.Hidden()
+                    .ItemID("fldId"),
+                X.FieldSet()
+                    .Border(false)
+                    .Margin(10)
+                    .LayoutConfig(new VBoxLayoutConfig{Align=VBoxAlign.Center})
+                    .Items(
+                        X.Panel()
+                            .Border(false)
+                            .Layout(LayoutType.Table)
+                            .LayoutConfig(new TableLayoutConfig{Columns=4})
+                            .Items(
+                                X.Label("در سال:"),
+                                X.ComboBox()
+                                    .ItemID("cboBYear")
+                                    .Editable(false)
+                                    .TypeAhead(true)
+                                    .QueryMode(DataLoadMode.Local)
+                                    .ForceSelection(true)
+                                    .TriggerAction(TriggerAction.All)
+                                    .DisplayField("fldName")
+                                    .PaddingSpec("0 0 0 20px")
+                                    .ValueField("fldID")
+                                    .EmptyText("در سال...")
+                                    .Width(190)
+                                    .Listeners(ls => ls.Select.Handler = "loadGrid()")
+                                    .Store(X.Store()
+                                        .Listeners(l=>l.Load.Handler="setNowDate()")
+                                        .Model(X.Model()
+                                            .IDProperty("fldID")                                            
+                                            .Fields(
+                                                new ModelField("fldID", ModelFieldType.String) { Mapping = "fldID" },
+                                                new ModelField("fldName", ModelFieldType.String) { Mapping = "fldName" }
+                                            )
+                                            )
+                                        .Proxy(X.AjaxProxy()
+                                        .Url(Url.Action("GetYear"))
+                                        .Reader(X.JsonReader().Root("data"))
+                                        )
+                                    ),
+                                X.Label("کل بودجه:"),
+                                X.TextField()
+                                    .ItemID("txtAllBudjet")
+                                    .Listeners(l=>l.Change.Handler="seperateNumber()")
+                                    .Width(190)
+                                    .AllowBlank(false)
+                                    .BlankText("لطفا مبلغ کل بودجه را وارد نمایید.")
+                                    .MsgTarget(Ext.Net.MessageTarget.Side))),
+        X.FieldSet()
+            .Border(false)
+            .Margin(10)
+            .LayoutConfig(new VBoxLayoutConfig{Align=VBoxAlign.Center})
+            .Items(
+                X.GridPanel()
+                    .AutoScroll(true)
+                    .ItemID("GridBudjetDetails")
+                    //.Listeners(l=>l.ViewReady.Handler="loadGrid()")
+                    .Listeners(l => l.Render.Handler = "App.BudjetByMonth.queryById('GridBudjetDetails').setSize(Ext.getBody().getViewSize().width-500,Ext.getBody().getViewSize().height-300);")
+                    .BottomBar(X.PagingToolbar().HideRefresh(true))
+                    .Store(
+                        Html.X().StoreForModel()
+                            .PageSize(20)
+                            .RemoteFilter(true)
+                            .RemotePaging(true)
+                            //.Listeners(l => l.DataChanged.Handler = "App.Cost.queryById('GridCost').selModel.refresh();")
+                        )
+                    .View(
+                        Html.X().GridView().LoadingText("در حال بارگذاری...").RTL(true)
+                    )
+                        .Plugins(X.CellEditing().Listeners(l => l.Edit.Fn = "checkandsetDarsad"))
+                    .ColumnModel(
+                        Html.X().RowNumbererColumn(),
+                        Html.X().Column().DataIndex(Model, m => m.Id).Text("کد").Hidden(true).Flex(1),
+                        Html.X().Column().DataIndex(Model, m => m.Month_No).Text("کد").Hidden(true).Flex(1),
+                        Html.X().Column().DataIndex(Model, m => m.MonthTitle).Text("ماه").Flex(3),
+                        Html.X().Column().DataIndex(Model, m => m.Percents).Flex(5).Text("درصد(%)")
+                            .Editor(Html.X().TextField().MaskRe("[0-9,.]")/*.Listeners(l => l.Change.Fn = "checkandsetDarsad")*/),
+                        Html.X().Column().ID("Mablagh").Editor(Html.X().NumberField().ReadOnly(true)).DataIndex(Model, m => m.Price).Flex(5).Text("مبلغ").Renderer("sp")
+                        )
+                    .SelectionModel(
+                        Html.X().RowSelectionModel()
+                            .Mode(Ext.Net.SelectionMode.Single)
+                    )
+                    )
+
+))
+)
+
+<script type="text/javascript">
+    function setNowDate() {
+        Ext.net.DirectMethod.request({
+            url: '/NewVer/BudjetByMonth_New/GetNowDate',
+            success: function (data) {
+                App.BudjetByMonth.queryById('cboBYear').setValue(data.NowDate);
+                loadGrid();
+            }
+        });
+    }
+
+    var checkandsetDarsad = function (editing, record) {
+        m = record;
+        var darsadha = 0;
+        var GridBudjetDetails=App.BudjetByMonth.queryById('GridBudjetDetails');
+        var txtAllBudjet = App.BudjetByMonth.queryById('txtAllBudjet');
+
+        if (txtAllBudjet.getValue() == 0) {
+            Ext.MessageBox.show({
+                title: "خطا",
+                msg: "لطفا ابتدا مبلغ کل بودجه را وارد نمایید.",
+                icon: Ext.MessageBox.ERROR,
+                buttons: Ext.MessageBox.OK
+            });
+            record.record.set(record.field, 0);
+        }
+        for (var i = 0; i < GridBudjetDetails.store.count(); i++) {
+            var item = GridBudjetDetails.store.data.items[i];
+            darsadha = darsadha + item.data.Percents;
+        }
+        if (darsadha > 100) {
+            Ext.MessageBox.show({
+                title: "خطا",
+                msg: "جمع درصد نمی تواند بیشتر از 100 باشد.",
+                icon: Ext.MessageBox.ERROR,
+                buttons: Ext.MessageBox.OK
+            });
+            record.record.set(record.field, 0);
+        }
+        else {
+            var allbudje = txtAllBudjet.getValue().replace(',', '').replace(',', '').replace(',', '').replace(',', '').replace(',', '');
+            var pericee = allbudje * record.record.data.Percents/ 100;
+            record.record.set("Price", pericee);
+        }
+    };
+
+    var sp = function (value)
+    {
+        return value.toLocaleString();
+    };
+
+    function seperateNumber() {
+        App.BudjetByMonth.queryById('txtAllBudjet').setValue(accounting.formatNumber(App.BudjetByMonth.queryById('txtAllBudjet').getValue()));
+    }
+
+    function loadGrid() {
+        Ext.net.DirectMethod.request({
+            url: '/NewVer/BudjetByMonth_New/GetData',
+            params:{
+                Year: App.BudjetByMonth.queryById('cboBYear').getValue()
+            },
+            success: function (data) {
+                App.BudjetByMonth.queryById('GridBudjetDetails').store.loadData(data.data);
+                App.BudjetByMonth.queryById('txtAllBudjet').setValue(data.TotalBudget);
+            }
+        });
+    }
+
+    function SaveBudjetByMonth() {
+        var er = false;
+        var BudgeByMonthVal = new Array();
+        txtAllBudjet = App.BudjetByMonth.queryById('txtAllBudjet');
+        if (txtAllBudjet.validate() == false)
+            er = true;
+        if (er == true) {
+            return;
+        }
+
+        var Grid = App.BudjetByMonth.queryById('GridBudjetDetails');
+        for (var i = 0; i < Grid.store.count() ; i++) {
+            var item = Grid.store.data.items[i];
+            BudgeByMonthVal.push({
+                'fldId': item.data.Id,
+                'fldPercent': item.data.Percents,
+                'fldMonth_No': item.data.Month_No
+            });
+        }
+
+        var data = {
+            BudgeByMonthVal: BudgeByMonthVal,
+            fldYear: App.BudjetByMonth.queryById('cboBYear').getValue(),
+            fldTotalBudget: App.BudjetByMonth.queryById('txtAllBudjet').getValue().replace(',', '').replace(',', '').replace(',', '').replace(',', '').replace(',', '').replace(',', '')
+        };
+
+        App.BudjetByMonth.body.mask("در حال ذخیره سازی...");
+        $.ajax({
+            type: "POST",
+            url: '/NewVer/BudjetByMonth_New/Save',
+            contentType: "application/json; charset=utf-8",
+            data: JSON.stringify(data),
+            datatype: "json",
+            success: function (data) {
+                var ic = Ext.MessageBox.INFO;
+                if (data.Er == 1)
+                    ic = Ext.MessageBox.ERROR;
+                Ext.MessageBox.show({
+                    title: data.MsgTitle,
+                    msg: data.Msg,
+                    icon: ic,
+                    buttons: Ext.MessageBox.OK
+                });
+                if (data.Er != 1) {
+                    loadGrid();
+                }
+                App.BudjetByMonth.body.mask().hide();
+            },
+            failure: function (data) {
+                alert(data.data);
+            }
+        });
+    }
+
+</script>

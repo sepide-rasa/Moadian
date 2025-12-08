@@ -1,0 +1,509 @@
+﻿@using Ext.Net.MVC
+@using Hogaf.ExtNet.UX
+@using Ext.Net;
+@{
+    var X = Html.X();
+}
+
+<style>
+    .LblStyle {
+        height: auto;
+    }
+
+    .LblRed {
+        color: red;
+    }
+    .trheight{
+        height:48px;
+    }
+</style>
+
+@(Html.X().Window().Modal(true)
+.Width(712)
+.Resizable(false)
+        .Title("تنظیمات اصلی")//.Listeners(l => l.AfterRender.Handler = "LoadMainSetting()")
+             .ID("NewMainSetting")
+        .Closable(true).ButtonAlign(Ext.Net.Alignment.Center)
+    .CloseAction(Ext.Net.CloseAction.Destroy)
+        .Layout(LayoutType.Fit)
+                   .Buttons(X.Button().Text("ذخیره").Icon(Ext.Net.Icon.Disk)//.ToolTip("کلید میانبر F8")
+                               .Listeners(l =>
+                               {
+                                   l.Click.Handler = "SaveMainSetting();";
+
+                               })
+                               .ItemID("btnSave")
+                                ,
+                                X.Button().Text("خروج").Icon(Ext.Net.Icon.DoorOut)//.ToolTip("کلید میانبر Esc")
+                                           .OnClientClick("App.NewMainSetting.destroy()"))
+    .Items(
+        X.FormPanel()
+        .Border(false)
+        //.Margin(5)
+            .DefaultButton("btn")
+        .TitleAlign(Ext.Net.TitleAlign.Center)
+           .Layout(LayoutType.Fit)
+                .Items(
+
+                X.Panel().Border(false).PaddingSpec("5px 0 10px 0")
+                    .Layout(Ext.Net.LayoutType.VBox)
+                    .LayoutConfig(new Ext.Net.VBoxLayoutConfig { Align = VBoxAlign.Center })
+            .Items(
+            X.Panel().Layout(LayoutType.HBox).Border(false)
+                .LayoutConfig(new Ext.Net.HBoxLayoutConfig { Align = HBoxAlign.Middle })
+                  .Defaults(new { Margin = 5 })
+            .Items(
+                 X.FieldSet()
+                .Border(true)
+                    .Width(330)
+                .Defaults(new { Margin = 5 })
+                .Title("مشخصات")
+                   .LayoutConfig(new TableLayoutConfig { Columns = 2, TRAttrs = { Cls = "trheight" } })
+                .Items(
+                X.Hidden().ItemID("fldId"),
+                X.Hidden().ItemID("countryId"),
+                X.Hidden().ItemID("countrySID"),
+                X.Hidden().ItemID("countryNType"),
+                X.Hidden().ItemID("CarId"),
+                X.Hidden().ItemID("CarSID"),
+                X.Hidden().ItemID("CarNType"),
+                 X.Label()
+                    .Text("تاریخ پیاده سازی:"),
+                    X.PDateField()
+                    .ItemID("txtDate")
+                    .Editable(false)
+                    .Width(190)
+                    .MsgTarget(Ext.Net.MessageTarget.Side)
+                    //.AllowBlank(false)
+                    .MaskRe("/[0-9,/]/")
+                    //.BlankText("لطفا تاریخ تعیین هزینه را وارد نمایید.")
+                    .LabelAlign(Ext.Net.LabelAlign.Top),
+                         X.Label("نوع جریمه:"),//.PaddingSpec("0 0 0 0"),
+                         X.ComboBox()//.PaddingSpec("32px 0 0 0")
+                        .Width(190)
+                        .ItemID("cboFineType")
+                        .Editable(false)
+                        .TypeAhead(true)
+                        .AllowBlank(false)
+                            .BlankText("لطفا نوع جریمه را انتخاب نمایید.")
+                            .MsgTarget(Ext.Net.MessageTarget.Side)    
+                        .QueryMode(DataLoadMode.Local)
+                        .TriggerAction(TriggerAction.All)
+                        .SelectedItems(new { Value = "0" })
+                        .Items(
+                            new ListItem("روز شمار", "0"),
+                            new ListItem("ماه شمار", "1")
+                                            )
+                              )
+                        ,
+                    X.FieldSet()
+                        .Border(true)
+                        .Layout(LayoutType.VBox)
+                        .LayoutConfig(new Ext.Net.VBoxLayoutConfig { Align = VBoxAlign.Right })
+                        .Title("فیلتر محاسبات")
+                            .Width(330)
+                        .Items(
+                       X.FieldSet()
+                       .Width(290)
+                        .Border(false)
+                        .Layout(LayoutType.HBox)
+                        .Items(
+                            X.Checkbox()
+                            .ItemID("chLate")
+                            .LabelAlign(Ext.Net.LabelAlign.Left)
+                                .PaddingSpec("0 0 0 3px")
+                            .LabelSeparator("")
+                            , X.Label("اخذ جریمه دیر کرد")
+                            , X.Checkbox()
+                                .ItemID("chTax")
+                                .PaddingSpec("0 43px 0 3px")
+                             .LabelAlign(Ext.Net.LabelAlign.Left)
+                            .LabelSeparator("")
+                            , X.Label("اخذ خودرو فرسوده")
+                                )
+                            , X.FieldSet()
+                        .Border(false)
+                        .Layout(LayoutType.HBox)
+
+                       // .Width(290)
+                        .Items(
+                        X.Checkbox()
+                                .ItemID("chSeri")
+                             .LabelAlign(Ext.Net.LabelAlign.Left)
+                            .PaddingSpec("0 0 0 3px")
+                            .LabelSeparator(""),
+                            X.Label("اعمال سری خودرو"),
+                             X.Checkbox()
+                                .ItemID("chApply")
+                             .LabelAlign(Ext.Net.LabelAlign.Left)
+                                 .PaddingSpec("0 40px 0 3px")
+                            .LabelSeparator(""),
+                            X.Label("اعمال تقسیمات کشوری")
+                            )
+                              , X.FieldSet()
+                        .Border(false)
+                        .Layout(LayoutType.HBox)
+                        .Width(200)
+                        .Items(
+                                X.Checkbox()
+                                .ItemID("chBime")
+                            .LabelAlign(Ext.Net.LabelAlign.Left)
+                            .PaddingSpec("0 0 0 3px")
+                            .LabelSeparator("")
+                             , X.Label("اخذ عوارض از تاریخ بیمه")
+                        )
+
+                        )
+                        ),
+                              X.Panel().Layout(LayoutType.HBox).Border(false).Defaults(new { Margin = 5 })
+                        .Items(
+                        X.FieldSet()
+                    .Border(true)
+                    .Title("موقعیت در تقسیمات کشوری")
+                    .Width(330)
+                    .Height(400)
+                    .Layout(LayoutType.Column)
+                    .Defaults(new { Margin = 2 })
+                    .Items(
+                              X.TreePanel()
+                                .ID("TreeCountryMs")
+                                .AutoScroll(true)
+                                .Width(305)
+                                .ColSpan(2)
+                                .Expand(true)
+                                .Height(300)
+                                .Expand(true)
+                                .UseArrows(true)
+                                .Border(false)
+                                .Listeners(a =>
+                                    {
+                                        a.Select.Handler = "GetTreeCountryIdMs(record);";
+                                        a.AfterRender.Handler = "this.getRootNode().expand();";
+                                    })
+                                .Root(Html.X().Node().NodeID("1").DataPath("0").Cls("0").Text("جمهوری اسلامی ایران").IconFile("/Content/images/0.png"))
+                                .Listeners(l =>
+                                {
+                                    l.BeforeLoad.Fn = "nodeLoadTreeCountryMs";
+                                })
+                                , X.Label()
+                                .Cls("LblRed")
+                                .Text("مورد انتخاب شده: ")
+                                , X.Label()
+
+                                .Cls("LblStyle")
+                                .ItemID("lblTitleCountry")
+                                ),
+                                    X.FieldSet()
+                        .Border(true)
+                        .Title("سلسله مراتب خودرو")
+                        .Width(330)
+                        .Height(400)
+                        .Layout(LayoutType.Column)
+                        .Defaults(new { Margin = 2 })
+                        .Items(
+                                  X.TreePanel()
+                                    .ID("TreeCarMs")
+                                    .AutoScroll(true)
+                                    .Width(305)
+                                    .ColSpan(2)
+                                    .Expand(true)
+                                    .Height(300)
+                                    .Expand(true)
+                                    .UseArrows(true)
+                                    .Border(false)
+                                    .Listeners(a =>
+                                        {
+                                            a.Select.Handler = "GetTreeCarIdMs(record);";
+                                            a.AfterRender.Handler = "this.getRootNode().expand();";
+                                        })
+                                    .Root(Html.X().Node().NodeID("1").DataPath("0").Cls("0").Text("وسیله نقلیه").IconFile("/Content/images/c0.png"))
+                                    .Listeners(l =>
+                                    {
+                                        l.BeforeLoad.Fn = "nodeLoadTreeCarMs";
+                                    })
+                                    , X.Label()
+                                    .Cls("LblRed")
+                                    .Text("مورد انتخاب شده: ")
+                                    , X.Label()
+                                    .Cls("LblStyle")
+                                    .ItemID("lblTitleCar")
+                                    )
+                                    )
+                                    )
+
+            )
+        )
+)
+@(Html.X().KeyMap()
+                     .ID("NewMainSettingMap")
+                     .Target("={App.NewMainSetting.getTargetEl()}")
+            .Binding(b =>
+            {
+                b.Add(Html.X().KeyBinding()
+                .KeysString(((int)Ext.Net.KeyCode.F8).ToString())
+                .Handler("SaveMainSetting(); ")
+                );
+
+            }))
+<script type="text/javascript">
+    setTimeout("LoadMainSetting()", 700);
+    var nodeLoadTreeCountryMs = function (store, operation, options) {
+        var node = operation.node;
+        Ext.net.DirectMethod.request({
+            url: '/NewVer/MainSetting_New/NodeLoadTreeCountry',
+            params: {
+                nod: node.getId()
+            },
+            success: function (result) {
+                node.set('loading', false);
+                node.set('loaded', true);
+                node.appendChild(result);
+                node.expand();
+            },
+
+            failure: function (errorMsg) {
+                Ext.Msg.alert('Failure', errorMsg);
+            }
+        });
+
+        return false;
+    };
+
+    function GetTreeCountryIdMs(record) {
+        var path = record.getPath("text");
+        var Text = path.split('/').splice(1).join("-->");
+        App.NewMainSetting.queryById("countryId").setValue(record.getId());
+        App.NewMainSetting.queryById("countrySID").setValue(record.data.cls);
+        App.NewMainSetting.queryById("countryNType").setValue(record.data.dataPath);
+        App.NewMainSetting.queryById('lblTitleCountry').setText(Text);
+    };
+
+    var nodeLoadTreeCarMs = function (store, operation, options) {
+        var node = operation.node;
+        Ext.net.DirectMethod.request({
+            url: '/NewVer/MainSetting_New/NodeLoadTreeCar',
+            params: {
+                nod: node.getId()
+            },
+            success: function (result) {
+                node.set('loading', false);
+                node.set('loaded', true);
+                node.appendChild(result);
+                node.expand();
+            },
+
+            failure: function (errorMsg) {
+                Ext.Msg.alert('Failure', errorMsg);
+            }
+        });
+
+        return false;
+    };
+
+    function SetDefault1() {
+        App.TreeCountryMs.getSelectionModel().select(0);
+    }
+
+    function SetDefault() {
+        App.TreeCarMs.getSelectionModel().select(0);
+    }
+
+    function GetTreeCarIdMs(record) {
+        var path = record.getPath("text");
+        var Text = path.split('/').splice(1).join("-->");
+        App.NewMainSetting.queryById("CarId").setValue(record.getId());
+        App.NewMainSetting.queryById("CarSID").setValue(record.data.cls);
+        App.NewMainSetting.queryById("CarNType").setValue(record.data.dataPath);
+        App.NewMainSetting.queryById('lblTitleCar').setText(Text);
+    };
+
+    function LoadMainSetting() {
+        if ('@ViewBag.Id' != '0') {
+            App.NewMainSetting.body.mask("در حال بارگذاری...");
+            Ext.net.DirectMethod.request({
+                url: '/NewVer/MainSetting_New/Details',
+                params: {
+                    id: '@ViewBag.Id'
+                },
+                success: function (data) {
+                    if (data.Er == 0) {
+                        var txtDate = App.NewMainSetting.queryById('txtDate');
+                        txtDate.setValue(data.fldImplementationDate);
+                        var cboFineType = App.NewMainSetting.queryById('cboFineType');
+                        cboFineType.setValue(data.finetype);
+                        var chLate = App.NewMainSetting.queryById('chLate');
+                        chLate.setValue(data.fldLateFine);
+                        var chTax = App.NewMainSetting.queryById('chTax');
+                        chTax.setValue(data.fldTax);
+                        var chSeri = App.NewMainSetting.queryById('chSeri');
+                        chSeri.setValue(data.fldCarSeriesTreeApplyId);
+                        var chApply = App.NewMainSetting.queryById('chApply');
+                        chApply.setValue(data.fldCountryDivisionsTreeApplyId);
+                        var chBime = App.NewMainSetting.queryById('chBime');
+                        chBime.setValue(data.firstbime);
+                        var Id = App.NewMainSetting.queryById('fldId');
+                        Id.setValue(data.fldId);
+                        App.NewMainSetting.queryById("countryId").setValue(data.countryid);
+                        App.NewMainSetting.queryById("countrySID").setValue(data.countryCode);
+                        App.NewMainSetting.queryById("countryNType").setValue(data.CountryType);
+                        App.NewMainSetting.queryById("CarId").setValue(data.Carid);
+                        App.NewMainSetting.queryById("CarSID").setValue(data.carCode);
+                        App.NewMainSetting.queryById("CarNType").setValue(data.carType);
+
+                        if (data.Path == "/1") {
+                            App.TreeCountryMs.getSelectionModel().select(0);
+                        }
+                        else {
+                            Ext.net.DirectMethod.request({
+                                url: '/NewVer/MainSetting_New/LoadPath',
+                                params: {
+                                    Path: data.Path
+                                },
+                                success: function (result) {
+                                    if (result.length != 0) {
+                                        App.TreeCountryMs.store.getNodeById(data.Path.split('/')[2]).appendChild(result);
+                                        var nodee = App.TreeCountryMs.store.getNodeById(data.Path.split('/')[data.Path.split('/').length - 1]);
+                                        App.TreeCountryMs.expandPath(data.Path);
+                                        App.TreeCountryMs.selectPath(data.Path);
+                                    }
+                                    else {
+                                        App.TreeCountryMs.selectPath(data.Path);
+                                    }
+                                },
+                                failure: function (errorMsg) {
+                                    Ext.Msg.alert('Failure', errorMsg);
+                                }
+                            });
+                        }
+                        Ext.net.DirectMethod.request({
+                            url: '/NewVer/MainSetting_New/LoadPathCar',
+                            params: {
+                                Path: data.CarPath
+                            },
+                            success: function (result) {
+                                if (result.length != 0) {
+                                    App.TreeCarMs.store.getNodeById(data.CarPath.split('/')[2]).appendChild(result);
+                                    var nodeeC = App.TreeCarMs.store.getNodeById(data.CarPath.split('/')[data.CarPath.split('/').length - 1]);
+                                    App.TreeCarMs.expandPath(data.CarPath);
+                                    App.TreeCarMs.selectPath(data.CarPath);
+                                }
+                                else {
+                                    App.TreeCarMs.selectPath(data.CarPath);
+                                }
+                            },
+                            failure: function (errorMsg) {
+                                Ext.Msg.alert('Failure', errorMsg);
+                            }
+                        });
+                    }
+                    else if (data.Er == 1) {
+                        Ext.MessageBox.show({
+                            title: data.MsgTitle,
+                            msg: data.Msg,
+                            icon: Ext.MessageBox.ERROR,
+                            buttons: Ext.MessageBox.OK
+                        });
+                    }
+                    App.NewMainSetting.body.mask().hide();
+                }
+            });
+        }
+        else {
+            var CboCostType = App.NewMainSetting.queryById('cboFineType');
+            CboCostType.setValue(CboCostType.store.getAt(0));
+            /*App.NewMainSetting.queryById('txtAmount').validate();
+            App.NewMainSetting.queryById('CboCostType').validate();
+            App.NewMainSetting.queryById('txtCostDate').validate();*/
+            SetDefault();
+            SetDefault1();
+        }
+
+    }
+
+    function SaveMainSetting() {
+        var txtDate = App.NewMainSetting.queryById('txtDate');
+        var chLate = App.NewMainSetting.queryById('chLate');
+        var chTax = App.NewMainSetting.queryById('chTax');
+        var txtDate = App.NewMainSetting.queryById('txtDate');
+        var chApply = App.NewMainSetting.queryById('chApply');
+        var chSeri = App.NewMainSetting.queryById('chSeri');
+        var cboFineType = App.NewMainSetting.queryById('cboFineType');
+        var chBime = App.NewMainSetting.queryById('chBime');
+        var Id = App.NewMainSetting.queryById('fldId');
+        var er = false;
+        
+        if (txtDate.validate() == false) {
+            er = true;
+        }
+        if (cboFineType.validate() == false) {
+            er = true;
+        }
+        var FineType = false;
+        if (cboFineType.getValue() == "1")
+            FineType = true;
+        if (er == true)
+            return;
+        App.NewMainSetting.body.mask("در حال ذخیره سازی...");
+        Ext.net.DirectMethod.request({
+            url: '/NewVer/MainSetting_New/Save',
+            params: {
+                fldLateFine: chLate.getValue(),
+                fldImplementationDate: txtDate.rawValue,
+                fldTypeCountryDivisions: App.NewMainSetting.queryById("countryNType").getValue(),
+                fldCodeCountryDivisions: App.NewMainSetting.queryById("countrySID").getValue(),
+                fldTax: chTax.getValue(),
+                fldTypeCar: App.NewMainSetting.queryById("CarNType").getValue(),
+                fldCodeCar: App.NewMainSetting.queryById("CarSID").getValue(),
+                fldCountryDivisionsTreeApply: chApply.getValue(),
+                fldId: Id.getValue(),
+                fldCarSeriesTreeApply: chSeri.getValue(),
+                fldFineType: FineType,
+                fldFirstInsurance: chBime.getValue()
+
+            },
+            success: function (data) {
+                var ic = Ext.MessageBox.INFO;
+                if (data.Er == 1)
+                    ic = Ext.MessageBox.ERROR;
+                Ext.MessageBox.show({
+                    Name: data.MsgTile,
+                    msg: data.Msg,
+                    icon: ic,
+                    buttons: Ext.MessageBox.OK
+                });
+                App.NewMainSetting.body.mask().hide();
+                App.MainSetting.queryById('GridMainSetting').store.load();
+                if (data.Er != 1)
+                    ClearMainSetting();
+            }
+
+        });
+    }
+    function ClearMainSetting() {
+        App.NewMainSetting.queryById('cboFineType').setValue("");
+        App.NewMainSetting.queryById('txtDate').setValue("");
+        App.NewMainSetting.queryById('chLate').setValue(false);
+        App.NewMainSetting.queryById('chTax').setValue(false);
+        App.NewMainSetting.queryById('chSeri').setValue(false);
+        App.NewMainSetting.queryById('chApply').setValue(false);
+        App.NewMainSetting.queryById('chBime').setValue(false);
+        App.NewMainSetting.queryById('lblTitleCountry').setText("");
+        App.NewMainSetting.queryById('lblTitleCar').setText("");
+        App.NewMainSetting.queryById("countryId").setValue(0);
+        App.NewMainSetting.queryById("countrySID").setValue(0);
+        App.NewMainSetting.queryById("countryNType").setValue(0);
+        App.NewMainSetting.queryById("CarId").setValue(0);
+        App.NewMainSetting.queryById("CarSID").setValue(0);
+        App.NewMainSetting.queryById("CarNType").setValue(0);
+        App.NewMainSetting.queryById('fldId').setValue(0);
+        App.TreeCountryMs.getSelectionModel().select(0);
+        App.TreeCarMs.getSelectionModel().select(0);
+    }
+   /* function EnterNext() {
+        var keyfield = App.NewMainSetting.queryById(Ext.getCmp((Ext.Element.getActiveElement()).name).itemId);
+        var nextfld = keyfield.nextSibling();
+        nextfld.focus();
+        nextfld.selectText();
+
+    }*/
+</script>

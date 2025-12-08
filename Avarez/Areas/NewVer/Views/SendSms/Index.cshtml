@@ -1,0 +1,144 @@
+﻿@model IEnumerable<Avarez.Models.sp_tblBedehiSelect>
+@using Ext.Net.MVC;
+@{
+
+    var X = Html.X();
+}
+
+@(X.Panel()
+    .ID("Bedehkaran")
+    .Title("لیست بدهکاران")
+    .Closable(true)
+    .Border(false)
+    .CloseAction(Ext.Net.CloseAction.Destroy)
+    .Layout(Ext.Net.LayoutType.Fit)
+    .Items(
+        X.Panel()
+            .ItemID("PnlGridBedehkar")
+            .Border(false)
+            .Layout(Ext.Net.LayoutType.Fit)
+            .Items(
+                X.GridPanel()
+                    .AutoScroll(true)
+                    .TopBar(
+                        Html.X().Toolbar()
+                            .Items(
+                                X.Button()
+                                    .Text("ارسال پیامک")
+                                    .Icon(Ext.Net.Icon.EmailGo)
+                                        .Listeners(l => l.Click.Handler = "SendSmsB()"),
+                                            X.Button()
+                                            .Text("بارگذاری مجدد")
+                                            .Icon(Ext.Net.Icon.ArrowRefresh)
+                                                .Listeners(l => l.Click.Handler = "RefreshBed()"),
+                                                X.Button()
+                                                .Text("خروجی اکسل")
+                                                .Icon(Ext.Net.Icon.ApplicationSideList)
+                                                    .Listeners(l => l.Click.Handler = "ecxel()"),
+                                                X.Button()
+                                                .Text("چاپ لیست")
+                                                .Icon(Ext.Net.Icon.Printer)
+                                                .Listeners(l => l.Click.Handler = "pdf()")
+                                    )
+                                        
+                                    )
+                    .ItemID("GridBedehkar")
+                    .BottomBar(X.PagingToolbar())
+                    .Store(
+                        Html.X().StoreForModel()
+                            .Proxy(Html.X().AjaxProxy()
+                                .Url(Url.Action("Read"))
+                                .Reader(Html.X().JsonReader().Root("data"))
+        )
+                    .PageSize(20)
+                    .RemoteFilter(true)
+                    .RemotePaging(true)
+    )
+                    .View(
+                        Html.X().GridView().LoadingText("در حال بارگذاری...").RTL(true)
+    )
+                    .Plugins(X.FilterHeader().Remote(true))
+                    .ColumnModel(
+                        Html.X().RowNumbererColumn(),
+                        Html.X().Column().DataIndex(Model, m => m.fldCarFileID).Text("شماره پرونده").Flex(2),
+                        Html.X().Column().DataIndex(Model, m => m.fldName).Text("نام و نام خانوادگی").Wrap(true).Flex(5),
+                        Html.X().Column().DataIndex(Model, m => m.fldMotorNumber).Text("شماره موتور").Wrap(true).Flex(3),
+                            Html.X().Column().DataIndex(Model, m => m.fldMobile).Text("شماره موبایل").Wrap(true).Flex(3),
+                            Html.X().Column().DataIndex(Model, m => m.fldMablagh).Text("مبلغ بدهی(ریال)").Wrap(true).Renderer("sep").Flex(4)
+    )
+                .SelectionModel(
+                    Html.X().RowSelectionModel()
+                        .Mode(Ext.Net.SelectionMode.Single)
+    )
+
+))
+)
+
+<script type="text/javascript">
+
+    var sep = function (value, metadata, record, rowIndex, colIndex, store) {
+        return value.toLocaleString();
+    };
+    function ecxel() {
+        Checked = "fldCarFileID" + ";" + "fldName" + ";" + "fldMotorNumber" + ";" + "fldMobile" + ";" + "fldPlaqueNumber" + ";" + "fldModelName" + ";" + "fldClassName" + ";" + "fldSystemName" + ";" + "fldMelli_EconomicCode" + ";" + "fldShasiNumber" + ";" + "fldCarID" + ";" + "fldMablagh";
+        window.location.href = '@Url.Content("~/NewVer/SendSms/Excel/")' + '?Checked=' + Checked;
+    }
+    function pdf() {
+        window.open('@Url.Content("~/NewVer/SendSms/generatepdf/")','blank')
+    }
+    function RefreshBed() {
+        Ext.MessageBox.show({
+            title: "هشدار",
+            msg: "آیا برای بارگذاری مجدد مطمئن هستید؟",
+            icon: Ext.MessageBox.WARNING,
+            buttons: Ext.MessageBox.YESNO,
+            fn: function (btn) {
+                if (btn == 'yes') {
+                    Ext.net.Mask.show({ msg: 'در حال بارگذاری...' });
+                    $.getJSON('/NewVer/SendSms/reload',
+                        function (data) {
+                            var ic = Ext.MessageBox.INFO;
+                            if (data.Er == 1)
+                                ic = Ext.MessageBox.ERROR;
+                            Ext.MessageBox.show({
+                                title: data.MsgTitle,
+                                msg: data.Msg,
+                                icon: ic,
+                                buttons: Ext.MessageBox.OK
+                            });
+                            App.CarCabin.queryById('GridBedehkar').store.load();
+                            Ext.net.Mask.hide();
+                        });
+                }
+            }
+        });
+    }
+    function SendSmsB() {
+        Ext.MessageBox.show({
+            title: "هشدار",
+            msg: "آیا برای ارسال پیامک مطمئن هستید؟",
+            icon: Ext.MessageBox.WARNING,
+            buttons: Ext.MessageBox.YESNO,
+            fn: function (btn) {
+                if (btn == 'yes') {
+                    Ext.net.Mask.show({ msg: 'در حال ارسال...' });
+                    Ext.net.DirectMethod.request({
+                        url: '/NewVer/SendSms/Send',
+                        success: function (data) {
+                            var ic = Ext.MessageBox.INFO;
+                            if (data.Er == 1)
+                                ic = Ext.MessageBox.ERROR;
+                            Ext.MessageBox.show({
+                                title: data.MsgTitle,
+                                msg: data.Msg,
+                                icon: ic,
+                                buttons: Ext.MessageBox.OK
+                            });
+                            Ext.net.Mask.hide();
+                        }
+                    });
+                }
+            }
+        });
+    }
+</script>

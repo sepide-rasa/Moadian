@@ -1,0 +1,108 @@
+﻿@using Ext.Net.MVC
+@using Hogaf.ExtNet.UX
+@using Ext.Net;
+@{
+    var X = Html.X();
+}
+@(Html.X().Window()
+    .Modal(true)
+    .Resizable(false)
+    .Width(680)
+    .Height(550)
+    .AutoScroll(true)
+    .Title("تصویر مدرک")
+    .Layout(LayoutType.Fit)
+    .ID("MadrakVariz")
+    .Closable(true)
+    .ButtonAlign(Ext.Net.Alignment.Center) 
+    .Buttons(
+
+        X.Button()
+            .Text("خروج")
+            .Icon(Ext.Net.Icon.DoorOut)
+        //.ToolTip("کلید میانبر Esc")
+                .OnClientClick("App.MadrakVariz.destroy();"))
+    .CloseAction(Ext.Net.CloseAction.Destroy)
+    .Items(
+        //X.FormPanel()
+        //            .Border(false).AutoScroll(false)
+        //    .Layout(LayoutType.Fit)
+        //    .Items(
+        //        X.Panel()
+        //                .Border(false)
+        ////.PaddingSpec("15px 0 0 0")
+        //            .Layout(LayoutType.VBox)
+        //            .LayoutConfig(new VBoxLayoutConfig { Align = VBoxAlign.Center })
+        //            .Items(
+        //                X.Panel()
+        //                .ID("pnlGallery")
+        //                    .Cls("Background")
+        //                        .AutoScroll(false)
+        //                    .Border(false)
+        //                    .Width(670)
+        //                    .Height(550)
+        ////.Defaults(new { Margin = 2 })
+        //                    .Layout(LayoutType.Table)
+        ////.Title("مشخصات بانک")
+        //                    .LayoutConfig(new TableLayoutConfig { Columns = 4 })
+        //                    .Items(
+                                X.Container().Content(@<html>
+                            <head>
+                                <title>تصاویر</title>
+
+                                <style type="text/css">
+                                    .gallery {
+                                        width: 640px;
+                                        height: auto;
+                                        /*background: #dfe8f6;*/
+                                        color: #eee;
+                                        margin-top: 20px;
+                                        font-family: Arial, "Helvetica Neue", Helvetica, sans-serif;
+                                    }
+
+
+                                    .preview img {
+                                        border: 1px solid #444;
+                                        padding: 1px;
+                                        margin: 0 10px 10px 0;
+                                        width: auto;
+                                        height: auto;
+                                    }
+
+                                    .preview:active {
+                                        transition: -webkit-transform 0.25s ease;
+                                        transition: transform 0.25s ease;
+                                    }
+
+                                        .preview:active img {
+                                            -webkit-transform: scale(2);
+                                            transform: scale(2);
+                                        }
+                                </style>
+
+                            </head>
+                            @*<body class="galleryBody">*@
+                                <center>
+                                    <div class="gallery" align="center">
+
+                                        <div class="preview">
+
+                                            <img name="preview" src='@Url.Content("~/SelectParvande/Image?State=1&id=" + ViewBag.fileIdVariz)' alt="" title="" />
+
+
+                                        </div>
+
+                                    </div>
+                                </center>
+
+                            @*</body>*@
+                        </html>
+
+)
+
+            //  )
+          // )
+      // )
+    )
+)
+

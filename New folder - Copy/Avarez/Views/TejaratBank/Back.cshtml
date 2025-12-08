@@ -1,0 +1,67 @@
+﻿<center>
+    <table style="text-align: center; font-weight: bold;">
+        <tr>
+            <td>
+                <div class="tag">
+                <br />
+                    تاریخ: @ViewBag.Date
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <div class="tag">
+                    کد تراکنش: @ViewBag.ResNum
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <div class="tag">
+                    کد رهگیری: @ViewBag.RefNum
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                بانک عامل: @ViewBag.Bank
+            </td>
+        </tr>
+        <tr>
+            <td>
+                مبلغ: @ViewBag.Money
+            </td>
+        </tr>
+        <tr>
+            <td>
+                نتیجه پرداخت: @ViewBag.Result
+            </td>
+        </tr>
+        <tr>
+            <td>
+            <br />
+                <button id="Back" style="font-size: 12px;">
+                    بازگشت</button>
+                <button id="Report" style="font-size: 12px;">
+                    چاپ رسید</button>
+            </td>
+        </tr>
+    </table>
+</center>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('#Back').button();
+        $('#Report').button();
+
+        $('#Back').click(function () {
+            window.location.href = '@Session["ReturnUrl"]';
+        });
+
+        $('#Report').click(function () {
+            if ('@Session["ResidId"]' != "")
+                window.open('/Facture/Receipt/' + '@Session["ResidId"]');
+            else
+                alert('پرداخت شما نا موفق بوده است.');
+        });
+    });
+</script>

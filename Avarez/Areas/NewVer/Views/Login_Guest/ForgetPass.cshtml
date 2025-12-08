@@ -1,0 +1,294 @@
+﻿@using Ext.Net.MVC
+@using Hogaf.ExtNet.UX
+@using Ext.Net;
+@using Ext.Net.Utilities;
+@{
+    var X = Html.X();
+}
+<script src="~/Scripts/accounting.js"></script>
+
+@(Html.X().Window()
+    .Modal(true)
+        .Listeners(li => li.AfterRender.Handler = "LoadUserName();")
+    .Resizable(false)
+    .Width(303)
+    .Height(168)
+    .Title("بازنشانی رمز عبور")
+       .Icon(Icon.UserEdit)
+    .Layout(LayoutType.Fit)
+    .ID("Forget_Guest")
+    .Closable(true)
+    .ButtonAlign(Ext.Net.Alignment.Center)
+    .Buttons(
+        X.Button()
+            .Text("بازنشانی")
+            .Icon(Ext.Net.Icon.Disk)
+        //.ToolTip("کلید میانبر F8")
+                .Listeners(l => l.Click.Handler = "SaveForget_Guest();"),
+        X.Button()
+            .Text("خروج")
+            .Icon(Ext.Net.Icon.DoorOut)
+        //.ToolTip("کلید میانبر Esc")
+                .OnClientClick("destroy();"))
+    .CloseAction(Ext.Net.CloseAction.Destroy)
+    .Items(
+        X.FormPanel()
+            .Border(false)
+            .Layout(LayoutType.Fit)
+            .Items(
+                X.Panel()
+                    .Border(false)
+                    .PaddingSpec("15px 0 0 0")
+                    .Items(
+                        X.FieldSet()
+                            .Border(false)
+                            .Defaults(new { Margin = 2 })
+                            .Layout(LayoutType.Table)
+                            .LayoutConfig(new TableLayoutConfig { Columns = 2 })
+                            .Items(
+                                X.Hidden().ItemID("fldId"),
+                                X.Label("نوع مالکیت:"),
+                                X.ComboBox()
+                                    .ItemID("cboTypeGF")
+                                    //.FieldLabel("نوع مالکیت")
+                                    .Editable(false)
+                                    .TypeAhead(true)
+                                    .Width(190)
+                                    //.Width(190)
+                                    .QueryMode(DataLoadMode.Local)
+                                    .TriggerAction(TriggerAction.All)
+                                    .SelectedItems(new { Value = "1" })
+                                    .Items(
+                                            new ListItem("حقیقی", "1"),
+                                            new ListItem("حقوقی", "0")
+                                        )
+                                    .Listeners(l => { l.Select.Handler = "ChangeCboTypeGF()"; }),
+                                    X.Label("کد ملی:").ItemID("lblCodeMeli"),
+                                X.TextField()
+                                .ItemID("txtCodeMeli")
+                                .Width(190)
+                                .Plugins(X.InputMask()
+                                        .Mask("AAAAAAAAAA")
+                                        .UnmaskOnBlur(true)
+                                        .ClearWhenInvalid(true)
+                                        .MaskSymbols(ls =>
+                                        {
+                                            ls.Add(new MaskSymbol { Name = "A", Regex = "[0-9]", Placeholder = "_".ToCharArray()[0] });
+                                        })
+                                    )
+                                .MsgTarget(Ext.Net.MessageTarget.Side)
+                                .AllowBlank(false)
+                                .BlankText("لطفا کد ملی را وارد کنید.")
+                                .Focus(true)
+                                ,
+                                    X.Label("کد اقتصادی:").ItemID("lblCodeEghtesadi"),
+                                 X.TextField()
+                                .ItemID("txtCodeEghtesadi")
+                                //.FieldLabel("کد اقتصادی")
+                                .Width(190)
+                                .MsgTarget(Ext.Net.MessageTarget.Side)
+                                .AllowBlank(false)
+                                .Plugins(X.InputMask()
+                                        .Mask("AAAAAAAAAAAA")
+                                        .UnmaskOnBlur(true)
+                                        .ClearWhenInvalid(true)
+                                        .MaskSymbols(ls =>
+                                        {
+                                            ls.Add(new MaskSymbol { Name = "A", Regex = "[0-9]", Placeholder = "_".ToCharArray()[0] });
+                                        })
+                                    )
+                                //.EnforceMaxLength(true)
+                                //.Hidden(true)
+                                //.MaxLength(12)
+                                .BlankText("لطفا کد اقتصادی را وارد نمایید."),
+                                X.Label("شماره موبایل"),
+                                X.TextField()
+                                .ItemID("txtMobile")
+                                .MsgTarget(Ext.Net.MessageTarget.Side)
+                                .AllowBlank(false)
+                                .MaskRe("/[0-9]/")
+                                .Width(190)
+                                .BlankText("لطفا شماره موبایل را وارد کنید.")
+                                .EmptyText("09111111111")
+                                    .Plugins(X.InputMask()
+                                        .Mask("09AAAAAAAAA")
+                                        .ClearWhenInvalid(true)
+                                        .MaskSymbols(ls =>
+                                        {
+                                            ls.Add(new MaskSymbol { Name = "A", Regex = "[0-9]", Placeholder = "_".ToCharArray()[0] });
+                                        })
+                                    )
+
+                            )
+                )
+            )
+        )
+)
+
+
+<script type="text/javascript">
+    var colour = "";
+
+    function LoadUserName() {
+        var txtCodeMeli = App.Forget_Guest.queryById('txtCodeMeli');
+        var txtMobile = App.Forget_Guest.queryById('txtMobile');
+        var lblCodeMeli = App.Forget_Guest.queryById('lblCodeMeli');
+        var lblCodeEghtesadi = App.Forget_Guest.queryById('lblCodeEghtesadi');
+        var txtCodeEghtesadi = App.Forget_Guest.queryById('txtCodeEghtesadi');
+
+        lblCodeEghtesadi.hide();
+        txtCodeEghtesadi.hide();
+        lblCodeMeli.show();
+        txtCodeMeli.show();
+
+        txtMobile.validate();
+        txtCodeMeli.validate();
+    }
+
+    function ChangeCboTypeGF() {
+        var cboTypeGF = App.Forget_Guest.queryById('cboTypeGF');
+        var txtCodeEghtesadi = App.Forget_Guest.queryById('txtCodeEghtesadi');
+        var txtCodeMeli = App.Forget_Guest.queryById('txtCodeMeli');
+        var lblCodeMeli = App.Forget_Guest.queryById('lblCodeMeli');
+        var lblCodeEghtesadi = App.Forget_Guest.queryById('lblCodeEghtesadi');
+
+        if (cboTypeGF.getValue() == 1) {
+            lblCodeEghtesadi.hide();
+            txtCodeEghtesadi.hide();
+            lblCodeMeli.show();
+            txtCodeMeli.show();
+        }
+        else {
+            lblCodeMeli.hide();
+            txtCodeMeli.hide();
+            lblCodeEghtesadi.show();
+            txtCodeEghtesadi.show();
+        }
+    }
+
+    function SaveForget_Guest() {
+        var cboTypeGF = App.Forget_Guest.queryById('cboTypeGF');
+        var txtCodeMeli = App.Forget_Guest.queryById('txtCodeMeli');
+        var txtCodeEghtesadi = App.Forget_Guest.queryById('txtCodeEghtesadi');
+        var txtMobile = App.Forget_Guest.queryById('txtMobile');
+        var fldId = App.Forget_Guest.queryById('fldId');
+        if (fldId.getValue() == "")
+            fldId.setValue("0");
+        var er = false;
+
+        if (cboTypeGF.getValue() == "1") {
+            if (txtCodeMeli.validate() == false) {
+                Ext.MessageBox.show({
+                    title: 'خطا',
+                    msg: 'لطفا کد ملی را وارد نمایید.',
+                    icon: Ext.MessageBox.ERROR,
+                    buttons: Ext.MessageBox.OK
+                });
+                return;
+            }
+        }
+        else {
+            if (txtCodeEghtesadi.validate() == false) {
+                Ext.MessageBox.show({
+                    title: 'خطا',
+                    msg: 'لطفا کد اقتصادی را وارد نمایید.',
+                    icon: Ext.MessageBox.ERROR,
+                    buttons: Ext.MessageBox.OK
+                });
+                return;
+            }
+        }
+        if (txtMobile.validate() == false) {
+            Ext.MessageBox.show({
+                title: 'خطا',
+                msg: 'لطفا موبایل را وارد نمایید.',
+                icon: Ext.MessageBox.ERROR,
+                buttons: Ext.MessageBox.OK
+            });
+            return;
+        }
+
+        if (er == true)
+            return;
+        m = txtMobile.getValue();
+        if (m.substring(0, 2) != "09") {
+            Ext.net.Mask.hide();
+            Ext.MessageBox.show({
+                title: 'خطا',
+                msg: 'موبایل وارد شده نامعتبر است.',
+                icon: Ext.MessageBox.ERROR,
+                buttons: Ext.MessageBox.OK
+            });
+            er = true;
+            return;
+        }
+        else {
+            var code;
+            if (cboTypeGF.getValue() == "1")
+            {
+                code = txtCodeMeli.getValue();
+            }
+            else {
+                code=txtCodeEghtesadi.getValue();
+            }
+            Ext.net.Mask.show({ msg: 'در حال انجام عملیات...' });
+            Ext.net.DirectMethod.request({
+                url: '/NewVer/Login_Guest/SaveForget',
+                params: {
+                    CodeMeli: code,
+                    Mobail: txtMobile.getValue()
+                },
+                success: function (data) {
+                    if (data.Err == 1) {
+                        ic = Ext.MessageBox.ERROR;
+                    }
+                    else
+                        ic = Ext.MessageBox.INFO;
+                        Ext.MessageBox.show({
+                            title: data.MsgTitle,
+                            msg: data.Msg,
+                            icon: ic,
+                            buttons: Ext.MessageBox.OK
+                        });
+                    
+         
+                    @*if ('@ViewBag.fldFirstLogin' == 'True')
+                    App.Forget_Guest.destroy();*@
+                    Ext.net.Mask.hide();
+
+                }
+
+            });
+        }
+    }
+
+    function ClearForget_Guest() {
+        App.Forget_Guest.queryById('txtCodeMeli').setValue("");
+        App.Forget_Guest.queryById('txtMobile').setValue("");
+    }
+    function EnterNext() {
+        var keyfield = App.Forget_Guest.queryById(Ext.getCmp((Ext.Element.getActiveElement()).name).itemId);
+        var nextfld = keyfield.nextSibling();
+        nextfld.focus();
+        nextfld.selectText();
+
+    }
+    function destroy() {
+        Ext.net.DirectMethod.request({
+            url: '/NewVer/Login_Guest/Destroy'
+        });
+    }
+
+    function HelpForget_Guest() {
+        Ext.net.Mask.show({ msg: 'در حال بارگذاری...' });
+        Ext.net.DirectMethod.request({
+            url: '/Login_Guest/Help',
+            params: {
+
+            },
+            success: function (data) {
+                Ext.net.Mask.hide();
+            }
+        });
+    }
+</script>

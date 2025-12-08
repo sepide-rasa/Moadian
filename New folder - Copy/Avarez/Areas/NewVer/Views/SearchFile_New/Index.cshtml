@@ -1,0 +1,291 @@
+﻿@model IEnumerable<Avarez.Models.sp_CarUserGuestSelect>
+@using Ext.Net.MVC
+@using Hogaf.ExtNet.UX
+@using Ext.Net;
+@using Ext.Net.Utilities;
+@{
+
+    var X = Html.X();
+}
+@(X.TabPanel().Title("جستجو پرونده").Border(false).Height(500).Listeners(l => l.AfterRender.Handler = "LoadForm();")
+                .ID("SearchFile")
+                .AutoScroll(true).Closable(false)
+                .Layout(LayoutType.Fit)
+                .Items(
+        //    X.FieldSet().Border(true).Width(500)
+        //  .Layout(Ext.Net.LayoutType.VBox)
+        //                    .LayoutConfig(new Ext.Net.VBoxLayoutConfig { Align = Ext.Net.VBoxAlign.Center })
+        //.Items(
+        X.Panel().Title("پرونده ها")
+
+            .Layout(Ext.Net.LayoutType.VBox)
+            .LayoutConfig(new Ext.Net.VBoxLayoutConfig { Align = Ext.Net.VBoxAlign.Center })
+        .Border(false).ButtonAlign(Ext.Net.Alignment.Center)
+         .ID("Parvande_Guest")
+
+        .Items(
+        
+                X.Panel()
+                //.Layout(Ext.Net.LayoutType.VBox)
+                //        .LayoutConfig(new VBoxLayoutConfig { Align = VBoxAlign.Center })
+                .Layout(Ext.Net.LayoutType.Fit)
+                            .Height(45)
+                            .Width(270)
+                        .Border(false)
+                        .Items(
+                            X.Image()
+                            .ItemID("ImageSearchFile")
+                            .ImageUrl("/Content/images/GeustNAV1.png")
+                           // .SetSize(0, 0)
+                        ),
+                    X.Panel().Border(false)
+                    .Margins("20px 0px 0px 0px")
+                    .ButtonAlign(Ext.Net.Alignment.Center)
+                    .Buttons(X.Button().Text("جستجو").Icon(Ext.Net.Icon.Magnifier).Margin(10)
+                               .Listeners(l =>
+                               {
+                                   l.Click.Handler = "FnSearchParvande();";
+
+                               })
+                               .ItemID("btnSave")
+                                ,
+                                X.Button().Text("ادامه").Icon(Ext.Net.Icon.ArrowLeft).Margin(10)
+                                .Listeners(l =>
+                                {
+                                    l.Click.Handler = "FnNext();";
+
+                                })
+                                ,
+                                //X.Button().Text("راهنما").Icon(Ext.Net.Icon.Help).Margin(10)
+                                //.Listeners(l =>
+                                //{
+                                //    l.Click.Handler = "HelpParvande();";
+
+                                //}),
+                                X.Button().Text("خروج").Icon(Ext.Net.Icon.DoorOut).ToolTip("کلید میانبر Esc")
+                                .OnClientClick("App.Guest.destroy();"))
+                .Center()
+                .Layout(LayoutType.Table)
+                .LayoutConfig(new Ext.Net.TableLayoutConfig { Columns = 4 })
+                .Defaults(new { Margin = 2 })
+                .Items(
+                    X.ComboBox()
+                        .ItemID("cboSearchField")
+                    .FieldLabel("فیلد جستجو")
+                    .Editable(false)
+        //.TypeAhead(true)
+                    .Width(300)
+                    .QueryMode(DataLoadMode.Local)
+                    .TriggerAction(TriggerAction.All)
+                    .SelectedItems(new { Value = "0" })
+                    .Items(
+                        new ListItem("VIN", "0"),
+                        new ListItem("شماره موتور و شاسی", "1")
+                        )
+                        .Listeners(l => l.Select.Handler = "ChangeCbo();")
+                    ,
+                    X.ComboBox()
+                        .ItemID("cboSearchType")
+                    .FieldLabel("نوع جستجو")
+                    .Width(300)
+                    .Editable(false)
+                    .TypeAhead(true)
+                    .QueryMode(DataLoadMode.Local)
+                    .TriggerAction(TriggerAction.All)
+                    .SelectedItems(new { Value = "0" })
+                    .Items(
+                        new ListItem("مشابه عبارت", "0"),
+                        new ListItem("مشابه عبارت از سمت راست", "1"),
+                        new ListItem("عین عبارت", "2")
+                        )
+                        ,
+                    X.TextField()
+                    .FieldLabel("VIN")
+                    .ItemID("txtSearch")
+                        .Width(300)
+                    .MsgTarget(Ext.Net.MessageTarget.Side)
+                    .AllowBlank(false)
+                    .BlankText("لطفا متن جستجو را وارد کنید.")
+                        ,
+                    X.TextField()
+                    .FieldLabel("شماره شاسی")
+                    .ItemID("txtSearch2")
+                        .Width(300)
+                    .MsgTarget(Ext.Net.MessageTarget.Side)
+                    .AllowBlank(false)
+                    .BlankText("لطفا شماره شاسی را وارد کنید.")
+                                )
+            ,
+                    X.Panel()
+                        .Margins("20px 0px 0px 0px")
+                //.Height(400)
+                .Width(1000)
+                            .Border(false)
+                            .AutoScroll(true)
+                            .ID("PnlGridPanel")
+                            .Listeners(l => l.AfterRender.Handler = "App.PnlGridPanel.setHeight(Ext.getBody().getViewSize().height-280);")
+                            .Layout(Ext.Net.LayoutType.Fit)
+                    .Items(
+                        X.GridPanel()
+                            .AutoScroll(true)
+                            .ItemID("GridSearch")
+                            .BottomBar(X.PagingToolbar())
+                            .Store(
+                            X.StoreForModel().Listeners(l => l.DataChanged.Handler = "App.SearchFile.queryById('GridSearch').selModel.refresh();")
+        // .AutoLoad(false)
+                   // .Proxy(Html.X().AjaxProxy()
+                        //.Url(Url.Action("Read"))
+                        //.Reader(Html.X().JsonReader().Root("data"))
+                   // )
+                                    .PageSize(20)
+                                    .RemoteFilter(true)
+                                    .RemotePaging(true)
+                            )
+                            //.View(
+                            //    Html.X().GridView().LoadingText("در حال بارگذاری...").RTL(true)
+                            //)
+        // .Plugins(X.FilterHeader().Remote(true))
+                            .ColumnModel(
+                                 Html.X().RowNumbererColumn().Flex(1),
+                                   Html.X().Column().DataIndex(Model, m => m.fldID).Text("کد").Flex(2).Hidden(true),
+                                    Html.X().Column().DataIndex(Model, m => m.fldMotorNumber).Text("ش موتور").Flex(5),
+                                    Html.X().Column().DataIndex(Model, m => m.fldShasiNumber).Text("ش شاسی").Flex(5),
+                                    Html.X().Column().DataIndex(Model, m => m.fldVIN).Text("VIN").Flex(5),
+                                    Html.X().Column().DataIndex(Model, m => m.fldModel).Text("مدل").Flex(4),
+                                    Html.X().Column().DataIndex(Model, m => m.fldCarModelName).Text("تیپ").Flex(5),
+                                    Html.X().Column().DataIndex(Model, m => m.fldCarClassName).Text("کلاس").Flex(5),
+                                    Html.X().Column().DataIndex(Model, m => m.fldCarFileId).Text("کد ").Flex(5).Hidden(true)
+
+                                        )
+                            )
+
+
+                        )
+                            )
+
+)
+<script>
+    function LoadForm() {
+        /*App.SearchFile.queryById('ImageSearchFile').setImageUrl("/Content/images/GeustNAV1.png");*/
+        var txtSearch2 = App.SearchFile.queryById('txtSearch2');
+        txtSearch2.hide(true);
+    }
+    function ChangeCbo() {
+        var cboSearchField = App.SearchFile.queryById('cboSearchField');
+        var txtSearch = App.SearchFile.queryById('txtSearch');
+        var txtSearch2 = App.SearchFile.queryById('txtSearch2');
+
+        if (cboSearchField.getValue() == "0") {
+            txtSearch2.hide(true);
+            txtSearch.setFieldLabel("VIN");
+        }
+        else if (cboSearchField.getValue() == "1") {
+            txtSearch2.show(true);
+            txtSearch.setFieldLabel("شماره موتور");
+        }
+        
+    }
+
+    function FnSearchParvande() {
+        var cboSearchField = App.SearchFile.queryById('cboSearchField');
+        var cboSearchType = App.SearchFile.queryById('cboSearchType');
+        var txtSearch = App.SearchFile.queryById('txtSearch');
+        var txtSearch2 = App.SearchFile.queryById('txtSearch2');
+
+        if (cboSearchField.getValue() == "0") {
+            if (txtSearch.getValue() != "") {
+                Ext.net.Mask.show({ msg: 'در حال جستجو...' });
+                Ext.net.DirectMethod.request({
+                    url: '/NewVer/SearchFile_New/Search',
+                    params: {
+                        SearchField: cboSearchField.getValue(),
+                        SearchType: cboSearchType.getValue(),
+                        Value1: txtSearch.getValue(),
+                        Value2: txtSearch2.getValue()
+                    },
+                    success: function (data) {
+                        Ext.net.Mask.hide();
+                        App.SearchFile.queryById('GridSearch').getStore().loadData(data);
+                        if (data.length == 0) {
+                            Ext.MessageBox.show({
+                                title: "توجه",
+                                msg: "کاربر گرامی؛ اطلاعات شما در این سامانه ثبت نشده است. لطفاً جهت ثبت اطلاعات خود به شهرداری یا دفاتر پیشخوان مراجعه نمایید.",
+                                icon: Ext.MessageBox.WARNING,
+                                buttons: Ext.MessageBox.OK
+                            });
+                        }
+                    }
+                });
+            }
+        }
+        else {
+            if (txtSearch.getValue() != "" && txtSearch2.getValue() != "") {
+                Ext.net.Mask.show({ msg: 'در حال جستجو...' });
+                Ext.net.DirectMethod.request({
+                    url: '/NewVer/SearchFile_New/Search',
+                    params: {
+                        SearchField: cboSearchField.getValue(),
+                        SearchType: cboSearchType.getValue(),
+                        Value1: txtSearch.getValue(),
+                        Value2: txtSearch2.getValue()
+                    },
+                    success: function (data) {
+                        Ext.net.Mask.hide();
+                        App.SearchFile.queryById('GridSearch').getStore().loadData(data);
+                        if (data.length == 0) {
+                            Ext.MessageBox.show({
+                                title: "توجه",
+                                msg: "کاربر گرامی؛ اطلاعات شما در این سامانه ثبت نشده است. لطفاً جهت ثبت اطلاعات خود به شهرداری یا دفاتر پیشخوان مراجعه نمایید.",
+                                icon: Ext.MessageBox.WARNING,
+                                buttons: Ext.MessageBox.OK
+                            });
+                        }
+                    }
+                });
+            }
+        }
+    }
+
+    function FnNext() {
+        var SelectedHeaderRow = App.SearchFile.queryById('GridSearch').selModel.getLastSelected();
+        if (SelectedHeaderRow != null) {
+            Ext.net.Mask.show({ msg: 'در حال بارگذاری...' });
+            Ext.net.DirectMethod.request({
+                url: '/NewVer/Facture_New/Index',
+                params: {
+                    containerId: "SearchFile",
+                    id: SelectedHeaderRow.data.fldID,
+                    carFileId: SelectedHeaderRow.data.fldCarFileId
+                },
+                success: function () {
+                    Ext.net.Mask.hide();
+                }
+            });
+        }
+        else {
+            Ext.MessageBox.show({
+                title: "خطا",
+                msg: "لطفا یک سطر را انتخاب کنید",
+                icon: Ext.MessageBox.ERROR,
+                buttons: Ext.MessageBox.OK
+            });
+        }
+    }
+    function EnterNext() {
+        var nextfld;
+        if (App.GuestTab.activeTab.id == "SearchFile" && App.SearchFile.activeTab.id == "Parvande_Guest") {
+            var keyfield = App.SearchFile.queryById(Ext.getCmp((Ext.Element.getActiveElement()).name).itemId);
+            if (keyfield.itemId == "txtSearch") {
+                FnSearchParvande();
+            }
+            else if (keyfield.itemId == "txtSearch2") {
+                FnSearchParvande();
+            }
+            else {
+                nextfld = keyfield.nextSibling();
+                nextfld.focus();
+            }
+        }
+        /*nextfld.selectText();*/
+    }
+</script>

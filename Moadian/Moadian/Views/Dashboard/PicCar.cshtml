@@ -1,0 +1,199 @@
+﻿@model IEnumerable<Avarez.Models.sp_CarExperienceSelect>
+@using Ext.Net.MVC
+@using Hogaf.ExtNet.UX
+@using Ext.Net;
+@using Ext.Net.Utilities;
+@{
+    var X = Html.X();
+}
+<style>
+    .colorlbl {
+        color: red;
+    }
+</style>
+@(Html.X().Window()
+    .Border(false)
+            .ID("PicCar")
+               .Listeners(l => l.AfterRender.Handler = "loadPicCar();")
+    .Title("تصاویر")
+    .AutoScroll(true)
+    .Closable(true)
+    .CloseAction(CloseAction.Destroy)
+    .Height(150)
+    .Width(270)
+    .Layout(Ext.Net.LayoutType.VBox)
+    .LayoutConfig(new VBoxLayoutConfig { Align = VBoxAlign.Center })
+    .Items(
+        X.Hidden()
+            .ItemID("fldId"),
+
+        X.FormPanel()
+            .Border(false)
+            .BodyStyle("background-color:transparent;")
+            .Layout(LayoutType.Fit)
+
+                .Defaults(new { Margin = 2 })
+            .Layout(LayoutType.Table)
+            .LayoutConfig(new TableLayoutConfig { Columns = 4 })
+            .Items(
+            X.Label("تصویر برگ سبز:"),
+                        X.Button()
+                            .ID("UploadBargSabz")
+                            .Icon(Icon.Attach)
+                            .Text("نمایش")
+                            .Listeners(l =>
+                            {
+                                l.Click.Handler = "ShowPicCar(3);";
+                            })  ,
+                        X.Button()
+                            .ID("AccBargSabz")
+                            .Icon(Icon.Attach)
+                            .Text("تایید")
+                            .Listeners(l =>
+                            {
+                                l.Click.Handler = "AccPicCar(1);";
+                            })  ,
+                            X.Label()
+                            .ItemID("LblBargSabz")                                
+                            ,
+                    X.Label("تصویر کارت خودرو:"),
+                        X.Button()
+                            .ID("UploadCartKhodro")
+                            .Icon(Icon.Attach)
+                            .Text("نمایش")
+                            .Listeners(l =>
+                            {
+                                l.Click.Handler = "ShowPicCar(4);";
+                            })
+                                ,
+                            X.Button()
+                                .ID("AccCartKhodro")
+                                .Icon(Icon.Attach)
+                                .Text("تایید")
+                                .Listeners(l =>
+                                {
+                                    l.Click.Handler = "AccPicCar(2);";
+                                }),
+                                    X.Label()
+                                    .ItemID("LblCartKhodro")
+                                ,
+                        X.Label("تصویر پشت کارت خودرو:"),
+                                X.Button()
+                                    .ID("UploadCartKhodro_P")
+                                    .Icon(Icon.Attach)
+                                    .Text("نمایش")
+                                    .Listeners(l =>
+                                    {
+                                        l.Click.Handler = "ShowPicCar(5);";
+                                    })
+                                   ,
+                            X.Button()
+                                .ID("AccCartKhodro_P")
+                                .Icon(Icon.Attach)
+                                .Text("تایید")
+                                .Listeners(l =>
+                                {
+                                    l.Click.Handler = "AccPicCar(3);";
+                                }),
+                                    X.Label()
+                                    .ItemID("LblCartKhodro_P")
+                                ,
+                             X.Label("تصویر سند کارخانه:"),
+                                X.Button()
+                                    .ID("UploadSanad")
+                                    .Icon(Icon.Attach)
+                                    .Text("نمایش")
+                                    .Listeners(l =>
+                                    {
+                                        l.Click.Handler = "ShowPicCar(6);";
+                                    }),
+                        X.Button()
+                            .ID("AccSanad")
+                            .Icon(Icon.Attach)
+                            .Text("تایید")
+                            .Listeners(l =>
+                            {
+                                l.Click.Handler = "AccPicCar(4);";
+                            })  ,
+                            X.Label()
+                                .ItemID("LblSanad")
+                            
+                                        
+                )
+            )
+)
+<script type="text/javascript">
+    var CarId = '@ViewBag.CarID';
+    function loadPicCar() {
+        var AccBargSabz = App.PicCar.queryById('AccBargSabz');
+        var LblBargSabz = App.PicCar.queryById('LblBargSabz');
+        var AccCartKhodro = App.PicCar.queryById('AccCartKhodro');
+        var LblCartKhodro = App.PicCar.queryById('LblCartKhodro');
+        var AccCartKhodro_P = App.PicCar.queryById('AccCartKhodro_P');
+        var LblCartKhodro_P = App.PicCar.queryById('LblCartKhodro_P');
+        var AccSanad = App.PicCar.queryById('AccSanad');
+        var LblSanad = App.PicCar.queryById('LblSanad');
+
+        App.PicCar.body.mask("در حال بارگذاری...");
+        Ext.net.DirectMethod.request({
+            url: '/Dashboard/LoadLblAcc',
+            params: {
+                Id: '@ViewBag.CarID'
+            },
+            success: function (data) {
+                App.PicCar.body.mask().hide();
+                if (data.HaveTaiid) {
+                    App.PicCar.setWidth(500);
+                    if (data.fldKarbarTaeedKonandeBargSabz != "")
+                        LblBargSabz.setText("کاربر تاییدکننده:" + data.fldKarbarTaeedKonandeBargSabz);
+                    if (data.fldKarbarTaeedKonandeCart != "")
+                        LblCartKhodro.setText("کاربر تاییدکننده:" + data.fldKarbarTaeedKonandeCart);
+                    if (data.fldKarbarTaeedKonandeCartBack != "")
+                        LblCartKhodro_P.setText("کاربر تاییدکننده:" + data.fldKarbarTaeedKonandeCartBack);
+                    if (data.fldKarbarTaeedKonandeSanad != "")
+                        LblSanad.setText("کاربر تاییدکننده:" + data.fldKarbarTaeedKonandeSanad);
+                }
+
+                AccBargSabz.setDisabled(data.fldIsAcceptBargSabz);
+                AccCartKhodro.setDisabled(data.fldIsAcceptCart);
+                AccCartKhodro_P.setDisabled(data.fldIsAcceptCartBack);
+                AccSanad.setDisabled(data.fldIsAcceptSanad);
+                    
+                
+            }
+        });
+    }
+    function ShowPicCar(state) {
+        Ext.net.Mask.show({ msg: 'در حال بارگذاری...' });
+        Ext.net.DirectMethod.request({
+            url: '/NewVer/PreviewFile/Index',
+            params: {
+                State: state,
+                Id: '@ViewBag.CarID'
+            },
+            success: function () {
+                Ext.net.Mask.hide();
+            }
+        });
+    }
+    function AccPicCar(state) {
+        Ext.net.Mask.show({ msg: 'در حال بارگذاری...' });
+        Ext.net.DirectMethod.request({
+            url: '/Dashboard/AccPicCar',
+            params: {
+                State: state,
+                Id: '@ViewBag.CarID'
+            },
+            success: function (data) {
+                Ext.net.Mask.hide();
+                Ext.MessageBox.show({
+                    Name: data.MsgTitle,
+                    msg: data.Msg,
+                    icon: Ext.MessageBox.INFO,
+                    buttons: Ext.MessageBox.OK
+                });
+                loadPicCar();
+            }
+        });
+    }
+</script>

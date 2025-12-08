@@ -1,0 +1,139 @@
+﻿@using Ext.Net.MVC
+@using Hogaf.ExtNet.UX
+@using Ext.Net;
+@using Ext.Net.Utilities;
+@{
+    var X = Html.X();
+}
+
+
+@(Html.X().Window()
+    .Modal(true)
+    .Width(500).Height(300)
+    .Maximized(true)
+    .Title("گزارش صورتحساب")
+                .ID("ReportPage")
+                               .Listeners(L => L.AfterRender.Handler = "setSizeReportPage()")
+    .Resizable(false)
+    .Closable(true)
+    .CloseAction(Ext.Net.CloseAction.Destroy)
+    .ButtonAlign(Alignment.Center)
+    .Layout(LayoutType.Fit)
+
+        .Items(
+            X.Panel()
+                .AutoScroll(true)
+                .Border(false)
+        //.Layout(LayoutType.VBox)
+        //.LayoutConfig(new VBoxLayoutConfig { Align = VBoxAlign.Center })
+                .Items(
+                    X.Panel()
+                        .AutoScroll(true)
+                        .Border(false)
+                        .ButtonAlign(Alignment.Center)
+                        .Layout(LayoutType.VBox)
+                        .LayoutConfig(new VBoxLayoutConfig { Align = VBoxAlign.Center })
+                        .Buttons(
+                            Html.X().Button()
+                                .Text("چاپ")
+                                .Icon(Ext.Net.Icon.Printer)
+                                    .Listeners(l => l.Click.Handler = "PrintReportPage()"),
+                            Html.X().Button()
+                                .Text("اکسل")
+                                .Icon(Ext.Net.Icon.PageExcel)
+                                    .Listeners(l => l.Click.Handler = "ExcelReportPage()"),
+                            Html.X().Button()
+                                .Text("خروج")
+                                .Icon(Ext.Net.Icon.DoorOut)
+                                    .Listeners(l => l.Click.Handler = "App.ReportPage.destroy()")
+                        )
+                        .Items(
+                            X.FieldSet()
+                                .Border(false)
+                                .Layout(LayoutType.Table)
+                                .LayoutConfig(new TableLayoutConfig { Columns = 4 })
+                                .Defaults(new { Margin = 2 })
+                                .Items(
+
+                                     X.Label("از تاریخ:"),
+                                X.PDateField()
+                                    .ItemID("txtDateStart")
+                                    .AutoFocus(true)
+                                    .AllowBlank(false)
+                                    .Width(100)
+                                    .Editable(true)
+                                    .MaskRe("/[0-9 /]/")
+        //.Listeners(l =>
+        //{
+        //    l.AfterRender.Handler = "SetDefaulttxtDocDate()";
+        //    l.Change.Handler = "SetValidateDocDate()";
+        //})
+                                        .BlankText("لطفا از تاریخ را وارد کنید.")
+                                    .MaxLength(10)
+                                    .EnforceMaxLength(true)
+                                         , 
+                                   X.Label("تا تاریخ:"),
+                                X.PDateField()
+                                    .ItemID("txtDateEnd")
+                                    .AllowBlank(false)
+                                    .Width(100)
+                                    .Editable(true)
+                                    .MaskRe("/[0-9 /]/")
+        //.Listeners(l =>
+        //{
+        //    l.AfterRender.Handler = "SetDefaulttxtDocDate()";
+        //    l.Change.Handler = "SetValidateDocDate()";
+        //})
+                                        .BlankText("لطفا تا تاریخ را وارد کنید.")
+                                    .MaxLength(10)
+                                    .EnforceMaxLength(true)
+                                )
+                        ),
+                    Html.X().Panel()
+                        .Border(true)
+                        .Listeners(L => L.AfterRender.Handler = "setSizePnlRpt()")
+                        .AutoScroll(true)
+                        .ItemID("RptPanel2")
+                )
+        )
+)
+<script type="text/javascript">
+    function SetDefult() {
+        App.ReportPage.queryById('txtDateStart').setValue('@ViewBag.Tarikh');
+        App.ReportPage.queryById('txtDateEnd').setValue('@ViewBag.Tarikh');
+    }
+    function setSizeReportPage() {
+        if ('@ViewBag.state' == 0)
+            App.ReportPage.setTitle('گزارش صورتحساب');
+    }
+    function setSizePnlRpt() {
+        App.ReportPage.queryById('RptPanel2').setSize(App.Desktop1.desktop.getWidth() - 15, App.Desktop1.desktop.getHeight() - 100);
+    }
+    function PrintReportPage() {
+        var txtDateStart = App.ReportPage.queryById('txtDateStart');
+        var txtDateEnd = App.ReportPage.queryById('txtDateEnd');
+
+        var height = App.Desktop1.desktop.getHeight() - 105;
+
+        if (txtDateStart.validate() == true && txtDateEnd.validate() == true) {
+
+            App.ReportPage.queryById('RptPanel2').update("<center><object class='se-pre-con' style='width:100%;height:" + height +
+                "px;border: 1px solid #ccc;' type='application/pdf' data='/Tax/RptSooratHesab/GeneratePdf?DateStart=" + txtDateStart.rawValue + "&DateEnd=" + txtDateEnd.rawValue +
+                "'></object></center>");
+        }
+    }
+       function ExcelReportPage() {
+        var txtDateStart = App.ReportPage.queryById('txtDateStart');
+        var txtDateEnd = App.ReportPage.queryById('txtDateEnd');
+
+        var height = App.Desktop1.desktop.getHeight() - 105;
+
+        if (txtDateStart.validate() == true && txtDateEnd.validate() == true) {
+
+              var Checked = "";
+            Checked = "fldIndatim" + ";"+"fldShomareFish" + ";" + "fldkh_name" + ";"+ "fldkh_fldNationalCode" + ";"+ "fldkh_CodeEghtesadi" + ";" + "SumSooratHesab" + ";" + "fldStatusName" + ";" ;
+            window.location.href = '@Url.Content("~/Tax/RptSooratHesab/CreateExcel/")' + '?Checked=' + Checked + "&DateStart=" + txtDateStart.rawValue + "&DateEnd=" + txtDateEnd.rawValue ;
+
+        }
+    }
+  </script>

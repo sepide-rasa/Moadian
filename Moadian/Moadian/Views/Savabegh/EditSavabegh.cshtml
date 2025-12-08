@@ -1,0 +1,18 @@
+﻿@using Kendo.Mvc.UI;
+@Avarez.Helper.winClass.windowHeader("", ".", 800, 600)
+<div>
+    <div class="modal" id="EditSavabegh">
+
+    </div>
+    @Avarez.Helper.winClass.windowFother()
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#CommonWin #btnClose').click(function () {
+                $("#CommonWin").remove();
+                isWinOpen = false;
+                Dialog = 0;
+            });
+        });
+    </script>
+</div>

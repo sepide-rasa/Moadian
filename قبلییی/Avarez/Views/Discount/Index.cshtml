@@ -1,0 +1,615 @@
+﻿@using Kendo.Mvc.UI;
+<div class="modal" id="Discount">
+    <script src="@Url.Content("~/Content/Base.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Scripts/jquery.ui.datepicker-cc.all.min.js")" type="text/javascript"></script>
+    <div>
+     <a href="@Url.Content("~/Helps/تخفیف.htm")" target="_blank" id="Help" title="راهنما" style="background-image:url('/Content/images/1381415123_help.png');background-repeat: no-repeat;height: 20px;float: left;top: 10px;left: 10px;"></a>
+        <br />
+        <center>
+            <table>
+                <tr>
+                    @Html.Hidden("fldId")
+                    <td align="left">
+                        <span style="color: Red;">*</span> نام تخفیف:
+                    </td>
+                    <td dir="rtl" align="right">
+                        @Avarez.Helper.winClass.textbox("txtName")
+                        <span id="lblNameError" style="color: Red;"></span>
+                    </td>
+                    <td align="left">
+                        <span style="color: Red;">*</span> تاریخ شروع :
+                    </td>
+                    <td dir="rtl" align="right">
+                        @Html.TextBox("txtDateS", null, new { @dir = "ltr", @style = "width: 162px;" })
+                        <span id="lblDateSError" style="color: Red;"></span>
+                    </td>
+                </tr>
+                <tr>
+                </tr>
+                <tr>
+                    <td align="left">
+                        <span style="color: Red;">*</span> تاریخ پایان:
+                    </td>
+                    <td dir="rtl" align="right">
+                        @Html.TextBox("txtDateE", null, new { @dir = "ltr", @style = "width: 162px;" })
+                        <span id="lblDateEError" style="color: Red;"></span>
+                    </td>
+                    <td align="left">
+                        <span style="color: Red;">*</span> درصد تخفیف:
+                    </td>
+                    <td dir="rtl" align="right">
+                        @Avarez.Helper.winClass.textbox("txtPercent")
+                        <span id="lblPercentError" style="color: Red;"></span>
+                    </td>
+                </tr>
+                <tr>
+                    <td align="left">
+                        <span style="color: Red;">*</span> تاریخ اثر:
+                    </td>
+                    <td dir="rtl" align="right">
+                        @Html.TextBox("txtDateOf", null, new { @dir = "ltr", @style = "width: 162px;" })
+                        <span id="lblDateOfError" style="color: Red;"></span>
+                    </td>
+                    <td align="left">
+                    </td>
+                    <td dir="rtl" align="right">
+                        @Html.CheckBox("chRate")مشمول نرخ عوارض
+                    </td>
+                </tr>
+                <tr>
+                    <td align="left">
+                    </td>
+                    <td dir="rtl" align="right">
+                        @Html.CheckBox("chOther")مشمول سایر مبالغ
+                    </td>
+                    <td align="left">
+                    </td>
+                    <td dir="rtl" align="right">
+                        @Html.CheckBox("chEffectUser")موثر بر کاربر
+                    </td>
+                </tr>
+                <tr>
+                    <td align="left">
+                    </td>
+                    <td dir="rtl" align="right">
+                        @Html.CheckBox("chExtra")مشمول ارزش افزوده
+                    </td>
+                    <td align="left">
+                    </td>
+                    <td dir="rtl" align="right">
+                        @Html.CheckBox("chEffectMun")موثر بر شهرداری
+                    </td>
+                </tr>
+                <tr>
+                    <td align="left">
+                    </td>
+                    <td dir="rtl" align="right">
+                        @Html.CheckBox("chFine")مشمول جریمه
+                    </td>
+                    <td align="left">
+                    </td>
+                    <td dir="rtl" align="right">
+                        @Html.CheckBox("chEffectOffice")موثر بر دفاتر
+                    </td>
+                </tr>
+                <tr>
+                    <td align="left">
+                        موقعیت در تقسیمات کشوری:
+                    </td>
+                    <td colspan="3" dir="rtl" id="countryLocation" align="right">
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="4" align="center" style="height: 30px;">
+                        @Html.Label("مورد انتخاب شده: ", new { @id = "CountryPosition" })
+                    </td>
+                </tr>
+                <tr>
+                    <td align="left">
+                        سلسله مراتب خودرو:
+                    </td>
+                    <td colspan="3" dir="rtl" id="carLocation" align="right">
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="4" align="center" style="height: 30px;">
+                        @Html.Label("مورد انتخاب شده: ", new { @id = "carPosition" })
+                    </td>
+                </tr>
+                @Html.Hidden("fldId")
+            </table>
+            <p>
+                @Avarez.Helper.winClass.Buttons("AddLink", "ذخیره", "Save")
+                @Avarez.Helper.winClass.Buttons("EditLink", "ویرایش", "Edit")
+                @Avarez.Helper.winClass.Buttons("DelLink", "حذف", "Del")
+                @Avarez.Helper.winClass.Buttons("exit", "خروج", "Exit")
+            </p>
+        </center>
+        @(Html.Kendo().PanelBar()
+        .Name("panelbar-images")
+        .Items(panelbar =>
+        {
+            panelbar.Add().Text("جستجو")
+                .ImageUrl(Url.Content("~/Content/images/search.png"))
+                .Content(@<div>
+                    <table>
+                        <tr>
+                            <td>
+                                فیلد جستجو:@Html.DropDownList("cboSearchFiald", new SelectList(new[] { new { ID = "0", Name = "نام تقسیمات کشوری " } }, "ID", "Name"))
+                            </td>
+                            <td>
+                                نوع جستجو: @Html.DropDownList("cboSearchType", new SelectList(new[] { new { ID = "0", Name = "مشابه عبارت" }, new { ID = "1", Name = "مشابه عبارت از سمت راست" }, new { ID = "2", Name = "عین عبارت" } }, "ID", "Name"))
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                عبارت جستجو: @Avarez.Helper.winClass.textbox("txtSearch")
+                            </td>
+                            <td>
+                                نتیجه رکوردها: @Html.TextBox("txtTop", 30, new { @style = "width:30px;" }) رکورد
+                            </td>
+                        </tr>
+                    </table>
+                    <br />
+                </div>);
+        })
+        )
+        <div class="k-rtl demo-section">
+            @(Html.Kendo().Grid<Avarez.Models.sp_DiscountSelect>()
+                .Name("Grid")
+                .Columns(columns =>
+                {
+                    columns.Bound(p => p.fldID).Title("کد").Visible(false);
+                    columns.Bound(p => p.fldName).Title("نام");
+                    columns.Bound(p => p.fldStartDate).Title("تاریخ شروع");
+                    columns.Bound(p => p.fldEndDate).Title("تاریخ پایان");
+                    columns.Bound(p => p.fldPercentDiscount).Title(" درصد تخفیف");
+                    columns.Bound(p => p.fldCountryDivisionName).Title(" تقسیم کشوری");
+                    columns.Bound(p => p.fldCarSeriesName).Title(" سری خودرو");
+                    columns.Bound(p => p.fldDesc).Title("توضیحات");
+                })
+                .Selectable(selectable => selectable.Mode(GridSelectionMode.Single))
+                .Pageable()
+                .Scrollable()
+                .DataSource(data =>
+                data.Ajax()
+                .PageSize(10)
+                .Read("Fill", "Discount")
+            )
+        )
+        </div>
+    </div>
+    <script type="text/javascript">
+        function select(e) {
+            var dataItem = this.dataItem(e.node);
+            countryid = dataItem.id;
+            countrySID = dataItem.fldSid;
+            countryNType = dataItem.fldNodeType;
+            var url = '@Url.Content("~/Discount/CountryPosition")';
+            $.ajax({
+                type: "post",
+                url: url,
+                data: { id: countryid },
+                datatype: "json",
+                success: function (data) {
+                    var m = data;
+                    $('#CountryPosition').html('مورد انتخاب شده: ' + m.Position);
+                    var treeview = $("#treeview").data("kendoTreeView");
+                    treeview.collapse(".k-item");
+                },
+                failure: function (data) {
+                    alert(data.data);
+                }
+            });
+        }
+
+        var countryid;
+        var countrySID;
+        var countryNType;
+
+        function carselect(e) {
+            var dataItem = this.dataItem(e.node);
+            carid = dataItem.id;
+            carSID = dataItem.fldSid;
+            carNType = dataItem.fldNodeType;
+            var url = '@Url.Content("~/Discount/CarPosition")';
+            $.ajax({
+                type: "post",
+                url: url,
+                data: { id: carid },
+                datatype: "json",
+                success: function (data) {
+                    var m = data;
+                    $('#carPosition').html('مورد انتخاب شده: ' + m.Position);
+                    var treeview = $("#cartreeview").data("kendoTreeView");
+                    treeview.collapse(".k-item");
+                },
+                failure: function (data) {
+                    alert(data.data);
+                }
+            });
+        }
+
+        var carid;
+        var carSID;
+        var carNType;
+        $("document").ready(function () {
+            $("#txtDateS").datepicker({
+                showButtonPanel: true
+            });
+            $("#txtDateE").datepicker({
+                showButtonPanel: true
+            });
+            $("#txtDateOf").datepicker({
+                showButtonPanel: true
+            });
+            $('#countryLocation').html($('#LocationDiv').valueOf());
+            $('#carLocation').html($('#carLocationDiv').valueOf());
+            $("#AddLink").button();
+            $("#EditLink").button();
+            $("#DelLink").button();
+            $("#Next").button();
+            $("#exit").button();
+            $("#btnBrowse").button();
+            $("#Help").button();
+            $("#exit").click(function () {
+                $("#Discount").remove();
+            });
+
+            $('#Discount').on('keyup', 'input', function (event) {
+                if (event.which == 13) {
+                    var inputs = $('#Discount ').find(':input:visible');
+                    inputs.eq(inputs.index(this) + 1).focus();
+                }
+            });
+
+            $(document).keyup(function (event) {
+                if (event.which == 119) {
+                    SaveRecord();
+                }
+                else if (event.which == 113) {
+                    EditRecord();
+                }
+                else if (event.which == 115) {
+                    DeleteRecord();
+                }
+            });
+            $('#AddLink').attr('title', 'کلید میانبر (F8)'); //119
+            $('#EditLink').attr('title', 'کلید میانبر (F2)'); //113
+            $('#DelLink').attr('title', 'کلید میانبر (F4)'); //115
+
+            jQuery("#EditLink").click(function () {
+                EditRecord();
+            });
+
+            $('#DelLink').click(function () {
+                DeleteRecord();
+            });
+
+            $("#AddLink").click(function () {
+                SaveRecord();
+            });
+
+            $('#txtSearch').keyup(function () {
+                var url = '@Url.Action("Reload", "Discount")';
+                Reload(url, 'Grid', $("#cboSearchFiald").val(), $("#txtSearch").val(), $("#txtTop").val(), $("#cboSearchType").val());
+            });
+
+            $("#btnBrowse").click(function () {
+                performClick(document.getElementById('image'));
+            });
+
+            function performClick(node) {
+                var evt = document.createEvent("MouseEvents");
+                evt.initEvent("click", true, false);
+                node.dispatchEvent(evt);
+            }
+
+            $("#txtName").keyup(function () {
+                if ($("#txtName").val() != '') {
+                    $("#txtName").removeClass("input-validation-error");
+                    $("#lblNameError").html("");
+                }
+                else {
+                    $("#txtName").addClass("input-validation-error");
+                    $('#lblNameError').html('لطفا نام را وارد کنید.');
+                }
+            });
+
+            $("#txtDateS").change(function () {
+                if ($("#txtDateS").val() != '') {
+                    $("#txtDateS").removeClass("input-validation-error");
+                    $("#lblDateSError").html("");
+                }
+                else {
+                    $("#txtDateS").addClass("input-validation-error");
+                    $('#lblDateSError').html('لطفا تاریخ شروع را وارد کنید.');
+                }
+            });
+
+            $("#txtDateE").change(function () {
+                if ($("#txtDateE").val() != '') {
+                    $("#txtDateE").removeClass("input-validation-error");
+                    $("#lblDateEError").html("");
+                }
+                else {
+                    $("#txtDateE").addClass("input-validation-error");
+                    $('#lblDateEError').html('لطفا تاریخ پایان را وارد کنید.');
+                }
+            });
+
+            $("#txtDateOf").change(function () {
+                if ($("#txtDateOf").val() != '') {
+                    $("#txtDateOf").removeClass("input-validation-error");
+                    $("#lblDateOfError").html("");
+                }
+                else {
+                    $("#txtDateOf").addClass("input-validation-error");
+                    $('#lblDateOfError').html('لطفا تاریخ اثر را وارد کنید.');
+                }
+            });
+
+            $("#txtPercent").keyup(function () {
+                if ($("#txtPercent").val() != '') {
+                    $("#txtPercent").removeClass("input-validation-error");
+                    $("#lblPercentError").html("");
+                }
+                else {
+                    $("#txtPercent").addClass("input-validation-error");
+                    $('#lblPercentError').html('لطفا درصد تخفیف را انتخاب کنید.');
+                }
+            });
+
+        });
+
+        function Clear() {
+            document.getElementById('chRate').checked = false;
+            $('#txtName').val('');
+            document.getElementById('chFine').checked = false;
+            $('#txtDateS').val('');
+            $('#txtDateE').val('');
+            $('#txtDateOf').val('');
+            document.getElementById('chExtra').checked = false;
+            document.getElementById('chOther').checked = false;
+            document.getElementById('chEffectMun').checked = false;
+            document.getElementById('chEffectUser').checked = false;
+            document.getElementById('chEffectOffice').checked = false;
+            $('#txtPercent').val('');
+            $('#fldId').val('');
+            $('#txtDesc').val('');
+        }
+        function SaveRecord() {
+                var er = false;
+                if ($("#txtName").val() == '') {
+                    $("#txtName").addClass("input-validation-error");
+                    $('#lblNameError').html('لطفا نام را وارد کنید.');
+                    er = true;
+                }
+                else {
+                    $("#txtName").removeClass("input-validation-error");
+                    $('#lblNameError').html('');
+                }
+
+                if ($("#txtDateS").val() == '') {
+                    $("#txtDateS").addClass("input-validation-error");
+                    $('#lblDateSError').html('لطفا تاریخ شروع را وارد کنید.');
+                    er = true;
+                }
+                else {
+                    $("#txtDateS").removeClass("input-validation-error");
+                    $('#lblDateSError').html('');
+                }
+
+                if ($("#txtDateE").val() == '') {
+                    $("#txtDateE").addClass("input-validation-error");
+                    $('#lblDateEError').html('لطفا تاریخ پایان را وارد کنید.');
+                    er = true;
+                }
+                else {
+                    $("#txtDateE").removeClass("input-validation-error");
+                    $('#lblDateEError').html('');
+                }
+
+
+                if ($("#txtDateOf").val() == '') {
+                    $("#txtDateOf").addClass("input-validation-error");
+                    $('#lblDateOfError').html('لطفا تاریخ اثر را وارد کنید.');
+                    er = true;
+                }
+                else {
+                    $("#txtDateOf").removeClass("input-validation-error");
+                    $('#lblDateOfError').html('');
+                }
+
+                if ($("#txtPercent").val() == '') {
+                    $("#txtPercent").addClass("input-validation-error");
+                    $('#lblPercentError').html('لطفا درصد را وارد کنید.');
+                    er = true;
+                }
+                else {
+                    $("#txtPercent").removeClass("input-validation-error");
+                    $('#lblPercentError').html('');
+                }
+
+                if (er)
+                    return;
+
+                var data = {
+                    fldEndDate: $("#txtDateE").val(),
+                    fldDateOf: $("#txtDateOf").val(),
+
+                    fldFinePrice: document.getElementById('chFine').checked,
+                    fldName: $("#txtName").val(),
+                    fldOtherPrice: document.getElementById('chOther').checked,
+                    fldPercentDiscount: $("#txtPercent").val(),
+                    fldStartDate: $("#txtDateS").val(),
+                    fldValueAddedPrice: document.getElementById('chExtra').checked,
+                    fldTypeCountryDivisions: countryNType,
+                    fldCodeCountryDivisions: countrySID,
+                    fldTypeCar: carNType,
+                    fldCodeCar: carSID,
+                    fldId: $("#fldId").val(),
+                    fldEffectiveMunicipality: document.getElementById('chEffectMun').checked,
+                    fldEffectiveUser: document.getElementById('chEffectUser').checked,
+                    fldEffectiveOffice: document.getElementById('chEffectOffice').checked,
+                    fldComplicationPrice: document.getElementById('chRate').checked 
+                };
+                if (data != '') {
+                    PostForm(data, '@Url.Content("~/Discount/Save")', "#win");
+                }
+                Clear();
+            }
+            function EditRecord() {
+                var entityGrid = $("#Grid").data("kendoGrid");
+                var selectedItem = entityGrid.dataItem(entityGrid.select());
+                if (selectedItem) {
+                    var id = selectedItem.fldID;
+                    var URL = '@Url.Content("~/Discount/Details")';
+                    URL = URL + "/" + id;
+                    $.ajax({
+                        type: "GET",
+                        url: URL,
+                        success: function (data) {
+                            $('#txtName').val(data.fldName);
+                            $('#txtDateS').val(data.fldStartDate);
+                            $('#txtDateE').val(data.fldEndDate);
+                            $('#txtPercent').val(data.fldPercentDiscount);
+                            $('#txtDateOf').val(data.fldDateOf);
+
+                            document.getElementById('chRate').checked = data.fldComplicationPriceID;
+                            document.getElementById('chFine').checked = data.fldFinePriceID;
+                            document.getElementById('chExtra').checked = data.fldValueAddedPriceID;
+                            document.getElementById('chOther').checked = data.fldOtherPriceID;
+
+                            document.getElementById('chEffectMun').checked = data.fldEffectiveMunicipality;
+                            document.getElementById('chEffectUser').checked = data.fldEffectiveUser;
+                            document.getElementById('chEffectOffice').checked = data.fldEffectiveOffice;
+
+                            $('#fldId').val(data.fldId);
+                            $('#txtDesc').val(data.fldDesc);
+                        },
+                        failure: function (data) {
+                            alert(data.data);
+                        }
+                    });
+                }
+                else {
+                    alert('لطفا یک سطر را انتخاب کنید.');
+                }
+            }
+         function DeleteRecord() {
+                var entityGrid = $("#Grid").data("kendoGrid");
+                var selectedItem = entityGrid.dataItem(entityGrid.select());
+                if (selectedItem) {
+                    var id = selectedItem.fldID;
+                    var URL = '@Url.Content("~/metro/YesNomsg")';
+                    URL = URL + "/?id=" + id + "&URL=" + '@Url.Content("~/Discount/Delete")';
+                    windowAppend("body", URL);
+                    $("#message").html('آیا مایل به حذف رکورد انتخاب شده هستید؟');
+                }
+                else {
+                    alert('لطفا یک سطر را انتخاب کنید.');
+                }
+                Clear();
+            }
+
+        function Reload(Url, gridname, field, value, top, searchType) {
+            var grid = $('#' + gridname).data('kendoGrid');
+            $.ajax({
+                url: Url,
+                type: 'get',
+                datatype: 'json',
+                data: { field: field, value: value, top: top, searchtype: searchType },
+                error: function (xhr, status, error) {
+                    alert(xhr + status);
+                },
+                success: function (result) {
+                    $("#" + gridname).data("kendoGrid").dataSource.data(result);
+                }
+            });
+        }
+
+        function PostForm(datas, url, id) {
+            var sendInfo = datas;
+            $('#Lock').show();
+            $.ajax({
+                type: "POST",
+                url: url,
+                data: sendInfo,
+                datatype: "json",
+                success: function (data) {
+                    var m = data;
+                    windowAppend("body", "/metro/error");
+                    $("#message").html(m.data);
+                    switch (m.state) {
+                        case 0:
+                            $("#error .wintitle").html("ذخیره موفق");
+                            break;
+                        case 1:
+                            $("#error .wintitle").html("خطا");
+                            break;
+                    }
+                    var url = '@Url.Action("Reload", "Discount")';
+                    Reload(url, 'Grid', '0', '', 30, 1);
+                    $('#Lock').hide();
+                },
+                failure: function (data) {
+                    alert(data.data);
+                }
+            });
+        }
+        
+    </script>
+</div>
+<div class="treeview-back  k-rtl" dir="rtl" id="LocationDiv">
+    @(Html.Kendo().TreeView()
+                        .Name("treeview")
+                        .DataImageUrlField("image")
+
+                        .DataTextField("Name")
+                        .Checkboxes(chkbxs =>
+                        {
+                            chkbxs.Enabled(false).CheckChildren(false);
+                        })
+                        .DataSource(dataSource => dataSource
+                        .Read(read => read
+                                                  .Action("_CountryTree", "Discount")
+                        )
+                        )
+                        .Events(events =>
+                        events.Select("select"))
+                        )
+</div>
+<div class="treeview-back  k-rtl" dir="rtl" id="carLocationDiv">
+    @(Html.Kendo().TreeView()
+                        .Name("cartreeview")
+                        .DataImageUrlField("image")
+
+                        .DataTextField("Name")
+                        .Checkboxes(chkbxs =>
+                        {
+                            chkbxs.Enabled(false).CheckChildren(false);
+                        })
+                        .DataSource(dataSource => dataSource
+                        .Read(read => read
+                                          .Action("_CarTree", "Discount")
+                        )
+                        )
+                        .Events(events =>
+                        events.Select("carselect"))
+                        )
+</div>
+<style type="text/css">
+    .treeview-back
+    {
+        width: 400px;
+        margin: 30px;
+        padding: 20px;
+        -moz-box-shadow: 0 1px 2px rgba(0,0,0,0.45), inset 0 0 30px rgba(0,0,0,0.07);
+        -webkit-box-shadow: 0 1px 2px rgba(0,0,0,0.45), inset 0 0 30px rgba(0,0,0,0.07);
+        box-shadow: 0 1px 2px rgba(0,0,0,0.45), inner 0 0 30px rgba(0,0,0,0.07);
+        -webkit-border-radius: 8px;
+        -moz-border-radius: 8px;
+        border-radius: 8px;
+    }
+</style>

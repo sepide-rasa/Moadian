@@ -1,0 +1,113 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Report ScriptLanguage="CSharp" ReportInfo.Created="08/22/2013 12:59:48" ReportInfo.Modified="09/06/2017 12:21:07" ReportInfo.CreatorVersion="2015.1.2.0">
+  <Styles>
+    <Style Name="Style1" Fill.Color="232, 244, 255"/>
+  </Styles>
+  <Dictionary>
+    <TableDataSource Name="Sp_RegisterSelect" ReferenceName="complicationsCarDBDataSet1.Sp_RegisterSelect" DataType="System.Int32" Enabled="true">
+      <Column Name="fldId" DataType="System.Int64"/>
+      <Column Name="fldCodeDaftar" DataType="System.Int32"/>
+      <Column Name="fldAddress" DataType="System.String"/>
+      <Column Name="fldTel" DataType="System.String"/>
+      <Column Name="fldMunId" DataType="System.Int32"/>
+      <Column Name="fldLocalId" DataType="System.Int64"/>
+      <Column Name="fldAreaId" DataType="System.Int64"/>
+      <Column Name="fldState" DataType="System.Boolean" BindableControl="CheckBox"/>
+      <Column Name="MunName" DataType="System.String"/>
+      <Column Name="LocaName" DataType="System.String"/>
+      <Column Name="AreaName" DataType="System.String"/>
+      <Column Name="fldModirDaftar" DataType="System.String"/>
+      <Column Name="fldmodirFamily" DataType="System.String"/>
+      <Column Name="fldcodeMeli" DataType="System.String"/>
+      <Column Name="fldStateTitle" DataType="System.String"/>
+    </TableDataSource>
+    <TableDataSource Name="sp_PictureSelect1" ReferenceName="complicationsCarDBDataSet1.sp_PictureSelect" DataType="System.Int32" Enabled="true">
+      <Column Name="fldID" DataType="System.Int32"/>
+      <Column Name="fldPic" DataType="System.Byte[]" BindableControl="Picture"/>
+      <Column Name="fldMunicipalityPic" DataType="System.String"/>
+      <Column Name="fldMunicipalityPicID" DataType="System.Int32"/>
+      <Column Name="fldBankPic" DataType="System.String"/>
+      <Column Name="fldBankPicID" DataType="System.Int32"/>
+      <Column Name="fldUserPic" DataType="System.String"/>
+      <Column Name="fldUserPicID" DataType="System.Int64"/>
+      <Column Name="fldUserName" DataType="System.String"/>
+      <Column Name="fldUserID" DataType="System.Int64"/>
+      <Column Name="fldDesc" DataType="System.String"/>
+      <Column Name="fldDate" DataType="System.String"/>
+    </TableDataSource>
+    <Parameter Name="date" DataType="System.String"/>
+    <Parameter Name="time" DataType="System.String"/>
+    <Parameter Name="StateName" DataType="System.String"/>
+    <Parameter Name="MunicipalityName" DataType="System.String"/>
+    <Parameter Name="AreaName" DataType="System.String"/>
+    <Parameter Name="OfficeName" DataType="System.String"/>
+  </Dictionary>
+  <ReportPage Name="Page1" Landscape="true" PaperWidth="297" PaperHeight="210">
+    <ReportTitleBand Name="ReportTitle1" Width="1047.06"/>
+    <PageHeaderBand Name="PageHeader1" Top="4" Width="1047.06" Height="131.32">
+      <TableObject Name="Table1" Left="1.44" Top="106.76" Width="1044.19" Height="24.56" Border.Lines="All">
+        <TableColumn Name="Column1" Width="98.5"/>
+        <TableColumn Name="Column3" Width="268.95"/>
+        <TableColumn Name="Column6" Width="86.21"/>
+        <TableColumn Name="Column10" Width="93.17"/>
+        <TableColumn Name="Column11" Width="138.79"/>
+        <TableColumn Name="Column12" Width="88.64"/>
+        <TableColumn Name="Column13" Width="120.75"/>
+        <TableColumn Name="Column14" Width="83.03"/>
+        <TableColumn Name="Column62"/>
+        <TableRow Name="Row1" Height="24.56">
+          <TableCell Name="Cell1" Border.Lines="All" Fill="Glass" Fill.Color="SkyBlue" Fill.Blend="0.2" Fill.Hatch="false" Text="وضعیت ثبت نام" AutoShrink="FontWidth" HorzAlign="Center" VertAlign="Center" Font="RasaFont, 11pt, style=Bold"/>
+          <TableCell Name="Cell3" Border.Lines="All" Fill="Glass" Fill.Color="SkyBlue" Fill.Blend="0.2" Fill.Hatch="false" Text="آدرس" AutoShrink="FontWidth" HorzAlign="Center" VertAlign="Center" Font="RasaFont, 11pt, style=Bold"/>
+          <TableCell Name="Cell6" Border.Lines="All" Fill="Glass" Fill.Color="SkyBlue" Fill.Blend="0.2" Fill.Hatch="false" Text="تلفن" AutoShrink="FontWidth" HorzAlign="Center" VertAlign="Center" Font="RasaFont, 11pt, style=Bold"/>
+          <TableCell Name="Cell10" Border.Lines="All" Fill="Glass" Fill.Color="SkyBlue" Fill.Blend="0.2" Fill.Hatch="false" Text="کدملی" AutoShrink="FontWidth" HorzAlign="Center" VertAlign="Center" Font="RasaFont, 11pt, style=Bold"/>
+          <TableCell Name="Cell11" Border.Lines="All" Fill="Glass" Fill.Color="SkyBlue" Fill.Blend="0.2" Fill.Hatch="false" Text="نام خانوادگی" AutoShrink="FontWidth" HorzAlign="Center" VertAlign="Center" Font="RasaFont, 11pt, style=Bold"/>
+          <TableCell Name="Cell12" Border.Lines="All" Fill="Glass" Fill.Color="SkyBlue" Fill.Blend="0.2" Fill.Hatch="false" Text="نام مدیر دفتر" AutoShrink="FontWidth" HorzAlign="Center" VertAlign="Center" Font="RasaFont, 11pt, style=Bold"/>
+          <TableCell Name="Cell13" Border.Lines="All" Fill="Glass" Fill.Color="SkyBlue" Fill.Blend="0.2" Fill.Hatch="false" Text="شهرداری" AutoShrink="FontWidth" HorzAlign="Center" VertAlign="Center" Font="RasaFont, 11pt, style=Bold"/>
+          <TableCell Name="Cell14" Border.Lines="All" Fill="Glass" Fill.Color="SkyBlue" Fill.Blend="0.2" Fill.Hatch="false" Text="کد دفتر" AutoShrink="FontWidth" HorzAlign="Center" VertAlign="Center" Font="RasaFont, 11pt, style=Bold"/>
+          <TableCell Name="Cell62" Border.Lines="All" Fill="Glass" Fill.Color="SkyBlue" Fill.Blend="0.2" Fill.Hatch="false" Text="رهگیری" HorzAlign="Center" VertAlign="Center" Font="RasaFont, 11pt, style=Bold"/>
+        </TableRow>
+      </TableObject>
+      <TableObject Name="Table3" Width="1053.06" Height="94.14">
+        <TableColumn Name="Column59" Width="280.65"/>
+        <TableColumn Name="Column60" Width="500"/>
+        <TableColumn Name="Column61" Width="272.41"/>
+        <TableRow Name="Row3" Height="94.14">
+          <TableCell Name="Cell59" HorzAlign="Center" VertAlign="Center" Font="Microsoft Sans Serif, 10pt">
+            <TextObject Name="Text3" Left="85.05" Top="18.9" Width="179.55" Height="18.9" Fill="Glass" Fill.Color="White" Fill.Blend="0.2" Fill.Hatch="true" Text="تاریخ چاپ :[date]" VertAlign="Center" RightToLeft="true" Font="RasaFont, 11pt"/>
+            <TextObject Name="Text4" Left="85.05" Top="37.8" Width="179.55" Height="18.9" Fill="Glass" Fill.Color="White" Fill.Blend="0.2" Fill.Hatch="true" Text="ساعت چاپ:[time]" VertAlign="Center" RightToLeft="true" Font="RasaFont, 11pt"/>
+            <TextObject Name="Text5" Left="56.7" Top="56.7" Width="207.9" Height="18.9" Fill="Glass" Fill.Color="White" Fill.Blend="0.2" Fill.Hatch="true" Text="صفحه:[Page#] از [TotalPages#]" VertAlign="Center" RightToLeft="true" Font="RasaFont, 11pt"/>
+          </TableCell>
+          <TableCell Name="Cell60" Text="[StateName]&#13;&#10;[MunicipalityName]&#13;&#10;[AreaName]&#13;&#10;[OfficeName]" HorzAlign="Center" VertAlign="Center" Font="RasaFont, 11pt"/>
+          <TableCell Name="Cell61" HorzAlign="Right" VertAlign="Center" Font="Microsoft Sans Serif, 10pt">
+            <PictureObject Name="Picture1" Left="98.28" Top="5.67" Width="75.6" Height="75.6" DataColumn="sp_PictureSelect1.fldPic"/>
+          </TableCell>
+        </TableRow>
+      </TableObject>
+    </PageHeaderBand>
+    <DataBand Name="Data1" Top="139.32" Width="1047.06" Height="24.56" DataSource="Sp_RegisterSelect" Columns.Count="1" Columns.Layout="DownThenAcross">
+      <TableObject Name="Table4" Left="1.44" Width="1044.19" Height="24.56" Border.Lines="All" EvenStyle="Style1">
+        <TableColumn Name="Column63" Width="98.5"/>
+        <TableColumn Name="Column64" Width="268.95"/>
+        <TableColumn Name="Column65" Width="86.21"/>
+        <TableColumn Name="Column66" Width="93.17"/>
+        <TableColumn Name="Column67" Width="138.79"/>
+        <TableColumn Name="Column68" Width="88.64"/>
+        <TableColumn Name="Column69" Width="120.75"/>
+        <TableColumn Name="Column70" Width="83.03"/>
+        <TableColumn Name="Column71"/>
+        <TableRow Name="Row4" Height="24.56">
+          <TableCell Name="Cell63" Border.Lines="All" Text="[Sp_RegisterSelect.fldStateTitle]" AutoShrink="FontWidth" HorzAlign="Center" VertAlign="Center" Font="RasaFont, 11pt"/>
+          <TableCell Name="Cell64" Border.Lines="All" Text="[Sp_RegisterSelect.fldAddress]" AutoShrink="FontWidth" HorzAlign="Center" VertAlign="Center" Font="RasaFont, 11pt"/>
+          <TableCell Name="Cell65" Border.Lines="All" Text="[Sp_RegisterSelect.fldTel]" AutoShrink="FontWidth" HorzAlign="Center" VertAlign="Center" Font="RasaFont, 11pt"/>
+          <TableCell Name="Cell66" Border.Lines="All" Text="[Sp_RegisterSelect.fldcodeMeli]" AutoShrink="FontWidth" HorzAlign="Center" VertAlign="Center" Font="RasaFont, 11pt"/>
+          <TableCell Name="Cell67" Border.Lines="All" Text="[Sp_RegisterSelect.fldmodirFamily]" AutoShrink="FontWidth" HorzAlign="Center" VertAlign="Center" Font="RasaFont, 11pt"/>
+          <TableCell Name="Cell68" Border.Lines="All" Text="[Sp_RegisterSelect.fldModirDaftar]" AutoShrink="FontWidth" HorzAlign="Center" VertAlign="Center" Font="RasaFont, 11pt"/>
+          <TableCell Name="Cell69" Border.Lines="All" Text="[Sp_RegisterSelect.MunName]" AutoShrink="FontWidth" HorzAlign="Center" VertAlign="Center" Font="RasaFont, 11pt"/>
+          <TableCell Name="Cell70" Border.Lines="All" Text="[Sp_RegisterSelect.fldCodeDaftar]" AutoShrink="FontWidth" HorzAlign="Center" VertAlign="Center" Font="RasaFont, 11pt"/>
+          <TableCell Name="Cell71" Border.Lines="All" Text="[Sp_RegisterSelect.fldId]" HorzAlign="Center" VertAlign="Center" Font="RasaFont, 11pt"/>
+        </TableRow>
+      </TableObject>
+    </DataBand>
+    <PageFooterBand Name="PageFooter1" Top="167.88" Width="1047.06" Height="18.91"/>
+  </ReportPage>
+</Report>

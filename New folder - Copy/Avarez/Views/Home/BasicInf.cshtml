@@ -1,0 +1,336 @@
+﻿@using Avarez.Controllers.Users;
+<div id="BasicInf">
+    @using Kendo.Mvc.UI;
+    <link href="@Url.Content("~/Content/Site.css")" rel="stylesheet" type="text/css" />
+    <script src="@Url.Content("~/Content/Base.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Scripts/jquery-1.7.1.min.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Scripts/jquery-ui-1.8.20.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Scripts/jquery-ui-1.8.20.min.js")" type="text/javascript"></script>
+    <link href="@Url.Content("~/Content/themes/base/ui.css")" rel="stylesheet" type="text/css" />
+    <link href="@Url.Content("~/Content/web/kendo.common.min.css")" rel="stylesheet" type="text/css" />
+    <link href="@Url.Content("~/Content/web/kendo.default.min.css")" rel="stylesheet" type="text/css" />
+    <link href="@Url.Content("~/Content/web/kendo.rtl.min.css")" rel="stylesheet" type="text/css" />
+    <script src="@Url.Content("~/Scripts/console.min.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Scripts/kendo.web.min.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Scripts/prettify.min.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Scripts/kendo.aspnetmvc.min.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Scripts/kendo.splitter.min.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Scripts/cultures/kendo.fa-IR.js")" type="text/javascript"></script>
+    <script type="text/javascript">
+        $("document").ready(function () {
+            $('#ChangeLocation').button();
+            $('#Exit').button();
+            $('#HomePage').button();
+            $('#HomePage').click(function () {
+                window.location.href = '/Home/Home';
+            });
+            $('#Exit').click(function () {
+                window.location.href = '/Account/LogOff';
+            });
+
+            $('#ChangeLocation').click(function () {
+                window.location.href = '/Home/ChangeLocation';
+            });
+            $("#bank").click(function () {
+                windows("#win", "/Bank/Index");
+            });
+            $("#bankType").click(function () {
+                windows("#win", "/bankType/Index");
+            });
+            $("#branch").click(function () {
+                windows("#win", "/bankBranch/Index");
+            });
+            $("#State").click(function () {
+                windows("#win", "/State/Index");
+            });
+            $("#County").click(function () {
+                windows("#win", "/County/Index");
+            });
+            $("#Zone").click(function () {
+                windows("#win", "/Zone/Index");
+            });
+            $("#City").click(function () {
+                windows("#win", "/City/Index");
+            });
+            $("#Municipality").click(function () {
+                windows("#win", "/Municipality/Index");
+            });
+            $("#Local").click(function () {
+                windows("#win", "/Local/Index");
+            });
+            $("#Area").click(function () {
+                windows("#win", "/Area/Index");
+            });
+            $("#OfficeType").click(function () {
+                windows("#win", "/OfficeType/Index");
+            });
+            $("#Offices").click(function () {
+                windows("#win", "/Offices/Index");
+            });
+            $("#CarColor").click(function () {
+                windows("#win", "/CarColor/Index");
+            });
+            $("#CarMake").click(function () {
+                windows("#win", "/CarMake/Index");
+            });
+            $("#CarAccountType").click(function () {
+                windows("#win", "/CarAccountType/Index");
+            });
+            $("#CarCabin").click(function () {
+                windows("#win", "/CarCabin/Index");
+            });
+            $("#CarSystem").click(function () {
+                windows("#win", "/CarSystem/Index");
+            });
+            $("#CarPatternModel").click(function () {
+                windows("#win", "/CarPatternModel/Index");
+            });
+            $("#CarModel").click(function () {
+                windows("#win", "/CarModel/Index");
+            });
+            $("#CarClass").click(function () {
+                windows("#win", "/CarClass/Index");
+            });
+            $("#FuelType").click(function () {
+                windows("#win", "/FuelType/Index");
+            });
+            $("#CharPerPlaque").click(function () {
+                windows("#win", "/CharPerPlaque/Index");
+            });
+            $("#PelaqueSerial").click(function () {
+                windows("#win", "/PelaqueSerial/Index");
+            });
+            $("#StatusPelaque").click(function () {
+                windows("#win", "/StatusPelaque/Index");
+            });
+            $("#PelaqueCity").click(function () {
+                windows("#win", "/PelaqueCity/Index");
+            });            
+            $("#PlaqueType").click(function () {
+                windows("#win", "/PlaqueType/Index");
+            }); 
+            $("#ShortTerm").click(function () {
+                windows("#win", "/ShortTerm/Index");
+            });
+            $("#DigitalTree").click(function () {
+                windows("#win", "/DigitalTree/Index");
+            });
+
+        });
+    </script>
+    @{Avarez.Models.cartaxEntities p = new Avarez.Models.cartaxEntities();
+      var state = p.sp_StateSelect("fldId", Session["UserState"].ToString(), 1, Convert.ToInt32(Session["UserId"]), Session["UserPass"].ToString()).FirstOrDefault();
+      var Mnu = p.sp_MunicipalitySelect("fldId", Session["UserMnu"].ToString(), 1, Convert.ToInt32(Session["UserId"]), Session["UserPass"].ToString()).FirstOrDefault();
+      var Location = state.fldName + " --> " + Mnu.fldName + Session["Location"];}
+    @(Html.Kendo().Splitter()
+      .Name("vertical")
+      .Orientation(SplitterOrientation.Vertical)
+          .HtmlAttributes(new { style = "height: 750px;" })
+      .Panes(verticalPanes =>
+      {
+          verticalPanes.Add()
+            .Size("30px")
+            .Collapsible(false)
+            .Resizable(false)
+            .Content(@<div dir="rtl" style="text-align: center;">
+                <span style="font-weight: bold; color: #127AA3; font-size: 11px;">موقعیت فعلی شما: @Location
+                </span>
+                <button id="ChangeLocation" title="برای تغییر موقعیت از این گزینه استفاده کنید."
+                    style="font-size: 11px;">
+                    ...</button>
+                <button id="Exit" style="font-size: 11px; float: left; text-align: left; background-image: url('/Content/images/1377957633_exit.png');
+                        background-repeat: no-repeat; background-position: right; width: 70px; background-size: 14px;
+                        background-position-x: 50px;">
+                        خروج</button>
+                <button id="HomePage" style="float: right; font-size: 11px; text-align: left; background-image: url('/Content/images/1377958371_Home.png');
+                    background-repeat: no-repeat; background-position: right; width: 100px; background-size: 16px;
+                    background-position-x: 80px;">
+                    صفحه اصلی</button></div>);
+          verticalPanes.Add()
+              .HtmlAttributes(new { id = "top-pane" })
+              .Scrollable(false)
+              .Collapsible(false)
+              .Content(
+                Html.Kendo().Splitter()
+                    .Name("horizontal")
+                    .HtmlAttributes(new { style = "height: 100%;" })
+                    .Panes(horizontalPanes =>
+                    {
+                        horizontalPanes.Add()
+                            .HtmlAttributes(new { id = "left-pane" })
+                            .Size("688px")
+                            .Content(@<div id="win" class="pane-content">
+                            </div>);
+
+
+
+                        horizontalPanes.Add()
+                            .HtmlAttributes(new { id = "right-pane" })
+                            .Size("210px")
+                            .Content(@<div class="pane-content">
+                                @(Html.Kendo().PanelBar()
+        .Name("panelbar-images")
+        .Items(panelbar =>
+        {
+            panelbar.Add().Text("بانک و شعبه")
+                .Expanded(true)
+                        .Visible(Permossions.haveAccess(Convert.ToInt32(Session["UserId"]), 2))
+                .ImageUrl(Url.Content("~/Content/images/1375790977_bank.png"))
+                .Items(Banks =>
+                {
+                    Banks.Add().Text("تعریف نوع بانک")
+                        .HtmlAttributes(new { id = "bankType" })
+                        .Visible(Permossions.haveAccess(Convert.ToInt32(Session["UserId"]), 3))
+                        .ImageUrl(Url.Content("~/Content/images/1375979023_group_data.png"));
+                    Banks.Add().Text("تعریف بانک")
+                        .HtmlAttributes(new { id = "bank" })
+                        .Visible(Permossions.haveAccess(Convert.ToInt32(Session["UserId"]),7))
+                        .ImageUrl(Url.Content("~/Content/images/32.png"));
+                    Banks.Add().Text("تعریف شعبه")
+                        .HtmlAttributes(new { id = "branch" })
+                        .Visible(Permossions.haveAccess(Convert.ToInt32(Session["UserId"]), 11))
+                        .ImageUrl(Url.Content("~/Content/images/48.png"));
+                });
+
+            panelbar.Add().Text("تقسیمات کشوری")
+                .Expanded(true)
+                        .Visible(Permossions.haveAccess(Convert.ToInt32(Session["UserId"]), 15))
+                .ImageUrl(Url.Content("~/Content/images/64.png"))
+                .Items(Country =>
+                {
+                    Country.Add().Text("استان")
+                        .HtmlAttributes(new { id = "State" })
+                        .Visible(Permossions.haveAccess(Convert.ToInt32(Session["UserId"]), 16))
+                        .ImageUrl(Url.Content("~/Content/images/state.png"));
+                    Country.Add().Text("شهرستان")
+                        .HtmlAttributes(new { id = "County" })
+                        .Visible(Permossions.haveAccess(Convert.ToInt32(Session["UserId"]), 20))
+                        .ImageUrl(Url.Content("~/Content/images/1375792520_map_with_pin-b.png"));
+                    Country.Add().Text("بخش")
+                        .HtmlAttributes(new { id = "Zone" })
+                        .Visible(Permossions.haveAccess(Convert.ToInt32(Session["UserId"]), 24))
+                        .ImageUrl(Url.Content("~/Content/images/1375792490_Map.png"));
+                    Country.Add().Text("شهر")
+                        .HtmlAttributes(new { id = "City" })
+                        .Visible(Permossions.haveAccess(Convert.ToInt32(Session["UserId"]), 28))
+                        .ImageUrl(Url.Content("~/Content/images/60.png"));
+                    Country.Add().Text("شهرداری")
+                        .HtmlAttributes(new { id = "Municipality" })
+                        .Visible(Permossions.haveAccess(Convert.ToInt32(Session["UserId"]), 32))
+                        .ImageUrl(Url.Content("~/Content/images/1375793337_Office-Building.png"));
+                    Country.Add().Text("منطقه")
+                        .HtmlAttributes(new { id = "Local" })
+                        .Visible(Permossions.haveAccess(Convert.ToInt32(Session["UserId"]), 36))
+                        .ImageUrl(Url.Content("~/Content/images/1375792890_map.png"));
+                    Country.Add().Text("ناحیه")
+                        .HtmlAttributes(new { id = "Area" })
+                        .Visible(Permossions.haveAccess(Convert.ToInt32(Session["UserId"]), 40))
+                        .ImageUrl(Url.Content("~/Content/images/1375793475_Map-Marker-Chequered-Flag-Left-Azure.png"));
+                    Country.Add().Text("نوع دفتر")
+                        .HtmlAttributes(new { id = "OfficeType" })
+                        .Visible(Permossions.haveAccess(Convert.ToInt32(Session["UserId"]), 44))
+                        .ImageUrl(Url.Content("~/Content/images/1376572385_stock_samples-36.png"));
+                    Country.Add().Text("دفتر")
+                        .HtmlAttributes(new { id = "Offices" })
+                        .Visible(Permossions.haveAccess(Convert.ToInt32(Session["UserId"]), 48))
+                        .ImageUrl(Url.Content("~/Content/images/1375793418_office.png"));
+                });
+
+            
+            panelbar.Add().Text("خودرو")
+            .Expanded(true)
+            .ImageUrl(Url.Content("~/Content/images/1375797233_CabrioletRed.png"))
+                        .Visible(Permossions.haveAccess(Convert.ToInt32(Session["UserId"]),52))
+            .Items(Car =>
+            {
+                Car.Add().Text("رنگ خودرو")
+                    .HtmlAttributes(new { id = "CarColor" })
+                        .Visible(Permossions.haveAccess(Convert.ToInt32(Session["UserId"]), 53))
+                    .ImageUrl(Url.Content("~/Content/images/1375797379_color.png"));
+                Car.Add().Text("نوع سوخت")
+                    .HtmlAttributes(new { id = "FuelType" })
+                        .Visible(Permossions.haveAccess(Convert.ToInt32(Session["UserId"]), 57))
+                    .ImageUrl(Url.Content("~/Content/images/26.png"));
+                Car.Add().Text("کشورهای سازنده")
+                   .HtmlAttributes(new { id = "ShortTerm" })
+                        .Visible(Permossions.haveAccess(Convert.ToInt32(Session["UserId"]), 61))
+                   .ImageUrl(Url.Content("~/Content/images/1376572725_industry.png"));
+                Car.Add().Text("نوع ساخت")
+                    .HtmlAttributes(new { id = "CarMake" })
+                        .Visible(Permossions.haveAccess(Convert.ToInt32(Session["UserId"]), 65))
+                   .ImageUrl(Url.Content("~/Content/images/1375797501_package_graphics.png"));
+                Car.Add().Text("نوع کاربری")
+                    .HtmlAttributes(new { id = "CarAccountType" })
+                        .Visible(Permossions.haveAccess(Convert.ToInt32(Session["UserId"]), 69))
+                  .ImageUrl(Url.Content("~/Content/images/1375986168_Grit_Spreader.png"));
+                Car.Add().Text("نوع کابین")
+                    .HtmlAttributes(new { id = "CarCabin" })
+                        .Visible(Permossions.haveAccess(Convert.ToInt32(Session["UserId"]), 73))
+                 .ImageUrl(Url.Content("~/Content/images/1375986149_Car-1.png"));
+                Car.Add().Text("سیستم خودرو")
+                    .HtmlAttributes(new { id = "CarSystem" })
+                        .Visible(Permossions.haveAccess(Convert.ToInt32(Session["UserId"]), 77))
+                   .ImageUrl(Url.Content("~/Content/images/1375985679_package_system.png"));
+                Car.Add().Text("الگوی تیپ خودرو")
+                    .HtmlAttributes(new { id = "CarPatternModel" })
+                        .Visible(Permossions.haveAccess(Convert.ToInt32(Session["UserId"]), 81))
+                    .ImageUrl(Url.Content("~/Content/images/1375985871_template_source.png"));
+                Car.Add().Text("تیپ خودرو")
+                    .HtmlAttributes(new { id = "CarModel" })
+                        .Visible(Permossions.haveAccess(Convert.ToInt32(Session["UserId"]), 85))
+                   .ImageUrl(Url.Content("~/Content/images/1375797574_Android-Car-Home.png"));
+                Car.Add().Text("کلاس خودرو")
+                    .HtmlAttributes(new { id = "CarClass" })
+                        .Visible(Permossions.haveAccess(Convert.ToInt32(Session["UserId"]), 89))
+                   .ImageUrl(Url.Content("~/Content/images/1375798547_aiga_ground_transportation.png"));
+
+            });
+            panelbar.Add().Text("پلاک")
+                .Expanded(true)
+                .ImageUrl(Url.Content("~/Content/images/1375799182_tablet.png"))
+                        .Visible(Permossions.haveAccess(Convert.ToInt32(Session["UserId"]), 93))
+                .Items(pelak =>
+                {
+                    pelak.Add().Text("کاراکتر وسط پلاک")
+                        .HtmlAttributes(new { id = "CharPerPlaque" })
+                        .Visible(Permossions.haveAccess(Convert.ToInt32(Session["UserId"]), 94))
+                        .ImageUrl(Url.Content("~/Content/images/cahr.png"));
+                    pelak.Add().Text("نوع پلاک")
+                        .HtmlAttributes(new { id = "PlaqueType" })
+                        .Visible(Permossions.haveAccess(Convert.ToInt32(Session["UserId"]), 98))
+                        .ImageUrl(Url.Content("~/Content/images/1375798893_type.png"));
+                    pelak.Add().Text("سریال پلاک")
+                        .HtmlAttributes(new { id = "PelaqueSerial" })
+                        .Visible(Permossions.haveAccess(Convert.ToInt32(Session["UserId"]), 102))
+                        .ImageUrl(Url.Content("~/Content/images/serial.png"));
+                    pelak.Add().Text("وضعیت پلاک")
+                        .HtmlAttributes(new { id = "StatusPelaque" })
+                        .Visible(Permossions.haveAccess(Convert.ToInt32(Session["UserId"]), 106))
+                        .ImageUrl(Url.Content("~/Content/images/1376573286_Marker.png"));
+                    pelak.Add().Text("شهر پلاک")
+                        .HtmlAttributes(new { id = "PelaqueCity" })
+                        .Visible(Permossions.haveAccess(Convert.ToInt32(Session["UserId"]), 110))
+                        .ImageUrl(Url.Content("~/Content/images/1376572914_companies.png"));
+                });
+            panelbar.Add().Text("ساختار درختی بایگانی دیجیتال")
+                .Expanded(true)
+                        .Visible(Permossions.haveAccess(Convert.ToInt32(Session["UserId"]), 344))
+                .ImageUrl(Url.Content("~/Content/images/1375799182_tablet.png"))
+                .Items(pelak =>
+                {
+                    pelak.Add().Text("ساختار درختی بایگانی دیجیتال")
+                        .HtmlAttributes(new { id = "DigitalTree" })
+                        .Visible(Permossions.haveAccess(Convert.ToInt32(Session["UserId"]), 345))
+                        .ImageUrl(Url.Content("~/Content/images/ساختار درختی دیجیتال.png"));
+                   
+                });
+        })
+    )
+                            </div>);
+                    }).ToHtmlString()
+              );
+
+
+      })
+)
+</div>

@@ -1,0 +1,1573 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="cartaxtest2Model.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2008" Alias="Self" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <Function Name="sp_ErrorProgramInsert" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="fldID" Type="int" Mode="InOut" />
+          <Parameter Name="fldText" Type="nvarchar(max)" Mode="In" />
+          <Parameter Name="fldUserID" Type="bigint" Mode="In" />
+          <Parameter Name="fldDesc" Type="nvarchar(max)" Mode="In" />
+          <Parameter Name="fldDate" Type="datetime" Mode="In" />
+          <Parameter Name="fldUserPass" Type="nvarchar" Mode="In" />
+        </Function>
+        <Function Name="prs_InsertSooratHesabForExcel" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="Movadi">
+          <Parameter Name="HeaderId" Type="bigint" Mode="InOut" />
+          <Parameter Name="fldForooshandeId" Type="bigint" Mode="In" />
+          <Parameter Name="fldkh_Name" Type="nvarchar" Mode="In" />
+          <Parameter Name="fldkh_Family" Type="nvarchar" Mode="In" />
+          <Parameter Name="fldBid" Type="varchar" Mode="In" />
+          <Parameter Name="fldkh_TypeShakhsId" Type="tinyint" Mode="In" />
+          <Parameter Name="fldtinb" Type="varchar" Mode="In" />
+          <Parameter Name="fldTaxId" Type="varchar" Mode="In" />
+          <Parameter Name="fldIndatim" Type="datetime" Mode="In" />
+          <Parameter Name="fldIndati2m" Type="datetime" Mode="In" />
+          <Parameter Name="fldInty" Type="tinyint" Mode="In" />
+          <Parameter Name="fldInp" Type="tinyint" Mode="In" />
+          <Parameter Name="fldInno" Type="varchar" Mode="In" />
+          <Parameter Name="fldIrtaxId" Type="varchar" Mode="In" />
+          <Parameter Name="fldFunctionName" Type="nvarchar" Mode="In" />
+          <Parameter Name="fldShomareFish" Type="varchar" Mode="In" />
+          <Parameter Name="fldUserId" Type="bigint" Mode="In" />
+          <Parameter Name="fldDesc" Type="nvarchar(max)" Mode="In" />
+          <Parameter Name="fldIP" Type="varchar" Mode="In" />
+        </Function>
+        <Function Name="prs_rptSooratHesab_Header" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="Movadi">
+          <Parameter Name="fldIdSooratHesab" Type="bigint" Mode="In" />
+        </Function>
+        <Function Name="prs_SelectDetailSooratHesab" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="Movadi">
+          <Parameter Name="fldIdSooratHesab" Type="bigint" Mode="In" />
+        </Function>
+        <Function Name="prs_SelectHeaderSooratHesab" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="Movadi">
+          <Parameter Name="fldIdSooratHesab" Type="bigint" Mode="In" />
+        </Function>
+        <Function Name="prs_SelectParametr_Field_Template" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="Movadi">
+          <Parameter Name="TemplateId" Type="int" Mode="In" />
+        </Function>
+        <Function Name="prs_tblCurrencyTypeSelect" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="Movadi">
+          <Parameter Name="fieldname" Type="nvarchar" Mode="In" />
+          <Parameter Name="value" Type="nvarchar" Mode="In" />
+          <Parameter Name="h" Type="int" Mode="In" />
+        </Function>
+        <Function Name="prs_tblKala_KhedmatDelete" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="Movadi">
+          <Parameter Name="Code" Type="varchar" Mode="In" />
+          <Parameter Name="type" Type="bit" Mode="In" />
+        </Function>
+        <Function Name="prs_tblKala_KhedmatInsert" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="Movadi">
+          <Parameter Name="fldCode" Type="varchar" Mode="In" />
+          <Parameter Name="fldTypeShenaseId" Type="tinyint" Mode="In" />
+          <Parameter Name="fldTarikh" Type="varchar" Mode="In" />
+          <Parameter Name="fldRunDate" Type="varchar" Mode="In" />
+          <Parameter Name="fldExpDate" Type="varchar" Mode="In" />
+          <Parameter Name="fldSpecialOrGeneral" Type="bit" Mode="In" />
+          <Parameter Name="fldTaxableOrFree" Type="bit" Mode="In" />
+          <Parameter Name="fldVat" Type="tinyint" Mode="In" />
+          <Parameter Name="fldVatCustomPurposes" Type="tinyint" Mode="In" />
+          <Parameter Name="fldDescriptionOfID" Type="nvarchar" Mode="In" />
+          <Parameter Name="type" Type="bit" Mode="In" />
+        </Function>
+        <Function Name="prs_tblKala_KhedmatSelect" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="Movadi">
+          <Parameter Name="fieldname" Type="nvarchar" Mode="In" />
+          <Parameter Name="value" Type="nvarchar" Mode="In" />
+          <Parameter Name="h" Type="int" Mode="In" />
+        </Function>
+        <Function Name="prs_tblMeasureUnitSelect" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="Movadi">
+          <Parameter Name="fieldname" Type="nvarchar" Mode="In" />
+          <Parameter Name="value" Type="nvarchar" Mode="In" />
+          <Parameter Name="h" Type="int" Mode="In" />
+        </Function>
+        <Function Name="prs_tblShakhsHaghighi_HoghoghiDelete" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="Movadi">
+          <Parameter Name="fldId" Type="bigint" Mode="In" />
+          <Parameter Name="fldUserId" Type="bigint" Mode="In" />
+          <Parameter Name="fldUserPass" Type="nvarchar" Mode="In" />
+          <Parameter Name="fldIP" Type="varchar" Mode="In" />
+        </Function>
+        <Function Name="prs_tblShakhsHaghighi_HoghoghiInsert" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="Movadi">
+          <Parameter Name="fldName" Type="nvarchar" Mode="In" />
+          <Parameter Name="fldFamily" Type="nvarchar" Mode="In" />
+          <Parameter Name="fldNationalCode" Type="varchar" Mode="In" />
+          <Parameter Name="fldCodeEghtesadi" Type="varchar" Mode="In" />
+          <Parameter Name="fldTypeShakhsId" Type="tinyint" Mode="In" />
+          <Parameter Name="fldCodePosti" Type="varchar" Mode="In" />
+          <Parameter Name="fldCodeShobe" Type="varchar" Mode="In" />
+          <Parameter Name="fldOwnerId" Type="bigint" Mode="In" />
+          <Parameter Name="fldUserID" Type="bigint" Mode="In" />
+          <Parameter Name="fldDesc" Type="nvarchar(max)" Mode="In" />
+          <Parameter Name="fldIP" Type="varchar" Mode="In" />
+        </Function>
+        <Function Name="prs_tblShakhsHaghighi_HoghoghiSelect" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="Movadi">
+          <Parameter Name="fieldname" Type="nvarchar" Mode="In" />
+          <Parameter Name="value" Type="nvarchar" Mode="In" />
+          <Parameter Name="UserId" Type="bigint" Mode="In" />
+          <Parameter Name="h" Type="int" Mode="In" />
+        </Function>
+        <Function Name="prs_tblShakhsHaghighi_HoghoghiUpdate" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="Movadi">
+          <Parameter Name="fldId" Type="bigint" Mode="In" />
+          <Parameter Name="fldName" Type="nvarchar" Mode="In" />
+          <Parameter Name="fldFamily" Type="nvarchar" Mode="In" />
+          <Parameter Name="fldNationalCode" Type="varchar" Mode="In" />
+          <Parameter Name="fldCodeEghtesadi" Type="varchar" Mode="In" />
+          <Parameter Name="fldTypeShakhsId" Type="tinyint" Mode="In" />
+          <Parameter Name="fldCodePosti" Type="varchar" Mode="In" />
+          <Parameter Name="fldCodeShobe" Type="varchar" Mode="In" />
+          <Parameter Name="fldOwnerId" Type="bigint" Mode="In" />
+          <Parameter Name="fldUserID" Type="bigint" Mode="In" />
+          <Parameter Name="fldDesc" Type="nvarchar(max)" Mode="In" />
+          <Parameter Name="fldIP" Type="varchar" Mode="In" />
+        </Function>
+        <Function Name="prs_tblSooratHesab_DetailDelete" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="Movadi">
+          <Parameter Name="fldId" Type="bigint" Mode="In" />
+          <Parameter Name="fldUserId" Type="bigint" Mode="In" />
+        </Function>
+        <Function Name="prs_tblSooratHesab_DetailInsert" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="Movadi">
+          <Parameter Name="fldHeaderId" Type="bigint" Mode="In" />
+          <Parameter Name="fldUserID" Type="bigint" Mode="In" />
+          <Parameter Name="fldIP" Type="varchar" Mode="In" />
+        </Function>
+        <Function Name="prs_tblSooratHesab_DetailUpdate" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="Movadi">
+          <Parameter Name="fldHeaderId" Type="bigint" Mode="In" />
+          <Parameter Name="fldUserID" Type="bigint" Mode="In" />
+          <Parameter Name="fldIP" Type="varchar" Mode="In" />
+        </Function>
+        <Function Name="prs_tblSooratHesab_HeaderDelete" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="Movadi">
+          <Parameter Name="fldId" Type="bigint" Mode="In" />
+          <Parameter Name="flduserId" Type="bigint" Mode="In" />
+          <Parameter Name="fldIP" Type="varchar" Mode="In" />
+        </Function>
+        <Function Name="prs_tblSooratHesab_HeaderInsert" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="Movadi">
+          <Parameter Name="fldid" Type="bigint" Mode="InOut" />
+          <Parameter Name="fldTaxId" Type="varchar" Mode="In" />
+          <Parameter Name="fldIndatim" Type="datetime" Mode="In" />
+          <Parameter Name="fldIndati2m" Type="datetime" Mode="In" />
+          <Parameter Name="fldInty" Type="tinyint" Mode="In" />
+          <Parameter Name="fldInp" Type="tinyint" Mode="In" />
+          <Parameter Name="fldInno" Type="varchar" Mode="In" />
+          <Parameter Name="fldIrtaxId" Type="varchar" Mode="In" />
+          <Parameter Name="fldKharidarId" Type="bigint" Mode="In" />
+          <Parameter Name="fldForooshandeId" Type="bigint" Mode="In" />
+          <Parameter Name="fldFunctionName" Type="nvarchar" Mode="In" />
+          <Parameter Name="fldkh_Pas_No" Type="varchar" Mode="In" />
+          <Parameter Name="fldkh_TypeFly" Type="tinyint" Mode="In" />
+          <Parameter Name="fldF_Sh_Parvane" Type="varchar" Mode="In" />
+          <Parameter Name="fldF_GomrokCode" Type="varchar" Mode="In" />
+          <Parameter Name="fldF_UniqId" Type="varchar" Mode="In" />
+          <Parameter Name="fldShomareFish" Type="varchar" Mode="In" />
+          <Parameter Name="fldUserId" Type="bigint" Mode="In" />
+          <Parameter Name="fldIP" Type="varchar" Mode="In" />
+        </Function>
+        <Function Name="prs_tblSooratHesab_HeaderSelect" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="Movadi">
+          <Parameter Name="fieldname" Type="nvarchar" Mode="In" />
+          <Parameter Name="value" Type="nvarchar(max)" Mode="In" />
+          <Parameter Name="Value1" Type="nvarchar" Mode="In" />
+          <Parameter Name="value2" Type="nvarchar" Mode="In" />
+          <Parameter Name="h" Type="int" Mode="In" />
+        </Function>
+        <Function Name="prs_tblSooratHesab_HeaderUpdate" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="Movadi">
+          <Parameter Name="fldid" Type="bigint" Mode="In" />
+          <Parameter Name="fldTaxId" Type="varchar" Mode="In" />
+          <Parameter Name="fldIndatim" Type="datetime" Mode="In" />
+          <Parameter Name="fldIndati2m" Type="datetime" Mode="In" />
+          <Parameter Name="fldInty" Type="tinyint" Mode="In" />
+          <Parameter Name="fldInp" Type="tinyint" Mode="In" />
+          <Parameter Name="fldInno" Type="varchar" Mode="In" />
+          <Parameter Name="fldIrtaxId" Type="varchar" Mode="In" />
+          <Parameter Name="fldKharidarId" Type="bigint" Mode="In" />
+          <Parameter Name="fldForooshandeId" Type="bigint" Mode="In" />
+          <Parameter Name="fldFunctionName" Type="nvarchar" Mode="In" />
+          <Parameter Name="fldkh_Pas_No" Type="varchar" Mode="In" />
+          <Parameter Name="fldkh_TypeFly" Type="tinyint" Mode="In" />
+          <Parameter Name="fldF_Sh_Parvane" Type="varchar" Mode="In" />
+          <Parameter Name="fldF_GomrokCode" Type="varchar" Mode="In" />
+          <Parameter Name="fldF_UniqId" Type="varchar" Mode="In" />
+          <Parameter Name="fldShomareFish" Type="varchar" Mode="In" />
+          <Parameter Name="fldUserId" Type="bigint" Mode="In" />
+          <Parameter Name="fldIP" Type="varchar" Mode="In" />
+        </Function>
+        <Function Name="prs_tblSooratHesabExcelField_TemplateDelete" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="Movadi">
+          <Parameter Name="fldTemplateId" Type="int" Mode="In" />
+          <Parameter Name="fldUserId" Type="bigint" Mode="In" />
+          <Parameter Name="fldIP" Type="varchar" Mode="In" />
+        </Function>
+        <Function Name="prs_tblSooratHesabExcelField_TemplateInsert" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="Movadi">
+          <Parameter Name="fldTemplateId" Type="int" Mode="In" />
+          <Parameter Name="fldParametrId" Type="smallint" Mode="In" />
+          <Parameter Name="fldColumnNum" Type="smallint" Mode="In" />
+          <Parameter Name="fldUserId" Type="bigint" Mode="In" />
+          <Parameter Name="fldDesc" Type="nvarchar" Mode="In" />
+          <Parameter Name="fldIP" Type="varchar" Mode="In" />
+        </Function>
+        <Function Name="prs_tblSooratHesabExcelField_TemplateSelect" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="Movadi">
+          <Parameter Name="fieldname" Type="nvarchar" Mode="In" />
+          <Parameter Name="value" Type="nvarchar" Mode="In" />
+          <Parameter Name="value1" Type="nvarchar" Mode="In" />
+          <Parameter Name="h" Type="int" Mode="In" />
+        </Function>
+        <Function Name="prs_tblSooratHesabExcelField_TemplateUpdate" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="Movadi">
+          <Parameter Name="fldId" Type="bigint" Mode="In" />
+          <Parameter Name="fldTemplateId" Type="int" Mode="In" />
+          <Parameter Name="fldParametrId" Type="smallint" Mode="In" />
+          <Parameter Name="fldColumnNum" Type="smallint" Mode="In" />
+          <Parameter Name="fldUserId" Type="bigint" Mode="In" />
+          <Parameter Name="fldDesc" Type="nvarchar" Mode="In" />
+          <Parameter Name="fldIP" Type="varchar" Mode="In" />
+        </Function>
+        <Function Name="prs_tblSooratHesabExcelTemplateDelete" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="Movadi">
+          <Parameter Name="fldId" Type="int" Mode="In" />
+          <Parameter Name="fldUserId" Type="bigint" Mode="In" />
+          <Parameter Name="fldIP" Type="varchar" Mode="In" />
+        </Function>
+        <Function Name="prs_tblSooratHesabExcelTemplateInsert" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="Movadi">
+          <Parameter Name="fldid" Type="int" Mode="InOut" />
+          <Parameter Name="fldTitle" Type="nvarchar" Mode="In" />
+          <Parameter Name="fldStartRowNumber" Type="tinyint" Mode="In" />
+          <Parameter Name="fldUserId" Type="bigint" Mode="In" />
+          <Parameter Name="fldDesc" Type="nvarchar" Mode="In" />
+          <Parameter Name="fldIP" Type="varchar" Mode="In" />
+        </Function>
+        <Function Name="prs_tblSooratHesabExcelTemplateSelect" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="Movadi">
+          <Parameter Name="fieldname" Type="nvarchar" Mode="In" />
+          <Parameter Name="value" Type="nvarchar" Mode="In" />
+          <Parameter Name="h" Type="int" Mode="In" />
+        </Function>
+        <Function Name="prs_tblSooratHesabExcelTemplateUpdate" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="Movadi">
+          <Parameter Name="fldId" Type="int" Mode="In" />
+          <Parameter Name="fldTitle" Type="nvarchar" Mode="In" />
+          <Parameter Name="fldStartRowNumber" Type="tinyint" Mode="In" />
+          <Parameter Name="fldUserId" Type="bigint" Mode="In" />
+          <Parameter Name="fldDesc" Type="nvarchar" Mode="In" />
+          <Parameter Name="fldIP" Type="varchar" Mode="In" />
+        </Function>
+        <Function Name="prs_tblSooratHesabFromWebServiceInsert" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="Movadi">
+          <Parameter Name="HeaderId" Type="bigint" Mode="InOut" />
+          <Parameter Name="fldForooshandeId" Type="bigint" Mode="In" />
+          <Parameter Name="fldkh_Name" Type="nvarchar" Mode="In" />
+          <Parameter Name="fldkh_Family" Type="nvarchar" Mode="In" />
+          <Parameter Name="fldBid" Type="varchar" Mode="In" />
+          <Parameter Name="fldkh_TypeShakhsId" Type="tinyint" Mode="In" />
+          <Parameter Name="fldtinb" Type="varchar" Mode="In" />
+          <Parameter Name="fldTaxId" Type="varchar" Mode="In" />
+          <Parameter Name="fldIndatim" Type="datetime" Mode="In" />
+          <Parameter Name="fldIndati2m" Type="datetime" Mode="In" />
+          <Parameter Name="fldInty" Type="tinyint" Mode="In" />
+          <Parameter Name="fldInp" Type="tinyint" Mode="In" />
+          <Parameter Name="fldInno" Type="varchar" Mode="In" />
+          <Parameter Name="fldIrtaxId" Type="varchar" Mode="In" />
+          <Parameter Name="fldFunctionName" Type="nvarchar" Mode="In" />
+          <Parameter Name="fldUserId" Type="bigint" Mode="In" />
+          <Parameter Name="fldDesc" Type="nvarchar(max)" Mode="In" />
+          <Parameter Name="fldIP" Type="varchar" Mode="In" />
+        </Function>
+        <Function Name="prs_tblSooratHesabHeader_ValueInsert" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="Movadi">
+          <Parameter Name="fldHeaderId" Type="bigint" Mode="In" />
+          <Parameter Name="fldValue" Type="nvarchar" Mode="In" />
+          <Parameter Name="fldParametrHeaderId" Type="smallint" Mode="In" />
+          <Parameter Name="fldUserId" Type="bigint" Mode="In" />
+          <Parameter Name="fldIP" Type="varchar" Mode="In" />
+        </Function>
+        <Function Name="prs_tblSooratHesabHeader_ValueUpdate" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="Movadi">
+          <Parameter Name="fldHeaderId" Type="bigint" Mode="In" />
+          <Parameter Name="fldValue" Type="nvarchar" Mode="In" />
+          <Parameter Name="fldParametrHeaderId" Type="smallint" Mode="In" />
+          <Parameter Name="fldUserId" Type="bigint" Mode="In" />
+          <Parameter Name="fldIP" Type="varchar" Mode="In" />
+        </Function>
+        <Function Name="prs_tblSooratHesabStatus_DetailInsert" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="Movadi">
+          <Parameter Name="fldSooratHesabStatusId" Type="bigint" Mode="In" />
+          <Parameter Name="fldStatusError" Type="tinyint" Mode="In" />
+          <Parameter Name="fldMatn" Type="nvarchar(max)" Mode="In" />
+          <Parameter Name="fldCode" Type="varchar" Mode="In" />
+          <Parameter Name="fldUserId" Type="bigint" Mode="In" />
+          <Parameter Name="fldIP" Type="varchar" Mode="In" />
+        </Function>
+        <Function Name="prs_tblSooratHesabStatus_DetailSelect" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="Movadi">
+          <Parameter Name="fieldname" Type="nvarchar" Mode="In" />
+          <Parameter Name="value" Type="nvarchar" Mode="In" />
+          <Parameter Name="h" Type="int" Mode="In" />
+        </Function>
+        <Function Name="prs_tblSooratHesabStatusInsert" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="Movadi">
+          <Parameter Name="fldHeaderId" Type="bigint" Mode="In" />
+          <Parameter Name="fldStatus" Type="tinyint" Mode="In" />
+          <Parameter Name="fldMatn" Type="nvarchar(max)" Mode="In" />
+          <Parameter Name="fldReferenceNumber" Type="varchar" Mode="In" />
+          <Parameter Name="fldSerializeObject" Type="nvarchar(max)" Mode="In" />
+          <Parameter Name="fldUID" Type="varchar" Mode="In" />
+          <Parameter Name="fldUserId" Type="bigint" Mode="In" />
+          <Parameter Name="fldIP" Type="varchar" Mode="In" />
+        </Function>
+        <Function Name="prs_tblSooratHesabStatusSelect" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="Movadi">
+          <Parameter Name="fieldname" Type="nvarchar" Mode="In" />
+          <Parameter Name="value" Type="nvarchar" Mode="In" />
+          <Parameter Name="h" Type="int" Mode="In" />
+        </Function>
+        <Function Name="prs_tblSooratHesabStatusUpdate" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="Movadi">
+          <Parameter Name="fldid" Type="bigint" Mode="In" />
+          <Parameter Name="fldHeaderId" Type="bigint" Mode="In" />
+          <Parameter Name="fldStatus" Type="tinyint" Mode="In" />
+          <Parameter Name="fldMatn" Type="nvarchar(max)" Mode="In" />
+          <Parameter Name="fldReferenceNumber" Type="varchar" Mode="In" />
+          <Parameter Name="fldSerializeObject" Type="nvarchar(max)" Mode="In" />
+          <Parameter Name="fldUID" Type="varchar" Mode="In" />
+          <Parameter Name="fldUserId" Type="bigint" Mode="In" />
+          <Parameter Name="fldIP" Type="varchar" Mode="In" />
+        </Function>
+        <Function Name="prs_tblTarfGharardadDelete" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="Movadi">
+          <Parameter Name="fldId" Type="int" Mode="In" />
+          <Parameter Name="fldUserId" Type="bigint" Mode="In" />
+          <Parameter Name="fldIP" Type="varchar" Mode="In" />
+        </Function>
+        <Function Name="prs_tblTarfGharardadInsert" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="Movadi">
+          <Parameter Name="fldId" Type="int" Mode="InOut" />
+          <Parameter Name="fldShakhsId" Type="bigint" Mode="In" />
+          <Parameter Name="fldUniqId" Type="varchar" Mode="In" />
+          <Parameter Name="fldPrivateKey" Type="varbinary" Mode="In" />
+          <Parameter Name="fldSignatureCertificate" Type="varbinary" Mode="In" />
+          <Parameter Name="fldUserID" Type="bigint" Mode="In" />
+          <Parameter Name="fldDesc" Type="nvarchar(max)" Mode="In" />
+          <Parameter Name="fldIP" Type="varchar" Mode="In" />
+        </Function>
+        <Function Name="prs_tblTarfGharardadSelect" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="Movadi">
+          <Parameter Name="fieldname" Type="nvarchar" Mode="In" />
+          <Parameter Name="value" Type="nvarchar" Mode="In" />
+          <Parameter Name="h" Type="int" Mode="In" />
+        </Function>
+        <Function Name="prs_tblTarfGharardadUpdate" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="Movadi">
+          <Parameter Name="fldId" Type="int" Mode="In" />
+          <Parameter Name="fldShakhsId" Type="bigint" Mode="In" />
+          <Parameter Name="fldUniqId" Type="varchar" Mode="In" />
+          <Parameter Name="fldPrivateKey" Type="varbinary" Mode="In" />
+          <Parameter Name="fldSignatureCertificate" Type="varbinary" Mode="In" />
+          <Parameter Name="fldUserID" Type="bigint" Mode="In" />
+          <Parameter Name="fldDesc" Type="nvarchar(max)" Mode="In" />
+          <Parameter Name="fldIP" Type="varchar" Mode="In" />
+        </Function>
+        <Function Name="prs_tblTypeShakhsSelect" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="Movadi">
+          <Parameter Name="fieldname" Type="nvarchar" Mode="In" />
+          <Parameter Name="value" Type="nvarchar" Mode="In" />
+          <Parameter Name="h" Type="int" Mode="In" />
+        </Function>
+        <Function Name="prs_TransactionInfInsert" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="Movadi">
+          <Parameter Name="fldTarfGharardadId" Type="int" Mode="In" />
+          <Parameter Name="fldUserName" Type="nvarchar" Mode="In" />
+          <Parameter Name="fldPass" Type="nvarchar" Mode="In" />
+          <Parameter Name="fldUserId" Type="bigint" Mode="In" />
+          <Parameter Name="fldDesc" Type="nvarchar(max)" Mode="In" />
+          <Parameter Name="fldInherit" Type="bit" Mode="In" />
+        </Function>
+        <Function Name="prs_TransactionInfSelect" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="Movadi">
+          <Parameter Name="fieldname" Type="nvarchar" Mode="In" />
+          <Parameter Name="Value" Type="nvarchar" Mode="In" />
+          <Parameter Name="h" Type="int" Mode="In" />
+        </Function>
+        <Function Name="prs_TransactionInfUpdate" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="Movadi">
+          <Parameter Name="fldId" Type="int" Mode="In" />
+          <Parameter Name="fldUserName" Type="nvarchar" Mode="In" />
+          <Parameter Name="fldTarfGharardadId" Type="int" Mode="In" />
+          <Parameter Name="fldPass" Type="nvarchar" Mode="In" />
+          <Parameter Name="fldUserId" Type="bigint" Mode="In" />
+          <Parameter Name="fldDesc" Type="nvarchar(max)" Mode="In" />
+          <Parameter Name="fldInherit" Type="bit" Mode="In" />
+        </Function>
+        <Function Name="prs_UpdateIrTaxId" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="Movadi">
+          <Parameter Name="IdHeader" Type="bigint" Mode="In" />
+          <Parameter Name="fldIrtaxId" Type="varchar" Mode="In" />
+          <Parameter Name="fldUserId" Type="bigint" Mode="In" />
+          <Parameter Name="fldIP" Type="varchar" Mode="In" />
+        </Function>
+        <Function Name="prs_User_GharardadInsert" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="Movadi">
+          <Parameter Name="fldId" Type="bigint" Mode="InOut" />
+          <Parameter Name="fldTarfGharardadId" Type="int" Mode="In" />
+          <Parameter Name="fldStatus" Type="bit" Mode="In" />
+          <Parameter Name="fldPassword" Type="nvarchar" Mode="In" />
+          <Parameter Name="fldUserName" Type="nvarchar" Mode="In" />
+          <Parameter Name="fldUserID" Type="bigint" Mode="In" />
+          <Parameter Name="fldDesc" Type="nvarchar(max)" Mode="In" />
+          <Parameter Name="fldImage" Type="image" Mode="In" />
+        </Function>
+        <Function Name="prs_User_GharardadResetPass" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="Movadi">
+          <Parameter Name="fldID" Type="bigint" Mode="In" />
+          <Parameter Name="fldPassword" Type="nvarchar" Mode="In" />
+        </Function>
+        <Function Name="prs_User_GharardadSelect" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="Movadi">
+          <Parameter Name="fieldname" Type="nvarchar" Mode="In" />
+          <Parameter Name="Value" Type="nvarchar" Mode="In" />
+          <Parameter Name="h" Type="int" Mode="In" />
+          <Parameter Name="Pass" Type="nvarchar" Mode="In" />
+          <Parameter Name="fldUserId" Type="int" Mode="In" />
+          <Parameter Name="fldUserPass" Type="nvarchar" Mode="In" />
+        </Function>
+        <Function Name="prs_User_GharardadUpdate" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="Movadi">
+          <Parameter Name="fldID" Type="bigint" Mode="In" />
+          <Parameter Name="fldTarfGharardadId" Type="int" Mode="In" />
+          <Parameter Name="fldStatus" Type="bit" Mode="In" />
+          <Parameter Name="fldUserName" Type="nvarchar" Mode="In" />
+          <Parameter Name="fldUserID" Type="bigint" Mode="In" />
+          <Parameter Name="fldDesc" Type="nvarchar(max)" Mode="In" />
+          <Parameter Name="fldpic" Type="image" Mode="In" />
+        </Function>
+        <EntityContainer Name="cartaxtest2ModelStoreContainer" />
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="cartaxtest2Model" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityContainer Name="cartaxtest2Entities" annotation:LazyLoadingEnabled="true" >
+          <FunctionImport Name="prs_tblTarfGharardadSelect" ReturnType="Collection(cartaxtest2Model.prs_tblTarfGharardadSelect)">
+            <Parameter Name="fieldname" Mode="In" Type="String" />
+            <Parameter Name="value" Mode="In" Type="String" />
+            <Parameter Name="h" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="prs_User_GharardadSelect" ReturnType="Collection(cartaxtest2Model.prs_User_GharardadSelect)">
+            <Parameter Name="fieldname" Mode="In" Type="String" />
+            <Parameter Name="Value" Mode="In" Type="String" />
+            <Parameter Name="h" Mode="In" Type="Int32" />
+            <Parameter Name="Pass" Mode="In" Type="String" />
+            <Parameter Name="fldUserId" Mode="In" Type="Int32" />
+            <Parameter Name="fldUserPass" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="prs_tblShakhsHaghighi_HoghoghiDelete">
+            <Parameter Name="fldId" Mode="In" Type="Int64" />
+            <Parameter Name="fldUserId" Mode="In" Type="Int64" />
+            <Parameter Name="fldUserPass" Mode="In" Type="String" />
+            <Parameter Name="fldIP" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="prs_tblShakhsHaghighi_HoghoghiInsert">
+            <Parameter Name="fldName" Mode="In" Type="String" />
+            <Parameter Name="fldFamily" Mode="In" Type="String" />
+            <Parameter Name="fldNationalCode" Mode="In" Type="String" />
+            <Parameter Name="fldCodeEghtesadi" Mode="In" Type="String" />
+            <Parameter Name="fldTypeShakhsId" Mode="In" Type="Byte" />
+            <Parameter Name="fldCodePosti" Mode="In" Type="String" />
+            <Parameter Name="fldCodeShobe" Mode="In" Type="String" />
+            <Parameter Name="fldOwnerId" Mode="In" Type="Int64" />
+            <Parameter Name="fldUserID" Mode="In" Type="Int64" />
+            <Parameter Name="fldDesc" Mode="In" Type="String" />
+            <Parameter Name="fldIP" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="prs_tblShakhsHaghighi_HoghoghiSelect" ReturnType="Collection(cartaxtest2Model.prs_tblShakhsHaghighi_HoghoghiSelect)">
+            <Parameter Name="fieldname" Mode="In" Type="String" />
+            <Parameter Name="value" Mode="In" Type="String" />
+            <Parameter Name="UserId" Mode="In" Type="Int64" />
+            <Parameter Name="h" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="prs_tblShakhsHaghighi_HoghoghiUpdate">
+            <Parameter Name="fldId" Mode="In" Type="Int64" />
+            <Parameter Name="fldName" Mode="In" Type="String" />
+            <Parameter Name="fldFamily" Mode="In" Type="String" />
+            <Parameter Name="fldNationalCode" Mode="In" Type="String" />
+            <Parameter Name="fldCodeEghtesadi" Mode="In" Type="String" />
+            <Parameter Name="fldTypeShakhsId" Mode="In" Type="Byte" />
+            <Parameter Name="fldCodePosti" Mode="In" Type="String" />
+            <Parameter Name="fldCodeShobe" Mode="In" Type="String" />
+            <Parameter Name="fldOwnerId" Mode="In" Type="Int64" />
+            <Parameter Name="fldUserID" Mode="In" Type="Int64" />
+            <Parameter Name="fldDesc" Mode="In" Type="String" />
+            <Parameter Name="fldIP" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="prs_tblTarfGharardadDelete">
+            <Parameter Name="fldId" Mode="In" Type="Int32" />
+            <Parameter Name="fldUserId" Mode="In" Type="Int64" />
+            <Parameter Name="fldIP" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="prs_tblTarfGharardadInsert">
+            <Parameter Name="fldId" Mode="InOut" Type="Int32" />
+            <Parameter Name="fldShakhsId" Mode="In" Type="Int64" />
+            <Parameter Name="fldUniqId" Mode="In" Type="String" />
+            <Parameter Name="fldPrivateKey" Mode="In" Type="Binary" />
+            <Parameter Name="fldSignatureCertificate" Mode="In" Type="Binary" />
+            <Parameter Name="fldUserID" Mode="In" Type="Int64" />
+            <Parameter Name="fldDesc" Mode="In" Type="String" />
+            <Parameter Name="fldIP" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="prs_tblTarfGharardadUpdate">
+            <Parameter Name="fldId" Mode="In" Type="Int32" />
+            <Parameter Name="fldShakhsId" Mode="In" Type="Int64" />
+            <Parameter Name="fldUniqId" Mode="In" Type="String" />
+            <Parameter Name="fldPrivateKey" Mode="In" Type="Binary" />
+            <Parameter Name="fldSignatureCertificate" Mode="In" Type="Binary" />
+            <Parameter Name="fldUserID" Mode="In" Type="Int64" />
+            <Parameter Name="fldDesc" Mode="In" Type="String" />
+            <Parameter Name="fldIP" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="prs_tblTypeShakhsSelect" ReturnType="Collection(cartaxtest2Model.prs_tblTypeShakhsSelect)">
+            <Parameter Name="fieldname" Mode="In" Type="String" />
+            <Parameter Name="value" Mode="In" Type="String" />
+            <Parameter Name="h" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="prs_User_GharardadInsert">
+            <Parameter Name="fldId" Mode="InOut" Type="Int64" />
+            <Parameter Name="fldTarfGharardadId" Mode="In" Type="Int32" />
+            <Parameter Name="fldStatus" Mode="In" Type="Boolean" />
+            <Parameter Name="fldPassword" Mode="In" Type="String" />
+            <Parameter Name="fldUserName" Mode="In" Type="String" />
+            <Parameter Name="fldUserID" Mode="In" Type="Int64" />
+            <Parameter Name="fldDesc" Mode="In" Type="String" />
+            <Parameter Name="fldImage" Mode="In" Type="Binary" />
+          </FunctionImport>
+          <FunctionImport Name="prs_User_GharardadUpdate">
+            <Parameter Name="fldID" Mode="In" Type="Int64" />
+            <Parameter Name="fldTarfGharardadId" Mode="In" Type="Int32" />
+            <Parameter Name="fldStatus" Mode="In" Type="Boolean" />
+            <Parameter Name="fldUserName" Mode="In" Type="String" />
+            <Parameter Name="fldUserID" Mode="In" Type="Int64" />
+            <Parameter Name="fldDesc" Mode="In" Type="String" />
+            <Parameter Name="fldpic" Mode="In" Type="Binary" />
+          </FunctionImport>
+          <FunctionImport Name="prs_tblMeasureUnitSelect" ReturnType="Collection(cartaxtest2Model.prs_tblMeasureUnitSelect)">
+            <Parameter Name="fieldname" Mode="In" Type="String" />
+            <Parameter Name="value" Mode="In" Type="String" />
+            <Parameter Name="h" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="prs_tblKala_KhedmatSelect" ReturnType="Collection(cartaxtest2Model.prs_tblKala_KhedmatSelect)">
+            <Parameter Name="fieldname" Mode="In" Type="String" />
+            <Parameter Name="value" Mode="In" Type="String" />
+            <Parameter Name="h" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="prs_SelectDetailSooratHesab" ReturnType="Collection(cartaxtest2Model.prs_SelectDetailSooratHesab)" >
+          <Parameter Name="fldIdSooratHesab" Mode="In" Type="Int64" />
+          </FunctionImport>
+          <FunctionImport Name="prs_SelectHeaderSooratHesab" ReturnType="Collection(cartaxtest2Model.prs_SelectHeaderSooratHesab)">
+          <Parameter Name="fldIdSooratHesab" Mode="In" Type="Int64" />
+          </FunctionImport>
+          <FunctionImport Name="prs_tblSooratHesabHeader_ValueInsert">
+            <Parameter Name="fldHeaderId" Mode="In" Type="Int64" />
+            <Parameter Name="fldValue" Mode="In" Type="String" />
+            <Parameter Name="fldParametrHeaderId" Mode="In" Type="Int16" />
+            <Parameter Name="fldUserId" Mode="In" Type="Int64" />
+            <Parameter Name="fldIP" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="prs_tblCurrencyTypeSelect" ReturnType="Collection(cartaxtest2Model.prs_tblCurrencyTypeSelect)">
+            <Parameter Name="fieldname" Mode="In" Type="String" />
+            <Parameter Name="value" Mode="In" Type="String" />
+            <Parameter Name="h" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="prs_tblSooratHesab_DetailInsert">
+            <Parameter Name="fldHeaderId" Mode="In" Type="Int64" />
+            <Parameter Name="fldUserID" Mode="In" Type="Int64" />
+            <Parameter Name="fldIP" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="prs_tblSooratHesab_HeaderInsert">
+            <Parameter Name="fldid" Mode="InOut" Type="Int64" />
+            <Parameter Name="fldTaxId" Mode="In" Type="String" />
+            <Parameter Name="fldIndatim" Mode="In" Type="DateTime" />
+            <Parameter Name="fldIndati2m" Mode="In" Type="DateTime" />
+            <Parameter Name="fldInty" Mode="In" Type="Byte" />
+            <Parameter Name="fldInp" Mode="In" Type="Byte" />
+            <Parameter Name="fldInno" Mode="In" Type="String" />
+            <Parameter Name="fldIrtaxId" Mode="In" Type="String" />
+            <Parameter Name="fldKharidarId" Mode="In" Type="Int64" />
+            <Parameter Name="fldForooshandeId" Mode="In" Type="Int64" />
+            <Parameter Name="fldFunctionName" Mode="In" Type="String" />
+            <Parameter Name="fldkh_Pas_No" Mode="In" Type="String" />
+            <Parameter Name="fldkh_TypeFly" Mode="In" Type="Byte" />
+            <Parameter Name="fldF_Sh_Parvane" Mode="In" Type="String" />
+            <Parameter Name="fldF_GomrokCode" Mode="In" Type="String" />
+            <Parameter Name="fldF_UniqId" Mode="In" Type="String" />
+            <Parameter Name="fldShomareFish" Mode="In" Type="String" />
+            <Parameter Name="fldUserId" Mode="In" Type="Int64" />
+            <Parameter Name="fldIP" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="prs_tblSooratHesab_HeaderSelect" ReturnType="Collection(cartaxtest2Model.prs_tblSooratHesab_HeaderSelect)">
+            <Parameter Name="fieldname" Mode="In" Type="String" />
+            <Parameter Name="value" Mode="In" Type="String" />
+            <Parameter Name="Value1" Mode="In" Type="String" />
+            <Parameter Name="value2" Mode="In" Type="String" />
+            <Parameter Name="h" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="prs_tblSooratHesab_HeaderDelete">
+            <Parameter Name="fldId" Mode="In" Type="Int64" />
+            <Parameter Name="flduserId" Mode="In" Type="Int64" />
+            <Parameter Name="fldIP" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="prs_tblSooratHesabStatusInsert" ReturnType="Collection(cartaxtest2Model.prs_tblSooratHesabStatusInsert)">
+            <Parameter Name="fldHeaderId" Mode="In" Type="Int64" />
+            <Parameter Name="fldStatus" Mode="In" Type="Byte" />
+            <Parameter Name="fldMatn" Mode="In" Type="String" />
+            <Parameter Name="fldReferenceNumber" Mode="In" Type="String" />
+            <Parameter Name="fldSerializeObject" Mode="In" Type="String" />
+            <Parameter Name="fldUID" Mode="In" Type="String" />
+            <Parameter Name="fldUserId" Mode="In" Type="Int64" />
+            <Parameter Name="fldIP" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="prs_rptSooratHesab_Header" ReturnType="Collection(cartaxtest2Model.prs_rptSooratHesab_Header)">
+          <Parameter Name="fldIdSooratHesab" Mode="In" Type="Int64" />
+          </FunctionImport>
+          <FunctionImport Name="prs_tblSooratHesabFromWebServiceInsert">
+            <Parameter Name="HeaderId" Mode="InOut" Type="Int64" />
+            <Parameter Name="fldForooshandeId" Mode="In" Type="Int64" />
+            <Parameter Name="fldkh_Name" Mode="In" Type="String" />
+            <Parameter Name="fldkh_Family" Mode="In" Type="String" />
+            <Parameter Name="fldBid" Mode="In" Type="String" />
+            <Parameter Name="fldkh_TypeShakhsId" Mode="In" Type="Byte" />
+            <Parameter Name="fldtinb" Mode="In" Type="String" />
+            <Parameter Name="fldTaxId" Mode="In" Type="String" />
+            <Parameter Name="fldIndatim" Mode="In" Type="DateTime" />
+            <Parameter Name="fldIndati2m" Mode="In" Type="DateTime" />
+            <Parameter Name="fldInty" Mode="In" Type="Byte" />
+            <Parameter Name="fldInp" Mode="In" Type="Byte" />
+            <Parameter Name="fldInno" Mode="In" Type="String" />
+            <Parameter Name="fldIrtaxId" Mode="In" Type="String" />
+            <Parameter Name="fldFunctionName" Mode="In" Type="String" />
+            <Parameter Name="fldUserId" Mode="In" Type="Int64" />
+            <Parameter Name="fldDesc" Mode="In" Type="String" />
+            <Parameter Name="fldIP" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="prs_InsertSooratHesabForExcel">
+            <Parameter Name="HeaderId" Mode="InOut" Type="Int64" />
+            <Parameter Name="fldForooshandeId" Mode="In" Type="Int64" />
+            <Parameter Name="fldkh_Name" Mode="In" Type="String" />
+            <Parameter Name="fldkh_Family" Mode="In" Type="String" />
+            <Parameter Name="fldBid" Mode="In" Type="String" />
+            <Parameter Name="fldkh_TypeShakhsId" Mode="In" Type="Byte" />
+            <Parameter Name="fldtinb" Mode="In" Type="String" />
+            <Parameter Name="fldTaxId" Mode="In" Type="String" />
+            <Parameter Name="fldIndatim" Mode="In" Type="DateTime" />
+            <Parameter Name="fldIndati2m" Mode="In" Type="DateTime" />
+            <Parameter Name="fldInty" Mode="In" Type="Byte" />
+            <Parameter Name="fldInp" Mode="In" Type="Byte" />
+            <Parameter Name="fldInno" Mode="In" Type="String" />
+            <Parameter Name="fldIrtaxId" Mode="In" Type="String" />
+            <Parameter Name="fldFunctionName" Mode="In" Type="String" />
+            <Parameter Name="fldShomareFish" Mode="In" Type="String" />
+            <Parameter Name="fldUserId" Mode="In" Type="Int64" />
+            <Parameter Name="fldDesc" Mode="In" Type="String" />
+            <Parameter Name="fldIP" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="prs_TransactionInfInsert">
+            <Parameter Name="fldTarfGharardadId" Mode="In" Type="Int32" />
+            <Parameter Name="fldUserName" Mode="In" Type="String" />
+            <Parameter Name="fldPass" Mode="In" Type="String" />
+            <Parameter Name="fldUserId" Mode="In" Type="Int64" />
+            <Parameter Name="fldDesc" Mode="In" Type="String" />
+            <Parameter Name="fldInherit" Mode="In" Type="Boolean" />
+          </FunctionImport>
+          <FunctionImport Name="prs_TransactionInfSelect" ReturnType="Collection(cartaxtest2Model.prs_TransactionInfSelect)">
+            <Parameter Name="fieldname" Mode="In" Type="String" />
+            <Parameter Name="Value" Mode="In" Type="String" />
+            <Parameter Name="h" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="prs_TransactionInfUpdate">
+            <Parameter Name="fldId" Mode="In" Type="Int32" />
+            <Parameter Name="fldUserName" Mode="In" Type="String" />
+            <Parameter Name="fldTarfGharardadId" Mode="In" Type="Int32" />
+            <Parameter Name="fldPass" Mode="In" Type="String" />
+            <Parameter Name="fldUserId" Mode="In" Type="Int64" />
+            <Parameter Name="fldDesc" Mode="In" Type="String" />
+            <Parameter Name="fldInherit" Mode="In" Type="Boolean" />
+          </FunctionImport>
+          <FunctionImport Name="prs_tblSooratHesabHeader_ValueUpdate">
+            <Parameter Name="fldHeaderId" Mode="In" Type="Int64" />
+            <Parameter Name="fldValue" Mode="In" Type="String" />
+            <Parameter Name="fldParametrHeaderId" Mode="In" Type="Int16" />
+            <Parameter Name="fldUserId" Mode="In" Type="Int64" />
+            <Parameter Name="fldIP" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="prs_tblSooratHesabExcelTemplateSelect" ReturnType="Collection(cartaxtest2Model.prs_tblSooratHesabExcelTemplateSelect)">
+            <Parameter Name="fieldname" Mode="In" Type="String" />
+            <Parameter Name="value" Mode="In" Type="String" />
+            <Parameter Name="h" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="prs_tblSooratHesabExcelField_TemplateSelect" ReturnType="Collection(cartaxtest2Model.prs_tblSooratHesabExcelField_TemplateSelect)">
+            <Parameter Name="fieldname" Mode="In" Type="String" />
+            <Parameter Name="value" Mode="In" Type="String" />
+            <Parameter Name="value1" Mode="In" Type="String" />
+            <Parameter Name="h" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="prs_SelectParametr_Field_Template" ReturnType="Collection(cartaxtest2Model.prs_SelectParametr_Field_Template)">
+          <Parameter Name="TemplateId" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="prs_tblSooratHesabExcelField_TemplateDelete">
+            <Parameter Name="fldTemplateId" Mode="In" Type="Int32" />
+            <Parameter Name="fldUserId" Mode="In" Type="Int64" />
+            <Parameter Name="fldIP" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="prs_tblSooratHesabExcelField_TemplateInsert">
+            <Parameter Name="fldTemplateId" Mode="In" Type="Int32" />
+            <Parameter Name="fldParametrId" Mode="In" Type="Int16" />
+            <Parameter Name="fldColumnNum" Mode="In" Type="Int16" />
+            <Parameter Name="fldUserId" Mode="In" Type="Int64" />
+            <Parameter Name="fldDesc" Mode="In" Type="String" />
+            <Parameter Name="fldIP" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="prs_tblSooratHesabExcelField_TemplateUpdate">
+            <Parameter Name="fldId" Mode="In" Type="Int64" />
+            <Parameter Name="fldTemplateId" Mode="In" Type="Int32" />
+            <Parameter Name="fldParametrId" Mode="In" Type="Int16" />
+            <Parameter Name="fldColumnNum" Mode="In" Type="Int16" />
+            <Parameter Name="fldUserId" Mode="In" Type="Int64" />
+            <Parameter Name="fldDesc" Mode="In" Type="String" />
+            <Parameter Name="fldIP" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="prs_tblSooratHesabExcelTemplateDelete">
+            <Parameter Name="fldId" Mode="In" Type="Int32" />
+            <Parameter Name="fldUserId" Mode="In" Type="Int64" />
+            <Parameter Name="fldIP" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="prs_tblSooratHesabExcelTemplateInsert">
+            <Parameter Name="fldid" Mode="InOut" Type="Int32" />
+            <Parameter Name="fldTitle" Mode="In" Type="String" />
+            <Parameter Name="fldStartRowNumber" Mode="In" Type="Byte" />
+            <Parameter Name="fldUserId" Mode="In" Type="Int64" />
+            <Parameter Name="fldDesc" Mode="In" Type="String" />
+            <Parameter Name="fldIP" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="prs_tblSooratHesabExcelTemplateUpdate">
+            <Parameter Name="fldId" Mode="In" Type="Int32" />
+            <Parameter Name="fldTitle" Mode="In" Type="String" />
+            <Parameter Name="fldStartRowNumber" Mode="In" Type="Byte" />
+            <Parameter Name="fldUserId" Mode="In" Type="Int64" />
+            <Parameter Name="fldDesc" Mode="In" Type="String" />
+            <Parameter Name="fldIP" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="prs_User_GharardadResetPass">
+            <Parameter Name="fldID" Mode="In" Type="Int64" />
+            <Parameter Name="fldPassword" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="prs_tblSooratHesabStatusSelect" ReturnType="Collection(cartaxtest2Model.prs_tblSooratHesabStatusSelect)">
+            <Parameter Name="fieldname" Mode="In" Type="String" />
+            <Parameter Name="value" Mode="In" Type="String" />
+            <Parameter Name="h" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="prs_tblSooratHesab_HeaderUpdate">
+            <Parameter Name="fldid" Mode="In" Type="Int64" />
+            <Parameter Name="fldTaxId" Mode="In" Type="String" />
+            <Parameter Name="fldIndatim" Mode="In" Type="DateTime" />
+            <Parameter Name="fldIndati2m" Mode="In" Type="DateTime" />
+            <Parameter Name="fldInty" Mode="In" Type="Byte" />
+            <Parameter Name="fldInp" Mode="In" Type="Byte" />
+            <Parameter Name="fldInno" Mode="In" Type="String" />
+            <Parameter Name="fldIrtaxId" Mode="In" Type="String" />
+            <Parameter Name="fldKharidarId" Mode="In" Type="Int64" />
+            <Parameter Name="fldForooshandeId" Mode="In" Type="Int64" />
+            <Parameter Name="fldFunctionName" Mode="In" Type="String" />
+            <Parameter Name="fldkh_Pas_No" Mode="In" Type="String" />
+            <Parameter Name="fldkh_TypeFly" Mode="In" Type="Byte" />
+            <Parameter Name="fldF_Sh_Parvane" Mode="In" Type="String" />
+            <Parameter Name="fldF_GomrokCode" Mode="In" Type="String" />
+            <Parameter Name="fldF_UniqId" Mode="In" Type="String" />
+            <Parameter Name="fldShomareFish" Mode="In" Type="String" />
+            <Parameter Name="fldUserId" Mode="In" Type="Int64" />
+            <Parameter Name="fldIP" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="prs_tblSooratHesab_DetailUpdate">
+            <Parameter Name="fldHeaderId" Mode="In" Type="Int64" />
+            <Parameter Name="fldUserID" Mode="In" Type="Int64" />
+            <Parameter Name="fldIP" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="sp_ErrorProgramInsert">
+            <Parameter Name="fldID" Mode="InOut" Type="Int32" />
+            <Parameter Name="fldText" Mode="In" Type="String" />
+            <Parameter Name="fldUserID" Mode="In" Type="Int64" />
+            <Parameter Name="fldDesc" Mode="In" Type="String" />
+            <Parameter Name="fldDate" Mode="In" Type="DateTime" />
+            <Parameter Name="fldUserPass" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="prs_tblKala_KhedmatInsert">
+            <Parameter Name="fldCode" Mode="In" Type="String" />
+            <Parameter Name="fldTypeShenaseId" Mode="In" Type="Byte" />
+            <Parameter Name="fldTarikh" Mode="In" Type="String" />
+            <Parameter Name="fldRunDate" Mode="In" Type="String" />
+            <Parameter Name="fldExpDate" Mode="In" Type="String" />
+            <Parameter Name="fldSpecialOrGeneral" Mode="In" Type="Boolean" />
+            <Parameter Name="fldTaxableOrFree" Mode="In" Type="Boolean" />
+            <Parameter Name="fldVat" Mode="In" Type="Byte" />
+            <Parameter Name="fldVatCustomPurposes" Mode="In" Type="Byte" />
+            <Parameter Name="fldDescriptionOfID" Mode="In" Type="String" />
+            <Parameter Name="type" Mode="In" Type="Boolean" />
+          </FunctionImport>
+          <FunctionImport Name="prs_tblKala_KhedmatDelete">
+            <Parameter Name="Code" Mode="In" Type="String" />
+            <Parameter Name="type" Mode="In" Type="Boolean" />
+          </FunctionImport>
+          <FunctionImport Name="prs_tblSooratHesab_DetailDelete">
+            <Parameter Name="fldId" Mode="In" Type="Int64" />
+            <Parameter Name="fldUserId" Mode="In" Type="Int64" />
+          </FunctionImport>
+          <FunctionImport Name="prs_UpdateIrTaxId">
+            <Parameter Name="IdHeader" Mode="In" Type="Int64" />
+            <Parameter Name="fldIrtaxId" Mode="In" Type="String" />
+            <Parameter Name="fldUserId" Mode="In" Type="Int64" />
+            <Parameter Name="fldIP" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="prs_tblSooratHesabStatus_DetailInsert">
+            <Parameter Name="fldSooratHesabStatusId" Mode="In" Type="Int64" />
+            <Parameter Name="fldStatusError" Mode="In" Type="Byte" />
+            <Parameter Name="fldMatn" Mode="In" Type="String" />
+            <Parameter Name="fldCode" Mode="In" Type="String" />
+            <Parameter Name="fldUserId" Mode="In" Type="Int64" />
+            <Parameter Name="fldIP" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="prs_tblSooratHesabStatus_DetailSelect" ReturnType="Collection(cartaxtest2Model.prs_tblSooratHesabStatus_DetailSelect)">
+            <Parameter Name="fieldname" Mode="In" Type="String" />
+            <Parameter Name="value" Mode="In" Type="String" />
+            <Parameter Name="h" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="prs_tblSooratHesabStatusUpdate">
+            <Parameter Name="fldid" Mode="In" Type="Int64" />
+            <Parameter Name="fldHeaderId" Mode="In" Type="Int64" />
+            <Parameter Name="fldStatus" Mode="In" Type="Byte" />
+            <Parameter Name="fldMatn" Mode="In" Type="String" />
+            <Parameter Name="fldReferenceNumber" Mode="In" Type="String" />
+            <Parameter Name="fldSerializeObject" Mode="In" Type="String" />
+            <Parameter Name="fldUID" Mode="In" Type="String" />
+            <Parameter Name="fldUserId" Mode="In" Type="Int64" />
+            <Parameter Name="fldIP" Mode="In" Type="String" />
+          </FunctionImport>
+        </EntityContainer>
+        <ComplexType Name="prs_tblTarfGharardadSelect">
+          <Property Type="Int32" Name="fldId" Nullable="false" />
+          <Property Type="Int64" Name="fldShakhsId" Nullable="false" />
+          <Property Type="String" Name="fldUniqId" Nullable="false" MaxLength="6" />
+          <Property Type="Binary" Name="fldPrivateKey" Nullable="false" MaxLength="2000" />
+          <Property Type="Binary" Name="fldSignatureCertificate" Nullable="false" MaxLength="2000" />
+          <Property Type="Int64" Name="fldUserID" Nullable="false" />
+          <Property Type="String" Name="fldDesc" Nullable="false" />
+          <Property Type="DateTime" Name="fldDate" Nullable="false" Precision="23" />
+          <Property Type="String" Name="fldNameShakhs" Nullable="false" MaxLength="351" />
+          <Property Type="String" Name="fldCodeEghtesadi" Nullable="false" MaxLength="15" />
+          <Property Type="String" Name="fldCodeShobe" Nullable="false" MaxLength="10" />
+          <Property Type="String" Name="fldNationalCode" Nullable="false" MaxLength="10" />
+          <Property Type="String" Name="fldCodePosti" Nullable="false" MaxLength="10" />
+          <Property Type="String" Name="fldNameTypeShakhs" Nullable="false" MaxLength="50" />
+        </ComplexType>
+        <ComplexType Name="prs_User_GharardadSelect">
+          <Property Type="Int64" Name="fldID" Nullable="false" />
+          <Property Type="String" Name="fldName" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="fldFamily" Nullable="true" MaxLength="50" />
+          <Property Type="Boolean" Name="fldStatus" Nullable="false" />
+          <Property Type="String" Name="fldUserName" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="fldMelliCode" Nullable="false" MaxLength="11" />
+          <Property Type="String" Name="fldStartDate" Nullable="true" MaxLength="10" />
+          <Property Type="Int64" Name="fldCountryDivisionsID" Nullable="true" />
+          <Property Type="String" Name="fldUserName1" Nullable="true" MaxLength="50" />
+          <Property Type="Int64" Name="fldUserID" Nullable="true" />
+          <Property Type="String" Name="fldDesc" Nullable="true" />
+          <Property Type="String" Name="fldDate" Nullable="true" MaxLength="10" />
+          <Property Type="String" Name="fldPassword" Nullable="false" MaxLength="50" />
+          <Property Type="Byte" Name="fldUserType" Nullable="false" />
+          <Property Type="Int32" Name="fldTarfGharardadId" Nullable="true" />
+          <Property Type="String" Name="fldStatusName" Nullable="true" MaxLength="8" />
+          <Property Type="String" Name="fldNameTypeShakhs" Nullable="false" MaxLength="50" />
+          <Property Type="Int64" Name="fldShakhsId" Nullable="false" />
+        </ComplexType>
+        <ComplexType Name="prs_tblShakhsHaghighi_HoghoghiSelect">
+          <Property Type="Int64" Name="fldId" Nullable="false" />
+          <Property Type="String" Name="fldName" Nullable="false" MaxLength="500" />
+          <Property Type="String" Name="fldFamily" Nullable="false" MaxLength="200" />
+          <Property Type="String" Name="fldNationalCode" Nullable="false" MaxLength="12" />
+          <Property Type="String" Name="fldCodeEghtesadi" Nullable="false" MaxLength="15" />
+          <Property Type="Byte" Name="fldTypeShakhsId" Nullable="false" />
+          <Property Type="String" Name="fldCodePosti" Nullable="false" MaxLength="10" />
+          <Property Type="String" Name="fldCodeShobe" Nullable="false" MaxLength="10" />
+          <Property Type="Int64" Name="fldOwnerId" Nullable="true" />
+          <Property Type="Int64" Name="fldUserID" Nullable="false" />
+          <Property Type="String" Name="fldDesc" Nullable="false" />
+          <Property Type="DateTime" Name="fldDate" Nullable="false" Precision="23" />
+          <Property Type="String" Name="fldNameTypeShakhs" Nullable="false" MaxLength="50" />
+          <Property Type="Int32" Name="fldIdTarfGharardad" Nullable="false" />
+        </ComplexType>
+        <ComplexType Name="prs_tblTypeShakhsSelect">
+          <Property Type="Byte" Name="fldId" Nullable="false" />
+          <Property Type="String" Name="fldNameTypeShakhs" Nullable="false" MaxLength="50" />
+        </ComplexType>
+        <ComplexType Name="prs_tblMeasureUnitSelect">
+          <Property Type="Byte" Name="fldId" Nullable="false" />
+          <Property Type="String" Name="fldName" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="fldCode" Nullable="false" MaxLength="20" />
+        </ComplexType>
+        <ComplexType Name="prs_tblKala_KhedmatSelect">
+          <Property Type="Int64" Name="fldId" Nullable="false" />
+          <Property Type="String" Name="fldCode" Nullable="false" MaxLength="15" />
+          <Property Type="Byte" Name="fldTypeShenaseId" Nullable="true" />
+          <Property Type="String" Name="fldTarikh" Nullable="false" MaxLength="10" />
+          <Property Type="String" Name="fldRunDate" Nullable="false" MaxLength="10" />
+          <Property Type="String" Name="fldExpDate" Nullable="false" MaxLength="10" />
+          <Property Type="Boolean" Name="fldSpecialOrGeneral" Nullable="true" />
+          <Property Type="Boolean" Name="fldTaxableOrFree" Nullable="true" />
+          <Property Type="Byte" Name="fldVat" Nullable="true" />
+          <Property Type="Byte" Name="fldVatCustomPurposes" Nullable="true" />
+          <Property Type="String" Name="fldDescriptionOfID" Nullable="false" MaxLength="1000" />
+          <Property Type="String" Name="fldNameShenase" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="fldSpecialOrGeneralName" Nullable="false" MaxLength="5" />
+          <Property Type="String" Name="fldTaxableOrFreeName" Nullable="false" MaxLength="5" />
+        </ComplexType>
+        <ComplexType Name="prs_SelectDetailSooratHesab">
+          <Property Type="String" Name="fldsstt" Nullable="true" MaxLength="100" />
+          <Property Type="Decimal" Name="fldam" Nullable="true" Precision="26" Scale="7" />
+          <Property Type="String" Name="fldmu" Nullable="true" MaxLength="100" />
+          <Property Type="Decimal" Name="fldnw" Nullable="true" Precision="23" Scale="8" />
+          <Property Type="Decimal" Name="fldfee" Nullable="true" Precision="26" Scale="8" />
+          <Property Type="Decimal" Name="fldcfee" Nullable="true" Precision="18" Scale="4" />
+          <Property Type="String" Name="fldcut" Nullable="true" MaxLength="100" />
+          <Property Type="Int64" Name="fldexr" Nullable="true" />
+          <Property Type="Int64" Name="fldssrv" Nullable="true" />
+          <Property Type="Decimal" Name="fldsscv" Nullable="true" Precision="18" Scale="8" />
+          <Property Type="Int64" Name="fldprdis" Nullable="true" />
+          <Property Type="String" Name="fldolt" Nullable="true" MaxLength="100" />
+          <Property Type="Decimal" Name="fldolr" Nullable="true" Precision="5" Scale="2" />
+          <Property Type="Int64" Name="fldolam" Nullable="true" />
+          <Property Type="Int64" Name="fldconsfee" Nullable="true" />
+          <Property Type="Int64" Name="fldspro" Nullable="true" />
+          <Property Type="Int64" Name="fldbros" Nullable="true" />
+          <Property Type="Int64" Name="fldtcpbs" Nullable="true" />
+          <Property Type="Int64" Name="fldcop" Nullable="true" />
+          <Property Type="Int64" Name="fldvop" Nullable="true" />
+          <Property Type="String" Name="fldbsrn" Nullable="true" MaxLength="100" />
+          <Property Type="Int64" Name="fldtsstam" Nullable="true" />
+          <Property Type="Int64" Name="flddis" Nullable="true" />
+          <Property Type="Int64" Name="fldadis" Nullable="true" />
+          <Property Type="Decimal" Name="fldvra" Nullable="true" Precision="5" Scale="2" />
+          <Property Type="Int64" Name="fldvam" Nullable="true" />
+          <Property Type="Decimal" Name="fldodr" Nullable="true" Precision="5" Scale="2" />
+          <Property Type="String" Name="fldodt" Nullable="true" MaxLength="100" />
+          <Property Type="Int64" Name="fldodam" Nullable="true" />
+          <Property Type="Int64" Name="fldHeaderId" Nullable="false" />
+          <Property Type="String" Name="fldsstid" Nullable="true" MaxLength="100" />
+          <Property Type="Decimal" Name="fldpspd" Nullable="true" Precision="26" Scale="8" />
+          <Property Type="Decimal" Name="fldcui" Nullable="true" Precision="6" Scale="2" />
+        </ComplexType>
+        <ComplexType Name="prs_SelectHeaderSooratHesab">
+          <Property Type="String" Name="fldTaxId" Nullable="false" MaxLength="22" />
+          <Property Type="DateTime" Name="fldIndatim" Nullable="false" Precision="23" />
+          <Property Type="String" Name="fldIndatim_Zaman" Nullable="true" MaxLength="10" />
+          <Property Type="DateTime" Name="fldIndati2m" Nullable="true" Precision="23" />
+          <Property Type="String" Name="fldIndati2m_Zaman" Nullable="true" MaxLength="10" />
+          <Property Type="String" Name="fldInno" Nullable="true" MaxLength="10" />
+          <Property Type="String" Name="fldIrtaxId" Nullable="true" MaxLength="22" />
+          <Property Type="Byte" Name="fldInty" Nullable="false" />
+          <Property Type="Byte" Name="fldinp" Nullable="true" />
+          <Property Type="String" Name="fldTypeSooratHesab" Nullable="false" MaxLength="100" />
+          <Property Type="String" Name="fldNamePettern" Nullable="false" MaxLength="200" />
+          <Property Type="String" Name="fldTinb" Nullable="true" MaxLength="15" />
+          <Property Type="String" Name="fldBpc" Nullable="true" MaxLength="10" />
+          <Property Type="String" Name="fldbbc" Nullable="true" MaxLength="10" />
+          <Property Type="String" Name="fldkh_Bid" Nullable="true" MaxLength="12" />
+          <Property Type="String" Name="fldTins" Nullable="true" MaxLength="15" />
+          <Property Type="String" Name="fldf_CodePosti" Nullable="true" MaxLength="10" />
+          <Property Type="String" Name="fldSbc" Nullable="true" MaxLength="10" />
+          <Property Type="String" Name="fldBid" Nullable="true" MaxLength="12" />
+          <Property Type="Byte" Name="fldTob" Nullable="true" />
+          <Property Type="Byte" Name="fldKh_Tob" Nullable="true" />
+          <Property Type="String" Name="fldtyeShkashFoorosh" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="fldTypeShakhKharid" Nullable="true" MaxLength="50" />
+          <Property Type="Byte" Name="fldins" Nullable="true" />
+          <Property Type="Byte" Name="fldft" Nullable="true" />
+          <Property Type="String" Name="fldbpn" Nullable="true" MaxLength="9" />
+          <Property Type="String" Name="fldscln" Nullable="true" MaxLength="14" />
+          <Property Type="String" Name="fldscc" Nullable="true" MaxLength="5" />
+          <Property Type="String" Name="fldcdcn" Nullable="true" MaxLength="500" />
+          <Property Type="String" Name="fldcdcd" Nullable="true" MaxLength="500" />
+          <Property Type="String" Name="fldcrn" Nullable="true" MaxLength="12" />
+          <Property Type="String" Name="fldbilid" Nullable="true" MaxLength="500" />
+          <Property Type="Int64" Name="fldtprdis" Nullable="true" />
+          <Property Type="Int64" Name="fldtdis" Nullable="true" />
+          <Property Type="Int64" Name="fldtadis" Nullable="true" />
+          <Property Type="Int64" Name="fldtvam" Nullable="true" />
+          <Property Type="Int64" Name="fldtodam" Nullable="true" />
+          <Property Type="Int64" Name="fldtbill" Nullable="true" />
+          <Property Type="Decimal" Name="fldtonw" Nullable="true" Precision="23" Scale="8" />
+          <Property Type="Int64" Name="fldtorv" Nullable="true" />
+          <Property Type="Decimal" Name="fldtocv" Nullable="true" Precision="18" Scale="4" />
+          <Property Type="Byte" Name="fldsetm" Nullable="true" />
+          <Property Type="Int64" Name="fldcap" Nullable="true" />
+          <Property Type="Int64" Name="fldinsp" Nullable="true" />
+          <Property Type="Int64" Name="fldtvop" Nullable="true" />
+          <Property Type="Int64" Name="fldtax17" Nullable="true" />
+          <Property Type="String" Name="fldSh_Indatim" Nullable="false" MaxLength="10" />
+          <Property Type="String" Name="fldSh_Indati2m" Nullable="true" MaxLength="10" />
+          <Property Type="String" Name="fldf_name" Nullable="true" MaxLength="701" />
+          <Property Type="String" Name="fldkh_Name" Nullable="true" MaxLength="701" />
+          <Property Type="Int64" Name="fldForooshandeId" Nullable="true" />
+          <Property Type="Int64" Name="fldKharidarId" Nullable="true" />
+          <Property Type="String" Name="fldFunctionName" Nullable="true" MaxLength="200" />
+          <Property Type="String" Name="fldShomareFish" Nullable="false" />
+        </ComplexType>
+        <ComplexType Name="prs_tblCurrencyTypeSelect">
+          <Property Type="Int16" Name="fldId" Nullable="false" />
+          <Property Type="String" Name="fldNameEn" Nullable="false" MaxLength="100" />
+          <Property Type="String" Name="fldCurrency" Nullable="false" MaxLength="100" />
+          <Property Type="String" Name="fldAlphabeticCode" Nullable="false" MaxLength="5" />
+          <Property Type="String" Name="fldNumericCode" Nullable="false" MaxLength="5" />
+          <Property Type="String" Name="fldMinorUnit" Nullable="false" MaxLength="5" />
+        </ComplexType>
+        <ComplexType Name="prs_tblSooratHesab_HeaderSelect">
+          <Property Type="Int64" Name="fldId" Nullable="false" />
+          <Property Type="String" Name="fldTaxId" Nullable="false" MaxLength="22" />
+          <Property Type="String" Name="fldIndatim" Nullable="true" MaxLength="19" />
+          <Property Type="String" Name="fldIndati2m" Nullable="false" MaxLength="19" />
+          <Property Type="Byte" Name="fldInty" Nullable="false" />
+          <Property Type="Byte" Name="fldInp" Nullable="true" />
+          <Property Type="String" Name="fldInno" Nullable="true" MaxLength="10" />
+          <Property Type="String" Name="fldIrtaxId" Nullable="true" MaxLength="22" />
+          <Property Type="Int64" Name="fldKharidarId" Nullable="true" />
+          <Property Type="Int64" Name="fldForooshandeId" Nullable="true" />
+          <Property Type="Int64" Name="fldUserId" Nullable="false" />
+          <Property Type="DateTime" Name="fldDate" Nullable="false" Precision="23" />
+          <Property Type="String" Name="fldf_Name" Nullable="false" MaxLength="701" />
+          <Property Type="String" Name="fldkh_name" Nullable="false" MaxLength="701" />
+          <Property Type="String" Name="fldTypeSooratHesab" Nullable="false" MaxLength="100" />
+          <Property Type="String" Name="fldNamePettern" Nullable="false" MaxLength="200" />
+          <Property Type="Byte" Name="fldStatus" Nullable="false" />
+          <Property Type="String" Name="fldStatusName" Nullable="false" MaxLength="15" />
+          <Property Type="String" Name="fldReferenceNumber" Nullable="true" MaxLength="30" />
+          <Property Type="String" Name="fldUid" Nullable="true" MaxLength="30" />
+          <Property Type="String" Name="fldf_NationalCode" Nullable="false" MaxLength="12" />
+          <Property Type="String" Name="fldkh_fldNationalCode" Nullable="false" MaxLength="12" />
+          <Property Type="String" Name="fldf_CodeEghtesadi" Nullable="false" MaxLength="15" />
+          <Property Type="String" Name="fldkh_CodeEghtesadi" Nullable="false" MaxLength="15" />
+          <Property Type="String" Name="fldSubject" Nullable="false" MaxLength="20" />
+          <Property Type="String" Name="fldFunctionName" Nullable="true" MaxLength="200" />
+          <Property Type="String" Name="fldSerializeObject" Nullable="true" />
+          <Property Type="String" Name="fldShomareFish" Nullable="false" />
+          <Property Type="String" Name="SumSooratHesab" Nullable="false" MaxLength="500" />
+        </ComplexType>
+        <ComplexType Name="prs_rptSooratHesab_Header">
+          <Property Type="String" Name="fldsh_Maliyati" Nullable="false" MaxLength="22" />
+          <Property Type="String" Name="fldTarikhSoodor" Nullable="true" MaxLength="21" />
+          <Property Type="String" Name="fldTarikhEijad" Nullable="true" MaxLength="19" />
+          <Property Type="String" Name="fldSerial" Nullable="true" MaxLength="10" />
+          <Property Type="String" Name="fldSh_Marja" Nullable="true" MaxLength="22" />
+          <Property Type="String" Name="fldTypeSooratHesab" Nullable="false" MaxLength="100" />
+          <Property Type="String" Name="fldNamePettern" Nullable="false" MaxLength="200" />
+          <Property Type="String" Name="fldkh_Eghtesadi" Nullable="true" MaxLength="15" />
+          <Property Type="String" Name="fldkh_CodePosti" Nullable="true" MaxLength="10" />
+          <Property Type="String" Name="fldkh_CodeShobe" Nullable="true" MaxLength="10" />
+          <Property Type="String" Name="fldkh_NationalCode" Nullable="true" MaxLength="12" />
+          <Property Type="String" Name="fldf_CodeEghtesadi" Nullable="true" MaxLength="15" />
+          <Property Type="String" Name="fldf_CodePosti" Nullable="true" MaxLength="10" />
+          <Property Type="String" Name="fldf_CodeShobe" Nullable="true" MaxLength="10" />
+          <Property Type="String" Name="fldf_NationalCode" Nullable="true" MaxLength="12" />
+          <Property Type="String" Name="fldSubject" Nullable="true" MaxLength="200" />
+          <Property Type="String" Name="fldFlyType" Nullable="true" MaxLength="15" />
+          <Property Type="String" Name="fldPas_No" Nullable="true" MaxLength="9" />
+          <Property Type="String" Name="fldParvane_No" Nullable="true" MaxLength="14" />
+          <Property Type="String" Name="fldCodeEzhar" Nullable="true" MaxLength="5" />
+          <Property Type="String" Name="fldCotazh_No" Nullable="true" MaxLength="200" />
+          <Property Type="String" Name="fldCotazh_Date" Nullable="true" MaxLength="200" />
+          <Property Type="String" Name="fldEshterak_No" Nullable="true" MaxLength="200" />
+          <Property Type="String" Name="fldSumMablagh" Nullable="true" MaxLength="200" />
+          <Property Type="String" Name="fldSumTakhfif" Nullable="true" MaxLength="200" />
+          <Property Type="String" Name="fldSumMablagh_Takhfif" Nullable="true" MaxLength="200" />
+          <Property Type="String" Name="fldSumMaliyat" Nullable="true" MaxLength="200" />
+          <Property Type="String" Name="fldSumMablaghSayer" Nullable="true" MaxLength="200" />
+          <Property Type="String" Name="fldSumSooratheasb" Nullable="true" MaxLength="200" />
+          <Property Type="String" Name="fldSumVaznKhales" Nullable="true" MaxLength="200" />
+          <Property Type="String" Name="fldArzeshReyali" Nullable="true" MaxLength="200" />
+          <Property Type="String" Name="fldArzeshArzi" Nullable="true" MaxLength="200" />
+          <Property Type="String" Name="fldRaveshTasviye" Nullable="true" MaxLength="200" />
+          <Property Type="String" Name="fldMablaghNaghdi" Nullable="true" MaxLength="200" />
+          <Property Type="String" Name="fldMablaghNesiye" Nullable="true" MaxLength="200" />
+          <Property Type="String" Name="fldSumSahmMaliyat" Nullable="true" MaxLength="200" />
+          <Property Type="String" Name="fldMaliyat17" Nullable="true" MaxLength="200" />
+          <Property Type="String" Name="fldUniqCode" Nullable="true" MaxLength="12" />
+        </ComplexType>
+        <ComplexType Name="prs_TransactionInfSelect">
+          <Property Type="Int32" Name="fldId" Nullable="false" />
+          <Property Type="String" Name="fldUserName" Nullable="false" MaxLength="50" />
+          <Property Type="Int64" Name="fldDivId" Nullable="false" />
+          <Property Type="String" Name="fldPass" Nullable="false" MaxLength="50" />
+          <Property Type="Int64" Name="fldUserId" Nullable="false" />
+          <Property Type="DateTime" Name="fldDate" Nullable="false" Precision="23" />
+          <Property Type="String" Name="fldDesc" Nullable="false" />
+          <Property Type="Boolean" Name="fldInherit" Nullable="false" />
+          <Property Type="String" Name="fldName" Nullable="false" MaxLength="701" />
+          <Property Type="Int32" Name="fldTarfGharardadId" Nullable="true" />
+        </ComplexType>
+        <ComplexType Name="prs_tblSooratHesabExcelTemplateSelect">
+          <Property Type="Int32" Name="fldId" Nullable="false" />
+          <Property Type="String" Name="fldTitle" Nullable="false" MaxLength="600" />
+          <Property Type="Byte" Name="fldStartRowNumber" Nullable="false" />
+          <Property Type="Int64" Name="fldUserId" Nullable="false" />
+          <Property Type="String" Name="fldDesc" Nullable="false" MaxLength="200" />
+          <Property Type="DateTime" Name="fldDate" Nullable="false" Precision="23" />
+        </ComplexType>
+        <ComplexType Name="prs_tblSooratHesabExcelField_TemplateSelect">
+          <Property Type="Int64" Name="fldId" Nullable="false" />
+          <Property Type="Int32" Name="fldTemplateId" Nullable="false" />
+          <Property Type="Int16" Name="fldParametrId" Nullable="false" />
+          <Property Type="Int16" Name="fldColumnNum" Nullable="false" />
+          <Property Type="Int64" Name="fldUserId" Nullable="false" />
+          <Property Type="DateTime" Name="fldDate" Nullable="false" Precision="23" />
+          <Property Type="String" Name="fldDesc" Nullable="false" MaxLength="200" />
+          <Property Type="String" Name="fldNameEn" Nullable="false" MaxLength="50" />
+        </ComplexType>
+        <ComplexType Name="prs_SelectParametr_Field_Template">
+          <Property Type="String" Name="fldNameEn" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="fldNameFa" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="fldColumnNum" Nullable="false" MaxLength="10" />
+          <Property Type="Boolean" Name="fldInExcel" Nullable="false" />
+          <Property Type="Boolean" Name="fldEjbari" Nullable="false" />
+          <Property Type="Int16" Name="fldId" Nullable="false" />
+          <Property Type="String" Name="fldEjbariName" Nullable="false" MaxLength="7" />
+        </ComplexType>
+        <ComplexType Name="prs_tblSooratHesabStatusSelect">
+          <Property Type="Int64" Name="fldid" Nullable="false" />
+          <Property Type="Int64" Name="fldHeaderId" Nullable="false" />
+          <Property Type="Byte" Name="fldStatus" Nullable="false" />
+          <Property Type="String" Name="fldMatn" Nullable="false" />
+          <Property Type="DateTime" Name="fldDate" Nullable="false" Precision="23" />
+          <Property Type="Int64" Name="fldUserId" Nullable="false" />
+          <Property Type="String" Name="fldReferenceNumber" Nullable="false" MaxLength="30" />
+          <Property Type="String" Name="fldUid" Nullable="false" MaxLength="30" />
+          <Property Type="String" Name="fldStatusName" Nullable="true" MaxLength="15" />
+          <Property Type="String" Name="fldSerializeObject" Nullable="false" />
+        </ComplexType>
+        <ComplexType Name="prs_tblSooratHesabStatusInsert">
+          <Property Type="Int64" Name="fldId" Nullable="true" />
+        </ComplexType>
+        <ComplexType Name="prs_tblSooratHesabStatus_DetailSelect">
+          <Property Type="Int64" Name="fldId" Nullable="false" />
+          <Property Type="Int64" Name="fldSooratHesabStatusId" Nullable="false" />
+          <Property Type="Byte" Name="fldStatusError" Nullable="false" />
+          <Property Type="String" Name="fldMatn" Nullable="false" />
+          <Property Type="String" Name="fldCode" Nullable="false" MaxLength="50" />
+          <Property Type="Int64" Name="fldUserId" Nullable="false" />
+          <Property Type="DateTime" Name="fldDate" Nullable="false" Precision="23" />
+          <Property Type="String" Name="fldStatusErrorName" Nullable="true" MaxLength="7" />
+        </ComplexType>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="cartaxtest2ModelStoreContainer" CdmEntityContainer="cartaxtest2Entities" >
+          <FunctionImportMapping FunctionImportName="prs_tblTarfGharardadSelect" FunctionName="cartaxtest2Model.Store.prs_tblTarfGharardadSelect">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="cartaxtest2Model.prs_tblTarfGharardadSelect">
+                <ScalarProperty Name="fldId" ColumnName="fldId" />
+                <ScalarProperty Name="fldShakhsId" ColumnName="fldShakhsId" />
+                <ScalarProperty Name="fldUniqId" ColumnName="fldUniqId" />
+                <ScalarProperty Name="fldPrivateKey" ColumnName="fldPrivateKey" />
+                <ScalarProperty Name="fldSignatureCertificate" ColumnName="fldSignatureCertificate" />
+                <ScalarProperty Name="fldUserID" ColumnName="fldUserID" />
+                <ScalarProperty Name="fldDesc" ColumnName="fldDesc" />
+                <ScalarProperty Name="fldDate" ColumnName="fldDate" />
+                <ScalarProperty Name="fldNameShakhs" ColumnName="fldNameShakhs" />
+                <ScalarProperty Name="fldCodeEghtesadi" ColumnName="fldCodeEghtesadi" />
+                <ScalarProperty Name="fldCodeShobe" ColumnName="fldCodeShobe" />
+                <ScalarProperty Name="fldNationalCode" ColumnName="fldNationalCode" />
+                <ScalarProperty Name="fldCodePosti" ColumnName="fldCodePosti" />
+                <ScalarProperty Name="fldNameTypeShakhs" ColumnName="fldNameTypeShakhs" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="prs_User_GharardadSelect" FunctionName="cartaxtest2Model.Store.prs_User_GharardadSelect">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="cartaxtest2Model.prs_User_GharardadSelect">
+                <ScalarProperty Name="fldID" ColumnName="fldID" />
+                <ScalarProperty Name="fldName" ColumnName="fldName" />
+                <ScalarProperty Name="fldFamily" ColumnName="fldFamily" />
+                <ScalarProperty Name="fldStatus" ColumnName="fldStatus" />
+                <ScalarProperty Name="fldUserName" ColumnName="fldUserName" />
+                <ScalarProperty Name="fldMelliCode" ColumnName="fldMelliCode" />
+                <ScalarProperty Name="fldStartDate" ColumnName="fldStartDate" />
+                <ScalarProperty Name="fldCountryDivisionsID" ColumnName="fldCountryDivisionsID" />
+                <ScalarProperty Name="fldUserName1" ColumnName="fldUserName1" />
+                <ScalarProperty Name="fldUserID" ColumnName="fldUserID" />
+                <ScalarProperty Name="fldDesc" ColumnName="fldDesc" />
+                <ScalarProperty Name="fldDate" ColumnName="fldDate" />
+                <ScalarProperty Name="fldPassword" ColumnName="fldPassword" />
+                <ScalarProperty Name="fldUserType" ColumnName="fldUserType" />
+                <ScalarProperty Name="fldTarfGharardadId" ColumnName="fldTarfGharardadId" />
+                <ScalarProperty Name="fldStatusName" ColumnName="fldStatusName" />
+                <ScalarProperty Name="fldNameTypeShakhs" ColumnName="fldNameTypeShakhs" />
+                <ScalarProperty Name="fldShakhsId" ColumnName="fldShakhsId" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="prs_tblShakhsHaghighi_HoghoghiDelete" FunctionName="cartaxtest2Model.Store.prs_tblShakhsHaghighi_HoghoghiDelete" />
+          <FunctionImportMapping FunctionImportName="prs_tblShakhsHaghighi_HoghoghiInsert" FunctionName="cartaxtest2Model.Store.prs_tblShakhsHaghighi_HoghoghiInsert" />
+          <FunctionImportMapping FunctionImportName="prs_tblShakhsHaghighi_HoghoghiSelect" FunctionName="cartaxtest2Model.Store.prs_tblShakhsHaghighi_HoghoghiSelect">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="cartaxtest2Model.prs_tblShakhsHaghighi_HoghoghiSelect">
+                <ScalarProperty Name="fldId" ColumnName="fldId" />
+                <ScalarProperty Name="fldName" ColumnName="fldName" />
+                <ScalarProperty Name="fldFamily" ColumnName="fldFamily" />
+                <ScalarProperty Name="fldNationalCode" ColumnName="fldNationalCode" />
+                <ScalarProperty Name="fldCodeEghtesadi" ColumnName="fldCodeEghtesadi" />
+                <ScalarProperty Name="fldTypeShakhsId" ColumnName="fldTypeShakhsId" />
+                <ScalarProperty Name="fldCodePosti" ColumnName="fldCodePosti" />
+                <ScalarProperty Name="fldCodeShobe" ColumnName="fldCodeShobe" />
+                <ScalarProperty Name="fldOwnerId" ColumnName="fldOwnerId" />
+                <ScalarProperty Name="fldUserID" ColumnName="fldUserID" />
+                <ScalarProperty Name="fldDesc" ColumnName="fldDesc" />
+                <ScalarProperty Name="fldDate" ColumnName="fldDate" />
+                <ScalarProperty Name="fldNameTypeShakhs" ColumnName="fldNameTypeShakhs" />
+                <ScalarProperty Name="fldIdTarfGharardad" ColumnName="fldIdTarfGharardad" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="prs_tblShakhsHaghighi_HoghoghiUpdate" FunctionName="cartaxtest2Model.Store.prs_tblShakhsHaghighi_HoghoghiUpdate" />
+          <FunctionImportMapping FunctionImportName="prs_tblTarfGharardadDelete" FunctionName="cartaxtest2Model.Store.prs_tblTarfGharardadDelete" />
+          <FunctionImportMapping FunctionImportName="prs_tblTarfGharardadInsert" FunctionName="cartaxtest2Model.Store.prs_tblTarfGharardadInsert" />
+          <FunctionImportMapping FunctionImportName="prs_tblTarfGharardadUpdate" FunctionName="cartaxtest2Model.Store.prs_tblTarfGharardadUpdate" />
+          <FunctionImportMapping FunctionImportName="prs_tblTypeShakhsSelect" FunctionName="cartaxtest2Model.Store.prs_tblTypeShakhsSelect">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="cartaxtest2Model.prs_tblTypeShakhsSelect">
+                <ScalarProperty Name="fldId" ColumnName="fldId" />
+                <ScalarProperty Name="fldNameTypeShakhs" ColumnName="fldNameTypeShakhs" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="prs_User_GharardadInsert" FunctionName="cartaxtest2Model.Store.prs_User_GharardadInsert" />
+          <FunctionImportMapping FunctionImportName="prs_User_GharardadUpdate" FunctionName="cartaxtest2Model.Store.prs_User_GharardadUpdate" />
+          <FunctionImportMapping FunctionImportName="prs_tblMeasureUnitSelect" FunctionName="cartaxtest2Model.Store.prs_tblMeasureUnitSelect">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="cartaxtest2Model.prs_tblMeasureUnitSelect">
+                <ScalarProperty Name="fldId" ColumnName="fldId" />
+                <ScalarProperty Name="fldName" ColumnName="fldName" />
+                <ScalarProperty Name="fldCode" ColumnName="fldCode" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="prs_tblKala_KhedmatSelect" FunctionName="cartaxtest2Model.Store.prs_tblKala_KhedmatSelect">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="cartaxtest2Model.prs_tblKala_KhedmatSelect">
+                <ScalarProperty Name="fldId" ColumnName="fldId" />
+                <ScalarProperty Name="fldCode" ColumnName="fldCode" />
+                <ScalarProperty Name="fldTypeShenaseId" ColumnName="fldTypeShenaseId" />
+                <ScalarProperty Name="fldTarikh" ColumnName="fldTarikh" />
+                <ScalarProperty Name="fldRunDate" ColumnName="fldRunDate" />
+                <ScalarProperty Name="fldExpDate" ColumnName="fldExpDate" />
+                <ScalarProperty Name="fldSpecialOrGeneral" ColumnName="fldSpecialOrGeneral" />
+                <ScalarProperty Name="fldTaxableOrFree" ColumnName="fldTaxableOrFree" />
+                <ScalarProperty Name="fldVat" ColumnName="fldVat" />
+                <ScalarProperty Name="fldVatCustomPurposes" ColumnName="fldVatCustomPurposes" />
+                <ScalarProperty Name="fldDescriptionOfID" ColumnName="fldDescriptionOfID" />
+                <ScalarProperty Name="fldNameShenase" ColumnName="fldNameShenase" />
+                <ScalarProperty Name="fldSpecialOrGeneralName" ColumnName="fldSpecialOrGeneralName" />
+                <ScalarProperty Name="fldTaxableOrFreeName" ColumnName="fldTaxableOrFreeName" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="prs_SelectDetailSooratHesab" FunctionName="cartaxtest2Model.Store.prs_SelectDetailSooratHesab">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="cartaxtest2Model.prs_SelectDetailSooratHesab">
+                <ScalarProperty Name="fldsstt" ColumnName="fldsstt" />
+                <ScalarProperty Name="fldam" ColumnName="fldam" />
+                <ScalarProperty Name="fldmu" ColumnName="fldmu" />
+                <ScalarProperty Name="fldnw" ColumnName="fldnw" />
+                <ScalarProperty Name="fldfee" ColumnName="fldfee" />
+                <ScalarProperty Name="fldcfee" ColumnName="fldcfee" />
+                <ScalarProperty Name="fldcut" ColumnName="fldcut" />
+                <ScalarProperty Name="fldexr" ColumnName="fldexr" />
+                <ScalarProperty Name="fldssrv" ColumnName="fldssrv" />
+                <ScalarProperty Name="fldsscv" ColumnName="fldsscv" />
+                <ScalarProperty Name="fldprdis" ColumnName="fldprdis" />
+                <ScalarProperty Name="fldolt" ColumnName="fldolt" />
+                <ScalarProperty Name="fldolr" ColumnName="fldolr" />
+                <ScalarProperty Name="fldolam" ColumnName="fldolam" />
+                <ScalarProperty Name="fldconsfee" ColumnName="fldconsfee" />
+                <ScalarProperty Name="fldspro" ColumnName="fldspro" />
+                <ScalarProperty Name="fldbros" ColumnName="fldbros" />
+                <ScalarProperty Name="fldtcpbs" ColumnName="fldtcpbs" />
+                <ScalarProperty Name="fldcop" ColumnName="fldcop" />
+                <ScalarProperty Name="fldvop" ColumnName="fldvop" />
+                <ScalarProperty Name="fldbsrn" ColumnName="fldbsrn" />
+                <ScalarProperty Name="fldtsstam" ColumnName="fldtsstam" />
+                <ScalarProperty Name="flddis" ColumnName="flddis" />
+                <ScalarProperty Name="fldadis" ColumnName="fldadis" />
+                <ScalarProperty Name="fldvra" ColumnName="fldvra" />
+                <ScalarProperty Name="fldvam" ColumnName="fldvam" />
+                <ScalarProperty Name="fldodr" ColumnName="fldodr" />
+                <ScalarProperty Name="fldodt" ColumnName="fldodt" />
+                <ScalarProperty Name="fldodam" ColumnName="fldodam" />
+                <ScalarProperty Name="fldHeaderId" ColumnName="fldHeaderId" />
+                <ScalarProperty Name="fldsstid" ColumnName="fldsstid" />
+                <ScalarProperty Name="fldpspd" ColumnName="fldpspd" />
+                <ScalarProperty Name="fldcui" ColumnName="fldcui" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="prs_SelectHeaderSooratHesab" FunctionName="cartaxtest2Model.Store.prs_SelectHeaderSooratHesab">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="cartaxtest2Model.prs_SelectHeaderSooratHesab">
+                <ScalarProperty Name="fldTaxId" ColumnName="fldTaxId" />
+                <ScalarProperty Name="fldIndatim" ColumnName="fldIndatim" />
+                <ScalarProperty Name="fldIndatim_Zaman" ColumnName="fldIndatim_Zaman" />
+                <ScalarProperty Name="fldIndati2m" ColumnName="fldIndati2m" />
+                <ScalarProperty Name="fldIndati2m_Zaman" ColumnName="fldIndati2m_Zaman" />
+                <ScalarProperty Name="fldInno" ColumnName="fldInno" />
+                <ScalarProperty Name="fldIrtaxId" ColumnName="fldIrtaxId" />
+                <ScalarProperty Name="fldInty" ColumnName="fldInty" />
+                <ScalarProperty Name="fldinp" ColumnName="fldinp" />
+                <ScalarProperty Name="fldTypeSooratHesab" ColumnName="fldTypeSooratHesab" />
+                <ScalarProperty Name="fldNamePettern" ColumnName="fldNamePettern" />
+                <ScalarProperty Name="fldTinb" ColumnName="fldTinb" />
+                <ScalarProperty Name="fldBpc" ColumnName="fldBpc" />
+                <ScalarProperty Name="fldbbc" ColumnName="fldbbc" />
+                <ScalarProperty Name="fldkh_Bid" ColumnName="fldkh_Bid" />
+                <ScalarProperty Name="fldTins" ColumnName="fldTins" />
+                <ScalarProperty Name="fldf_CodePosti" ColumnName="fldf_CodePosti" />
+                <ScalarProperty Name="fldSbc" ColumnName="fldSbc" />
+                <ScalarProperty Name="fldBid" ColumnName="fldBid" />
+                <ScalarProperty Name="fldTob" ColumnName="fldTob" />
+                <ScalarProperty Name="fldKh_Tob" ColumnName="fldKh_Tob" />
+                <ScalarProperty Name="fldtyeShkashFoorosh" ColumnName="fldtyeShkashFoorosh" />
+                <ScalarProperty Name="fldTypeShakhKharid" ColumnName="fldTypeShakhKharid" />
+                <ScalarProperty Name="fldins" ColumnName="fldins" />
+                <ScalarProperty Name="fldft" ColumnName="fldft" />
+                <ScalarProperty Name="fldbpn" ColumnName="fldbpn" />
+                <ScalarProperty Name="fldscln" ColumnName="fldscln" />
+                <ScalarProperty Name="fldscc" ColumnName="fldscc" />
+                <ScalarProperty Name="fldcdcn" ColumnName="fldcdcn" />
+                <ScalarProperty Name="fldcdcd" ColumnName="fldcdcd" />
+                <ScalarProperty Name="fldcrn" ColumnName="fldcrn" />
+                <ScalarProperty Name="fldbilid" ColumnName="fldbilid" />
+                <ScalarProperty Name="fldtprdis" ColumnName="fldtprdis" />
+                <ScalarProperty Name="fldtdis" ColumnName="fldtdis" />
+                <ScalarProperty Name="fldtadis" ColumnName="fldtadis" />
+                <ScalarProperty Name="fldtvam" ColumnName="fldtvam" />
+                <ScalarProperty Name="fldtodam" ColumnName="fldtodam" />
+                <ScalarProperty Name="fldtbill" ColumnName="fldtbill" />
+                <ScalarProperty Name="fldtonw" ColumnName="fldtonw" />
+                <ScalarProperty Name="fldtorv" ColumnName="fldtorv" />
+                <ScalarProperty Name="fldtocv" ColumnName="fldtocv" />
+                <ScalarProperty Name="fldsetm" ColumnName="fldsetm" />
+                <ScalarProperty Name="fldcap" ColumnName="fldcap" />
+                <ScalarProperty Name="fldinsp" ColumnName="fldinsp" />
+                <ScalarProperty Name="fldtvop" ColumnName="fldtvop" />
+                <ScalarProperty Name="fldtax17" ColumnName="fldtax17" />
+                <ScalarProperty Name="fldSh_Indatim" ColumnName="fldSh_Indatim" />
+                <ScalarProperty Name="fldSh_Indati2m" ColumnName="fldSh_Indati2m" />
+                <ScalarProperty Name="fldf_name" ColumnName="fldf_name" />
+                <ScalarProperty Name="fldkh_Name" ColumnName="fldkh_Name" />
+                <ScalarProperty Name="fldForooshandeId" ColumnName="fldForooshandeId" />
+                <ScalarProperty Name="fldKharidarId" ColumnName="fldKharidarId" />
+                <ScalarProperty Name="fldFunctionName" ColumnName="fldFunctionName" />
+                <ScalarProperty Name="fldShomareFish" ColumnName="fldShomareFish" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="prs_tblSooratHesabHeader_ValueInsert" FunctionName="cartaxtest2Model.Store.prs_tblSooratHesabHeader_ValueInsert" />
+          <FunctionImportMapping FunctionImportName="prs_tblCurrencyTypeSelect" FunctionName="cartaxtest2Model.Store.prs_tblCurrencyTypeSelect">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="cartaxtest2Model.prs_tblCurrencyTypeSelect">
+                <ScalarProperty Name="fldId" ColumnName="fldId" />
+                <ScalarProperty Name="fldNameEn" ColumnName="fldNameEn" />
+                <ScalarProperty Name="fldCurrency" ColumnName="fldCurrency" />
+                <ScalarProperty Name="fldAlphabeticCode" ColumnName="fldAlphabeticCode" />
+                <ScalarProperty Name="fldNumericCode" ColumnName="fldNumericCode" />
+                <ScalarProperty Name="fldMinorUnit" ColumnName="fldMinorUnit" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="prs_tblSooratHesab_DetailInsert" FunctionName="cartaxtest2Model.Store.prs_tblSooratHesab_DetailInsert" />
+          <FunctionImportMapping FunctionImportName="prs_tblSooratHesab_HeaderInsert" FunctionName="cartaxtest2Model.Store.prs_tblSooratHesab_HeaderInsert" />
+          <FunctionImportMapping FunctionImportName="prs_tblSooratHesab_HeaderSelect" FunctionName="cartaxtest2Model.Store.prs_tblSooratHesab_HeaderSelect">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="cartaxtest2Model.prs_tblSooratHesab_HeaderSelect">
+                <ScalarProperty Name="fldId" ColumnName="fldId" />
+                <ScalarProperty Name="fldTaxId" ColumnName="fldTaxId" />
+                <ScalarProperty Name="fldIndatim" ColumnName="fldIndatim" />
+                <ScalarProperty Name="fldIndati2m" ColumnName="fldIndati2m" />
+                <ScalarProperty Name="fldInty" ColumnName="fldInty" />
+                <ScalarProperty Name="fldInp" ColumnName="fldInp" />
+                <ScalarProperty Name="fldInno" ColumnName="fldInno" />
+                <ScalarProperty Name="fldIrtaxId" ColumnName="fldIrtaxId" />
+                <ScalarProperty Name="fldKharidarId" ColumnName="fldKharidarId" />
+                <ScalarProperty Name="fldForooshandeId" ColumnName="fldForooshandeId" />
+                <ScalarProperty Name="fldUserId" ColumnName="fldUserId" />
+                <ScalarProperty Name="fldDate" ColumnName="fldDate" />
+                <ScalarProperty Name="fldf_Name" ColumnName="fldf_Name" />
+                <ScalarProperty Name="fldkh_name" ColumnName="fldkh_name" />
+                <ScalarProperty Name="fldTypeSooratHesab" ColumnName="fldTypeSooratHesab" />
+                <ScalarProperty Name="fldNamePettern" ColumnName="fldNamePettern" />
+                <ScalarProperty Name="fldStatus" ColumnName="fldStatus" />
+                <ScalarProperty Name="fldStatusName" ColumnName="fldStatusName" />
+                <ScalarProperty Name="fldReferenceNumber" ColumnName="fldReferenceNumber" />
+                <ScalarProperty Name="fldUid" ColumnName="fldUid" />
+                <ScalarProperty Name="fldf_NationalCode" ColumnName="fldf_NationalCode" />
+                <ScalarProperty Name="fldkh_fldNationalCode" ColumnName="fldkh_fldNationalCode" />
+                <ScalarProperty Name="fldf_CodeEghtesadi" ColumnName="fldf_CodeEghtesadi" />
+                <ScalarProperty Name="fldkh_CodeEghtesadi" ColumnName="fldkh_CodeEghtesadi" />
+                <ScalarProperty Name="fldSubject" ColumnName="fldSubject" />
+                <ScalarProperty Name="fldFunctionName" ColumnName="fldFunctionName" />
+                <ScalarProperty Name="fldSerializeObject" ColumnName="fldSerializeObject" />
+                <ScalarProperty Name="fldShomareFish" ColumnName="fldShomareFish" />
+                <ScalarProperty Name="SumSooratHesab" ColumnName="SumSooratHesab" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="prs_tblSooratHesab_HeaderDelete" FunctionName="cartaxtest2Model.Store.prs_tblSooratHesab_HeaderDelete" />
+          <FunctionImportMapping FunctionImportName="prs_tblSooratHesabStatusInsert" FunctionName="cartaxtest2Model.Store.prs_tblSooratHesabStatusInsert" >
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="cartaxtest2Model.prs_tblSooratHesabStatusInsert">
+                <ScalarProperty Name="fldId" ColumnName="fldId" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="prs_rptSooratHesab_Header" FunctionName="cartaxtest2Model.Store.prs_rptSooratHesab_Header">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="cartaxtest2Model.prs_rptSooratHesab_Header">
+                <ScalarProperty Name="fldsh_Maliyati" ColumnName="fldsh_Maliyati" />
+                <ScalarProperty Name="fldTarikhSoodor" ColumnName="fldTarikhSoodor" />
+                <ScalarProperty Name="fldTarikhEijad" ColumnName="fldTarikhEijad" />
+                <ScalarProperty Name="fldSerial" ColumnName="fldSerial" />
+                <ScalarProperty Name="fldSh_Marja" ColumnName="fldSh_Marja" />
+                <ScalarProperty Name="fldTypeSooratHesab" ColumnName="fldTypeSooratHesab" />
+                <ScalarProperty Name="fldNamePettern" ColumnName="fldNamePettern" />
+                <ScalarProperty Name="fldkh_Eghtesadi" ColumnName="fldkh_Eghtesadi" />
+                <ScalarProperty Name="fldkh_CodePosti" ColumnName="fldkh_CodePosti" />
+                <ScalarProperty Name="fldkh_CodeShobe" ColumnName="fldkh_CodeShobe" />
+                <ScalarProperty Name="fldkh_NationalCode" ColumnName="fldkh_NationalCode" />
+                <ScalarProperty Name="fldf_CodeEghtesadi" ColumnName="fldf_CodeEghtesadi" />
+                <ScalarProperty Name="fldf_CodePosti" ColumnName="fldf_CodePosti" />
+                <ScalarProperty Name="fldf_CodeShobe" ColumnName="fldf_CodeShobe" />
+                <ScalarProperty Name="fldf_NationalCode" ColumnName="fldf_NationalCode" />
+                <ScalarProperty Name="fldSubject" ColumnName="fldSubject" />
+                <ScalarProperty Name="fldFlyType" ColumnName="fldFlyType" />
+                <ScalarProperty Name="fldPas_No" ColumnName="fldPas_No" />
+                <ScalarProperty Name="fldParvane_No" ColumnName="fldParvane_No" />
+                <ScalarProperty Name="fldCodeEzhar" ColumnName="fldCodeEzhar" />
+                <ScalarProperty Name="fldCotazh_No" ColumnName="fldCotazh_No" />
+                <ScalarProperty Name="fldCotazh_Date" ColumnName="fldCotazh_Date" />
+                <ScalarProperty Name="fldEshterak_No" ColumnName="fldEshterak_No" />
+                <ScalarProperty Name="fldSumMablagh" ColumnName="fldSumMablagh" />
+                <ScalarProperty Name="fldSumTakhfif" ColumnName="fldSumTakhfif" />
+                <ScalarProperty Name="fldSumMablagh_Takhfif" ColumnName="fldSumMablagh_Takhfif" />
+                <ScalarProperty Name="fldSumMaliyat" ColumnName="fldSumMaliyat" />
+                <ScalarProperty Name="fldSumMablaghSayer" ColumnName="fldSumMablaghSayer" />
+                <ScalarProperty Name="fldSumSooratheasb" ColumnName="fldSumSooratheasb" />
+                <ScalarProperty Name="fldSumVaznKhales" ColumnName="fldSumVaznKhales" />
+                <ScalarProperty Name="fldArzeshReyali" ColumnName="fldArzeshReyali" />
+                <ScalarProperty Name="fldArzeshArzi" ColumnName="fldArzeshArzi" />
+                <ScalarProperty Name="fldRaveshTasviye" ColumnName="fldRaveshTasviye" />
+                <ScalarProperty Name="fldMablaghNaghdi" ColumnName="fldMablaghNaghdi" />
+                <ScalarProperty Name="fldMablaghNesiye" ColumnName="fldMablaghNesiye" />
+                <ScalarProperty Name="fldSumSahmMaliyat" ColumnName="fldSumSahmMaliyat" />
+                <ScalarProperty Name="fldMaliyat17" ColumnName="fldMaliyat17" />
+                <ScalarProperty Name="fldUniqCode" ColumnName="fldUniqCode" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="prs_tblSooratHesabFromWebServiceInsert" FunctionName="cartaxtest2Model.Store.prs_tblSooratHesabFromWebServiceInsert" />
+          <FunctionImportMapping FunctionImportName="prs_InsertSooratHesabForExcel" FunctionName="cartaxtest2Model.Store.prs_InsertSooratHesabForExcel" />
+          <FunctionImportMapping FunctionImportName="prs_TransactionInfInsert" FunctionName="cartaxtest2Model.Store.prs_TransactionInfInsert" />
+          <FunctionImportMapping FunctionImportName="prs_TransactionInfSelect" FunctionName="cartaxtest2Model.Store.prs_TransactionInfSelect">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="cartaxtest2Model.prs_TransactionInfSelect">
+                <ScalarProperty Name="fldId" ColumnName="fldId" />
+                <ScalarProperty Name="fldUserName" ColumnName="fldUserName" />
+                <ScalarProperty Name="fldDivId" ColumnName="fldDivId" />
+                <ScalarProperty Name="fldPass" ColumnName="fldPass" />
+                <ScalarProperty Name="fldUserId" ColumnName="fldUserId" />
+                <ScalarProperty Name="fldDate" ColumnName="fldDate" />
+                <ScalarProperty Name="fldDesc" ColumnName="fldDesc" />
+                <ScalarProperty Name="fldInherit" ColumnName="fldInherit" />
+                <ScalarProperty Name="fldName" ColumnName="fldName" />
+                <ScalarProperty Name="fldTarfGharardadId" ColumnName="fldTarfGharardadId" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="prs_TransactionInfUpdate" FunctionName="cartaxtest2Model.Store.prs_TransactionInfUpdate" />
+          <FunctionImportMapping FunctionImportName="prs_tblSooratHesabHeader_ValueUpdate" FunctionName="cartaxtest2Model.Store.prs_tblSooratHesabHeader_ValueUpdate" />
+          <FunctionImportMapping FunctionImportName="prs_tblSooratHesabExcelTemplateSelect" FunctionName="cartaxtest2Model.Store.prs_tblSooratHesabExcelTemplateSelect">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="cartaxtest2Model.prs_tblSooratHesabExcelTemplateSelect">
+                <ScalarProperty Name="fldId" ColumnName="fldId" />
+                <ScalarProperty Name="fldTitle" ColumnName="fldTitle" />
+                <ScalarProperty Name="fldStartRowNumber" ColumnName="fldStartRowNumber" />
+                <ScalarProperty Name="fldUserId" ColumnName="fldUserId" />
+                <ScalarProperty Name="fldDesc" ColumnName="fldDesc" />
+                <ScalarProperty Name="fldDate" ColumnName="fldDate" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="prs_tblSooratHesabExcelField_TemplateSelect" FunctionName="cartaxtest2Model.Store.prs_tblSooratHesabExcelField_TemplateSelect">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="cartaxtest2Model.prs_tblSooratHesabExcelField_TemplateSelect">
+                <ScalarProperty Name="fldId" ColumnName="fldId" />
+                <ScalarProperty Name="fldTemplateId" ColumnName="fldTemplateId" />
+                <ScalarProperty Name="fldParametrId" ColumnName="fldParametrId" />
+                <ScalarProperty Name="fldColumnNum" ColumnName="fldColumnNum" />
+                <ScalarProperty Name="fldUserId" ColumnName="fldUserId" />
+                <ScalarProperty Name="fldDate" ColumnName="fldDate" />
+                <ScalarProperty Name="fldDesc" ColumnName="fldDesc" />
+                <ScalarProperty Name="fldNameEn" ColumnName="fldNameEn" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="prs_SelectParametr_Field_Template" FunctionName="cartaxtest2Model.Store.prs_SelectParametr_Field_Template">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="cartaxtest2Model.prs_SelectParametr_Field_Template">
+                <ScalarProperty Name="fldNameEn" ColumnName="fldNameEn" />
+                <ScalarProperty Name="fldNameFa" ColumnName="fldNameFa" />
+                <ScalarProperty Name="fldColumnNum" ColumnName="fldColumnNum" />
+                <ScalarProperty Name="fldInExcel" ColumnName="fldInExcel" />
+                <ScalarProperty Name="fldEjbari" ColumnName="fldEjbari" />
+                <ScalarProperty Name="fldId" ColumnName="fldId" />
+                <ScalarProperty Name="fldEjbariName" ColumnName="fldEjbariName" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="prs_tblSooratHesabExcelField_TemplateDelete" FunctionName="cartaxtest2Model.Store.prs_tblSooratHesabExcelField_TemplateDelete" />
+          <FunctionImportMapping FunctionImportName="prs_tblSooratHesabExcelField_TemplateInsert" FunctionName="cartaxtest2Model.Store.prs_tblSooratHesabExcelField_TemplateInsert" />
+          <FunctionImportMapping FunctionImportName="prs_tblSooratHesabExcelField_TemplateUpdate" FunctionName="cartaxtest2Model.Store.prs_tblSooratHesabExcelField_TemplateUpdate" />
+          <FunctionImportMapping FunctionImportName="prs_tblSooratHesabExcelTemplateDelete" FunctionName="cartaxtest2Model.Store.prs_tblSooratHesabExcelTemplateDelete" />
+          <FunctionImportMapping FunctionImportName="prs_tblSooratHesabExcelTemplateInsert" FunctionName="cartaxtest2Model.Store.prs_tblSooratHesabExcelTemplateInsert" />
+          <FunctionImportMapping FunctionImportName="prs_tblSooratHesabExcelTemplateUpdate" FunctionName="cartaxtest2Model.Store.prs_tblSooratHesabExcelTemplateUpdate" />
+          <FunctionImportMapping FunctionImportName="prs_User_GharardadResetPass" FunctionName="cartaxtest2Model.Store.prs_User_GharardadResetPass" />
+          <FunctionImportMapping FunctionImportName="prs_tblSooratHesabStatusSelect" FunctionName="cartaxtest2Model.Store.prs_tblSooratHesabStatusSelect">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="cartaxtest2Model.prs_tblSooratHesabStatusSelect">
+                <ScalarProperty Name="fldid" ColumnName="fldid" />
+                <ScalarProperty Name="fldHeaderId" ColumnName="fldHeaderId" />
+                <ScalarProperty Name="fldStatus" ColumnName="fldStatus" />
+                <ScalarProperty Name="fldMatn" ColumnName="fldMatn" />
+                <ScalarProperty Name="fldDate" ColumnName="fldDate" />
+                <ScalarProperty Name="fldUserId" ColumnName="fldUserId" />
+                <ScalarProperty Name="fldReferenceNumber" ColumnName="fldReferenceNumber" />
+                <ScalarProperty Name="fldUid" ColumnName="fldUid" />
+                <ScalarProperty Name="fldStatusName" ColumnName="fldStatusName" />
+                <ScalarProperty Name="fldSerializeObject" ColumnName="fldSerializeObject" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="prs_tblSooratHesab_HeaderUpdate" FunctionName="cartaxtest2Model.Store.prs_tblSooratHesab_HeaderUpdate" />
+          <FunctionImportMapping FunctionImportName="prs_tblSooratHesab_DetailUpdate" FunctionName="cartaxtest2Model.Store.prs_tblSooratHesab_DetailUpdate" />
+          <FunctionImportMapping FunctionImportName="sp_ErrorProgramInsert" FunctionName="cartaxtest2Model.Store.sp_ErrorProgramInsert" />
+          <FunctionImportMapping FunctionImportName="prs_tblKala_KhedmatInsert" FunctionName="cartaxtest2Model.Store.prs_tblKala_KhedmatInsert" />
+          <FunctionImportMapping FunctionImportName="prs_tblKala_KhedmatDelete" FunctionName="cartaxtest2Model.Store.prs_tblKala_KhedmatDelete" />
+          <FunctionImportMapping FunctionImportName="prs_tblSooratHesab_DetailDelete" FunctionName="cartaxtest2Model.Store.prs_tblSooratHesab_DetailDelete" />
+          <FunctionImportMapping FunctionImportName="prs_UpdateIrTaxId" FunctionName="cartaxtest2Model.Store.prs_UpdateIrTaxId" />
+          <FunctionImportMapping FunctionImportName="prs_tblSooratHesabStatus_DetailInsert" FunctionName="cartaxtest2Model.Store.prs_tblSooratHesabStatus_DetailInsert" />
+          <FunctionImportMapping FunctionImportName="prs_tblSooratHesabStatus_DetailSelect" FunctionName="cartaxtest2Model.Store.prs_tblSooratHesabStatus_DetailSelect">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="cartaxtest2Model.prs_tblSooratHesabStatus_DetailSelect">
+                <ScalarProperty Name="fldId" ColumnName="fldId" />
+                <ScalarProperty Name="fldSooratHesabStatusId" ColumnName="fldSooratHesabStatusId" />
+                <ScalarProperty Name="fldStatusError" ColumnName="fldStatusError" />
+                <ScalarProperty Name="fldMatn" ColumnName="fldMatn" />
+                <ScalarProperty Name="fldCode" ColumnName="fldCode" />
+                <ScalarProperty Name="fldUserId" ColumnName="fldUserId" />
+                <ScalarProperty Name="fldDate" ColumnName="fldDate" />
+                <ScalarProperty Name="fldStatusErrorName" ColumnName="fldStatusErrorName" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="prs_tblSooratHesabStatusUpdate" FunctionName="cartaxtest2Model.Store.prs_tblSooratHesabStatusUpdate" />
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

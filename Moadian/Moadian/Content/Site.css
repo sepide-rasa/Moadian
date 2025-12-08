@@ -1,0 +1,515 @@
+﻿/*----------------------------------------------------------
+The base color for this template is #5c87b2. If you'd like
+to use a different color start by replacing all instances of
+#5c87b2 with your new color.
+----------------------------------------------------------*/
+
+@font-face {
+    font-family: 'Tornado Tahoma';
+    src:url('TTahoma.eot?#') format('eot'),    
+          url('TTahoma.woff') format('woff'),
+          url('TTahoma.ttf') format('truetype'); 
+}
+@font-face
+{
+	font-family: 'Tahoma';
+	src: url('TTahoma.eot?#iefix') format('embedded-opentype'), url('TTahoma.woff') format('woff'), url('TTahoma.ttf') format('truetype');
+    
+}
+
+.shortcut-Cartax{
+    background-image:url("/Content/icon/avarez.png")
+}
+.shortcut-BasicInf{
+     background-image:url("/Content/images/1376570130_folder_home2.png")
+}
+.x-btn-default-large-icon-text-top .x-btn-icon-el
+{
+	height: 52px;
+}
+.x-btn-default-large-icon-text-top .x-btn-inner
+{
+	padding-top: 44px;
+}
+.x-datepicker-month .x-btn-inner {
+    color: #00001e;
+}
+.x-fieldset-header-text {
+    color: #38158b;
+    padding: 1px 0;
+    font-family: tahoma;
+    font-weight: bold;
+}
+.x-datepicker-header {
+    padding: 3px 6px;
+    text-align: center;
+    background-image: -webkit-linear-gradient(top,#dfe8f6,#cad9ee);
+    background-image: -moz-linear-gradient(top,#264888,#1f3a6c);
+    background-image: -o-linear-gradient(top,#264888,#1f3a6c);
+    background-image: linear-gradient(top,#264888,#1f3a6c);
+    color:black;
+}
+.x-menu
+{
+	background:#FFFFFF;
+}
+.x-panel-body {
+background-color:white;/*#dfe8f6;*/
+}
+.x-window-body-default{
+background:#FFFFFF;
+}
+
+.x-rtl.x-message-box-info, .x-rtl.x-message-box-warning, .x-rtl.x-message-box-question, .x-rtl.x-message-box-error
+{
+	right: -15px;
+	top: 10px;
+}
+
+.x-message-box-error {
+background-image: url("/content/Error.png");
+right: -15px;
+	top: 10px;
+}
+
+.x-message-box-info {
+background-image: url("/content/Info.png");
+right: -15px;
+	top: 10px;
+} 
+.x-message-box-warning {
+background-image: url("/content/warning.png");
+right: -15px;
+	top: 10px;
+}
+.x-message-box-question {
+background-image: url("/content/question.png");
+right: -15px;
+	top: 10px;
+}
+.field-validation-error{
+    color: #ff0000;
+}
+.ux-start-button-icon {
+    background-image: url("/content/small-rasa-red.png") !important;
+    background-color: transparent;
+}
+.msg-wrap {
+    word-wrap: break-word !important;
+}
+.rotation90{
+transform: rotate(90deg);
+}
+.mylabel {
+font-weight: bold;
+font-size:11px;
+}
+
+.ux-desktop-shortcut-text {
+ color:black;
+/*width: 100px;*/
+}
+
+#btnClose
+{
+	background-image: url(/content/closeBlue.png);
+	background-repeat: no-repeat;
+	background-position-x: 100%;
+	background-position-y: 5px;
+	position: absolute;
+	width: 50px;
+	height: 30px;
+}
+#btnClose:hover
+{
+    background-image: url(/content/closeRed.png);
+    background-repeat: no-repeat;
+    background-position-x: 100%;
+    background-position-y: 5px;
+    cursor:pointer;
+}
+table
+{
+    width: 100%;
+}
+.shortcut-Car{
+     background-image:url("/Content/volume_manager.png")
+}
+.shortcut-fish{
+     background-image:url("/Content/chart_bar.png")
+}
+.shortcut-Parvande{
+     background-image:url("/Content/live_folder.png")
+}
+.modal
+{     
+}
+
+.frame
+{
+    padding: 4px 4px 4px 54px;
+    background-color: #096DBB;
+    border-radius: 4px 4px 4px 4px;
+    -webkit-border-radius: 4px 4px 4px 4px;
+    -moz-border-radius: 4px 4px 4px 4px;
+    font-family: Tornado Tahoma;
+    position: absolute;
+}
+.wintitle
+{
+    float: right;
+    padding: 5px 30px 10px 30px;
+    font-family: Tornado Tahoma;
+    font-weight: bold;
+    color: White;
+}
+
+.frame1
+{
+    padding: 0px 30px 0px 30px;
+    background-color: #fff;
+    font-family: Tornado Tahoma;
+    overflow: auto;
+}
+body
+{
+    background: #0d3562;
+    font-size: small;
+    font-family: "Tornado tahoma" , Verdana, Helvetica, Sans-Serif;
+    margin: 0;
+    padding: 0;
+    color: #696969;
+    direction: rtl;
+}
+
+a:link
+{
+    color: rgb(79, 88, 197);
+    text-decoration: none;
+}
+
+a:visited
+{
+    color: rgb(79, 88, 197);
+}
+
+a:hover
+{
+    color: rgb(79, 88, 197);
+    text-decoration: none;
+}
+
+a:active
+{
+    color: rgb(79, 88, 197);
+}
+
+p
+{
+    margin-bottom: 20px;
+    line-height: 1.6em;
+}
+
+header, footer, nav, section
+{
+    display: block;
+}
+
+/* HEADINGS   
+----------------------------------------------------------*/
+h1, h2, h3, h4, h5, h6
+{
+    font-size: 1.5em;
+    color: #000;
+}
+
+h1
+{
+    font-size: 2em;
+    padding-bottom: 0;
+    margin-bottom: 0;
+}
+
+h2
+{
+    padding: 0 0 10px 0;
+}
+
+h3
+{
+    font-size: 1.2em;
+}
+
+h4
+{
+    font-size: 1.1em;
+}
+
+h5, h6
+{
+    font-size: 1em;
+}
+
+/* PRIMARY LAYOUT ELEMENTS   
+----------------------------------------------------------*/
+
+/* you can specify a greater or lesser percentage for the 
+page width. Or, you can specify an exact pixel width. */
+.page
+{
+    width: 908px;
+    margin-left: auto;
+    margin-right: auto;
+    font-family: Tornado Tahoma;
+}
+
+header, #header
+{
+    position: relative;
+    height: 110px;
+    color: #000;
+    padding: 10px 0 0 0;
+}
+
+header h1, #header h1
+{
+    font-weight: bold;
+    margin: 0;
+    color: #fff;
+    border: none;
+    line-height: 2em;
+    font-size: 32px !important;
+    text-shadow: 1px 1px 2px #111;
+}
+.main
+{
+    background-color: White;
+    direction: rtl;
+    font-family: Tornado Tahoma;
+}
+#main
+{
+    direction: rtl;
+    font-family: Tornado Tahoma;
+    background-color: White;
+    border-style: solid;
+    border-bottom: none;
+    border-top: none;
+    border-color: #a1a8b2;
+}
+
+.footer
+{
+    background: #fff;
+    color: #000000;
+    padding: 10px 0;
+    text-align: center;
+    line-height: normal;
+    margin: 0 0 30px 0;
+    font-size: .9em;
+    border-radius: 0 0 4px 4px;
+    -webkit-border-radius: 0 0 4px 4px;
+    -moz-border-radius: 0 0 4px 4px;
+    font-family: Tornado Tahoma;
+}
+footer, #footer
+{
+    color: #000000;
+    background-color: White;
+    padding: 10px 0;
+    text-align: center;
+    line-height: normal;
+    margin: 0 0 30px 0;
+    font-size: .9em;
+    border-radius: 0 0 5px 5px;
+    -webkit-border-radius: 0 0 5px 5px;
+    -moz-border-radius: 0 0 5px 5px;
+    font-family: Tornado Tahoma;
+    border-style: solid;
+    border-top: none;
+    border-color: #a1a8b2;
+}
+
+/* TAB MENU   
+----------------------------------------------------------*/
+
+/* FORM LAYOUT ELEMENTS   
+----------------------------------------------------------*/
+ul
+{
+    list-style-type: none;
+    margin-right: 0px;
+}
+fieldset
+{
+    border: 1px solid #ddd;
+    padding: 0 1.4em 1.4em 1.4em;
+    margin: 0 0 1.5em 0;
+}
+
+legend
+{
+    font-size: 1.2em;
+    font-weight: bold;
+}
+
+textarea
+{
+    min-height: 75px;
+}
+
+input[type="text"], input[type="password"]
+{
+    border: 1px solid #ccc;
+    padding: 2px;
+    font-size: small;
+    color: #444;
+    width: 150px;
+    font-family: Tornado tahoma;
+}
+input:focus
+{
+    background-color:Yellow;
+}
+
+textarea:focus
+{
+    background-color:Yellow;
+}
+select
+{
+    border: 1px solid #ccc;
+    padding: 2px;
+    font-size: small;
+    color: #444;
+    font-family: Tornado tahoma;
+    width: 156px;
+}
+
+input[type="submit"]
+{
+    /*font-size: 1.2em;     padding: 5px;*/
+    font-family: Tornado Tahoma;
+    font-size: small;
+    height: 26px;
+}
+
+input[type="button"]
+{
+    /*font-size: 1.2em;     padding: 5px;*/
+    font-family: Tornado Tahoma;
+    font-size: small;
+    height: 26px;
+}
+/* TABLE
+----------------------------------------------------------*/
+
+table
+{
+    color: Black;
+}
+/* MISC  
+----------------------------------------------------------*/
+.clear
+{
+    clear: both;
+}
+
+.error
+{
+    color: Red;
+}
+
+
+
+div#title
+{
+    display: block;
+    float: left;
+    text-align: left;
+}
+
+#logindisplay
+{
+    font-size: 1.1em;
+    display: block;
+    text-align: right;
+    margin: 10px;
+    color: White;
+}
+
+#logindisplay a:link
+{
+    color: white;
+    text-decoration: underline;
+}
+
+#logindisplay a:visited
+{
+    color: white;
+    text-decoration: underline;
+}
+
+#logindisplay a:hover
+{
+    color: white;
+    text-decoration: none;
+}
+
+/* Styles for validation helpers
+-----------------------------------------------------------*/
+.field-validation-error
+{
+    color: #ff0000;
+}
+
+.field-validation-valid
+{
+    display: none;
+}
+
+.input-validation-error
+{
+    border: 1px solid #ff0000;
+    background-color: #ffeeee;
+}
+
+.validation-summary-errors
+{
+    font-weight: bold;
+    color: #ff0000;
+}
+
+.validation-summary-valid
+{
+    display: none;
+}
+
+/* Styles for editor and display helpers
+----------------------------------------------------------*/
+.display-label, .editor-label
+{
+    margin: 1em 0 0 0;
+    color: Black;
+}
+
+.display-field, .editor-field
+{
+    margin: 0.5em 0 0 0;
+}
+
+.text-box
+{
+    width: 30em;
+}
+
+.text-box.multi-line
+{
+    height: 6.5em;
+}
+
+.tri-state
+{
+    width: 6em;
+}
+

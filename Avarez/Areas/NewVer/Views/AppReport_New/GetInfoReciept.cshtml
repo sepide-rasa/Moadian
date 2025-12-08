@@ -1,0 +1,129 @@
+﻿@using Ext.Net.MVC
+@using Hogaf.ExtNet.UX
+@using Ext.Net;
+@{
+    var X = Html.X();
+}
+
+<style>
+    .x-form-display-field {
+        text-align: right;
+    }
+</style>
+@(Html.X().Window()
+    .Modal(true)
+    .Resizable(false)
+    .Width(350)
+    .Height(240)
+    .Title("تأیید پرداخت")
+    .Layout(LayoutType.Fit)
+    .ID("PoseRecipt")
+    .Closable(false)
+    .ButtonAlign(Ext.Net.Alignment.Center)
+    .Buttons(
+        X.Button()
+            .Text("تأیید")
+            .Icon(Ext.Net.Icon.Disk)
+            .Listeners(l => l.Click.Handler = "SavePoseRecipt();"),
+        X.Button()
+            .Text("خروج")
+            .Icon(Ext.Net.Icon.DoorOut)
+            .OnClientClick("App.PoseRecipt.destroy()"))
+    .Items(
+        X.FormPanel()
+            .LayoutConfig(new VBoxLayoutConfig { Align = VBoxAlign.Center })
+            .Border(false)
+            .Padding(10)
+            .Items(
+                X.FormPanel()
+                    .LayoutConfig(new TableLayoutConfig { Columns = 2 })
+                    .Border(false)
+                    .Items(
+                        X.Label("شماره مرجع:"),
+                        X.TextField()
+                            .ItemID("txtRRN")
+                            .AllowBlank(false)
+                            .BlankText("لطفا شماره مرجع را وارد نمایید")
+                            .MaskRe("[0-9]"),
+                        X.Label("شماره پیگیری:"),
+                        X.TextField()
+                            .ItemID("txtTrace")
+                            .AllowBlank(false)
+                            .BlankText("لطفا شماره پیگیری را وارد نمایید")
+                            .MaskRe("[0-9]"),
+                        X.Label("شماره پایانه:"),
+                        X.TextField()
+                            .ItemID("txtTermId")
+                            .AllowBlank(false)
+                            .BlankText("لطفا شماره پایانه را وارد نمایید")
+                            .MaskRe("[0-9]"),
+                        X.Label("مبلغ:"),
+                        X.TextField()
+                            .ItemID("txtPrice")
+                            .AllowBlank(false)
+                            .BlankText("لطفا مبلغ را وارد نمایید")
+                            .MaskRe("[0-9]")
+                    )
+                    )
+        )
+)
+<script type="text/javascript">
+
+    function SavePoseRecipt() {
+        var txtRRN = App.PoseRecipt.queryById("txtRRN");
+        var txtTrace = App.PoseRecipt.queryById("txtTrace");
+        var txtTermId = App.PoseRecipt.queryById("txtTermId");
+        var txtPrice = App.PoseRecipt.queryById("txtPrice");
+
+        var er = false;
+
+        if (txtRRN.validate() == false) {
+            er = true;
+        }
+        if (txtTrace.validate() == false) {
+            er = true;
+        }
+        if (txtTermId.validate() == false) {
+            er = true;
+        }
+        if (txtPrice.validate() == false) {
+            er = true;
+        }
+        if (er == true)
+            return;
+
+        App.PoseRecipt.body.mask('در حال انجام عملیات...');
+        /*Ext.net.Mask.show({ msg: 'در حال انجام عملیات...' });*/
+        Ext.net.DirectMethod.request({
+            url: '/NewVer/AppReport_New/PishkhanResiptVerify',
+            params: {
+                RRN: txtRRN.getValue(),
+                TermId: txtTermId.getValue(),
+                Trace: txtTrace.getValue(),
+                PishkhanRecipetId: '@ViewBag.PishkhanRecipetId',
+                price: txtPrice.getValue()
+            },
+            success: function (data) {
+                Ext.MessageBox.show({
+                    title:data.MsgTitle,
+                    msg:data.Msg,
+                    icon: Ext.MessageBox.INFO,
+                    buttons: Ext.MessageBox.OK
+                });
+                if (data.MsgType == "1") {
+                    Ext.net.DirectMethod.request({
+                        url: '/NewVer/SelectParvande/PrintPishkhanResidWin',
+                        params: {
+                            resiptId: '@ViewBag.PishkhanRecipetId'
+                        }
+                    });
+                }
+                if ('@ViewBag.CarFileId' == "0") {
+                    App.ListUnsuccessResipt.queryById('GridUnsuccessResipt').store.load();
+                }
+                App.PoseRecipt.body.mask().hide();
+            }
+        });
+    }
+
+</script>

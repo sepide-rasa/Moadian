@@ -1,0 +1,135 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Report ScriptLanguage="CSharp" ReferencedAssemblies="System.dll&#13;&#10;System.Drawing.dll&#13;&#10;System.Windows.Forms.dll&#13;&#10;System.Data.dll&#13;&#10;System.Xml.dll&#13;&#10;MyLib.dll" ReportInfo.Created="08/22/2013 12:59:48" ReportInfo.Modified="09/26/2017 13:58:41" ReportInfo.CreatorVersion="2015.1.2.0">
+  <ScriptText>using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Windows.Forms;
+using System.Drawing;
+using System.Data;
+using FastReport;
+using FastReport.Data;
+using FastReport.Dialog;
+using FastReport.Barcode;
+using FastReport.Table;
+using FastReport.Utils;
+
+namespace FastReport
+{
+  public class ReportScript
+  {
+
+    
+
+    private void GroupHeader1_AfterData(object sender, EventArgs e)
+    {
+      
+    }
+  }
+}
+</ScriptText>
+  <Styles>
+    <Style Name="Style1" Fill.Color="232, 244, 255"/>
+  </Styles>
+  <Dictionary>
+    <TableDataSource Name="sp_PictureSelect" ReferenceName="carTaxDataSet.sp_PictureSelect" DataType="System.Int32" Enabled="true">
+      <Column Name="fldID" DataType="System.Int32"/>
+      <Column Name="fldPic" DataType="System.Byte[]" BindableControl="Picture"/>
+      <Column Name="fldMunicipalityPic" DataType="System.String"/>
+      <Column Name="fldMunicipalityPicID" DataType="System.Int32"/>
+      <Column Name="fldBankPic" DataType="System.String"/>
+      <Column Name="fldBankPicID" DataType="System.Int32"/>
+      <Column Name="fldUserPic" DataType="System.String"/>
+      <Column Name="fldUserPicID" DataType="System.Int64"/>
+      <Column Name="fldUserName" DataType="System.String"/>
+      <Column Name="fldUserID" DataType="System.Int64"/>
+      <Column Name="fldDesc" DataType="System.String"/>
+      <Column Name="fldDate" DataType="System.String"/>
+    </TableDataSource>
+    <TableDataSource Name="sp_RptLogCarFile" ReferenceName="carTaxDataSet.sp_RptLogCarFile" DataType="System.Int32" Enabled="true">
+      <Column Name="fldID" DataType="System.Int64"/>
+      <Column Name="fldCarID" DataType="System.Int64"/>
+      <Column Name="fldBargSabzFileId" DataType="System.Int32"/>
+      <Column Name="fldCartFileId" DataType="System.Int32"/>
+      <Column Name="fldSanadForoshFileId" DataType="System.Int32"/>
+      <Column Name="fldCartBackFileId" DataType="System.Int32"/>
+      <Column Name="fldMotorNumber" DataType="System.String"/>
+      <Column Name="fldShasiNumber" DataType="System.String"/>
+      <Column Name="fldVIN" DataType="System.String"/>
+      <Column Name="fldUserName" DataType="System.String"/>
+      <Column Name="fldDate" DataType="System.DateTime"/>
+      <Column Name="LogType" DataType="System.String"/>
+      <Column Name="fldPlaqueNumber" DataType="System.String"/>
+      <Column Name="fldNameOwner" DataType="System.String"/>
+    </TableDataSource>
+    <Parameter Name="date" DataType="System.String"/>
+    <Parameter Name="time" DataType="System.String"/>
+    <Parameter Name="StateName" DataType="System.String"/>
+    <Parameter Name="MunicipalityName" DataType="System.String"/>
+    <Parameter Name="AreaName" DataType="System.String"/>
+    <Parameter Name="OfficeName" DataType="System.String"/>
+    <Parameter Name="sal" DataType="System.String"/>
+    <Parameter Name="MyTablighat" DataType="System.String"/>
+    <Parameter Name="Num" DataType="System.String"/>
+    <Parameter Name="UserName" DataType="System.String"/>
+  </Dictionary>
+  <ReportPage Name="Page1">
+    <ReportTitleBand Name="ReportTitle1" Width="718.2"/>
+    <PageHeaderBand Name="PageHeader1" Top="4" Width="718.2" Height="126.63">
+      <TableObject Name="Table3" Left="0.67" Top="0.95" Width="716.86" Height="112.83">
+        <TableColumn Name="Column10" Width="191.24"/>
+        <TableColumn Name="Column11" Width="334.27"/>
+        <TableColumn Name="Column12" Width="191.35"/>
+        <TableRow Name="Row3" Height="112.83">
+          <TableCell Name="Cell10" Text="تاریخ صدور: [date]&#13;&#10;ساعت صدور: [time]" HorzAlign="Center" VertAlign="Center" RightToLeft="true" Font="RasaFont, 10pt"/>
+          <TableCell Name="Cell11" Text="[StateName]&#13;&#10;[MunicipalityName]&#13;&#10;[AreaName]&#13;&#10;[OfficeName]&#13;&#10;تاریخچه ویرایش پرونده" HorzAlign="Center" VertAlign="Center" RightToLeft="true" Font="RasaFont, 11pt, style=Bold"/>
+          <TableCell Name="Cell12" HorzAlign="Center" VertAlign="Center" RightToLeft="true" Font="RasaFont, 10pt">
+            <PictureObject Name="Picture1" Left="94.49" Top="8.69" Width="75.6" Height="75.6" DataColumn="sp_PictureSelect.fldPic"/>
+          </TableCell>
+        </TableRow>
+      </TableObject>
+    </PageHeaderBand>
+    <GroupHeaderBand Name="GroupHeader1" Top="134.63" Width="718.2" Height="96.64" AfterDataEvent="GroupHeader1_AfterData" StartNewPage="true" Condition="[sp_RptLogCarFile.fldID]">
+      <TextObject Name="Text2" Left="1.74" Top="3" Width="714.71" Height="41.55" Border.Lines="All"/>
+      <TextObject Name="Text1" Left="479.63" Top="10.92" Width="233.27" Height="28.35" Text="شماره پلاک: [sp_RptLogCarFile.fldPlaqueNumber]" VertAlign="Center" RightToLeft="true" Font="RasaFont, 12pt"/>
+      <TextObject Name="Text35" Left="240.77" Top="10.56" Width="233.27" Height="28.35" Text="نام مالک: [sp_RptLogCarFile.fldNameOwner]" VertAlign="Center" RightToLeft="true" Font="RasaFont, 12pt"/>
+      <TableObject Name="Table4" Left="2.47" Top="59.81" Width="713.23" Height="36.83">
+        <TableColumn Name="Column1" Width="69.42"/>
+        <TableColumn Name="Column2" Width="184.39"/>
+        <TableColumn Name="Column36" Width="162.3"/>
+        <TableColumn Name="Column37" Width="134.69"/>
+        <TableColumn Name="Column38" Width="124.92"/>
+        <TableColumn Name="Column39" Width="37.51"/>
+        <TableRow Name="Row1" Height="36.83">
+          <TableCell Name="Cell1" Border.Lines="All" Fill="Glass" Fill.Color="SkyBlue" Fill.Blend="0.2" Fill.Hatch="true" Text="نوع تغییر ات" HorzAlign="Center" VertAlign="Center" RightToLeft="true" Font="RasaFont, 10pt, style=Bold"/>
+          <TableCell Name="Cell22" Border.Lines="All" Fill="Glass" Fill.Color="SkyBlue" Fill.Blend="0.2" Fill.Hatch="true" Text="نام کاربر" HorzAlign="Center" VertAlign="Center" RightToLeft="true" Font="RasaFont, 10pt, style=Bold"/>
+          <TableCell Name="Cell48" Border.Lines="All" Fill="Glass" Fill.Color="SkyBlue" Fill.Blend="0.2" Fill.Hatch="true" Text="VIN" HorzAlign="Center" VertAlign="Center" RightToLeft="true" Font="RasaFont, 10pt, style=Bold"/>
+          <TableCell Name="Cell49" Border.Lines="All" Fill="Glass" Fill.Color="SkyBlue" Fill.Blend="0.2" Fill.Hatch="true" Text="شماره شاسی" HorzAlign="Center" VertAlign="Center" RightToLeft="true" Font="RasaFont, 10pt, style=Bold"/>
+          <TableCell Name="Cell50" Border.Lines="All" Fill="Glass" Fill.Color="SkyBlue" Fill.Blend="0.2" Fill.Hatch="true" Text="شماره موتور" HorzAlign="Center" VertAlign="Center" RightToLeft="true" Font="RasaFont, 10pt, style=Bold"/>
+          <TableCell Name="Cell51" Border.Lines="All" Fill="Glass" Fill.Color="SkyBlue" Fill.Blend="0.2" Fill.Hatch="true" Text="ردیف" HorzAlign="Center" VertAlign="Center" RightToLeft="true" Font="RasaFont, 10pt, style=Bold"/>
+        </TableRow>
+      </TableObject>
+      <DataBand Name="Data1" Top="235.27" Width="718.2" Height="28.9" CanGrow="true" DataSource="sp_RptLogCarFile" Columns.Count="1" Columns.Layout="DownThenAcross">
+        <TableObject Name="Table5" Left="2.47" Width="713.25" Height="28.9">
+          <TableColumn Name="Column40" Width="69.05"/>
+          <TableColumn Name="Column41" Width="184.03"/>
+          <TableColumn Name="Column42" Width="163.81"/>
+          <TableColumn Name="Column43" Width="134.69"/>
+          <TableColumn Name="Column44" Width="124.16"/>
+          <TableColumn Name="Column45" Width="37.51"/>
+          <TableRow Name="Row4" Height="28.9">
+            <TableCell Name="Cell52" Border.Lines="All" Text="[sp_RptLogCarFile.LogType]" HorzAlign="Center" VertAlign="Center" RightToLeft="true" Font="RasaFont, 10pt"/>
+            <TableCell Name="Cell53" Border.Lines="All" Text="[sp_RptLogCarFile.fldUserName]" HorzAlign="Center" VertAlign="Center" RightToLeft="true" Font="RasaFont, 10pt"/>
+            <TableCell Name="Cell54" Border.Lines="All" Text="[sp_RptLogCarFile.fldVIN]" HorzAlign="Center" VertAlign="Center" Font="Times New Roman, 10pt"/>
+            <TableCell Name="Cell55" Border.Lines="All" Text="[sp_RptLogCarFile.fldShasiNumber]" HorzAlign="Center" VertAlign="Center" Font="Times New Roman, 10pt"/>
+            <TableCell Name="Cell56" Border.Lines="All" Text="[sp_RptLogCarFile.fldMotorNumber]" HorzAlign="Center" VertAlign="Center" Font="Times New Roman, 10pt"/>
+            <TableCell Name="Cell57" Border.Lines="All" Text="[Row#]" HorzAlign="Center" VertAlign="Center" RightToLeft="true" Font="RasaFont, 10pt"/>
+          </TableRow>
+        </TableObject>
+      </DataBand>
+    </GroupHeaderBand>
+    <PageFooterBand Name="PageFooter1" Top="268.17" Width="718.2" Height="48.77">
+      <TextObject Name="Text34" Left="9.53" Top="3.34" Width="707.03" Height="39.67" CanGrow="true" GrowToBottom="true" Text="[MyTablighat]" RightToLeft="true" Font="RasaFont, 11pt, style=Bold"/>
+    </PageFooterBand>
+  </ReportPage>
+</Report>

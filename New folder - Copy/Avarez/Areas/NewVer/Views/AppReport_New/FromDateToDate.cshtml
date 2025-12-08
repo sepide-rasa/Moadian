@@ -1,0 +1,228 @@
+﻿@using Ext.Net.MVC
+@using Hogaf.ExtNet.UX
+@using Ext.Net;
+@{
+    var X = Html.X();
+}
+
+
+@(Html.X().Panel().Border(false)//.Modal(true)
+  //  .Listeners(l => l.AfterRender.Handler = "FormLoad()")
+        //.Width(500)//.Height(300)
+        .Title("گزارش فیش های صادر شده و پرداخت شده")
+                 .ID("FromDateToDate")
+    .Closable(true)
+    .CloseAction(Ext.Net.CloseAction.Destroy)
+    .Items(
+                X.TabPanel().Border(false).ID("FromDateToDateTab")
+                .Items(
+
+                    X.Panel().Border(false).Title("گزارش فیش های صادر شده و پرداخت شده")
+                    .ButtonAlign(Ext.Net.Alignment.Center)
+                .DefaultButton("btn")
+            .TitleAlign(Ext.Net.TitleAlign.Center)
+                   .Buttons(X.Button().Text("چاپ").Icon(Ext.Net.Icon.Printer).Margin(10)
+                               .Listeners(l =>
+                               {
+                                   l.Click.Handler = "PrintFromDateToDate()";
+
+                               })
+                               .ItemID("btnSave")
+                                ,
+                                        X.Button().Text("خروجی اکسل").Icon(Ext.Net.Icon.PageExcel).Margin(10)
+                                       .Listeners(l =>
+                                       {
+                                           l.Click.Handler = "ExcelDlFishPaid()";
+                                       }),
+                                X.Button().Text("خروج").Icon(Ext.Net.Icon.DoorOut).ToolTip("کلید میانبر Esc")
+                                               .OnClientClick("App.FromDateToDate.destroy()"))
+                .Items(
+
+                X.FieldSet().Border(false)
+                .Center()
+                .LayoutConfig(new Ext.Net.TableLayoutConfig { Columns = 2 })
+                .Defaults(new { Margin = 2 })
+                .Items(
+                        X.Label().Text("از تاریخ:")
+                            
+                    , X.PDateField()
+                        .ItemID("txtAzTarikh")
+                        .Width(160)
+                        
+                        .Editable(false)
+                        .MsgTarget(Ext.Net.MessageTarget.Side)
+                        .AllowBlank(false)
+                        .MaskRe("/[0-9,/]/")
+                        .BlankText("لطفا تاریخ را انتخاب نمایید.")
+                        .Listeners(l => l.Change.Handler = "AzTarikh()")
+                        .Listeners(l => l.AfterRender.Handler = "setOnlyOneMonth()")
+                        .LabelAlign(Ext.Net.LabelAlign.Top)
+                    , X.Label().Text("تا تاریخ:")
+                    , X.PDateField()
+                                .ItemID("txtTaTarikh")//.PaddingSpec("0 0 9px 0")
+                        .Width(160)
+                        .MsgTarget(Ext.Net.MessageTarget.Side)
+                        .AllowBlank(false)
+                        .Editable(false)
+                        .MaskRe("/[0-9,/]/")
+                        .BlankText("لطفا تاریخ را انتخاب نمایید.")
+                        .LabelAlign(Ext.Net.LabelAlign.Top)
+                        .Listeners(l => l.Change.Handler = "TaTarikh()")
+
+                            , X.Label("کاربر:"),
+                        X.ComboBox()
+                        .ItemID("cboUser")
+                        .Editable(false)
+                        .TypeAhead(true)
+                        .QueryMode(DataLoadMode.Local)
+                        .ForceSelection(true)
+                        .TriggerAction(TriggerAction.All)
+                        .DisplayField("fldName")
+                        .ValueField("fldID")
+                        .EmptyText(" کاربر...")
+                        .Width(160)
+                            .Store(X.Store()//.AutoLoad(false)
+                                .Listeners(l => l.Load.Handler = "FormLoad()")
+                            .Model(X.Model()
+                            .IDProperty("fldID")
+                                .Fields(
+                                    new ModelField("fldID", ModelFieldType.String) { Mapping = "fldID" },
+                                    new ModelField("fldName", ModelFieldType.String) { Mapping = "fldName" }
+                                )
+                            )
+                                .Proxy(X.AjaxProxy()
+                                    .Url(Url.Action("GetUsers"))
+                                .Reader(X.JsonReader().Root("data"))
+                                ))
+                ).ColSpan(3)
+
+                       )
+                            .Layout(Ext.Net.LayoutType.VBox)
+                            .LayoutConfig(new Ext.Net.VBoxLayoutConfig { Align = Ext.Net.VBoxAlign.Center })
+                    )
+
+                )
+)
+
+
+<script type="text/javascript">
+
+    function setOnlyOneMonth() {
+        if ('@ViewBag.StartDate' != "0") {
+            var txtAzTarikh = App.FromDateToDate.queryById('txtAzTarikh');
+            txtAzTarikh.setMinValue(new Date('@ViewBag.StartDate'));
+        }
+    }
+
+    function ExcelDlFishPaid() {
+        var cboUser = App.FromDateToDate.queryById('cboUser');
+        var txtAzTarikh = App.FromDateToDate.queryById('txtAzTarikh');
+        var txtTaTarikh = App.FromDateToDate.queryById('txtTaTarikh');
+        var er = false;
+        if (txtAzTarikh.validate() == false) {
+            er = true;
+        }
+        if (txtTaTarikh.validate() == false) {
+            er = true;
+        }
+        if (er == true)
+            return;
+
+        var Checked = "";
+        Checked = "fldID" + ";" + "fldCarFileID" + ";" + "fldName" + ";" + "fldMelli_EconomicCode" + ";" + "fldMotorNumber" + ";" + "fldShasiNumber" + ";" + "fldIssuanceDate" + ";" + "fldCollectionDate" + ";" + "fldBedehi" + ";" + "fldShowMoney" + ";" + "fldFromDate" + ";" + "fldToDate" + ";" + "userName";
+        window.location.href = '@Url.Content("~/NewVer/AppReport_New/PaidExcel/")' + '?Checked=' + Checked + '&SDate=' + txtAzTarikh.rawValue + '&EDate=' + txtTaTarikh.rawValue + '&User=' + cboUser.getValue();
+    }
+
+    function FormLoad() {/*
+        if (state == "1") {
+            App.FromDateToDate.setTitle("گزارش فیش های صادر شده و پرداخت شده");
+            App.InnerTab.setTitle("گزارش فیش های صادر شده و پرداخت شده");
+        }
+        else if (state == "2") {
+            App.FromDateToDate.setTitle("گزارش فیش های صادر شده و پرداخت نشده");
+            App.InnerTab.setTitle("گزارش فیش های صادر شده و پرداخت نشده");
+        }*/
+        App.FromDateToDate.queryById('cboUser').setValue('@ViewBag.User');
+    }
+    function showBargozary() {
+        Ext.MessageBox.show({
+            msg: 'لطفاً منتظر باشید',
+            progressText: 'در حال بارگذاری...',
+            width: 300,
+            wait: true,
+            waitConfig:
+            {
+                /*duration: 10000,*/
+                interval: 200,
+                /*increment: 15,*/
+                text: 'در حال بارگذاری...',
+                scope: this
+                /*fn: function () {
+                    Ext.MessageBox.hide();
+                    Ext.Msg.alert('Status', 'Saved successfully!');
+                }*/
+            }
+        });
+    }
+    function AzTarikh() {
+        var txtAzTarikh = App.FromDateToDate.queryById('txtAzTarikh');
+        var txtTaTarikh = App.FromDateToDate.queryById('txtTaTarikh');
+        txtTaTarikh.setMinValue(txtAzTarikh.getValue());
+        txtTaTarikh.minText = "تاریخ شروع نباید از تاریخ پایان بزرگتر باشد.";
+    }
+    function TaTarikh() {
+        var txtAzTarikh = App.FromDateToDate.queryById('txtAzTarikh');
+        var txtTaTarikh = App.FromDateToDate.queryById('txtTaTarikh');
+        txtAzTarikh.setMaxValue(txtTaTarikh.getValue());
+        txtAzTarikh.maxText = "تاریخ شروع نباید از تاریخ پایان بزرگتر باشد.";
+    }
+    function PrintFromDateToDate() {
+        var cboUser = App.FromDateToDate.queryById('cboUser');
+        var txtAzTarikh = App.FromDateToDate.queryById('txtAzTarikh');
+        var txtTaTarikh = App.FromDateToDate.queryById('txtTaTarikh');
+        var er = false;
+        if (txtAzTarikh.validate() == false) {
+            er = true;
+        }
+        if (txtTaTarikh.validate() == false) {
+            er = true;
+        }
+        if (cboUser.validate() == false) {
+            er = true;
+        }
+        if (er == true)
+            return;
+
+       /* if (state == "1") {*/
+            showBargozary();
+            Ext.net.DirectMethod.request({
+                url: '/NewVer/AppReport_New/PrintPaid',
+                params: {
+                    containerId: "FromDateToDateTab",
+                    SDate: txtAzTarikh.rawValue,
+                    EDate: txtTaTarikh.rawValue,
+                    User: cboUser.getValue()
+                },
+                success: function () {
+                    Ext.MessageBox.hide();
+                }
+            });
+        }
+       /* else if (state == "2") {
+            showBargozary();
+            Ext.net.DirectMethod.request({
+                url: '/NewVer/AppReport_New/PrintNotPaid',
+                params: {
+                    containerId: "FromDateToDateTab",
+                    SDate: txtAzTarikh.rawValue,
+                    EDate: txtTaTarikh.rawValue,
+                    User: cboUser.getValue()
+                },
+                success: function () {
+                    Ext.MessageBox.hide();
+                }
+            });
+        }
+
+    }*/
+</script>

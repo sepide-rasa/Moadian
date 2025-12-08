@@ -1,0 +1,123 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Report ScriptLanguage="CSharp" ReferencedAssemblies="System.dll&#13;&#10;System.Drawing.dll&#13;&#10;System.Windows.Forms.dll&#13;&#10;System.Data.dll&#13;&#10;System.Xml.dll&#13;&#10;MyLib.dll" ReportInfo.Created="08/22/2013 12:59:48" ReportInfo.Modified="10/09/2017 14:45:19" ReportInfo.CreatorVersion="2015.1.2.0">
+  <ScriptText>using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Windows.Forms;
+using System.Drawing;
+using System.Data;
+using FastReport;
+using FastReport.Data;
+using FastReport.Dialog;
+using FastReport.Barcode;
+using FastReport.Table;
+using FastReport.Utils;
+
+namespace FastReport
+{
+  public class ReportScript
+  {
+
+    
+
+    private void GroupHeader1_AfterData(object sender, EventArgs e)
+    {
+      Text42.Text=&quot;از تاریخ: &quot;+MyLib.Shamsi.Miladi2ShamsiString(((DateTime)Report.GetColumnValue(&quot;sp_RptCarExperience_File.fldStartDate&quot;)));
+      Text43.Text=&quot;تا تاریخ: &quot;+MyLib.Shamsi.Miladi2ShamsiString(((DateTime)Report.GetColumnValue(&quot;sp_RptCarExperience_File.fldEndDate&quot;)));
+    }
+  }
+}
+</ScriptText>
+  <Styles>
+    <Style Name="Style1" Fill.Color="232, 244, 255"/>
+  </Styles>
+  <Dictionary>
+    <TableDataSource Name="sp_PictureSelect" ReferenceName="carTaxDataSet.sp_PictureSelect" DataType="System.Int32" Enabled="true">
+      <Column Name="fldID" DataType="System.Int32"/>
+      <Column Name="fldPic" DataType="System.Byte[]" BindableControl="Picture"/>
+      <Column Name="fldMunicipalityPic" DataType="System.String"/>
+      <Column Name="fldMunicipalityPicID" DataType="System.Int32"/>
+      <Column Name="fldBankPic" DataType="System.String"/>
+      <Column Name="fldBankPicID" DataType="System.Int32"/>
+      <Column Name="fldUserPic" DataType="System.String"/>
+      <Column Name="fldUserPicID" DataType="System.Int64"/>
+      <Column Name="fldUserName" DataType="System.String"/>
+      <Column Name="fldUserID" DataType="System.Int64"/>
+      <Column Name="fldDesc" DataType="System.String"/>
+      <Column Name="fldDate" DataType="System.String"/>
+    </TableDataSource>
+    <TableDataSource Name="sp_RptCarExperience_File" ReferenceName="carTaxDataSet.sp_RptCarExperience_File" DataType="System.Int32" Enabled="true">
+      <Column Name="fldID" DataType="System.Int64"/>
+      <Column Name="fldCarFileID" DataType="System.Int64"/>
+      <Column Name="fldStartDate" DataType="System.DateTime"/>
+      <Column Name="fldEndDate" DataType="System.DateTime"/>
+      <Column Name="fldMunicipalityID" DataType="System.Int32"/>
+      <Column Name="fldLetterNumber" DataType="System.String"/>
+      <Column Name="fldUserID" DataType="System.Int64"/>
+      <Column Name="fldDesc" DataType="System.String"/>
+      <Column Name="fldDate" DataType="System.DateTime"/>
+      <Column Name="fldFileId" DataType="System.Int32"/>
+      <Column Name="fldAccept" DataType="System.Boolean" BindableControl="CheckBox"/>
+      <Column Name="fldAcceptUser" DataType="System.Int64"/>
+      <Column Name="fldAcceptDate" DataType="System.DateTime"/>
+      <Column Name="fldUserName" DataType="System.String"/>
+      <Column Name="fldImage" DataType="System.Byte[]" BindableControl="Picture"/>
+      <Column Name="fldMotorNumber" DataType="System.String"/>
+      <Column Name="fldShasiNumber" DataType="System.String"/>
+      <Column Name="fldVIN" DataType="System.String"/>
+      <Column Name="OwnerName" DataType="System.String"/>
+      <Column Name="NameCar" DataType="System.String"/>
+      <Column Name="fldNameMUN" DataType="System.String"/>
+      <Column Name="fldPlaqueNumber" DataType="System.String"/>
+    </TableDataSource>
+    <Parameter Name="date" DataType="System.String"/>
+    <Parameter Name="time" DataType="System.String"/>
+    <Parameter Name="StateName" DataType="System.String"/>
+    <Parameter Name="MunicipalityName" DataType="System.String"/>
+    <Parameter Name="AreaName" DataType="System.String"/>
+    <Parameter Name="OfficeName" DataType="System.String"/>
+    <Parameter Name="sal" DataType="System.String"/>
+    <Parameter Name="MyTablighat" DataType="System.String"/>
+    <Parameter Name="Num" DataType="System.String"/>
+    <Parameter Name="UserName" DataType="System.String"/>
+  </Dictionary>
+  <ReportPage Name="Page1">
+    <ReportTitleBand Name="ReportTitle1" Width="718.2"/>
+    <PageHeaderBand Name="PageHeader1" Top="4" Width="718.2" Height="96.03">
+      <TableObject Name="Table3" Left="0.67" Top="0.95" Width="716.86" Height="95.08">
+        <TableColumn Name="Column10" Width="191.24"/>
+        <TableColumn Name="Column11" Width="334.27"/>
+        <TableColumn Name="Column12" Width="191.35"/>
+        <TableRow Name="Row3" Height="95.08">
+          <TableCell Name="Cell10" Text="تاریخ صدور: [date]&#13;&#10;ساعت صدور: [time]" HorzAlign="Center" VertAlign="Center" RightToLeft="true" Font="RasaFont, 10pt"/>
+          <TableCell Name="Cell11" Text="[StateName]&#13;&#10;[MunicipalityName]&#13;&#10;[AreaName]&#13;&#10;[OfficeName]&#13;&#10;گزارش انتقال سابقه های ثبت شده در روز" HorzAlign="Center" VertAlign="Center" RightToLeft="true" Font="RasaFont, 10pt, style=Bold"/>
+          <TableCell Name="Cell12" HorzAlign="Center" VertAlign="Center" RightToLeft="true" Font="RasaFont, 10pt">
+            <PictureObject Name="Picture2" Left="92.61" Top="17.01" Width="75.6" Height="75.6" DataColumn="sp_PictureSelect.fldPic"/>
+          </TableCell>
+        </TableRow>
+      </TableObject>
+    </PageHeaderBand>
+    <GroupHeaderBand Name="GroupHeader1" Top="104.03" Width="718.2" Height="120.5" AfterDataEvent="GroupHeader1_AfterData" StartNewPage="true" Condition="[sp_RptCarExperience_File.fldCarFileID]">
+      <TextObject Name="Text2" Left="1.74" Top="3" Width="714.71" Height="117.5" Border.Lines="All" Border.Style="Double"/>
+      <TextObject Name="Text1" Left="490.6" Top="42.51" Width="222.31" Height="32.09" Text="نام مالک: [sp_RptCarExperience_File.OwnerName]" VertAlign="Center" RightToLeft="true" Font="RasaFont, 11pt"/>
+      <TextObject Name="Text35" Left="218.14" Top="42.88" Width="270.64" Height="32.09" Text="تیپ خودرو: [sp_RptCarExperience_File.NameCar]" VertAlign="Center" RightToLeft="true" Font="RasaFont, 11pt"/>
+      <TextObject Name="Text36" Left="148.18" Top="42.51" Width="72.25" Height="32.09" Text="شماره موتور:" VertAlign="Center" RightToLeft="true" Font="RasaFont, 11pt"/>
+      <TextObject Name="Text37" Left="4.15" Top="42.5" Width="148.98" Height="32.09" Text="[sp_RptCarExperience_File.fldMotorNumber]" HorzAlign="Right" VertAlign="Center" Font="Times New Roman, 10pt"/>
+      <TextObject Name="Text38" Left="640.4" Top="83.74" Width="73.03" Height="32.09" Text="شماره شاسی:" VertAlign="Center" RightToLeft="true" Font="RasaFont, 11pt"/>
+      <TextObject Name="Text39" Left="491.1" Top="83.73" Width="156.53" Height="32.09" Text="[sp_RptCarExperience_File.fldShasiNumber]" HorzAlign="Right" VertAlign="Center" Font="Times New Roman, 10pt"/>
+      <TextObject Name="Text40" Left="447.15" Top="84.13" Width="41.69" Height="32.09" Text="VIN:" VertAlign="Center" RightToLeft="true" Font="Times New Roman, 11pt"/>
+      <TextObject Name="Text41" Left="223.22" Top="83.74" Width="230.21" Height="32.09" Text="[sp_RptCarExperience_File.fldVIN]" HorzAlign="Right" VertAlign="Center" Font="Times New Roman, 10pt"/>
+      <TextObject Name="Text42" Left="490.22" Top="6.44" Width="222.31" Height="32.09" Text="از تاریخ: [sp_RptCarExperience_File.fldStartDate]" VertAlign="Center" RightToLeft="true" Font="RasaFont, 11pt"/>
+      <TextObject Name="Text43" Left="240.81" Top="6.81" Width="248.71" Height="32.09" Text="تا تاریخ: [sp_RptCarExperience_File.fldEndDate]" VertAlign="Center" RightToLeft="true" Font="RasaFont, 11pt"/>
+      <TextObject Name="Text44" Left="5.7" Top="83.16" Width="213.97" Height="32.09" Text="شماره پلاک: [sp_RptCarExperience_File.fldPlaqueNumber]" VertAlign="Center" RightToLeft="true" Font="RasaFont, 11pt"/>
+      <TextObject Name="Text45" Left="5.71" Top="7.21" Width="212.1" Height="32.09" Text="شهرداری: [sp_RptCarExperience_File.fldNameMUN]" VertAlign="Center" RightToLeft="true" Font="RasaFont, 11pt"/>
+      <DataBand Name="Data1" Top="228.53" Width="718.2" Height="364.33" CanGrow="true" DataSource="sp_RptCarExperience_File" Columns.Count="1" Columns.Layout="DownThenAcross">
+        <PictureObject Name="Picture1" Left="216.79" Top="23.88" Width="284.63" Height="316.56" CanGrow="true" GrowToBottom="true" DataColumn="sp_RptCarExperience_File.fldImage"/>
+      </DataBand>
+    </GroupHeaderBand>
+    <PageFooterBand Name="PageFooter1" Top="596.86" Width="718.2" Height="48.77">
+      <TextObject Name="Text34" Left="9.53" Top="3.34" Width="700.23" Height="39.67" CanGrow="true" GrowToBottom="true" Text="[MyTablighat]" RightToLeft="true" Font="RasaFont, 11pt, style=Bold"/>
+    </PageFooterBand>
+  </ReportPage>
+</Report>

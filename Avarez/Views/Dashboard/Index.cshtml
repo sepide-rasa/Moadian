@@ -1,0 +1,171 @@
+﻿@using Ext.Net.MVC;
+@using Hogaf.ExtNet.UX;
+@using Ext.Net;
+@using Avarez.Controllers.Users;
+@{var X = Html.X();}
+@X.ResourceManager().RTL(true).Locale("fa-ir")
+<style type="text/css">
+    body{
+        direction:rtl;
+    }
+</style>
+<script src="~/Scripts/jquery-1.8.2.min.js"></script>
+<div dir="rtl">
+
+    @(
+     Html.X().Desktop().Listeners(k => k.Ready.Handler = "$('.ux-start-button .x-btn-inner').html('شروع');")
+    .ID("Desktop1")
+        .Modules(Html.X().DesktopModule()
+            .ModuleID("_CompanyProfile2")
+            //.AutoRun(true)
+            .Shortcut(
+                Html.X().DesktopShortcut()
+                .Hidden(!(Permossions.haveAccess(Convert.ToInt32(Session["UserId"]), 375)))
+                .Name("پرونده ها")
+                    .IconCls("shortcut-Parvande")
+                )
+            .Launcher(
+                Html.X().MenuItem()
+                        .Text("پرونده ها")
+                        .Hidden(!(Permossions.haveAccess(Convert.ToInt32(Session["UserId"]), 375)))
+                    .IconCls("MiniCompanyProfile")
+                    ).Window(
+                        Html.X().Window().RTL(true).Width(1150)
+                    .AutoScroll(true)
+                            .Title("پرونده ها")
+                    .Icon(Ext.Net.Icon.Money)
+                        .BodyStyle("background-color:rergb(244, 247, 249;")
+                            .ContentFromAction("Filtering", "Dashboard")
+                        .Height(630).ID("Win")
+                    )
+                                
+                        , Html.X().DesktopModule()
+        .ModuleID("_CompanyProfile")
+        .AutoRun(true)
+        .Shortcut(
+            Html.X().DesktopShortcut()
+            .Name("نمودار فیش های  ماه جاری")
+                .Hidden(!(Permossions.haveAccess(Convert.ToInt32(Session["UserId"]), 376)))
+            .IconCls("shortcut-fish")
+            )
+        .Launcher(
+            Html.X().MenuItem()
+                .Text("نمودار فیش های  ماه جاری")
+                    .Hidden(!(Permossions.haveAccess(Convert.ToInt32(Session["UserId"]), 376)))
+                .IconCls("MiniCompanyProfile")
+                ).Window(
+                    Html.X().Window().RTL(true).Width(1050)
+                .AutoScroll(true)
+                    .Title("فیش های صادر شده و پرداخت شده ماه جاری")
+                .Icon(Ext.Net.Icon.Money)
+                    .BodyStyle("background-color:rergb(244, 247, 249;")
+                        .ContentFromAction("Fishchart", "Dashboard")
+                .Height(630)
+                    ),
+            Html.X().DesktopModule()
+            .ModuleID("_CompanyProfile1")
+            .Shortcut(
+                Html.X().DesktopShortcut()
+                    .Name("نمودار خودروهای ماه جاری")
+                        .Hidden(!(Permossions.haveAccess(Convert.ToInt32(Session["UserId"]), 377)))
+                .IconCls("shortcut-Car")
+                )
+            .Launcher(
+                Html.X().MenuItem()
+                    .Text("نمودار خودروهای ماه جاری")
+                    .IconCls("MiniCompanyProfile")
+                        .Hidden(!(Permossions.haveAccess(Convert.ToInt32(Session["UserId"]), 377)))
+                    ).Window(
+                        Html.X().Window().RTL(true).Width(1050)
+                    .AutoScroll(true)
+                        .Title("خودروها")
+                    .Icon(Ext.Net.Icon.Money)
+                        .BodyStyle("background-color:rergb(244, 247, 249;")
+                            .ContentFromAction("Piechart", "Dashboard")
+                    .Height(630)
+                        )
+                )
+        .DesktopConfig(
+        Html.X().DesktopConfig()
+                    
+            .ShortcutDefaults(defaults =>
+            {
+                defaults.IconCls = "x-default-shortcut";
+            })
+            .ContextMenu(
+                Html.X().Menu()
+                    .Items(
+                        Html.X().MenuItem().Text("Change Settings"),
+                        Html.X().MenuSeparator(),
+                            Html.X().MenuItem().Text("Title").Icon(Ext.Net.Icon.ApplicationTileVertical),
+                            Html.X().MenuItem().Text("Cascade").Icon(Ext.Net.Icon.ApplicationCascade)
+                    )
+            )
+            .Content(@<text>
+                            @(
+ Html.X().Image()
+                                        .ImageUrl("~/Content/rasa-red.png")
+                                .StyleSpec("position:absolute;top: 50%;left: 50%;width: 127px;margin-top: -39px; margin-left: -39px;")
+                            )
+                        </text>)
+        )
+        .StartMenu(
+            Html.X().DesktopStartMenu()
+                .Title("رسا سیستم البرز")
+                .IconCls("RasaIco")
+                .Height(300)
+                .ToolConfig(
+                    Html.X().Toolbar()
+                        .Width(100)
+                        .Items(Html.X().Button()
+                                .Text("خروج")
+                                .Icon(Ext.Net.Icon.DoorOut)
+                                .DirectEvents(de =>
+                                {
+                                    de.Click.Action = "Logout";
+                                    de.Click.EventMask.ShowMask = true;
+                                    de.Click.EventMask.Msg = "خدانگهدار...";
+                                    de.Click.EventMask.MinDelay = 1000;
+                                })
+                        )
+                )
+        )
+        .TaskBar(
+            Html.X().DesktopTaskBar()
+                .TrayWidth(250).HideQuickStart(true)
+                    .Tray(
+                        Html.X().Toolbar()
+                            .Items(
+                                Html.X().Label()
+                                    .Text(""),
+                                Html.X().ToolbarFill()
+                            )
+                    )
+        )
+    )
+
+    @X.TaskManager().ID("TaskManager1").Tasks(X.Task().TaskID("Task1")
+    .Interval(100)
+    .AutoRun(false)
+    .DirectEvents(de => de.Update.Action = "RefreshProgress")
+)
+    <link href="~/Content/style.css" rel="stylesheet" />
+    <script>
+
+
+
+    </script>
+    <style>
+        #pnlUser-innerCt {
+            background-color: white;
+        }
+
+        #pnlCom-innerCt {
+            background-color: white;
+        }
+
+        #pnlHelp {
+            background-color: white;
+        }
+    </style>
+</div>

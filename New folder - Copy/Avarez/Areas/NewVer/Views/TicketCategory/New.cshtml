@@ -1,0 +1,190 @@
+﻿@using Ext.Net.MVC
+@using Hogaf.ExtNet.UX
+@using Ext.Net;
+@{
+    var X = Html.X();
+}
+
+
+@(Html.X().Window().Modal(true).Listeners(li => { li.AfterRender.Handler = "LoadTicketCategory();"; li.Render.Fn = "addKeyMapTicketCategory"; })
+.Width(465)//.Height(300)
+    .Title("تعریف موضوع گفتگو")
+             .ID("NewTicketCategory")
+    .Closable(true)
+    .CloseAction(Ext.Net.CloseAction.Destroy)
+        .ButtonAlign(Ext.Net.Alignment.Center)
+                   .Buttons(X.Button().Text("ذخیره").Icon(Ext.Net.Icon.Disk)
+                               .Listeners(l =>
+                               {
+                                   l.Click.Handler = "SaveTicketCategory();";
+
+                               })
+                                       .ItemID("btnSaveTicketCategory")
+                                ,
+                                X.Button().Text("خروج").Icon(Ext.Net.Icon.DoorOut).ToolTip("کلید میانبر Esc")
+                                           .OnClientClick("App.NewTicketCategory.destroy()"))
+    .Items(
+        X.FormPanel().Border(false)
+        .Border(false)
+            .DefaultButton("btn")
+            .TitleAlign(Ext.Net.TitleAlign.Center)
+
+
+                .Items(
+                X.Panel().Border(false)
+
+            .Items(
+                X.FieldSet().Border(true).Title("اطلاعات موضوع گفتگو")
+                .Center()
+                .LayoutConfig(new Ext.Net.TableLayoutConfig { Columns = 4 })
+                .Defaults(new { Margin = 2 })
+                .Items(
+                     X.Hidden().ItemID("fldId"),
+                        X.Label("فرستنده:"),
+                     X.ComboBox()
+                    .ItemID("CboType")
+                    .LabelAlign(Ext.Net.LabelAlign.Right)
+                    .TypeAhead(true)
+                    .Editable(false)
+                    .QueryMode(DataLoadMode.Local)
+                    .BlankText("لطفا فرستنده را انتخاب کنید.")
+                    .ForceSelection(true)
+                    .TriggerAction(TriggerAction.All)
+                    .DisplayField("Name")
+                    .ValueField("ID")
+                    .Items(
+                        new ListItem("کاربران", "0"),
+                        new ListItem("ستادی", "1")
+                    )
+                    .SelectedItems(new { Value = "1" })
+                    .ColSpan(3)
+                    .AllowBlank(false),
+                         X.Label("عنوان:"),
+                         X.TextField()
+                         .ItemID("txtTitle")
+                        .AllowBlank(false)
+                        .BlankText("لطفا عنوان را وارد کنید.")
+                            .AutoFocus(true)
+                                .ColSpan(3)
+                                .Width(350)
+                        , X.Label("توضیحات:"),
+                        X.TextArea()
+                        .ItemID("txtDesc")
+                            .Width(350)
+                                .ColSpan(3)
+
+
+                        )
+
+                )
+                    .Layout(Ext.Net.LayoutType.VBox)
+                    .LayoutConfig(new Ext.Net.VBoxLayoutConfig { Align = Ext.Net.VBoxAlign.Center })
+            )
+        )
+)
+<script type="text/javascript">
+
+    function LoadTicketCategory() {
+        ReplaceArabic();
+        if ('@ViewBag.Id' != '0') {
+            Ext.net.Mask.show({ msg: 'در حال بارگذاری...' });
+            Ext.net.DirectMethod.request({
+                url: '/TicketCategory/Details',
+                params: {
+                    Id: '@ViewBag.Id'
+                },
+                success: function (data) {
+                    var txtTitle = App.NewTicketCategory.queryById('txtTitle');
+                    txtTitle.setValue(data.fldTitle);
+                    var CboType = App.NewTicketCategory.queryById('CboType');
+                    CboType.setValue(data.fldType);
+                    var txtDesc = App.NewTicketCategory.queryById('txtDesc');
+                    txtDesc.setValue(data.fldDesc);
+                    var Id = App.NewTicketCategory.queryById('fldId');
+                    Id.setValue(data.fldId);
+                    Ext.net.Mask.hide();
+                }
+            });
+        }
+        else {
+            App.NewTicketCategory.queryById('txtTitle').validate();
+        }
+
+    }
+
+    function SaveTicketCategory() {
+        var txtTitle = App.NewTicketCategory.queryById('txtTitle');
+        var CboType = App.NewTicketCategory.queryById('CboType');
+        var txtDesc = App.NewTicketCategory.queryById('txtDesc');
+        var Id = App.NewTicketCategory.queryById('fldId');
+        var er = false;
+        if (txtTitle.validate() == false) {
+            er = true;
+        }
+        if (er == true)
+            return;
+
+        var t = false;
+        if (CboType.getValue() == "1")
+            t = true;
+
+        App.NewTicketCategory.body.mask("در حال ذخیره سازی");
+        Ext.net.DirectMethod.request({
+            url: '/TicketCategory/Save',
+            params: {
+                fldId: Id.getValue(),
+                fldTitle: txtTitle.getValue(),
+                fldType: t,
+                fldDesc: txtDesc.getValue()
+            },
+            success: function (data) {
+                var ic = Ext.MessageBox.INFO;
+                if (data.Err == 1)
+                    ic = Ext.MessageBox.ERROR;
+                Ext.MessageBox.show({
+                    Name: data.MsgName,
+                    msg: data.Msg,
+                    icon: ic,
+                    buttons: Ext.MessageBox.OK
+                });
+                App.TicketCategory.queryById('GridTicketCategory').store.load();
+                if (data.Err != 1)
+                    ClearTicketCategory();
+                App.NewTicketCategory.body.mask().hide();
+                /*Ext.net.Mask.hide();*/
+            }
+
+        });
+    }
+    function ClearTicketCategory() {
+        App.NewTicketCategory.queryById('txtTitle').setValue("");
+        App.NewTicketCategory.queryById('txtDesc').setValue("");
+        App.NewTicketCategory.queryById('fldId').setValue(0);
+    }
+    var addKeyMapTicketCategory = function (cmp) {
+        this.keyMap = new Ext.util.KeyMap({
+            target: cmp.getEl(),
+            binding: [{
+                key: [13, 9], /*Ext.EventObject.ENTER,*/
+                fn: function (key, e) {
+                    if (e.getKey() == 9) {
+                        e.stopEvent();
+                    }
+                    var keyfield = App.NewTicketCategory.queryById(Ext.getCmp((Ext.Element.getActiveElement()).name).itemId);
+                    var nextfld;
+
+                    if (keyfield.itemId == "txtDesc") {
+                        nextfld = App.NewTicketCategory.queryById('btnSaveTicketCategory');
+                    }
+                    else {
+                        nextfld = keyfield.nextSibling().nextSibling();
+                        nextfld.selectText();
+                    }
+                    
+                    nextfld.focus();
+                    nextfld.selectText();
+                }
+            }]
+        });
+    }
+</script>

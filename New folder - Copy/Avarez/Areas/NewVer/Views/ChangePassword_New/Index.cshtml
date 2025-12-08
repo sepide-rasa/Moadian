@@ -1,0 +1,194 @@
+﻿@using Ext.Net.MVC
+@using Hogaf.ExtNet.UX
+@using Ext.Net;
+@using Ext.Net.Utilities;
+@{
+    var X = Html.X();
+}
+<script src="~/Scripts/accounting.js"></script>
+
+@(Html.X().Window()
+    .Modal(true)
+        .Listeners(li => li.AfterRender.Handler = "LoadUserName();")
+    .Resizable(false)
+    .Width(310)
+    .Height(170)
+    .Title("تغییر رمز عبور")
+    .Layout(LayoutType.Fit)
+    .ID("ChangePassword")
+    .Closable(true)
+    .ButtonAlign(Ext.Net.Alignment.Center)
+    .Buttons(
+        X.Button()
+            .Text("ذخیره")
+            .Icon(Ext.Net.Icon.Disk)
+        //.ToolTip("کلید میانبر F8")
+                .Listeners(l => l.Click.Handler = "SaveChangePassword();"),
+        X.Button()
+            .Text("خروج")
+            .Icon(Ext.Net.Icon.DoorOut)
+        //.ToolTip("کلید میانبر Esc")
+                .OnClientClick("App.ChangePassword.destroy();"))
+    .CloseAction(Ext.Net.CloseAction.Destroy)
+    .Items(
+        X.FormPanel()
+            .Border(false)
+            .Layout(LayoutType.Fit)
+            .Items(
+                X.Panel()
+                    .Border(false)
+                    .PaddingSpec("15px 0 0 0")
+                    .Items(
+                        X.FieldSet()
+                            .Border(false)
+                            .Defaults(new { Margin = 2 })
+                            .Layout(LayoutType.Table)
+                            .LayoutConfig(new TableLayoutConfig { Columns = 2 })
+                            .Items(
+                                X.Hidden().ItemID("fldId"),
+                                X.Label("رمز عبور فعلی:"),
+                                X.TextField()
+                                .ItemID("txtPass")
+                                .EnforceMaxLength(true)
+                                .MaxLength(50)
+                                .Width(190)
+                                .InputType(Ext.Net.InputType.Password)
+                                .MsgTarget(Ext.Net.MessageTarget.Side)
+                                .AllowBlank(false)
+                                .BlankText("لطفا رمز عبور فعلی را وارد کنید.")
+                                .Focus(true)
+                                , X.Label("رمز عبور جدید:"),
+                                X.TextField()
+                                .ItemID("txtNewPass")
+                                .EnforceMaxLength(true)
+                                .MaxLength(50)
+                                .MsgTarget(Ext.Net.MessageTarget.Side)
+                                .AllowBlank(false)
+                                .Width(190)
+                                .InputType(Ext.Net.InputType.Password)
+                                .BlankText("لطفا رمز عبور جدید را وارد کنید."),
+                                X.Label("تکرار رمز عبور:"),
+                                X.TextField()
+                                .ItemID("txtConfirmPass")
+                                    .EnforceMaxLength(true)
+                                    .MaxLength(50)
+                                    .AllowBlank(false).Width(190)
+                                .InputType(Ext.Net.InputType.Password)
+                                .BlankText("لطفا تکرار رمز عبور جدید را وارد کنید.")
+                                .MsgTarget(Ext.Net.MessageTarget.Side)
+                            )
+                )
+            )
+        )
+)
+
+
+<script type="text/javascript">
+    var colour = "";
+   
+    function LoadUserName() {
+        ReplaceArabic();
+        var txtPass = App.ChangePassword.queryById('txtPass');
+        var txtNewPass = App.ChangePassword.queryById('txtNewPass');
+        var txtConfirmPass = App.ChangePassword.queryById('txtConfirmPass');
+        txtPass.validate();
+        txtNewPass.validate();
+        txtConfirmPass.validate();
+
+        @*if ('@ViewBag.fldFirstLogin' == 'True')
+            App.ChangePassword.queryById('btnExit').hide();
+        else
+            App.ChangePassword.queryById('btnExit').show();
+
+        Ext.net.DirectMethod.request({
+            url: '/ChangePassword/Details',
+            success: function (data) {
+                App.ChangePassword.queryById('txtUserName').setValue(data.fldUserName);
+            }
+        });*@
+    }
+   
+    function SaveChangePassword() {
+        var txtPass = App.ChangePassword.queryById('txtPass');
+        var txtNewPass = App.ChangePassword.queryById('txtNewPass');
+        var txtConfirmPass = App.ChangePassword.queryById('txtConfirmPass');
+        var er = false;
+
+        if (txtPass.validate() == false) {
+            er = true;
+        }
+        if (txtNewPass.validate() == false) {
+            er = true;
+        }
+        if (txtConfirmPass.validate() == false) {
+            er = true;
+        }
+       /* if (colour != "green") {
+            alert("رمز عبور جدید پیچیدگی لازم را ندارد. ");
+            er = true;
+        }*/
+
+        if (txtNewPass.getValue() != txtConfirmPass.getValue()) {
+            Ext.MessageBox.show({
+                title:"خطا",
+                msg: "رمز عبور و تکرار رمز عبور یکسان نیست.",
+                icon: Ext.MessageBox.ERROR,
+                buttons: Ext.MessageBox.OK
+            });
+            er = true;
+        }
+
+        if (er == true)
+            return;
+
+        Ext.net.DirectMethod.request({
+            url: '/NewVer/ChangePassword_New/ChangePassword',
+            params: {
+                OldPassword: txtPass.getValue(),
+                NewPassword: txtNewPass.getValue(),
+                ConfirmPassword: txtConfirmPass.getValue(),
+                UserType:'@ViewBag.UserType'
+            },
+            success: function (data) {
+                var ic = Ext.MessageBox.INFO;
+                if (data.Er == 1)
+                    ic = Ext.MessageBox.ERROR;
+                Ext.MessageBox.show({
+                    title: data.MsgTitle,
+                    msg: data.Msg,
+                    icon: ic,
+                    buttons: Ext.MessageBox.OK
+                });
+                @*if ('@ViewBag.fldFirstLogin' == 'True')
+                    App.ChangePassword.destroy();*@
+            }
+
+        });
+    }
+
+    function ClearChangePassword() {
+        App.ChangePassword.queryById('txtPass').setValue("");
+        App.ChangePassword.queryById('txtNewPass').setValue("");
+        App.ChangePassword.queryById('txtConfirmPass').setValue("");
+    }
+    function EnterNext() {
+        var keyfield = App.ChangePassword.queryById(Ext.getCmp((Ext.Element.getActiveElement()).name).itemId);
+        var nextfld = keyfield.nextSibling();
+        nextfld.focus();
+        nextfld.selectText();
+
+    }
+
+    function HelpChangePassword() {
+        Ext.net.Mask.show({ msg: 'در حال بارگذاری...' });
+        Ext.net.DirectMethod.request({
+            url: '/ChangePassword/Help',
+            params: {
+
+            },
+            success: function (data) {
+                Ext.net.Mask.hide();
+            }
+        });
+    }
+</script>

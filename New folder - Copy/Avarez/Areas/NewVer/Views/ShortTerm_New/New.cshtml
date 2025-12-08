@@ -1,0 +1,350 @@
+﻿@using Ext.Net.MVC
+@using Hogaf.ExtNet.UX
+@using Ext.Net;
+@{
+    var X = Html.X();
+}
+
+@(Html.X().Window().Listeners(li => li.AfterRender.Handler = "LoadShortTerm_NewType();")
+    .Modal(true)
+         .Resizable(false)
+    .Width(595)
+    .Height(325)
+    .Title("تعریف کشور سازنده")
+    .Layout(LayoutType.Fit)
+    .ID("NewShortTerm_New")
+    .Closable(true)
+    .ButtonAlign(Ext.Net.Alignment.Center)
+    .Buttons(
+        X.Button()
+            .Text("ذخیره")
+            .Icon(Ext.Net.Icon.Disk)
+        //.ToolTip("کلید میانبر F8")
+            .Listeners(l => l.Click.Handler = "SaveShortTerm_New();"),
+        X.Button()
+            .Text("خروج")
+            .Icon(Ext.Net.Icon.DoorOut)
+        //.ToolTip("کلید میانبر Esc")
+            .OnClientClick("App.NewShortTerm_New.destroy();"))
+    .CloseAction(Ext.Net.CloseAction.Destroy)
+    .Items(
+        X.FormPanel()
+            .Border(false)
+            .Layout(LayoutType.Fit)
+            .Items(
+                X.Panel()
+                    .Border(false)
+                    .PaddingSpec("15px 0 0 0")
+                    .Layout(LayoutType.VBox)
+                    .LayoutConfig(new VBoxLayoutConfig { Align = VBoxAlign.Center })
+                    .Items(
+                        X.FieldSet()
+                            .Border(true)
+                            .Height(120)
+                            .Defaults(new { Margin = 2 })
+                            .Layout(LayoutType.Table)
+                            .Title("مشخصات کشور")
+                            .LayoutConfig(new TableLayoutConfig { Columns = 4 })
+                            .Items(
+                                X.Hidden()
+                                    .ItemID("fldId"),
+                                
+                                X.Label("نام لاتین:"),
+                                X.TextField()
+                                    .ItemID("txtLatinName")
+                                    .Width(190)
+                                    .MaxLength(50)
+                                    .EnforceMaxLength(true)
+                                    .EnableKeyEvents(true)
+                                    //.MaskRe("/[a-z,A-Z ]/")
+                                    //.Listeners(l => l.Change.Handler = "onInitializeToEn();")
+                                    .Listeners(l => l.KeyUp.Fn = "onInitializeToEn")
+                                    .AllowBlank(false)
+                                    .BlankText("لطفا نام لاتین را وارد نمایید.")
+                                    .MsgTarget(Ext.Net.MessageTarget.Side),
+                                X.Label("نام فارسی:"),
+                                X.TextField()
+                                    .ItemID("txtPersianName")
+                                    .Width(190)
+                                    .MaxLength(50)
+                                    .EnforceMaxLength(true)
+                                    .EnableKeyEvents(true)
+                                    .Listeners(l => l.KeyUp.Fn = "onInitializeToFN")
+                                    .AllowBlank(false)
+                                    .BlankText("لطفا نام فارسی را وارد نمایید.")
+                                    .MsgTarget(Ext.Net.MessageTarget.Side),
+                                X.Label("نام اختصاری:"),
+                                X.TextField()
+                                    .ItemID("txtSymbol")
+                                    .Listeners(l => l.KeyUp.Fn = "onInitializeToSymbol")
+                                    .EnableKeyEvents(true)
+                                    .Width(190)
+                                    .MaxLength(2)
+                                    .EnforceMaxLength(true)
+                                    .AllowBlank(false)
+                                    .BlankText("لطفا نام اختصاری را وارد نمایید.")
+                                    .MsgTarget(Ext.Net.MessageTarget.Side),
+                                X.Label("توضیحات:"),
+                                X.TextArea()
+                                    .ItemID("txtDesc")
+                                    .ColSpan(3)
+                                    .Width(190)
+                            ),
+                        X.FieldSet()
+                            .Border(true)
+                            .Height(95)
+                            .Title("انتخاب پرچم کشور(حداکثر حجم مجاز: 25KB)")
+                            .Layout(LayoutType.HBox)
+                            .LayoutConfig(new HBoxLayoutConfig { Align = HBoxAlign.Middle })
+        /*.LayoutConfig(new TableLayoutConfig { Columns=3})*/
+                            .Width(540)
+        //.Defaults(new { Margin = 2 })
+                            .Items(
+                                X.FileUploadField()
+                                    .ID("FileUploadField1")
+                                    .MarginSpec("0 10px 0 0")
+                                    .Icon(Ext.Net.Icon.DiskUpload)
+                                    .ButtonOnly(true)
+                                    .ButtonText("انتخاب فایل")
+                                    .DirectEvents(l =>
+                                    {
+                                        l.Change.Action = "Upload";
+                                        l.Change.Success = "hideprogressShortTerm_New();";
+                                    })
+                                    .Listeners(l => l.Change.Fn = "showFile"),
+                                X.Container()
+                                    .Content(@<div id="fi-button-msg" style="width: 360px; text-align:right;"><b>فایل انتخاب شده:</b></div>),
+                               X.Panel()
+                                    .Border(false)
+                                    .Layout(LayoutType.VBox)
+                                    .LayoutConfig(new VBoxLayoutConfig { Align=VBoxAlign.Center})
+                                    .Items(
+                                        X.Label("پیش نمایش"),                                            
+                                        X.Panel()
+                                            .Frame(true)
+                                            .MarginSpec("3px 0 0 0")
+                                            .Layout(LayoutType.Fit)
+                                            .Items(
+                                        X.Image()
+                                            .ItemID("Image")
+                                            .Flex(1)
+                                            .ImageUrl("/Content/Blank.jpg")
+                                            .Width(40)
+                                            .Height(30)
+                                            //.PaddingSpec("0 0 15px 0")
+                                            .Border(true)
+                                            .Frame(true)))
+                            )
+                )
+            )
+        )
+)
+
+<script type="text/javascript">
+    var MojazShortTerm_New = 0;
+    var sizeeShortTerm_New = 0;
+    var EndUploadShortTerm_New = false;
+
+
+    var CheckShortTerm_New = setInterval(CheckEndShortTerm_New, 500);
+
+    
+    var onInitializeToSymbol = function () {
+        var tt = App.NewShortTerm_New.queryById('txtSymbol');
+        chnageLag(tt);
+        tt.setValue(tt.getValue().toUpperCase());
+    };
+    var onInitializeToEn = function () {
+        var tt = App.NewShortTerm_New.queryById('txtLatinName');
+        changeLagToEn(tt);
+    };
+
+    var onInitializeToFN=function(){
+        var tt = App.NewShortTerm_New.queryById('txtPersianName');
+        changeLagToFa(tt);        
+    };
+    
+    function CheckEndShortTerm_New() {
+        if (EndUploadShortTerm_New == true) {
+            Ext.net.DirectMethod.request({
+                url: '/NewVer/ShortTerm_New/ShowPic',
+                success: function (data) {
+                    value = "data:image/gif;base64," + data.image;
+                    App.NewShortTerm_New.queryById('Image').setImageUrl(value);
+                }
+            });
+
+            Ext.MessageBox.hide();
+            Ext.Msg.alert('عملیات موفق', 'فایل با موفقیت آپلود شد.');
+            clearInterval(CheckEndShortTerm_New);
+            EndUploadShortTerm_New = false;
+        }
+    }
+    var showFile = function (fb, v) {
+        var id = fb.fileInputEl.dom.id;
+        var el = Ext.get('fi-button-msg');
+        if (v) {
+            showProgressBarShortTerm_New();
+            if (v.split('.').pop().toLowerCase() == "jpg" || v.split('.').pop().toLowerCase()=="png") {
+                MojazShortTerm_New = 1;
+                if (document.getElementById(id).files[0].size <= 25600) {
+                    sizeeShortTerm_New = 1;
+                }
+                if (sizeeShortTerm_New == 1) {
+                    el.update('<b>فایل انتخاب شده:</b> ' + v);
+                }
+                else {
+                    el.update('<b>فایل انتخاب شده:</b> ');
+                }
+
+                if (!el.isVisible()) {
+                    el.slideIn('t', {
+                        duration: .2,
+                        easing: 'easeIn',
+                        callback: function () {
+                            el.highlight();
+                        }
+                    });
+                } else {
+                    el.highlight();
+                }
+            }
+            else {
+                el.update('<b>فایل انتخاب شده:</b> ');
+            }
+        }
+    };
+
+    function hideprogressShortTerm_New() {
+        if (MojazShortTerm_New == 1 && sizeeShortTerm_New == 1) {
+            EndUploadShortTerm_New = true;
+        }
+        MojazShortTerm_New = 0;
+        sizeeShortTerm_New = 0;
+    }
+
+    function showProgressBarShortTerm_New() {
+        Ext.MessageBox.show({
+            msg: 'لطفاً منتظر باشید',
+            progressText: 'در حال آپلود فایل...',
+            width: 300,
+            wait: true,
+            waitConfig:
+            {
+                interval: 200,
+                text: 'در حال آپلود فایل...',
+                scope: this
+            }
+        });
+    }
+
+    function LoadShortTerm_NewType() {
+        if ('@ViewBag.Id' != '0') {
+            App.NewShortTerm_New.body.mask("در حال بارگذاری...");
+            Ext.net.DirectMethod.request({
+                url: '/NewVer/ShortTerm_New/Details',
+                params: {
+                    Id: '@ViewBag.Id'
+                },
+                success: function (data) {
+                    if (data.Er == 0) {
+                        var txtLatinName = App.NewShortTerm_New.queryById('txtLatinName');
+                        txtLatinName.setValue(data.fldEnglishName);
+                        var txtPersianName = App.NewShortTerm_New.queryById('txtPersianName');
+                        txtPersianName.setValue(data.fldPersianName);
+                        var txtSymbol = App.NewShortTerm_New.queryById('txtSymbol');
+                        txtSymbol.setValue(data.fldSymbol);
+                        var txtDesc = App.NewShortTerm_New.queryById('txtDesc');
+                        txtDesc.setValue(data.fldDesc);
+                        var Id = App.NewShortTerm_New.queryById('fldId');
+                        Id.setValue(data.fldID);
+                        value = "data:image/gif;base64," + data.image;
+                        App.NewShortTerm_New.queryById('Image').setImageUrl(value);
+                    }
+                    else if (data.Er == 1) {
+                        Ext.MessageBox.show({
+                            title: data.MsgTitle,
+                            msg: data.Msg,
+                            icon: Ext.MessageBox.ERROR,
+                            buttons: Ext.MessageBox.OK
+                        });
+                    }
+                    App.NewShortTerm_New.body.mask().hide();
+                }
+            });
+        }
+        else {
+            App.NewShortTerm_New.queryById('txtLatinName').validate();
+            App.NewShortTerm_New.queryById('txtPersianName').validate();
+            App.NewShortTerm_New.queryById('txtSymbol').validate();
+        }
+    }
+
+    function SaveShortTerm_New() {
+        var txtLatinName = App.NewShortTerm_New.queryById('txtLatinName');
+        var txtPersianName = App.NewShortTerm_New.queryById('txtPersianName');
+        var txtSymbol = App.NewShortTerm_New.queryById('txtSymbol');
+        var Id = App.NewShortTerm_New.queryById('fldId');
+        var txtDesc = App.NewShortTerm_New.queryById('txtDesc');
+
+        var er = false;
+
+        if (txtLatinName.validate() == false) {
+            er = true;
+        }
+        if (txtPersianName.validate() == false) {
+            er = true;
+        }
+        if (txtSymbol.validate() == false) {
+            er = true;
+        }
+        if (er == true)
+            return;
+        App.NewShortTerm_New.body.mask("در حال ذخیره سازی...");
+        Ext.net.DirectMethod.request({
+            url: '/NewVer/ShortTerm_New/Save',
+            params: {
+                fldID: Id.getValue(),
+                fldEnglishName: txtLatinName.getValue(),
+                fldPersianName: txtPersianName.getValue(),
+                fldSymbol: txtSymbol.getValue(),
+                fldDesc: txtDesc.getValue()
+            },
+            success: function (data) {
+                var ic = Ext.MessageBox.INFO;
+                if (data.Er == 1)
+                    ic = Ext.MessageBox.ERROR;
+                Ext.MessageBox.show({
+                    title: data.MsgTitle,
+                    msg: data.Msg,
+                    icon: ic,
+                    buttons: Ext.MessageBox.OK
+                });
+                App.NewShortTerm_New.body.mask().hide();
+                App.ShortTerm_New.queryById('GridShortTerm_New').store.load();
+                if (data.Er != 1) {
+                    ClearShortTerm_New();
+                }
+            }
+        });
+    }
+
+    function ClearShortTerm_New() {
+        App.NewShortTerm_New.queryById('txtDesc').setValue("");
+        App.NewShortTerm_New.queryById('txtLatinName').setValue("");
+        App.NewShortTerm_New.queryById('txtPersianName').setValue("");
+        App.NewShortTerm_New.queryById('txtSymbol').setValue("");
+        App.NewShortTerm_New.queryById('fldId').setValue(0);
+        var el = Ext.get('fi-button-msg');
+        el.update('<b>فایل انتخاب شده:</b> ');
+        App.NewShortTerm_New.queryById('Image').setImageUrl("/Content/Blank.jpg");
+    }
+
+   /* function EnterNext() {
+        var keyfield = App.NewCustomer.queryById(Ext.getCmp((Ext.Element.getActiveElement()).name).itemId);
+        var nextfld = keyfield.nextSibling();
+        nextfld.focus();
+        nextfld.selectText();
+    }*/
+
+</script>

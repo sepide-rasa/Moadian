@@ -1,0 +1,302 @@
+﻿<div id="ChCarFile">
+@using Kendo.Mvc.UI;
+    <script src="@Url.Content("~/Content/Base.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Scripts/jquery.ui.datepicker-cc.all.min.js")" type="text/javascript"></script>
+    <img src="@Url.Content("~/Content/images/ChOwnerNav3.png")" />
+    <center>
+        <table>
+            <tr>
+                <td align="left">
+                    نام و خانوادگی مالک:
+                </td>
+                <td>
+                    @Html.TextBox("txtMalek1", null, new { @readonly = "true" })
+                </td>
+                <td align="left">
+                    شماره پلاک:
+                </td>
+                <td>
+                    @Html.TextBox("fldPlaqueNum1", null, new { @dir = "rtl", @style = "width: 150px;background-color:rgb(255, 202, 153);", @id = "fldPlaqueNum1", @readonly = "true" })
+                </td>
+            </tr>
+            <tr>
+                <td align="left">
+                    نوع ساخت:
+                </td>
+                <td>
+                    @Html.TextBox("txtCarMake1", null, new { @readonly = "true" })
+                </td>
+                <td align="left">
+                    نوع کاربری:
+                </td>
+                <td>
+                    @Html.TextBox("txtCarAccountTypes1", null, new { @readonly = "true" })
+                </td>
+            </tr>
+            <tr>
+                <td align="left">
+                    نوع کابین:
+                </td>
+                <td>
+                    @Html.TextBox("txtCarCabin1", null, new { @readonly = "true" })
+                </td>
+                <td align="left">
+                    سیستم خودرو:
+                </td>
+                <td>
+                    @Html.TextBox("txtSystem1", null, new { @readonly = "true" })
+                </td>
+            </tr>
+            <tr>
+                <td align="left">
+                    تیپ خودرو:
+                </td>
+                <td>
+                    @Html.TextBox("txtModel1", null, new { @readonly = "true" })
+                </td>
+                <td align="left">
+                    کلاس خودرو:
+                </td>
+                <td>
+                    @Html.TextBox("txtClass1", null, new { @readonly = "true" })
+                </td>
+            </tr>
+            <tr>
+                <td align="left">
+                    شماره موتور:
+                </td>
+                <td>
+                    @Html.TextBox("txtMotor1", null, new { @readonly = "true" })
+                </td>
+                <td align="left">
+                    شماره شاسی:
+                </td>
+                <td>
+                    @Html.TextBox("txtShasi1", null, new { @readonly = "true" })
+                </td>
+            </tr>
+            <tr>
+                <td align="left">
+                    رنگ خودرو:
+                </td>
+                <td>
+                    @Html.TextBox("txtColor1", null, new { @readonly = "true" })
+                </td>
+                <td align="left">
+                    سال تولید:
+                </td>
+                <td>
+                    @Html.TextBox("txtYear1", null, new { @dir = "ltr", @style = "width: 30px;", @id = "txtYear1", @maxlength = "4", @readonly = "true" })
+                </td>
+            </tr>
+            <tr>
+                <td align="left">
+                    تاریخ پلاک گذاری:
+                </td>
+                <td>
+                    @Html.TextBox("txtDateP1", null, new { @dir = "ltr", @style = "width: 70px;", @readonly = "true" })
+                </td>
+                <td align="left">
+                    تاریخ اولین بیمه:
+                </td>
+                <td colspan="3">
+                    @Html.TextBox("txtDate1", null, new { @dir = "ltr", @style = "width: 70px;", @readonly = "true" })
+                </td>
+            </tr>
+            <tr>
+                <td align="left">
+                    VIN:
+                </td>
+                <td colspan="3" dir='rtl'>
+                    @Html.TextBox("VIN1", null, new { @dir = "ltr", @style = "width:150px;background-color:rgb(255, 202, 153);", @id = "VIN1", @readonly = "true", enable = "false" })
+                </td>
+            </tr>
+        </table>
+        @Avarez.Helper.winClass.Buttons("AddLink", "ذخیره", "Save")
+        @Avarez.Helper.winClass.Buttons("exit", "خروج", "Exit") 
+        <div class="k-rtl demo-section">
+            @(Html.Kendo().Grid<Avarez.Models.sp_CarFileSelect>()
+                .Name("Grid")
+                .Columns(columns =>
+                {
+                    columns.Bound(p => p.fldID).Title("کد").Visible(false);
+                    columns.Bound(p => p.fldOwnerName).Title("نام مالک");
+                    columns.Bound(p => p.fldPlaqueNumber).Title("شماره پلاک");
+                    columns.Bound(p => p.fldMotorNumber).Title("شماره موتور");
+                    columns.Bound(p => p.fldVIN).Title("VIN");
+                    columns.Bound(p => p.fldShasiNumber).Title("شماره شاسی");
+                    columns.Bound(p => p.fldPlaqueNumber).Title("شماره پلاک");
+                    columns.Bound(p => p.fldDesc).Title("توضیحات");
+                    columns.Bound(p => p.fldCarID).Visible(false);
+                })
+            .Selectable(selectable => selectable.Mode(GridSelectionMode.Single))
+            .Pageable()
+            .Scrollable()
+            .DataSource(data =>
+                data.Ajax()
+                .PageSize(10)
+                .Model(m=>m.Id(p=>p.fldCarID))
+            )
+        )
+        </div>
+    </center>
+    <script type="text/javascript">
+        var carId = 0;
+        var PlaquId = 0;
+        $(document).ready(function () {
+            PlaquId = '@ViewBag.PlaquId';
+            carId = '@ViewBag.CarID';
+            $('#txtDateP1').val('@ViewBag.Date');
+            $("#AddLink").button();
+            $("#exit").button();
+            $("#exit").click(function () {
+                $("#ChCarFile").remove();
+            });
+
+            $('#ChCarFile').on('keyup', 'input', function (event) {
+                if (event.which == 13) {
+                    var inputs = $('#CarFile').find(':input:visible');
+                    inputs.eq(inputs.index(this) + 1).focus();
+                }
+            });
+
+            $(document).keyup(function (event) {
+                if (event.which == 119) {
+                    SaveRecord();
+                }
+                else if (event.which == 113) {
+                    EditRecord();
+                }
+                else if (event.which == 115) {
+                    DeleteRecord();
+                }
+            });
+
+            $('#AddLink').attr('title', 'کلید میانبر (F8)'); //119
+            $('#EditLink').attr('title', 'کلید میانبر (F2)'); //113
+            $('#DelLink').attr('title', 'کلید میانبر (F4)'); //115
+
+            $("#AddLink").click(function () {
+                SaveRecord();
+            });
+
+            //            $("#txtDateP").datepicker({
+            //                showButtonPanel: true,
+            //                changeMonth: true,
+            //                changeYear: true
+            //            });
+            $.ajax({
+                type: "post",
+                url: '/ChCarFile/Fill',
+                data: { PlaquId: PlaquId, CarID: carId },
+                success: function (data) {
+                    var mo = data;
+                    $('#fldPlaqueNum1').val(data.plaq);
+                    $('#txtMalek1').val(data.Malek);
+                    $('#txtCarMake1').val(data.make);
+                    $('#txtCarAccountTypes1').val(data.account);
+                    $('#txtCarCabin1').val(data.cabin);
+                    $('#txtSystem1').val(data.syst);
+                    $('#txtModel1').val(data.modell);
+                    $('#txtClass1').val(data.classs);
+                    $('#txtMotor1').val(data.motor);
+                    $('#txtShasi1').val(data.shasi);
+                    $('#txtColor1').val(data.color);
+                    $('#txtYear1').val(data.year);
+                    $('#txtDate1').val(data.date);
+                    $('#VIN1').val(data.vin);
+                    var url = '@Url.Action("Reload", "ChCarFile")';
+                    ReloadChCarFile(url, 'Grid', 0, PlaquId, 30, 2);
+                },
+                failure: function (data) {
+                    alert(data.data);
+                }
+            });
+        });
+
+        function SaveRecord() {
+            var er = false;
+            if ($("#txtDateP1").val() == '') {
+                $("#txtDateP1").addClass("input-validation-error");
+                $('#lblDatePError').html('لطفا تاریخ پلاک گذاری خودرو را وارد کنید.');
+                er = true;
+            }
+            else {
+                $("#txtDateP1").removeClass("input-validation-error");
+                $('#lblDatePError').html('');
+            }
+
+            if (er)
+                return;
+            var data = {
+                PlaquId: PlaquId,
+                carId: carId,
+                Date: $("#txtDateP1").val()
+            };
+            if (data != '') {
+                PostForm(data, '@Url.Content("~/ChCarFile/Save")', "#win");
+            }
+        }
+
+        function ReloadChCarFile(Url, gridname, field, value, top, searchType) {
+            var grid = $('#' + gridname).data('kendoGrid');
+            $.ajax({
+                url: Url,
+                type: 'get',
+                datatype: 'json',
+                data: { field: field, value: value, top: top, searchtype: searchType },
+                error: function (xhr, status, error) {
+                    alert(xhr + status);
+                },
+                success: function (result) {
+                    $("#" + gridname).data("kendoGrid").dataSource.data(result);
+                }
+
+            });
+        }
+
+        function PostForm(datas, url, id) {
+            var sendInfo = datas;
+            $('#Lock').show();
+            $.ajax({
+                type: "POST",
+                url: url,
+                data: sendInfo,
+                datatype: "json",
+                success: function (data) {
+                    var m = data;
+                    windowAppend("body", "/metro/error");
+                    $("#message").html(m.data);
+                    switch (m.state) {
+                        case 0:
+                            $("#error .wintitle").html("ذخیره موفق");
+                            break;
+                        case 1:
+                            $("#error .wintitle").html("خطا");
+                            break;
+                    }
+                    var url = '@Url.Action("Reload", "ChCarFile")';
+                    ReloadChCarFile(url, 'Grid', 0, PlaquId, 30, 2);
+                    $('#fldPlaqueNum').val($('#fldPlaqueNum1').val());
+                    $('#txtMalek').val($('#txtMalek1').val());
+                    $('#txtCarMake').val($('#txtCarMake1').val());
+                    $('#txtCarAccountTypes').val($('#txtCarAccountTypes1').val());
+                    $('#txtCarCabin').val($('#txtCarCabin1').val());
+                    $('#txtSystem').val($('#txtSystem1').val());
+                    $('#txtModel').val($('#txtModel1').val());
+                    $('#txtClass').val($('#txtClass1').val());
+                    $('#txtMotor').val($('#txtMotor1').val());
+                    $('#txtShasi').val($('#txtShasi1').val());
+                    $('#txtColor').val($('#txtColor1').val());
+                    $('#txtYear').val($('#txtYear1').val());
+                    $('#txtDate').val($('#txtDate1').val());
+                    $('#VIN').val($('#VIN1').val());
+                    $('#Lock').hide();
+                },
+                failure: function (data) {
+                    alert(data.data);
+                }
+            });
+        }    
+    </script>
+</div>

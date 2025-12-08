@@ -1,0 +1,408 @@
+﻿@using Ext.Net.MVC
+@using Hogaf.ExtNet.UX
+@using Ext.Net;
+@{
+    var X = Html.X();
+}
+
+<style>
+    .LblStyle {
+        height: auto;
+    }
+
+    .LblRed {
+        color: red;
+    }
+</style>
+
+@(Html.X().Window().Modal(true)
+.Width(560)
+.Resizable(false)
+    .Title("تعریف شماره حساب")
+         .ID("NewAccountBank_New")
+        .Closable(true).ButtonAlign(Ext.Net.Alignment.Center)
+    .CloseAction(Ext.Net.CloseAction.Destroy)
+        .Layout(LayoutType.Fit)
+                   .Buttons(X.Button().Text("ذخیره").Icon(Ext.Net.Icon.Disk)//.ToolTip("کلید میانبر F8")
+                               .Listeners(l =>
+                               {
+                                   l.Click.Handler = "SaveAccountBank_New();";
+
+                               })
+                               .ItemID("btnSave")
+                                ,
+                                X.Button().Text("خروج").Icon(Ext.Net.Icon.DoorOut)//.ToolTip("کلید میانبر Esc")
+                                       .OnClientClick("App.NewAccountBank_New.destroy()"))
+    .Items(
+        X.FormPanel()
+        .Border(false)
+            .DefaultButton("btn")
+        .TitleAlign(Ext.Net.TitleAlign.Center)
+           .Layout(LayoutType.Fit)
+                .Items(
+
+                X.Panel().Border(false).PaddingSpec("5px 0 10px 0")
+                    .Layout(Ext.Net.LayoutType.VBox)
+                    .LayoutConfig(new Ext.Net.VBoxLayoutConfig { Align = VBoxAlign.Center })
+            .Items(
+            X.Panel().Layout(LayoutType.HBox).Border(false)
+                .LayoutConfig(new Ext.Net.HBoxLayoutConfig { Align = HBoxAlign.Middle })
+                  .Defaults(new { Margin = 5 })
+            .Items(
+                 X.FieldSet()
+                        .Border(true)
+                        .Layout(LayoutType.Table)
+                             .LayoutConfig(new Ext.Net.TableLayoutConfig { Columns = 4 })
+                           // .LayoutConfig(new Ext.Net.VBoxLayoutConfig { Align = VBoxAlign.Left })
+                        .Title("مشخصات حساب")
+                            .Width(525)
+                        .Items(
+                       //X.FieldSet()
+
+                       // .Border(false)
+                       // .Layout(LayoutType.HBox)
+                       // .Items(
+
+                            X.Hidden().ItemID("fldId"),
+                            X.Hidden().ItemID("countryId"),
+                            X.Hidden().ItemID("countrySID"),
+                            X.Hidden().ItemID("countryNType"),
+                            X.Hidden().ItemID("CarId"),
+                            X.Hidden().ItemID("CarSID"),
+                            X.Hidden().ItemID("CarNType"),
+                X.Label("بانک:"),
+             X.ComboBox()
+                .ItemID("CboBank")
+            .LabelAlign(Ext.Net.LabelAlign.Top)
+            .Editable(false)
+            .TypeAhead(true)
+            .QueryMode(DataLoadMode.Local)
+            .ForceSelection(true)
+            .TriggerAction(TriggerAction.All)
+            .DisplayField("Name")
+            .ValueField("ID")
+            .EmptyText("بانک...")
+            .Width(190)
+            .Listeners(ls =>
+                    ls.Select.Handler = " App.NewAccountBank_New.queryById('CboBranch').getStore().load();"
+                        )
+            .Store(X.Store()
+            .Model(X.Model()
+                .IDProperty("fldBankId")
+                    .Fields(
+                                new ModelField("ID", ModelFieldType.String) { Mapping = "fldID" },
+                                new ModelField("Name", ModelFieldType.String) { Mapping = "fldName" }
+                    )
+                )
+                .Proxy(X.AjaxProxy()
+                        .Url(Url.Action("GetCascadeBank"))
+                    .Reader(X.JsonReader().Root("data"))
+                )
+                    //.Listeners(li => li.Load.Handler = "LoadAccountBank_New();")
+        )
+            .AllowBlank(false)
+            .MsgTarget(Ext.Net.MessageTarget.Side)
+            .BlankText("لطفا بانک را انتخاب نمایید.")
+            
+             //X.FieldSet()
+
+             //           .Border(false)
+             //           .Layout(LayoutType.HBox)
+             //           .Items(
+                ,X.Label("شعبه:"),
+                        X.ComboBox()
+                                .ItemID("CboBranch")
+                            .EmptyText("شعبه...")
+                        .LabelAlign(Ext.Net.LabelAlign.Top)
+                        .TypeAhead(true)
+                        .Editable(false)
+                        .AllowBlank(false)
+                            .BlankText("لطفا شعبه مورد نظر را انتخاب نمایید.")
+                            .MsgTarget(Ext.Net.MessageTarget.Side)
+                        .QueryMode(DataLoadMode.Local)
+                        .ForceSelection(true)
+                        .Width(190)
+                        .TriggerAction(TriggerAction.All)
+                            .DisplayField("Name")
+                            .ValueField("ID")
+                                    .Store(X.Store().AutoLoad(false)
+                            .Model(X.Model()
+                                            .IDProperty("fldBranchId")
+                                .Fields(
+                                                     new ModelField("ID", ModelFieldType.String) { Mapping = "fldID" },
+                                    new ModelField("Name", ModelFieldType.String) { Mapping = "fldName" })
+                                    )
+                            .Proxy(X.AjaxProxy()
+                                                    .Url(Url.Action("GetCascadeBranch"))
+                                .Reader(X.JsonReader().Root("data")))
+                                                        .Parameters(ps => ps.Add(new StoreParameter("cboBank", "App.NewAccountBank_New.queryById('CboBank').getValue()", ParameterMode.Raw)))
+                                            )
+                                        //   ),
+                      //X.FieldSet()
+
+                      //  .Border(false)
+                      //  .Layout(LayoutType.HBox)
+                      //  .Items(
+                    ,X.Label("شماره حساب:"),
+                     X.TextField()
+                     .EnforceMaxLength(true)
+                     .MaxLength(20)
+                     .ItemID("txtAccountNumber")
+                    .MsgTarget(Ext.Net.MessageTarget.Side)
+                    .AllowBlank(false)
+                    .Width(190)
+                    .MaskRe("/[0-9,-]/")
+                    .BlankText("لطفا شماره حساب را وارد نمایید."),
+                         X.Label("توضیحات:"),
+                        X.TextArea()
+                        .ItemID("txtDesc")
+                        .Width(190)
+                    //)
+                        )
+                        ),
+                              X.Panel().Layout(LayoutType.HBox).Border(false).Defaults(new { Margin = 5 })
+            .Items(
+                        X.FieldSet()
+                    .Border(true)
+                    .Title("موقعیت در تقسیمات کشوری")
+                    .Width(400)
+                    .Height(400)
+                    .Layout(LayoutType.Column)
+                    .Defaults(new { Margin = 2 })
+                    .Items(
+                              X.TreePanel()
+                                .ID("TreeCountryAcc")
+                                .AutoScroll(true)
+                                .Width(370)
+                                .ColSpan(2)
+                                .Expand(true)
+                                .Height(300)
+                                .Expand(true)
+                                .UseArrows(true)
+                                .Border(false)
+                                .Listeners(a =>
+                                    {
+                                        a.Select.Handler = "GetTreeCountryIdAcc(record);";
+                                        a.AfterRender.Handler = "this.getRootNode().expand();";
+                                    })
+                                                .Root(Html.X().Node().NodeID("1").DataPath("0").Cls("0").Text("جمهوری اسلامی ایران").IconFile("/Content/images/0.png"))
+                                                .Listeners(l =>
+                                                {
+                                                    l.BeforeLoad.Fn = "nodeLoadTreeCountryAcc";
+                                                })
+                                , X.Label()
+                                .Cls("LblRed")
+                                .Text("مورد انتخاب شده: ")
+                                , X.Label()
+
+                                .Cls("LblStyle")
+                                .ItemID("lblTitleCountry")
+                                )
+                                    )
+                                    )
+
+            )
+        )
+)
+@(Html.X().KeyMap()
+                 .ID("NewAccountBank_NewMap")
+                 .Target("={App.NewAccountBank_New.getTargetEl()}")
+            .Binding(b =>
+            {
+                b.Add(Html.X().KeyBinding()
+                .KeysString(((int)Ext.Net.KeyCode.F8).ToString())
+                .Handler("SaveAccountBank_New(); ")
+                );
+
+            }))
+<script type="text/javascript">
+    setTimeout("LoadAccountBank_New()", 700);
+
+    var nodeLoadTreeCountryAcc = function (store, operation, options) {
+        var node = operation.node;
+        Ext.net.DirectMethod.request({
+            url: '/NewVer/AccountBank_New/NodeLoadTreeCountry',
+            params: {
+                nod: node.getId()
+            },
+            success: function (result) {
+                node.set('loading', false);
+                node.set('loaded', true);
+                node.appendChild(result);
+                node.expand();
+            },
+
+            failure: function (errorMsg) {
+                Ext.Msg.alert('Failure', errorMsg);
+            }
+        });
+
+        return false;
+    };
+    function GetTreeCountryIdAcc(record) {
+        var path = record.getPath("text");
+        var Text = path.split('/').splice(1).join("-->");
+        App.NewAccountBank_New.queryById('countryId').setValue(record.getId());
+        App.NewAccountBank_New.queryById('countrySID').setValue(record.data.cls);
+        App.NewAccountBank_New.queryById('countryNType').setValue(record.data.dataPath);
+        App.NewAccountBank_New.queryById('lblTitleCountry').setText(Text);
+    };
+
+    function SetDefault1() {
+        App.TreeCountryAcc.getSelectionModel().select(0);
+    }
+    
+    function LoadAccountBank_New() {
+        if ('@ViewBag.Id' != '0') {
+            App.NewAccountBank_New.body.mask("در حال بارگذاری...");
+            Ext.net.DirectMethod.request({
+                url: '/NewVer/AccountBank_New/Details',
+                params: {
+                    Id: '@ViewBag.Id'
+                },
+                success: function (data) {
+                    if (data.Er == 0) {
+                    var CboBank = App.NewAccountBank_New.queryById('CboBank');
+                    CboBank.setValue(data.fldBankID);
+                    App.NewAccountBank_New.queryById('CboBranch').clearValue(); App.NewAccountBank_New.queryById('CboBranch').getStore().load();
+                    var CboBranch = App.NewAccountBank_New.queryById('CboBranch');
+                    CboBranch.setValue(data.fldBranchID);
+                    var txtAccountNumber = App.NewAccountBank_New.queryById('txtAccountNumber');
+                    txtAccountNumber.setValue(data.fldAccountNumber);
+                    var txtDesc = App.NewAccountBank_New.queryById('txtDesc');
+                    txtDesc.setValue(data.fldDesc);
+                    var Id = App.NewAccountBank_New.queryById('fldId');
+                    Id.setValue(data.fldId);
+                    App.NewAccountBank_New.queryById('countryId').setValue(data.countryId);
+                    App.NewAccountBank_New.queryById('countrySID').setValue(data.countryCode);
+                    App.NewAccountBank_New.queryById('countryNType').setValue(data.CountryType);
+
+                    if (data.Path == "/1") {
+                        App.TreeCountryAcc.getSelectionModel().select(0);
+                    }
+                    else {
+                        Ext.net.DirectMethod.request({
+                            url: '/NewVer/AccountBank_New/LoadPath',
+                            params: {
+                                Path: data.Path
+                            },
+                            success: function (result) {
+                                if (result.length != 0) {
+                                    App.TreeCountryAcc.store.getNodeById(data.Path.split('/')[2]).appendChild(result);
+                                    var nodee = App.TreeCountryAcc.store.getNodeById(data.Path.split('/')[data.Path.split('/').length - 1]);
+                                    App.TreeCountryAcc.expandPath(data.Path);
+                                    App.TreeCountryAcc.selectPath(data.Path);
+                                }
+                                else {
+                                    App.TreeCountryAcc.selectPath(data.Path);
+                                }
+                            },
+                            failure: function (errorMsg) {
+                                Ext.Msg.alert('Failure', errorMsg);
+                            }
+                        });
+                    }
+                    /*Ext.net.DirectMethod.request({
+                        url: '/NewVer/AccountBank_New/CountryPosition',
+                        params: {
+                            id: countryid
+                        },
+                        success: function (data) {
+                            Ext.net.Mask.hide();
+                            App.NewAccountBank_New.queryById('lblTitleCountry').setText(data.Position);
+                        }
+
+                    });*/
+                   
+                }
+            else if (data.Er == 1) {
+                Ext.MessageBox.show({
+                    title: data.MsgTitle,
+                    msg: data.Msg,
+                    icon: Ext.MessageBox.ERROR,
+                    buttons: Ext.MessageBox.OK
+                });
+            }
+                    App.NewAccountBank_New.body.mask().hide();
+                }
+            });
+        }
+        else {
+            /*var CboBank = App.NewAccountBank_New.queryById('CboBank');
+            CboBank.setValue(CboBank.store.getAt(0));*/
+            SetDefault1();
+            App.NewAccountBank_New.queryById('CboBank').validate();
+            App.NewAccountBank_New.queryById('CboBranch').validate();
+            App.NewAccountBank_New.queryById('txtAccountNumber').validate();
+        }
+
+    }
+
+    function SaveAccountBank_New() {
+        var CboBank = App.NewAccountBank_New.queryById('CboBank');
+        var CboBranch = App.NewAccountBank_New.queryById('CboBranch');
+        var txtAccountNumber = App.NewAccountBank_New.queryById('txtAccountNumber');
+        var Id = App.NewAccountBank_New.queryById('fldId');
+        var txtDesc = App.NewAccountBank_New.queryById('txtDesc');
+        var er = false;
+
+        if (CboBank.validate() == false) {
+            er = true;
+        }
+        if (CboBranch.validate() == false) {
+            er = true;
+        }
+        if (txtAccountNumber.validate() == false) {
+            er = true;
+        }
+        if (er == true)
+            return;
+        App.NewAccountBank_New.body.mask("در حال ذخیره سازی...");
+        Ext.net.DirectMethod.request({
+            url: '/NewVer/AccountBank_New/Save',
+            params: {
+                fldTypeCountryDivisions: App.NewAccountBank_New.queryById('countryNType').getValue(),
+                fldCodeCountryDivisions: App.NewAccountBank_New.queryById('countrySID').getValue(),
+                fldAccountNumber: txtAccountNumber.getValue(),
+                fldBranchID: CboBranch.getValue(),
+                fldId: Id.getValue(),
+                fldDesc:txtDesc.getValue()
+            },
+            success: function (data) {
+                var ic = Ext.MessageBox.INFO;
+                if (data.Err == 1)
+                    ic = Ext.MessageBox.ERROR;
+                Ext.MessageBox.show({
+                    Name: data.MsgName,
+                    msg: data.Msg,
+                    icon: ic,
+                    buttons: Ext.MessageBox.OK
+                });
+                App.NewAccountBank_New.body.mask().hide();
+                App.AccountBank_New.queryById('GridAccountBank_New').store.load();
+                if (data.Err != 1)
+                    ClearAccountBank_New();
+            }
+
+        });
+    }
+    function ClearAccountBank_New() {
+        App.NewAccountBank_New.queryById('CboBank').setValue("");
+        App.NewAccountBank_New.queryById('CboBranch').setValue("");
+        App.NewAccountBank_New.queryById('txtAccountNumber').setValue("");
+        App.NewAccountBank_New.queryById('lblTitleCountry').setText("");
+        App.NewAccountBank_New.queryById('txtDesc').setValue("");
+        App.NewAccountBank_New.queryById('countryId').setValue(0);
+        App.NewAccountBank_New.queryById('countrySID').setValue(0);
+        App.NewAccountBank_New.queryById('countryNType').setValue(0);
+        App.NewAccountBank_New.queryById('fldId').setValue(0);
+        App.TreeCountryAcc.getSelectionModel().select(0);
+    }
+  /*  function EnterNext() {
+        var keyfield = App.NewAccountBank_New.queryById(Ext.getCmp((Ext.Element.getActiveElement()).name).itemId);
+        var nextfld = keyfield.nextSibling();
+        nextfld.focus();
+        nextfld.selectText();
+
+    }*/
+</script>

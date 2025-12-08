@@ -1,0 +1,123 @@
+﻿<div id="SearchMnu" style="z-index:100001;">
+    @Avarez.Helper.winClass.windowHeader("", "جستجو شهرداری", 600, 430)
+    @using Kendo.Mvc.UI;
+    <div>
+        <center>
+            <br />
+            <table>
+                <tr>
+                    <td>
+                        عبارت جستجو: @Avarez.Helper.winClass.textbox("txtSearch10")
+                    </td>
+                    <td>
+                        نتیجه رکوردها: @Html.TextBox("txtTop10", 30, new { @style = "width:30px;" }) رکورد
+                    </td>
+                </tr>
+            </table>
+            <br />
+        </center>
+    </div>
+    <center>
+        <div>
+            @Avarez.Helper.winClass.Buttons("next10", "انتخاب", "Next")
+            @Avarez.Helper.winClass.Buttons("exit10", "خروج", "exit")
+        </div>
+    </center>
+    <div class="k-rtl demo-section">
+        @(Html.Kendo().Grid<Avarez.Models.sp_MunicipalitySelect>()
+                .Name("MunGrid")
+                .Columns(columns =>
+                {
+                    columns.Bound(p => p.fldID).Title("کد").Visible(false);
+                    columns.Bound(p => p.fldName).Title("نام شهرداری");
+                    columns.Bound(p => p.fldCityName).Title("نام شهر");
+                })
+            .Selectable(selectable => selectable.Mode(GridSelectionMode.Single))
+            .Pageable()
+            .Scrollable()
+            .DataSource(data =>
+                data.Ajax()
+                .PageSize(10)
+                .Read(read => read.Action("Fill", "MnuSearch"))
+            )
+        )
+    </div>
+    <script type="text/javascript">
+        var _state = "@ViewBag.State";
+        $("document").ready(function () {
+            $("#next10").button();
+            $("#search").button();
+            $("#exit10").button();
+            $("#exit10").click(function () {
+                $("#SearchMnu").remove();
+                isWinOpen = false;
+            });
+
+            $('#txtSearch10').keyup(function () {
+                ClassReload('/MnuSearch/Reload', 'MunGrid', $('#txtSearch10').val(), $('#txtTop10').val());
+            });
+            $('#SearchMnu #btnClose').click(function () {
+                $("#SearchMnu").remove();
+                isWinOpen = false;
+            });
+            $('#next10').click(function () {
+                var entityGrid = $("#MunGrid").data("kendoGrid");
+                var selectedItem = entityGrid.dataItem(entityGrid.select());
+                if (selectedItem) {
+                    var id = selectedItem.fldID;
+                    if (_state == "1") {
+                        $.ajax({
+                            url: '/MnuSearch/GetMunInf',
+                            type: 'get',
+                            datatype: 'json',
+                            data: { id: id },
+                            error: function (xhr, status, error) {
+                                alert(xhr + status);
+                            },
+                            success: function (data) {
+
+                                var mun = $("#cboMnu").data("kendoDropDownList");
+                                var state = $("#cboState").data("kendoDropDownList");
+                                state.value(data.State);
+
+                                mun.enable(true);
+
+
+                                mun.dataSource.data(data.Mun);
+                                //cabin.dataSource.read();
+                                mun.value(data.MunId);
+
+
+
+                            }
+                        });
+                    }
+                    else if (_state == "2") {
+                        MunId = selectedItem.fldID;
+                        $('#txtMunId').val(selectedItem.fldName);
+                    }
+                    $("#SearchMnu").remove();
+                    isWinOpen = false;
+                } else {
+                    alert('لطفا یک سطر را انتخاب کنید.');
+                }
+            });
+        });
+        function ClassReload(Url, gridname, value, top) {
+            var grid = $('#' + gridname).data('kendoGrid');
+            $.ajax({
+                url: Url,
+                type: 'get',
+                datatype: 'json',
+                data: { value: value, top: top },
+                error: function (xhr, status, error) {
+                    alert(xhr + status);
+                },
+                success: function (result) {
+                    $("#" + gridname).data("kendoGrid").dataSource.data(result);
+                }
+            });
+        }
+    </script>
+    @Avarez.Helper.winClass.windowFother()
+</div>

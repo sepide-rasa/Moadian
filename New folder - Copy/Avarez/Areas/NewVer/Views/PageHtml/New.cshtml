@@ -1,0 +1,142 @@
+﻿@using Ext.Net.MVC
+@using Hogaf.ExtNet.UX
+@{
+    var X = Html.X();
+}
+<script>
+    var h;
+    var onInitializeToEn = function (htmlEditor) {
+        h = htmlEditor;
+        htmlEditor.getDoc()[Ext.isGecko ? 'onkeypress' : 'onkeyup'] = function (e) {
+            htmlEditor.setValue(FaLangAlert(htmlEditor.getValue()));
+        };
+    };
+
+</script>
+<script src="~/Scripts/accounting.js"></script>
+@(Html.X().Window().Modal(true).Listeners(li => li.AfterRender.Handler = "LoadPageHtml();")
+.Width(800)
+    .Title("صفحات HTML")
+         .ID("NewPageHtml")
+    .Closable(true)
+    .CloseAction(Ext.Net.CloseAction.Destroy)
+    .Items(
+        X.FormPanel().Border(false)
+        .Border(false).ButtonAlign(Ext.Net.Alignment.Center)
+
+            .DefaultButton("btn")
+        .TitleAlign(Ext.Net.TitleAlign.Center)
+               .Buttons(X.Button().Text("ذخیره").Icon(Ext.Net.Icon.Disk).ToolTip("کلید میانبر F8")
+                               .Listeners(l =>
+                               {
+                                   l.Click.Handler = "SavePageHtml();";
+
+                               })
+                           .ItemID("btnSave")
+                            ,
+                            X.Button().Text("خروج").Icon(Ext.Net.Icon.DoorOut).ToolTip("کلید میانبر Esc")
+                                   .OnClientClick("App.NewPageHtml.destroy()"))
+
+                .Items(
+                X.Panel().Border(false)
+
+            .Items(
+                X.FieldSet().Border(false)
+                .Center()
+                .LayoutConfig(new Ext.Net.TableLayoutConfig { Columns = 1 })
+                .Defaults(new { Margin = 10 })
+                .Items(
+                X.Hidden().ItemID("fldId")
+                        , X.HtmlEditor().ItemID("txtMatn")
+                            .Width(700).Height(300)
+                                .RTL(true)
+        //.Listeners(l => l.Initialize.Fn = "onInitializeToEn")
+
+                        )
+
+                )
+                    .Layout(Ext.Net.LayoutType.VBox)
+                    .LayoutConfig(new Ext.Net.VBoxLayoutConfig { Align = Ext.Net.VBoxAlign.Center })
+            )
+        )
+)
+@(Html.X().KeyMap()
+                 .ID("NewPageHtmlMap")
+                .Target("={App.NewPageHtml.getTargetEl()}")
+            .Binding(b =>
+            {
+                b.Add(Html.X().KeyBinding()
+                .KeysString(((int)Ext.Net.KeyCode.F8).ToString())
+                .Handler("SavePageHtml(); ")
+                );
+
+            }))
+<script type="text/javascript">
+    function LoadPageHtml() {
+        ReplaceArabic();
+        if ('@ViewBag.Id' != '0') {
+            Ext.net.DirectMethod.request({
+                url: '/Newver/PageHtml/Details',
+                params: {
+                    id: '@ViewBag.Id'
+                },
+                success: function (data) {
+                    var Id = App.NewPageHtml.queryById('fldId');
+                    Id.setValue(data.fldId);
+                    var txtMatn = App.NewPageHtml.queryById('txtMatn');
+                    txtMatn.setValue(data.fldMatnHtml);
+                }
+            });
+        }
+    }
+
+    function SavePageHtml() {
+
+        var txtMatn = App.NewPageHtml.queryById('txtMatn');
+        var Id = App.NewPageHtml.queryById('fldId');
+        var er = false;
+        if (Ext.util.Format.trim(txtMatn.getEditorBody().textContent) == "") {
+            alert("لطفا اطلاعات را وارد کنید.");
+            return;
+        }
+        if (er == true)
+            return;
+        var data1 = {
+            fldId: Id.getValue(),
+            fldMatnHtml: txtMatn.getValue()
+          
+        };
+
+        $.ajax({
+            type: "POST",
+            url: '/Newver/PageHtml/Save',
+            contentType: "application/json; charset=utf-8",
+            data: JSON.stringify(data1),
+            datatype: "json",
+            success: function (data) {
+                Ext.MessageBox.show({
+                    title: data.MsgTitle,
+                    msg: data.Msg,
+                    icon: Ext.MessageBox.INFO,
+                    buttons: Ext.MessageBox.OK
+                });
+                App.PageHtml.queryById('GridPageHtml').store.load();
+                /* ClearPageSite();*/
+            },
+            failure: function (data) {
+                alert(data.data);
+            }
+        });
+    }
+    function ClearPageHtml() {
+        tinyMCE.getInstanceById('txtPageSiteContent').setContent("");
+        App.NewPageHtml.queryById('fldId').setValue(0);
+    }
+    function EnterNext() {
+        var keyfield = App.NewPageHtml.queryById(Ext.getCmp((Ext.Element.getActiveElement()).name).itemId);
+        var nextfld = keyfield.nextSibling();
+        nextfld.focus();
+        nextfld.selectText();
+
+    }
+</script>

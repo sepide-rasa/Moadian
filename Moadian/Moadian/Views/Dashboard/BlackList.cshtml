@@ -1,0 +1,161 @@
+﻿@model List<Avarez.Models.sp_ListeSiyahSelect>
+@using Ext.Net.MVC;
+@using Ext.Net;
+@using Hogaf.ExtNet.UX;
+@{
+    var X = Html.X();
+}
+@(X.Panel().Border(false)
+        .ID("List").Title("لیست سیاه")
+            .AutoScroll(true)
+            .Closable(true)
+            .CloseAction(Ext.Net.CloseAction.Destroy)
+            .Items(
+                X.Panel().Border(false)
+                .Border(false)
+                .AutoScroll(true)
+                .Items(
+                    X.TabPanel().ID("ListTab")
+                    .AutoScroll(true).Items(
+                        X.Panel().ItemID("GridPanel")
+                            .Title("لیست سیاه")
+                        .Items(
+                    X.GridPanel().AutoScroll(true)
+                            .TopBar(
+                            Html.X().Toolbar()
+                            .Items(
+                                X.Button().Text("جدید").Icon(Ext.Net.Icon.Add)
+                                    .Listeners(de => { de.Click.Handler = "New();"; })
+                                ,X.Button().Text("ویرایش").Icon(Ext.Net.Icon.Pencil)
+                                    .Listeners(de => { de.Click.Handler = "Edit();"; })
+                                , X.Button().Text("حذف").Icon(Ext.Net.Icon.Delete)
+                                    .Listeners(de => { de.Click.Handler = "Delete();"; })
+                            )
+                        )
+                        .ItemID("Grid1").Flex(2)
+                    .BottomBar(X.PagingToolbar())
+                    .Height(540)
+        //.ColumnWidth(0.6)
+        //.Layout(Ext.Net.LayoutType.Column)
+            .Listeners(l => l.AfterRender.Handler = "Reload();")
+                    .Store(
+                        X.StoreForModel()
+        //.Proxy(Html.X().AjaxProxy()
+        //.Url(Url.Action("Read"))
+        //.Reader(Html.X().JsonReader().Root("data"))
+
+                        //)
+                        .PageSize(20)
+                        .RemoteFilter(true)
+                        .RemotePaging(true)
+        //.Listeners(l => l.DataChanged.Handler = "App.EdaratKol.queryById('GridEdaratKol').selModel.refresh();")
+                    )
+                    .View(
+                        Html.X().GridView().LoadingText("در حال بارگذاری...").RTL(true)
+                    )
+                   // .Plugins(X.FilterHeader().Remote(true))
+                    .ColumnModel(
+                            Html.X().Column().DataIndex(Model, m => m.fldId).Hidden(true),
+                            Html.X().Column().DataIndex(Model, m => m.fldTypeS).Text("نوع محدودیت").Flex(5),
+                           Html.X().Column().DataIndex(Model, m => m.fldMsg).Text("پیغام").Flex(5)
+
+                    )
+
+                )
+                )
+            )
+        )
+)
+
+<script type="text/javascript">
+    function Reload() {
+
+        Ext.net.DirectMethod.request({
+            url: '/Dashboard/ReadBlackList',
+            params: {
+                CarfileId: '@ViewBag.CarFileId'
+            },
+            success: function (data) {
+                App.List.queryById('Grid1').getStore().loadData(data);
+            }
+        });
+    }
+    function New() {
+        Ext.net.Mask.show({ msg: 'در حال بارگذاری...' });
+        Ext.net.DirectMethod.request({
+            url: '/Dashboard/NewBlackList',
+            params: {
+                id: 0,
+                CarfileId: '@ViewBag.CarFileId'
+            },
+            success: function () {
+                Ext.net.Mask.hide();
+            }
+        });
+    }
+    function Edit() {
+        var SelectedRow = App.List.queryById('Grid1').selModel.getLastSelected();
+
+        if (SelectedRow != null) {
+            Ext.net.Mask.show({ msg: 'در حال بارگذاری...' });
+            Ext.net.DirectMethod.request({
+                url: '/Dashboard/NewBlackList',
+                params: {
+                    id: SelectedRow.data.fldId,
+                    CarfileId: '@ViewBag.CarFileId'
+                },
+                success: function () {
+                    Ext.net.Mask.hide();
+                }
+            });
+        }
+        else {
+            Ext.MessageBox.show({
+                title: "خطا",
+                msg: "لطفا یک سطر را انتخاب کنید",
+                icon: Ext.MessageBox.ERROR,
+                buttons: Ext.MessageBox.OK
+            });
+        }
+    }
+    function Delete() {
+        var SelectedHeaderRow = App.List.queryById('Grid1').selModel.getLastSelected();
+        if (SelectedHeaderRow != null) {
+            Ext.MessageBox.show({
+                title: "هشدار",
+                msg: "آیا برای حذف مطمئن هستید؟",
+                icon: Ext.MessageBox.WARNING,
+                buttons: Ext.MessageBox.YESNO,
+                fn: function (btn) {
+                    if (btn == 'yes') {
+                        Ext.net.DirectMethod.request({
+                            url: '/Dashboard/DeleteBlackList',
+                            params: {
+                                id: SelectedHeaderRow.data.fldId
+                            },
+                            success: function (data) {
+                                Ext.MessageBox.show({
+                                    title: data.MsgTitle,
+                                    msg: data.Msg,
+                                    icon: Ext.MessageBox.INFO,
+                                    buttons: Ext.MessageBox.OK
+                                });
+                                Reload();
+                            }
+                        });
+                    }
+                }
+            });
+        }
+        else {
+            Ext.MessageBox.show({
+                title: "خطا",
+                msg: "لطفا یک سطر را انتخاب کنید",
+                icon: Ext.MessageBox.ERROR,
+                buttons: Ext.MessageBox.OK
+            });
+        }
+    }
+</script>
+
+

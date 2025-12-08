@@ -1,0 +1,318 @@
+﻿@using Ext.Net.MVC
+@using Hogaf.ExtNet.UX
+@using Ext.Net;
+@{
+    var X = Html.X();
+}
+
+
+@(Html.X().Window().Modal(true)//.Listeners(li => li.AfterRender.Handler = "LoadCity_New();")
+.Width(560)//.Height(300)
+.Resizable(false)
+    .Title("تعریف شهر")
+         .ID("NewCity_New")
+        .Closable(true).ButtonAlign(Ext.Net.Alignment.Center)
+    .CloseAction(Ext.Net.CloseAction.Destroy)
+                   .Buttons(X.Button().Text("ذخیره").Icon(Ext.Net.Icon.Disk)//.ToolTip("کلید میانبر F8")
+                               .Listeners(l =>
+                               {
+                                   l.Click.Handler = "SaveCity_New();";
+
+                               })
+                               .ItemID("btnSave")
+                                ,
+                                X.Button().Text("خروج").Icon(Ext.Net.Icon.DoorOut)//.ToolTip("کلید میانبر Esc")
+                                       .OnClientClick("App.NewCity_New.destroy()"))
+    .Items(
+        X.FormPanel().Border(false)
+        .Border(false)
+            .Margin(5)
+            .DefaultButton("btn")
+        .TitleAlign(Ext.Net.TitleAlign.Center)
+    
+
+                .Items(
+                X.Panel().Border(false).PaddingSpec("10px 0 0 0")
+
+            .Items(
+                X.FieldSet().Border(true).Height(142)
+                .Title("شهر")
+                .Center()
+                .LayoutConfig(new Ext.Net.TableLayoutConfig { Columns = 4 })
+                .Defaults(new { Margin = 2 })
+                .Items(
+                X.Hidden().ItemID("fldId"),
+        //        X.Label("استان:"),
+        //            X.ComboBox()
+        //            .LabelAlign(Ext.Net.LabelAlign.Top)
+        //                    .ItemID("CboState")
+        //            .TypeAhead(true)
+        //            .Editable(false)
+        //            .QueryMode(DataLoadMode.Local)
+        //                .BlankText("لطفا استان را انتخاب کنید.")
+        //            .ForceSelection(true)
+        //            .TriggerAction(TriggerAction.All)
+        //                    .DisplayField("Name")
+        //                .ValueField("ID")
+        //            .EmptyText("استان ...")
+        ////.SelectedItems(new { Value = "1" })
+        //            .Store(X.Store()
+        //            .Model(X.Model()
+        //            .IDProperty("fldId")
+        //            .Fields(
+        //                        new ModelField("ID", ModelFieldType.String) { Mapping = "ID" },
+        //                                new ModelField("Name", ModelFieldType.String) { Mapping = "Name" }
+        //                    )
+        //                        )
+        //            .Proxy(X.AjaxProxy()
+        //                        .Url(Url.Action("GetState"))
+        //            .Reader(X.JsonReader().Root("data"))
+        //                    )
+        //                               .Listeners(li => li.BeforeLoad.Handler = "LoadCity_New();")
+        //                    )
+        //            .AllowBlank(false),
+            X.Label("استان:"),
+         X.ComboBox()
+            .ItemID("CboState")
+        .LabelAlign(Ext.Net.LabelAlign.Top)
+        .Editable(false)
+        .TypeAhead(true)
+        .QueryMode(DataLoadMode.Local)
+        .ForceSelection(true)
+        .TriggerAction(TriggerAction.All)
+            .DisplayField("Name")
+            .ValueField("ID")
+        .EmptyText("استان...")
+        .Width(190)
+        //.Listeners(ls =>
+        //ls.Select.Handler = "App.NewCity_New.queryById('CboState').clearValue(); App.NewCity_New.queryById('CboState').getStore().load()"
+        //    )
+        .Listeners(ls =>
+                    ls.Select.Handler = " App.NewCity_New.queryById('CboCounty').getStore().load();"
+                                )
+                .Store(X.Store()//.AutoLoad(false)
+            .Model(X.Model()
+                        .IDProperty("fldStateId")
+                .Fields(
+                            new ModelField("ID", ModelFieldType.String) { Mapping = "fldID" },
+                            new ModelField("Name", ModelFieldType.String) { Mapping = "fldName" }
+                )
+            )
+            .Proxy(X.AjaxProxy()
+                .Url(Url.Action("GetCascadeState"))
+                .Reader(X.JsonReader().Root("data"))
+            )
+                .Listeners(li => li.Load.Handler = "LoadCity_New();")
+    )
+        .AllowBlank(false)
+        .MsgTarget(Ext.Net.MessageTarget.Side)
+        .BlankText("لطفا استان را انتخاب نمایید."),
+        X.Label("شهرستان:"),
+                    X.ComboBox()
+                        .ItemID("CboCounty")
+                    .EmptyText("شهرستان...")
+                    .LabelAlign(Ext.Net.LabelAlign.Top)
+                    .TypeAhead(true)
+                    .Editable(false)
+                    .AllowBlank(false)
+                    .BlankText("لطفا شهرستان مورد نظر را انتخاب نمایید.")
+                     .MsgTarget(Ext.Net.MessageTarget.Side)
+                    .QueryMode(DataLoadMode.Local)
+                    .ForceSelection(true)
+                    .Width(190)
+                    .Listeners(ls =>
+                                ls.Select.Handler = " App.NewCity_New.queryById('CboZone').getStore().load();"
+                                    )
+                    .TriggerAction(TriggerAction.All)
+                        .DisplayField("Name")
+                        .ValueField("ID")
+                                .Store(X.Store().AutoLoad(false)
+                        .Model(X.Model()
+                                    .IDProperty("fldCityId")
+                            .Fields(
+                                                 new ModelField("ID", ModelFieldType.String) { Mapping = "fldID" },
+                                new ModelField("Name", ModelFieldType.String) { Mapping = "fldName" })
+                                )
+                        .Proxy(X.AjaxProxy()
+                                        .Url(Url.Action("GetCascadeCounty"))
+                            .Reader(X.JsonReader().Root("data")))
+                                        .Parameters(ps => ps.Add(new StoreParameter("ID", "App.NewCity_New.queryById('CboState').getValue()", ParameterMode.Raw)))
+                                        ),
+                        X.Label("بخش:"),
+                         X.ComboBox()
+                                .ItemID("CboZone")
+                        .EmptyText("بخش...")
+                        .LabelAlign(Ext.Net.LabelAlign.Top)
+                        .TypeAhead(true)
+                        .Editable(false)
+                        .AllowBlank(false)
+                        .BlankText("لطفا بخش مورد نظر را انتخاب نمایید.")
+                        .MsgTarget(Ext.Net.MessageTarget.Side)
+                        .QueryMode(DataLoadMode.Local)
+                        .ForceSelection(true)
+                        .Width(190)
+                        .TriggerAction(TriggerAction.All)
+                            .DisplayField("Name")
+                            .ValueField("ID")
+                                    .Store(X.Store().AutoLoad(false)
+                            .Model(X.Model()
+                                .IDProperty("fldZoneId")
+                                .Fields(
+                                    new ModelField("ID", ModelFieldType.String) { Mapping = "fldID" },
+                                    new ModelField("Name", ModelFieldType.String) { Mapping = "fldName" })
+                                    )
+                            .Proxy(X.AjaxProxy()
+                                .Url(Url.Action("GetCascadeZone"))
+                                .Reader(X.JsonReader().Root("data")))
+                                            .Parameters(ps => ps.Add(new StoreParameter("ID", "App.NewCity_New.queryById('CboCounty').getValue()", ParameterMode.Raw)))
+                                            ),
+                     X.Label("نام شهر:"),
+                     X.TextField()
+                     .ItemID("txtTitle")
+                    .MaxLength(50)
+                    .MsgTarget(Ext.Net.MessageTarget.Side)
+                    .AllowBlank(false)
+                    .Width(190)
+                    .MaxLength(50)
+                    .EnforceMaxLength(true)
+                    .BlankText("لطفا نام شهر را وارد نمایید.")
+                    .MaskRe("/[ا-ی,ئ,آ, ]/")
+                    .AutoFocus(true)
+                    , X.Label("توضیحات:"),
+                    X.TextArea()
+                    .ItemID("txtDesc")
+                    .ColSpan(4)
+                    .Width(445)
+                        )
+
+                )
+                    .Layout(Ext.Net.LayoutType.VBox)
+                    .LayoutConfig(new Ext.Net.VBoxLayoutConfig { Align = Ext.Net.VBoxAlign.Center })
+            )
+        )
+)
+@(Html.X().KeyMap()
+                 .ID("NewCity_NewMap")
+                 .Target("={App.NewCity_New.getTargetEl()}")
+            .Binding(b =>
+            {
+                b.Add(Html.X().KeyBinding()
+                .KeysString(((int)Ext.Net.KeyCode.F8).ToString())
+                .Handler("SaveCity_New(); ")
+                );
+
+            }))
+<script type="text/javascript">
+    function LoadCity_New() {
+        ReplaceArabic();
+        if ('@ViewBag.Id' != '0') {
+            App.NewCity_New.body.mask("در حال بارگذاری...");
+            Ext.net.DirectMethod.request({
+                url: '/NewVer/City_New/Details',
+                params: {
+                    Id: '@ViewBag.Id'
+                },
+                success: function (data) {
+                    if (data.Er == 0) {
+                    var txtTitle = App.NewCity_New.queryById('txtTitle');
+                    txtTitle.setValue(data.fldName);
+                    var CboState = App.NewCity_New.queryById('CboState');
+                    CboState.setValue(data.fldStateID);
+                    App.NewCity_New.queryById('CboCounty').clearValue(); App.NewCity_New.queryById('CboCounty').getStore().load();
+                    var CboCounty = App.NewCity_New.queryById('CboCounty');
+                    CboCounty.setValue(data.fldCountyID);
+                    App.NewCity_New.queryById('CboZone').clearValue(); App.NewCity_New.queryById('CboZone').getStore().load();
+                    var CboZone = App.NewCity_New.queryById('CboZone');
+                    CboZone.setValue(data.fldZoneID);
+                    var txtDesc = App.NewCity_New.queryById('txtDesc');
+                    txtDesc.setValue(data.fldDesc);
+                    var Id = App.NewCity_New.queryById('fldId');
+                    Id.setValue(data.fldId);
+                }
+            else if (data.Er == 1) {
+                Ext.MessageBox.show({
+                    title: data.MsgTitle,
+                    msg: data.Msg,
+                    icon: Ext.MessageBox.ERROR,
+                    buttons: Ext.MessageBox.OK
+                });
+            }
+                    App.NewCity_New.body.mask().hide();
+                }
+            });
+        }
+        else {
+            App.NewCity_New.queryById('txtTitle').validate();
+            App.NewCity_New.queryById('CboState').validate();
+            App.NewCity_New.queryById('CboCounty').validate();
+            App.NewCity_New.queryById('CboZone').validate();
+        }
+
+    }
+
+    function SaveCity_New() {
+        var CboState = App.NewCity_New.queryById('CboState');
+        var CboCounty = App.NewCity_New.queryById('CboCounty');
+        var CboZone = App.NewCity_New.queryById('CboZone');
+        var txtTitle = App.NewCity_New.queryById('txtTitle');
+        var txtDesc = App.NewCity_New.queryById('txtDesc');
+        var Id = App.NewCity_New.queryById('fldId');
+        var er = false;
+
+        if (txtTitle.validate() == false) {
+            er = true;
+        }
+        if (CboState.validate() == false) {
+            er = true;
+        }
+        if (CboCounty.validate() == false) {
+            er = true;
+        }
+        if (CboZone.validate() == false) {
+            er = true;
+        }
+        if (er == true)
+            return;
+        App.NewCity_New.body.mask("در حال ذخیره سازی...");
+        Ext.net.DirectMethod.request({
+            url: '/NewVer/City_New/Save',
+            params: {
+                fldId: Id.getValue(),
+                fldName: txtTitle.getValue(),
+                fldZoneId: CboZone.getValue(),
+                fldDesc: txtDesc.getValue()
+            },
+            success: function (data) {
+                var ic = Ext.MessageBox.INFO;
+                if (data.Err == 1)
+                    ic = Ext.MessageBox.ERROR;
+                Ext.MessageBox.show({
+                    Name: data.MsgName,
+                    msg: data.Msg,
+                    icon: ic,
+                    buttons: Ext.MessageBox.OK
+                });
+                App.NewCity_New.body.mask().hide();
+                App.City_New.queryById('GridCity_New').store.load();
+                if (data.Err != 1)
+                    ClearCity_New();
+            }
+
+        });
+    }
+    function ClearCity_New() {
+        App.NewCity_New.queryById('txtTitle').setValue("");
+        App.NewCity_New.queryById('CboZone').setValue("");
+        App.NewCity_New.queryById('CboCounty').setValue("");
+        App.NewCity_New.queryById('CboState').setValue("");
+        App.NewCity_New.queryById('txtDesc').setValue("");
+        App.NewCity_New.queryById('fldId').setValue(0);
+    }
+   /** function EnterNext() {
+        var keyfield = App.NewCity_New.queryById(Ext.getCmp((Ext.Element.getActiveElement()).name).itemId);
+        var nextfld = keyfield.nextSibling();
+        nextfld.focus();
+        nextfld.selectText();
+
+    }*/
+</script>

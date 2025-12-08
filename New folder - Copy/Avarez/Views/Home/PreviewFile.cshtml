@@ -1,0 +1,15 @@
+﻿<div id="PreviewFile">
+    @Avarez.Helper.winClass.windowHeader("", "تصویر مدرک", 950, 580)
+    
+    <div id="image"></div>
+    @Avarez.Helper.winClass.windowFother()
+    <script type="text/javascript">
+        $(document).ready(function () {
+
+            $('#PreviewFile #btnClose').click(function () {
+                $("#PreviewFile").remove();
+                isWinOpen = false;
+            });
+        });
+    </script>
+</div>

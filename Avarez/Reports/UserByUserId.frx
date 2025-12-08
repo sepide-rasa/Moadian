@@ -1,0 +1,97 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Report ScriptLanguage="CSharp" ReportInfo.Created="08/22/2013 12:59:48" ReportInfo.Modified="10/26/2017 12:56:05" ReportInfo.CreatorVersion="2015.1.2.0">
+  <Dictionary>
+    <TableDataSource Name="sp_SelectUserByUserId" ReferenceName="carTax.sp_SelectUserByUserId" DataType="System.Int32" Enabled="true">
+      <Column Name="fldID" DataType="System.Int64"/>
+      <Column Name="fldName" DataType="System.String"/>
+      <Column Name="fldFamily" DataType="System.String"/>
+      <Column Name="fldStatus" DataType="System.Boolean" BindableControl="CheckBox"/>
+      <Column Name="fldUserName" DataType="System.String"/>
+      <Column Name="fldMelliCode" DataType="System.String"/>
+      <Column Name="fldEmail" DataType="System.String"/>
+      <Column Name="fldNumberAgoTel" DataType="System.String"/>
+      <Column Name="fldTel" DataType="System.String"/>
+      <Column Name="fldMobile" DataType="System.String"/>
+      <Column Name="fldStartDate" DataType="System.String"/>
+      <Column Name="fldCountryDivisionsName" DataType="System.String"/>
+      <Column Name="fldCountryDivisionsID" DataType="System.Int64"/>
+      <Column Name="fldUserName1" DataType="System.String"/>
+      <Column Name="fldUserID" DataType="System.Int64"/>
+      <Column Name="fldDesc" DataType="System.String"/>
+      <Column Name="fldDate" DataType="System.String"/>
+      <Column Name="CountryCode" DataType="System.Int32"/>
+      <Column Name="CountryType" DataType="System.Int32"/>
+      <Column Name="fldPassword" DataType="System.String"/>
+      <Column Name="fldOfficeUserKey" DataType="System.String"/>
+    </TableDataSource>
+    <TableDataSource Name="sp_PictureSelect" ReferenceName="carTax.sp_PictureSelect" DataType="System.Int32" Enabled="true">
+      <Column Name="fldID" DataType="System.Int32"/>
+      <Column Name="fldPic" DataType="System.Byte[]" BindableControl="Picture"/>
+      <Column Name="fldMunicipalityPic" DataType="System.String"/>
+      <Column Name="fldMunicipalityPicID" DataType="System.Int32"/>
+      <Column Name="fldBankPic" DataType="System.String"/>
+      <Column Name="fldBankPicID" DataType="System.Int32"/>
+      <Column Name="fldUserPic" DataType="System.String"/>
+      <Column Name="fldUserPicID" DataType="System.Int64"/>
+      <Column Name="fldUserName" DataType="System.String"/>
+      <Column Name="fldUserID" DataType="System.Int64"/>
+      <Column Name="fldDesc" DataType="System.String"/>
+      <Column Name="fldDate" DataType="System.String"/>
+    </TableDataSource>
+    <Parameter Name="date" DataType="System.String"/>
+    <Parameter Name="time" DataType="System.String"/>
+    <Parameter Name="StateName" DataType="System.String"/>
+    <Parameter Name="MunicipalityName" DataType="System.String"/>
+    <Parameter Name="AreaName" DataType="System.String"/>
+    <Parameter Name="OfficeName" DataType="System.String"/>
+    <Parameter Name="MyTablighat" DataType="System.String"/>
+  </Dictionary>
+  <ReportPage Name="Page1" Landscape="true" PaperWidth="297" PaperHeight="210" RawPaperSize="9">
+    <ReportTitleBand Name="ReportTitle1" Width="1047.06"/>
+    <PageHeaderBand Name="PageHeader1" Top="4" Width="1047.06" Height="153.87" CanGrow="true">
+      <TableObject Name="Table3" Width="1053.06" Height="100.94">
+        <TableColumn Name="Column59" Width="280.65"/>
+        <TableColumn Name="Column60" Width="500"/>
+        <TableColumn Name="Column61" Width="272.41"/>
+        <TableRow Name="Row3" Height="100.94">
+          <TableCell Name="Cell59" Text="تاریخ چاپ :[date]&#13;&#10;ساعت چاپ:[time]&#13;&#10;صفحه:[Page#] از [TotalPages#]" VertAlign="Center" RightToLeft="true" Font="RasaFont, 10pt"/>
+          <TableCell Name="Cell60" Text="[StateName]&#13;&#10;[MunicipalityName]&#13;&#10;[AreaName]&#13;&#10;[OfficeName]" HorzAlign="Center" VertAlign="Center" RightToLeft="true" Font="RasaFont, 11pt"/>
+          <TableCell Name="Cell61" HorzAlign="Right" VertAlign="Center" Font="Microsoft Sans Serif, 10pt">
+            <PictureObject Name="Picture1" Left="97.15" Top="8.32" Width="75.6" Height="75.6" DataColumn="sp_PictureSelect.fldPic"/>
+          </TableCell>
+        </TableRow>
+      </TableObject>
+      <TextObject Name="Text2" Left="394.82" Top="103.22" Width="258.18" Height="21.73" Text="لیست کاربران" HorzAlign="Center" VertAlign="Center" Font="RasaFont, 12pt, style=Bold"/>
+      <TableObject Name="Table4" Left="15.2" Top="128.37" Width="1016.66" Height="25.5">
+        <TableColumn Name="Column62" Width="187.39"/>
+        <TableColumn Name="Column2" Width="137.68"/>
+        <TableColumn Name="Column63" Width="134.16"/>
+        <TableColumn Name="Column64" Width="128.87"/>
+        <TableColumn Name="Column65" Width="135.66"/>
+        <TableColumn Name="Column66" Width="122.82"/>
+        <TableColumn Name="Column67" Width="111.88"/>
+        <TableColumn Name="Column68" Width="58.2"/>
+        <TableRow Name="Row4" Height="25.5">
+          <TableCell Name="Cell62" Border.Lines="All" Fill="Glass" Fill.Color="SkyBlue" Fill.Blend="0.2" Fill.Hatch="true" Text="موقعیت کاربر" HorzAlign="Center" VertAlign="Center" RightToLeft="true" Font="RasaFont, 11pt, style=Bold"/>
+          <TableCell Name="Cell22" Border.Lines="All" Fill="Glass" Fill.Color="SkyBlue" Fill.Blend="0.2" Fill.Hatch="true" Text="تلفن" HorzAlign="Center" VertAlign="Center" RightToLeft="true" Font="RasaFont, 11pt, style=Bold"/>
+          <TableCell Name="Cell63" Border.Lines="All" Fill="Glass" Fill.Color="SkyBlue" Fill.Blend="0.2" Fill.Hatch="true" Text="موبایل" HorzAlign="Center" VertAlign="Center" Font="RasaFont, 11pt, style=Bold"/>
+          <TableCell Name="Cell64" Border.Lines="All" Fill="Glass" Fill.Color="SkyBlue" Fill.Blend="0.2" Fill.Hatch="true" Text="نام کاربری" HorzAlign="Center" VertAlign="Center" Font="RasaFont, 11pt, style=Bold"/>
+          <TableCell Name="Cell65" Border.Lines="All" Fill="Glass" Fill.Color="SkyBlue" Fill.Blend="0.2" Fill.Hatch="true" Text="کد ملی" HorzAlign="Center" VertAlign="Center" Font="RasaFont, 11pt, style=Bold"/>
+          <TableCell Name="Cell66" Border.Lines="All" Fill="Glass" Fill.Color="SkyBlue" Fill.Blend="0.2" Fill.Hatch="true" Text="نام خانوادگی" HorzAlign="Center" VertAlign="Center" Font="RasaFont, 11pt, style=Bold"/>
+          <TableCell Name="Cell67" Border.Lines="All" Fill="Glass" Fill.Color="SkyBlue" Fill.Blend="0.2" Fill.Hatch="true" Text="نام" HorzAlign="Center" VertAlign="Center" Font="RasaFont, 11pt, style=Bold"/>
+          <TableCell Name="Cell68" Border.Lines="All" Fill="Glass" Fill.Color="SkyBlue" Fill.Blend="0.2" Fill.Hatch="true" Text="ردیف" HorzAlign="Center" VertAlign="Center" Font="RasaFont, 11pt, style=Bold"/>
+        </TableRow>
+      </TableObject>
+    </PageHeaderBand>
+    <DataBand Name="Data1" Top="161.87" Width="1047.06" Height="26.83" CanGrow="true" DataSource="sp_SelectUserByUserId" Columns.Count="1" Columns.Layout="DownThenAcross">
+      <TextObject Name="Text1" Left="974.01" Width="57.87" Height="26.83" Border.Lines="All" CanGrow="true" GrowToBottom="true" Text="[Row#]" VertAlign="Center" RightToLeft="true" Font="RasaFont, 11pt"/>
+      <TextObject Name="Text3" Left="861.88" Width="111.86" Height="26.83" Border.Lines="All" CanGrow="true" GrowToBottom="true" Text="[sp_SelectUserByUserId.fldName]" VertAlign="Center" RightToLeft="true" Font="RasaFont, 11pt"/>
+      <TextObject Name="Text4" Left="739.41" Width="122.42" Height="26.83" Border.Lines="All" CanGrow="true" GrowToBottom="true" Text="[sp_SelectUserByUserId.fldFamily]" VertAlign="Center" RightToLeft="true" Font="RasaFont, 11pt"/>
+      <TextObject Name="Text5" Left="602.57" Width="136.79" Height="26.83" Border.Lines="All" CanGrow="true" GrowToBottom="true" Text="[sp_SelectUserByUserId.fldMelliCode]" VertAlign="Center" RightToLeft="true" Font="RasaFont, 11pt"/>
+      <TextObject Name="Text6" Left="339.94" Width="134.51" Height="26.83" Border.Lines="All" CanGrow="true" GrowToBottom="true" Text="[sp_SelectUserByUserId.fldMobile]" VertAlign="Center" RightToLeft="true" Font="RasaFont, 11pt"/>
+      <TextObject Name="Text7" Left="203.37" Width="136.49" Height="26.83" Border.Lines="All" CanGrow="true" GrowToBottom="true" Text="[sp_SelectUserByUserId.fldTel]" VertAlign="Center" RightToLeft="true" Font="RasaFont, 11pt"/>
+      <TextObject Name="Text8" Left="15.22" Width="188.19" Height="26.83" Border.Lines="All" CanGrow="true" GrowToBottom="true" Text="[sp_SelectUserByUserId.fldCountryDivisionsName]" VertAlign="Center" RightToLeft="true" Font="RasaFont, 11pt"/>
+      <TextObject Name="Text9" Left="474.02" Width="129.22" Height="26.83" Border.Lines="All" CanGrow="true" GrowToBottom="true" Text="[sp_SelectUserByUserId.fldUserName]" VertAlign="Center" RightToLeft="true" Font="RasaFont, 11pt"/>
+    </DataBand>
+  </ReportPage>
+</Report>

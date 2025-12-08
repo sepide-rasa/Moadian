@@ -1,0 +1,167 @@
+﻿@using Ext.Net.MVC
+@using Hogaf.ExtNet.UX
+@using Ext.Net;
+@{
+    var X = Html.X();
+}
+
+@(Html.X().Window()
+    .Modal(true)
+         .Resizable(false)
+            .Listeners(l => l.AfterRender.Handler = "LoadCarColor()")
+    .Width(310)
+   // .Height(185)
+    .Title("تعریف رنگ خودرو")
+    .Layout(LayoutType.Fit)
+        .ID("NewCarColor")
+    .Closable(true)
+    .ButtonAlign(Ext.Net.Alignment.Center)
+    .Buttons(
+        X.Button()
+            .Text("ذخیره")
+            .Icon(Ext.Net.Icon.Disk)
+        //.ToolTip("کلید میانبر F8")
+                .Listeners(l => l.Click.Handler = "SaveCarColor();"),
+        X.Button()
+            .Text("خروج")
+            .Icon(Ext.Net.Icon.DoorOut)
+        //.ToolTip("کلید میانبر Esc")
+                .OnClientClick("App.NewCarColor.destroy();"))
+    .CloseAction(Ext.Net.CloseAction.Destroy)
+    .Items(
+        X.FormPanel()
+            .Border(false)
+            .Layout(LayoutType.Fit)
+            .Items(
+                X.Panel()
+                    .Border(false)
+                    .PaddingSpec("15px 0 0 0")
+                    .Layout(LayoutType.VBox)
+                    .LayoutConfig(new VBoxLayoutConfig { Align = VBoxAlign.Center })
+                    .Items(
+                        X.FieldSet()
+                            .Border(true)
+                            .Title("رنگ خودرو")
+                            .Height(118)
+                            .Defaults(new { Margin = 2 })
+                            .Layout(LayoutType.Table)
+                            //.Title("رنگ خودرو")
+                            .LayoutConfig(new TableLayoutConfig { Columns = 2 })
+                            .Items(
+                                X.Hidden()
+                                    .ItemID("fldId"),
+                               
+                                X.Label("رنگ خودرو:"),
+                                X.TextField()
+                                        .ItemID("txtCarColor")
+                                    .Width(190)
+                                    .AllowBlank(false)
+                                    .EnforceMaxLength(true)
+                                    .MaxLength(50)
+                                    .BlankText("لطفا رنگ خودرو را وارد نمایید.")
+                                    .MsgTarget(Ext.Net.MessageTarget.Side),
+                              
+                                X.Label("توضیحات:"),
+                                X.TextArea()
+                                    .ItemID("txtDesc")
+                                    .Width(190)
+                            )
+                  
+                          
+                )
+            )
+        )
+)
+
+<script type="text/javascript">
+
+
+
+    function LoadCarColor() {
+        if ('@ViewBag.Id' != '0') {
+            App.NewCarColor.body.mask("در حال بارگذاری...");
+            Ext.net.DirectMethod.request({
+                url: '/NewVer/CarColor_New/Details',
+                params: {
+                    Id: '@ViewBag.Id'
+                },
+                success: function (data) {
+                    if (data.Er == 0) {
+                        var txtCarColor = App.NewCarColor.queryById('txtCarColor');
+                        txtCarColor.setValue(data.fldColor);
+                        var txtDesc = App.NewCarColor.queryById('txtDesc');
+                        txtDesc.setValue(data.fldDesc);
+                        var Id = App.NewCarColor.queryById('fldId');
+                        Id.setValue(data.fldId);
+                    }
+                    else if (data.Er == 1) {
+                        Ext.MessageBox.show({
+                            title: data.MsgTitle,
+                            msg: data.Msg,
+                            icon: Ext.MessageBox.ERROR,
+                            buttons: Ext.MessageBox.OK
+                        });
+                    }
+                    App.NewCarColor.body.mask().hide();
+                }
+            });
+        }
+        else {
+            App.NewCarColor.queryById('txtCarColor').validate();
+        }
+    }
+  
+
+    function SaveCarColor() {
+        var txtCarColor = App.NewCarColor.queryById('txtCarColor');
+        var Id = App.NewCarColor.queryById('fldId');
+        var txtDesc = App.NewCarColor.queryById('txtDesc');
+
+        var er = false;
+
+        if (txtCarColor.validate() == false) {
+            er = true;
+        }
+        if (er == true)
+            return;
+        App.NewCarColor.body.mask("در حال ذخیره سازی...");
+        Ext.net.DirectMethod.request({
+            url: '/NewVer/CarColor_New/Save',
+            params: {
+                fldID: Id.getValue(),
+                fldColor: txtCarColor.getValue(),
+                fldDesc: txtDesc.getValue()
+            },
+            success: function (data) {
+                var ic = Ext.MessageBox.INFO;
+                if (data.Er == 1)
+                    ic = Ext.MessageBox.ERROR;
+                Ext.MessageBox.show({
+                    title: data.MsgTitle,
+                    msg: data.Msg,
+                    icon: ic,
+                    buttons: Ext.MessageBox.OK
+                });
+                if (data.Er != 1) {
+                    ClearCarColor();
+                }
+                App.NewCarColor.body.mask().hide();
+                App.ColorCar.queryById('GridColorCar').store.load();                
+            }
+        });
+    }
+
+    function ClearCarColor() {
+        App.NewCarColor.queryById('txtDesc').setValue("");
+        App.NewCarColor.queryById('txtCarColor').setValue("");
+        App.NewCarColor.queryById('fldId').setValue(0);
+    }
+
+    /*function EnterNext() {
+        var keyfield = App.NewCustomer.queryById(Ext.getCmp((Ext.Element.getActiveElement()).name).itemId);
+        var nextfld = keyfield.nextSibling();
+        nextfld.focus();
+        nextfld.selectText();
+    }*/
+
+</script>

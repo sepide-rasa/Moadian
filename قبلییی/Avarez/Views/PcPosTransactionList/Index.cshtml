@@ -1,0 +1,128 @@
+﻿@using Kendo.Mvc.UI;
+<div class="modal" id="PcPosTransactionList">
+    <script src="@Url.Content("~/Content/Base.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Scripts/jquery.ui.datepicker-cc.all.min.js")" type="text/javascript"></script>
+    <div>
+        @*<a href="@Url.Content("~/Helps/تنظیمات پنل پیامک.htm")" target="_blank" id="Help" title="راهنما" style="background-image:url('/Content/images/1381415123_help.png');background-repeat: no-repeat;height: 20px;float: left;top: 10px;left: 10px;"></a>*@
+
+        <br />
+        <center>
+      
+            <p>
+                @Avarez.Helper.winClass.Buttons("AddLink", "تایید پرداخت", "Save")
+                @Avarez.Helper.winClass.Buttons("exit", "خروج", "Exit")
+            </p>
+        </center>
+ 
+        <div class="k-rtl demo-section">
+            @(Html.Kendo().Grid<Avarez.Models.sp_PcPosTransactionSelect>()
+                .Name("Grid")
+                .Columns(columns =>
+                {
+                    columns.Bound(p => p.fldId).Title("کد").Visible(false);
+                    columns.Bound(p => p.fldStatus).Title("کد").Visible(false);
+                    columns.Bound(p => p.fldPrice).Title("مبلغ").Width(50);
+                    columns.Bound(p => p.fldTrackingCode).Title("کد تراکنش").Width(50);
+                    columns.Bound(p => p.fldStatusName).Title("وضعیت").Width(50);
+                    columns.Bound(p => p.fldDesc).Title("توضیحات").Width(200); 
+                })
+            .Selectable(selectable => selectable.Mode(GridSelectionMode.Single))
+            .Pageable()
+                    .Scrollable(sc => sc.Height(600))
+            .DataSource(data =>
+                data.Ajax()
+                .PageSize(20)
+                .Read("Fill", "PcPosTransactionList")
+            )
+            )
+        </div>
+    </div>
+    <script type="text/javascript">
+
+        $("document").ready(function () {
+
+            $("#AddLink").button();
+            $("#exit").button();
+            $("#Help").button();
+
+
+            $("#exit").click(function () {
+                $("#PcPosTransactionList").remove();
+            });
+
+            $('#PcPosTransactionList').on('keyup', 'input', function (event) {
+                if (event.which == 13) {
+                    var inputs = $('#PcPosTransactionList').find(':input:visible');
+                    inputs.eq(inputs.index(this) + 1).focus();
+                }
+            });
+
+            $(document).keyup(function (event) {
+                if (event.which == 119) {
+                    SaveRecord();
+                }
+            });
+            $('#AddLink').attr('title', 'کلید میانبر (F8)'); //119
+
+            $("#AddLink").click(function () {
+                SaveRecord();
+            });
+
+          
+
+
+
+        });
+      
+         function SaveRecord() {
+                var entityGrid = $("#Grid").data("kendoGrid");
+                var selectedItem = entityGrid.dataItem(entityGrid.select());
+                if (selectedItem) {
+                    if (selectedItem.fldStatus == 0) {
+                        var id = selectedItem.fldId;
+                        var URL = '@Url.Content("~/PcPosTransactionList/Save")';
+                        URL = URL + "/?TransactionId=" + id;
+                        $.ajax({
+                            type: "POST",
+                            url: URL,
+                            success: function (result) {
+                                windowAppend("body", "/metro/error");
+                                $("#message").html(result.data);
+                                $("#error .wintitle").html("عملیات موفق");
+                                var url = '@Url.Action("Reload", "PcPosTransactionList")';
+                                Reload(url, 'Grid');
+                            }
+                        });
+                    }
+                    else {
+                        windowAppend("body", "/metro/error");
+                        $("#message").html("وضعیت این تراکنش قابل تغییر نمی باشد.");
+                        $("#error .wintitle").html("خطا");
+                    }
+                }
+                else {
+                    alert('لطفا یک سطر را انتخاب کنید.');
+                }
+            }
+
+        function Reload(Url, gridname) {
+            var grid = $('#' + gridname).data('kendoGrid');
+            $.ajax({
+                url: Url,
+                type: 'get',
+                datatype: 'json',
+                error: function (xhr, status, error) {
+                    alert(xhr + status);
+                },
+                success: function (result) {
+                    $("#" + gridname).data("kendoGrid").dataSource.data(result);
+                }
+
+            });
+        }
+
+
+
+    </script>
+</div>
+

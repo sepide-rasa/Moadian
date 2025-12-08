@@ -1,0 +1,11 @@
+﻿@using Ext.Net.MVC;
+
+@(
+ Html.X().Panel().Height(560)
+        .Title("پیش نمایش")
+            .ID("PrintuserCount")
+        .AutoScroll(true)
+        .Closable(true)
+        .CloseAction(Ext.Net.CloseAction.Destroy)
+                            .Html("<center><object  class='se-pre-con2' style='width: 1200px;height: 550px;border: 1px solid #ccc;' type='application/pdf' data='/NewVer/AppReport_New/GeneratePDFuserCount?Sal=" + @ViewBag.Sal + "'></object></center>")
+)

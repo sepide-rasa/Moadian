@@ -1,0 +1,167 @@
+﻿@using Ext.Net.MVC
+@using Hogaf.ExtNet.UX
+@using Ext.Net;
+@{
+    var X = Html.X();
+}
+
+
+@(Html.X().Panel().Border(false)//.Modal(true)
+   // .Listeners(l => l.AfterRender.Handler = "FormLoad()")
+        //.Width(500)//.Height(300)
+    .Title("فیش وصولی به تفکیک کاربران(بازه زمانی)")
+    .ID("UserCount_Date")
+    .Closable(true)
+    .CloseAction(Ext.Net.CloseAction.Destroy)
+    .Items(
+                    X.TabPanel().Border(false).ID("UserCount_DateTab")
+                .Items(
+
+                X.Panel().Border(false).Title("فیش وصولی")
+                    .ButtonAlign(Ext.Net.Alignment.Center)
+                .DefaultButton("btn")
+            .TitleAlign(Ext.Net.TitleAlign.Center)
+                   .Buttons(X.Button().Text("پرداخت شده").Icon(Ext.Net.Icon.Printer).Margin(5)
+                               .Listeners(l =>
+                               {
+                                   l.Click.Handler = "PrintUserCount_Date()";
+
+                               })
+                                ,
+                                X.Button().Text("پرداخت نشده").Icon(Ext.Net.Icon.Printer).Margin(5)
+                               .Listeners(l =>
+                               {
+                                   l.Click.Handler = "rptuserCount_Date_notpay()";
+
+                               }),
+                                X.Button().Text("خروج").Icon(Ext.Net.Icon.DoorOut).ToolTip("کلید میانبر Esc")
+                                                   .OnClientClick("App.UserCount_Date.destroy()"))
+                .Items(
+
+                X.FieldSet().Border(false)
+                .Center()
+                .LayoutConfig(new Ext.Net.TableLayoutConfig { Columns = 4 })
+                .Defaults(new { Margin = 2 })
+                .Items(
+                        X.Label().Text("از تاریخ:")
+                    , X.PDateField()
+                        .ItemID("txtAzTarikh")
+                        .Width(160)
+                        .Editable(false)
+                        .MsgTarget(Ext.Net.MessageTarget.Side)
+                        .AllowBlank(false)
+                        .MaskRe("/[0-9,/]/")
+                        .BlankText("لطفا تاریخ را انتخاب نمایید.")
+                        .Listeners(l => l.Change.Handler = "AzTarikh()")
+                        .Listeners(l => l.AfterRender.Handler = "setOnlyOneMonth3()")
+                        .LabelAlign(Ext.Net.LabelAlign.Top)
+                    , X.Label().Text("تا تاریخ:")
+                    , X.PDateField()
+                                .ItemID("txtTaTarikh")//.PaddingSpec("0 0 9px 0")
+                        .Width(160)
+                        .MsgTarget(Ext.Net.MessageTarget.Side)
+                        .AllowBlank(false)
+                        .Editable(false)
+                        .MaskRe("/[0-9,/]/")
+                        .BlankText("لطفا تاریخ را انتخاب نمایید.")
+                        .LabelAlign(Ext.Net.LabelAlign.Top)
+                        .Listeners(l => l.Change.Handler = "TaTarikh()")
+                ).ColSpan(3)
+
+                       )
+                            .Layout(Ext.Net.LayoutType.VBox)
+                            .LayoutConfig(new Ext.Net.VBoxLayoutConfig { Align = Ext.Net.VBoxAlign.Center })
+                    )
+
+                )
+)
+<script type="text/javascript">
+    function showBargozary() {
+        Ext.MessageBox.show({
+            msg: 'لطفاً منتظر باشید',
+            progressText: 'در حال بارگذاری...',
+            width: 300,
+            wait: true,
+            waitConfig:
+            {
+                /*duration: 10000,*/
+                interval: 200,
+                /*increment: 15,*/
+                text: 'در حال بارگذاری...',
+                scope: this
+                /*fn: function () {
+                    Ext.MessageBox.hide();
+                    Ext.Msg.alert('Status', 'Saved successfully!');
+                }*/
+            }
+        });
+    }
+    function setOnlyOneMonth3() {
+        if ('@ViewBag.StartDate' != "0") {
+            var txtAzTarikh = App.UserCount_Date.queryById('txtAzTarikh');
+            txtAzTarikh.setMinValue(new Date('@ViewBag.StartDate'));
+        }
+    }
+
+    function AzTarikh() {
+        var txtAzTarikh = App.UserCount_Date.queryById('txtAzTarikh');
+        var txtTaTarikh = App.UserCount_Date.queryById('txtTaTarikh');
+        txtTaTarikh.setMinValue(txtAzTarikh.getValue());
+        txtTaTarikh.minText = "تاریخ شروع نباید از تاریخ پایان بزرگتر باشد.";
+    }
+    function TaTarikh() {
+        var txtAzTarikh = App.UserCount_Date.queryById('txtAzTarikh');
+        var txtTaTarikh = App.UserCount_Date.queryById('txtTaTarikh');
+        txtAzTarikh.setMaxValue(txtTaTarikh.getValue());
+        txtAzTarikh.maxText = "تاریخ شروع نباید از تاریخ پایان بزرگتر باشد.";
+    }
+    function PrintUserCount_Date() {
+        var txtAzTarikh = App.UserCount_Date.queryById('txtAzTarikh');
+        var txtTaTarikh = App.UserCount_Date.queryById('txtTaTarikh');
+        var er = false;
+        if (txtAzTarikh.validate() == false) {
+            er = true;
+        }
+        if (txtTaTarikh.validate() == false) {
+            er = true;
+        }
+        if (er == true)
+            return;
+        showBargozary();
+        Ext.net.DirectMethod.request({
+            url: '/NewVer/AppReport_New/PrintuserCount_Date',
+            params: {
+                containerId: "UserCount_DateTab",
+                SDate: txtAzTarikh.rawValue,
+                EDate: txtTaTarikh.rawValue
+            },
+            success: function () {
+                Ext.MessageBox.hide();
+            }
+        });
+    }
+    function rptuserCount_Date_notpay() {
+        var txtAzTarikh = App.UserCount_Date.queryById('txtAzTarikh');
+        var txtTaTarikh = App.UserCount_Date.queryById('txtTaTarikh');
+        var er = false;
+        if (txtAzTarikh.validate() == false)
+            er = true;
+        if (txtTaTarikh.validate() == false)
+            er = true;
+        if (er == true)
+            return;
+        showBargozary();
+        Ext.net.DirectMethod.request({
+            url: '/NewVer/AppReport_New/PrintuserCount_Date_notpay',
+            params: {
+                containerId: "UserCount_DateTab",
+                SDate: txtAzTarikh.rawValue,
+                EDate: txtTaTarikh.rawValue
+            },
+            success: function () {
+                Ext.MessageBox.hide();
+            }
+        });
+        
+    }
+</script>

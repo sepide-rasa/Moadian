@@ -1,0 +1,289 @@
+﻿@using Ext.Net.MVC
+@using Hogaf.ExtNet.UX
+@using Ext.Net;
+@using Avarez.Areas.Tax.Models;
+
+@{var X = Html.X();
+
+}
+<img src="~/Content/Tax.jpg" style="width:100%;" />
+@*<table style="width:100%;background-color:white;border-spacing:0px;background: rgba(217,222,224,1);
+    background: -moz-linear-gradient(left, rgba(217,222,224,1) 0%, rgba(255,255,255,1) 100%);
+    background: -webkit-gradient(left top, right top, color-stop(0%, rgba(217,222,224,1)), color-stop(100%, rgba(255,255,255,1)));
+    background: -webkit-linear-gradient(left, rgba(217,222,224,1) 0%, rgba(255,255,255,1) 100%);
+    background: -o-linear-gradient(left, rgba(217,222,224,1) 0%, rgba(255,255,255,1) 100%);
+    background: -ms-linear-gradient(left, rgba(217,222,224,1) 0%, rgba(255,255,255,1) 100%);
+    background: linear-gradient(to right, rgba(217,222,224,1) 0%, rgba(255,255,255,1) 100%);
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#d9dee0', endColorstr='#ffffff', GradientType=1 );" border="0px">
+        <tr>
+            <td >
+                <img src="@Url.Content("~/Content/right transpa.png")" />
+            </td>
+            <td style="text-align:center;">
+                <img src="@Url.Content("~/Content/samane.png")" />
+            </td>
+            <td style="text-align: left;">
+                <img src="@Url.Content("~/Content/train.png")" />
+            </td>
+        </tr>
+    </table>*@
+<style>
+    #pnllogin-innerCt {
+        background-color: #ededed;
+    }
+
+    td {
+        text-align: right;
+    }
+    .x-panel-body {
+background-color:#dfe8f6;
+}
+</style>
+@(
+
+ X.Panel()
+    .Title("")
+                 .Listeners(l => l.AfterRender.Handler = "LoadCapthalogin()")
+    .Border(false)
+    .ID("Account")
+    .AutoScroll(true)
+    .CloseAction(Ext.Net.CloseAction.Destroy)
+    .Layout(LayoutType.Fit)
+
+    .Items(
+
+                X.Panel().ID("pnl1")
+                .Border(false)
+                .Layout(LayoutType.VBox)
+                    .LayoutConfig(new VBoxLayoutConfig { Align = VBoxAlign.Stretch })
+
+                .TopBar(
+                    Html.X().Toolbar()
+                        .Items(
+        //X.Button()
+        //    .Text("پایگاه نهاد ریاست جمهوری")
+        //    .Icon(Ext.Net.Icon.PageWorld).Width(150)
+        //        .Listeners(Li => Li.Click.Handler = " window.location.href = 'http://www.president.ir/fa/nahad';"),
+        //X.Button()
+        //.Text("لیست سازمان های مرتبط").Width(160)
+        //.Icon(Ext.Net.Icon.BookOpen)
+        //    .Menu(X.Menu().ItemID("ListMenu")
+        //          .Items(
+        //              X.MenuItem()
+        //                      .IconCls("SabtAhval")
+        //               .Text("سازمان ثبت احوال کشور")
+        //                   .Listeners(Li => Li.Click.Handler = " window.location.href = 'https://www.sabteahval.ir/';"),
+        //              X.MenuItem()
+        //                      .IconCls("Post")
+        //               .Text("شرکت ملی پست جمهوری اسلامی ایران")
+        //                   .Listeners(Li => Li.Click.Handler = " window.location.href = 'http://post.ir/';"),
+        //              X.MenuItem()
+        //                      .IconCls("Nezam")
+        //               .Text("سازمان نظام وظیفه عمومی")
+        //               .Listeners(Li => Li.Click.Handler = " window.location.href = 'http://vazifeh.police.ir/';")
+        //       )
+        //   ),
+                                                 X.Button().ItemID("Help")
+                                       .Text("راهنما").Width(60)
+                                               .Icon(Icon.Help).Listeners(l => l.Click.Handler = "DlHelps()")
+
+                                        , X.Button()
+                                    .Text("ارتباط با ما").Width(85)
+                                        .Icon(Icon.Telephone)
+        //.Menu(X.Menu()
+        //        .Items(
+        //            X.MenuItem()
+        //            .Text("ارتباط با ما")
+        //                    .Icon(Icon.UserComment)
+                                                    .Listeners(l => l.Click.Handler = "About();")
+
+                                      // )
+        //)
+                            )
+
+                        )
+
+            .Items(
+                X.Label(), X.Label(), X.Label(), X.Label(), X.Label(),
+                X.Panel()
+                    .Border(false)
+                        .ID("pnlLowS")
+                        .Layout(Ext.Net.LayoutType.VBox)
+                            .LayoutConfig(new Ext.Net.VBoxLayoutConfig { Align = Ext.Net.VBoxAlign.Center })
+                            .ManageHeight(true)
+                            .AutoScroll(true)
+                        .Border(false).Height(400)
+                    .Items(
+                        X.Panel()
+                            .KeyMap(Html.X().KeyMap()
+                .Target("={Ext.isGecko ? Ext.getDoc() : Ext.getBody()}")
+                .Binding(b =>
+                {
+                    b.Add(Html.X().KeyBinding()
+                    .KeysString(((int)Ext.Net.KeyCode.ENTER).ToString())
+                    .Handler("LogOn(); ")
+                    );
+
+                }))
+                    .ID("pnllogin").BodyCls("background-image:none;background-color:#d1d1d1;")
+                            .Border(false).Width(365).Height(170)//.AutoScroll(true)
+                                .Icon(Icon.Lock)
+        //.AutoScroll(true)
+                        .Title("ورود")
+                        .Border(true)
+
+                            .Items(
+                    X.FieldSet().Border(false)
+                        .LayoutConfig(new Ext.Net.TableLayoutConfig { Columns = 1 })
+                    .Defaults(new { Margin = 2 })
+                    .Items(
+                        X.Hidden().ItemID("fldId")
+
+        //                        , X.FieldSet().Title("اطلاعیه های مهم").Width(370)
+        //                        .ColSpan(2)
+        //                            .LayoutConfig(new Ext.Net.TableLayoutConfig { Columns = 1 })
+        //                       .Defaults(new { Margin = 10 })
+        //                            .Items(
+        //                            X.Label().ItemID("lblMatnHtml")
+        //                            .Listeners(l => l.AfterRender.Handler = "loadMatnHtml()")
+        ////.Text("1. شناسه کاربری و گذرواژه پرونده الکترونیکی تشخیص صلاحیت‌ شرکت‌ها صرفاً در اختیار صاحبان امضاء مجاز شرکت است. هیچ فرد دیگری امکان درج اطلاعات و تغییر آن را ندارد، لذا مسئولیت صحت و سقم ورود هرگونه اطلاعات و الصاق مدارک و مستندات شرکت بر عهده صاحبان امضاء مجاز شرکت می باشد.")
+        //                        , X.Label().Margin(2)
+        //                            )
+                                    ,
+                                    X.FieldSet().Title("مشخصات کاربری")
+                                .Defaults(new { Margin = 2 })
+                                .Items(
+                                    X.TextField()
+                                        .ItemID("txtUserName")
+                                    .FieldLabel("شناسه کاربری")
+                                    .MsgTarget(Ext.Net.MessageTarget.Side)
+                                    .AllowBlank(false)
+                                    .BlankText("لطفا شناسه کاربری را وارد کنید.")
+                                    .LabelAlign(Ext.Net.LabelAlign.Left)
+                                    .AutoFocus(true)
+                                    .Width(310)
+                                    , X.TextField()
+                                    .ItemID("txtPass")
+                                    .FieldLabel("گذر واژه")
+                                    .MsgTarget(Ext.Net.MessageTarget.Side)
+                                        .InputType(Ext.Net.InputType.Password)
+                                    .AllowBlank(false)
+                                    .BlankText("لطفا گذر وازه را وارد کنید.")
+                                    .LabelAlign(Ext.Net.LabelAlign.Left)
+                                            .Width(310)
+                                      )
+                                                , X.FieldSet().ID("Captha").Title("کد امنیتی")
+                                        .LayoutConfig(new Ext.Net.TableLayoutConfig { Columns = 3 })
+                                                .Defaults(new { Margin = 2 })
+                                                .Items(
+                                        X.Container().Content(@<div><img id="Captchalogin" style="width:150px;height:70px" /><span id="BtnRefresh" style="font-size: 11px;font-family: tornado tahoma;width: 25px;height:25px;text-align: left;align-content:center;background-image: url('/Content/refresh1.png');background-repeat: no-repeat;"></span></div>)//.ColSpan(3)
+                                        //,X.Label("کد امنیتی:")
+                                        ,X.Container().Content(@<div><input id='txtCapthalogin' class='text' style='direction:ltr;font-family:sans-serif;width: 120px;height: 22px;' /></div>)
+                                        , X.Button().Icon(Ext.Net.Icon.ArrowRefresh)
+                                        .Handler("LoadCaptha")
+                                        )
+
+                                              , X.Button().Width(70)
+                                              .X(265)
+                                            .Text("ورود")
+                                            .Icon(Icon.DoorIn)
+                                            .Listeners(l => l.Click.Handler = "LogOn();")
+
+                                                    , X.FieldSet().Border(false).ColSpan(2)
+                                            //.LayoutConfig(new Ext.Net.TableLayoutConfig { Columns = 3 })
+                                                .Defaults(new { Margin = 2 }).Items(
+                                                X.Label()
+                                            //.Text("اگر رمز عبور خود را فراموش کرده اید")
+                                            //    , X.HyperLink()
+                                            //                .NavigateUrl(Url.Content("~/FristRegister/ForgetPass")).Target("_self")
+                                            //.Text("اینجا")
+                                            //    , X.Label()
+                                            //    .Text("کلیک کنید.")
+                                            )
+                                            ,X.Container().Content(@<div style="text-align:left;direction:ltr;font-size:10px;">CopyRight © 2024-Design By<a href="http://www.rasa-system.com/" style="text-decoration:none;"> RasaCo</a></div>)
+
+                        )
+                     )
+               )
+           )
+    )
+)
+<script type="text/javascript">
+    var captchahave = 0;
+    var LoadCaptha = function () {
+        var originalSrc = '@Url.Content("~/Tax/AccountTax/generateCaptcha")';
+        var antiCachePart = (new Date()).getTime();
+        var newSrc = originalSrc + '?dc=' + antiCachePart;
+        $("#Captchalogin").attr('src', newSrc);
+
+    }
+
+    function LoadCapthalogin() {
+        if (parseInt(@ViewBag.captchahave) > 1 || captchahave > 1) {
+
+            App.Account.queryById("Captha").show();
+            App.pnllogin.setHeight(270);
+        }
+        else {
+            App.Account.queryById("Captha").hide();
+        }
+        var url = '@Url.Content("~/Tax/AccountTax/generateCaptcha")';
+        var currentdate = (new Date()).getTime();
+        var newurl = url + '?dc=' + currentdate;
+        $("#Captchalogin").attr('src', newurl);
+    }
+    function About() {
+        Ext.net.DirectMethod.request({
+            url: '/Tax/AccountTax/About',
+            success: function (data) {
+                Ext.net.Mask.hide();
+            }
+        });
+    }
+
+    function DlHelps() {
+       /* Ext.net.Mask.show({ msg: 'در حال بارگذاری...' });
+        Ext.net.DirectMethod.request({
+            url: '/Home/DownloadHelp',
+            success: function (data) {
+                Ext.net.Mask.hide();
+            }
+        });*/
+        window.location.href = '/Tax/AccountTax/DownloadHelpLogin';
+    }
+    function LogOn() {
+
+        var txtUserName = App.Account.queryById("txtUserName").getValue();
+        var txtPass = App.Account.queryById('txtPass').getValue();
+        /*var txtCapthalogin = App.Account.queryById('txtCapthalogin').getValue();*/
+        var txtCapthalogin = $('#txtCapthalogin').val();
+        Ext.net.Mask.show({ msg: 'در حال بارگذاری...' });
+        Ext.net.DirectMethod.request({
+            url: '/Tax/AccountTax/Vorod',
+            params: {
+                UserName: txtUserName,
+                Password: txtPass,
+                Capthalogin: txtCapthalogin
+            },
+            success: function (data) {
+                var ic = Ext.MessageBox.INFO;
+                if (data.flag == false) {
+                    ic = Ext.MessageBox.ERROR;
+                    Ext.MessageBox.show({
+                        title: data.MsgTitle,
+                        msg: data.Msg,
+                        icon: ic,
+                        buttons: Ext.MessageBox.OK
+                    });
+
+                    captchahave = data.captchahave;
+                    LoadCapthalogin();
+                }
+                else {
+                    window.location.href = "/Tax/TaxHome/index";
+                }
+                Ext.net.Mask.hide();
+            }
+        });
+    }
+</script>

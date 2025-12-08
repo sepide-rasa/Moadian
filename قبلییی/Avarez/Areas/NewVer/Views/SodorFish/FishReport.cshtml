@@ -1,0 +1,12 @@
+﻿@using Ext.Net.MVC;
+
+@(
+ Html.X().Window().Height(560).Width(1200)
+        .Title("پیش نمایش")
+        .AutoScroll(true)
+        .Closable(true)
+        .CloseAction(Ext.Net.CloseAction.Destroy)
+        //.Items(Html.X().Container().Content("<center><object style='width: 1200px;height: 550px;border: 1px solid #ccc;' type='application/pdf' data='/NewVer/SodorFish/GeneratPdfReceipt?ResidId=" + @ViewBag.ResidId + "&Type=" + @ViewBag.Type + "'></object></center>"))
+                    .Html("<center><object style='width: 1200px;height: 550px;border: 1px solid #ccc;' type='application/pdf' data='/NewVer/SodorFish/GenerateFishReport?carid=" + @ViewBag.carid + "&mablagh=" + @ViewBag.mablagh + "&fldFine=" + @ViewBag.fldFine + "&fldValueAddPrice=" + @ViewBag.fldValueAddPrice + "&fldPrice=" + @ViewBag.fldPrice + "&Years=" + @ViewBag.Years + "&Bed=" + @ViewBag.Bed + "&fldOtherPrice=" + @ViewBag.fldOtherPrice + "&fldMainDiscount=" + @ViewBag.fldMainDiscount + "&fldFineDiscount=" + @ViewBag.fldFineDiscount + "&fldValueAddDiscount=" + @ViewBag.fldValueAddDiscount + "&fldOtherDiscount=" + @ViewBag.fldOtherDiscount + "&Joziyat=" + @ViewBag.Joziyat + "'></object></center>")
+                                                                
+)

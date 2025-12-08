@@ -1,0 +1,106 @@
+﻿@model List<Avarez.Models.Sp_MafasaSelect>
+@using Ext.Net.MVC;
+@using Ext.Net;
+@using Hogaf.ExtNet.UX;
+@{
+    var X = Html.X();
+}
+@(X.Panel().Border(false)
+        .ID("Mafasa").Title("مفاصا حساب های صادره")
+            .AutoScroll(true)
+            .Closable(true)
+            .CloseAction(Ext.Net.CloseAction.Destroy)
+                .Layout(Ext.Net.LayoutType.Fit)
+            .Items(
+                //X.Panel().Border(false)
+                //.Border(false)
+                //.AutoScroll(true)
+                //.Items(
+                //        X.TabPanel().ID("MafasaTab")
+                //    .AutoScroll(true).Items(
+                //        X.Panel().ItemID("GridPanel")
+                //        .Title("مفاصا حساب ها")
+                //        .Items(
+                    X.GridPanel().AutoScroll(true)
+                        .TopBar(
+                        Html.X().Toolbar()
+                        .Items(
+                            X.Button().Text("چاپ مفاصا").Icon(Ext.Net.Icon.Table).ToolTip("چاپ مفاصا حساب انتخاب شده")
+                                .Listeners(de => { de.Click.Handler = "MafasaPrint();"; })
+                        )
+                    )
+                        .ItemID("Grid1").Flex(2)
+                    .BottomBar(X.PagingToolbar())
+                    //.Height(540)
+        //.ColumnWidth(0.6)
+        //.Layout(Ext.Net.LayoutType.Column)
+            .Listeners(l => l.AfterRender.Handler = "ReloadMafasa();")
+                    .Store(
+                        X.StoreForModel()
+        //.Proxy(Html.X().AjaxProxy()
+        //.Url(Url.Action("Read"))
+        //.Reader(Html.X().JsonReader().Root("data"))
+
+                        //)
+                        .PageSize(20)
+                        .RemoteFilter(true)
+                        .RemotePaging(true)
+        //.Listeners(l => l.DataChanged.Handler = "App.EdaratKol.queryById('GridEdaratKol').selModel.refresh();")
+                    )
+                    .View(
+                        Html.X().GridView().LoadingText("در حال بارگذاری...").RTL(true)
+                    )
+                    .Plugins(X.FilterHeader().Remote(true))
+                    .ColumnModel(
+                            Html.X().Column().DataIndex(Model, m => m.fldId).Hidden(true),
+                            Html.X().Column().DataIndex(Model, m => m.fldLetterDate).Text("تاریخ صدور").Flex(5),
+                            Html.X().Column().DataIndex(Model, m => m.fldLetterNum).Text("شماره").Flex(5),
+                            Html.X().Column().DataIndex(Model, m => m.UserName).Text("کاربر").Flex(5)
+                    //)
+               // )
+            //)
+        )
+    )
+)
+
+<script type="text/javascript">
+    function ReloadMafasa() {
+        Ext.net.Mask.show({ msg: 'در حال بارگذاری...' });
+
+        Ext.net.DirectMethod.request({
+            url: '/NewVer/Filtering_New/ReadMafasa',
+            params: {
+                CarfileId: '@ViewBag.CarFileId'
+            },
+            success: function (data) {
+                App.Mafasa.queryById('Grid1').getStore().loadData(data);
+                Ext.net.Mask.hide();
+            }
+        });
+    }
+    function MafasaPrint() {
+        var SelectedRow = App.Mafasa.queryById('Grid1').selModel.getLastSelected();
+        if (SelectedRow != null) {
+            Ext.net.Mask.show({ msg: 'در حال بارگذاری...' });
+            Ext.net.DirectMethod.request({
+                url: '/NewVer/Filtering_New/printMafasa',
+                params: {
+                    MafasaId: SelectedRow.data.fldId
+                },
+                success: function () {
+                    Ext.net.Mask.hide();
+                }
+            });
+        }
+        else {
+            Ext.MessageBox.show({
+                title: "خطا",
+                msg: "لطفا یک سطر را انتخاب کنید",
+                icon: Ext.MessageBox.ERROR,
+                buttons: Ext.MessageBox.OK
+            });
+        }
+    }
+</script>
+
+

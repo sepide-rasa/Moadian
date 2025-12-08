@@ -1,0 +1,148 @@
+﻿@using Avarez.Controllers.Users;
+<div id="Zone">
+    @using Kendo.Mvc.UI;
+    <link href="@Url.Content("~/Content/Site.css")" rel="stylesheet" type="text/css" />
+    <script src="@Url.Content("~/Scripts/jquery-1.7.1.min.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Scripts/jquery-ui-1.8.20.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Scripts/jquery-ui-1.8.20.min.js")" type="text/javascript"></script>
+    <link href="@Url.Content("~/Content/themes/base/ui.css")" rel="stylesheet" type="text/css" />
+    <link href="@Url.Content("~/Content/web/kendo.common.min.css")" rel="stylesheet" type="text/css" />
+    <link href="@Url.Content("~/Content/web/kendo.default.min.css")" rel="stylesheet" type="text/css" />
+    <link href="@Url.Content("~/Content/web/kendo.rtl.min.css")" rel="stylesheet" type="text/css" />
+    <script src="@Url.Content("~/Scripts/console.min.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Scripts/kendo.web.min.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Scripts/prettify.min.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Scripts/kendo.aspnetmvc.min.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Scripts/kendo.splitter.min.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Scripts/cultures/kendo.fa-IR.js")" type="text/javascript"></script>
+    <script type="text/javascript">
+        $("document").ready(function () {
+            $('#ChangeLocation').button();
+            $('#Exit').button();
+            $('#HomePage').button();
+            $('#HomePage').click(function () {
+                window.location.href = '/Home/Home';
+            });
+            $('#Exit').click(function () {
+                window.location.href = '/Account/LogOff';
+            });
+
+            $('#ChangeLocation').click(function () {
+                window.location.href = '/Home/ChangeLocation';
+            });
+            $("#Chart").click(function () {
+                windows("#win", "/MgrReport/Chart");
+            });
+            $("#PersentChart").click(function () {
+                windows("#win", "/MgrReport/PersentChart");
+            });
+            $("#TafkikDaramad").click(function () {
+                windows("#win", "/MgrReport/TafkikDaramad");
+            }); 
+            $("#CountFish").click(function () {
+                windows("#win", "/MgrReport/CountFish");
+            });
+            $("#YearBudget_Tafriq").click(function () {
+                windows("#win", "/MgrReport/YearBudget_Tafriq");
+            });
+            $("#mountlyCollectionTip").click(function () {
+                windows("#win", "/MgrReport/MounthlyTipCollection");
+            }); 
+        });
+    </script>
+     @{Avarez.Models.cartaxEntities p = new Avarez.Models.cartaxEntities();
+      var state = p.sp_StateSelect("fldId", Session["UserState"].ToString(), 1, Convert.ToInt32(Session["UserId"]), Session["UserPass"].ToString()).FirstOrDefault();
+      var Mnu = p.sp_MunicipalitySelect("fldId", Session["UserMnu"].ToString(), 1, Convert.ToInt32(Session["UserId"]), Session["UserPass"].ToString()).FirstOrDefault();
+      var Location = state.fldName + " --> " + Mnu.fldName + Session["Location"];}
+    @(Html.Kendo().Splitter()
+      .Name("vertical")
+      .Orientation(SplitterOrientation.Vertical)
+          .HtmlAttributes(new { style = "height: 750px;" })
+      .Panes(verticalPanes =>
+      {
+          verticalPanes.Add()
+            .Size("30px")
+            .Collapsible(false)
+            .Resizable(false)
+            .Content(@<div dir="rtl" style="text-align: center;">
+                <span style="font-weight: bold; color: #127AA3; font-size: 11px;">موقعیت فعلی شما: @Location
+                </span>
+                <button id="ChangeLocation" title="برای تغییر موقعیت از این گزینه استفاده کنید."
+                    style="font-size: 11px;">
+                    ...</button>
+                <button id="Exit" style="font-size: 11px; float: left; text-align: left; background-image: url('/Content/images/1377957633_exit.png');
+                        background-repeat: no-repeat; background-position: right; width: 70px; background-size: 14px;
+                        background-position-x: 50px;">
+                        خروج</button>
+                <button id="HomePage" style="float: right; font-size: 11px; text-align: left; background-image: url('/Content/images/1377958371_Home.png');
+                    background-repeat: no-repeat; background-position: right; width: 100px; background-size: 16px;
+                    background-position-x: 80px;">
+                    صفحه اصلی</button></div>);
+          verticalPanes.Add()
+              .HtmlAttributes(new { id = "top-pane" })
+              .Scrollable(false)
+              .Collapsible(false)
+              .Content(
+                Html.Kendo().Splitter()
+                    .Name("horizontal")
+                    .HtmlAttributes(new { style = "height: 100%;" })
+                    .Panes(horizontalPanes =>
+                    {
+                        horizontalPanes.Add()
+                            .HtmlAttributes(new { id = "left-pane" })
+                            .Size("688px")
+                            .Content(@<div id="win" class="pane-content" dir="ltr">
+                            </div>);
+
+
+
+                        horizontalPanes.Add()
+                            .HtmlAttributes(new { id = "right-pane" })
+                            .Size("210px")
+                            .Content(@<div class="pane-content">
+                                @(Html.Kendo().PanelBar()
+        .Name("panelbar-images")
+        .Items(panelbar =>
+        {
+            panelbar.Add().Text("گزارش های مدیریتی")
+                .Expanded(true)
+                        .Visible(Permossions.haveAccess(Convert.ToInt32(Session["UserId"]), 224))
+                .ImageUrl(Url.Content("~/Content/images/1375790977_bank.png"))
+                .Items(Banks =>
+                {
+                    
+                    Banks.Add().Text("گزارش آماری (ریالی)")
+                        .HtmlAttributes(new { id = "Chart" })
+                        .Visible(Permossions.haveAccess(Convert.ToInt32(Session["UserId"]), 304))
+                        .ImageUrl(Url.Content("~/Content/images/گزارش آماری ریالی.png"));
+                    Banks.Add().Text("گزارش آماری (درصدی)")
+                        .HtmlAttributes(new { id = "PersentChart" })
+                        .Visible(Permossions.haveAccess(Convert.ToInt32(Session["UserId"]), 305))
+                        .ImageUrl(Url.Content("~/Content/images/گزارش آماری درصدی.png"));
+                    Banks.Add().Text("گزارش تفکیکی در آمد به ماه وسال")
+                        .HtmlAttributes(new { id = "TafkikDaramad" })
+                        .Visible(Permossions.haveAccess(Convert.ToInt32(Session["UserId"]), 306))
+                        .ImageUrl(Url.Content("~/Content/images/گزارش تفکیکی درامد به ماه و سال.png"));
+                    Banks.Add().Text("گزارش تعداد فیش به تفکیک ماه وسال")
+                        .HtmlAttributes(new { id = "CountFish" })
+                        .Visible(Permossions.haveAccess(Convert.ToInt32(Session["UserId"]), 307))
+                        .ImageUrl(Url.Content("~/Content/images/گزارش تعداد فیش به تفکیک ماه و سال.png"));
+                    Banks.Add().Text("تفریغ بودجه در سال")
+                        .HtmlAttributes(new { id = "YearBudget_Tafriq" })
+                        .Visible(Permossions.haveAccess(Convert.ToInt32(Session["UserId"]), 365))
+                        .ImageUrl(Url.Content("~/Content/images/تفریغ بودجه.png"));
+                    Banks.Add().Text("درآمد سالیانه به تفکیک ماه و نوع خودرو")
+                        .HtmlAttributes(new { id = "mountlyCollectionTip" })
+                        .Visible(Permossions.haveAccess(Convert.ToInt32(Session["UserId"]), 366))
+                        .ImageUrl(Url.Content("~/Content/images/درامد ماهیانه به تفکیک ماه و نوع خودرو.png"));
+                });
+        })
+    )
+                            </div>);
+                    }).ToHtmlString()
+              );
+
+
+      })
+)
+</div>

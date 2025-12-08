@@ -1,0 +1,2758 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<kml xmlns="http://www.opengis.net/kml/2.2" xmlns:gx="http://www.google.com/kml/ext/2.2" xmlns:kml="http://www.opengis.net/kml/2.2" xmlns:atom="http://www.w3.org/2005/Atom">
+<Document>
+	<name>Block_2 - export.kml</name>
+	<visibility>0</visibility>
+	<StyleMap id="completePose0">
+		<Pair>
+			<key>normal</key>
+			<styleUrl>#completePose_default0</styleUrl>
+		</Pair>
+		<Pair>
+			<key>highlight</key>
+			<styleUrl>#completePose_hl0</styleUrl>
+		</Pair>
+	</StyleMap>
+	<Style id="completePose_default0">
+		<IconStyle>
+			<scale>0.8</scale>
+			<Icon>
+				<href>http://maps.google.com/mapfiles/kml/shapes/camera.png</href>
+			</Icon>
+			<hotSpot x="0.5" y="0" xunits="fraction" yunits="fraction"/>
+		</IconStyle>
+		<LabelStyle>
+			<scale>0</scale>
+		</LabelStyle>
+	</Style>
+	<Style id="completePose_hl0">
+		<IconStyle>
+			<scale>1.2</scale>
+			<Icon>
+				<href>http://maps.google.com/mapfiles/kml/shapes/camera.png</href>
+			</Icon>
+			<hotSpot x="0.5" y="0" xunits="fraction" yunits="fraction"/>
+		</IconStyle>
+	</Style>
+	<Placemark>
+		<name>VD_1_00002.JPG</name>
+		<visibility>0</visibility>
+		<description><![CDATA[<a href="H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00002.JPG">H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00002.JPG</a><br/>Component: None<br/>Photogroup: Photogroup 1<br/>Image dimensions: 5472x3648<br/>Camera model: L1D-20c<br/>Focal length: 10.4877 mm<br/>Position (WGS84): 36.3851&deg ; 54.912&deg<br/>Ellipsoid height: 1447.54 m]]></description>
+		<styleUrl>#completePose0</styleUrl>
+		<Point>
+			<altitudeMode>absolute</altitudeMode>
+			<coordinates>54.91202388999999,36.38508192,1454.38704</coordinates>
+		</Point>
+	</Placemark>
+	<Placemark>
+		<name>VD_1_00003.JPG</name>
+		<visibility>0</visibility>
+		<description><![CDATA[<a href="H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00003.JPG">H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00003.JPG</a><br/>Component: None<br/>Photogroup: Photogroup 1<br/>Image dimensions: 5472x3648<br/>Camera model: L1D-20c<br/>Focal length: 10.4877 mm<br/>Position (WGS84): 36.3848&deg ; 54.9117&deg<br/>Ellipsoid height: 1447.52 m]]></description>
+		<styleUrl>#completePose0</styleUrl>
+		<Point>
+			<altitudeMode>absolute</altitudeMode>
+			<coordinates>54.91173569,36.38481864,1454.36557</coordinates>
+		</Point>
+	</Placemark>
+	<Placemark>
+		<name>VD_1_00004.JPG</name>
+		<visibility>0</visibility>
+		<description><![CDATA[<a href="H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00004.JPG">H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00004.JPG</a><br/>Component: None<br/>Photogroup: Photogroup 1<br/>Image dimensions: 5472x3648<br/>Camera model: L1D-20c<br/>Focal length: 10.4877 mm<br/>Position (WGS84): 36.3846&deg ; 54.9115&deg<br/>Ellipsoid height: 1447.47 m]]></description>
+		<styleUrl>#completePose0</styleUrl>
+		<Point>
+			<altitudeMode>absolute</altitudeMode>
+			<coordinates>54.91148767,36.38459989,1454.32439</coordinates>
+		</Point>
+	</Placemark>
+	<Placemark>
+		<name>VD_1_00005.JPG</name>
+		<visibility>0</visibility>
+		<description><![CDATA[<a href="H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00005.JPG">H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00005.JPG</a><br/>Component: None<br/>Photogroup: Photogroup 1<br/>Image dimensions: 5472x3648<br/>Camera model: L1D-20c<br/>Focal length: 10.4877 mm<br/>Position (WGS84): 36.3844&deg ; 54.9112&deg<br/>Ellipsoid height: 1447.33 m]]></description>
+		<styleUrl>#completePose0</styleUrl>
+		<Point>
+			<altitudeMode>absolute</altitudeMode>
+			<coordinates>54.91124719,36.38438647,1454.17759</coordinates>
+		</Point>
+	</Placemark>
+	<Placemark>
+		<name>VD_1_00006.JPG</name>
+		<visibility>0</visibility>
+		<description><![CDATA[<a href="H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00006.JPG">H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00006.JPG</a><br/>Component: None<br/>Photogroup: Photogroup 1<br/>Image dimensions: 5472x3648<br/>Camera model: L1D-20c<br/>Focal length: 10.4877 mm<br/>Position (WGS84): 36.3842&deg ; 54.911&deg<br/>Ellipsoid height: 1447.1 m]]></description>
+		<styleUrl>#completePose0</styleUrl>
+		<Point>
+			<altitudeMode>absolute</altitudeMode>
+			<coordinates>54.91100497,36.38417117,1453.94902</coordinates>
+		</Point>
+	</Placemark>
+	<Placemark>
+		<name>VD_1_00007.JPG</name>
+		<visibility>0</visibility>
+		<description><![CDATA[<a href="H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00007.JPG">H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00007.JPG</a><br/>Component: None<br/>Photogroup: Photogroup 1<br/>Image dimensions: 5472x3648<br/>Camera model: L1D-20c<br/>Focal length: 10.4877 mm<br/>Position (WGS84): 36.384&deg ; 54.9108&deg<br/>Ellipsoid height: 1447.02 m]]></description>
+		<styleUrl>#completePose0</styleUrl>
+		<Point>
+			<altitudeMode>absolute</altitudeMode>
+			<coordinates>54.91076522,36.38395794,1453.86844</coordinates>
+		</Point>
+	</Placemark>
+	<Placemark>
+		<name>VD_1_00008.JPG</name>
+		<visibility>0</visibility>
+		<description><![CDATA[<a href="H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00008.JPG">H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00008.JPG</a><br/>Component: None<br/>Photogroup: Photogroup 1<br/>Image dimensions: 5472x3648<br/>Camera model: L1D-20c<br/>Focal length: 10.4877 mm<br/>Position (WGS84): 36.3837&deg ; 54.9105&deg<br/>Ellipsoid height: 1447.04 m]]></description>
+		<styleUrl>#completePose0</styleUrl>
+		<Point>
+			<altitudeMode>absolute</altitudeMode>
+			<coordinates>54.91052156000001,36.38374111,1453.89132</coordinates>
+		</Point>
+	</Placemark>
+	<Placemark>
+		<name>VD_1_00009.JPG</name>
+		<visibility>0</visibility>
+		<description><![CDATA[<a href="H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00009.JPG">H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00009.JPG</a><br/>Component: None<br/>Photogroup: Photogroup 1<br/>Image dimensions: 5472x3648<br/>Camera model: L1D-20c<br/>Focal length: 10.4877 mm<br/>Position (WGS84): 36.3835&deg ; 54.9103&deg<br/>Ellipsoid height: 1447.03 m]]></description>
+		<styleUrl>#completePose0</styleUrl>
+		<Point>
+			<altitudeMode>absolute</altitudeMode>
+			<coordinates>54.91028411,36.38352842,1453.87808</coordinates>
+		</Point>
+	</Placemark>
+	<Placemark>
+		<name>VD_1_00010.JPG</name>
+		<visibility>0</visibility>
+		<description><![CDATA[<a href="H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00010.JPG">H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00010.JPG</a><br/>Component: None<br/>Photogroup: Photogroup 1<br/>Image dimensions: 5472x3648<br/>Camera model: L1D-20c<br/>Focal length: 10.4877 mm<br/>Position (WGS84): 36.3833&deg ; 54.91&deg<br/>Ellipsoid height: 1446.97 m]]></description>
+		<styleUrl>#completePose0</styleUrl>
+		<Point>
+			<altitudeMode>absolute</altitudeMode>
+			<coordinates>54.91004158,36.38331197,1453.82179</coordinates>
+		</Point>
+	</Placemark>
+	<Placemark>
+		<name>VD_1_00011.JPG</name>
+		<visibility>0</visibility>
+		<description><![CDATA[<a href="H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00011.JPG">H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00011.JPG</a><br/>Component: None<br/>Photogroup: Photogroup 1<br/>Image dimensions: 5472x3648<br/>Camera model: L1D-20c<br/>Focal length: 10.4877 mm<br/>Position (WGS84): 36.3831&deg ; 54.9098&deg<br/>Ellipsoid height: 1446.94 m]]></description>
+		<styleUrl>#completePose0</styleUrl>
+		<Point>
+			<altitudeMode>absolute</altitudeMode>
+			<coordinates>54.90980005999999,36.38309664,1453.7909</coordinates>
+		</Point>
+	</Placemark>
+	<Placemark>
+		<name>VD_1_00012.JPG</name>
+		<visibility>0</visibility>
+		<description><![CDATA[<a href="H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00012.JPG">H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00012.JPG</a><br/>Component: None<br/>Photogroup: Photogroup 1<br/>Image dimensions: 5472x3648<br/>Camera model: L1D-20c<br/>Focal length: 10.4877 mm<br/>Position (WGS84): 36.3829&deg ; 54.9096&deg<br/>Ellipsoid height: 1446.73 m]]></description>
+		<styleUrl>#completePose0</styleUrl>
+		<Point>
+			<altitudeMode>absolute</altitudeMode>
+			<coordinates>54.90956169,36.38288342,1453.58119</coordinates>
+		</Point>
+	</Placemark>
+	<Placemark>
+		<name>VD_1_00013.JPG</name>
+		<visibility>0</visibility>
+		<description><![CDATA[<a href="H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00013.JPG">H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00013.JPG</a><br/>Component: None<br/>Photogroup: Photogroup 1<br/>Image dimensions: 5472x3648<br/>Camera model: L1D-20c<br/>Focal length: 10.4877 mm<br/>Position (WGS84): 36.3827&deg ; 54.9093&deg<br/>Ellipsoid height: 1446.77 m]]></description>
+		<styleUrl>#completePose0</styleUrl>
+		<Point>
+			<altitudeMode>absolute</altitudeMode>
+			<coordinates>54.90932131,36.38267147,1453.61539</coordinates>
+		</Point>
+	</Placemark>
+	<Placemark>
+		<name>VD_1_00014.JPG</name>
+		<visibility>0</visibility>
+		<description><![CDATA[<a href="H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00014.JPG">H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00014.JPG</a><br/>Component: None<br/>Photogroup: Photogroup 1<br/>Image dimensions: 5472x3648<br/>Camera model: L1D-20c<br/>Focal length: 10.4877 mm<br/>Position (WGS84): 36.3825&deg ; 54.9091&deg<br/>Ellipsoid height: 1447.24 m]]></description>
+		<styleUrl>#completePose0</styleUrl>
+		<Point>
+			<altitudeMode>absolute</altitudeMode>
+			<coordinates>54.90909077999999,36.38246647,1454.0823</coordinates>
+		</Point>
+	</Placemark>
+	<Placemark>
+		<name>VD_1_00015.JPG</name>
+		<visibility>0</visibility>
+		<description><![CDATA[<a href="H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00015.JPG">H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00015.JPG</a><br/>Component: None<br/>Photogroup: Photogroup 1<br/>Image dimensions: 5472x3648<br/>Camera model: L1D-20c<br/>Focal length: 10.4877 mm<br/>Position (WGS84): 36.3823&deg ; 54.909&deg<br/>Ellipsoid height: 1447.04 m]]></description>
+		<styleUrl>#completePose0</styleUrl>
+		<Point>
+			<altitudeMode>absolute</altitudeMode>
+			<coordinates>54.90900889,36.38234508,1453.88296</coordinates>
+		</Point>
+	</Placemark>
+	<Placemark>
+		<name>VD_1_00016.JPG</name>
+		<visibility>0</visibility>
+		<description><![CDATA[<a href="H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00016.JPG">H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00016.JPG</a><br/>Component: None<br/>Photogroup: Photogroup 1<br/>Image dimensions: 5472x3648<br/>Camera model: L1D-20c<br/>Focal length: 10.4877 mm<br/>Position (WGS84): 36.382&deg ; 54.9093&deg<br/>Ellipsoid height: 1447.32 m]]></description>
+		<styleUrl>#completePose0</styleUrl>
+		<Point>
+			<altitudeMode>absolute</altitudeMode>
+			<coordinates>54.90931574999999,36.38203131,1454.1708</coordinates>
+		</Point>
+	</Placemark>
+	<Placemark>
+		<name>VD_1_00017.JPG</name>
+		<visibility>0</visibility>
+		<description><![CDATA[<a href="H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00017.JPG">H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00017.JPG</a><br/>Component: None<br/>Photogroup: Photogroup 1<br/>Image dimensions: 5472x3648<br/>Camera model: L1D-20c<br/>Focal length: 10.4877 mm<br/>Position (WGS84): 36.3822&deg ; 54.9096&deg<br/>Ellipsoid height: 1446.95 m]]></description>
+		<styleUrl>#completePose0</styleUrl>
+		<Point>
+			<altitudeMode>absolute</altitudeMode>
+			<coordinates>54.90956439,36.38223053,1453.79462</coordinates>
+		</Point>
+	</Placemark>
+	<Placemark>
+		<name>VD_1_00018.JPG</name>
+		<visibility>0</visibility>
+		<description><![CDATA[<a href="H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00018.JPG">H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00018.JPG</a><br/>Component: None<br/>Photogroup: Photogroup 1<br/>Image dimensions: 5472x3648<br/>Camera model: L1D-20c<br/>Focal length: 10.4877 mm<br/>Position (WGS84): 36.3825&deg ; 54.9098&deg<br/>Ellipsoid height: 1446.8 m]]></description>
+		<styleUrl>#completePose0</styleUrl>
+		<Point>
+			<altitudeMode>absolute</altitudeMode>
+			<coordinates>54.90980838999999,36.38245044,1453.6481</coordinates>
+		</Point>
+	</Placemark>
+	<Placemark>
+		<name>VD_1_00019.JPG</name>
+		<visibility>0</visibility>
+		<description><![CDATA[<a href="H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00019.JPG">H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00019.JPG</a><br/>Component: None<br/>Photogroup: Photogroup 1<br/>Image dimensions: 5472x3648<br/>Camera model: L1D-20c<br/>Focal length: 10.4877 mm<br/>Position (WGS84): 36.3827&deg ; 54.91&deg<br/>Ellipsoid height: 1446.6 m]]></description>
+		<styleUrl>#completePose0</styleUrl>
+		<Point>
+			<altitudeMode>absolute</altitudeMode>
+			<coordinates>54.9100455,36.38266867,1453.44501</coordinates>
+		</Point>
+	</Placemark>
+	<Placemark>
+		<name>VD_1_00020.JPG</name>
+		<visibility>0</visibility>
+		<description><![CDATA[<a href="H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00020.JPG">H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00020.JPG</a><br/>Component: None<br/>Photogroup: Photogroup 1<br/>Image dimensions: 5472x3648<br/>Camera model: L1D-20c<br/>Focal length: 10.4877 mm<br/>Position (WGS84): 36.3829&deg ; 54.9103&deg<br/>Ellipsoid height: 1446.72 m]]></description>
+		<styleUrl>#completePose0</styleUrl>
+		<Point>
+			<altitudeMode>absolute</altitudeMode>
+			<coordinates>54.91028569,36.38288956,1453.57193</coordinates>
+		</Point>
+	</Placemark>
+	<Placemark>
+		<name>VD_1_00021.JPG</name>
+		<visibility>0</visibility>
+		<description><![CDATA[<a href="H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00021.JPG">H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00021.JPG</a><br/>Component: None<br/>Photogroup: Photogroup 1<br/>Image dimensions: 5472x3648<br/>Camera model: L1D-20c<br/>Focal length: 10.4877 mm<br/>Position (WGS84): 36.3831&deg ; 54.9105&deg<br/>Ellipsoid height: 1446.89 m]]></description>
+		<styleUrl>#completePose0</styleUrl>
+		<Point>
+			<altitudeMode>absolute</altitudeMode>
+			<coordinates>54.91052375,36.38310372,1453.73596</coordinates>
+		</Point>
+	</Placemark>
+	<Placemark>
+		<name>VD_1_00022.JPG</name>
+		<visibility>0</visibility>
+		<description><![CDATA[<a href="H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00022.JPG">H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00022.JPG</a><br/>Component: None<br/>Photogroup: Photogroup 1<br/>Image dimensions: 5472x3648<br/>Camera model: L1D-20c<br/>Focal length: 10.4877 mm<br/>Position (WGS84): 36.3833&deg ; 54.9108&deg<br/>Ellipsoid height: 1446.89 m]]></description>
+		<styleUrl>#completePose0</styleUrl>
+		<Point>
+			<altitudeMode>absolute</altitudeMode>
+			<coordinates>54.91076564,36.38331925,1453.73879</coordinates>
+		</Point>
+	</Placemark>
+	<Placemark>
+		<name>VD_1_00023.JPG</name>
+		<visibility>0</visibility>
+		<description><![CDATA[<a href="H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00023.JPG">H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00023.JPG</a><br/>Component: None<br/>Photogroup: Photogroup 1<br/>Image dimensions: 5472x3648<br/>Camera model: L1D-20c<br/>Focal length: 10.4877 mm<br/>Position (WGS84): 36.3835&deg ; 54.911&deg<br/>Ellipsoid height: 1447.11 m]]></description>
+		<styleUrl>#completePose0</styleUrl>
+		<Point>
+			<altitudeMode>absolute</altitudeMode>
+			<coordinates>54.91100483,36.38353367,1453.96105</coordinates>
+		</Point>
+	</Placemark>
+	<Placemark>
+		<name>VD_1_00024.JPG</name>
+		<visibility>0</visibility>
+		<description><![CDATA[<a href="H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00024.JPG">H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00024.JPG</a><br/>Component: None<br/>Photogroup: Photogroup 1<br/>Image dimensions: 5472x3648<br/>Camera model: L1D-20c<br/>Focal length: 10.4877 mm<br/>Position (WGS84): 36.3838&deg ; 54.9113&deg<br/>Ellipsoid height: 1447.13 m]]></description>
+		<styleUrl>#completePose0</styleUrl>
+		<Point>
+			<altitudeMode>absolute</altitudeMode>
+			<coordinates>54.91125094,36.38375233,1453.98348</coordinates>
+		</Point>
+	</Placemark>
+	<Placemark>
+		<name>VD_1_00025.JPG</name>
+		<visibility>0</visibility>
+		<description><![CDATA[<a href="H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00025.JPG">H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00025.JPG</a><br/>Component: None<br/>Photogroup: Photogroup 1<br/>Image dimensions: 5472x3648<br/>Camera model: L1D-20c<br/>Focal length: 10.4877 mm<br/>Position (WGS84): 36.384&deg ; 54.9115&deg<br/>Ellipsoid height: 1446.86 m]]></description>
+		<styleUrl>#completePose0</styleUrl>
+		<Point>
+			<altitudeMode>absolute</altitudeMode>
+			<coordinates>54.91148844,36.38396261,1453.70808</coordinates>
+		</Point>
+	</Placemark>
+	<Placemark>
+		<name>VD_1_00026.JPG</name>
+		<visibility>0</visibility>
+		<description><![CDATA[<a href="H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00026.JPG">H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00026.JPG</a><br/>Component: None<br/>Photogroup: Photogroup 1<br/>Image dimensions: 5472x3648<br/>Camera model: L1D-20c<br/>Focal length: 10.4877 mm<br/>Position (WGS84): 36.3842&deg ; 54.9117&deg<br/>Ellipsoid height: 1446.88 m]]></description>
+		<styleUrl>#completePose0</styleUrl>
+		<Point>
+			<altitudeMode>absolute</altitudeMode>
+			<coordinates>54.91172672,36.38417544,1453.73427</coordinates>
+		</Point>
+	</Placemark>
+	<Placemark>
+		<name>VD_1_00027.JPG</name>
+		<visibility>0</visibility>
+		<description><![CDATA[<a href="H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00027.JPG">H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00027.JPG</a><br/>Component: None<br/>Photogroup: Photogroup 1<br/>Image dimensions: 5472x3648<br/>Camera model: L1D-20c<br/>Focal length: 10.4877 mm<br/>Position (WGS84): 36.3844&deg ; 54.912&deg<br/>Ellipsoid height: 1447.14 m]]></description>
+		<styleUrl>#completePose0</styleUrl>
+		<Point>
+			<altitudeMode>absolute</altitudeMode>
+			<coordinates>54.91196683,36.38439117,1453.98632</coordinates>
+		</Point>
+	</Placemark>
+	<Placemark>
+		<name>VD_1_00028.JPG</name>
+		<visibility>0</visibility>
+		<description><![CDATA[<a href="H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00028.JPG">H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00028.JPG</a><br/>Component: None<br/>Photogroup: Photogroup 1<br/>Image dimensions: 5472x3648<br/>Camera model: L1D-20c<br/>Focal length: 10.4877 mm<br/>Position (WGS84): 36.3846&deg ; 54.9122&deg<br/>Ellipsoid height: 1447.4 m]]></description>
+		<styleUrl>#completePose0</styleUrl>
+		<Point>
+			<altitudeMode>absolute</altitudeMode>
+			<coordinates>54.91219956,36.38459875,1454.25553</coordinates>
+		</Point>
+	</Placemark>
+	<Placemark>
+		<name>VD_1_00029.JPG</name>
+		<visibility>0</visibility>
+		<description><![CDATA[<a href="H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00029.JPG">H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00029.JPG</a><br/>Component: None<br/>Photogroup: Photogroup 1<br/>Image dimensions: 5472x3648<br/>Camera model: L1D-20c<br/>Focal length: 10.4877 mm<br/>Position (WGS84): 36.3847&deg ; 54.9123&deg<br/>Ellipsoid height: 1446.99 m]]></description>
+		<styleUrl>#completePose0</styleUrl>
+		<Point>
+			<altitudeMode>absolute</altitudeMode>
+			<coordinates>54.91234956,36.38468828,1453.84192</coordinates>
+		</Point>
+	</Placemark>
+	<Placemark>
+		<name>VD_1_00030.JPG</name>
+		<visibility>0</visibility>
+		<description><![CDATA[<a href="H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00030.JPG">H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00030.JPG</a><br/>Component: None<br/>Photogroup: Photogroup 1<br/>Image dimensions: 5472x3648<br/>Camera model: L1D-20c<br/>Focal length: 10.4877 mm<br/>Position (WGS84): 36.3843&deg ; 54.9126&deg<br/>Ellipsoid height: 1447.41 m]]></description>
+		<styleUrl>#completePose0</styleUrl>
+		<Point>
+			<altitudeMode>absolute</altitudeMode>
+			<coordinates>54.91255744,36.38428069,1454.26139</coordinates>
+		</Point>
+	</Placemark>
+	<Placemark>
+		<name>VD_1_00031.JPG</name>
+		<visibility>0</visibility>
+		<description><![CDATA[<a href="H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00031.JPG">H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00031.JPG</a><br/>Component: None<br/>Photogroup: Photogroup 1<br/>Image dimensions: 5472x3648<br/>Camera model: L1D-20c<br/>Focal length: 10.4877 mm<br/>Position (WGS84): 36.3841&deg ; 54.9123&deg<br/>Ellipsoid height: 1447.19 m]]></description>
+		<styleUrl>#completePose0</styleUrl>
+		<Point>
+			<altitudeMode>absolute</altitudeMode>
+			<coordinates>54.91232386000001,36.38406317,1454.042</coordinates>
+		</Point>
+	</Placemark>
+	<Placemark>
+		<name>VD_1_00032.JPG</name>
+		<visibility>0</visibility>
+		<description><![CDATA[<a href="H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00032.JPG">H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00032.JPG</a><br/>Component: None<br/>Photogroup: Photogroup 1<br/>Image dimensions: 5472x3648<br/>Camera model: L1D-20c<br/>Focal length: 10.4877 mm<br/>Position (WGS84): 36.3838&deg ; 54.9121&deg<br/>Ellipsoid height: 1447.37 m]]></description>
+		<styleUrl>#completePose0</styleUrl>
+		<Point>
+			<altitudeMode>absolute</altitudeMode>
+			<coordinates>54.91207467,36.38384481,1454.2234</coordinates>
+		</Point>
+	</Placemark>
+	<Placemark>
+		<name>VD_1_00033.JPG</name>
+		<visibility>0</visibility>
+		<description><![CDATA[<a href="H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00033.JPG">H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00033.JPG</a><br/>Component: None<br/>Photogroup: Photogroup 1<br/>Image dimensions: 5472x3648<br/>Camera model: L1D-20c<br/>Focal length: 10.4877 mm<br/>Position (WGS84): 36.3836&deg ; 54.9118&deg<br/>Ellipsoid height: 1446.95 m]]></description>
+		<styleUrl>#completePose0</styleUrl>
+		<Point>
+			<altitudeMode>absolute</altitudeMode>
+			<coordinates>54.91183564,36.38363006,1453.80077</coordinates>
+		</Point>
+	</Placemark>
+	<Placemark>
+		<name>VD_1_00034.JPG</name>
+		<visibility>0</visibility>
+		<description><![CDATA[<a href="H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00034.JPG">H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00034.JPG</a><br/>Component: None<br/>Photogroup: Photogroup 1<br/>Image dimensions: 5472x3648<br/>Camera model: L1D-20c<br/>Focal length: 10.4877 mm<br/>Position (WGS84): 36.3834&deg ; 54.9116&deg<br/>Ellipsoid height: 1446.54 m]]></description>
+		<styleUrl>#completePose0</styleUrl>
+		<Point>
+			<altitudeMode>absolute</altitudeMode>
+			<coordinates>54.91159475,36.38341094,1453.38981</coordinates>
+		</Point>
+	</Placemark>
+	<Placemark>
+		<name>VD_1_00035.JPG</name>
+		<visibility>0</visibility>
+		<description><![CDATA[<a href="H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00035.JPG">H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00035.JPG</a><br/>Component: None<br/>Photogroup: Photogroup 1<br/>Image dimensions: 5472x3648<br/>Camera model: L1D-20c<br/>Focal length: 10.4877 mm<br/>Position (WGS84): 36.3832&deg ; 54.9114&deg<br/>Ellipsoid height: 1446.07 m]]></description>
+		<styleUrl>#completePose0</styleUrl>
+		<Point>
+			<altitudeMode>absolute</altitudeMode>
+			<coordinates>54.91136305999999,36.38320169,1452.92412</coordinates>
+		</Point>
+	</Placemark>
+	<Placemark>
+		<name>VD_1_00036.JPG</name>
+		<visibility>0</visibility>
+		<description><![CDATA[<a href="H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00036.JPG">H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00036.JPG</a><br/>Component: None<br/>Photogroup: Photogroup 1<br/>Image dimensions: 5472x3648<br/>Camera model: L1D-20c<br/>Focal length: 10.4877 mm<br/>Position (WGS84): 36.383&deg ; 54.9111&deg<br/>Ellipsoid height: 1446.03 m]]></description>
+		<styleUrl>#completePose0</styleUrl>
+		<Point>
+			<altitudeMode>absolute</altitudeMode>
+			<coordinates>54.91111660999999,36.38298458,1452.88566</coordinates>
+		</Point>
+	</Placemark>
+	<Placemark>
+		<name>VD_1_00037.JPG</name>
+		<visibility>0</visibility>
+		<description><![CDATA[<a href="H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00037.JPG">H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00037.JPG</a><br/>Component: None<br/>Photogroup: Photogroup 1<br/>Image dimensions: 5472x3648<br/>Camera model: L1D-20c<br/>Focal length: 10.4877 mm<br/>Position (WGS84): 36.3828&deg ; 54.9109&deg<br/>Ellipsoid height: 1446.43 m]]></description>
+		<styleUrl>#completePose0</styleUrl>
+		<Point>
+			<altitudeMode>absolute</altitudeMode>
+			<coordinates>54.91088247,36.38278092,1453.27997</coordinates>
+		</Point>
+	</Placemark>
+	<Placemark>
+		<name>VD_1_00038.JPG</name>
+		<visibility>0</visibility>
+		<description><![CDATA[<a href="H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00038.JPG">H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00038.JPG</a><br/>Component: None<br/>Photogroup: Photogroup 1<br/>Image dimensions: 5472x3648<br/>Camera model: L1D-20c<br/>Focal length: 10.4877 mm<br/>Position (WGS84): 36.3826&deg ; 54.9106&deg<br/>Ellipsoid height: 1446.76 m]]></description>
+		<styleUrl>#completePose0</styleUrl>
+		<Point>
+			<altitudeMode>absolute</altitudeMode>
+			<coordinates>54.91063928,36.38256353,1453.6055</coordinates>
+		</Point>
+	</Placemark>
+	<Placemark>
+		<name>VD_1_00039.JPG</name>
+		<visibility>0</visibility>
+		<description><![CDATA[<a href="H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00039.JPG">H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00039.JPG</a><br/>Component: None<br/>Photogroup: Photogroup 1<br/>Image dimensions: 5472x3648<br/>Camera model: L1D-20c<br/>Focal length: 10.4877 mm<br/>Position (WGS84): 36.3823&deg ; 54.9104&deg<br/>Ellipsoid height: 1447.09 m]]></description>
+		<styleUrl>#completePose0</styleUrl>
+		<Point>
+			<altitudeMode>absolute</altitudeMode>
+			<coordinates>54.91039564,36.38234553,1453.9412</coordinates>
+		</Point>
+	</Placemark>
+	<Placemark>
+		<name>VD_1_00040.JPG</name>
+		<visibility>0</visibility>
+		<description><![CDATA[<a href="H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00040.JPG">H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00040.JPG</a><br/>Component: None<br/>Photogroup: Photogroup 1<br/>Image dimensions: 5472x3648<br/>Camera model: L1D-20c<br/>Focal length: 10.4877 mm<br/>Position (WGS84): 36.3821&deg ; 54.9102&deg<br/>Ellipsoid height: 1447.27 m]]></description>
+		<styleUrl>#completePose0</styleUrl>
+		<Point>
+			<altitudeMode>absolute</altitudeMode>
+			<coordinates>54.91016153,36.38213494,1454.12157</coordinates>
+		</Point>
+	</Placemark>
+	<Placemark>
+		<name>VD_1_00041.JPG</name>
+		<visibility>0</visibility>
+		<description><![CDATA[<a href="H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00041.JPG">H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00041.JPG</a><br/>Component: None<br/>Photogroup: Photogroup 1<br/>Image dimensions: 5472x3648<br/>Camera model: L1D-20c<br/>Focal length: 10.4877 mm<br/>Position (WGS84): 36.3819&deg ; 54.9099&deg<br/>Ellipsoid height: 1447.26 m]]></description>
+		<styleUrl>#completePose0</styleUrl>
+		<Point>
+			<altitudeMode>absolute</altitudeMode>
+			<coordinates>54.90991921999999,36.38191769,1454.10605</coordinates>
+		</Point>
+	</Placemark>
+	<Placemark>
+		<name>VD_1_00042.JPG</name>
+		<visibility>0</visibility>
+		<description><![CDATA[<a href="H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00042.JPG">H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00042.JPG</a><br/>Component: None<br/>Photogroup: Photogroup 1<br/>Image dimensions: 5472x3648<br/>Camera model: L1D-20c<br/>Focal length: 10.4877 mm<br/>Position (WGS84): 36.3817&deg ; 54.9097&deg<br/>Ellipsoid height: 1446.89 m]]></description>
+		<styleUrl>#completePose0</styleUrl>
+		<Point>
+			<altitudeMode>absolute</altitudeMode>
+			<coordinates>54.90968186,36.38170631,1453.74302</coordinates>
+		</Point>
+	</Placemark>
+	<Placemark>
+		<name>VD_1_00043.JPG</name>
+		<visibility>0</visibility>
+		<description><![CDATA[<a href="H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00043.JPG">H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00043.JPG</a><br/>Component: None<br/>Photogroup: Photogroup 1<br/>Image dimensions: 5472x3648<br/>Camera model: L1D-20c<br/>Focal length: 10.4877 mm<br/>Position (WGS84): 36.3815&deg ; 54.9095&deg<br/>Ellipsoid height: 1446.6 m]]></description>
+		<styleUrl>#completePose0</styleUrl>
+		<Point>
+			<altitudeMode>absolute</altitudeMode>
+			<coordinates>54.90952306,36.38152256,1453.4529</coordinates>
+		</Point>
+	</Placemark>
+	<Placemark>
+		<name>VD_1_00044.JPG</name>
+		<visibility>0</visibility>
+		<description><![CDATA[<a href="H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00044.JPG">H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00044.JPG</a><br/>Component: None<br/>Photogroup: Photogroup 1<br/>Image dimensions: 5472x3648<br/>Camera model: L1D-20c<br/>Focal length: 10.4877 mm<br/>Position (WGS84): 36.3812&deg ; 54.9098&deg<br/>Ellipsoid height: 1446.92 m]]></description>
+		<styleUrl>#completePose0</styleUrl>
+		<Point>
+			<altitudeMode>absolute</altitudeMode>
+			<coordinates>54.90983047,36.38120403,1453.77244</coordinates>
+		</Point>
+	</Placemark>
+	<Placemark>
+		<name>VD_1_00045.JPG</name>
+		<visibility>0</visibility>
+		<description><![CDATA[<a href="H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00045.JPG">H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00045.JPG</a><br/>Component: None<br/>Photogroup: Photogroup 1<br/>Image dimensions: 5472x3648<br/>Camera model: L1D-20c<br/>Focal length: 10.4877 mm<br/>Position (WGS84): 36.3814&deg ; 54.9101&deg<br/>Ellipsoid height: 1446.83 m]]></description>
+		<styleUrl>#completePose0</styleUrl>
+		<Point>
+			<altitudeMode>absolute</altitudeMode>
+			<coordinates>54.91008769,36.38140214,1453.68395</coordinates>
+		</Point>
+	</Placemark>
+	<Placemark>
+		<name>VD_1_00046.JPG</name>
+		<visibility>0</visibility>
+		<description><![CDATA[<a href="H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00046.JPG">H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00046.JPG</a><br/>Component: None<br/>Photogroup: Photogroup 1<br/>Image dimensions: 5472x3648<br/>Camera model: L1D-20c<br/>Focal length: 10.4877 mm<br/>Position (WGS84): 36.3816&deg ; 54.9103&deg<br/>Ellipsoid height: 1446.94 m]]></description>
+		<styleUrl>#completePose0</styleUrl>
+		<Point>
+			<altitudeMode>absolute</altitudeMode>
+			<coordinates>54.91032943999999,36.38163764,1453.78795</coordinates>
+		</Point>
+	</Placemark>
+	<Placemark>
+		<name>VD_1_00047.JPG</name>
+		<visibility>0</visibility>
+		<description><![CDATA[<a href="H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00047.JPG">H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00047.JPG</a><br/>Component: None<br/>Photogroup: Photogroup 1<br/>Image dimensions: 5472x3648<br/>Camera model: L1D-20c<br/>Focal length: 10.4877 mm<br/>Position (WGS84): 36.3819&deg ; 54.9106&deg<br/>Ellipsoid height: 1447.15 m]]></description>
+		<styleUrl>#completePose0</styleUrl>
+		<Point>
+			<altitudeMode>absolute</altitudeMode>
+			<coordinates>54.91056278,36.3818545,1454.00286</coordinates>
+		</Point>
+	</Placemark>
+	<Placemark>
+		<name>VD_1_00048.JPG</name>
+		<visibility>0</visibility>
+		<description><![CDATA[<a href="H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00048.JPG">H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00048.JPG</a><br/>Component: None<br/>Photogroup: Photogroup 1<br/>Image dimensions: 5472x3648<br/>Camera model: L1D-20c<br/>Focal length: 10.4877 mm<br/>Position (WGS84): 36.3821&deg ; 54.9108&deg<br/>Ellipsoid height: 1446.8 m]]></description>
+		<styleUrl>#completePose0</styleUrl>
+		<Point>
+			<altitudeMode>absolute</altitudeMode>
+			<coordinates>54.91080081,36.38206644,1453.64892</coordinates>
+		</Point>
+	</Placemark>
+	<Placemark>
+		<name>VD_1_00049.JPG</name>
+		<visibility>0</visibility>
+		<description><![CDATA[<a href="H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00049.JPG">H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00049.JPG</a><br/>Component: None<br/>Photogroup: Photogroup 1<br/>Image dimensions: 5472x3648<br/>Camera model: L1D-20c<br/>Focal length: 10.4877 mm<br/>Position (WGS84): 36.3823&deg ; 54.911&deg<br/>Ellipsoid height: 1446.46 m]]></description>
+		<styleUrl>#completePose0</styleUrl>
+		<Point>
+			<altitudeMode>absolute</altitudeMode>
+			<coordinates>54.91104125,36.38228192,1453.31317</coordinates>
+		</Point>
+	</Placemark>
+	<Placemark>
+		<name>VD_1_00050.JPG</name>
+		<visibility>0</visibility>
+		<description><![CDATA[<a href="H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00050.JPG">H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00050.JPG</a><br/>Component: None<br/>Photogroup: Photogroup 1<br/>Image dimensions: 5472x3648<br/>Camera model: L1D-20c<br/>Focal length: 10.4877 mm<br/>Position (WGS84): 36.3825&deg ; 54.9113&deg<br/>Ellipsoid height: 1446.48 m]]></description>
+		<styleUrl>#completePose0</styleUrl>
+		<Point>
+			<altitudeMode>absolute</altitudeMode>
+			<coordinates>54.911282,36.38249683,1453.33592</coordinates>
+		</Point>
+	</Placemark>
+	<Placemark>
+		<name>VD_1_00051.JPG</name>
+		<visibility>0</visibility>
+		<description><![CDATA[<a href="H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00051.JPG">H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00051.JPG</a><br/>Component: None<br/>Photogroup: Photogroup 1<br/>Image dimensions: 5472x3648<br/>Camera model: L1D-20c<br/>Focal length: 10.4877 mm<br/>Position (WGS84): 36.3827&deg ; 54.9115&deg<br/>Ellipsoid height: 1446.77 m]]></description>
+		<styleUrl>#completePose0</styleUrl>
+		<Point>
+			<altitudeMode>absolute</altitudeMode>
+			<coordinates>54.91152042,36.38271183,1453.6264</coordinates>
+		</Point>
+	</Placemark>
+	<Placemark>
+		<name>VD_1_00052.JPG</name>
+		<visibility>0</visibility>
+		<description><![CDATA[<a href="H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00052.JPG">H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00052.JPG</a><br/>Component: None<br/>Photogroup: Photogroup 1<br/>Image dimensions: 5472x3648<br/>Camera model: L1D-20c<br/>Focal length: 10.4877 mm<br/>Position (WGS84): 36.3829&deg ; 54.9118&deg<br/>Ellipsoid height: 1446.88 m]]></description>
+		<styleUrl>#completePose0</styleUrl>
+		<Point>
+			<altitudeMode>absolute</altitudeMode>
+			<coordinates>54.91176168999999,36.38292544,1453.73139</coordinates>
+		</Point>
+	</Placemark>
+	<Placemark>
+		<name>VD_1_00053.JPG</name>
+		<visibility>0</visibility>
+		<description><![CDATA[<a href="H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00053.JPG">H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00053.JPG</a><br/>Component: None<br/>Photogroup: Photogroup 1<br/>Image dimensions: 5472x3648<br/>Camera model: L1D-20c<br/>Focal length: 10.4877 mm<br/>Position (WGS84): 36.3831&deg ; 54.912&deg<br/>Ellipsoid height: 1446.89 m]]></description>
+		<styleUrl>#completePose0</styleUrl>
+		<Point>
+			<altitudeMode>absolute</altitudeMode>
+			<coordinates>54.91200108000001,36.38313747,1453.73837</coordinates>
+		</Point>
+	</Placemark>
+	<Placemark>
+		<name>VD_1_00054.JPG</name>
+		<visibility>0</visibility>
+		<description><![CDATA[<a href="H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00054.JPG">H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00054.JPG</a><br/>Component: None<br/>Photogroup: Photogroup 1<br/>Image dimensions: 5472x3648<br/>Camera model: L1D-20c<br/>Focal length: 10.4877 mm<br/>Position (WGS84): 36.3834&deg ; 54.9122&deg<br/>Ellipsoid height: 1447.44 m]]></description>
+		<styleUrl>#completePose0</styleUrl>
+		<Point>
+			<altitudeMode>absolute</altitudeMode>
+			<coordinates>54.91224694,36.383357,1454.29162</coordinates>
+		</Point>
+	</Placemark>
+	<Placemark>
+		<name>VD_1_00055.JPG</name>
+		<visibility>0</visibility>
+		<description><![CDATA[<a href="H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00055.JPG">H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00055.JPG</a><br/>Component: None<br/>Photogroup: Photogroup 1<br/>Image dimensions: 5472x3648<br/>Camera model: L1D-20c<br/>Focal length: 10.4877 mm<br/>Position (WGS84): 36.3836&deg ; 54.9125&deg<br/>Ellipsoid height: 1447.69 m]]></description>
+		<styleUrl>#completePose0</styleUrl>
+		<Point>
+			<altitudeMode>absolute</altitudeMode>
+			<coordinates>54.91248017,36.38356444,1454.54707</coordinates>
+		</Point>
+	</Placemark>
+	<Placemark>
+		<name>VD_1_00056.JPG</name>
+		<visibility>0</visibility>
+		<description><![CDATA[<a href="H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00056.JPG">H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00056.JPG</a><br/>Component: None<br/>Photogroup: Photogroup 1<br/>Image dimensions: 5472x3648<br/>Camera model: L1D-20c<br/>Focal length: 10.4877 mm<br/>Position (WGS84): 36.3838&deg ; 54.9127&deg<br/>Ellipsoid height: 1447.66 m]]></description>
+		<styleUrl>#completePose0</styleUrl>
+		<Point>
+			<altitudeMode>absolute</altitudeMode>
+			<coordinates>54.91272025,36.38378014,1454.5087</coordinates>
+		</Point>
+	</Placemark>
+	<Placemark>
+		<name>VD_1_00057.JPG</name>
+		<visibility>0</visibility>
+		<description><![CDATA[<a href="H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00057.JPG">H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00057.JPG</a><br/>Component: None<br/>Photogroup: Photogroup 1<br/>Image dimensions: 5472x3648<br/>Camera model: L1D-20c<br/>Focal length: 10.4877 mm<br/>Position (WGS84): 36.3839&deg ; 54.9129&deg<br/>Ellipsoid height: 1447.58 m]]></description>
+		<styleUrl>#completePose0</styleUrl>
+		<Point>
+			<altitudeMode>absolute</altitudeMode>
+			<coordinates>54.91291053,36.38394739,1454.4383</coordinates>
+		</Point>
+	</Placemark>
+	<Placemark>
+		<name>VD_1_00058.JPG</name>
+		<visibility>0</visibility>
+		<description><![CDATA[<a href="H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00058.JPG">H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00058.JPG</a><br/>Component: None<br/>Photogroup: Photogroup 1<br/>Image dimensions: 5472x3648<br/>Camera model: L1D-20c<br/>Focal length: 10.4877 mm<br/>Position (WGS84): 36.3835&deg ; 54.9132&deg<br/>Ellipsoid height: 1447.26 m]]></description>
+		<styleUrl>#completePose0</styleUrl>
+		<Point>
+			<altitudeMode>absolute</altitudeMode>
+			<coordinates>54.91315331,36.38353097,1454.11155</coordinates>
+		</Point>
+	</Placemark>
+	<Placemark>
+		<name>VD_1_00059.JPG</name>
+		<visibility>0</visibility>
+		<description><![CDATA[<a href="H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00059.JPG">H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00059.JPG</a><br/>Component: None<br/>Photogroup: Photogroup 1<br/>Image dimensions: 5472x3648<br/>Camera model: L1D-20c<br/>Focal length: 10.4877 mm<br/>Position (WGS84): 36.3833&deg ; 54.9129&deg<br/>Ellipsoid height: 1447.2 m]]></description>
+		<styleUrl>#completePose0</styleUrl>
+		<Point>
+			<altitudeMode>absolute</altitudeMode>
+			<coordinates>54.91292078000001,36.38331914,1454.0563</coordinates>
+		</Point>
+	</Placemark>
+	<Placemark>
+		<name>VD_1_00060.JPG</name>
+		<visibility>0</visibility>
+		<description><![CDATA[<a href="H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00060.JPG">H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00060.JPG</a><br/>Component: None<br/>Photogroup: Photogroup 1<br/>Image dimensions: 5472x3648<br/>Camera model: L1D-20c<br/>Focal length: 10.4877 mm<br/>Position (WGS84): 36.3831&deg ; 54.9127&deg<br/>Ellipsoid height: 1447.38 m]]></description>
+		<styleUrl>#completePose0</styleUrl>
+		<Point>
+			<altitudeMode>absolute</altitudeMode>
+			<coordinates>54.91267769,36.38310178,1454.23525</coordinates>
+		</Point>
+	</Placemark>
+	<Placemark>
+		<name>VD_1_00061.JPG</name>
+		<visibility>0</visibility>
+		<description><![CDATA[<a href="H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00061.JPG">H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00061.JPG</a><br/>Component: None<br/>Photogroup: Photogroup 1<br/>Image dimensions: 5472x3648<br/>Camera model: L1D-20c<br/>Focal length: 10.4877 mm<br/>Position (WGS84): 36.3829&deg ; 54.9124&deg<br/>Ellipsoid height: 1447.23 m]]></description>
+		<styleUrl>#completePose0</styleUrl>
+		<Point>
+			<altitudeMode>absolute</altitudeMode>
+			<coordinates>54.91243999999999,36.38288939,1454.07932</coordinates>
+		</Point>
+	</Placemark>
+	<Placemark>
+		<name>VD_1_00062.JPG</name>
+		<visibility>0</visibility>
+		<description><![CDATA[<a href="H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00062.JPG">H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00062.JPG</a><br/>Component: None<br/>Photogroup: Photogroup 1<br/>Image dimensions: 5472x3648<br/>Camera model: L1D-20c<br/>Focal length: 10.4877 mm<br/>Position (WGS84): 36.3827&deg ; 54.9122&deg<br/>Ellipsoid height: 1447.04 m]]></description>
+		<styleUrl>#completePose0</styleUrl>
+		<Point>
+			<altitudeMode>absolute</altitudeMode>
+			<coordinates>54.91220061,36.38267617,1453.88967</coordinates>
+		</Point>
+	</Placemark>
+	<Placemark>
+		<name>VD_1_00063.JPG</name>
+		<visibility>0</visibility>
+		<description><![CDATA[<a href="H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00063.JPG">H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00063.JPG</a><br/>Component: None<br/>Photogroup: Photogroup 1<br/>Image dimensions: 5472x3648<br/>Camera model: L1D-20c<br/>Focal length: 10.4877 mm<br/>Position (WGS84): 36.3825&deg ; 54.912&deg<br/>Ellipsoid height: 1446.73 m]]></description>
+		<styleUrl>#completePose0</styleUrl>
+		<Point>
+			<altitudeMode>absolute</altitudeMode>
+			<coordinates>54.91196075,36.38246244,1453.58733</coordinates>
+		</Point>
+	</Placemark>
+	<Placemark>
+		<name>VD_1_00064.JPG</name>
+		<visibility>0</visibility>
+		<description><![CDATA[<a href="H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00064.JPG">H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00064.JPG</a><br/>Component: None<br/>Photogroup: Photogroup 1<br/>Image dimensions: 5472x3648<br/>Camera model: L1D-20c<br/>Focal length: 10.4877 mm<br/>Position (WGS84): 36.3822&deg ; 54.9117&deg<br/>Ellipsoid height: 1446.56 m]]></description>
+		<styleUrl>#completePose0</styleUrl>
+		<Point>
+			<altitudeMode>absolute</altitudeMode>
+			<coordinates>54.91171931,36.38224839,1453.41756</coordinates>
+		</Point>
+	</Placemark>
+	<Placemark>
+		<name>VD_1_00065.JPG</name>
+		<visibility>0</visibility>
+		<description><![CDATA[<a href="H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00065.JPG">H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00065.JPG</a><br/>Component: None<br/>Photogroup: Photogroup 1<br/>Image dimensions: 5472x3648<br/>Camera model: L1D-20c<br/>Focal length: 10.4877 mm<br/>Position (WGS84): 36.382&deg ; 54.9115&deg<br/>Ellipsoid height: 1446.77 m]]></description>
+		<styleUrl>#completePose0</styleUrl>
+		<Point>
+			<altitudeMode>absolute</altitudeMode>
+			<coordinates>54.91148539,36.382039,1453.62205</coordinates>
+		</Point>
+	</Placemark>
+	<Placemark>
+		<name>VD_1_00066.JPG</name>
+		<visibility>0</visibility>
+		<description><![CDATA[<a href="H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00066.JPG">H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00066.JPG</a><br/>Component: None<br/>Photogroup: Photogroup 1<br/>Image dimensions: 5472x3648<br/>Camera model: L1D-20c<br/>Focal length: 10.4877 mm<br/>Position (WGS84): 36.3818&deg ; 54.9112&deg<br/>Ellipsoid height: 1446.79 m]]></description>
+		<styleUrl>#completePose0</styleUrl>
+		<Point>
+			<altitudeMode>absolute</altitudeMode>
+			<coordinates>54.91124628000001,36.38182683,1453.64166</coordinates>
+		</Point>
+	</Placemark>
+	<Placemark>
+		<name>VD_1_00067.JPG</name>
+		<visibility>0</visibility>
+		<description><![CDATA[<a href="H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00067.JPG">H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00067.JPG</a><br/>Component: None<br/>Photogroup: Photogroup 1<br/>Image dimensions: 5472x3648<br/>Camera model: L1D-20c<br/>Focal length: 10.4877 mm<br/>Position (WGS84): 36.3816&deg ; 54.911&deg<br/>Ellipsoid height: 1446.84 m]]></description>
+		<styleUrl>#completePose0</styleUrl>
+		<Point>
+			<altitudeMode>absolute</altitudeMode>
+			<coordinates>54.91100206,36.381607,1453.68816</coordinates>
+		</Point>
+	</Placemark>
+	<Placemark>
+		<name>VD_1_00068.JPG</name>
+		<visibility>0</visibility>
+		<description><![CDATA[<a href="H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00068.JPG">H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00068.JPG</a><br/>Component: None<br/>Photogroup: Photogroup 1<br/>Image dimensions: 5472x3648<br/>Camera model: L1D-20c<br/>Focal length: 10.4877 mm<br/>Position (WGS84): 36.3814&deg ; 54.9108&deg<br/>Ellipsoid height: 1447.15 m]]></description>
+		<styleUrl>#completePose0</styleUrl>
+		<Point>
+			<altitudeMode>absolute</altitudeMode>
+			<coordinates>54.9107595,36.38139219,1454.00643</coordinates>
+		</Point>
+	</Placemark>
+	<Placemark>
+		<name>VD_1_00069.JPG</name>
+		<visibility>0</visibility>
+		<description><![CDATA[<a href="H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00069.JPG">H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00069.JPG</a><br/>Component: None<br/>Photogroup: Photogroup 1<br/>Image dimensions: 5472x3648<br/>Camera model: L1D-20c<br/>Focal length: 10.4877 mm<br/>Position (WGS84): 36.3812&deg ; 54.9105&deg<br/>Ellipsoid height: 1447.23 m]]></description>
+		<styleUrl>#completePose0</styleUrl>
+		<Point>
+			<altitudeMode>absolute</altitudeMode>
+			<coordinates>54.91052492,36.38118356,1454.07712</coordinates>
+		</Point>
+	</Placemark>
+	<Placemark>
+		<name>VD_1_00070.JPG</name>
+		<visibility>0</visibility>
+		<description><![CDATA[<a href="H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00070.JPG">H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00070.JPG</a><br/>Component: None<br/>Photogroup: Photogroup 1<br/>Image dimensions: 5472x3648<br/>Camera model: L1D-20c<br/>Focal length: 10.4877 mm<br/>Position (WGS84): 36.381&deg ; 54.9103&deg<br/>Ellipsoid height: 1447.15 m]]></description>
+		<styleUrl>#completePose0</styleUrl>
+		<Point>
+			<altitudeMode>absolute</altitudeMode>
+			<coordinates>54.91028328,36.38096825,1453.99628</coordinates>
+		</Point>
+	</Placemark>
+	<Placemark>
+		<name>VD_1_00071.JPG</name>
+		<visibility>0</visibility>
+		<description><![CDATA[<a href="H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00071.JPG">H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00071.JPG</a><br/>Component: None<br/>Photogroup: Photogroup 1<br/>Image dimensions: 5472x3648<br/>Camera model: L1D-20c<br/>Focal length: 10.4877 mm<br/>Position (WGS84): 36.3808&deg ; 54.9101&deg<br/>Ellipsoid height: 1447.07 m]]></description>
+		<styleUrl>#completePose0</styleUrl>
+		<Point>
+			<altitudeMode>absolute</altitudeMode>
+			<coordinates>54.91007069,36.38078125,1453.91769</coordinates>
+		</Point>
+	</Placemark>
+	<Placemark>
+		<name>VD_1_00072.JPG</name>
+		<visibility>0</visibility>
+		<description><![CDATA[<a href="H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00072.JPG">H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00072.JPG</a><br/>Component: None<br/>Photogroup: Photogroup 1<br/>Image dimensions: 5472x3648<br/>Camera model: L1D-20c<br/>Focal length: 10.4877 mm<br/>Position (WGS84): 36.3807&deg ; 54.91&deg<br/>Ellipsoid height: 1446.77 m]]></description>
+		<styleUrl>#completePose0</styleUrl>
+		<Point>
+			<altitudeMode>absolute</altitudeMode>
+			<coordinates>54.91003956,36.38070844,1453.61854</coordinates>
+		</Point>
+	</Placemark>
+	<Placemark>
+		<name>VD_1_00073.JPG</name>
+		<visibility>0</visibility>
+		<description><![CDATA[<a href="H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00073.JPG">H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00073.JPG</a><br/>Component: None<br/>Photogroup: Photogroup 1<br/>Image dimensions: 5472x3648<br/>Camera model: L1D-20c<br/>Focal length: 10.4877 mm<br/>Position (WGS84): 36.3804&deg ; 54.9103&deg<br/>Ellipsoid height: 1447.45 m]]></description>
+		<styleUrl>#completePose0</styleUrl>
+		<Point>
+			<altitudeMode>absolute</altitudeMode>
+			<coordinates>54.91034486,36.38039122,1454.29716</coordinates>
+		</Point>
+	</Placemark>
+	<Placemark>
+		<name>VD_1_00074.JPG</name>
+		<visibility>0</visibility>
+		<description><![CDATA[<a href="H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00074.JPG">H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00074.JPG</a><br/>Component: None<br/>Photogroup: Photogroup 1<br/>Image dimensions: 5472x3648<br/>Camera model: L1D-20c<br/>Focal length: 10.4877 mm<br/>Position (WGS84): 36.3806&deg ; 54.9106&deg<br/>Ellipsoid height: 1447.54 m]]></description>
+		<styleUrl>#completePose0</styleUrl>
+		<Point>
+			<altitudeMode>absolute</altitudeMode>
+			<coordinates>54.91058278000001,36.38059131,1454.39334</coordinates>
+		</Point>
+	</Placemark>
+	<Placemark>
+		<name>VD_1_00075.JPG</name>
+		<visibility>0</visibility>
+		<description><![CDATA[<a href="H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00075.JPG">H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00075.JPG</a><br/>Component: None<br/>Photogroup: Photogroup 1<br/>Image dimensions: 5472x3648<br/>Camera model: L1D-20c<br/>Focal length: 10.4877 mm<br/>Position (WGS84): 36.3808&deg ; 54.9108&deg<br/>Ellipsoid height: 1447.45 m]]></description>
+		<styleUrl>#completePose0</styleUrl>
+		<Point>
+			<altitudeMode>absolute</altitudeMode>
+			<coordinates>54.91083386,36.38081033,1454.30073</coordinates>
+		</Point>
+	</Placemark>
+	<Placemark>
+		<name>VD_1_00076.JPG</name>
+		<visibility>0</visibility>
+		<description><![CDATA[<a href="H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00076.JPG">H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00076.JPG</a><br/>Component: None<br/>Photogroup: Photogroup 1<br/>Image dimensions: 5472x3648<br/>Camera model: L1D-20c<br/>Focal length: 10.4877 mm<br/>Position (WGS84): 36.381&deg ; 54.9111&deg<br/>Ellipsoid height: 1447.5 m]]></description>
+		<styleUrl>#completePose0</styleUrl>
+		<Point>
+			<altitudeMode>absolute</altitudeMode>
+			<coordinates>54.91107292,36.381025,1454.35336</coordinates>
+		</Point>
+	</Placemark>
+	<Placemark>
+		<name>VD_1_00077.JPG</name>
+		<visibility>0</visibility>
+		<description><![CDATA[<a href="H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00077.JPG">H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00077.JPG</a><br/>Component: None<br/>Photogroup: Photogroup 1<br/>Image dimensions: 5472x3648<br/>Camera model: L1D-20c<br/>Focal length: 10.4877 mm<br/>Position (WGS84): 36.3812&deg ; 54.9113&deg<br/>Ellipsoid height: 1447.67 m]]></description>
+		<styleUrl>#completePose0</styleUrl>
+		<Point>
+			<altitudeMode>absolute</altitudeMode>
+			<coordinates>54.91131867,36.38124833,1454.52223</coordinates>
+		</Point>
+	</Placemark>
+	<Placemark>
+		<name>VD_1_00078.JPG</name>
+		<visibility>0</visibility>
+		<description><![CDATA[<a href="H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00078.JPG">H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00078.JPG</a><br/>Component: None<br/>Photogroup: Photogroup 1<br/>Image dimensions: 5472x3648<br/>Camera model: L1D-20c<br/>Focal length: 10.4877 mm<br/>Position (WGS84): 36.3815&deg ; 54.9116&deg<br/>Ellipsoid height: 1447.68 m]]></description>
+		<styleUrl>#completePose0</styleUrl>
+		<Point>
+			<altitudeMode>absolute</altitudeMode>
+			<coordinates>54.91155958,36.381464,1454.53167</coordinates>
+		</Point>
+	</Placemark>
+	<Placemark>
+		<name>VD_1_00079.JPG</name>
+		<visibility>0</visibility>
+		<description><![CDATA[<a href="H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00079.JPG">H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00079.JPG</a><br/>Component: None<br/>Photogroup: Photogroup 1<br/>Image dimensions: 5472x3648<br/>Camera model: L1D-20c<br/>Focal length: 10.4877 mm<br/>Position (WGS84): 36.3817&deg ; 54.9118&deg<br/>Ellipsoid height: 1447.01 m]]></description>
+		<styleUrl>#completePose0</styleUrl>
+		<Point>
+			<altitudeMode>absolute</altitudeMode>
+			<coordinates>54.91180097000001,36.38167697,1453.86271</coordinates>
+		</Point>
+	</Placemark>
+	<Placemark>
+		<name>VD_1_00080.JPG</name>
+		<visibility>0</visibility>
+		<description><![CDATA[<a href="H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00080.JPG">H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00080.JPG</a><br/>Component: None<br/>Photogroup: Photogroup 1<br/>Image dimensions: 5472x3648<br/>Camera model: L1D-20c<br/>Focal length: 10.4877 mm<br/>Position (WGS84): 36.3819&deg ; 54.912&deg<br/>Ellipsoid height: 1445.73 m]]></description>
+		<styleUrl>#completePose0</styleUrl>
+		<Point>
+			<altitudeMode>absolute</altitudeMode>
+			<coordinates>54.91203519,36.38188428,1452.58235</coordinates>
+		</Point>
+	</Placemark>
+	<Placemark>
+		<name>VD_1_00081.JPG</name>
+		<visibility>0</visibility>
+		<description><![CDATA[<a href="H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00081.JPG">H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00081.JPG</a><br/>Component: None<br/>Photogroup: Photogroup 1<br/>Image dimensions: 5472x3648<br/>Camera model: L1D-20c<br/>Focal length: 10.4877 mm<br/>Position (WGS84): 36.3821&deg ; 54.9123&deg<br/>Ellipsoid height: 1445.43 m]]></description>
+		<styleUrl>#completePose0</styleUrl>
+		<Point>
+			<altitudeMode>absolute</altitudeMode>
+			<coordinates>54.91227832999999,36.38210092,1452.28202</coordinates>
+		</Point>
+	</Placemark>
+	<Placemark>
+		<name>VD_1_00082.JPG</name>
+		<visibility>0</visibility>
+		<description><![CDATA[<a href="H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00082.JPG">H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00082.JPG</a><br/>Component: None<br/>Photogroup: Photogroup 1<br/>Image dimensions: 5472x3648<br/>Camera model: L1D-20c<br/>Focal length: 10.4877 mm<br/>Position (WGS84): 36.3823&deg ; 54.9125&deg<br/>Ellipsoid height: 1445.94 m]]></description>
+		<styleUrl>#completePose0</styleUrl>
+		<Point>
+			<altitudeMode>absolute</altitudeMode>
+			<coordinates>54.91251558,36.382316,1452.78972</coordinates>
+		</Point>
+	</Placemark>
+	<Placemark>
+		<name>VD_1_00083.JPG</name>
+		<visibility>0</visibility>
+		<description><![CDATA[<a href="H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00083.JPG">H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00083.JPG</a><br/>Component: None<br/>Photogroup: Photogroup 1<br/>Image dimensions: 5472x3648<br/>Camera model: L1D-20c<br/>Focal length: 10.4877 mm<br/>Position (WGS84): 36.3825&deg ; 54.9128&deg<br/>Ellipsoid height: 1445.96 m]]></description>
+		<styleUrl>#completePose0</styleUrl>
+		<Point>
+			<altitudeMode>absolute</altitudeMode>
+			<coordinates>54.91275506,36.38253194,1452.81945</coordinates>
+		</Point>
+	</Placemark>
+	<Placemark>
+		<name>VD_1_00084.JPG</name>
+		<visibility>0</visibility>
+		<description><![CDATA[<a href="H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00084.JPG">H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00084.JPG</a><br/>Component: None<br/>Photogroup: Photogroup 1<br/>Image dimensions: 5472x3648<br/>Camera model: L1D-20c<br/>Focal length: 10.4877 mm<br/>Position (WGS84): 36.3827&deg ; 54.913&deg<br/>Ellipsoid height: 1446.05 m]]></description>
+		<styleUrl>#completePose0</styleUrl>
+		<Point>
+			<altitudeMode>absolute</altitudeMode>
+			<coordinates>54.91299872,36.3827485,1452.90908</coordinates>
+		</Point>
+	</Placemark>
+	<Placemark>
+		<name>VD_1_00085.JPG</name>
+		<visibility>0</visibility>
+		<description><![CDATA[<a href="H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00085.JPG">H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00085.JPG</a><br/>Component: None<br/>Photogroup: Photogroup 1<br/>Image dimensions: 5472x3648<br/>Camera model: L1D-20c<br/>Focal length: 10.4877 mm<br/>Position (WGS84): 36.383&deg ; 54.9132&deg<br/>Ellipsoid height: 1446.08 m]]></description>
+		<styleUrl>#completePose0</styleUrl>
+		<Point>
+			<altitudeMode>absolute</altitudeMode>
+			<coordinates>54.91323303,36.38295797,1452.93305</coordinates>
+		</Point>
+	</Placemark>
+	<Placemark>
+		<name>VD_1_00086.JPG</name>
+		<visibility>0</visibility>
+		<description><![CDATA[<a href="H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00086.JPG">H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00086.JPG</a><br/>Component: None<br/>Photogroup: Photogroup 1<br/>Image dimensions: 5472x3648<br/>Camera model: L1D-20c<br/>Focal length: 10.4877 mm<br/>Position (WGS84): 36.3832&deg ; 54.9135&deg<br/>Ellipsoid height: 1446.57 m]]></description>
+		<styleUrl>#completePose0</styleUrl>
+		<Point>
+			<altitudeMode>absolute</altitudeMode>
+			<coordinates>54.91345514,36.38315817,1453.42861</coordinates>
+		</Point>
+	</Placemark>
+	<Placemark>
+		<name>VD_1_00087.JPG</name>
+		<visibility>0</visibility>
+		<description><![CDATA[<a href="H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00087.JPG">H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00087.JPG</a><br/>Component: None<br/>Photogroup: Photogroup 1<br/>Image dimensions: 5472x3648<br/>Camera model: L1D-20c<br/>Focal length: 10.4877 mm<br/>Position (WGS84): 36.3832&deg ; 54.9136&deg<br/>Ellipsoid height: 1446.33 m]]></description>
+		<styleUrl>#completePose0</styleUrl>
+		<Point>
+			<altitudeMode>absolute</altitudeMode>
+			<coordinates>54.91355264,36.38320392,1453.19066</coordinates>
+		</Point>
+	</Placemark>
+	<Placemark>
+		<name>VD_1_00088.JPG</name>
+		<visibility>0</visibility>
+		<description><![CDATA[<a href="H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00088.JPG">H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00088.JPG</a><br/>Component: None<br/>Photogroup: Photogroup 1<br/>Image dimensions: 5472x3648<br/>Camera model: L1D-20c<br/>Focal length: 10.4877 mm<br/>Position (WGS84): 36.3828&deg ; 54.9138&deg<br/>Ellipsoid height: 1446.1 m]]></description>
+		<styleUrl>#completePose0</styleUrl>
+		<Point>
+			<altitudeMode>absolute</altitudeMode>
+			<coordinates>54.91377064,36.38279672,1452.95291</coordinates>
+		</Point>
+	</Placemark>
+	<Placemark>
+		<name>VD_1_00089.JPG</name>
+		<visibility>0</visibility>
+		<description><![CDATA[<a href="H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00089.JPG">H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00089.JPG</a><br/>Component: None<br/>Photogroup: Photogroup 1<br/>Image dimensions: 5472x3648<br/>Camera model: L1D-20c<br/>Focal length: 10.4877 mm<br/>Position (WGS84): 36.3826&deg ; 54.9136&deg<br/>Ellipsoid height: 1445.82 m]]></description>
+		<styleUrl>#completePose0</styleUrl>
+		<Point>
+			<altitudeMode>absolute</altitudeMode>
+			<coordinates>54.91355739,36.38257458,1452.67291</coordinates>
+		</Point>
+	</Placemark>
+	<Placemark>
+		<name>VD_1_00090.JPG</name>
+		<visibility>0</visibility>
+		<description><![CDATA[<a href="H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00090.JPG">H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00090.JPG</a><br/>Component: None<br/>Photogroup: Photogroup 1<br/>Image dimensions: 5472x3648<br/>Camera model: L1D-20c<br/>Focal length: 10.4877 mm<br/>Position (WGS84): 36.3824&deg ; 54.9133&deg<br/>Ellipsoid height: 1446 m]]></description>
+		<styleUrl>#completePose0</styleUrl>
+		<Point>
+			<altitudeMode>absolute</altitudeMode>
+			<coordinates>54.91329617,36.38235678,1452.85413</coordinates>
+		</Point>
+	</Placemark>
+	<Placemark>
+		<name>VD_1_00091.JPG</name>
+		<visibility>0</visibility>
+		<description><![CDATA[<a href="H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00091.JPG">H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00091.JPG</a><br/>Component: None<br/>Photogroup: Photogroup 1<br/>Image dimensions: 5472x3648<br/>Camera model: L1D-20c<br/>Focal length: 10.4877 mm<br/>Position (WGS84): 36.3821&deg ; 54.913&deg<br/>Ellipsoid height: 1446.19 m]]></description>
+		<styleUrl>#completePose0</styleUrl>
+		<Point>
+			<altitudeMode>absolute</altitudeMode>
+			<coordinates>54.913044,36.38214983,1453.04714</coordinates>
+		</Point>
+	</Placemark>
+	<Placemark>
+		<name>VD_1_00092.JPG</name>
+		<visibility>0</visibility>
+		<description><![CDATA[<a href="H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00092.JPG">H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00092.JPG</a><br/>Component: None<br/>Photogroup: Photogroup 1<br/>Image dimensions: 5472x3648<br/>Camera model: L1D-20c<br/>Focal length: 10.4877 mm<br/>Position (WGS84): 36.3819&deg ; 54.9128&deg<br/>Ellipsoid height: 1446.23 m]]></description>
+		<styleUrl>#completePose0</styleUrl>
+		<Point>
+			<altitudeMode>absolute</altitudeMode>
+			<coordinates>54.91280492,36.38193806,1453.08543</coordinates>
+		</Point>
+	</Placemark>
+	<Placemark>
+		<name>VD_1_00093.JPG</name>
+		<visibility>0</visibility>
+		<description><![CDATA[<a href="H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00093.JPG">H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00093.JPG</a><br/>Component: None<br/>Photogroup: Photogroup 1<br/>Image dimensions: 5472x3648<br/>Camera model: L1D-20c<br/>Focal length: 10.4877 mm<br/>Position (WGS84): 36.3817&deg ; 54.9126&deg<br/>Ellipsoid height: 1446.54 m]]></description>
+		<styleUrl>#completePose0</styleUrl>
+		<Point>
+			<altitudeMode>absolute</altitudeMode>
+			<coordinates>54.91256322,36.3817255,1453.39693</coordinates>
+		</Point>
+	</Placemark>
+	<Placemark>
+		<name>VD_1_00094.JPG</name>
+		<visibility>0</visibility>
+		<description><![CDATA[<a href="H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00094.JPG">H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00094.JPG</a><br/>Component: None<br/>Photogroup: Photogroup 1<br/>Image dimensions: 5472x3648<br/>Camera model: L1D-20c<br/>Focal length: 10.4877 mm<br/>Position (WGS84): 36.3815&deg ; 54.9123&deg<br/>Ellipsoid height: 1446.92 m]]></description>
+		<styleUrl>#completePose0</styleUrl>
+		<Point>
+			<altitudeMode>absolute</altitudeMode>
+			<coordinates>54.91232119000001,36.38151075,1453.77713</coordinates>
+		</Point>
+	</Placemark>
+	<Placemark>
+		<name>VD_1_00095.JPG</name>
+		<visibility>0</visibility>
+		<description><![CDATA[<a href="H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00095.JPG">H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00095.JPG</a><br/>Component: None<br/>Photogroup: Photogroup 1<br/>Image dimensions: 5472x3648<br/>Camera model: L1D-20c<br/>Focal length: 10.4877 mm<br/>Position (WGS84): 36.3813&deg ; 54.9121&deg<br/>Ellipsoid height: 1447.28 m]]></description>
+		<styleUrl>#completePose0</styleUrl>
+		<Point>
+			<altitudeMode>absolute</altitudeMode>
+			<coordinates>54.91208033,36.38129656,1454.13498</coordinates>
+		</Point>
+	</Placemark>
+	<Placemark>
+		<name>VD_1_00096.JPG</name>
+		<visibility>0</visibility>
+		<description><![CDATA[<a href="H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00096.JPG">H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00096.JPG</a><br/>Component: None<br/>Photogroup: Photogroup 1<br/>Image dimensions: 5472x3648<br/>Camera model: L1D-20c<br/>Focal length: 10.4877 mm<br/>Position (WGS84): 36.3811&deg ; 54.9118&deg<br/>Ellipsoid height: 1447.38 m]]></description>
+		<styleUrl>#completePose0</styleUrl>
+		<Point>
+			<altitudeMode>absolute</altitudeMode>
+			<coordinates>54.91183858,36.38108069,1454.23729</coordinates>
+		</Point>
+	</Placemark>
+	<Placemark>
+		<name>VD_1_00097.JPG</name>
+		<visibility>0</visibility>
+		<description><![CDATA[<a href="H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00097.JPG">H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00097.JPG</a><br/>Component: None<br/>Photogroup: Photogroup 1<br/>Image dimensions: 5472x3648<br/>Camera model: L1D-20c<br/>Focal length: 10.4877 mm<br/>Position (WGS84): 36.3809&deg ; 54.9116&deg<br/>Ellipsoid height: 1447.55 m]]></description>
+		<styleUrl>#completePose0</styleUrl>
+		<Point>
+			<altitudeMode>absolute</altitudeMode>
+			<coordinates>54.91160169,36.38086969,1454.40172</coordinates>
+		</Point>
+	</Placemark>
+	<Placemark>
+		<name>VD_1_00098.JPG</name>
+		<visibility>0</visibility>
+		<description><![CDATA[<a href="H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00098.JPG">H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00098.JPG</a><br/>Component: None<br/>Photogroup: Photogroup 1<br/>Image dimensions: 5472x3648<br/>Camera model: L1D-20c<br/>Focal length: 10.4877 mm<br/>Position (WGS84): 36.3807&deg ; 54.9114&deg<br/>Ellipsoid height: 1447.76 m]]></description>
+		<styleUrl>#completePose0</styleUrl>
+		<Point>
+			<altitudeMode>absolute</altitudeMode>
+			<coordinates>54.91136153,36.38065469,1454.61604</coordinates>
+		</Point>
+	</Placemark>
+	<Placemark>
+		<name>VD_1_00099.JPG</name>
+		<visibility>0</visibility>
+		<description><![CDATA[<a href="H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00099.JPG">H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00099.JPG</a><br/>Component: None<br/>Photogroup: Photogroup 1<br/>Image dimensions: 5472x3648<br/>Camera model: L1D-20c<br/>Focal length: 10.4877 mm<br/>Position (WGS84): 36.3804&deg ; 54.9111&deg<br/>Ellipsoid height: 1448.18 m]]></description>
+		<styleUrl>#completePose0</styleUrl>
+		<Point>
+			<altitudeMode>absolute</altitudeMode>
+			<coordinates>54.91112072,36.38043992,1455.03121</coordinates>
+		</Point>
+	</Placemark>
+	<Placemark>
+		<name>VD_1_00100.JPG</name>
+		<visibility>0</visibility>
+		<description><![CDATA[<a href="H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00100.JPG">H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00100.JPG</a><br/>Component: None<br/>Photogroup: Photogroup 1<br/>Image dimensions: 5472x3648<br/>Camera model: L1D-20c<br/>Focal length: 10.4877 mm<br/>Position (WGS84): 36.3802&deg ; 54.9109&deg<br/>Ellipsoid height: 1448.45 m]]></description>
+		<styleUrl>#completePose0</styleUrl>
+		<Point>
+			<altitudeMode>absolute</altitudeMode>
+			<coordinates>54.91087911,36.38022503,1455.30429</coordinates>
+		</Point>
+	</Placemark>
+	<Placemark>
+		<name>VD_1_00101.JPG</name>
+		<visibility>0</visibility>
+		<description><![CDATA[<a href="H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00101.JPG">H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00101.JPG</a><br/>Component: None<br/>Photogroup: Photogroup 1<br/>Image dimensions: 5472x3648<br/>Camera model: L1D-20c<br/>Focal length: 10.4877 mm<br/>Position (WGS84): 36.38&deg ; 54.9106&deg<br/>Ellipsoid height: 1448.51 m]]></description>
+		<styleUrl>#completePose0</styleUrl>
+		<Point>
+			<altitudeMode>absolute</altitudeMode>
+			<coordinates>54.91064925,36.38002031,1455.36136</coordinates>
+		</Point>
+	</Placemark>
+	<Placemark>
+		<name>VD_1_00102.JPG</name>
+		<visibility>0</visibility>
+		<description><![CDATA[<a href="H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00102.JPG">H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00102.JPG</a><br/>Component: None<br/>Photogroup: Photogroup 1<br/>Image dimensions: 5472x3648<br/>Camera model: L1D-20c<br/>Focal length: 10.4877 mm<br/>Position (WGS84): 36.3799&deg ; 54.9106&deg<br/>Ellipsoid height: 1447.86 m]]></description>
+		<styleUrl>#completePose0</styleUrl>
+		<Point>
+			<altitudeMode>absolute</altitudeMode>
+			<coordinates>54.91055278000001,36.37988817,1454.71721</coordinates>
+		</Point>
+	</Placemark>
+	<Placemark>
+		<name>VD_1_00103.JPG</name>
+		<visibility>0</visibility>
+		<description><![CDATA[<a href="H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00103.JPG">H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00103.JPG</a><br/>Component: None<br/>Photogroup: Photogroup 1<br/>Image dimensions: 5472x3648<br/>Camera model: L1D-20c<br/>Focal length: 10.4877 mm<br/>Position (WGS84): 36.3796&deg ; 54.9109&deg<br/>Ellipsoid height: 1446.74 m]]></description>
+		<styleUrl>#completePose0</styleUrl>
+		<Point>
+			<altitudeMode>absolute</altitudeMode>
+			<coordinates>54.91085903,36.37956839,1453.59624</coordinates>
+		</Point>
+	</Placemark>
+	<Placemark>
+		<name>VD_1_00104.JPG</name>
+		<visibility>0</visibility>
+		<description><![CDATA[<a href="H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00104.JPG">H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00104.JPG</a><br/>Component: None<br/>Photogroup: Photogroup 1<br/>Image dimensions: 5472x3648<br/>Camera model: L1D-20c<br/>Focal length: 10.4877 mm<br/>Position (WGS84): 36.3798&deg ; 54.9111&deg<br/>Ellipsoid height: 1446.66 m]]></description>
+		<styleUrl>#completePose0</styleUrl>
+		<Point>
+			<altitudeMode>absolute</altitudeMode>
+			<coordinates>54.91111147,36.37977022,1453.51765</coordinates>
+		</Point>
+	</Placemark>
+	<Placemark>
+		<name>VD_1_00105.JPG</name>
+		<visibility>0</visibility>
+		<description><![CDATA[<a href="H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00105.JPG">H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00105.JPG</a><br/>Component: None<br/>Photogroup: Photogroup 1<br/>Image dimensions: 5472x3648<br/>Camera model: L1D-20c<br/>Focal length: 10.4877 mm<br/>Position (WGS84): 36.38&deg ; 54.9114&deg<br/>Ellipsoid height: 1446.88 m]]></description>
+		<styleUrl>#completePose0</styleUrl>
+		<Point>
+			<altitudeMode>absolute</altitudeMode>
+			<coordinates>54.91135589,36.38000283,1453.73554</coordinates>
+		</Point>
+	</Placemark>
+	<Placemark>
+		<name>VD_1_00106.JPG</name>
+		<visibility>0</visibility>
+		<description><![CDATA[<a href="H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00106.JPG">H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00106.JPG</a><br/>Component: None<br/>Photogroup: Photogroup 1<br/>Image dimensions: 5472x3648<br/>Camera model: L1D-20c<br/>Focal length: 10.4877 mm<br/>Position (WGS84): 36.3802&deg ; 54.9116&deg<br/>Ellipsoid height: 1447.15 m]]></description>
+		<styleUrl>#completePose0</styleUrl>
+		<Point>
+			<altitudeMode>absolute</altitudeMode>
+			<coordinates>54.91159217,36.38021972,1454.00066</coordinates>
+		</Point>
+	</Placemark>
+	<Placemark>
+		<name>VD_1_00107.JPG</name>
+		<visibility>0</visibility>
+		<description><![CDATA[<a href="H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00107.JPG">H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00107.JPG</a><br/>Component: None<br/>Photogroup: Photogroup 1<br/>Image dimensions: 5472x3648<br/>Camera model: L1D-20c<br/>Focal length: 10.4877 mm<br/>Position (WGS84): 36.3804&deg ; 54.9118&deg<br/>Ellipsoid height: 1447.11 m]]></description>
+		<styleUrl>#completePose0</styleUrl>
+		<Point>
+			<altitudeMode>absolute</altitudeMode>
+			<coordinates>54.91183256,36.38043397,1453.96477</coordinates>
+		</Point>
+	</Placemark>
+	<Placemark>
+		<name>VD_1_00108.JPG</name>
+		<visibility>0</visibility>
+		<description><![CDATA[<a href="H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00108.JPG">H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00108.JPG</a><br/>Component: None<br/>Photogroup: Photogroup 1<br/>Image dimensions: 5472x3648<br/>Camera model: L1D-20c<br/>Focal length: 10.4877 mm<br/>Position (WGS84): 36.3806&deg ; 54.9121&deg<br/>Ellipsoid height: 1447.33 m]]></description>
+		<styleUrl>#completePose0</styleUrl>
+		<Point>
+			<altitudeMode>absolute</altitudeMode>
+			<coordinates>54.91207133,36.38064619,1454.18787</coordinates>
+		</Point>
+	</Placemark>
+	<Placemark>
+		<name>VD_1_00109.JPG</name>
+		<visibility>0</visibility>
+		<description><![CDATA[<a href="H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00109.JPG">H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00109.JPG</a><br/>Component: None<br/>Photogroup: Photogroup 1<br/>Image dimensions: 5472x3648<br/>Camera model: L1D-20c<br/>Focal length: 10.4877 mm<br/>Position (WGS84): 36.3809&deg ; 54.9123&deg<br/>Ellipsoid height: 1447.27 m]]></description>
+		<styleUrl>#completePose0</styleUrl>
+		<Point>
+			<altitudeMode>absolute</altitudeMode>
+			<coordinates>54.91230844,36.38085575,1454.12508</coordinates>
+		</Point>
+	</Placemark>
+	<Placemark>
+		<name>VD_1_00110.JPG</name>
+		<visibility>0</visibility>
+		<description><![CDATA[<a href="H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00110.JPG">H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00110.JPG</a><br/>Component: None<br/>Photogroup: Photogroup 1<br/>Image dimensions: 5472x3648<br/>Camera model: L1D-20c<br/>Focal length: 10.4877 mm<br/>Position (WGS84): 36.3811&deg ; 54.9126&deg<br/>Ellipsoid height: 1447.29 m]]></description>
+		<styleUrl>#completePose0</styleUrl>
+		<Point>
+			<altitudeMode>absolute</altitudeMode>
+			<coordinates>54.91255017,36.38107133,1454.1489</coordinates>
+		</Point>
+	</Placemark>
+	<Placemark>
+		<name>VD_1_00111.JPG</name>
+		<visibility>0</visibility>
+		<description><![CDATA[<a href="H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00111.JPG">H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00111.JPG</a><br/>Component: None<br/>Photogroup: Photogroup 1<br/>Image dimensions: 5472x3648<br/>Camera model: L1D-20c<br/>Focal length: 10.4877 mm<br/>Position (WGS84): 36.3813&deg ; 54.9128&deg<br/>Ellipsoid height: 1447.37 m]]></description>
+		<styleUrl>#completePose0</styleUrl>
+		<Point>
+			<altitudeMode>absolute</altitudeMode>
+			<coordinates>54.91279049999999,36.38128628,1454.22976</coordinates>
+		</Point>
+	</Placemark>
+	<Placemark>
+		<name>VD_1_00112.JPG</name>
+		<visibility>0</visibility>
+		<description><![CDATA[<a href="H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00112.JPG">H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00112.JPG</a><br/>Component: None<br/>Photogroup: Photogroup 1<br/>Image dimensions: 5472x3648<br/>Camera model: L1D-20c<br/>Focal length: 10.4877 mm<br/>Position (WGS84): 36.3815&deg ; 54.913&deg<br/>Ellipsoid height: 1447.09 m]]></description>
+		<styleUrl>#completePose0</styleUrl>
+		<Point>
+			<altitudeMode>absolute</altitudeMode>
+			<coordinates>54.91302856,36.38149786,1453.94171</coordinates>
+		</Point>
+	</Placemark>
+	<Placemark>
+		<name>VD_1_00113.JPG</name>
+		<visibility>0</visibility>
+		<description><![CDATA[<a href="H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00113.JPG">H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00113.JPG</a><br/>Component: None<br/>Photogroup: Photogroup 1<br/>Image dimensions: 5472x3648<br/>Camera model: L1D-20c<br/>Focal length: 10.4877 mm<br/>Position (WGS84): 36.3817&deg ; 54.9133&deg<br/>Ellipsoid height: 1446.6 m]]></description>
+		<styleUrl>#completePose0</styleUrl>
+		<Point>
+			<altitudeMode>absolute</altitudeMode>
+			<coordinates>54.91326767,36.38171056,1453.4593</coordinates>
+		</Point>
+	</Placemark>
+	<Placemark>
+		<name>VD_1_00114.JPG</name>
+		<visibility>0</visibility>
+		<description><![CDATA[<a href="H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00114.JPG">H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00114.JPG</a><br/>Component: None<br/>Photogroup: Photogroup 1<br/>Image dimensions: 5472x3648<br/>Camera model: L1D-20c<br/>Focal length: 10.4877 mm<br/>Position (WGS84): 36.3819&deg ; 54.9135&deg<br/>Ellipsoid height: 1445.54 m]]></description>
+		<styleUrl>#completePose0</styleUrl>
+		<Point>
+			<altitudeMode>absolute</altitudeMode>
+			<coordinates>54.91350482999999,36.3819195,1452.40026</coordinates>
+		</Point>
+	</Placemark>
+	<Placemark>
+		<name>VD_1_00115.JPG</name>
+		<visibility>0</visibility>
+		<description><![CDATA[<a href="H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00115.JPG">H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00115.JPG</a><br/>Component: None<br/>Photogroup: Photogroup 1<br/>Image dimensions: 5472x3648<br/>Camera model: L1D-20c<br/>Focal length: 10.4877 mm<br/>Position (WGS84): 36.3821&deg ; 54.9138&deg<br/>Ellipsoid height: 1444.47 m]]></description>
+		<styleUrl>#completePose0</styleUrl>
+		<Point>
+			<altitudeMode>absolute</altitudeMode>
+			<coordinates>54.91375614,36.38212264,1451.33047</coordinates>
+		</Point>
+	</Placemark>
+	<Placemark>
+		<name>VD_1_00116.JPG</name>
+		<visibility>0</visibility>
+		<description><![CDATA[<a href="H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00116.JPG">H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00116.JPG</a><br/>Component: None<br/>Photogroup: Photogroup 1<br/>Image dimensions: 5472x3648<br/>Camera model: L1D-20c<br/>Focal length: 10.4877 mm<br/>Position (WGS84): 36.3823&deg ; 54.914&deg<br/>Ellipsoid height: 1444.06 m]]></description>
+		<styleUrl>#completePose0</styleUrl>
+		<Point>
+			<altitudeMode>absolute</altitudeMode>
+			<coordinates>54.91399921999999,36.382334,1450.91425</coordinates>
+		</Point>
+	</Placemark>
+	<Placemark>
+		<name>VD_1_00117.JPG</name>
+		<visibility>0</visibility>
+		<description><![CDATA[<a href="H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00117.JPG">H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00117.JPG</a><br/>Component: None<br/>Photogroup: Photogroup 1<br/>Image dimensions: 5472x3648<br/>Camera model: L1D-20c<br/>Focal length: 10.4877 mm<br/>Position (WGS84): 36.3825&deg ; 54.9142&deg<br/>Ellipsoid height: 1444.78 m]]></description>
+		<styleUrl>#completePose0</styleUrl>
+		<Point>
+			<altitudeMode>absolute</altitudeMode>
+			<coordinates>54.91415439000001,36.38245692,1451.64216</coordinates>
+		</Point>
+	</Placemark>
+	<Placemark>
+		<name>VD_1_00118.JPG</name>
+		<visibility>0</visibility>
+		<description><![CDATA[<a href="H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00118.JPG">H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00118.JPG</a><br/>Component: None<br/>Photogroup: Photogroup 1<br/>Image dimensions: 5472x3648<br/>Camera model: L1D-20c<br/>Focal length: 10.4877 mm<br/>Position (WGS84): 36.3821&deg ; 54.9144&deg<br/>Ellipsoid height: 1445.77 m]]></description>
+		<styleUrl>#completePose0</styleUrl>
+		<Point>
+			<altitudeMode>absolute</altitudeMode>
+			<coordinates>54.91436925,36.382054,1452.62734</coordinates>
+		</Point>
+	</Placemark>
+	<Placemark>
+		<name>VD_1_00119.JPG</name>
+		<visibility>0</visibility>
+		<description><![CDATA[<a href="H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00119.JPG">H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00119.JPG</a><br/>Component: None<br/>Photogroup: Photogroup 1<br/>Image dimensions: 5472x3648<br/>Camera model: L1D-20c<br/>Focal length: 10.4877 mm<br/>Position (WGS84): 36.3818&deg ; 54.9142&deg<br/>Ellipsoid height: 1445.22 m]]></description>
+		<styleUrl>#completePose0</styleUrl>
+		<Point>
+			<altitudeMode>absolute</altitudeMode>
+			<coordinates>54.91415117,36.38183658,1452.07478</coordinates>
+		</Point>
+	</Placemark>
+	<Placemark>
+		<name>VD_1_00120.JPG</name>
+		<visibility>0</visibility>
+		<description><![CDATA[<a href="H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00120.JPG">H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00120.JPG</a><br/>Component: None<br/>Photogroup: Photogroup 1<br/>Image dimensions: 5472x3648<br/>Camera model: L1D-20c<br/>Focal length: 10.4877 mm<br/>Position (WGS84): 36.3816&deg ; 54.9139&deg<br/>Ellipsoid height: 1445.19 m]]></description>
+		<styleUrl>#completePose0</styleUrl>
+		<Point>
+			<altitudeMode>absolute</altitudeMode>
+			<coordinates>54.91389728000001,36.38161739,1452.0489</coordinates>
+		</Point>
+	</Placemark>
+	<Placemark>
+		<name>VD_1_00121.JPG</name>
+		<visibility>0</visibility>
+		<description><![CDATA[<a href="H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00121.JPG">H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00121.JPG</a><br/>Component: None<br/>Photogroup: Photogroup 1<br/>Image dimensions: 5472x3648<br/>Camera model: L1D-20c<br/>Focal length: 10.4877 mm<br/>Position (WGS84): 36.3814&deg ; 54.9136&deg<br/>Ellipsoid height: 1445.51 m]]></description>
+		<styleUrl>#completePose0</styleUrl>
+		<Point>
+			<altitudeMode>absolute</altitudeMode>
+			<coordinates>54.91364492000001,36.38140589,1452.37003</coordinates>
+		</Point>
+	</Placemark>
+	<Placemark>
+		<name>VD_1_00122.JPG</name>
+		<visibility>0</visibility>
+		<description><![CDATA[<a href="H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00122.JPG">H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00122.JPG</a><br/>Component: None<br/>Photogroup: Photogroup 1<br/>Image dimensions: 5472x3648<br/>Camera model: L1D-20c<br/>Focal length: 10.4877 mm<br/>Position (WGS84): 36.3812&deg ; 54.9134&deg<br/>Ellipsoid height: 1446.5 m]]></description>
+		<styleUrl>#completePose0</styleUrl>
+		<Point>
+			<altitudeMode>absolute</altitudeMode>
+			<coordinates>54.91340197,36.38119225,1453.35363</coordinates>
+		</Point>
+	</Placemark>
+	<Placemark>
+		<name>VD_1_00123.JPG</name>
+		<visibility>0</visibility>
+		<description><![CDATA[<a href="H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00123.JPG">H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00123.JPG</a><br/>Component: None<br/>Photogroup: Photogroup 1<br/>Image dimensions: 5472x3648<br/>Camera model: L1D-20c<br/>Focal length: 10.4877 mm<br/>Position (WGS84): 36.381&deg ; 54.9132&deg<br/>Ellipsoid height: 1448.04 m]]></description>
+		<styleUrl>#completePose0</styleUrl>
+		<Point>
+			<altitudeMode>absolute</altitudeMode>
+			<coordinates>54.91316053,36.38097864,1454.89467</coordinates>
+		</Point>
+	</Placemark>
+	<Placemark>
+		<name>VD_1_00124.JPG</name>
+		<visibility>0</visibility>
+		<description><![CDATA[<a href="H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00124.JPG">H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00124.JPG</a><br/>Component: None<br/>Photogroup: Photogroup 1<br/>Image dimensions: 5472x3648<br/>Camera model: L1D-20c<br/>Focal length: 10.4877 mm<br/>Position (WGS84): 36.3808&deg ; 54.9129&deg<br/>Ellipsoid height: 1448.24 m]]></description>
+		<styleUrl>#completePose0</styleUrl>
+		<Point>
+			<altitudeMode>absolute</altitudeMode>
+			<coordinates>54.91292249999999,36.38076675,1455.10137</coordinates>
+		</Point>
+	</Placemark>
+	<Placemark>
+		<name>VD_1_00125.JPG</name>
+		<visibility>0</visibility>
+		<description><![CDATA[<a href="H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00125.JPG">H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00125.JPG</a><br/>Component: None<br/>Photogroup: Photogroup 1<br/>Image dimensions: 5472x3648<br/>Camera model: L1D-20c<br/>Focal length: 10.4877 mm<br/>Position (WGS84): 36.3806&deg ; 54.9127&deg<br/>Ellipsoid height: 1447.71 m]]></description>
+		<styleUrl>#completePose0</styleUrl>
+		<Point>
+			<altitudeMode>absolute</altitudeMode>
+			<coordinates>54.91268564000001,36.38055494,1454.57053</coordinates>
+		</Point>
+	</Placemark>
+	<Placemark>
+		<name>VD_1_00126.JPG</name>
+		<visibility>0</visibility>
+		<description><![CDATA[<a href="H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00126.JPG">H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00126.JPG</a><br/>Component: None<br/>Photogroup: Photogroup 1<br/>Image dimensions: 5472x3648<br/>Camera model: L1D-20c<br/>Focal length: 10.4877 mm<br/>Position (WGS84): 36.3803&deg ; 54.9124&deg<br/>Ellipsoid height: 1446.81 m]]></description>
+		<styleUrl>#completePose0</styleUrl>
+		<Point>
+			<altitudeMode>absolute</altitudeMode>
+			<coordinates>54.91244042000001,36.38033617,1453.66448</coordinates>
+		</Point>
+	</Placemark>
+	<Placemark>
+		<name>VD_1_00127.JPG</name>
+		<visibility>0</visibility>
+		<description><![CDATA[<a href="H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00127.JPG">H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00127.JPG</a><br/>Component: None<br/>Photogroup: Photogroup 1<br/>Image dimensions: 5472x3648<br/>Camera model: L1D-20c<br/>Focal length: 10.4877 mm<br/>Position (WGS84): 36.3801&deg ; 54.9122&deg<br/>Ellipsoid height: 1446.49 m]]></description>
+		<styleUrl>#completePose0</styleUrl>
+		<Point>
+			<altitudeMode>absolute</altitudeMode>
+			<coordinates>54.91220625,36.38012558,1453.34659</coordinates>
+		</Point>
+	</Placemark>
+	<Placemark>
+		<name>VD_1_00128.JPG</name>
+		<visibility>0</visibility>
+		<description><![CDATA[<a href="H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00128.JPG">H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00128.JPG</a><br/>Component: None<br/>Photogroup: Photogroup 1<br/>Image dimensions: 5472x3648<br/>Camera model: L1D-20c<br/>Focal length: 10.4877 mm<br/>Position (WGS84): 36.3799&deg ; 54.912&deg<br/>Ellipsoid height: 1446.32 m]]></description>
+		<styleUrl>#completePose0</styleUrl>
+		<Point>
+			<altitudeMode>absolute</altitudeMode>
+			<coordinates>54.91196275,36.37991003,1453.17318</coordinates>
+		</Point>
+	</Placemark>
+	<Placemark>
+		<name>VD_1_00129.JPG</name>
+		<visibility>0</visibility>
+		<description><![CDATA[<a href="H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00129.JPG">H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00129.JPG</a><br/>Component: None<br/>Photogroup: Photogroup 1<br/>Image dimensions: 5472x3648<br/>Camera model: L1D-20c<br/>Focal length: 10.4877 mm<br/>Position (WGS84): 36.3797&deg ; 54.9117&deg<br/>Ellipsoid height: 1446.46 m]]></description>
+		<styleUrl>#completePose0</styleUrl>
+		<Point>
+			<altitudeMode>absolute</altitudeMode>
+			<coordinates>54.91172333,36.37969764,1453.3181</coordinates>
+		</Point>
+	</Placemark>
+	<Placemark>
+		<name>VD_1_00130.JPG</name>
+		<visibility>0</visibility>
+		<description><![CDATA[<a href="H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00130.JPG">H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00130.JPG</a><br/>Component: None<br/>Photogroup: Photogroup 1<br/>Image dimensions: 5472x3648<br/>Camera model: L1D-20c<br/>Focal length: 10.4877 mm<br/>Position (WGS84): 36.3795&deg ; 54.9115&deg<br/>Ellipsoid height: 1446.83 m]]></description>
+		<styleUrl>#completePose0</styleUrl>
+		<Point>
+			<altitudeMode>absolute</altitudeMode>
+			<coordinates>54.91148217,36.37948428,1453.68803</coordinates>
+		</Point>
+	</Placemark>
+	<Placemark>
+		<name>VD_1_00131.JPG</name>
+		<visibility>0</visibility>
+		<description><![CDATA[<a href="H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00131.JPG">H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00131.JPG</a><br/>Component: None<br/>Photogroup: Photogroup 1<br/>Image dimensions: 5472x3648<br/>Camera model: L1D-20c<br/>Focal length: 10.4877 mm<br/>Position (WGS84): 36.3793&deg ; 54.9113&deg<br/>Ellipsoid height: 1447.3 m]]></description>
+		<styleUrl>#completePose0</styleUrl>
+		<Point>
+			<altitudeMode>absolute</altitudeMode>
+			<coordinates>54.91125131,36.37928122,1454.15356</coordinates>
+		</Point>
+	</Placemark>
+	<Placemark>
+		<name>VD_1_00132.JPG</name>
+		<visibility>0</visibility>
+		<description><![CDATA[<a href="H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00132.JPG">H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00132.JPG</a><br/>Component: None<br/>Photogroup: Photogroup 1<br/>Image dimensions: 5472x3648<br/>Camera model: L1D-20c<br/>Focal length: 10.4877 mm<br/>Position (WGS84): 36.3791&deg ; 54.9111&deg<br/>Ellipsoid height: 1446.77 m]]></description>
+		<styleUrl>#completePose0</styleUrl>
+		<Point>
+			<altitudeMode>absolute</altitudeMode>
+			<coordinates>54.91114556,36.37914317,1453.6215</coordinates>
+		</Point>
+	</Placemark>
+	<Placemark>
+		<name>VD_1_00133.JPG</name>
+		<visibility>0</visibility>
+		<description><![CDATA[<a href="H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00133.JPG">H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00133.JPG</a><br/>Component: None<br/>Photogroup: Photogroup 1<br/>Image dimensions: 5472x3648<br/>Camera model: L1D-20c<br/>Focal length: 10.4877 mm<br/>Position (WGS84): 36.3789&deg ; 54.9115&deg<br/>Ellipsoid height: 1446.41 m]]></description>
+		<styleUrl>#completePose0</styleUrl>
+		<Point>
+			<altitudeMode>absolute</altitudeMode>
+			<coordinates>54.91153264,36.37887903,1453.2641</coordinates>
+		</Point>
+	</Placemark>
+	<Placemark>
+		<name>VD_1_00134.JPG</name>
+		<visibility>0</visibility>
+		<description><![CDATA[<a href="H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00134.JPG">H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00134.JPG</a><br/>Component: None<br/>Photogroup: Photogroup 1<br/>Image dimensions: 5472x3648<br/>Camera model: L1D-20c<br/>Focal length: 10.4877 mm<br/>Position (WGS84): 36.3791&deg ; 54.9118&deg<br/>Ellipsoid height: 1446.3 m]]></description>
+		<styleUrl>#completePose0</styleUrl>
+		<Point>
+			<altitudeMode>absolute</altitudeMode>
+			<coordinates>54.91179778,36.37907475,1453.15846</coordinates>
+		</Point>
+	</Placemark>
+	<Placemark>
+		<name>VD_1_00135.JPG</name>
+		<visibility>0</visibility>
+		<description><![CDATA[<a href="H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00135.JPG">H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00135.JPG</a><br/>Component: None<br/>Photogroup: Photogroup 1<br/>Image dimensions: 5472x3648<br/>Camera model: L1D-20c<br/>Focal length: 10.4877 mm<br/>Position (WGS84): 36.3793&deg ; 54.912&deg<br/>Ellipsoid height: 1446.03 m]]></description>
+		<styleUrl>#completePose0</styleUrl>
+		<Point>
+			<altitudeMode>absolute</altitudeMode>
+			<coordinates>54.91204633,36.37928831,1452.8829</coordinates>
+		</Point>
+	</Placemark>
+	<Placemark>
+		<name>VD_1_00136.JPG</name>
+		<visibility>0</visibility>
+		<description><![CDATA[<a href="H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00136.JPG">H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00136.JPG</a><br/>Component: None<br/>Photogroup: Photogroup 1<br/>Image dimensions: 5472x3648<br/>Camera model: L1D-20c<br/>Focal length: 10.4877 mm<br/>Position (WGS84): 36.3795&deg ; 54.9123&deg<br/>Ellipsoid height: 1445.98 m]]></description>
+		<styleUrl>#completePose0</styleUrl>
+		<Point>
+			<altitudeMode>absolute</altitudeMode>
+			<coordinates>54.91226947,36.37951544,1452.8374</coordinates>
+		</Point>
+	</Placemark>
+	<Placemark>
+		<name>VD_1_00137.JPG</name>
+		<visibility>0</visibility>
+		<description><![CDATA[<a href="H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00137.JPG">H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00137.JPG</a><br/>Component: None<br/>Photogroup: Photogroup 1<br/>Image dimensions: 5472x3648<br/>Camera model: L1D-20c<br/>Focal length: 10.4877 mm<br/>Position (WGS84): 36.3797&deg ; 54.9125&deg<br/>Ellipsoid height: 1445.93 m]]></description>
+		<styleUrl>#completePose0</styleUrl>
+		<Point>
+			<altitudeMode>absolute</altitudeMode>
+			<coordinates>54.91250635999999,36.37974458,1452.78524</coordinates>
+		</Point>
+	</Placemark>
+	<Placemark>
+		<name>VD_1_00138.JPG</name>
+		<visibility>0</visibility>
+		<description><![CDATA[<a href="H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00138.JPG">H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00138.JPG</a><br/>Component: None<br/>Photogroup: Photogroup 1<br/>Image dimensions: 5472x3648<br/>Camera model: L1D-20c<br/>Focal length: 10.4877 mm<br/>Position (WGS84): 36.38&deg ; 54.9127&deg<br/>Ellipsoid height: 1445.87 m]]></description>
+		<styleUrl>#completePose0</styleUrl>
+		<Point>
+			<altitudeMode>absolute</altitudeMode>
+			<coordinates>54.91274233,36.37995886,1452.72974</coordinates>
+		</Point>
+	</Placemark>
+	<Placemark>
+		<name>VD_1_00139.JPG</name>
+		<visibility>0</visibility>
+		<description><![CDATA[<a href="H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00139.JPG">H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00139.JPG</a><br/>Component: None<br/>Photogroup: Photogroup 1<br/>Image dimensions: 5472x3648<br/>Camera model: L1D-20c<br/>Focal length: 10.4877 mm<br/>Position (WGS84): 36.3802&deg ; 54.913&deg<br/>Ellipsoid height: 1445.68 m]]></description>
+		<styleUrl>#completePose0</styleUrl>
+		<Point>
+			<altitudeMode>absolute</altitudeMode>
+			<coordinates>54.91298239,36.38017142,1452.53454</coordinates>
+		</Point>
+	</Placemark>
+	<Placemark>
+		<name>VD_1_00140.JPG</name>
+		<visibility>0</visibility>
+		<description><![CDATA[<a href="H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00140.JPG">H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00140.JPG</a><br/>Component: None<br/>Photogroup: Photogroup 1<br/>Image dimensions: 5472x3648<br/>Camera model: L1D-20c<br/>Focal length: 10.4877 mm<br/>Position (WGS84): 36.3804&deg ; 54.9132&deg<br/>Ellipsoid height: 1445.58 m]]></description>
+		<styleUrl>#completePose0</styleUrl>
+		<Point>
+			<altitudeMode>absolute</altitudeMode>
+			<coordinates>54.91322422,36.38038525,1452.43594</coordinates>
+		</Point>
+	</Placemark>
+	<Placemark>
+		<name>VD_1_00141.JPG</name>
+		<visibility>0</visibility>
+		<description><![CDATA[<a href="H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00141.JPG">H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00141.JPG</a><br/>Component: None<br/>Photogroup: Photogroup 1<br/>Image dimensions: 5472x3648<br/>Camera model: L1D-20c<br/>Focal length: 10.4877 mm<br/>Position (WGS84): 36.3806&deg ; 54.9135&deg<br/>Ellipsoid height: 1445.54 m]]></description>
+		<styleUrl>#completePose0</styleUrl>
+		<Point>
+			<altitudeMode>absolute</altitudeMode>
+			<coordinates>54.91346031,36.38060464,1452.39923</coordinates>
+		</Point>
+	</Placemark>
+	<Placemark>
+		<name>VD_1_00142.JPG</name>
+		<visibility>0</visibility>
+		<description><![CDATA[<a href="H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00142.JPG">H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00142.JPG</a><br/>Component: None<br/>Photogroup: Photogroup 1<br/>Image dimensions: 5472x3648<br/>Camera model: L1D-20c<br/>Focal length: 10.4877 mm<br/>Position (WGS84): 36.3808&deg ; 54.9137&deg<br/>Ellipsoid height: 1445.43 m]]></description>
+		<styleUrl>#completePose0</styleUrl>
+		<Point>
+			<altitudeMode>absolute</altitudeMode>
+			<coordinates>54.91369939,36.38082089,1452.29176</coordinates>
+		</Point>
+	</Placemark>
+	<Placemark>
+		<name>VD_1_00143.JPG</name>
+		<visibility>0</visibility>
+		<description><![CDATA[<a href="H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00143.JPG">H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00143.JPG</a><br/>Component: None<br/>Photogroup: Photogroup 1<br/>Image dimensions: 5472x3648<br/>Camera model: L1D-20c<br/>Focal length: 10.4877 mm<br/>Position (WGS84): 36.381&deg ; 54.9139&deg<br/>Ellipsoid height: 1445.23 m]]></description>
+		<styleUrl>#completePose0</styleUrl>
+		<Point>
+			<altitudeMode>absolute</altitudeMode>
+			<coordinates>54.91393803,36.38101797,1452.08656</coordinates>
+		</Point>
+	</Placemark>
+	<Placemark>
+		<name>VD_1_00144.JPG</name>
+		<visibility>0</visibility>
+		<description><![CDATA[<a href="H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00144.JPG">H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00144.JPG</a><br/>Component: None<br/>Photogroup: Photogroup 1<br/>Image dimensions: 5472x3648<br/>Camera model: L1D-20c<br/>Focal length: 10.4877 mm<br/>Position (WGS84): 36.3812&deg ; 54.9142&deg<br/>Ellipsoid height: 1445.31 m]]></description>
+		<styleUrl>#completePose0</styleUrl>
+		<Point>
+			<altitudeMode>absolute</altitudeMode>
+			<coordinates>54.91418389,36.38123936,1452.16613</coordinates>
+		</Point>
+	</Placemark>
+	<Placemark>
+		<name>VD_1_00145.JPG</name>
+		<visibility>0</visibility>
+		<description><![CDATA[<a href="H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00145.JPG">H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00145.JPG</a><br/>Component: None<br/>Photogroup: Photogroup 1<br/>Image dimensions: 5472x3648<br/>Camera model: L1D-20c<br/>Focal length: 10.4877 mm<br/>Position (WGS84): 36.3815&deg ; 54.9144&deg<br/>Ellipsoid height: 1445.24 m]]></description>
+		<styleUrl>#completePose0</styleUrl>
+		<Point>
+			<altitudeMode>absolute</altitudeMode>
+			<coordinates>54.91441831,36.38145517,1452.09962</coordinates>
+		</Point>
+	</Placemark>
+	<Placemark>
+		<name>VD_1_00146.JPG</name>
+		<visibility>0</visibility>
+		<description><![CDATA[<a href="H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00146.JPG">H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00146.JPG</a><br/>Component: None<br/>Photogroup: Photogroup 1<br/>Image dimensions: 5472x3648<br/>Camera model: L1D-20c<br/>Focal length: 10.4877 mm<br/>Position (WGS84): 36.3817&deg ; 54.9146&deg<br/>Ellipsoid height: 1445.37 m]]></description>
+		<styleUrl>#completePose0</styleUrl>
+		<Point>
+			<altitudeMode>absolute</altitudeMode>
+			<coordinates>54.91464314000001,36.38165275,1452.23298</coordinates>
+		</Point>
+	</Placemark>
+	<Placemark>
+		<name>VD_1_00147.JPG</name>
+		<visibility>0</visibility>
+		<description><![CDATA[<a href="H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00147.JPG">H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00147.JPG</a><br/>Component: None<br/>Photogroup: Photogroup 1<br/>Image dimensions: 5472x3648<br/>Camera model: L1D-20c<br/>Focal length: 10.4877 mm<br/>Position (WGS84): 36.3817&deg ; 54.9148&deg<br/>Ellipsoid height: 1445.89 m]]></description>
+		<styleUrl>#completePose0</styleUrl>
+		<Point>
+			<altitudeMode>absolute</altitudeMode>
+			<coordinates>54.91475008,36.38172139,1452.75333</coordinates>
+		</Point>
+	</Placemark>
+	<Placemark>
+		<name>VD_1_00148.JPG</name>
+		<visibility>0</visibility>
+		<description><![CDATA[<a href="H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00148.JPG">H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00148.JPG</a><br/>Component: None<br/>Photogroup: Photogroup 1<br/>Image dimensions: 5472x3648<br/>Camera model: L1D-20c<br/>Focal length: 10.4877 mm<br/>Position (WGS84): 36.3813&deg ; 54.915&deg<br/>Ellipsoid height: 1445.69 m]]></description>
+		<styleUrl>#completePose0</styleUrl>
+		<Point>
+			<altitudeMode>absolute</altitudeMode>
+			<coordinates>54.91495389,36.38130986,1452.55549</coordinates>
+		</Point>
+	</Placemark>
+	<Placemark>
+		<name>VD_1_00149.JPG</name>
+		<visibility>0</visibility>
+		<description><![CDATA[<a href="H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00149.JPG">H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00149.JPG</a><br/>Component: None<br/>Photogroup: Photogroup 1<br/>Image dimensions: 5472x3648<br/>Camera model: L1D-20c<br/>Focal length: 10.4877 mm<br/>Position (WGS84): 36.3811&deg ; 54.9147&deg<br/>Ellipsoid height: 1445.15 m]]></description>
+		<styleUrl>#completePose0</styleUrl>
+		<Point>
+			<altitudeMode>absolute</altitudeMode>
+			<coordinates>54.91472242,36.38108956,1452.01504</coordinates>
+		</Point>
+	</Placemark>
+	<Placemark>
+		<name>VD_1_00150.JPG</name>
+		<visibility>0</visibility>
+		<description><![CDATA[<a href="H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00150.JPG">H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00150.JPG</a><br/>Component: None<br/>Photogroup: Photogroup 1<br/>Image dimensions: 5472x3648<br/>Camera model: L1D-20c<br/>Focal length: 10.4877 mm<br/>Position (WGS84): 36.3809&deg ; 54.9145&deg<br/>Ellipsoid height: 1445.52 m]]></description>
+		<styleUrl>#completePose0</styleUrl>
+		<Point>
+			<altitudeMode>absolute</altitudeMode>
+			<coordinates>54.91447017,36.38087261,1452.38202</coordinates>
+		</Point>
+	</Placemark>
+	<Placemark>
+		<name>VD_1_00151.JPG</name>
+		<visibility>0</visibility>
+		<description><![CDATA[<a href="H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00151.JPG">H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00151.JPG</a><br/>Component: None<br/>Photogroup: Photogroup 1<br/>Image dimensions: 5472x3648<br/>Camera model: L1D-20c<br/>Focal length: 10.4877 mm<br/>Position (WGS84): 36.3807&deg ; 54.9142&deg<br/>Ellipsoid height: 1445.79 m]]></description>
+		<styleUrl>#completePose0</styleUrl>
+		<Point>
+			<altitudeMode>absolute</altitudeMode>
+			<coordinates>54.91423425,36.38066472,1452.64731</coordinates>
+		</Point>
+	</Placemark>
+	<Placemark>
+		<name>VD_1_00152.JPG</name>
+		<visibility>0</visibility>
+		<description><![CDATA[<a href="H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00152.JPG">H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00152.JPG</a><br/>Component: None<br/>Photogroup: Photogroup 1<br/>Image dimensions: 5472x3648<br/>Camera model: L1D-20c<br/>Focal length: 10.4877 mm<br/>Position (WGS84): 36.3805&deg ; 54.914&deg<br/>Ellipsoid height: 1445.57 m]]></description>
+		<styleUrl>#completePose0</styleUrl>
+		<Point>
+			<altitudeMode>absolute</altitudeMode>
+			<coordinates>54.91399317,36.38045172,1452.43004</coordinates>
+		</Point>
+	</Placemark>
+	<Placemark>
+		<name>VD_1_00153.JPG</name>
+		<visibility>0</visibility>
+		<description><![CDATA[<a href="H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00153.JPG">H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00153.JPG</a><br/>Component: None<br/>Photogroup: Photogroup 1<br/>Image dimensions: 5472x3648<br/>Camera model: L1D-20c<br/>Focal length: 10.4877 mm<br/>Position (WGS84): 36.3802&deg ; 54.9138&deg<br/>Ellipsoid height: 1445.76 m]]></description>
+		<styleUrl>#completePose0</styleUrl>
+		<Point>
+			<altitudeMode>absolute</altitudeMode>
+			<coordinates>54.91375192,36.380238,1452.61666</coordinates>
+		</Point>
+	</Placemark>
+	<Placemark>
+		<name>VD_1_00154.JPG</name>
+		<visibility>0</visibility>
+		<description><![CDATA[<a href="H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00154.JPG">H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00154.JPG</a><br/>Component: None<br/>Photogroup: Photogroup 1<br/>Image dimensions: 5472x3648<br/>Camera model: L1D-20c<br/>Focal length: 10.4877 mm<br/>Position (WGS84): 36.38&deg ; 54.9135&deg<br/>Ellipsoid height: 1445.93 m]]></description>
+		<styleUrl>#completePose0</styleUrl>
+		<Point>
+			<altitudeMode>absolute</altitudeMode>
+			<coordinates>54.91351406,36.38002483,1452.78833</coordinates>
+		</Point>
+	</Placemark>
+	<Placemark>
+		<name>VD_1_00155.JPG</name>
+		<visibility>0</visibility>
+		<description><![CDATA[<a href="H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00155.JPG">H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00155.JPG</a><br/>Component: None<br/>Photogroup: Photogroup 1<br/>Image dimensions: 5472x3648<br/>Camera model: L1D-20c<br/>Focal length: 10.4877 mm<br/>Position (WGS84): 36.3798&deg ; 54.9133&deg<br/>Ellipsoid height: 1445.76 m]]></description>
+		<styleUrl>#completePose0</styleUrl>
+		<Point>
+			<altitudeMode>absolute</altitudeMode>
+			<coordinates>54.91328336,36.37981622,1452.62006</coordinates>
+		</Point>
+	</Placemark>
+	<Placemark>
+		<name>VD_1_00156.JPG</name>
+		<visibility>0</visibility>
+		<description><![CDATA[<a href="H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00156.JPG">H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00156.JPG</a><br/>Component: None<br/>Photogroup: Photogroup 1<br/>Image dimensions: 5472x3648<br/>Camera model: L1D-20c<br/>Focal length: 10.4877 mm<br/>Position (WGS84): 36.3796&deg ; 54.913&deg<br/>Ellipsoid height: 1445.36 m]]></description>
+		<styleUrl>#completePose0</styleUrl>
+		<Point>
+			<altitudeMode>absolute</altitudeMode>
+			<coordinates>54.91304403,36.37960269,1452.21349</coordinates>
+		</Point>
+	</Placemark>
+	<Placemark>
+		<name>VD_1_00157.JPG</name>
+		<visibility>0</visibility>
+		<description><![CDATA[<a href="H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00157.JPG">H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00157.JPG</a><br/>Component: None<br/>Photogroup: Photogroup 1<br/>Image dimensions: 5472x3648<br/>Camera model: L1D-20c<br/>Focal length: 10.4877 mm<br/>Position (WGS84): 36.3794&deg ; 54.9128&deg<br/>Ellipsoid height: 1445.17 m]]></description>
+		<styleUrl>#completePose0</styleUrl>
+		<Point>
+			<altitudeMode>absolute</altitudeMode>
+			<coordinates>54.91279839,36.379387,1452.02624</coordinates>
+		</Point>
+	</Placemark>
+	<Placemark>
+		<name>VD_1_00158.JPG</name>
+		<visibility>0</visibility>
+		<description><![CDATA[<a href="H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00158.JPG">H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00158.JPG</a><br/>Component: None<br/>Photogroup: Photogroup 1<br/>Image dimensions: 5472x3648<br/>Camera model: L1D-20c<br/>Focal length: 10.4877 mm<br/>Position (WGS84): 36.3792&deg ; 54.9126&deg<br/>Ellipsoid height: 1445.22 m]]></description>
+		<styleUrl>#completePose0</styleUrl>
+		<Point>
+			<altitudeMode>absolute</altitudeMode>
+			<coordinates>54.912557,36.37917492,1452.08194</coordinates>
+		</Point>
+	</Placemark>
+	<Placemark>
+		<name>VD_1_00159.JPG</name>
+		<visibility>0</visibility>
+		<description><![CDATA[<a href="H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00159.JPG">H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00159.JPG</a><br/>Component: None<br/>Photogroup: Photogroup 1<br/>Image dimensions: 5472x3648<br/>Camera model: L1D-20c<br/>Focal length: 10.4877 mm<br/>Position (WGS84): 36.379&deg ; 54.9123&deg<br/>Ellipsoid height: 1445.21 m]]></description>
+		<styleUrl>#completePose0</styleUrl>
+		<Point>
+			<altitudeMode>absolute</altitudeMode>
+			<coordinates>54.91231492000001,36.37895975,1452.07045</coordinates>
+		</Point>
+	</Placemark>
+	<Placemark>
+		<name>VD_1_00160.JPG</name>
+		<visibility>0</visibility>
+		<description><![CDATA[<a href="H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00160.JPG">H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00160.JPG</a><br/>Component: None<br/>Photogroup: Photogroup 1<br/>Image dimensions: 5472x3648<br/>Camera model: L1D-20c<br/>Focal length: 10.4877 mm<br/>Position (WGS84): 36.3787&deg ; 54.9121&deg<br/>Ellipsoid height: 1445.18 m]]></description>
+		<styleUrl>#completePose0</styleUrl>
+		<Point>
+			<altitudeMode>absolute</altitudeMode>
+			<coordinates>54.91207728,36.37874508,1452.03949</coordinates>
+		</Point>
+	</Placemark>
+	<Placemark>
+		<name>VD_1_00161.JPG</name>
+		<visibility>0</visibility>
+		<description><![CDATA[<a href="H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00161.JPG">H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00161.JPG</a><br/>Component: None<br/>Photogroup: Photogroup 1<br/>Image dimensions: 5472x3648<br/>Camera model: L1D-20c<br/>Focal length: 10.4877 mm<br/>Position (WGS84): 36.3786&deg ; 54.9119&deg<br/>Ellipsoid height: 1445.41 m]]></description>
+		<styleUrl>#completePose0</styleUrl>
+		<Point>
+			<altitudeMode>absolute</altitudeMode>
+			<coordinates>54.91186155999999,36.37855739,1452.27147</coordinates>
+		</Point>
+	</Placemark>
+	<Placemark>
+		<name>VD_1_00162.JPG</name>
+		<visibility>0</visibility>
+		<description><![CDATA[<a href="H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00162.JPG">H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00162.JPG</a><br/>Component: None<br/>Photogroup: Photogroup 1<br/>Image dimensions: 5472x3648<br/>Camera model: L1D-20c<br/>Focal length: 10.4877 mm<br/>Position (WGS84): 36.3785&deg ; 54.9118&deg<br/>Ellipsoid height: 1445.1 m]]></description>
+		<styleUrl>#completePose0</styleUrl>
+		<Point>
+			<altitudeMode>absolute</altitudeMode>
+			<coordinates>54.91183189000001,36.37848417,1451.95491</coordinates>
+		</Point>
+	</Placemark>
+	<Placemark>
+		<name>VD_1_00163.JPG</name>
+		<visibility>0</visibility>
+		<description><![CDATA[<a href="H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00163.JPG">H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00163.JPG</a><br/>Component: None<br/>Photogroup: Photogroup 1<br/>Image dimensions: 5472x3648<br/>Camera model: L1D-20c<br/>Focal length: 10.4877 mm<br/>Position (WGS84): 36.3782&deg ; 54.9122&deg<br/>Ellipsoid height: 1445.48 m]]></description>
+		<styleUrl>#completePose0</styleUrl>
+		<Point>
+			<altitudeMode>absolute</altitudeMode>
+			<coordinates>54.91221806,36.3782415,1452.33501</coordinates>
+		</Point>
+	</Placemark>
+	<Placemark>
+		<name>VD_1_00164.JPG</name>
+		<visibility>0</visibility>
+		<description><![CDATA[<a href="H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00164.JPG">H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00164.JPG</a><br/>Component: None<br/>Photogroup: Photogroup 1<br/>Image dimensions: 5472x3648<br/>Camera model: L1D-20c<br/>Focal length: 10.4877 mm<br/>Position (WGS84): 36.3784&deg ; 54.9125&deg<br/>Ellipsoid height: 1445.53 m]]></description>
+		<styleUrl>#completePose0</styleUrl>
+		<Point>
+			<altitudeMode>absolute</altitudeMode>
+			<coordinates>54.91246714,36.37843008,1452.38751</coordinates>
+		</Point>
+	</Placemark>
+	<Placemark>
+		<name>VD_1_00165.JPG</name>
+		<visibility>0</visibility>
+		<description><![CDATA[<a href="H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00165.JPG">H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00165.JPG</a><br/>Component: None<br/>Photogroup: Photogroup 1<br/>Image dimensions: 5472x3648<br/>Camera model: L1D-20c<br/>Focal length: 10.4877 mm<br/>Position (WGS84): 36.3787&deg ; 54.9127&deg<br/>Ellipsoid height: 1445.75 m]]></description>
+		<styleUrl>#completePose0</styleUrl>
+		<Point>
+			<altitudeMode>absolute</altitudeMode>
+			<coordinates>54.91272031,36.37865167,1452.61237</coordinates>
+		</Point>
+	</Placemark>
+	<Placemark>
+		<name>VD_1_00166.JPG</name>
+		<visibility>0</visibility>
+		<description><![CDATA[<a href="H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00166.JPG">H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00166.JPG</a><br/>Component: None<br/>Photogroup: Photogroup 1<br/>Image dimensions: 5472x3648<br/>Camera model: L1D-20c<br/>Focal length: 10.4877 mm<br/>Position (WGS84): 36.3789&deg ; 54.913&deg<br/>Ellipsoid height: 1445.76 m]]></description>
+		<styleUrl>#completePose0</styleUrl>
+		<Point>
+			<altitudeMode>absolute</altitudeMode>
+			<coordinates>54.91295039,36.37887369,1452.61872</coordinates>
+		</Point>
+	</Placemark>
+	<Placemark>
+		<name>VD_1_00167.JPG</name>
+		<visibility>0</visibility>
+		<description><![CDATA[<a href="H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00167.JPG">H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00167.JPG</a><br/>Component: None<br/>Photogroup: Photogroup 1<br/>Image dimensions: 5472x3648<br/>Camera model: L1D-20c<br/>Focal length: 10.4877 mm<br/>Position (WGS84): 36.3791&deg ; 54.9132&deg<br/>Ellipsoid height: 1446.19 m]]></description>
+		<styleUrl>#completePose0</styleUrl>
+		<Point>
+			<altitudeMode>absolute</altitudeMode>
+			<coordinates>54.91318942,36.37909561,1453.04586</coordinates>
+		</Point>
+	</Placemark>
+	<Placemark>
+		<name>VD_1_00168.JPG</name>
+		<visibility>0</visibility>
+		<description><![CDATA[<a href="H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00168.JPG">H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00168.JPG</a><br/>Component: None<br/>Photogroup: Photogroup 1<br/>Image dimensions: 5472x3648<br/>Camera model: L1D-20c<br/>Focal length: 10.4877 mm<br/>Position (WGS84): 36.3793&deg ; 54.9134&deg<br/>Ellipsoid height: 1446.19 m]]></description>
+		<styleUrl>#completePose0</styleUrl>
+		<Point>
+			<altitudeMode>absolute</altitudeMode>
+			<coordinates>54.91342622,36.37931089,1453.04839</coordinates>
+		</Point>
+	</Placemark>
+	<Placemark>
+		<name>VD_1_00169.JPG</name>
+		<visibility>0</visibility>
+		<description><![CDATA[<a href="H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00169.JPG">H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00169.JPG</a><br/>Component: None<br/>Photogroup: Photogroup 1<br/>Image dimensions: 5472x3648<br/>Camera model: L1D-20c<br/>Focal length: 10.4877 mm<br/>Position (WGS84): 36.3795&deg ; 54.9137&deg<br/>Ellipsoid height: 1446.13 m]]></description>
+		<styleUrl>#completePose0</styleUrl>
+		<Point>
+			<altitudeMode>absolute</altitudeMode>
+			<coordinates>54.91366832999999,36.379526,1452.98597</coordinates>
+		</Point>
+	</Placemark>
+	<Placemark>
+		<name>VD_1_00170.JPG</name>
+		<visibility>0</visibility>
+		<description><![CDATA[<a href="H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00170.JPG">H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00170.JPG</a><br/>Component: None<br/>Photogroup: Photogroup 1<br/>Image dimensions: 5472x3648<br/>Camera model: L1D-20c<br/>Focal length: 10.4877 mm<br/>Position (WGS84): 36.3797&deg ; 54.9139&deg<br/>Ellipsoid height: 1446 m]]></description>
+		<styleUrl>#completePose0</styleUrl>
+		<Point>
+			<altitudeMode>absolute</altitudeMode>
+			<coordinates>54.91390919,36.37973767,1452.86232</coordinates>
+		</Point>
+	</Placemark>
+	<Placemark>
+		<name>VD_1_00171.JPG</name>
+		<visibility>0</visibility>
+		<description><![CDATA[<a href="H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00171.JPG">H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00171.JPG</a><br/>Component: None<br/>Photogroup: Photogroup 1<br/>Image dimensions: 5472x3648<br/>Camera model: L1D-20c<br/>Focal length: 10.4877 mm<br/>Position (WGS84): 36.3799&deg ; 54.9141&deg<br/>Ellipsoid height: 1445.91 m]]></description>
+		<styleUrl>#completePose0</styleUrl>
+		<Point>
+			<altitudeMode>absolute</altitudeMode>
+			<coordinates>54.91414472,36.37994764,1452.76779</coordinates>
+		</Point>
+	</Placemark>
+	<Placemark>
+		<name>VD_1_00172.JPG</name>
+		<visibility>0</visibility>
+		<description><![CDATA[<a href="H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00172.JPG">H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00172.JPG</a><br/>Component: None<br/>Photogroup: Photogroup 1<br/>Image dimensions: 5472x3648<br/>Camera model: L1D-20c<br/>Focal length: 10.4877 mm<br/>Position (WGS84): 36.3802&deg ; 54.9144&deg<br/>Ellipsoid height: 1445.84 m]]></description>
+		<styleUrl>#completePose0</styleUrl>
+		<Point>
+			<altitudeMode>absolute</altitudeMode>
+			<coordinates>54.91438367,36.38016142,1452.70496</coordinates>
+		</Point>
+	</Placemark>
+	<Placemark>
+		<name>VD_1_00173.JPG</name>
+		<visibility>0</visibility>
+		<description><![CDATA[<a href="H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00173.JPG">H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00173.JPG</a><br/>Component: None<br/>Photogroup: Photogroup 1<br/>Image dimensions: 5472x3648<br/>Camera model: L1D-20c<br/>Focal length: 10.4877 mm<br/>Position (WGS84): 36.3804&deg ; 54.9146&deg<br/>Ellipsoid height: 1445.89 m]]></description>
+		<styleUrl>#completePose0</styleUrl>
+		<Point>
+			<altitudeMode>absolute</altitudeMode>
+			<coordinates>54.91462167,36.38037742,1452.75593</coordinates>
+		</Point>
+	</Placemark>
+	<Placemark>
+		<name>VD_1_00174.JPG</name>
+		<visibility>0</visibility>
+		<description><![CDATA[<a href="H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00174.JPG">H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00174.JPG</a><br/>Component: None<br/>Photogroup: Photogroup 1<br/>Image dimensions: 5472x3648<br/>Camera model: L1D-20c<br/>Focal length: 10.4877 mm<br/>Position (WGS84): 36.3806&deg ; 54.9149&deg<br/>Ellipsoid height: 1446.22 m]]></description>
+		<styleUrl>#completePose0</styleUrl>
+		<Point>
+			<altitudeMode>absolute</altitudeMode>
+			<coordinates>54.91486419,36.38059833,1453.08357</coordinates>
+		</Point>
+	</Placemark>
+	<Placemark>
+		<name>VD_1_00175.JPG</name>
+		<visibility>0</visibility>
+		<description><![CDATA[<a href="H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00175.JPG">H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00175.JPG</a><br/>Component: None<br/>Photogroup: Photogroup 1<br/>Image dimensions: 5472x3648<br/>Camera model: L1D-20c<br/>Focal length: 10.4877 mm<br/>Position (WGS84): 36.3808&deg ; 54.9151&deg<br/>Ellipsoid height: 1446.46 m]]></description>
+		<styleUrl>#completePose0</styleUrl>
+		<Point>
+			<altitudeMode>absolute</altitudeMode>
+			<coordinates>54.91509722,36.38080581,1453.32551</coordinates>
+		</Point>
+	</Placemark>
+	<Placemark>
+		<name>VD_1_00176.JPG</name>
+		<visibility>0</visibility>
+		<description><![CDATA[<a href="H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00176.JPG">H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00176.JPG</a><br/>Component: None<br/>Photogroup: Photogroup 1<br/>Image dimensions: 5472x3648<br/>Camera model: L1D-20c<br/>Focal length: 10.4877 mm<br/>Position (WGS84): 36.381&deg ; 54.9153&deg<br/>Ellipsoid height: 1446.6 m]]></description>
+		<styleUrl>#completePose0</styleUrl>
+		<Point>
+			<altitudeMode>absolute</altitudeMode>
+			<coordinates>54.91529811,36.38098144,1453.46294</coordinates>
+		</Point>
+	</Placemark>
+	<Placemark>
+		<name>VD_1_00177.JPG</name>
+		<visibility>0</visibility>
+		<description><![CDATA[<a href="H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00177.JPG">H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00177.JPG</a><br/>Component: None<br/>Photogroup: Photogroup 1<br/>Image dimensions: 5472x3648<br/>Camera model: L1D-20c<br/>Focal length: 10.4877 mm<br/>Position (WGS84): 36.3806&deg ; 54.9156&deg<br/>Ellipsoid height: 1445.67 m]]></description>
+		<styleUrl>#completePose0</styleUrl>
+		<Point>
+			<altitudeMode>absolute</altitudeMode>
+			<coordinates>54.91556328,36.38056983,1452.53787</coordinates>
+		</Point>
+	</Placemark>
+	<Placemark>
+		<name>VD_1_00178.JPG</name>
+		<visibility>0</visibility>
+		<description><![CDATA[<a href="H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00178.JPG">H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00178.JPG</a><br/>Component: None<br/>Photogroup: Photogroup 1<br/>Image dimensions: 5472x3648<br/>Camera model: L1D-20c<br/>Focal length: 10.4877 mm<br/>Position (WGS84): 36.3803&deg ; 54.9153&deg<br/>Ellipsoid height: 1445.7 m]]></description>
+		<styleUrl>#completePose0</styleUrl>
+		<Point>
+			<altitudeMode>absolute</altitudeMode>
+			<coordinates>54.91533893999999,36.38034778,1452.56613</coordinates>
+		</Point>
+	</Placemark>
+	<Placemark>
+		<name>VD_1_00179.JPG</name>
+		<visibility>0</visibility>
+		<description><![CDATA[<a href="H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00179.JPG">H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00179.JPG</a><br/>Component: None<br/>Photogroup: Photogroup 1<br/>Image dimensions: 5472x3648<br/>Camera model: L1D-20c<br/>Focal length: 10.4877 mm<br/>Position (WGS84): 36.3801&deg ; 54.9151&deg<br/>Ellipsoid height: 1446.05 m]]></description>
+		<styleUrl>#completePose0</styleUrl>
+		<Point>
+			<altitudeMode>absolute</altitudeMode>
+			<coordinates>54.91506817,36.38013392,1452.90839</coordinates>
+		</Point>
+	</Placemark>
+	<Placemark>
+		<name>VD_1_00180.JPG</name>
+		<visibility>0</visibility>
+		<description><![CDATA[<a href="H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00180.JPG">H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00180.JPG</a><br/>Component: None<br/>Photogroup: Photogroup 1<br/>Image dimensions: 5472x3648<br/>Camera model: L1D-20c<br/>Focal length: 10.4877 mm<br/>Position (WGS84): 36.3799&deg ; 54.9148&deg<br/>Ellipsoid height: 1446.16 m]]></description>
+		<styleUrl>#completePose0</styleUrl>
+		<Point>
+			<altitudeMode>absolute</altitudeMode>
+			<coordinates>54.91482261,36.37991906,1453.02294</coordinates>
+		</Point>
+	</Placemark>
+	<Placemark>
+		<name>VD_1_00181.JPG</name>
+		<visibility>0</visibility>
+		<description><![CDATA[<a href="H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00181.JPG">H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00181.JPG</a><br/>Component: None<br/>Photogroup: Photogroup 1<br/>Image dimensions: 5472x3648<br/>Camera model: L1D-20c<br/>Focal length: 10.4877 mm<br/>Position (WGS84): 36.3797&deg ; 54.9146&deg<br/>Ellipsoid height: 1446.04 m]]></description>
+		<styleUrl>#completePose0</styleUrl>
+		<Point>
+			<altitudeMode>absolute</altitudeMode>
+			<coordinates>54.91458271999999,36.37970578,1452.89846</coordinates>
+		</Point>
+	</Placemark>
+	<Placemark>
+		<name>VD_1_00182.JPG</name>
+		<visibility>0</visibility>
+		<description><![CDATA[<a href="H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00182.JPG">H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00182.JPG</a><br/>Component: None<br/>Photogroup: Photogroup 1<br/>Image dimensions: 5472x3648<br/>Camera model: L1D-20c<br/>Focal length: 10.4877 mm<br/>Position (WGS84): 36.3795&deg ; 54.9143&deg<br/>Ellipsoid height: 1445.86 m]]></description>
+		<styleUrl>#completePose0</styleUrl>
+		<Point>
+			<altitudeMode>absolute</altitudeMode>
+			<coordinates>54.91434828,36.37949656,1452.72184</coordinates>
+		</Point>
+	</Placemark>
+	<Placemark>
+		<name>VD_1_00183.JPG</name>
+		<visibility>0</visibility>
+		<description><![CDATA[<a href="H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00183.JPG">H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00183.JPG</a><br/>Component: None<br/>Photogroup: Photogroup 1<br/>Image dimensions: 5472x3648<br/>Camera model: L1D-20c<br/>Focal length: 10.4877 mm<br/>Position (WGS84): 36.3793&deg ; 54.9141&deg<br/>Ellipsoid height: 1445.82 m]]></description>
+		<styleUrl>#completePose0</styleUrl>
+		<Point>
+			<altitudeMode>absolute</altitudeMode>
+			<coordinates>54.91410792,36.37928181,1452.68549</coordinates>
+		</Point>
+	</Placemark>
+	<Placemark>
+		<name>VD_1_00184.JPG</name>
+		<visibility>0</visibility>
+		<description><![CDATA[<a href="H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00184.JPG">H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00184.JPG</a><br/>Component: None<br/>Photogroup: Photogroup 1<br/>Image dimensions: 5472x3648<br/>Camera model: L1D-20c<br/>Focal length: 10.4877 mm<br/>Position (WGS84): 36.3791&deg ; 54.9139&deg<br/>Ellipsoid height: 1445.81 m]]></description>
+		<styleUrl>#completePose0</styleUrl>
+		<Point>
+			<altitudeMode>absolute</altitudeMode>
+			<coordinates>54.91387331,36.37906872,1452.66878</coordinates>
+		</Point>
+	</Placemark>
+	<Placemark>
+		<name>VD_1_00185.JPG</name>
+		<visibility>0</visibility>
+		<description><![CDATA[<a href="H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00185.JPG">H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00185.JPG</a><br/>Component: None<br/>Photogroup: Photogroup 1<br/>Image dimensions: 5472x3648<br/>Camera model: L1D-20c<br/>Focal length: 10.4877 mm<br/>Position (WGS84): 36.3789&deg ; 54.9136&deg<br/>Ellipsoid height: 1445.92 m]]></description>
+		<styleUrl>#completePose0</styleUrl>
+		<Point>
+			<altitudeMode>absolute</altitudeMode>
+			<coordinates>54.91363553,36.37886075,1452.78309</coordinates>
+		</Point>
+	</Placemark>
+	<Placemark>
+		<name>VD_1_00186.JPG</name>
+		<visibility>0</visibility>
+		<description><![CDATA[<a href="H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00186.JPG">H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00186.JPG</a><br/>Component: None<br/>Photogroup: Photogroup 1<br/>Image dimensions: 5472x3648<br/>Camera model: L1D-20c<br/>Focal length: 10.4877 mm<br/>Position (WGS84): 36.3786&deg ; 54.9134&deg<br/>Ellipsoid height: 1445.79 m]]></description>
+		<styleUrl>#completePose0</styleUrl>
+		<Point>
+			<altitudeMode>absolute</altitudeMode>
+			<coordinates>54.91339325,36.37864158,1452.65215</coordinates>
+		</Point>
+	</Placemark>
+	<Placemark>
+		<name>VD_1_00187.JPG</name>
+		<visibility>0</visibility>
+		<description><![CDATA[<a href="H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00187.JPG">H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00187.JPG</a><br/>Component: None<br/>Photogroup: Photogroup 1<br/>Image dimensions: 5472x3648<br/>Camera model: L1D-20c<br/>Focal length: 10.4877 mm<br/>Position (WGS84): 36.3784&deg ; 54.9132&deg<br/>Ellipsoid height: 1445.6 m]]></description>
+		<styleUrl>#completePose0</styleUrl>
+		<Point>
+			<altitudeMode>absolute</altitudeMode>
+			<coordinates>54.91315694,36.37843033,1452.45791</coordinates>
+		</Point>
+	</Placemark>
+	<Placemark>
+		<name>VD_1_00188.JPG</name>
+		<visibility>0</visibility>
+		<description><![CDATA[<a href="H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00188.JPG">H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00188.JPG</a><br/>Component: None<br/>Photogroup: Photogroup 1<br/>Image dimensions: 5472x3648<br/>Camera model: L1D-20c<br/>Focal length: 10.4877 mm<br/>Position (WGS84): 36.3782&deg ; 54.9129&deg<br/>Ellipsoid height: 1445.76 m]]></description>
+		<styleUrl>#completePose0</styleUrl>
+		<Point>
+			<altitudeMode>absolute</altitudeMode>
+			<coordinates>54.91291511000001,36.37821519,1452.62401</coordinates>
+		</Point>
+	</Placemark>
+	<Placemark>
+		<name>VD_1_00189.JPG</name>
+		<visibility>0</visibility>
+		<description><![CDATA[<a href="H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00189.JPG">H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00189.JPG</a><br/>Component: None<br/>Photogroup: Photogroup 1<br/>Image dimensions: 5472x3648<br/>Camera model: L1D-20c<br/>Focal length: 10.4877 mm<br/>Position (WGS84): 36.378&deg ; 54.9128&deg<br/>Ellipsoid height: 1445.24 m]]></description>
+		<styleUrl>#completePose0</styleUrl>
+		<Point>
+			<altitudeMode>absolute</altitudeMode>
+			<coordinates>54.91276614,36.37804639,1452.09536</coordinates>
+		</Point>
+	</Placemark>
+	<Placemark>
+		<name>VD_1_00190.JPG</name>
+		<visibility>0</visibility>
+		<description><![CDATA[<a href="H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00190.JPG">H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00190.JPG</a><br/>Component: None<br/>Photogroup: Photogroup 1<br/>Image dimensions: 5472x3648<br/>Camera model: L1D-20c<br/>Focal length: 10.4877 mm<br/>Position (WGS84): 36.3779&deg ; 54.9133&deg<br/>Ellipsoid height: 1445.34 m]]></description>
+		<styleUrl>#completePose0</styleUrl>
+		<Point>
+			<altitudeMode>absolute</altitudeMode>
+			<coordinates>54.91327296999999,36.37786606,1452.19927</coordinates>
+		</Point>
+	</Placemark>
+	<Placemark>
+		<name>VD_1_00191.JPG</name>
+		<visibility>0</visibility>
+		<description><![CDATA[<a href="H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00191.JPG">H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00191.JPG</a><br/>Component: None<br/>Photogroup: Photogroup 1<br/>Image dimensions: 5472x3648<br/>Camera model: L1D-20c<br/>Focal length: 10.4877 mm<br/>Position (WGS84): 36.3781&deg ; 54.9135&deg<br/>Ellipsoid height: 1445.48 m]]></description>
+		<styleUrl>#completePose0</styleUrl>
+		<Point>
+			<altitudeMode>absolute</altitudeMode>
+			<coordinates>54.91354297000001,36.37805739,1452.33813</coordinates>
+		</Point>
+	</Placemark>
+	<Placemark>
+		<name>VD_1_00192.JPG</name>
+		<visibility>0</visibility>
+		<description><![CDATA[<a href="H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00192.JPG">H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00192.JPG</a><br/>Component: None<br/>Photogroup: Photogroup 1<br/>Image dimensions: 5472x3648<br/>Camera model: L1D-20c<br/>Focal length: 10.4877 mm<br/>Position (WGS84): 36.3783&deg ; 54.9138&deg<br/>Ellipsoid height: 1445.3 m]]></description>
+		<styleUrl>#completePose0</styleUrl>
+		<Point>
+			<altitudeMode>absolute</altitudeMode>
+			<coordinates>54.91375513999999,36.37830769,1452.16331</coordinates>
+		</Point>
+	</Placemark>
+	<Placemark>
+		<name>VD_1_00193.JPG</name>
+		<visibility>0</visibility>
+		<description><![CDATA[<a href="H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00193.JPG">H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00193.JPG</a><br/>Component: None<br/>Photogroup: Photogroup 1<br/>Image dimensions: 5472x3648<br/>Camera model: L1D-20c<br/>Focal length: 10.4877 mm<br/>Position (WGS84): 36.3785&deg ; 54.914&deg<br/>Ellipsoid height: 1445.66 m]]></description>
+		<styleUrl>#completePose0</styleUrl>
+		<Point>
+			<altitudeMode>absolute</altitudeMode>
+			<coordinates>54.91398286,36.37853081,1452.52457</coordinates>
+		</Point>
+	</Placemark>
+	<Placemark>
+		<name>VD_1_00194.JPG</name>
+		<visibility>0</visibility>
+		<description><![CDATA[<a href="H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00194.JPG">H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00194.JPG</a><br/>Component: None<br/>Photogroup: Photogroup 1<br/>Image dimensions: 5472x3648<br/>Camera model: L1D-20c<br/>Focal length: 10.4877 mm<br/>Position (WGS84): 36.3787&deg ; 54.9142&deg<br/>Ellipsoid height: 1445.72 m]]></description>
+		<styleUrl>#completePose0</styleUrl>
+		<Point>
+			<altitudeMode>absolute</altitudeMode>
+			<coordinates>54.91422044,36.37874497,1452.57995</coordinates>
+		</Point>
+	</Placemark>
+	<Placemark>
+		<name>VD_1_00195.JPG</name>
+		<visibility>0</visibility>
+		<description><![CDATA[<a href="H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00195.JPG">H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00195.JPG</a><br/>Component: None<br/>Photogroup: Photogroup 1<br/>Image dimensions: 5472x3648<br/>Camera model: L1D-20c<br/>Focal length: 10.4877 mm<br/>Position (WGS84): 36.379&deg ; 54.9145&deg<br/>Ellipsoid height: 1446.23 m]]></description>
+		<styleUrl>#completePose0</styleUrl>
+		<Point>
+			<altitudeMode>absolute</altitudeMode>
+			<coordinates>54.91446242,36.37896322,1453.0921</coordinates>
+		</Point>
+	</Placemark>
+	<Placemark>
+		<name>VD_1_00196.JPG</name>
+		<visibility>0</visibility>
+		<description><![CDATA[<a href="H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00196.JPG">H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00196.JPG</a><br/>Component: None<br/>Photogroup: Photogroup 1<br/>Image dimensions: 5472x3648<br/>Camera model: L1D-20c<br/>Focal length: 10.4877 mm<br/>Position (WGS84): 36.3792&deg ; 54.9147&deg<br/>Ellipsoid height: 1446.1 m]]></description>
+		<styleUrl>#completePose0</styleUrl>
+		<Point>
+			<altitudeMode>absolute</altitudeMode>
+			<coordinates>54.91470907999999,36.37917811,1452.96561</coordinates>
+		</Point>
+	</Placemark>
+	<Placemark>
+		<name>VD_1_00197.JPG</name>
+		<visibility>0</visibility>
+		<description><![CDATA[<a href="H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00197.JPG">H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00197.JPG</a><br/>Component: None<br/>Photogroup: Photogroup 1<br/>Image dimensions: 5472x3648<br/>Camera model: L1D-20c<br/>Focal length: 10.4877 mm<br/>Position (WGS84): 36.3794&deg ; 54.9149&deg<br/>Ellipsoid height: 1446.25 m]]></description>
+		<styleUrl>#completePose0</styleUrl>
+		<Point>
+			<altitudeMode>absolute</altitudeMode>
+			<coordinates>54.91494418999999,36.37939114,1453.10987</coordinates>
+		</Point>
+	</Placemark>
+	<Placemark>
+		<name>VD_1_00198.JPG</name>
+		<visibility>0</visibility>
+		<description><![CDATA[<a href="H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00198.JPG">H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00198.JPG</a><br/>Component: None<br/>Photogroup: Photogroup 1<br/>Image dimensions: 5472x3648<br/>Camera model: L1D-20c<br/>Focal length: 10.4877 mm<br/>Position (WGS84): 36.3796&deg ; 54.9152&deg<br/>Ellipsoid height: 1446.72 m]]></description>
+		<styleUrl>#completePose0</styleUrl>
+		<Point>
+			<altitudeMode>absolute</altitudeMode>
+			<coordinates>54.91518435999999,36.37960353,1453.58302</coordinates>
+		</Point>
+	</Placemark>
+	<Placemark>
+		<name>VD_1_00199.JPG</name>
+		<visibility>0</visibility>
+		<description><![CDATA[<a href="H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00199.JPG">H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00199.JPG</a><br/>Component: None<br/>Photogroup: Photogroup 1<br/>Image dimensions: 5472x3648<br/>Camera model: L1D-20c<br/>Focal length: 10.4877 mm<br/>Position (WGS84): 36.3798&deg ; 54.9154&deg<br/>Ellipsoid height: 1447.42 m]]></description>
+		<styleUrl>#completePose0</styleUrl>
+		<Point>
+			<altitudeMode>absolute</altitudeMode>
+			<coordinates>54.91542028,36.37981756,1454.28767</coordinates>
+		</Point>
+	</Placemark>
+	<Placemark>
+		<name>VD_1_00200.JPG</name>
+		<visibility>0</visibility>
+		<description><![CDATA[<a href="H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00200.JPG">H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00200.JPG</a><br/>Component: None<br/>Photogroup: Photogroup 1<br/>Image dimensions: 5472x3648<br/>Camera model: L1D-20c<br/>Focal length: 10.4877 mm<br/>Position (WGS84): 36.38&deg ; 54.9157&deg<br/>Ellipsoid height: 1448.33 m]]></description>
+		<styleUrl>#completePose0</styleUrl>
+		<Point>
+			<altitudeMode>absolute</altitudeMode>
+			<coordinates>54.91566238999999,36.38003142,1455.19364</coordinates>
+		</Point>
+	</Placemark>
+	<Placemark>
+		<name>VD_1_00201.JPG</name>
+		<visibility>0</visibility>
+		<description><![CDATA[<a href="H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00201.JPG">H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00201.JPG</a><br/>Component: None<br/>Photogroup: Photogroup 1<br/>Image dimensions: 5472x3648<br/>Camera model: L1D-20c<br/>Focal length: 10.4877 mm<br/>Position (WGS84): 36.3802&deg ; 54.9159&deg<br/>Ellipsoid height: 1448.2 m]]></description>
+		<styleUrl>#completePose0</styleUrl>
+		<Point>
+			<altitudeMode>absolute</altitudeMode>
+			<coordinates>54.91586903,36.38021989,1455.06067</coordinates>
+		</Point>
+	</Placemark>
+	<Placemark>
+		<name>VD_1_00202.JPG</name>
+		<visibility>0</visibility>
+		<description><![CDATA[<a href="H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00202.JPG">H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00202.JPG</a><br/>Component: None<br/>Photogroup: Photogroup 1<br/>Image dimensions: 5472x3648<br/>Camera model: L1D-20c<br/>Focal length: 10.4877 mm<br/>Position (WGS84): 36.3802&deg ; 54.9159&deg<br/>Ellipsoid height: 1446.52 m]]></description>
+		<styleUrl>#completePose0</styleUrl>
+		<Point>
+			<altitudeMode>absolute</altitudeMode>
+			<coordinates>54.91593919,36.38024,1453.38305</coordinates>
+		</Point>
+	</Placemark>
+	<Placemark>
+		<name>VD_1_00203.JPG</name>
+		<visibility>0</visibility>
+		<description><![CDATA[<a href="H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00203.JPG">H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00203.JPG</a><br/>Component: None<br/>Photogroup: Photogroup 1<br/>Image dimensions: 5472x3648<br/>Camera model: L1D-20c<br/>Focal length: 10.4877 mm<br/>Position (WGS84): 36.3798&deg ; 54.9162&deg<br/>Ellipsoid height: 1444.62 m]]></description>
+		<styleUrl>#completePose0</styleUrl>
+		<Point>
+			<altitudeMode>absolute</altitudeMode>
+			<coordinates>54.91615972,36.37982986,1451.48721</coordinates>
+		</Point>
+	</Placemark>
+	<Placemark>
+		<name>VD_1_00204.JPG</name>
+		<visibility>0</visibility>
+		<description><![CDATA[<a href="H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00204.JPG">H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00204.JPG</a><br/>Component: None<br/>Photogroup: Photogroup 1<br/>Image dimensions: 5472x3648<br/>Camera model: L1D-20c<br/>Focal length: 10.4877 mm<br/>Position (WGS84): 36.3796&deg ; 54.9159&deg<br/>Ellipsoid height: 1445.54 m]]></description>
+		<styleUrl>#completePose0</styleUrl>
+		<Point>
+			<altitudeMode>absolute</altitudeMode>
+			<coordinates>54.91593517,36.37961261,1452.40394</coordinates>
+		</Point>
+	</Placemark>
+	<Placemark>
+		<name>VD_1_00205.JPG</name>
+		<visibility>0</visibility>
+		<description><![CDATA[<a href="H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00205.JPG">H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00205.JPG</a><br/>Component: None<br/>Photogroup: Photogroup 1<br/>Image dimensions: 5472x3648<br/>Camera model: L1D-20c<br/>Focal length: 10.4877 mm<br/>Position (WGS84): 36.3794&deg ; 54.9157&deg<br/>Ellipsoid height: 1446.12 m]]></description>
+		<styleUrl>#completePose0</styleUrl>
+		<Point>
+			<altitudeMode>absolute</altitudeMode>
+			<coordinates>54.91567808,36.37939706,1452.98198</coordinates>
+		</Point>
+	</Placemark>
+	<Placemark>
+		<name>VD_1_00206.JPG</name>
+		<visibility>0</visibility>
+		<description><![CDATA[<a href="H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00206.JPG">H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00206.JPG</a><br/>Component: None<br/>Photogroup: Photogroup 1<br/>Image dimensions: 5472x3648<br/>Camera model: L1D-20c<br/>Focal length: 10.4877 mm<br/>Position (WGS84): 36.3792&deg ; 54.9154&deg<br/>Ellipsoid height: 1446.06 m]]></description>
+		<styleUrl>#completePose0</styleUrl>
+		<Point>
+			<altitudeMode>absolute</altitudeMode>
+			<coordinates>54.91542806,36.37918053,1452.92704</coordinates>
+		</Point>
+	</Placemark>
+	<Placemark>
+		<name>VD_1_00207.JPG</name>
+		<visibility>0</visibility>
+		<description><![CDATA[<a href="H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00207.JPG">H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00207.JPG</a><br/>Component: None<br/>Photogroup: Photogroup 1<br/>Image dimensions: 5472x3648<br/>Camera model: L1D-20c<br/>Focal length: 10.4877 mm<br/>Position (WGS84): 36.379&deg ; 54.9152&deg<br/>Ellipsoid height: 1446.51 m]]></description>
+		<styleUrl>#completePose0</styleUrl>
+		<Point>
+			<altitudeMode>absolute</altitudeMode>
+			<coordinates>54.91518975,36.37896931,1453.37028</coordinates>
+		</Point>
+	</Placemark>
+	<Placemark>
+		<name>VD_1_00208.JPG</name>
+		<visibility>0</visibility>
+		<description><![CDATA[<a href="H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00208.JPG">H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00208.JPG</a><br/>Component: None<br/>Photogroup: Photogroup 1<br/>Image dimensions: 5472x3648<br/>Camera model: L1D-20c<br/>Focal length: 10.4877 mm<br/>Position (WGS84): 36.3788&deg ; 54.915&deg<br/>Ellipsoid height: 1446.55 m]]></description>
+		<styleUrl>#completePose0</styleUrl>
+		<Point>
+			<altitudeMode>absolute</altitudeMode>
+			<coordinates>54.91495064,36.37875514,1453.41393</coordinates>
+		</Point>
+	</Placemark>
+	<Placemark>
+		<name>VD_1_00209.JPG</name>
+		<visibility>0</visibility>
+		<description><![CDATA[<a href="H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00209.JPG">H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00209.JPG</a><br/>Component: None<br/>Photogroup: Photogroup 1<br/>Image dimensions: 5472x3648<br/>Camera model: L1D-20c<br/>Focal length: 10.4877 mm<br/>Position (WGS84): 36.3785&deg ; 54.9147&deg<br/>Ellipsoid height: 1446.01 m]]></description>
+		<styleUrl>#completePose0</styleUrl>
+		<Point>
+			<altitudeMode>absolute</altitudeMode>
+			<coordinates>54.91471352999999,36.37854375,1452.8726</coordinates>
+		</Point>
+	</Placemark>
+	<Placemark>
+		<name>VD_1_00210.JPG</name>
+		<visibility>0</visibility>
+		<description><![CDATA[<a href="H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00210.JPG">H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00210.JPG</a><br/>Component: None<br/>Photogroup: Photogroup 1<br/>Image dimensions: 5472x3648<br/>Camera model: L1D-20c<br/>Focal length: 10.4877 mm<br/>Position (WGS84): 36.3783&deg ; 54.9145&deg<br/>Ellipsoid height: 1445.79 m]]></description>
+		<styleUrl>#completePose0</styleUrl>
+		<Point>
+			<altitudeMode>absolute</altitudeMode>
+			<coordinates>54.91446903,36.37832572,1452.64824</coordinates>
+		</Point>
+	</Placemark>
+	<Placemark>
+		<name>VD_1_00211.JPG</name>
+		<visibility>0</visibility>
+		<description><![CDATA[<a href="H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00211.JPG">H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00211.JPG</a><br/>Component: None<br/>Photogroup: Photogroup 1<br/>Image dimensions: 5472x3648<br/>Camera model: L1D-20c<br/>Focal length: 10.4877 mm<br/>Position (WGS84): 36.3781&deg ; 54.9142&deg<br/>Ellipsoid height: 1445.63 m]]></description>
+		<styleUrl>#completePose0</styleUrl>
+		<Point>
+			<altitudeMode>absolute</altitudeMode>
+			<coordinates>54.91423371999999,36.37811669,1452.49029</coordinates>
+		</Point>
+	</Placemark>
+	<Placemark>
+		<name>VD_1_00212.JPG</name>
+		<visibility>0</visibility>
+		<description><![CDATA[<a href="H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00212.JPG">H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00212.JPG</a><br/>Component: None<br/>Photogroup: Photogroup 1<br/>Image dimensions: 5472x3648<br/>Camera model: L1D-20c<br/>Focal length: 10.4877 mm<br/>Position (WGS84): 36.3779&deg ; 54.914&deg<br/>Ellipsoid height: 1445.56 m]]></description>
+		<styleUrl>#completePose0</styleUrl>
+		<Point>
+			<altitudeMode>absolute</altitudeMode>
+			<coordinates>54.91399508000001,36.37790392,1452.42673</coordinates>
+		</Point>
+	</Placemark>
+	<Placemark>
+		<name>VD_1_00213.JPG</name>
+		<visibility>0</visibility>
+		<description><![CDATA[<a href="H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00213.JPG">H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00213.JPG</a><br/>Component: None<br/>Photogroup: Photogroup 1<br/>Image dimensions: 5472x3648<br/>Camera model: L1D-20c<br/>Focal length: 10.4877 mm<br/>Position (WGS84): 36.3777&deg ; 54.9138&deg<br/>Ellipsoid height: 1445.48 m]]></description>
+		<styleUrl>#completePose0</styleUrl>
+		<Point>
+			<altitudeMode>absolute</altitudeMode>
+			<coordinates>54.91375583,36.37769111,1452.34057</coordinates>
+		</Point>
+	</Placemark>
+	<Placemark>
+		<name>VD_1_00214.JPG</name>
+		<visibility>0</visibility>
+		<description><![CDATA[<a href="H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00214.JPG">H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00214.JPG</a><br/>Component: None<br/>Photogroup: Photogroup 1<br/>Image dimensions: 5472x3648<br/>Camera model: L1D-20c<br/>Focal length: 10.4877 mm<br/>Position (WGS84): 36.3775&deg ; 54.9135&deg<br/>Ellipsoid height: 1445.74 m]]></description>
+		<styleUrl>#completePose0</styleUrl>
+		<Point>
+			<altitudeMode>absolute</altitudeMode>
+			<coordinates>54.91354894,36.3775105,1452.59798</coordinates>
+		</Point>
+	</Placemark>
+	<Placemark>
+		<name>VD_1_00215.JPG</name>
+		<visibility>0</visibility>
+		<description><![CDATA[<a href="H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00215.JPG">H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00215.JPG</a><br/>Component: None<br/>Photogroup: Photogroup 1<br/>Image dimensions: 5472x3648<br/>Camera model: L1D-20c<br/>Focal length: 10.4877 mm<br/>Position (WGS84): 36.3772&deg ; 54.9139&deg<br/>Ellipsoid height: 1444.7 m]]></description>
+		<styleUrl>#completePose0</styleUrl>
+		<Point>
+			<altitudeMode>absolute</altitudeMode>
+			<coordinates>54.91391969,36.37720033,1451.5625</coordinates>
+		</Point>
+	</Placemark>
+	<Placemark>
+		<name>VD_1_00216.JPG</name>
+		<visibility>0</visibility>
+		<description><![CDATA[<a href="H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00216.JPG">H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00216.JPG</a><br/>Component: None<br/>Photogroup: Photogroup 1<br/>Image dimensions: 5472x3648<br/>Camera model: L1D-20c<br/>Focal length: 10.4877 mm<br/>Position (WGS84): 36.3774&deg ; 54.9142&deg<br/>Ellipsoid height: 1444.72 m]]></description>
+		<styleUrl>#completePose0</styleUrl>
+		<Point>
+			<altitudeMode>absolute</altitudeMode>
+			<coordinates>54.91419022,36.37738897,1451.5845</coordinates>
+		</Point>
+	</Placemark>
+	<Placemark>
+		<name>VD_1_00217.JPG</name>
+		<visibility>0</visibility>
+		<description><![CDATA[<a href="H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00217.JPG">H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00217.JPG</a><br/>Component: None<br/>Photogroup: Photogroup 1<br/>Image dimensions: 5472x3648<br/>Camera model: L1D-20c<br/>Focal length: 10.4877 mm<br/>Position (WGS84): 36.3776&deg ; 54.9144&deg<br/>Ellipsoid height: 1444.87 m]]></description>
+		<styleUrl>#completePose0</styleUrl>
+		<Point>
+			<altitudeMode>absolute</altitudeMode>
+			<coordinates>54.91444683,36.37760858,1451.73823</coordinates>
+		</Point>
+	</Placemark>
+	<Placemark>
+		<name>VD_1_00218.JPG</name>
+		<visibility>0</visibility>
+		<description><![CDATA[<a href="H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00218.JPG">H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00218.JPG</a><br/>Component: None<br/>Photogroup: Photogroup 1<br/>Image dimensions: 5472x3648<br/>Camera model: L1D-20c<br/>Focal length: 10.4877 mm<br/>Position (WGS84): 36.3779&deg ; 54.9147&deg<br/>Ellipsoid height: 1444.99 m]]></description>
+		<styleUrl>#completePose0</styleUrl>
+		<Point>
+			<altitudeMode>absolute</altitudeMode>
+			<coordinates>54.91466311,36.37785378,1451.84873</coordinates>
+		</Point>
+	</Placemark>
+	<Placemark>
+		<name>VD_1_00219.JPG</name>
+		<visibility>0</visibility>
+		<description><![CDATA[<a href="H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00219.JPG">H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00219.JPG</a><br/>Component: None<br/>Photogroup: Photogroup 1<br/>Image dimensions: 5472x3648<br/>Camera model: L1D-20c<br/>Focal length: 10.4877 mm<br/>Position (WGS84): 36.3781&deg ; 54.9149&deg<br/>Ellipsoid height: 1445.58 m]]></description>
+		<styleUrl>#completePose0</styleUrl>
+		<Point>
+			<altitudeMode>absolute</altitudeMode>
+			<coordinates>54.91488953,36.37806797,1452.44547</coordinates>
+		</Point>
+	</Placemark>
+	<Placemark>
+		<name>VD_1_00220.JPG</name>
+		<visibility>0</visibility>
+		<description><![CDATA[<a href="H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00220.JPG">H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00220.JPG</a><br/>Component: None<br/>Photogroup: Photogroup 1<br/>Image dimensions: 5472x3648<br/>Camera model: L1D-20c<br/>Focal length: 10.4877 mm<br/>Position (WGS84): 36.3783&deg ; 54.9151&deg<br/>Ellipsoid height: 1446.36 m]]></description>
+		<styleUrl>#completePose0</styleUrl>
+		<Point>
+			<altitudeMode>absolute</altitudeMode>
+			<coordinates>54.91513614,36.37828611,1453.22668</coordinates>
+		</Point>
+	</Placemark>
+	<Placemark>
+		<name>VD_1_00221.JPG</name>
+		<visibility>0</visibility>
+		<description><![CDATA[<a href="H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00221.JPG">H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00221.JPG</a><br/>Component: None<br/>Photogroup: Photogroup 1<br/>Image dimensions: 5472x3648<br/>Camera model: L1D-20c<br/>Focal length: 10.4877 mm<br/>Position (WGS84): 36.3785&deg ; 54.9154&deg<br/>Ellipsoid height: 1446.4 m]]></description>
+		<styleUrl>#completePose0</styleUrl>
+		<Point>
+			<altitudeMode>absolute</altitudeMode>
+			<coordinates>54.91536842000001,36.37849364,1453.26596</coordinates>
+		</Point>
+	</Placemark>
+	<Placemark>
+		<name>VD_1_00222.JPG</name>
+		<visibility>0</visibility>
+		<description><![CDATA[<a href="H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00222.JPG">H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00222.JPG</a><br/>Component: None<br/>Photogroup: Photogroup 1<br/>Image dimensions: 5472x3648<br/>Camera model: L1D-20c<br/>Focal length: 10.4877 mm<br/>Position (WGS84): 36.3787&deg ; 54.9156&deg<br/>Ellipsoid height: 1445.94 m]]></description>
+		<styleUrl>#completePose0</styleUrl>
+		<Point>
+			<altitudeMode>absolute</altitudeMode>
+			<coordinates>54.91560831,36.37870889,1452.80644</coordinates>
+		</Point>
+	</Placemark>
+	<Placemark>
+		<name>VD_1_00223.JPG</name>
+		<visibility>0</visibility>
+		<description><![CDATA[<a href="H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00223.JPG">H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00223.JPG</a><br/>Component: None<br/>Photogroup: Photogroup 1<br/>Image dimensions: 5472x3648<br/>Camera model: L1D-20c<br/>Focal length: 10.4877 mm<br/>Position (WGS84): 36.3789&deg ; 54.9159&deg<br/>Ellipsoid height: 1445.58 m]]></description>
+		<styleUrl>#completePose0</styleUrl>
+		<Point>
+			<altitudeMode>absolute</altitudeMode>
+			<coordinates>54.91585081,36.37892478,1452.4484</coordinates>
+		</Point>
+	</Placemark>
+	<Placemark>
+		<name>VD_1_00224.JPG</name>
+		<visibility>0</visibility>
+		<description><![CDATA[<a href="H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00224.JPG">H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00224.JPG</a><br/>Component: None<br/>Photogroup: Photogroup 1<br/>Image dimensions: 5472x3648<br/>Camera model: L1D-20c<br/>Focal length: 10.4877 mm<br/>Position (WGS84): 36.3791&deg ; 54.9161&deg<br/>Ellipsoid height: 1444.92 m]]></description>
+		<styleUrl>#completePose0</styleUrl>
+		<Point>
+			<altitudeMode>absolute</altitudeMode>
+			<coordinates>54.91608647,36.37913631,1451.788</coordinates>
+		</Point>
+	</Placemark>
+	<Placemark>
+		<name>VD_1_00225.JPG</name>
+		<visibility>0</visibility>
+		<description><![CDATA[<a href="H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00225.JPG">H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00225.JPG</a><br/>Component: None<br/>Photogroup: Photogroup 1<br/>Image dimensions: 5472x3648<br/>Camera model: L1D-20c<br/>Focal length: 10.4877 mm<br/>Position (WGS84): 36.3794&deg ; 54.9163&deg<br/>Ellipsoid height: 1445.18 m]]></description>
+		<styleUrl>#completePose0</styleUrl>
+		<Point>
+			<altitudeMode>absolute</altitudeMode>
+			<coordinates>54.91632844,36.37935206,1452.04205</coordinates>
+		</Point>
+	</Placemark>
+	<Placemark>
+		<name>VD_1_00226.JPG</name>
+		<visibility>0</visibility>
+		<description><![CDATA[<a href="H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00226.JPG">H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00226.JPG</a><br/>Component: None<br/>Photogroup: Photogroup 1<br/>Image dimensions: 5472x3648<br/>Camera model: L1D-20c<br/>Focal length: 10.4877 mm<br/>Position (WGS84): 36.3795&deg ; 54.9165&deg<br/>Ellipsoid height: 1445.81 m]]></description>
+		<styleUrl>#completePose0</styleUrl>
+		<Point>
+			<altitudeMode>absolute</altitudeMode>
+			<coordinates>54.91652519,36.37950497,1452.67125</coordinates>
+		</Point>
+	</Placemark>
+	<Placemark>
+		<name>VD_1_00227.JPG</name>
+		<visibility>0</visibility>
+		<description><![CDATA[<a href="H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00227.JPG">H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00227.JPG</a><br/>Component: None<br/>Photogroup: Photogroup 1<br/>Image dimensions: 5472x3648<br/>Camera model: L1D-20c<br/>Focal length: 10.4877 mm<br/>Position (WGS84): 36.3791&deg ; 54.9167&deg<br/>Ellipsoid height: 1445.07 m]]></description>
+		<styleUrl>#completePose0</styleUrl>
+		<Point>
+			<altitudeMode>absolute</altitudeMode>
+			<coordinates>54.91674946999999,36.37908708,1451.93503</coordinates>
+		</Point>
+	</Placemark>
+	<Placemark>
+		<name>VD_1_00228.JPG</name>
+		<visibility>0</visibility>
+		<description><![CDATA[<a href="H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00228.JPG">H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00228.JPG</a><br/>Component: None<br/>Photogroup: Photogroup 1<br/>Image dimensions: 5472x3648<br/>Camera model: L1D-20c<br/>Focal length: 10.4877 mm<br/>Position (WGS84): 36.3789&deg ; 54.9165&deg<br/>Ellipsoid height: 1444.83 m]]></description>
+		<styleUrl>#completePose0</styleUrl>
+		<Point>
+			<altitudeMode>absolute</altitudeMode>
+			<coordinates>54.91653044,36.37887078,1451.69646</coordinates>
+		</Point>
+	</Placemark>
+	<Placemark>
+		<name>VD_1_00229.JPG</name>
+		<visibility>0</visibility>
+		<description><![CDATA[<a href="H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00229.JPG">H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00229.JPG</a><br/>Component: None<br/>Photogroup: Photogroup 1<br/>Image dimensions: 5472x3648<br/>Camera model: L1D-20c<br/>Focal length: 10.4877 mm<br/>Position (WGS84): 36.3787&deg ; 54.9163&deg<br/>Ellipsoid height: 1444.69 m]]></description>
+		<styleUrl>#completePose0</styleUrl>
+		<Point>
+			<altitudeMode>absolute</altitudeMode>
+			<coordinates>54.91626989,36.37865506,1451.55901</coordinates>
+		</Point>
+	</Placemark>
+	<Placemark>
+		<name>VD_1_00230.JPG</name>
+		<visibility>0</visibility>
+		<description><![CDATA[<a href="H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00230.JPG">H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00230.JPG</a><br/>Component: None<br/>Photogroup: Photogroup 1<br/>Image dimensions: 5472x3648<br/>Camera model: L1D-20c<br/>Focal length: 10.4877 mm<br/>Position (WGS84): 36.3784&deg ; 54.916&deg<br/>Ellipsoid height: 1444.89 m]]></description>
+		<styleUrl>#completePose0</styleUrl>
+		<Point>
+			<altitudeMode>absolute</altitudeMode>
+			<coordinates>54.9160275,36.37844386,1451.75818</coordinates>
+		</Point>
+	</Placemark>
+	<Placemark>
+		<name>VD_1_00231.JPG</name>
+		<visibility>0</visibility>
+		<description><![CDATA[<a href="H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00231.JPG">H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00231.JPG</a><br/>Component: None<br/>Photogroup: Photogroup 1<br/>Image dimensions: 5472x3648<br/>Camera model: L1D-20c<br/>Focal length: 10.4877 mm<br/>Position (WGS84): 36.3782&deg ; 54.9158&deg<br/>Ellipsoid height: 1445.08 m]]></description>
+		<styleUrl>#completePose0</styleUrl>
+		<Point>
+			<altitudeMode>absolute</altitudeMode>
+			<coordinates>54.91578794,36.37822967,1451.94222</coordinates>
+		</Point>
+	</Placemark>
+	<Placemark>
+		<name>VD_1_00232.JPG</name>
+		<visibility>0</visibility>
+		<description><![CDATA[<a href="H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00232.JPG">H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00232.JPG</a><br/>Component: None<br/>Photogroup: Photogroup 1<br/>Image dimensions: 5472x3648<br/>Camera model: L1D-20c<br/>Focal length: 10.4877 mm<br/>Position (WGS84): 36.378&deg ; 54.9155&deg<br/>Ellipsoid height: 1445.72 m]]></description>
+		<styleUrl>#completePose0</styleUrl>
+		<Point>
+			<altitudeMode>absolute</altitudeMode>
+			<coordinates>54.91554661,36.37801178,1452.58667</coordinates>
+		</Point>
+	</Placemark>
+	<Placemark>
+		<name>VD_1_00233.JPG</name>
+		<visibility>0</visibility>
+		<description><![CDATA[<a href="H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00233.JPG">H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00233.JPG</a><br/>Component: None<br/>Photogroup: Photogroup 1<br/>Image dimensions: 5472x3648<br/>Camera model: L1D-20c<br/>Focal length: 10.4877 mm<br/>Position (WGS84): 36.3778&deg ; 54.9153&deg<br/>Ellipsoid height: 1445.99 m]]></description>
+		<styleUrl>#completePose0</styleUrl>
+		<Point>
+			<altitudeMode>absolute</altitudeMode>
+			<coordinates>54.91530743999999,36.37779906,1452.85144</coordinates>
+		</Point>
+	</Placemark>
+	<Placemark>
+		<name>VD_1_00234.JPG</name>
+		<visibility>0</visibility>
+		<description><![CDATA[<a href="H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00234.JPG">H:/ghabr/ImageCenters/100 meter/Teobox_p8day1_2024-06-25T10.58.20/images/VD_1_00234.JPG</a><br/>Component: None<br/>Photogroup: Photogroup 1<br/>Image dimensions: 5472x3648<br/>Camera model: L1D-20c<br/>Focal length: 10.4877 mm<br/>Position (WGS84): 36.3776&deg ; 54.9151&deg<br/>Ellipsoid height: 1446.38 m]]></description>
+		<styleUrl>#completePose0</styleUrl>
+		<Point>
+			<altitudeMode>absolute</altitudeMode>
+			<coordinates>54.91507167,36.37759036,1453.24138</coordinates>
+		</Point>
+	</Placemark>
+	<Placemark>
+		<name>VD_1_00002.JPG</name>
+		<visibility>0</visibility>
+		<description><![CDATA[<a href="H:/ghabr/ImageCenters/100 meter/Teobox_p9day1_2024-06-25T11.05.13/images/VD_1_00002.JPG">H:/ghabr/ImageCenters/100 meter/Teobox_p9day1_2024-06-25T11.05.13/images/VD_1_00002.JPG</a><br/>Component: None<br/>Photogroup: Photogroup 2<br/>Image dimensions: 5472x3648<br/>Camera model: L1D-20c<br/>Focal length: 10.4877 mm<br/>Position (WGS84): 36.3774&deg ; 54.9149&deg<br/>Ellipsoid height: 1442.92 m]]></description>
+		<styleUrl>#completePose0</styleUrl>
+		<Point>
+			<altitudeMode>absolute</altitudeMode>
+			<coordinates>54.91486086,36.37738533,1449.78728</coordinates>
+		</Point>
+	</Placemark>
+	<Placemark>
+		<name>VD_1_00003.JPG</name>
+		<visibility>0</visibility>
+		<description><![CDATA[<a href="H:/ghabr/ImageCenters/100 meter/Teobox_p9day1_2024-06-25T11.05.13/images/VD_1_00003.JPG">H:/ghabr/ImageCenters/100 meter/Teobox_p9day1_2024-06-25T11.05.13/images/VD_1_00003.JPG</a><br/>Component: None<br/>Photogroup: Photogroup 2<br/>Image dimensions: 5472x3648<br/>Camera model: L1D-20c<br/>Focal length: 10.4877 mm<br/>Position (WGS84): 36.3771&deg ; 54.9146&deg<br/>Ellipsoid height: 1444.14 m]]></description>
+		<styleUrl>#completePose0</styleUrl>
+		<Point>
+			<altitudeMode>absolute</altitudeMode>
+			<coordinates>54.91459533,36.37713725,1451.00634</coordinates>
+		</Point>
+	</Placemark>
+	<Placemark>
+		<name>VD_1_00004.JPG</name>
+		<visibility>0</visibility>
+		<description><![CDATA[<a href="H:/ghabr/ImageCenters/100 meter/Teobox_p9day1_2024-06-25T11.05.13/images/VD_1_00004.JPG">H:/ghabr/ImageCenters/100 meter/Teobox_p9day1_2024-06-25T11.05.13/images/VD_1_00004.JPG</a><br/>Component: None<br/>Photogroup: Photogroup 2<br/>Image dimensions: 5472x3648<br/>Camera model: L1D-20c<br/>Focal length: 10.4877 mm<br/>Position (WGS84): 36.3769&deg ; 54.9143&deg<br/>Ellipsoid height: 1444.22 m]]></description>
+		<styleUrl>#completePose0</styleUrl>
+		<Point>
+			<altitudeMode>absolute</altitudeMode>
+			<coordinates>54.91433569,36.37691408,1451.08703</coordinates>
+		</Point>
+	</Placemark>
+	<Placemark>
+		<name>VD_1_00005.JPG</name>
+		<visibility>0</visibility>
+		<description><![CDATA[<a href="H:/ghabr/ImageCenters/100 meter/Teobox_p9day1_2024-06-25T11.05.13/images/VD_1_00005.JPG">H:/ghabr/ImageCenters/100 meter/Teobox_p9day1_2024-06-25T11.05.13/images/VD_1_00005.JPG</a><br/>Component: None<br/>Photogroup: Photogroup 2<br/>Image dimensions: 5472x3648<br/>Camera model: L1D-20c<br/>Focal length: 10.4877 mm<br/>Position (WGS84): 36.3768&deg ; 54.9142&deg<br/>Ellipsoid height: 1444.46 m]]></description>
+		<styleUrl>#completePose0</styleUrl>
+		<Point>
+			<altitudeMode>absolute</altitudeMode>
+			<coordinates>54.91421356000001,36.37676858,1451.32033</coordinates>
+		</Point>
+	</Placemark>
+	<Placemark>
+		<name>VD_1_00006.JPG</name>
+		<visibility>0</visibility>
+		<description><![CDATA[<a href="H:/ghabr/ImageCenters/100 meter/Teobox_p9day1_2024-06-25T11.05.13/images/VD_1_00006.JPG">H:/ghabr/ImageCenters/100 meter/Teobox_p9day1_2024-06-25T11.05.13/images/VD_1_00006.JPG</a><br/>Component: None<br/>Photogroup: Photogroup 2<br/>Image dimensions: 5472x3648<br/>Camera model: L1D-20c<br/>Focal length: 10.4877 mm<br/>Position (WGS84): 36.3765&deg ; 54.9146&deg<br/>Ellipsoid height: 1444.31 m]]></description>
+		<styleUrl>#completePose0</styleUrl>
+		<Point>
+			<altitudeMode>absolute</altitudeMode>
+			<coordinates>54.91459278,36.37650503,1451.17804</coordinates>
+		</Point>
+	</Placemark>
+	<Placemark>
+		<name>VD_1_00007.JPG</name>
+		<visibility>0</visibility>
+		<description><![CDATA[<a href="H:/ghabr/ImageCenters/100 meter/Teobox_p9day1_2024-06-25T11.05.13/images/VD_1_00007.JPG">H:/ghabr/ImageCenters/100 meter/Teobox_p9day1_2024-06-25T11.05.13/images/VD_1_00007.JPG</a><br/>Component: None<br/>Photogroup: Photogroup 2<br/>Image dimensions: 5472x3648<br/>Camera model: L1D-20c<br/>Focal length: 10.4877 mm<br/>Position (WGS84): 36.3767&deg ; 54.9149&deg<br/>Ellipsoid height: 1444.35 m]]></description>
+		<styleUrl>#completePose0</styleUrl>
+		<Point>
+			<altitudeMode>absolute</altitudeMode>
+			<coordinates>54.91486669,36.37669767,1451.21186</coordinates>
+		</Point>
+	</Placemark>
+	<Placemark>
+		<name>VD_1_00008.JPG</name>
+		<visibility>0</visibility>
+		<description><![CDATA[<a href="H:/ghabr/ImageCenters/100 meter/Teobox_p9day1_2024-06-25T11.05.13/images/VD_1_00008.JPG">H:/ghabr/ImageCenters/100 meter/Teobox_p9day1_2024-06-25T11.05.13/images/VD_1_00008.JPG</a><br/>Component: None<br/>Photogroup: Photogroup 2<br/>Image dimensions: 5472x3648<br/>Camera model: L1D-20c<br/>Focal length: 10.4877 mm<br/>Position (WGS84): 36.3769&deg ; 54.9151&deg<br/>Ellipsoid height: 1444.59 m]]></description>
+		<styleUrl>#completePose0</styleUrl>
+		<Point>
+			<altitudeMode>absolute</altitudeMode>
+			<coordinates>54.915117,36.37690064,1451.45569</coordinates>
+		</Point>
+	</Placemark>
+	<Placemark>
+		<name>VD_1_00009.JPG</name>
+		<visibility>0</visibility>
+		<description><![CDATA[<a href="H:/ghabr/ImageCenters/100 meter/Teobox_p9day1_2024-06-25T11.05.13/images/VD_1_00009.JPG">H:/ghabr/ImageCenters/100 meter/Teobox_p9day1_2024-06-25T11.05.13/images/VD_1_00009.JPG</a><br/>Component: None<br/>Photogroup: Photogroup 2<br/>Image dimensions: 5472x3648<br/>Camera model: L1D-20c<br/>Focal length: 10.4877 mm<br/>Position (WGS84): 36.3771&deg ; 54.9153&deg<br/>Ellipsoid height: 1444.52 m]]></description>
+		<styleUrl>#completePose0</styleUrl>
+		<Point>
+			<altitudeMode>absolute</altitudeMode>
+			<coordinates>54.91534856,36.37712861,1451.38396</coordinates>
+		</Point>
+	</Placemark>
+	<Placemark>
+		<name>VD_1_00010.JPG</name>
+		<visibility>0</visibility>
+		<description><![CDATA[<a href="H:/ghabr/ImageCenters/100 meter/Teobox_p9day1_2024-06-25T11.05.13/images/VD_1_00010.JPG">H:/ghabr/ImageCenters/100 meter/Teobox_p9day1_2024-06-25T11.05.13/images/VD_1_00010.JPG</a><br/>Component: None<br/>Photogroup: Photogroup 2<br/>Image dimensions: 5472x3648<br/>Camera model: L1D-20c<br/>Focal length: 10.4877 mm<br/>Position (WGS84): 36.3774&deg ; 54.9156&deg<br/>Ellipsoid height: 1444.41 m]]></description>
+		<styleUrl>#completePose0</styleUrl>
+		<Point>
+			<altitudeMode>absolute</altitudeMode>
+			<coordinates>54.91557831000001,36.37736494,1451.27451</coordinates>
+		</Point>
+	</Placemark>
+	<Placemark>
+		<name>VD_1_00011.JPG</name>
+		<visibility>0</visibility>
+		<description><![CDATA[<a href="H:/ghabr/ImageCenters/100 meter/Teobox_p9day1_2024-06-25T11.05.13/images/VD_1_00011.JPG">H:/ghabr/ImageCenters/100 meter/Teobox_p9day1_2024-06-25T11.05.13/images/VD_1_00011.JPG</a><br/>Component: None<br/>Photogroup: Photogroup 2<br/>Image dimensions: 5472x3648<br/>Camera model: L1D-20c<br/>Focal length: 10.4877 mm<br/>Position (WGS84): 36.3776&deg ; 54.9158&deg<br/>Ellipsoid height: 1444.58 m]]></description>
+		<styleUrl>#completePose0</styleUrl>
+		<Point>
+			<altitudeMode>absolute</altitudeMode>
+			<coordinates>54.91580857999999,36.37759294,1451.4505</coordinates>
+		</Point>
+	</Placemark>
+	<Placemark>
+		<name>VD_1_00012.JPG</name>
+		<visibility>0</visibility>
+		<description><![CDATA[<a href="H:/ghabr/ImageCenters/100 meter/Teobox_p9day1_2024-06-25T11.05.13/images/VD_1_00012.JPG">H:/ghabr/ImageCenters/100 meter/Teobox_p9day1_2024-06-25T11.05.13/images/VD_1_00012.JPG</a><br/>Component: None<br/>Photogroup: Photogroup 2<br/>Image dimensions: 5472x3648<br/>Camera model: L1D-20c<br/>Focal length: 10.4877 mm<br/>Position (WGS84): 36.3778&deg ; 54.916&deg<br/>Ellipsoid height: 1445.41 m]]></description>
+		<styleUrl>#completePose0</styleUrl>
+		<Point>
+			<altitudeMode>absolute</altitudeMode>
+			<coordinates>54.91604258,36.37781094,1452.27841</coordinates>
+		</Point>
+	</Placemark>
+	<Placemark>
+		<name>VD_1_00013.JPG</name>
+		<visibility>0</visibility>
+		<description><![CDATA[<a href="H:/ghabr/ImageCenters/100 meter/Teobox_p9day1_2024-06-25T11.05.13/images/VD_1_00013.JPG">H:/ghabr/ImageCenters/100 meter/Teobox_p9day1_2024-06-25T11.05.13/images/VD_1_00013.JPG</a><br/>Component: None<br/>Photogroup: Photogroup 2<br/>Image dimensions: 5472x3648<br/>Camera model: L1D-20c<br/>Focal length: 10.4877 mm<br/>Position (WGS84): 36.378&deg ; 54.9163&deg<br/>Ellipsoid height: 1446.15 m]]></description>
+		<styleUrl>#completePose0</styleUrl>
+		<Point>
+			<altitudeMode>absolute</altitudeMode>
+			<coordinates>54.91627860999999,36.37802114,1453.01867</coordinates>
+		</Point>
+	</Placemark>
+	<Placemark>
+		<name>VD_1_00014.JPG</name>
+		<visibility>0</visibility>
+		<description><![CDATA[<a href="H:/ghabr/ImageCenters/100 meter/Teobox_p9day1_2024-06-25T11.05.13/images/VD_1_00014.JPG">H:/ghabr/ImageCenters/100 meter/Teobox_p9day1_2024-06-25T11.05.13/images/VD_1_00014.JPG</a><br/>Component: None<br/>Photogroup: Photogroup 2<br/>Image dimensions: 5472x3648<br/>Camera model: L1D-20c<br/>Focal length: 10.4877 mm<br/>Position (WGS84): 36.3782&deg ; 54.9165&deg<br/>Ellipsoid height: 1446.47 m]]></description>
+		<styleUrl>#completePose0</styleUrl>
+		<Point>
+			<altitudeMode>absolute</altitudeMode>
+			<coordinates>54.91651675000001,36.37823511,1453.3369</coordinates>
+		</Point>
+	</Placemark>
+	<Placemark>
+		<name>VD_1_00015.JPG</name>
+		<visibility>0</visibility>
+		<description><![CDATA[<a href="H:/ghabr/ImageCenters/100 meter/Teobox_p9day1_2024-06-25T11.05.13/images/VD_1_00015.JPG">H:/ghabr/ImageCenters/100 meter/Teobox_p9day1_2024-06-25T11.05.13/images/VD_1_00015.JPG</a><br/>Component: None<br/>Photogroup: Photogroup 2<br/>Image dimensions: 5472x3648<br/>Camera model: L1D-20c<br/>Focal length: 10.4877 mm<br/>Position (WGS84): 36.3785&deg ; 54.9168&deg<br/>Ellipsoid height: 1446.57 m]]></description>
+		<styleUrl>#completePose0</styleUrl>
+		<Point>
+			<altitudeMode>absolute</altitudeMode>
+			<coordinates>54.91676267,36.37845536,1453.43479</coordinates>
+		</Point>
+	</Placemark>
+	<Placemark>
+		<name>VD_1_00016.JPG</name>
+		<visibility>0</visibility>
+		<description><![CDATA[<a href="H:/ghabr/ImageCenters/100 meter/Teobox_p9day1_2024-06-25T11.05.13/images/VD_1_00016.JPG">H:/ghabr/ImageCenters/100 meter/Teobox_p9day1_2024-06-25T11.05.13/images/VD_1_00016.JPG</a><br/>Component: None<br/>Photogroup: Photogroup 2<br/>Image dimensions: 5472x3648<br/>Camera model: L1D-20c<br/>Focal length: 10.4877 mm<br/>Position (WGS84): 36.3787&deg ; 54.917&deg<br/>Ellipsoid height: 1446.24 m]]></description>
+		<styleUrl>#completePose0</styleUrl>
+		<Point>
+			<altitudeMode>absolute</altitudeMode>
+			<coordinates>54.91699331000001,36.37866075,1453.11235</coordinates>
+		</Point>
+	</Placemark>
+	<Placemark>
+		<name>VD_1_00017.JPG</name>
+		<visibility>0</visibility>
+		<description><![CDATA[<a href="H:/ghabr/ImageCenters/100 meter/Teobox_p9day1_2024-06-25T11.05.13/images/VD_1_00017.JPG">H:/ghabr/ImageCenters/100 meter/Teobox_p9day1_2024-06-25T11.05.13/images/VD_1_00017.JPG</a><br/>Component: None<br/>Photogroup: Photogroup 2<br/>Image dimensions: 5472x3648<br/>Camera model: L1D-20c<br/>Focal length: 10.4877 mm<br/>Position (WGS84): 36.3787&deg ; 54.9171&deg<br/>Ellipsoid height: 1444.82 m]]></description>
+		<styleUrl>#completePose0</styleUrl>
+		<Point>
+			<altitudeMode>absolute</altitudeMode>
+			<coordinates>54.91713781,36.37874889,1451.69185</coordinates>
+		</Point>
+	</Placemark>
+	<Placemark>
+		<name>VD_1_00018.JPG</name>
+		<visibility>0</visibility>
+		<description><![CDATA[<a href="H:/ghabr/ImageCenters/100 meter/Teobox_p9day1_2024-06-25T11.05.13/images/VD_1_00018.JPG">H:/ghabr/ImageCenters/100 meter/Teobox_p9day1_2024-06-25T11.05.13/images/VD_1_00018.JPG</a><br/>Component: None<br/>Photogroup: Photogroup 2<br/>Image dimensions: 5472x3648<br/>Camera model: L1D-20c<br/>Focal length: 10.4877 mm<br/>Position (WGS84): 36.3783&deg ; 54.9174&deg<br/>Ellipsoid height: 1443.19 m]]></description>
+		<styleUrl>#completePose0</styleUrl>
+		<Point>
+			<altitudeMode>absolute</altitudeMode>
+			<coordinates>54.91735422,36.37834117,1450.05417</coordinates>
+		</Point>
+	</Placemark>
+	<Placemark>
+		<name>VD_1_00019.JPG</name>
+		<visibility>0</visibility>
+		<description><![CDATA[<a href="H:/ghabr/ImageCenters/100 meter/Teobox_p9day1_2024-06-25T11.05.13/images/VD_1_00019.JPG">H:/ghabr/ImageCenters/100 meter/Teobox_p9day1_2024-06-25T11.05.13/images/VD_1_00019.JPG</a><br/>Component: None<br/>Photogroup: Photogroup 2<br/>Image dimensions: 5472x3648<br/>Camera model: L1D-20c<br/>Focal length: 10.4877 mm<br/>Position (WGS84): 36.3781&deg ; 54.9171&deg<br/>Ellipsoid height: 1443.52 m]]></description>
+		<styleUrl>#completePose0</styleUrl>
+		<Point>
+			<altitudeMode>absolute</altitudeMode>
+			<coordinates>54.91711531,36.37812656,1450.38505</coordinates>
+		</Point>
+	</Placemark>
+	<Placemark>
+		<name>VD_1_00020.JPG</name>
+		<visibility>0</visibility>
+		<description><![CDATA[<a href="H:/ghabr/ImageCenters/100 meter/Teobox_p9day1_2024-06-25T11.05.13/images/VD_1_00020.JPG">H:/ghabr/ImageCenters/100 meter/Teobox_p9day1_2024-06-25T11.05.13/images/VD_1_00020.JPG</a><br/>Component: None<br/>Photogroup: Photogroup 2<br/>Image dimensions: 5472x3648<br/>Camera model: L1D-20c<br/>Focal length: 10.4877 mm<br/>Position (WGS84): 36.3779&deg ; 54.9169&deg<br/>Ellipsoid height: 1443.56 m]]></description>
+		<styleUrl>#completePose0</styleUrl>
+		<Point>
+			<altitudeMode>absolute</altitudeMode>
+			<coordinates>54.91686292,36.37790825,1450.43163</coordinates>
+		</Point>
+	</Placemark>
+	<Placemark>
+		<name>VD_1_00021.JPG</name>
+		<visibility>0</visibility>
+		<description><![CDATA[<a href="H:/ghabr/ImageCenters/100 meter/Teobox_p9day1_2024-06-25T11.05.13/images/VD_1_00021.JPG">H:/ghabr/ImageCenters/100 meter/Teobox_p9day1_2024-06-25T11.05.13/images/VD_1_00021.JPG</a><br/>Component: None<br/>Photogroup: Photogroup 2<br/>Image dimensions: 5472x3648<br/>Camera model: L1D-20c<br/>Focal length: 10.4877 mm<br/>Position (WGS84): 36.3777&deg ; 54.9166&deg<br/>Ellipsoid height: 1443.23 m]]></description>
+		<styleUrl>#completePose0</styleUrl>
+		<Point>
+			<altitudeMode>absolute</altitudeMode>
+			<coordinates>54.91662843999999,36.37769672,1450.09967</coordinates>
+		</Point>
+	</Placemark>
+	<Placemark>
+		<name>VD_1_00022.JPG</name>
+		<visibility>0</visibility>
+		<description><![CDATA[<a href="H:/ghabr/ImageCenters/100 meter/Teobox_p9day1_2024-06-25T11.05.13/images/VD_1_00022.JPG">H:/ghabr/ImageCenters/100 meter/Teobox_p9day1_2024-06-25T11.05.13/images/VD_1_00022.JPG</a><br/>Component: None<br/>Photogroup: Photogroup 2<br/>Image dimensions: 5472x3648<br/>Camera model: L1D-20c<br/>Focal length: 10.4877 mm<br/>Position (WGS84): 36.3775&deg ; 54.9164&deg<br/>Ellipsoid height: 1442.97 m]]></description>
+		<styleUrl>#completePose0</styleUrl>
+		<Point>
+			<altitudeMode>absolute</altitudeMode>
+			<coordinates>54.91639108,36.37748114,1449.84057</coordinates>
+		</Point>
+	</Placemark>
+	<Placemark>
+		<name>VD_1_00023.JPG</name>
+		<visibility>0</visibility>
+		<description><![CDATA[<a href="H:/ghabr/ImageCenters/100 meter/Teobox_p9day1_2024-06-25T11.05.13/images/VD_1_00023.JPG">H:/ghabr/ImageCenters/100 meter/Teobox_p9day1_2024-06-25T11.05.13/images/VD_1_00023.JPG</a><br/>Component: None<br/>Photogroup: Photogroup 2<br/>Image dimensions: 5472x3648<br/>Camera model: L1D-20c<br/>Focal length: 10.4877 mm<br/>Position (WGS84): 36.3773&deg ; 54.9162&deg<br/>Ellipsoid height: 1442.2 m]]></description>
+		<styleUrl>#completePose0</styleUrl>
+		<Point>
+			<altitudeMode>absolute</altitudeMode>
+			<coordinates>54.91615392,36.37726967,1449.06695</coordinates>
+		</Point>
+	</Placemark>
+	<Placemark>
+		<name>VD_1_00024.JPG</name>
+		<visibility>0</visibility>
+		<description><![CDATA[<a href="H:/ghabr/ImageCenters/100 meter/Teobox_p9day1_2024-06-25T11.05.13/images/VD_1_00024.JPG">H:/ghabr/ImageCenters/100 meter/Teobox_p9day1_2024-06-25T11.05.13/images/VD_1_00024.JPG</a><br/>Component: None<br/>Photogroup: Photogroup 2<br/>Image dimensions: 5472x3648<br/>Camera model: L1D-20c<br/>Focal length: 10.4877 mm<br/>Position (WGS84): 36.3771&deg ; 54.9159&deg<br/>Ellipsoid height: 1441.75 m]]></description>
+		<styleUrl>#completePose0</styleUrl>
+		<Point>
+			<altitudeMode>absolute</altitudeMode>
+			<coordinates>54.91591056,36.37705483,1448.61538</coordinates>
+		</Point>
+	</Placemark>
+	<Placemark>
+		<name>VD_1_00025.JPG</name>
+		<visibility>0</visibility>
+		<description><![CDATA[<a href="H:/ghabr/ImageCenters/100 meter/Teobox_p9day1_2024-06-25T11.05.13/images/VD_1_00025.JPG">H:/ghabr/ImageCenters/100 meter/Teobox_p9day1_2024-06-25T11.05.13/images/VD_1_00025.JPG</a><br/>Component: None<br/>Photogroup: Photogroup 2<br/>Image dimensions: 5472x3648<br/>Camera model: L1D-20c<br/>Focal length: 10.4877 mm<br/>Position (WGS84): 36.3768&deg ; 54.9157&deg<br/>Ellipsoid height: 1441.71 m]]></description>
+		<styleUrl>#completePose0</styleUrl>
+		<Point>
+			<altitudeMode>absolute</altitudeMode>
+			<coordinates>54.91566508,36.37683942,1448.57537</coordinates>
+		</Point>
+	</Placemark>
+	<Placemark>
+		<name>VD_1_00026.JPG</name>
+		<visibility>0</visibility>
+		<description><![CDATA[<a href="H:/ghabr/ImageCenters/100 meter/Teobox_p9day1_2024-06-25T11.05.13/images/VD_1_00026.JPG">H:/ghabr/ImageCenters/100 meter/Teobox_p9day1_2024-06-25T11.05.13/images/VD_1_00026.JPG</a><br/>Component: None<br/>Photogroup: Photogroup 2<br/>Image dimensions: 5472x3648<br/>Camera model: L1D-20c<br/>Focal length: 10.4877 mm<br/>Position (WGS84): 36.3766&deg ; 54.9154&deg<br/>Ellipsoid height: 1441.48 m]]></description>
+		<styleUrl>#completePose0</styleUrl>
+		<Point>
+			<altitudeMode>absolute</altitudeMode>
+			<coordinates>54.91542689,36.37662822,1448.34221</coordinates>
+		</Point>
+	</Placemark>
+	<Placemark>
+		<name>VD_1_00027.JPG</name>
+		<visibility>0</visibility>
+		<description><![CDATA[<a href="H:/ghabr/ImageCenters/100 meter/Teobox_p9day1_2024-06-25T11.05.13/images/VD_1_00027.JPG">H:/ghabr/ImageCenters/100 meter/Teobox_p9day1_2024-06-25T11.05.13/images/VD_1_00027.JPG</a><br/>Component: None<br/>Photogroup: Photogroup 2<br/>Image dimensions: 5472x3648<br/>Camera model: L1D-20c<br/>Focal length: 10.4877 mm<br/>Position (WGS84): 36.3764&deg ; 54.9152&deg<br/>Ellipsoid height: 1440.76 m]]></description>
+		<styleUrl>#completePose0</styleUrl>
+		<Point>
+			<altitudeMode>absolute</altitudeMode>
+			<coordinates>54.91519053,36.37641558,1447.62347</coordinates>
+		</Point>
+	</Placemark>
+	<Placemark>
+		<name>VD_1_00028.JPG</name>
+		<visibility>0</visibility>
+		<description><![CDATA[<a href="H:/ghabr/ImageCenters/100 meter/Teobox_p9day1_2024-06-25T11.05.13/images/VD_1_00028.JPG">H:/ghabr/ImageCenters/100 meter/Teobox_p9day1_2024-06-25T11.05.13/images/VD_1_00028.JPG</a><br/>Component: None<br/>Photogroup: Photogroup 2<br/>Image dimensions: 5472x3648<br/>Camera model: L1D-20c<br/>Focal length: 10.4877 mm<br/>Position (WGS84): 36.3762&deg ; 54.915&deg<br/>Ellipsoid height: 1440.59 m]]></description>
+		<styleUrl>#completePose0</styleUrl>
+		<Point>
+			<altitudeMode>absolute</altitudeMode>
+			<coordinates>54.91496906,36.37622142,1447.45973</coordinates>
+		</Point>
+	</Placemark>
+	<Placemark>
+		<name>VD_1_00029.JPG</name>
+		<visibility>0</visibility>
+		<description><![CDATA[<a href="H:/ghabr/ImageCenters/100 meter/Teobox_p9day1_2024-06-25T11.05.13/images/VD_1_00029.JPG">H:/ghabr/ImageCenters/100 meter/Teobox_p9day1_2024-06-25T11.05.13/images/VD_1_00029.JPG</a><br/>Component: None<br/>Photogroup: Photogroup 2<br/>Image dimensions: 5472x3648<br/>Camera model: L1D-20c<br/>Focal length: 10.4877 mm<br/>Position (WGS84): 36.3761&deg ; 54.9149&deg<br/>Ellipsoid height: 1439.72 m]]></description>
+		<styleUrl>#completePose0</styleUrl>
+		<Point>
+			<altitudeMode>absolute</altitudeMode>
+			<coordinates>54.91491483000001,36.37614514,1446.5812</coordinates>
+		</Point>
+	</Placemark>
+	<Placemark>
+		<name>VD_1_00030.JPG</name>
+		<visibility>0</visibility>
+		<description><![CDATA[<a href="H:/ghabr/ImageCenters/100 meter/Teobox_p9day1_2024-06-25T11.05.13/images/VD_1_00030.JPG">H:/ghabr/ImageCenters/100 meter/Teobox_p9day1_2024-06-25T11.05.13/images/VD_1_00030.JPG</a><br/>Component: None<br/>Photogroup: Photogroup 2<br/>Image dimensions: 5472x3648<br/>Camera model: L1D-20c<br/>Focal length: 10.4877 mm<br/>Position (WGS84): 36.3765&deg ; 54.916&deg<br/>Ellipsoid height: 1440.02 m]]></description>
+		<styleUrl>#completePose0</styleUrl>
+		<Point>
+			<altitudeMode>absolute</altitudeMode>
+			<coordinates>54.91600969,36.37652019,1446.883</coordinates>
+		</Point>
+	</Placemark>
+	<Placemark>
+		<name>VD_1_00031.JPG</name>
+		<visibility>0</visibility>
+		<description><![CDATA[<a href="H:/ghabr/ImageCenters/100 meter/Teobox_p9day1_2024-06-25T11.05.13/images/VD_1_00031.JPG">H:/ghabr/ImageCenters/100 meter/Teobox_p9day1_2024-06-25T11.05.13/images/VD_1_00031.JPG</a><br/>Component: None<br/>Photogroup: Photogroup 2<br/>Image dimensions: 5472x3648<br/>Camera model: L1D-20c<br/>Focal length: 10.4877 mm<br/>Position (WGS84): 36.3767&deg ; 54.9162&deg<br/>Ellipsoid height: 1440.1 m]]></description>
+		<styleUrl>#completePose0</styleUrl>
+		<Point>
+			<altitudeMode>absolute</altitudeMode>
+			<coordinates>54.9161845,36.37667742,1446.97096</coordinates>
+		</Point>
+	</Placemark>
+	<Placemark>
+		<name>VD_1_00032.JPG</name>
+		<visibility>0</visibility>
+		<description><![CDATA[<a href="H:/ghabr/ImageCenters/100 meter/Teobox_p9day1_2024-06-25T11.05.13/images/VD_1_00032.JPG">H:/ghabr/ImageCenters/100 meter/Teobox_p9day1_2024-06-25T11.05.13/images/VD_1_00032.JPG</a><br/>Component: None<br/>Photogroup: Photogroup 2<br/>Image dimensions: 5472x3648<br/>Camera model: L1D-20c<br/>Focal length: 10.4877 mm<br/>Position (WGS84): 36.3769&deg ; 54.9164&deg<br/>Ellipsoid height: 1440.39 m]]></description>
+		<styleUrl>#completePose0</styleUrl>
+		<Point>
+			<altitudeMode>absolute</altitudeMode>
+			<coordinates>54.91642908000001,36.37689144,1447.25871</coordinates>
+		</Point>
+	</Placemark>
+	<Placemark>
+		<name>VD_1_00033.JPG</name>
+		<visibility>0</visibility>
+		<description><![CDATA[<a href="H:/ghabr/ImageCenters/100 meter/Teobox_p9day1_2024-06-25T11.05.13/images/VD_1_00033.JPG">H:/ghabr/ImageCenters/100 meter/Teobox_p9day1_2024-06-25T11.05.13/images/VD_1_00033.JPG</a><br/>Component: None<br/>Photogroup: Photogroup 2<br/>Image dimensions: 5472x3648<br/>Camera model: L1D-20c<br/>Focal length: 10.4877 mm<br/>Position (WGS84): 36.3771&deg ; 54.9167&deg<br/>Ellipsoid height: 1439.8 m]]></description>
+		<styleUrl>#completePose0</styleUrl>
+		<Point>
+			<altitudeMode>absolute</altitudeMode>
+			<coordinates>54.91667189,36.37710386,1446.66861</coordinates>
+		</Point>
+	</Placemark>
+	<Placemark>
+		<name>VD_1_00034.JPG</name>
+		<visibility>0</visibility>
+		<description><![CDATA[<a href="H:/ghabr/ImageCenters/100 meter/Teobox_p9day1_2024-06-25T11.05.13/images/VD_1_00034.JPG">H:/ghabr/ImageCenters/100 meter/Teobox_p9day1_2024-06-25T11.05.13/images/VD_1_00034.JPG</a><br/>Component: None<br/>Photogroup: Photogroup 2<br/>Image dimensions: 5472x3648<br/>Camera model: L1D-20c<br/>Focal length: 10.4877 mm<br/>Position (WGS84): 36.3773&deg ; 54.9169&deg<br/>Ellipsoid height: 1438.97 m]]></description>
+		<styleUrl>#completePose0</styleUrl>
+		<Point>
+			<altitudeMode>absolute</altitudeMode>
+			<coordinates>54.91691094000001,36.377318,1445.83448</coordinates>
+		</Point>
+	</Placemark>
+	<Placemark>
+		<name>VD_1_00035.JPG</name>
+		<visibility>0</visibility>
+		<description><![CDATA[<a href="H:/ghabr/ImageCenters/100 meter/Teobox_p9day1_2024-06-25T11.05.13/images/VD_1_00035.JPG">H:/ghabr/ImageCenters/100 meter/Teobox_p9day1_2024-06-25T11.05.13/images/VD_1_00035.JPG</a><br/>Component: None<br/>Photogroup: Photogroup 2<br/>Image dimensions: 5472x3648<br/>Camera model: L1D-20c<br/>Focal length: 10.4877 mm<br/>Position (WGS84): 36.3775&deg ; 54.9171&deg<br/>Ellipsoid height: 1439.03 m]]></description>
+		<styleUrl>#completePose0</styleUrl>
+		<Point>
+			<altitudeMode>absolute</altitudeMode>
+			<coordinates>54.91714817,36.37753072,1445.90131</coordinates>
+		</Point>
+	</Placemark>
+	<Placemark>
+		<name>VD_1_00036.JPG</name>
+		<visibility>0</visibility>
+		<description><![CDATA[<a href="H:/ghabr/ImageCenters/100 meter/Teobox_p9day1_2024-06-25T11.05.13/images/VD_1_00036.JPG">H:/ghabr/ImageCenters/100 meter/Teobox_p9day1_2024-06-25T11.05.13/images/VD_1_00036.JPG</a><br/>Component: None<br/>Photogroup: Photogroup 2<br/>Image dimensions: 5472x3648<br/>Camera model: L1D-20c<br/>Focal length: 10.4877 mm<br/>Position (WGS84): 36.3777&deg ; 54.9174&deg<br/>Ellipsoid height: 1438.88 m]]></description>
+		<styleUrl>#completePose0</styleUrl>
+		<Point>
+			<altitudeMode>absolute</altitudeMode>
+			<coordinates>54.91738875,36.37774581,1445.75394</coordinates>
+		</Point>
+	</Placemark>
+	<Placemark>
+		<name>VD_1_00037.JPG</name>
+		<visibility>0</visibility>
+		<description><![CDATA[<a href="H:/ghabr/ImageCenters/100 meter/Teobox_p9day1_2024-06-25T11.05.13/images/VD_1_00037.JPG">H:/ghabr/ImageCenters/100 meter/Teobox_p9day1_2024-06-25T11.05.13/images/VD_1_00037.JPG</a><br/>Component: None<br/>Photogroup: Photogroup 2<br/>Image dimensions: 5472x3648<br/>Camera model: L1D-20c<br/>Focal length: 10.4877 mm<br/>Position (WGS84): 36.378&deg ; 54.9176&deg<br/>Ellipsoid height: 1439.75 m]]></description>
+		<styleUrl>#completePose0</styleUrl>
+		<Point>
+			<altitudeMode>absolute</altitudeMode>
+			<coordinates>54.917614,36.37795128,1446.62277</coordinates>
+		</Point>
+	</Placemark>
+	<Placemark>
+		<name>VD_1_00038.JPG</name>
+		<visibility>0</visibility>
+		<description><![CDATA[<a href="H:/ghabr/ImageCenters/100 meter/Teobox_p9day1_2024-06-25T11.05.13/images/VD_1_00038.JPG">H:/ghabr/ImageCenters/100 meter/Teobox_p9day1_2024-06-25T11.05.13/images/VD_1_00038.JPG</a><br/>Component: None<br/>Photogroup: Photogroup 2<br/>Image dimensions: 5472x3648<br/>Camera model: L1D-20c<br/>Focal length: 10.4877 mm<br/>Position (WGS84): 36.378&deg ; 54.9177&deg<br/>Ellipsoid height: 1439.92 m]]></description>
+		<styleUrl>#completePose0</styleUrl>
+		<Point>
+			<altitudeMode>absolute</altitudeMode>
+			<coordinates>54.91773583000001,36.37801714,1446.78789</coordinates>
+		</Point>
+	</Placemark>
+	<Placemark>
+		<name>VD_1_00039.JPG</name>
+		<visibility>0</visibility>
+		<description><![CDATA[<a href="H:/ghabr/ImageCenters/100 meter/Teobox_p9day1_2024-06-25T11.05.13/images/VD_1_00039.JPG">H:/ghabr/ImageCenters/100 meter/Teobox_p9day1_2024-06-25T11.05.13/images/VD_1_00039.JPG</a><br/>Component: None<br/>Photogroup: Photogroup 2<br/>Image dimensions: 5472x3648<br/>Camera model: L1D-20c<br/>Focal length: 10.4877 mm<br/>Position (WGS84): 36.3776&deg ; 54.918&deg<br/>Ellipsoid height: 1438.43 m]]></description>
+		<styleUrl>#completePose0</styleUrl>
+		<Point>
+			<altitudeMode>absolute</altitudeMode>
+			<coordinates>54.91796994,36.37763036,1445.29947</coordinates>
+		</Point>
+	</Placemark>
+	<Placemark>
+		<name>VD_1_00040.JPG</name>
+		<visibility>0</visibility>
+		<description><![CDATA[<a href="H:/ghabr/ImageCenters/100 meter/Teobox_p9day1_2024-06-25T11.05.13/images/VD_1_00040.JPG">H:/ghabr/ImageCenters/100 meter/Teobox_p9day1_2024-06-25T11.05.13/images/VD_1_00040.JPG</a><br/>Component: None<br/>Photogroup: Photogroup 2<br/>Image dimensions: 5472x3648<br/>Camera model: L1D-20c<br/>Focal length: 10.4877 mm<br/>Position (WGS84): 36.3775&deg ; 54.9178&deg<br/>Ellipsoid height: 1439.81 m]]></description>
+		<styleUrl>#completePose0</styleUrl>
+		<Point>
+			<altitudeMode>absolute</altitudeMode>
+			<coordinates>54.91782589,36.37749953,1446.68287</coordinates>
+		</Point>
+	</Placemark>
+</Document>
+</kml>

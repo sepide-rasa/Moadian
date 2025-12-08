@@ -1,0 +1,383 @@
+﻿@using Ext.Net.MVC
+@using Hogaf.ExtNet.UX
+@using Ext.Net;
+@{
+    var X = Html.X();
+}
+
+@(Html.X().Window()
+    .Modal(true)
+    .Resizable(false)
+    .Width(620)
+    //.Height(245)
+    .Title("تعریف کلاس خودرو")
+    .Layout(LayoutType.Fit)
+    .ID("NewCarClass")
+    .Closable(true)
+    .ButtonAlign(Ext.Net.Alignment.Center)
+    .Buttons(
+        X.Button()
+            .Text("ذخیره")
+            .Icon(Ext.Net.Icon.Disk)
+        //.ToolTip("کلید میانبر F8")
+            .Listeners(l => l.Click.Handler = "SaveCarClass();"),
+        X.Button()
+            .Text("خروج")
+            .Icon(Ext.Net.Icon.DoorOut)
+        //.ToolTip("کلید میانبر Esc")
+            .OnClientClick("App.NewCarClass.destroy();"))
+    .CloseAction(Ext.Net.CloseAction.Destroy)
+    .Items(
+        X.FormPanel()
+            .Border(false)
+            .Layout(LayoutType.Fit)
+            .Items(
+                X.Panel()
+                    .Border(false)
+                    .PaddingSpec("8px 0 0 0")
+                         .Layout(LayoutType.VBox)
+                        .LayoutConfig(new VBoxLayoutConfig { Align = VBoxAlign.Center })
+                    //.Defaults(new { Margin = 3 })
+                    //.Layout(LayoutType.Table)
+                    //.LayoutConfig(new TableLayoutConfig { Columns = 4 })
+                    .Items(
+                        X.FieldSet().Height(168)
+                            .Border(true)
+                            .Title("کلاس خودرو")
+                            .Defaults(new { Margin = 2 })
+                            .Layout(LayoutType.Table)
+                            .LayoutConfig(new TableLayoutConfig { Columns = 4 })
+                    .Items(
+                        X.Hidden()
+                            .ItemID("fldId"),
+                        X.Label("نوع ساخت:"),
+                        X.ComboBox()
+                            .ItemID("cboCarMake")
+                            .EmptyText("نوع ساخت خودرو...")
+                            .TypeAhead(true)
+                            .AllowBlank(false)
+                            .BlankText("لطفا نوع ساخت را انتخاب نمایید.")
+                            .MsgTarget(Ext.Net.MessageTarget.Side)
+                            .QueryMode(DataLoadMode.Local)
+                            .ForceSelection(true)
+                            .Editable(true)
+                            .Width(190)
+                            .TriggerAction(TriggerAction.All)
+                            .DisplayField("fldTitle")
+                            .ValueField("fldId")
+                            .Listeners(l => l.Select.Handler = "App.NewCarClass.queryById('cboCarAccountTypes').getStore().load();")
+                            .Store(X.Store()
+                                .Model(X.Model()
+                                    .IDProperty("fldId")
+                                    .Fields(
+                                        new ModelField("fldId", ModelFieldType.String) { Mapping = "fldId" },
+                                        new ModelField("fldTitle", ModelFieldType.String) { Mapping = "fldTitle" })
+                                        )
+                                .Proxy(X.AjaxProxy()
+                                    .Url(Url.Action("GetCarMake"))
+                                    .Reader(X.JsonReader().Root("data")))
+                                .Listeners(li => li.Load.Handler = "LoadCarClass();")
+                                ),
+                            X.Label("نوع کاربری:"),
+                            X.ComboBox()
+                                .ItemID("cboCarAccountTypes")
+                                .EmptyText("نوع کاربری خودرو...")
+                                .TypeAhead(true)
+                                .AllowBlank(false)
+                                .BlankText("لطفا نوع کاربری را انتخاب نمایید.")
+                                .MsgTarget(Ext.Net.MessageTarget.Side)
+                                .QueryMode(DataLoadMode.Local)
+                                .ForceSelection(true)
+                                .Editable(true)
+                                .Width(190)
+                                .TriggerAction(TriggerAction.All)
+                                .Listeners(l => l.Select.Handler = "App.NewCarClass.queryById('cboCarCabin').getStore().load();")
+                                .DisplayField("fldTitle")
+                                .ValueField("fldId")
+                                .Store(X.Store()
+                                    .AutoLoad(false)
+                                    .Model(X.Model()
+                                        .IDProperty("fldId")
+                                        .Fields(
+                                            new ModelField("fldId", ModelFieldType.String) { Mapping = "fldId" },
+                                            new ModelField("fldTitle", ModelFieldType.String) { Mapping = "fldTitle" })
+                                            )
+                                    .Proxy(X.AjaxProxy()
+                                        .Url(Url.Action("GetCarAccountTypes"))
+                                        .Reader(X.JsonReader().Root("data")))
+                                    .Parameters(ps => ps.Add(new StoreParameter("CarMakeID", "App.NewCarClass.queryById('cboCarMake').getValue()", ParameterMode.Raw)))
+                                    ),
+                            X.Label("نوع کابین:"),
+                            X.ComboBox()
+                                .ItemID("cboCarCabin")
+                                .EmptyText("نوع کابین خودرو...")
+                                .TypeAhead(true)
+                                .AllowBlank(false)
+                                .BlankText("لطفا نوع کابین را انتخاب نمایید.")
+                                .MsgTarget(Ext.Net.MessageTarget.Side)
+                                .QueryMode(DataLoadMode.Local)
+                                .ForceSelection(true)
+                                .Editable(true)
+                                .Width(190)
+                                .TriggerAction(TriggerAction.All)
+                                .DisplayField("fldTitle")
+                                .ValueField("fldId")
+                                .Listeners(l => l.Select.Handler = "App.NewCarClass.queryById('cboSystem').getStore().load();")
+                                .Store(X.Store()
+                                    .AutoLoad(false)
+                                    .Model(X.Model()
+                                        .IDProperty("fldId")
+                                        .Fields(
+                                            new ModelField("fldId", ModelFieldType.String) { Mapping = "fldId" },
+                                            new ModelField("fldTitle", ModelFieldType.String) { Mapping = "fldTitle" })
+                                            )
+                                    .Proxy(X.AjaxProxy()
+                                        .Url(Url.Action("GetCarCabin"))
+                                        .Reader(X.JsonReader().Root("data")))
+                                    .Parameters(ps => ps.Add(new StoreParameter("CarAccountTypesID", "App.NewCarClass.queryById('cboCarAccountTypes').getValue()", ParameterMode.Raw)))
+                                    ),
+                            X.Label("سیستم خودرو:"),
+                            X.ComboBox()
+                                .ItemID("cboSystem")
+                                .EmptyText("سیستم خودرو...")
+                                .TypeAhead(true)
+                                .AllowBlank(false)
+                                .BlankText("لطفا نوع سیستم را انتخاب نمایید.")
+                                .MsgTarget(Ext.Net.MessageTarget.Side)
+                                .QueryMode(DataLoadMode.Local)
+                                .ForceSelection(true)
+                                .Editable(true)
+                                .Width(190)
+                                .Listeners(l => l.Select.Handler = "App.NewCarClass.queryById('cboCarTip').getStore().load();")
+                                .TriggerAction(TriggerAction.All)
+                                .DisplayField("fldTitle")
+                                .ValueField("fldId")
+                                .Store(X.Store()
+                                    .AutoLoad(false)
+                                    .Model(X.Model()
+                                        .IDProperty("fldId")
+                                        .Fields(
+                                            new ModelField("fldId", ModelFieldType.String) { Mapping = "fldId" },
+                                            new ModelField("fldTitle", ModelFieldType.String) { Mapping = "fldTitle" })
+                                            )
+                                    .Proxy(X.AjaxProxy()
+                                        .Url(Url.Action("GetSystem"))
+                                        .Reader(X.JsonReader().Root("data")))
+                                    .Parameters(ps => ps.Add(new StoreParameter("CarCabinID", "App.NewCarClass.queryById('cboCarCabin').getValue()", ParameterMode.Raw)))
+                                    ),
+                                X.Label("تیپ خودرو:"),
+                                X.ComboBox()
+                                    .ItemID("cboCarTip")
+                                    .EmptyText("تیپ خودرو...")
+                                    .TypeAhead(true)
+                                    .AllowBlank(false)
+                                    .BlankText("لطفا تیپ خودرو را انتخاب نمایید.")
+                                    .MsgTarget(Ext.Net.MessageTarget.Side)
+                                    .QueryMode(DataLoadMode.Local)
+                                    .ForceSelection(true)
+                                    .Editable(true)
+                                    .Width(190)
+                                    .TriggerAction(TriggerAction.All)
+                                    .DisplayField("fldTitle")
+                                    .ValueField("fldId")
+                                    .Store(X.Store()
+                                        .AutoLoad(false)
+                                        .Model(X.Model()
+                                            .IDProperty("fldId")
+                                            .Fields(
+                                                new ModelField("fldId", ModelFieldType.String) { Mapping = "fldId" },
+                                                new ModelField("fldTitle", ModelFieldType.String) { Mapping = "fldTitle" })
+                                                )
+                                        .Proxy(X.AjaxProxy()
+                                            .Url(Url.Action("GetCarTip"))
+                                            .Reader(X.JsonReader().Root("data")))
+                                        .Parameters(ps => ps.Add(new StoreParameter("CarSystemID", "App.NewCarClass.queryById('cboSystem').getValue()", ParameterMode.Raw)))
+                                            ), 
+                                X.Label("الگوی تیپ خودرو:"),
+                                X.ComboBox()
+                                    .ItemID("cboCarPattern")
+                                    .EmptyText("سیستم خودرو...")
+                                    .TypeAhead(true)
+                                    .AllowBlank(false)
+                                    .BlankText("لطفا نوع سیستم را انتخاب نمایید.")
+                                    .MsgTarget(Ext.Net.MessageTarget.Side)
+                                    .QueryMode(DataLoadMode.Local)
+                                    .ForceSelection(true)
+                                    .Editable(true)
+                                    .Width(190)
+                                    .TriggerAction(TriggerAction.All)
+                                    .DisplayField("fldTitle")
+                                    .ValueField("fldId")
+                                    .Store(X.Store()
+                                        .Model(X.Model()
+                                            .IDProperty("fldId")
+                                            .Fields(
+                                                new ModelField("fldId", ModelFieldType.String) { Mapping = "fldId" },
+                                                new ModelField("fldTitle", ModelFieldType.String) { Mapping = "fldTitle" })
+                                                )
+                                        .Proxy(X.AjaxProxy()
+                                            .Url(Url.Action("GetCarPattern"))
+                                            .Reader(X.JsonReader().Root("data")))
+                                        ),
+                                X.Label("کلاس خودرو:"),
+                                X.TextField()
+                                    .ItemID("txtCarClass")
+                                    .Width(190)
+                                    .AllowBlank(false)
+                                    .EnforceMaxLength(true)
+                                    .MaxLength(50)
+                                    .BlankText("لطفا کلاس خودرو را وارد نمایید.")
+                                    .MsgTarget(Ext.Net.MessageTarget.Side),
+                                X.Label("توضیحات:"),
+                                X.TextArea()
+                                    .ItemID("txtDesc")
+                                    .Width(190)
+                )
+                )
+            )
+        )
+)
+
+<script type="text/javascript">
+    function LoadCarClass() {
+        if ('@ViewBag.Id' != '0') {
+            App.NewCarClass.body.mask("در حال بارگذاری...");
+            Ext.net.DirectMethod.request({
+                url: '/NewVer/CarClass_New/Details',
+                params: {
+                    Id: '@ViewBag.Id'
+                },
+                success: function (data) {
+                    if (data.Er == 1) {
+                        Ext.MessageBox.show({
+                            title: data.MsgTitle,
+                            msg: data.Msg,
+                            icon: Ext.MessageBox.ERROR,
+                            buttons: Ext.MessageBox.OK
+                        });
+                    }
+                    else {
+                        var cboCarMake = App.NewCarClass.queryById('cboCarMake');
+                        cboCarMake.setValue(String(data.fldCarMakeID));
+                        var cboCarAccountTypes = App.NewCarClass.queryById('cboCarAccountTypes');
+                        cboCarAccountTypes.getStore().load();
+                        cboCarAccountTypes.setValue(String(data.fldCarAccountTypeID));
+                        var Id = App.NewCarClass.queryById('fldId');
+                        Id.setValue(data.fldId);
+                        var cboCarCabin = App.NewCarClass.queryById('cboCarCabin');
+                        cboCarCabin.getStore().load();
+                        cboCarCabin.setValue(String(data.fldCabinTypeID));
+                        var cboSystem = App.NewCarClass.queryById('cboSystem');
+                        cboSystem.getStore().load();
+                        cboSystem.setValue(String(data.fldCarSystemID));
+                        var cboCarTip = App.NewCarClass.queryById('cboCarTip');
+                        cboCarTip.getStore().load();
+                        cboCarTip.setValue(String(data.fldCarModelID));
+                        var cboCarPattern = App.NewCarClass.queryById('cboCarPattern');
+                        cboCarPattern.setValue(String(data.fldCarPatternModelID));
+                        var txtCarClass = App.NewCarClass.queryById('txtCarClass');
+                        txtCarClass.setValue(data.fldName);
+                        var txtDesc = App.NewCarClass.queryById('txtDesc');
+                        txtDesc.setValue(data.fldDesc);
+                    }
+                    App.NewCarClass.body.mask().hide();
+                }
+            });
+        }
+        else {
+            App.NewCarClass.queryById('cboCarMake').validate();
+            App.NewCarClass.queryById('cboCarAccountTypes').validate();
+            App.NewCarClass.queryById('cboCarCabin').validate();
+            App.NewCarClass.queryById('cboSystem').validate();
+            App.NewCarClass.queryById('cboCarTip').validate();
+            App.NewCarClass.queryById('cboCarPattern').validate();
+            App.NewCarClass.queryById('txtCarClass').validate();
+        }
+    }
+
+    function SaveCarClass() {
+        var cboCarTip = App.NewCarClass.queryById('cboCarTip');
+        var Id = App.NewCarClass.queryById('fldId');
+        var txtCarClass = App.NewCarClass.queryById('txtCarClass');
+        var cboCarPattern = App.NewCarClass.queryById('cboCarPattern');
+        var txtDesc = App.NewCarClass.queryById('txtDesc');
+        var cboCarMake = App.NewCarClass.queryById('cboCarMake');
+        var cboCarAccountTypes = App.NewCarClass.queryById('cboCarAccountTypes');
+        var cboCarCabin = App.NewCarClass.queryById('cboCarCabin');
+        var cboSystem = App.NewCarClass.queryById('cboSystem');
+
+        var er = false;
+
+        if (cboCarTip.validate() == false) {
+            er = true;
+        }
+        if (txtCarClass.validate() == false) {
+            er = true;
+        }
+        if (cboCarPattern.validate() == false) {
+            er = true;
+        }
+        if (cboCarMake.validate() == false) {
+            er = true;
+        }
+        if (cboCarAccountTypes.validate() == false) {
+            er = true;
+        }
+        if (cboCarCabin.validate() == false) {
+            er = true;
+        }
+        if (cboSystem.validate() == false) {
+            er = true;
+        }
+        if (er == true)
+            return;
+
+        App.NewCarClass.body.mask("در حال ذخیره سازی...");
+        Ext.net.DirectMethod.request({
+            url: '/NewVer/CarClass_New/Save',
+            params: {
+                fldID: Id.getValue(),
+                fldName: txtCarClass.getValue(),
+                fldCarModelID: cboCarTip.getValue(),
+                fldCarPatternModelID: cboCarPattern.getValue(),
+                fldDesc: txtDesc.getValue()
+            },
+            success: function (data) {
+                var ic = Ext.MessageBox.INFO;
+                if (data.Er == 1)
+                    ic = Ext.MessageBox.ERROR;
+                Ext.MessageBox.show({
+                    title: data.MsgTitle,
+                    msg: data.Msg,
+                    icon: ic,
+                    buttons: Ext.MessageBox.OK
+                });
+                App.CarClass.queryById('GridCarClass').store.load();
+                if (data.Er != 1) {
+                    ClearCarClass();
+                }
+                App.NewCarClass.body.mask().hide();
+            }
+        });
+    }
+
+    function ClearCarClass() {
+        App.NewCarClass.queryById('txtDesc').setValue("");
+        App.NewCarClass.queryById('fldId').setValue(0);
+        App.NewCarClass.queryById('cboCarMake').setValue("");;
+        App.NewCarClass.queryById('cboCarAccountTypes').setValue("");;
+        App.NewCarClass.queryById('cboCarCabin').setValue("");;
+        App.NewCarClass.queryById('cboSystem').setValue("");;
+        App.NewCarClass.queryById('cboCarTip').setValue("");;
+        App.NewCarClass.queryById('cboCarPattern').setValue("");;
+        App.NewCarClass.queryById('txtCarClass').setValue("");;
+    }
+
+   /* function EnterNext() {
+        var keyfield = App.NewCustomer.queryById(Ext.getCmp((Ext.Element.getActiveElement()).name).itemId);
+        var nextfld = keyfield.nextSibling();
+        nextfld.focus();
+        nextfld.selectText();
+    }
+    */
+</script>

@@ -1,0 +1,582 @@
+﻿@using Kendo.Mvc.UI;
+<div class="modal" id="AmountCost">
+    <script src="@Url.Content("~/Content/Base.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Scripts/jquery.ui.datepicker-cc.all.min.js")" type="text/javascript"></script>
+    <div>
+     <a href="@Url.Content("~/Helps/تعیین مقدار هزینه.htm")" target="_blank" id="Help" title="راهنما" style="background-image:url('/Content/images/1381415123_help.png');background-repeat: no-repeat;height: 20px;float: left;top: 10px;left: 10px;"></a>
+        <br />
+        <center>
+            <table>
+                <tr>
+                    <td align="left">
+                        <span style="color: Red;">*</span> نوع هزینه:
+                    </td>
+                    <td dir="rtl" align="right" colspan="2">
+                        @(Html.Kendo().DropDownList()
+                                  .Name("cboCost")
+                                  .OptionLabel("نوع هزینه")
+                                  .DataTextField("fldName")
+                                  .DataValueField("fldID")
+                                  .DataSource(source =>
+                                  {
+                                      source.Read(read =>
+                                      {
+                                          read.Action("GetCascadeRound", "AmountCost");
+                                      });
+                                  }).HtmlAttributes(new { @style = "display: none;width:169px;" })
+                            )
+                        <span id="lblcboCostError" style="color: Red;"></span>
+                    </td>
+                </tr>
+                <tr>
+                    @Html.Hidden("fldId")
+                    <td align="left">
+                        <span style="color: Red;">*</span> مقدار هزینه:
+                    </td>
+                    <td dir="rtl" align="right" colspan="2">
+                        @Avarez.Helper.winClass.textbox("txtCost")
+                        <span id="lblCostError" style="color: Red;"></span>
+                    </td>
+                </tr>
+                <tr>
+                    @Html.Hidden("fldId")
+                    <td align="left">
+                        <span style="color: Red;">*</span> تاریخ تعیین هزینه:
+                    </td>
+                    <td dir="rtl" align="right" colspan="2">
+                        @Avarez.Helper.winClass.textbox("txtDate")
+                        <span id="lblDateError" style="color: Red;"></span>
+                    </td>
+                </tr>
+                <tr>
+                    <td align="left">
+                        
+                    </td>
+                    <td dir="rtl" align="right" colspan="2">
+                        @Html.CheckBox("chSeri")اعمال سری خودرو
+                    </td>
+                </tr>
+                <tr>
+                    <td align="left">
+                        
+                    </td>
+                    <td dir="rtl" align="right" colspan="2">
+                        @Html.CheckBox("chApply")اعمال تقسیمات کشوری
+                    </td>
+                </tr>               
+                <tr>
+                    <td align="left">
+                        
+                    </td>
+                    <td dir="rtl" align="right" colspan="2">
+                         @Html.CheckBox("chEffectUser")موثر بر کاربر
+                    </td>
+                </tr>
+                <tr>
+                    <td align="left">
+                        
+                    </td>
+                    <td dir="rtl" align="right" colspan="2">
+                        @Html.CheckBox("chEffectMun")موثر بر شهرداری
+                    </td>
+                </tr>
+                 <tr>
+                    <td align="left">
+
+                    </td>
+                    <td dir="rtl" align="right" colspan="2">
+                       @Html.CheckBox("chEffectOffice")موثر بر دفاتر
+                    </td>
+                </tr>
+                <tr>
+                    <td align="left">
+                        موقعیت در تقسیمات کشوری:
+                    </td>
+                    <td colspan="2" dir="rtl" id="countryLocation" align="right">
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="3" align="center" style="height: 30px;">
+                        @Html.Label("مورد انتخاب شده: ", new { @id = "CountryPosition" })
+                    </td>
+                </tr>
+                <tr>
+                    <td align="left">
+                        سلسله مراتب خودرو:
+                    </td>
+                    <td colspan="2" dir="rtl" id="carLocation" align="right">
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="3" align="center" style="height: 30px;">
+                        @Html.Label("مورد انتخاب شده: ", new { @id = "carPosition" })
+                    </td>
+                </tr>
+                <tr>
+                    @Html.Hidden("fldId")
+                </tr>
+            </table>
+            <p>
+                @Avarez.Helper.winClass.Buttons("AddLink", "ذخیره", "Save")
+                @Avarez.Helper.winClass.Buttons("EditLink", "ویرایش", "Edit")
+                @Avarez.Helper.winClass.Buttons("DelLink", "حذف", "Del")
+                @Avarez.Helper.winClass.Buttons("exit", "خروج", "Exit")
+            </p>
+        </center>
+        @(Html.Kendo().PanelBar()
+        .Name("panelbar-images")
+        .Items(panelbar =>
+        {
+            panelbar.Add().Text("جستجو")
+                .ImageUrl(Url.Content("~/Content/images/search.png"))
+                .Content(@<div>
+                    <table>
+                        <tr>
+                            <td>
+                                فیلد جستجو:@Html.DropDownList("cboSearchFiald", new SelectList(new[] { new { ID = "0", Name = "تقسیمات کشوری " }, new { ID = "1", Name = "سری خودرو" } }, "ID", "Name"))
+                            </td>
+                            <td>
+                                نوع جستجو: @Html.DropDownList("cboSearchType", new SelectList(new[] { new { ID = "0", Name = "مشابه عبارت" }, new { ID = "1", Name = "مشابه عبارت از سمت راست" }, new { ID = "2", Name = "عین عبارت" } }, "ID", "Name"))
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                عبارت جستجو: @Avarez.Helper.winClass.textbox("txtSearch")
+                            </td>
+                            <td>
+                                نتیجه رکوردها: @Html.TextBox("txtTop", 30, new { @style = "width:30px;" }) رکورد
+                            </td>
+                        </tr>
+                    </table>
+                    <br />
+                </div>);
+        })
+        )
+        <div class="k-rtl demo-section">
+            @(Html.Kendo().Grid<Avarez.Models.sp_AmountCostSelect>()
+                .Name("Grid")
+                .Columns(columns =>
+                {
+                    columns.Bound(p => p.fldID).Title("کد").Visible(false);
+                    columns.Bound(p => p.fldCostName).Title("نوع هزینه");
+                    columns.Bound(p => p.fldAmount).Title("مقدار هزینه").Format("{0:#,###0}");
+                    columns.Bound(p => p.fldDateAmount).Title("تاریخ تعیین");
+                    columns.Bound(p => p.fldCountryDivisionsName).Title("تقسیمات کشوری");
+                    columns.Bound(p => p.fldCarSeriesName).Title("سری خودرو");
+                    columns.Bound(p => p.fldDesc).Title("توضیحات");
+                })
+            .Selectable(selectable => selectable.Mode(GridSelectionMode.Single))
+            .Pageable()
+            .Scrollable()
+            .DataSource(data =>
+                data.Ajax()
+                .PageSize(10)
+                .Read("Fill", "AmountCost")
+            )
+        )
+        </div>
+    </div>
+    <script type="text/javascript">
+        function select(e) {
+            var dataItem = this.dataItem(e.node);
+            countryid = dataItem.id;
+            countrySID = dataItem.fldSid;
+            countryNType = dataItem.fldNodeType;
+            var url = '@Url.Content("~/AmountCost/CountryPosition")';
+            $.ajax({
+                type: "post",
+                url: url,
+                data: { id: countryid },
+                datatype: "json",
+                success: function (data) {
+                    var m = data;
+                    $('#CountryPosition').html('مورد انتخاب شده: ' + m.Position);
+                    var treeview = $("#treeview").data("kendoTreeView");
+                    treeview.collapse(".k-item");
+                },
+                failure: function (data) {
+                    alert(data.data);
+                }
+            });
+        }
+
+        var countryid;
+        var countrySID;
+        var countryNType;
+
+        function carselect(e) {
+            var dataItem = this.dataItem(e.node);
+            carid = dataItem.id;
+            carSID = dataItem.fldSid;
+            carNType = dataItem.fldNodeType;
+            var url = '@Url.Content("~/AmountCost/CarPosition")';
+            $.ajax({
+                type: "post",
+                url: url,
+                data: { id: carid },
+                datatype: "json",
+                success: function (data) {
+                    var m = data;
+                    $('#carPosition').html('مورد انتخاب شده: ' + m.Position);
+                    var treeview = $("#cartreeview").data("kendoTreeView");
+                    treeview.collapse(".k-item");
+                },
+                failure: function (data) {
+                    alert(data.data);
+                }
+            });
+        }
+
+        var carid;
+        var carSID;
+        var carNType;
+        $("document").ready(function () {
+
+            $("#txtDate").datepicker({
+                showButtonPanel: true
+            });
+            $('#countryLocation').html($('#LocationDiv').valueOf());
+            $('#carLocation').html($('#carLocationDiv').valueOf());
+            $("#AddLink").button();
+            $("#EditLink").button();
+            $("#DelLink").button();
+            $("#Next").button();
+            $("#exit").button();
+            $("#btnBrowse").button();
+            $("#btnRemove").button();
+            $("#Help").button();
+
+
+            $("#exit").click(function () {
+                $("#AmountCost").remove();
+            });
+
+            $('#AmountCost').on('keyup', 'input', function (event) {
+                if (event.which == 13) {
+                    var inputs = $('#AmountCost').find(':input:visible');
+                    inputs.eq(inputs.index(this) + 1).focus();
+                }
+            });
+
+            $(document).keyup(function (event) {
+                if (event.which == 119) {
+                    SaveRecord();
+                }
+                else if (event.which == 113) {
+                    EditRecord();
+                }
+                else if (event.which == 115) {
+                    DeleteRecord();
+                }
+            });
+            $('#AddLink').attr('title', 'کلید میانبر (F8)'); //119
+            $('#EditLink').attr('title', 'کلید میانبر (F2)'); //113
+            $('#DelLink').attr('title', 'کلید میانبر (F4)'); //115
+
+            jQuery("#EditLink").click(function () {
+                EditRecord();
+            });
+
+            $('#DelLink').click(function () {
+                DeleteRecord();
+            });
+
+            $("#AddLink").click(function () {
+                SaveRecord();
+            });
+
+            $('#txtSearch').keyup(function () {
+                var url = '@Url.Action("Reload", "AmountCost")';
+                Reload(url, 'Grid', $("#cboSearchFiald").val(), $("#txtSearch").val(), $("#txtTop").val(), $("#cboSearchType").val());
+            });
+
+            $("#btnBrowse").click(function () {
+                performClick(document.getElementById('image'));
+            });
+
+            function performClick(node) {
+                var evt = document.createEvent("MouseEvents");
+                evt.initEvent("click", true, false);
+                node.dispatchEvent(evt);
+            }
+
+            $("#txtCost").keyup(function () {
+                if ($("#txtCost").val() != '') {
+                    $("#txtCost").removeClass("input-validation-error");
+                    $("#lblCostError").html("");
+                }
+                else {
+                    $("#txtCost").addClass("input-validation-error");
+                    $('#lblCostError').html('لطفا مقدار هزینه را وارد کنید.');
+                }
+            });
+            $("#txtDate").change(function () {
+                if ($("#txtDate").val() != '') {
+                    $("#txtDate").removeClass("input-validation-error");
+                    $("#lblDateError").html("");
+                }
+                else {
+                    $("#txtDate").addClass("input-validation-error");
+                    $('#lblDateError').html('لطفا تاریخ تعیین هزینه را وارد کنید.');
+                }
+            });
+            $("#cboCost").change(function () {
+                if ($("#cboCost").val() != '') {
+                    $("#cboCost").removeClass("input-validation-error");
+                    $("#lblcboCostError").html("");
+                }
+                else {
+                    $("#cboCost").addClass("input-validation-error");
+                    $('#lblcboCostError').html('لطفا نوع هزینه را وارد کنید.');
+                }
+            });
+
+        });
+        function Clear() {
+            document.getElementById('chApply').checked = false;
+            $('#txtCost').val('');
+            document.getElementById('chSeri').checked = false;
+            $('#txtDate').val('');
+            $('#fldId').val('');
+            $('#txtDesc').val('');
+            var round = $("#cboRound").data("kendoDropDownList");
+            round.value(0);
+        }
+        function SaveRecord() {
+                var er = false;
+                if ($("#txtCost").val() == '') {
+                    $("#txtCost").addClass("input-validation-error");
+                    $('#lblCostError').html('لطفا مقدار هزینه را وارد کنید.');
+                    er = true;
+                }
+                else {
+                    $("#txtCost").removeClass("input-validation-error");
+                    $('#lblCostError').html('');
+                }
+
+                if ($("#txtDate").val() == '') {
+                    $("#txtDate").addClass("input-validation-error");
+                    $('#lblDateError').html('لطفا تاریخ تعیین مقدار هزینه را وارد کنید.');
+                    er = true;
+                }
+                else {
+                    $("#txtDate").removeClass("input-validation-error");
+                    $('#lblDateError').html('');
+                }
+
+                if ($("#cboCost").val() == '') {
+                    $("#cboCost").addClass("input-validation-error");
+                    $('#lblcboCostError').html('لطفا نوع هزینه را وارد کنید.');
+                    er = true;
+                }
+                else {
+                    $("#cboCost").removeClass("input-validation-error");
+                    $('#lblcboCostError').html('');
+                }
+
+
+                if (er)
+                    return;
+                var data = {
+                    fldAmount: $("#txtCost").val(),
+                    fldCostID: $("#cboCost").val(),
+                    fldDateAmount: $("#txtDate").val(),
+                    fldTypeCountryDivisions: countryNType,
+                    fldCodeCountryDivisions: countrySID,
+                    fldCountryDivisionsTreeApply: document.getElementById('chApply').checked,
+                    fldTypeCar: carNType,
+                    fldCodeCar: carSID,
+                    fldCarSeriesTreeApply: document.getElementById('chSeri').checked,
+                    fldId: $("#fldId").val(),
+                    fldEffectiveUser: document.getElementById('chEffectUser').checked,
+                    fldEffectiveOffice: document.getElementById('chEffectOffice').checked,
+                    fldEffectiveMunicipality: document.getElementById('chEffectMun').checked
+                };
+                if (data != '') {
+                    PostForm(data, '@Url.Content("~/AmountCost/Save")', "#win");
+                }
+                Clear();
+            }
+            function EditRecord() {
+                var entityGrid = $("#Grid").data("kendoGrid");
+                var selectedItem = entityGrid.dataItem(entityGrid.select());
+                if (selectedItem) {
+                    var id = selectedItem.fldID;
+                    var URL = '@Url.Content("~/AmountCost/Details")';
+                    URL = URL + "/" + id;
+                    $.ajax({
+                        type: "GET",
+                        url: URL,
+                        success: function (data) {
+                            $('#txtCost').val(data.fldAmount);
+                            $('#txtDate').val(data.fldDateAmount);
+                            document.getElementById('chApply').checked = data.fldCountryDivisionsTreeApply;
+                            document.getElementById('chSeri').checked = data.fldCarSeriesTreeApply;
+                            document.getElementById('chEffectMun').checked = data.fldEffectiveMunicipality;
+                            document.getElementById('chEffectUser').checked = data.fldEffectiveUser;
+                            document.getElementById('chEffectOffice').checked = data.fldEffectiveOffice;
+                            $('#fldId').val(data.fldId);
+                            $('#txtDesc').val(data.fldDesc);
+                            var round = $("#cboCost").data("kendoDropDownList");
+                            round.value(data.fldCostID);
+                            countryid = data.countryId;
+                            countrySID = data.countryCode;
+                            countryNType = data.CountryType;
+                            var url = '@Url.Content("~/AmountCost/CountryPosition")';
+                            $.ajax({
+                                type: "post",
+                                url: url,
+                                data: { id: countryid },
+                                datatype: "json",
+                                success: function (data) {
+                                    var m = data;
+                                    $('#CountryPosition').html('مورد انتخاب شده: ' + m.Position);
+                                },
+                                failure: function (data) {
+                                    alert(data.data);
+                                }
+                            });
+
+                            carid = data.carid;
+                            carSID = data.carCode;
+                            carNType = data.carType;
+                            var url = '@Url.Content("~/AmountCost/CarPosition")';
+                            $.ajax({
+                                type: "post",
+                                url: url,
+                                data: { id: carid },
+                                datatype: "json",
+                                success: function (data) {
+                                    var m = data;
+                                    $('#carPosition').html('مورد انتخاب شده: ' + m.Position);
+                                },
+                                failure: function (data) {
+                                    alert(data.data);
+                                }
+                            });
+                        },
+                        failure: function (data) {
+                            alert(data.data);
+                        }
+                    });
+                }
+                else {
+                    alert('لطفا یک سطر را انتخاب کنید.');
+                }
+            }
+        function DeleteRecord() {
+                var entityGrid = $("#Grid").data("kendoGrid");
+                var selectedItem = entityGrid.dataItem(entityGrid.select());
+                if (selectedItem) {
+                    var id = selectedItem.fldID;
+                    var URL = '@Url.Content("~/metro/YesNomsg")';
+                    URL = URL + "/?id=" + id + "&URL=" + '@Url.Content("~/AmountCost/Delete")';
+                    windowAppend("body", URL);
+                    $("#message").html('آیا مایل به حذف رکورد انتخاب شده هستید؟');
+                }
+                else {
+                    alert('لطفا یک سطر را انتخاب کنید.');
+                }
+                Clear();
+            }
+        function Reload(Url, gridname, field, value, top, searchType) {
+            var grid = $('#' + gridname).data('kendoGrid');
+            $.ajax({
+                url: Url,
+                type: 'get',
+                datatype: 'json',
+                data: { field: field, value: value, top: top, searchtype: searchType },
+                error: function (xhr, status, error) {
+                    alert(xhr + status);
+                },
+                success: function (result) {
+                    $("#" + gridname).data("kendoGrid").dataSource.data(result);
+                }
+
+            });
+        }
+
+        function PostForm(datas, url, id) {
+            var sendInfo = datas;
+            $('#Lock').show();
+            $.ajax({
+                type: "POST",
+                url: url,
+                data: sendInfo,
+                datatype: "json",
+                success: function (data) {
+                    var m = data;
+                    windowAppend("body", "/metro/error");
+                    $("#message").html(m.data);
+                    switch (m.state) {
+                        case 0:
+                            $("#error .wintitle").html("ذخیره موفق");
+                            break;
+                        case 1:
+                            $("#error .wintitle").html("خطا");
+                            break;
+                    }
+                    var url = '@Url.Action("Reload", "AmountCost")';
+                    Reload(url, 'Grid', '0', '', 30, 1);
+                    $('#Lock').hide();
+                },
+                failure: function (data) {
+                    alert(data.data);
+                }
+            });
+        }
+        
+    </script>
+</div>
+<div class="treeview-back  k-rtl" dir="rtl" id="LocationDiv">
+    @(Html.Kendo().TreeView()
+                        .Name("treeview")
+                        .DataImageUrlField("image")
+
+                        .DataTextField("Name")
+                        .Checkboxes(chkbxs =>
+                        {
+                            chkbxs.Enabled(false).CheckChildren(false);
+                        })
+                        .DataSource(dataSource => dataSource
+                        .Read(read => read
+                                                  .Action("_CountryTree", "AmountCost")
+                        )
+                        )
+                        .Events(events =>
+                        events.Select("select"))
+                        )
+</div>
+<div class="treeview-back  k-rtl" dir="rtl" id="carLocationDiv">
+    @(Html.Kendo().TreeView()
+                        .Name("cartreeview")
+                        .DataImageUrlField("image")
+
+                        .DataTextField("Name")
+                        .Checkboxes(chkbxs =>
+                        {
+                            chkbxs.Enabled(false).CheckChildren(false);
+                        })
+                        .DataSource(dataSource => dataSource
+                        .Read(read => read
+                                          .Action("_CarTree", "AmountCost")
+                        )
+                        )
+                        .Events(events =>
+                        events.Select("carselect"))
+                        )
+</div>
+<style type="text/css">
+    .treeview-back
+    {
+        width: 400px;
+        margin: 30px;
+        padding: 20px;
+        -moz-box-shadow: 0 1px 2px rgba(0,0,0,0.45), inset 0 0 30px rgba(0,0,0,0.07);
+        -webkit-box-shadow: 0 1px 2px rgba(0,0,0,0.45), inset 0 0 30px rgba(0,0,0,0.07);
+        box-shadow: 0 1px 2px rgba(0,0,0,0.45), inner 0 0 30px rgba(0,0,0,0.07);
+        -webkit-border-radius: 8px;
+        -moz-border-radius: 8px;
+        border-radius: 8px;
+    }
+</style>

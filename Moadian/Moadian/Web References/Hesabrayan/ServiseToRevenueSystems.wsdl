@@ -1,0 +1,1288 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:tm="http://microsoft.com/wsdl/mime/textMatching/" xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" xmlns:tns="http://tempuri.org/" xmlns:http="http://schemas.xmlsoap.org/wsdl/http/" xmlns:s="http://www.w3.org/2001/XMLSchema" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" targetNamespace="http://tempuri.org/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:types>
+    <s:schema elementFormDefault="qualified" targetNamespace="http://tempuri.org/">
+      <s:element name="HelloWorld">
+        <s:complexType />
+      </s:element>
+      <s:element name="HelloWorldResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="HelloWorldResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="CompanyList">
+        <s:complexType />
+      </s:element>
+      <s:element name="CompanyListResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="CompanyListResult">
+              <s:complexType mixed="true">
+                <s:sequence>
+                  <s:any />
+                </s:sequence>
+              </s:complexType>
+            </s:element>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="ClientList">
+        <s:complexType />
+      </s:element>
+      <s:element name="ClientListResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="ClientListResult">
+              <s:complexType mixed="true">
+                <s:sequence>
+                  <s:any />
+                </s:sequence>
+              </s:complexType>
+            </s:element>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="RevenueCodeList">
+        <s:complexType />
+      </s:element>
+      <s:element name="RevenueCodeListResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="RevenueCodeListResult">
+              <s:complexType mixed="true">
+                <s:sequence>
+                  <s:any />
+                </s:sequence>
+              </s:complexType>
+            </s:element>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="PartnershipList">
+        <s:complexType />
+      </s:element>
+      <s:element name="PartnershipListResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="PartnershipListResult">
+              <s:complexType mixed="true">
+                <s:sequence>
+                  <s:any />
+                </s:sequence>
+              </s:complexType>
+            </s:element>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="AccountListAccounting">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="companyID" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="AccountListAccountingResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="AccountListAccountingResult">
+              <s:complexType mixed="true">
+                <s:sequence>
+                  <s:any />
+                </s:sequence>
+              </s:complexType>
+            </s:element>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="AccountListRevenue">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="companyID" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="AccountListRevenueResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="AccountListRevenueResult">
+              <s:complexType mixed="true">
+                <s:sequence>
+                  <s:any />
+                </s:sequence>
+              </s:complexType>
+            </s:element>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="SundriesTypeDescList">
+        <s:complexType />
+      </s:element>
+      <s:element name="SundriesTypeDescListResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="SundriesTypeDescListResult">
+              <s:complexType mixed="true">
+                <s:sequence>
+                  <s:any />
+                </s:sequence>
+              </s:complexType>
+            </s:element>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="RecovrySendedFiche">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="SystemClientService" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="CompanyId" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="FicheNo" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="RecoveryDate" type="s:dateTime" />
+            <s:element minOccurs="0" maxOccurs="1" name="RefCode" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="RecovrySendedFicheResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="RecovrySendedFicheResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="VitiationRecovrySendedFiche">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="SystemClientService" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="CompanyId" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="FicheNo" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="VitiationRecovrySendedFicheResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="VitiationRecovrySendedFicheResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="VitiationSendedFiche">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="SystemClientService" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="CompanyId" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="FicheNo" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="VitiationSendedFicheResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="VitiationSendedFicheResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="InsertInstalmentRevenue">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="SystemClientService" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="IdCompany" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="InstalmentNum" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="ClientID" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="ChequeNum" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="MaturitryDate" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="BankName" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="BranchName" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="ChequeCost" type="s:long" />
+            <s:element minOccurs="0" maxOccurs="1" name="AccountNum" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="RecieptCode" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="RevenueCode" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="Cost" type="s:float" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="InsertInstalmentRevenueResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="InsertInstalmentRevenueResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="RegisterNewFicheByAccYearCost">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="SystemClientService" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="IdCompany" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="FicheNum" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="ClientName" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="FicheDateCreate" type="s:dateTime" />
+            <s:element minOccurs="0" maxOccurs="1" name="AccountNum" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="FicheNo" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="PaymentDesc" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="BiilID" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="PaymentID" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="RenovationCode" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="Pelaque" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="PayNo" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="TypeCode" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="SystemType" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="VehicleType" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="VIN" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="FicheCost" type="s:long" />
+            <s:element minOccurs="1" maxOccurs="1" name="totalDiscount" type="s:long" />
+            <s:element minOccurs="0" maxOccurs="1" name="FicheDetail">
+              <s:complexType mixed="true">
+                <s:sequence>
+                  <s:any />
+                </s:sequence>
+              </s:complexType>
+            </s:element>
+            <s:element minOccurs="0" maxOccurs="1" name="FicheDetailByFisYear">
+              <s:complexType mixed="true">
+                <s:sequence>
+                  <s:any />
+                </s:sequence>
+              </s:complexType>
+            </s:element>
+            <s:element minOccurs="0" maxOccurs="1" name="FicheAddAndSub">
+              <s:complexType mixed="true">
+                <s:sequence>
+                  <s:any />
+                </s:sequence>
+              </s:complexType>
+            </s:element>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="RegisterNewFicheByAccYearCostResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="RegisterNewFicheByAccYearCostResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="RegisterNewFicheByAccYearCostAndDiscount">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="SystemClientService" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="IdCompany" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="FicheNum" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="ClientName" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="FicheDateCreate" type="s:dateTime" />
+            <s:element minOccurs="0" maxOccurs="1" name="AccountNum" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="FicheNo" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="PaymentDesc" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="BiilID" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="PaymentID" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="RenovationCode" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="Pelaque" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="PayNo" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="TypeCode" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="SystemType" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="VehicleType" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="VIN" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="FicheCost" type="s:long" />
+            <s:element minOccurs="1" maxOccurs="1" name="totalAmountSavingBond" type="s:long" />
+            <s:element minOccurs="1" maxOccurs="1" name="totalDiscount" type="s:long" />
+            <s:element minOccurs="0" maxOccurs="1" name="FicheDetail">
+              <s:complexType mixed="true">
+                <s:sequence>
+                  <s:any />
+                </s:sequence>
+              </s:complexType>
+            </s:element>
+            <s:element minOccurs="0" maxOccurs="1" name="FicheDetailByFisYear">
+              <s:complexType mixed="true">
+                <s:sequence>
+                  <s:any />
+                </s:sequence>
+              </s:complexType>
+            </s:element>
+            <s:element minOccurs="0" maxOccurs="1" name="FicheAddAndSub">
+              <s:complexType mixed="true">
+                <s:sequence>
+                  <s:any />
+                </s:sequence>
+              </s:complexType>
+            </s:element>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="RegisterNewFicheByAccYearCostAndDiscountResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="RegisterNewFicheByAccYearCostAndDiscountResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="RegisterNewFiche">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="SystemClientService" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="CompanyId" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="FicheNum" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="ClientName" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="FicheDateCreate" type="s:dateTime" />
+            <s:element minOccurs="0" maxOccurs="1" name="AccountNum" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="FicheNo" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="PayNo" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="PaymentDesc" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="BiilID" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="PaymentID" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="RenovationCode" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="Pelaque" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="TypeCode" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="FicheDetail">
+              <s:complexType mixed="true">
+                <s:sequence>
+                  <s:any />
+                </s:sequence>
+              </s:complexType>
+            </s:element>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="RegisterNewFicheResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="RegisterNewFicheResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="FilesShow">
+        <s:complexType />
+      </s:element>
+      <s:element name="FilesShowResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="FilesShowResult" type="tns:ArrayOfPartnerShipSetting" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="ArrayOfPartnerShipSetting">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="PartnerShipSetting" nillable="true" type="tns:PartnerShipSetting" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="PartnerShipSetting">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="PID" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="Code" type="s:int" />
+          <s:element minOccurs="0" maxOccurs="1" name="PName" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="RegisterCarDutyFiche">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="SystemClientService" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="IdCompany" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="FicheNum" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="ClientName" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="FicheDateCreate" type="s:dateTime" />
+            <s:element minOccurs="0" maxOccurs="1" name="AccountNum" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="FicheNo" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="PaymentDesc" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="TypeCode" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="BiilID" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="PaymentID" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="RevenueID" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="Amount" type="s:long" />
+            <s:element minOccurs="0" maxOccurs="1" name="Vehicletype" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="VIN" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="TaxCost" type="s:long" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="RegisterCarDutyFicheResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="RegisterCarDutyFicheResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="ReturnRecoverySendedFiche">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="SystemClientService" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="CompanyId" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="FicheNo" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="ReturnRecoverySendedFicheResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="ReturnRecoverySendedFicheResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="EPaymentRecovrySendedFiche">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="SystemClientService" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="CompanyId" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="FicheNo" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="RecoveryDate" type="s:dateTime" />
+            <s:element minOccurs="0" maxOccurs="1" name="RefCode" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="EPBankId" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="EPPortId" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="RecoveryYear" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="EPaymentRecovrySendedFicheResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="EPaymentRecovrySendedFicheResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="RegisterInstalmentFicheByDetail">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="SystemClientService" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="PartnershipId" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="CompanyId" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="InstalmentDate" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="OrderManName" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="InsReqLetterNum" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="InsOrdLetterNum" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="InsTotalCost" type="s:long" />
+            <s:element minOccurs="1" maxOccurs="1" name="PrePaymentCost" type="s:long" />
+            <s:element minOccurs="1" maxOccurs="1" name="InsCount" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="StartInstalmentDate" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="InstalmentDistance" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="InsDescription" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="RecoverySundriesFicheId" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="FicheDetail">
+              <s:complexType mixed="true">
+                <s:sequence>
+                  <s:any />
+                </s:sequence>
+              </s:complexType>
+            </s:element>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="RegisterInstalmentFicheByDetailResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="RegisterInstalmentFicheByDetailResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="RegisterInstalmentCheque">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="SystemClientService" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="PartnershipId" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="CompanyId" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="InstalmentID" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="InstalmentCheques">
+              <s:complexType mixed="true">
+                <s:sequence>
+                  <s:any />
+                </s:sequence>
+              </s:complexType>
+            </s:element>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="RegisterInstalmentChequeResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="RegisterInstalmentChequeResult">
+              <s:complexType mixed="true">
+                <s:sequence>
+                  <s:any />
+                </s:sequence>
+              </s:complexType>
+            </s:element>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="RegisterInstalmentWithCheque">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="SystemClientService" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="PrepaymentFicheID" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="CompanyId" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="InstalmentDate" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="OrderManName" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="InsReqLetterNum" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="InsOrdLetterNum" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="InsTotalCost" type="s:long" />
+            <s:element minOccurs="1" maxOccurs="1" name="PrePaymentCost" nillable="true" type="s:long" />
+            <s:element minOccurs="1" maxOccurs="1" name="InsCount" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="StartInstalmentDate" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="InstalmentDistance" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="InsDescription" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="InstalmentWageCost" type="s:long" />
+            <s:element minOccurs="0" maxOccurs="1" name="RevenuesDetail">
+              <s:complexType mixed="true">
+                <s:sequence>
+                  <s:any />
+                </s:sequence>
+              </s:complexType>
+            </s:element>
+            <s:element minOccurs="0" maxOccurs="1" name="InstalmentCheques">
+              <s:complexType mixed="true">
+                <s:sequence>
+                  <s:any />
+                </s:sequence>
+              </s:complexType>
+            </s:element>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="RegisterInstalmentWithChequeResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="RegisterInstalmentWithChequeResult">
+              <s:complexType mixed="true">
+                <s:sequence>
+                  <s:any />
+                </s:sequence>
+              </s:complexType>
+            </s:element>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="RegisterClientRecord">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="number" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="clientFName" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="clinetLName" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="regNo" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="renewCode" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="address" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="address2" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="nationalCode" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="phone" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="fax" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="mobile" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="email" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="webSite" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="postcode" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="isActive" type="s:boolean" />
+            <s:element minOccurs="1" maxOccurs="1" name="groupID" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="comment" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="clientFatherName" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="creationDate" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="RegisterClientRecordResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="RegisterClientRecordResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="UpdateReturnRecoveryStatus">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="id" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="ficheType" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="UpdateReturnRecoveryStatusResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="UpdateReturnRecoveryStatusResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+    </s:schema>
+  </wsdl:types>
+  <wsdl:message name="HelloWorldSoapIn">
+    <wsdl:part name="parameters" element="tns:HelloWorld" />
+  </wsdl:message>
+  <wsdl:message name="HelloWorldSoapOut">
+    <wsdl:part name="parameters" element="tns:HelloWorldResponse" />
+  </wsdl:message>
+  <wsdl:message name="CompanyListSoapIn">
+    <wsdl:part name="parameters" element="tns:CompanyList" />
+  </wsdl:message>
+  <wsdl:message name="CompanyListSoapOut">
+    <wsdl:part name="parameters" element="tns:CompanyListResponse" />
+  </wsdl:message>
+  <wsdl:message name="ClientListSoapIn">
+    <wsdl:part name="parameters" element="tns:ClientList" />
+  </wsdl:message>
+  <wsdl:message name="ClientListSoapOut">
+    <wsdl:part name="parameters" element="tns:ClientListResponse" />
+  </wsdl:message>
+  <wsdl:message name="RevenueCodeListSoapIn">
+    <wsdl:part name="parameters" element="tns:RevenueCodeList" />
+  </wsdl:message>
+  <wsdl:message name="RevenueCodeListSoapOut">
+    <wsdl:part name="parameters" element="tns:RevenueCodeListResponse" />
+  </wsdl:message>
+  <wsdl:message name="PartnershipListSoapIn">
+    <wsdl:part name="parameters" element="tns:PartnershipList" />
+  </wsdl:message>
+  <wsdl:message name="PartnershipListSoapOut">
+    <wsdl:part name="parameters" element="tns:PartnershipListResponse" />
+  </wsdl:message>
+  <wsdl:message name="AccountListAccountingSoapIn">
+    <wsdl:part name="parameters" element="tns:AccountListAccounting" />
+  </wsdl:message>
+  <wsdl:message name="AccountListAccountingSoapOut">
+    <wsdl:part name="parameters" element="tns:AccountListAccountingResponse" />
+  </wsdl:message>
+  <wsdl:message name="AccountListRevenueSoapIn">
+    <wsdl:part name="parameters" element="tns:AccountListRevenue" />
+  </wsdl:message>
+  <wsdl:message name="AccountListRevenueSoapOut">
+    <wsdl:part name="parameters" element="tns:AccountListRevenueResponse" />
+  </wsdl:message>
+  <wsdl:message name="SundriesTypeDescListSoapIn">
+    <wsdl:part name="parameters" element="tns:SundriesTypeDescList" />
+  </wsdl:message>
+  <wsdl:message name="SundriesTypeDescListSoapOut">
+    <wsdl:part name="parameters" element="tns:SundriesTypeDescListResponse" />
+  </wsdl:message>
+  <wsdl:message name="RecovrySendedFicheSoapIn">
+    <wsdl:part name="parameters" element="tns:RecovrySendedFiche" />
+  </wsdl:message>
+  <wsdl:message name="RecovrySendedFicheSoapOut">
+    <wsdl:part name="parameters" element="tns:RecovrySendedFicheResponse" />
+  </wsdl:message>
+  <wsdl:message name="VitiationRecovrySendedFicheSoapIn">
+    <wsdl:part name="parameters" element="tns:VitiationRecovrySendedFiche" />
+  </wsdl:message>
+  <wsdl:message name="VitiationRecovrySendedFicheSoapOut">
+    <wsdl:part name="parameters" element="tns:VitiationRecovrySendedFicheResponse" />
+  </wsdl:message>
+  <wsdl:message name="VitiationSendedFicheSoapIn">
+    <wsdl:part name="parameters" element="tns:VitiationSendedFiche" />
+  </wsdl:message>
+  <wsdl:message name="VitiationSendedFicheSoapOut">
+    <wsdl:part name="parameters" element="tns:VitiationSendedFicheResponse" />
+  </wsdl:message>
+  <wsdl:message name="InsertInstalmentRevenueSoapIn">
+    <wsdl:part name="parameters" element="tns:InsertInstalmentRevenue" />
+  </wsdl:message>
+  <wsdl:message name="InsertInstalmentRevenueSoapOut">
+    <wsdl:part name="parameters" element="tns:InsertInstalmentRevenueResponse" />
+  </wsdl:message>
+  <wsdl:message name="RegisterNewFicheByAccYearCostSoapIn">
+    <wsdl:part name="parameters" element="tns:RegisterNewFicheByAccYearCost" />
+  </wsdl:message>
+  <wsdl:message name="RegisterNewFicheByAccYearCostSoapOut">
+    <wsdl:part name="parameters" element="tns:RegisterNewFicheByAccYearCostResponse" />
+  </wsdl:message>
+  <wsdl:message name="RegisterNewFicheByAccYearCostAndDiscountSoapIn">
+    <wsdl:part name="parameters" element="tns:RegisterNewFicheByAccYearCostAndDiscount" />
+  </wsdl:message>
+  <wsdl:message name="RegisterNewFicheByAccYearCostAndDiscountSoapOut">
+    <wsdl:part name="parameters" element="tns:RegisterNewFicheByAccYearCostAndDiscountResponse" />
+  </wsdl:message>
+  <wsdl:message name="RegisterNewFicheSoapIn">
+    <wsdl:part name="parameters" element="tns:RegisterNewFiche" />
+  </wsdl:message>
+  <wsdl:message name="RegisterNewFicheSoapOut">
+    <wsdl:part name="parameters" element="tns:RegisterNewFicheResponse" />
+  </wsdl:message>
+  <wsdl:message name="FilesShowSoapIn">
+    <wsdl:part name="parameters" element="tns:FilesShow" />
+  </wsdl:message>
+  <wsdl:message name="FilesShowSoapOut">
+    <wsdl:part name="parameters" element="tns:FilesShowResponse" />
+  </wsdl:message>
+  <wsdl:message name="RegisterCarDutyFicheSoapIn">
+    <wsdl:part name="parameters" element="tns:RegisterCarDutyFiche" />
+  </wsdl:message>
+  <wsdl:message name="RegisterCarDutyFicheSoapOut">
+    <wsdl:part name="parameters" element="tns:RegisterCarDutyFicheResponse" />
+  </wsdl:message>
+  <wsdl:message name="ReturnRecoverySendedFicheSoapIn">
+    <wsdl:part name="parameters" element="tns:ReturnRecoverySendedFiche" />
+  </wsdl:message>
+  <wsdl:message name="ReturnRecoverySendedFicheSoapOut">
+    <wsdl:part name="parameters" element="tns:ReturnRecoverySendedFicheResponse" />
+  </wsdl:message>
+  <wsdl:message name="EPaymentRecovrySendedFicheSoapIn">
+    <wsdl:part name="parameters" element="tns:EPaymentRecovrySendedFiche" />
+  </wsdl:message>
+  <wsdl:message name="EPaymentRecovrySendedFicheSoapOut">
+    <wsdl:part name="parameters" element="tns:EPaymentRecovrySendedFicheResponse" />
+  </wsdl:message>
+  <wsdl:message name="RegisterInstalmentFicheByDetailSoapIn">
+    <wsdl:part name="parameters" element="tns:RegisterInstalmentFicheByDetail" />
+  </wsdl:message>
+  <wsdl:message name="RegisterInstalmentFicheByDetailSoapOut">
+    <wsdl:part name="parameters" element="tns:RegisterInstalmentFicheByDetailResponse" />
+  </wsdl:message>
+  <wsdl:message name="RegisterInstalmentChequeSoapIn">
+    <wsdl:part name="parameters" element="tns:RegisterInstalmentCheque" />
+  </wsdl:message>
+  <wsdl:message name="RegisterInstalmentChequeSoapOut">
+    <wsdl:part name="parameters" element="tns:RegisterInstalmentChequeResponse" />
+  </wsdl:message>
+  <wsdl:message name="RegisterInstalmentWithChequeSoapIn">
+    <wsdl:part name="parameters" element="tns:RegisterInstalmentWithCheque" />
+  </wsdl:message>
+  <wsdl:message name="RegisterInstalmentWithChequeSoapOut">
+    <wsdl:part name="parameters" element="tns:RegisterInstalmentWithChequeResponse" />
+  </wsdl:message>
+  <wsdl:message name="RegisterClientRecordSoapIn">
+    <wsdl:part name="parameters" element="tns:RegisterClientRecord" />
+  </wsdl:message>
+  <wsdl:message name="RegisterClientRecordSoapOut">
+    <wsdl:part name="parameters" element="tns:RegisterClientRecordResponse" />
+  </wsdl:message>
+  <wsdl:message name="UpdateReturnRecoveryStatusSoapIn">
+    <wsdl:part name="parameters" element="tns:UpdateReturnRecoveryStatus" />
+  </wsdl:message>
+  <wsdl:message name="UpdateReturnRecoveryStatusSoapOut">
+    <wsdl:part name="parameters" element="tns:UpdateReturnRecoveryStatusResponse" />
+  </wsdl:message>
+  <wsdl:portType name="ServiseToRevenueSystemsSoap">
+    <wsdl:operation name="HelloWorld">
+      <wsdl:input message="tns:HelloWorldSoapIn" />
+      <wsdl:output message="tns:HelloWorldSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="CompanyList">
+      <wsdl:input message="tns:CompanyListSoapIn" />
+      <wsdl:output message="tns:CompanyListSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="ClientList">
+      <wsdl:input message="tns:ClientListSoapIn" />
+      <wsdl:output message="tns:ClientListSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="RevenueCodeList">
+      <wsdl:input message="tns:RevenueCodeListSoapIn" />
+      <wsdl:output message="tns:RevenueCodeListSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="PartnershipList">
+      <wsdl:input message="tns:PartnershipListSoapIn" />
+      <wsdl:output message="tns:PartnershipListSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="AccountListAccounting">
+      <wsdl:input message="tns:AccountListAccountingSoapIn" />
+      <wsdl:output message="tns:AccountListAccountingSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="AccountListRevenue">
+      <wsdl:input message="tns:AccountListRevenueSoapIn" />
+      <wsdl:output message="tns:AccountListRevenueSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="SundriesTypeDescList">
+      <wsdl:input message="tns:SundriesTypeDescListSoapIn" />
+      <wsdl:output message="tns:SundriesTypeDescListSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="RecovrySendedFiche">
+      <wsdl:input message="tns:RecovrySendedFicheSoapIn" />
+      <wsdl:output message="tns:RecovrySendedFicheSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="VitiationRecovrySendedFiche">
+      <wsdl:input message="tns:VitiationRecovrySendedFicheSoapIn" />
+      <wsdl:output message="tns:VitiationRecovrySendedFicheSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="VitiationSendedFiche">
+      <wsdl:input message="tns:VitiationSendedFicheSoapIn" />
+      <wsdl:output message="tns:VitiationSendedFicheSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="InsertInstalmentRevenue">
+      <wsdl:input message="tns:InsertInstalmentRevenueSoapIn" />
+      <wsdl:output message="tns:InsertInstalmentRevenueSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="RegisterNewFicheByAccYearCost">
+      <wsdl:input message="tns:RegisterNewFicheByAccYearCostSoapIn" />
+      <wsdl:output message="tns:RegisterNewFicheByAccYearCostSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="RegisterNewFicheByAccYearCostAndDiscount">
+      <wsdl:input message="tns:RegisterNewFicheByAccYearCostAndDiscountSoapIn" />
+      <wsdl:output message="tns:RegisterNewFicheByAccYearCostAndDiscountSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="RegisterNewFiche">
+      <wsdl:input message="tns:RegisterNewFicheSoapIn" />
+      <wsdl:output message="tns:RegisterNewFicheSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="FilesShow">
+      <wsdl:input message="tns:FilesShowSoapIn" />
+      <wsdl:output message="tns:FilesShowSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="RegisterCarDutyFiche">
+      <wsdl:input message="tns:RegisterCarDutyFicheSoapIn" />
+      <wsdl:output message="tns:RegisterCarDutyFicheSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="ReturnRecoverySendedFiche">
+      <wsdl:input message="tns:ReturnRecoverySendedFicheSoapIn" />
+      <wsdl:output message="tns:ReturnRecoverySendedFicheSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="EPaymentRecovrySendedFiche">
+      <wsdl:input message="tns:EPaymentRecovrySendedFicheSoapIn" />
+      <wsdl:output message="tns:EPaymentRecovrySendedFicheSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="RegisterInstalmentFicheByDetail">
+      <wsdl:input message="tns:RegisterInstalmentFicheByDetailSoapIn" />
+      <wsdl:output message="tns:RegisterInstalmentFicheByDetailSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="RegisterInstalmentCheque">
+      <wsdl:input message="tns:RegisterInstalmentChequeSoapIn" />
+      <wsdl:output message="tns:RegisterInstalmentChequeSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="RegisterInstalmentWithCheque">
+      <wsdl:input message="tns:RegisterInstalmentWithChequeSoapIn" />
+      <wsdl:output message="tns:RegisterInstalmentWithChequeSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="RegisterClientRecord">
+      <wsdl:input message="tns:RegisterClientRecordSoapIn" />
+      <wsdl:output message="tns:RegisterClientRecordSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="UpdateReturnRecoveryStatus">
+      <wsdl:input message="tns:UpdateReturnRecoveryStatusSoapIn" />
+      <wsdl:output message="tns:UpdateReturnRecoveryStatusSoapOut" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="ServiseToRevenueSystemsSoap" type="tns:ServiseToRevenueSystemsSoap">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="HelloWorld">
+      <soap:operation soapAction="http://tempuri.org/HelloWorld" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="CompanyList">
+      <soap:operation soapAction="http://tempuri.org/CompanyList" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ClientList">
+      <soap:operation soapAction="http://tempuri.org/ClientList" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="RevenueCodeList">
+      <soap:operation soapAction="http://tempuri.org/RevenueCodeList" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="PartnershipList">
+      <soap:operation soapAction="http://tempuri.org/PartnershipList" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="AccountListAccounting">
+      <soap:operation soapAction="http://tempuri.org/AccountListAccounting" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="AccountListRevenue">
+      <soap:operation soapAction="http://tempuri.org/AccountListRevenue" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SundriesTypeDescList">
+      <soap:operation soapAction="http://tempuri.org/SundriesTypeDescList" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="RecovrySendedFiche">
+      <soap:operation soapAction="http://tempuri.org/RecovrySendedFiche" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="VitiationRecovrySendedFiche">
+      <soap:operation soapAction="http://tempuri.org/VitiationRecovrySendedFiche" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="VitiationSendedFiche">
+      <soap:operation soapAction="http://tempuri.org/VitiationSendedFiche" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="InsertInstalmentRevenue">
+      <soap:operation soapAction="http://tempuri.org/InsertInstalmentRevenue" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="RegisterNewFicheByAccYearCost">
+      <soap:operation soapAction="http://tempuri.org/RegisterNewFicheByAccYearCost" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="RegisterNewFicheByAccYearCostAndDiscount">
+      <soap:operation soapAction="http://tempuri.org/RegisterNewFicheByAccYearCostAndDiscount" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="RegisterNewFiche">
+      <soap:operation soapAction="http://tempuri.org/RegisterNewFiche" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="FilesShow">
+      <soap:operation soapAction="http://tempuri.org/FilesShow" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="RegisterCarDutyFiche">
+      <soap:operation soapAction="http://tempuri.org/RegisterCarDutyFiche" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ReturnRecoverySendedFiche">
+      <soap:operation soapAction="http://tempuri.org/ReturnRecoverySendedFiche" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="EPaymentRecovrySendedFiche">
+      <soap:operation soapAction="http://tempuri.org/EPaymentRecovrySendedFiche" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="RegisterInstalmentFicheByDetail">
+      <soap:operation soapAction="http://tempuri.org/RegisterInstalmentFicheByDetail" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="RegisterInstalmentCheque">
+      <soap:operation soapAction="http://tempuri.org/RegisterInstalmentCheque" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="RegisterInstalmentWithCheque">
+      <soap:operation soapAction="http://tempuri.org/RegisterInstalmentWithCheque" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="RegisterClientRecord">
+      <soap:operation soapAction="http://tempuri.org/RegisterClientRecord" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="UpdateReturnRecoveryStatus">
+      <soap:operation soapAction="http://tempuri.org/UpdateReturnRecoveryStatus" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:binding name="ServiseToRevenueSystemsSoap12" type="tns:ServiseToRevenueSystemsSoap">
+    <soap12:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="HelloWorld">
+      <soap12:operation soapAction="http://tempuri.org/HelloWorld" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="CompanyList">
+      <soap12:operation soapAction="http://tempuri.org/CompanyList" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ClientList">
+      <soap12:operation soapAction="http://tempuri.org/ClientList" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="RevenueCodeList">
+      <soap12:operation soapAction="http://tempuri.org/RevenueCodeList" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="PartnershipList">
+      <soap12:operation soapAction="http://tempuri.org/PartnershipList" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="AccountListAccounting">
+      <soap12:operation soapAction="http://tempuri.org/AccountListAccounting" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="AccountListRevenue">
+      <soap12:operation soapAction="http://tempuri.org/AccountListRevenue" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SundriesTypeDescList">
+      <soap12:operation soapAction="http://tempuri.org/SundriesTypeDescList" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="RecovrySendedFiche">
+      <soap12:operation soapAction="http://tempuri.org/RecovrySendedFiche" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="VitiationRecovrySendedFiche">
+      <soap12:operation soapAction="http://tempuri.org/VitiationRecovrySendedFiche" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="VitiationSendedFiche">
+      <soap12:operation soapAction="http://tempuri.org/VitiationSendedFiche" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="InsertInstalmentRevenue">
+      <soap12:operation soapAction="http://tempuri.org/InsertInstalmentRevenue" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="RegisterNewFicheByAccYearCost">
+      <soap12:operation soapAction="http://tempuri.org/RegisterNewFicheByAccYearCost" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="RegisterNewFicheByAccYearCostAndDiscount">
+      <soap12:operation soapAction="http://tempuri.org/RegisterNewFicheByAccYearCostAndDiscount" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="RegisterNewFiche">
+      <soap12:operation soapAction="http://tempuri.org/RegisterNewFiche" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="FilesShow">
+      <soap12:operation soapAction="http://tempuri.org/FilesShow" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="RegisterCarDutyFiche">
+      <soap12:operation soapAction="http://tempuri.org/RegisterCarDutyFiche" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ReturnRecoverySendedFiche">
+      <soap12:operation soapAction="http://tempuri.org/ReturnRecoverySendedFiche" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="EPaymentRecovrySendedFiche">
+      <soap12:operation soapAction="http://tempuri.org/EPaymentRecovrySendedFiche" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="RegisterInstalmentFicheByDetail">
+      <soap12:operation soapAction="http://tempuri.org/RegisterInstalmentFicheByDetail" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="RegisterInstalmentCheque">
+      <soap12:operation soapAction="http://tempuri.org/RegisterInstalmentCheque" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="RegisterInstalmentWithCheque">
+      <soap12:operation soapAction="http://tempuri.org/RegisterInstalmentWithCheque" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="RegisterClientRecord">
+      <soap12:operation soapAction="http://tempuri.org/RegisterClientRecord" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="UpdateReturnRecoveryStatus">
+      <soap12:operation soapAction="http://tempuri.org/UpdateReturnRecoveryStatus" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="ServiseToRevenueSystems">
+    <wsdl:port name="ServiseToRevenueSystemsSoap" binding="tns:ServiseToRevenueSystemsSoap">
+      <soap:address location="http://46.209.114.102:81/Revenue/Services/ServiseToRevenueSystems.asmx" />
+    </wsdl:port>
+    <wsdl:port name="ServiseToRevenueSystemsSoap12" binding="tns:ServiseToRevenueSystemsSoap12">
+      <soap12:address location="http://46.209.114.102:81/Revenue/Services/ServiseToRevenueSystems.asmx" />
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

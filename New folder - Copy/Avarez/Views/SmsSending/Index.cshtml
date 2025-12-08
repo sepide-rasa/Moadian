@@ -1,0 +1,552 @@
+﻿@using Kendo.Mvc.UI;
+<div class="modal" id="SmsSetting">
+    <script src="@Url.Content("~/Content/Base.js")" type="text/javascript"></script>
+    <div>
+        <a href="@Url.Content("~/Helps/تنظیمات ارسال پیامک.htm")" target="_blank" id="Help" title="راهنما" style="background-image:url('/Content/images/1381415123_help.png');background-repeat: no-repeat;height: 20px;float: left;top: 10px;left: 10px;">
+        </a>
+        <br />
+        <center>
+            <table>@Html.Hidden("fldId")
+                @*<tr>
+                    <td align="left">
+                        <span style="color: Red;">*</span> متن شروع:
+                    </td>
+                    <td>
+                        @Html.TextBox("txtStart", "", new { @style="width: 464px;"})
+                        <span id="lblInfinitiveBankError" style="color: Red;"></span>
+                    </td>
+                </tr>
+                <tr>
+                    <td align="left">
+                        <span style="color: Red;">*</span> متن پایان:
+                    </td>
+                    <td>
+                         @Html.TextBox("txtEnd", "", new { @style = "width: 464px;" })
+                        <span id="lblCentralBankCodeError" style="color: Red;"></span>
+                    </td>
+                </tr>     *@
+                <tr>
+                    <td align="left">
+                        آیتم ها:
+                    </td>
+                    <td>
+                        @(Html.Kendo().DropDownList()
+                                  .Name("cboType")
+                                  .DataTextField("Text")
+                                  .DataValueField("Value")
+                                  .BindTo(new List<SelectListItem>() {
+                                      new SelectListItem() {
+                                          Text = "نوع خودرو",
+                                          Value = "CarTip"
+                                      },
+                                     new SelectListItem() { 
+                                         Text = "مشخصه خودرو",
+                                          Value = "CarClass"
+                                      },
+                                    new SelectListItem() {
+                                         Text = "نام مالک",
+                                          Value = "Owner"
+                                      },
+                                    new SelectListItem() {
+                                         Text = "شماره پلاک",
+                                          Value = "Pelaqe"
+                                      },
+                                    new SelectListItem() {
+                                         Text = "مبلغ عوارض",
+                                          Value = "Price"
+                                      },
+                                    new SelectListItem() {
+                                         Text = "شماره موتور",
+                                          Value = "MotorNum"
+                                      },
+                                    new SelectListItem() {
+                                         Text = "شماره شاسی",
+                                          Value = "ShasiNum"
+                                      },
+                                    new SelectListItem() {
+                                         Text = "سال های بدهکاری",
+                                          Value = "BedYear"
+                                      },
+                                    new SelectListItem() {
+                                         Text = "شناسه قبض",
+                                          Value = "ShGhabz"
+                                      },
+                                    new SelectListItem() {
+                                         Text = "شناسه پرداخت",
+                                          Value = "ShPardakht"
+                                      },
+                                    new SelectListItem() {
+                                         Text = "شماره فیش",
+                                          Value = "ShFish"
+                                      }
+                                  })
+                            )
+                        @Avarez.Helper.winClass.Buttons("Add", "اضافه", "yes")
+                    </td>
+                </tr>
+                <tr>
+                    <td align="left">
+                        متن آزاد:
+                    </td>
+                    <td>
+                        @Html.TextBox("txtFreeText", null, new { style = "text-align:right;width:162px;height: 25px;" })
+                        @Avarez.Helper.winClass.Buttons("AddText", "اضافه", "yes")
+                        @Avarez.Helper.winClass.Buttons("AddEnetr", "Enter", "")
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="2" align="center">
+                        <img src="@Url.Content("~/Content/images/CellPhone.png")" width="170px" />
+                        <textarea id="body" readonly="readonly" style="font-family: tornado tahoma; width: 135px;
+                            height: 179px; top: 146px; position: absolute; left: 310px;"></textarea>
+                        @Avarez.Helper.winClass.Buttons("Clean", "حذف الگو", "Clean")
+                    </td>
+                </tr>
+                <tr>
+                    <td align="left">
+                        موقعیت در تقسیمات کشوری:
+                    </td>
+                    <td colspan="2" dir="rtl" id="countryLocation" align="right">
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="3" align="center" style="height: 30px;">
+                        @Html.Label("مورد انتخاب شده: ", new { @id = "CountryPosition" })
+                    </td>
+                </tr>
+                <tr>
+                    <td align="left">
+                        نوع پیامک
+                    </td>
+                    <td>
+                        @(Html.Kendo().DropDownList()
+                            .Name("cboSmsType")
+                            .DataTextField("Text")
+                            .DataValueField("Value")
+                            .BindTo(new List<SelectListItem>() {
+                                new SelectListItem() {
+                                    Text = "پاسخ به استعلام",
+                                    Value = "1"
+                                },
+                                new SelectListItem() {
+                                    Text = "پس از تشکیل پرونده",
+                                    Value = "2"
+                                },
+                                new SelectListItem() {
+                                    Text = "پس از اعلام وصول",
+                                    Value = "3"
+                                }
+                                ,new SelectListItem() {
+                                    Text = "پس از صدور فیش",
+                                    Value = "4"
+                                }
+                                ,new SelectListItem() {
+                                    Text = "ارسال گروهی",
+                                    Value = "5"
+                                }
+                            })
+                        )
+                    </td>
+                </tr>
+                <tr>
+                    <td align="left">
+                        وضعیت
+                    </td>
+                    <td>
+                        @Html.CheckBox("ChkState")
+                    </td>
+                </tr>
+            </table>
+            <p>
+                @Avarez.Helper.winClass.Buttons("AddLink", "ذخیره", "Save")
+                @Avarez.Helper.winClass.Buttons("EditLink", "ویرایش", "Edit")
+                @Avarez.Helper.winClass.Buttons("DelLink", "حذف", "Del")
+                @Avarez.Helper.winClass.Buttons("exit", "خروج", "Exit")
+            </p>
+        </center>
+        @(Html.Kendo().PanelBar()
+        .Name("panelbar-images")
+        .Items(panelbar =>
+        {
+            panelbar.Add().Text("جستجو")
+                .ImageUrl(Url.Content("~/Content/images/search.png"))
+                .Content(@<div>
+                    <table>
+                        <tr>
+                            <td>
+                                فیلد جستجو:@Html.DropDownList("cboSearchFiald", new SelectList(new[] { new { ID = "1", Name = "موقعیت" },new { ID = "2", Name = "نوع پیامک" } }, "ID", "Name"))
+                            </td>
+                            <td>
+                                نوع جستجو: @Html.DropDownList("cboSearchType", new SelectList(new[] { new { ID = "0", Name = "مشابه عبارت" }, new { ID = "1", Name = "مشابه عبارت از سمت راست" }, new { ID = "2", Name = "عین عبارت" } }, "ID", "Name"))
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                عبارت جستجو: @Avarez.Helper.winClass.textbox("txtSearch")
+                            </td>
+                            <td>
+                                نتیجه رکوردها: @Html.TextBox("txtTop", 30, new { @style = "width:30px;" }) رکورد
+                            </td>
+                        </tr>
+                    </table>
+                    <br />
+                </div>);
+        })
+        )
+        <div class="k-rtl demo-section">
+            @(Html.Kendo().Grid<Avarez.Models.Sp_SmsSendingSettingSelect>()
+                .Name("Grid")
+                .Columns(columns =>
+                {
+                    columns.Bound(p => p.fldId).Title("کد").Visible(false);
+                    columns.Bound(p => p.fldCountryDivisionName).Title("موقعیت");
+                    columns.Bound(p => p.fldTypeString).Title("نوع پیامک");
+                    columns.Bound(p => p.fldText).Title("متن پیامک ");
+                    columns.Bound(p => p.fldStateString).Title("وضعیت");
+                    columns.Bound(p => p.fldDesc).Title("توضیحات");
+                })
+            .Selectable(selectable => selectable.Mode(GridSelectionMode.Single))
+            .Pageable()
+            .Scrollable()
+            .DataSource(data =>
+                data.Ajax()
+                .PageSize(10)
+                        .Read("Fill", "SmsSending")
+            )
+        )
+        </div>
+    </div>
+    <script type="text/javascript">
+        var pattern = '';
+        function select(e) {
+            var dataItem = this.dataItem(e.node);
+            countryid = dataItem.id;
+            countrySID = dataItem.fldSid;
+            countryNType = dataItem.fldNodeType;
+            if (countryNType == 5) {
+                var url = '@Url.Content("~/MainSetting/CountryPosition")';
+                $.ajax({
+                    type: "post",
+                    url: url,
+                    data: { id: countryid },
+                    datatype: "json",
+                    success: function (data) {
+                        var m = data;
+                        $('#CountryPosition').html('مورد انتخاب شده: ' + m.Position);
+                        var treeview = $("#treeview").data("kendoTreeView");
+                        treeview.collapse(".k-item");
+                        var url = '@Url.Action("Reload", "SmsSending")';
+                        Reload(url, 'Grid', '0', countrySID, countryNType, 30, 1);
+                    },
+                    failure: function (data) {
+                        alert(data.data);
+                    }
+                });
+            } else {
+                $('#CountryPosition').html('مورد انتخاب شده: ' + 'شما مجاز به انتخاب نمی باشید.');
+            }
+        }
+
+        var countryid;
+        var countrySID;
+        var countryNType;
+        function fillBody() {
+            var s = '';
+            var s1 = '';
+            if (pattern != '') {
+                var p = pattern.split('*');
+                for (var i = 0; i < p.length; i++) {
+                    var temp = p[i];
+                    switch (temp) {
+                        case 'CarTip':
+                            s1 = s1 + 'داخلی سواری شخصی ';
+                            break;
+                        case 'CarClass':
+                            s1 = s1 + 'پژو 206 عادی ';
+                            break;
+                        case 'Owner':
+                            s1 = s1 + 'جواد ربیعی ';
+                            break;
+                        case 'Pelaqe':
+                            s1 = s1 + 'ایران|44|456~12 ';
+                            break;
+                        case 'Price':
+                            s1 = s1 + '260،000 ریال ';
+                            break;
+                        case 'MotorNum':
+                            s1 = s1 + '1554654 ';
+                            break;
+                        case 'ShasiNum':
+                            s1 = s1 + '1654654654 ';
+                            break;
+                        case 'BedYear':
+                            s1 = s1 + '90-92 ';
+                            break;
+                        case 'ShGhabz':
+                            s1 = s1 + '51565 ';
+                            break;
+                        case 'ShPardakht':
+                            s1 = s1 + '5584 ';
+                            break;
+                        case 'ShFish':
+                            s1 = s1 + '651235 ';
+                            break;
+                            
+                        default:
+                            s1 = s1 + p[i] + '';
+                            break;
+                    }
+                }
+            }
+            //s = s + $('#txtStart').val() + '\n' + s1 + '\n' + $('#txtEnd').val();
+            $('#body').val(s1);
+        }
+        $("document").ready(function () {
+            $("#AddLink").button();
+            $("#Add").button();
+            $("#Clean").button();
+            $("#AddText").button();
+            $("#Detail").button();
+            $('#Help').button();
+            $("#EditLink").button();
+            $("#DelLink").button();
+            $("#exit").button();
+            $("#btnBrowse").button();
+            $("#btnRemove").button();
+            $("#Help").button();
+            $('#countryLocation').html($('#LocationDiv').valueOf());
+            $('#AddEnetr').button();
+            $('#Clean').click(function () {
+                pattern = '';
+                fillBody();
+            });
+
+            $('#Add').click(function () {
+                var drop = $("#cboType").data("kendoDropDownList");
+                pattern = pattern + drop.value() + '*';
+                fillBody();
+            });
+            $('#AddText').click(function () {
+                pattern = pattern + $('#txtFreeText').val() + '*';
+                fillBody();
+                $('#txtFreeText').val('');
+            });
+            $('#AddEnetr').click(function () {
+                pattern = pattern + "\n";
+            });
+            $("#exit").click(function () {
+                $("#Bank").remove();
+            });
+
+            $('#Bank').on('keyup', 'input', function (event) {
+                if (event.which == 13) {
+                    var inputs = $('#Bank').find(':input:visible');
+                    inputs.eq(inputs.index(this) + 1).focus();
+                }
+            });
+
+            $(document).keyup(function (event) {
+                if (event.which == 119) {
+                    SaveRecord();
+                }
+                else if (event.which == 113) {
+                    EditRecord();
+                }
+                else if (event.which == 115) {
+                    DeleteRecord();
+                }
+            });
+            $('#AddLink').attr('title', 'کلید میانبر (F8)'); //119
+            $('#EditLink').attr('title', 'کلید میانبر (F2)'); //113
+            $('#DelLink').attr('title', 'کلید میانبر (F4)'); //115
+
+            jQuery("#EditLink").click(function () {
+                EditRecord();
+            });
+
+            $('#DelLink').click(function () {
+                DeleteRecord();
+            });
+
+            $("#AddLink").click(function () {
+                SaveRecord();
+            });
+
+            $("#btnRemove").click(function () {
+                $('#PreviewImage').attr('src', '@Url.Content("~/Content/images/Blank.jpg")');
+            });
+            $('#txtStart').keyup(function () {
+                fillBody();
+            });
+            $('#txtEnd').keyup(function () {
+                fillBody();
+            });
+
+
+            $('#txtSearch').keyup(function () {
+                var url = '@Url.Action("ReloadSearch", "SmsSending")';
+                Reload(url, 'Grid', $("#cboSearchFiald").val(), $("#txtSearch").val(), $("#txtTop").val(), $("#cboSearchType").val());
+            });
+
+        });
+        function Clear() {
+            $('#fldId').val(0);
+            $('#txtDesc').val('');
+        }
+        function SaveRecord() {
+            var er = false;
+
+            if (er)
+                return;
+            var data = { fldText: pattern, fldType: $("#cboSmsType").val(),
+                type: countryNType,
+                code: countrySID, fldDesc: $("#txtDesc").val(),
+                fldId: $("#fldId").val(), fldState: ChkState.checked
+            };
+            if (data != '') {
+                PostForm(data, '@Url.Content("~/SmsSending/Save")', "#win");
+            }
+            Clear();
+        }
+        function EditRecord() {
+            var entityGrid = $("#Grid").data("kendoGrid");
+            var selectedItem = entityGrid.dataItem(entityGrid.select());
+            if (selectedItem) {
+                var id = selectedItem.fldId;
+                var URL = '@Url.Content("~/SmsSending/Details")';
+                URL = URL + "/" + id;
+                $.ajax({
+                    type: "GET",
+                    url: URL,
+                    success: function (data) {
+                        pattern = data.fldText
+                        fillBody();
+                        $('#fldId').val(data.fldId);
+                        $('#cboSmsType').val(data.fldType);
+                        $('#ChkState').val(data.fldState);
+                        $('#txtDesc').val(data.fldDesc);
+                        ChkState.checked = data.fldState;
+                        countryNType = data.countryType;
+                        countrySID = data.countrycode;
+                        countryid = data.countryid;
+                        var url = '@Url.Content("~/SmsSending/CountryPosition")';
+                        $.ajax({
+                            type: "post",
+                            url: url,
+                            data: { id: countryid },
+                            datatype: "json",
+                            success: function (data) {
+                                var m = data;
+                                $('#CountryPosition').html('مورد انتخاب شده: ' + m.Position);
+                            },
+                            failure: function (data) {
+                                alert(data.data);
+                            }
+                        });
+                    },
+                    failure: function (data) {
+                        alert(data.data);
+                    }
+                });
+            }
+            else {
+                alert('لطفا یک سطر را انتخاب کنید.');
+            }
+        }
+        function DeleteRecord() {
+            var entityGrid = $("#Grid").data("kendoGrid");
+            var selectedItem = entityGrid.dataItem(entityGrid.select());
+            if (selectedItem) {
+                var id = selectedItem.fldId;
+                var URL = '@Url.Content("~/metro/YesNomsg")';
+                URL = URL + "/?id=" + id + "&URL=" + '@Url.Content("~/SmsSending/Delete")';
+                windowAppend("body", URL);
+                $("#message").html('آیا مایل به حذف رکورد انتخاب شده هستید؟');
+            }
+            else {
+                alert('لطفا یک سطر را انتخاب کنید.');
+            }
+            Clear();
+        }
+
+        function Reload(Url, gridname, field, value, top, searchType) {
+            var grid = $('#' + gridname).data('kendoGrid');
+            $.ajax({
+                url: Url,
+                type: 'get',
+                datatype: 'json',
+                data: { field: field, value: value, type: countryNType, top: top, searchtype: searchType },
+                error: function (xhr, status, error) {
+                    alert(xhr + status);
+                },
+                success: function (result) {
+                    $("#" + gridname).data("kendoGrid").dataSource.data(result);
+                }
+
+            });
+        }
+
+        function PostForm(datas, url, id) {
+            var sendInfo = datas;
+            $('#Lock').show();
+            $.ajax({
+                type: "POST",
+                url: url,
+                data: sendInfo,
+                datatype: "json",
+                success: function (data) {
+                    var m = data;
+                    windowAppend("body", "/metro/error");
+                    $("#message").html(m.data);
+                    switch (m.state) {
+                        case 0:
+                            $("#error .wintitle").html("ذخیره موفق");
+                            break;
+                        case 1:
+                            $("#error .wintitle").html("خطا");
+                            break;
+                    }
+                    var url = '@Url.Action("Reload", "SmsSending")';
+                    Reload(url, 'Grid', '0', countrySID, 30, 1);
+                    $('#Lock').hide();
+                },
+                failure: function (data) {
+                    alert(data.data);
+                }
+            });
+        }    
+    </script>
+</div>
+<div class="treeview-back  k-rtl" dir="rtl" id="LocationDiv">
+    @(Html.Kendo().TreeView()
+        .Name("treeview")
+        .DataImageUrlField("image")
+
+        .DataTextField("Name")
+        .Checkboxes(chkbxs =>
+        {
+            chkbxs.Enabled(false).CheckChildren(false);
+        })
+        .DataSource(dataSource => dataSource
+            .Read(read => read
+                .Action("_CountryTree", "MainSetting")
+            )
+        )
+        .Events(events =>
+        events.Select("select"))
+    )
+</div>
+<style type="text/css">
+    .treeview-back
+    {
+        width: 400px;
+        margin: 30px;
+        padding: 20px;
+        -moz-box-shadow: 0 1px 2px rgba(0,0,0,0.45), inset 0 0 30px rgba(0,0,0,0.07);
+        -webkit-box-shadow: 0 1px 2px rgba(0,0,0,0.45), inset 0 0 30px rgba(0,0,0,0.07);
+        box-shadow: 0 1px 2px rgba(0,0,0,0.45), inner 0 0 30px rgba(0,0,0,0.07);
+        -webkit-border-radius: 8px;
+        -moz-border-radius: 8px;
+        border-radius: 8px;
+    }
+</style>

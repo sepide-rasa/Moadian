@@ -1,0 +1,128 @@
+﻿@using Ext.Net.MVC
+@using Hogaf.ExtNet.UX
+@using Ext.Net;
+@{
+    var X = Html.X();
+}
+
+<style>
+    .fontlbl {
+        font-size: 11px;
+    }
+</style>
+
+@(Html.X().Window()
+    .Modal(true)
+    .Width(400).Height(180)
+    .Title("پرداخت")
+    .Resizable(false)
+    .ID("NewWinIndex")
+    .Listeners(l=>l.AfterRender.Handler="showbarchasb()")
+    .Closable(true)
+    .CloseAction(Ext.Net.CloseAction.Destroy)
+    .Layout(LayoutType.Fit)
+    .ButtonAlign(Ext.Net.Alignment.Center)
+        //.Buttons(
+        //X.Button()
+        //        .Text("پرداخت").Handler("window.open('Https://Sadad.Shaparak.Ir/Purchase')")
+        //    .Icon(Ext.Net.Icon.Disk)
+        //,
+        //X.Button()
+        //    .Text("خروج")
+        //    .Icon(Ext.Net.Icon.BulletCross)
+        //    .ToolTip("کلید میانبر Esc")
+        //    .OnClientClick("App.NewWinIndex.destroy()"))
+    .Items(
+        X.FormPanel()
+            .Border(false)
+            .PaddingSpec("10px 0 10px 0")
+            .Layout(LayoutType.VBox)
+            .LayoutConfig(new VBoxLayoutConfig { Align = VBoxAlign.Center })
+            .Items(
+                    X.FieldSet()
+                    .Border(false)
+                    .Layout(LayoutType.Table)
+                    .LayoutConfig(new Ext.Net.TableLayoutConfig { Columns = 2 })
+                    .Defaults(new { Margin = 2 })
+                    .Items(
+                  X.Container().Height(120).Content(@<div align="center" id="fi-button-Dl4" style="text-align:center;">
+                        <br />
+                        @*<form action="@Url.Content("~/NewVer/parsian_New/pay")" method="post">*@
+                        <form id="parsian_form" onsubmit="payFunction()" method="post">
+                                <table>
+                                    <tr>
+                                        <td style="text-align:right;">
+                                            <div class="tag">
+                                                کد تراکنش:
+                                            </div>
+                                        </td>
+                                        <td style="text-align:right;">
+                                            <div class="tag">
+                                                @Session["Tax"].ToString()
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <div style="text-align:right;" class=" tag">
+                                                مبلغ پرداخت:
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div style="text-align:right;" class=" tag">
+                                                @Convert.ToDouble(Session["Amount"]).ToString("#,###")
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr id="barchasb">
+                                        <td style="text-align:center">
+                                            <div style="text-align:right;" class="tag">
+                                                سریال برچسب:
+                                            </div>
+                                        </td>
+                                        <td style="text-align:right;">
+                                            <input style="font-family:Tahoma;text-align:right;" type="text" id="serial" name="serial" class="run" />
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="2" style="text-align:right;">
+                                            لطفا کد تراکنش را جهت پیگیری های بعدی یادداشت فرمائید.
+                                            <br />
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="2" align="center">
+                                            <div style="margin:auto;text-align:center;display:block;">
+                                                <input style="font-family:Tahoma;" type="submit" id="Run" name="Run" value="پرداخت" class="run" />
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </form>
+
+                    </div>)
+
+                                )
+
+                )
+                )
+)
+
+<script type="text/javascript">
+    function showbarchasb() {
+        if ('@ViewBag.ImageSetting' == "6") {
+            $("#barchasb").show();
+           App.NewWinIndex.setHeight(180);
+        }
+        else {
+            $("#barchasb").hide();
+            App.NewWinIndex.setHeight(150);
+        }
+    }
+
+    function payFunction() {
+        var action_src = '@Url.Content("~/NewVer/parsian_New/pay?serial=")'+document.getElementsByName("serial").value;
+        var your_form = document.getElementById('parsian_form');
+        your_form.action = action_src;
+    }
+</script>

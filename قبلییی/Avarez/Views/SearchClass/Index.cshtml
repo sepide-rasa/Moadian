@@ -1,0 +1,160 @@
+﻿<div id="SearchClass" class="modal">
+    @Avarez.Helper.winClass.windowHeader("", "جستجو کلاس خودرو", 600, 430)
+    @using Kendo.Mvc.UI;
+    <div>
+        <center>
+            <br />
+            <table>
+                <tr>
+                    <td>
+                        عبارت جستجو: @Avarez.Helper.winClass.textbox("txtSearch10")
+                    </td>
+                    <td>
+                        نتیجه رکوردها: @Html.TextBox("txtTop10", 30, new { @style = "width:30px;" }) رکورد
+                    </td>
+                </tr>
+            </table>
+            <br />
+        </center>
+    </div>
+    <center>
+        <div>
+            @Avarez.Helper.winClass.Buttons("_next1", "انتخاب", "Next")
+            @Avarez.Helper.winClass.Buttons("_exit1", "خروج", "exit")
+        </div>
+    </center>
+    <div class="k-rtl demo-section">
+        @(Html.Kendo().Grid<Avarez.Models.sp_SearchClass>()
+                .Name("ClassGrid")
+                .Columns(columns =>
+                {
+                    columns.Bound(p => p.fldID).Title("کد").Visible(false);
+                    columns.Bound(p => p.ClassName).Title("نام کلاس");
+                    columns.Bound(p => p.fldCylinderNumber).Title("تعداد سیلندر").Width(90);
+                    columns.Bound(p => p.fldWheelNumber).Title("تعداد چرخ").Width(90);
+                })
+            .Selectable(selectable => selectable.Mode(GridSelectionMode.Single))
+            .Pageable()
+            .Scrollable()
+            .DataSource(data =>
+                data.Ajax()
+                .PageSize(10)
+                .Read(read => read.Action("Fill", "SearchClass"))
+            )
+        )
+    </div>
+    <script type="text/javascript">
+        $("document").ready(function () {
+            $("#_next1").button();
+            $("#_search").button();
+            $("#_exit1").button();
+            $("#_exit1").click(function () {
+                $("#SearchClass").remove();
+                isWinOpen = false;
+            });
+            $('#SearchClass #btnClose').click(function () {
+                $("#SearchClass").remove();
+                isWinOpen = false;
+
+            });
+            $('#txtSearch10').keyup(function () {
+                ClassReload('/SearchClass/Reload', 'ClassGrid', $('#txtSearch10').val(), $('#txtTop10').val());
+            });
+
+            $('#_next1').click(function () {
+                var entityGrid = $("#ClassGrid").data("kendoGrid");
+                var selectedItem = entityGrid.dataItem(entityGrid.select());
+                if (selectedItem) {
+                    var id = selectedItem.fldID;
+                    $.ajax({
+                        url: '/SearchClass/GetClassInf',
+                        type: 'get',
+                        datatype: 'json',
+                        data: { id: id },
+                        error: function (xhr, status, error) {
+                            alert(xhr + status);
+                        },
+                        success: function (data) {
+                            var Make = $("#cboCarMake").data("kendoDropDownList");
+                            var Account = $("#cboCarAccountTypes").data("kendoDropDownList");
+                            var cabin = $("#cboCarCabin").data("kendoDropDownList");
+                            var system = $("#cboSystem").data("kendoDropDownList");
+                            var model = $("#cboModel").data("kendoDropDownList");
+                            var Class = $("#cboClass").data("kendoDropDownList");
+                            var ShortTerm = $("#cboShort").data("kendoDropDownList");
+                            Make.value(data.CarMake);
+                            var cboYear = $("#txtYear").data("kendoDropDownList");
+                            if (cboYear != null) {
+                                cboYear.enable(true);
+                                cboYear.dataSource.read();
+                            }
+                            else {
+                                cboYear = $("#cboModelNum").data("kendoDropDownList");
+                                cboYear.enable(true);
+                                cboYear.dataSource.read();
+                            }
+                            Account.enable(true);
+                            cabin.enable(true);
+                            system.enable(true);
+                            model.enable(true);
+                            Class.enable(true);
+                            //Account.dataSource.read();
+
+                            Account.dataSource.data(data.CarAccount);
+
+                            //cabin.dataSource.read();
+
+                            cabin.dataSource.data(data.CabinType);
+                            //system.dataSource.read();
+
+                            system.dataSource.data(data.CarSystem);
+                            //model.dataSource.read();
+
+                            model.dataSource.data(data.CarModel);
+                            // Class.dataSource.read();
+
+                            Class.dataSource.data(data.CarClass);
+
+                            if (ShortTerm != null)
+                                ShortTerm.dataSource.data(data.Symbol);
+
+                            Account.value(data.CarAccountId);
+                            cabin.value(data.CabinTypeId);
+                            system.value(data.CarSystemId);
+                            model.value(data.CarModelId);
+                            Class.value(data.CarClassId);
+
+                            Account.enable(true);
+                            cabin.enable(true);
+                            system.enable(true);
+                            model.enable(true);
+                            Class.enable(true);
+                            if (ShortTerm != null) ShortTerm.enable(true);
+	            isWinOpen = false;
+                            $("#SearchClass").remove();
+                        }
+                    });
+
+                } else {
+                    alert('لطفا یک سطر را انتخاب کنید.');
+                }
+            });
+        });
+        function ClassReload(Url, gridname, value, top) {
+            var grid = $('#' + gridname).data('kendoGrid');
+            $.ajax({
+                url: Url,
+                type: 'get',
+                datatype: 'json',
+                data: { value: value, top: top },
+                error: function (xhr, status, error) {
+                    alert(xhr + status);
+                },
+                success: function (result) {
+                    $("#" + gridname).data("kendoGrid").dataSource.read();
+                }
+            });
+        }
+    </script>
+    @Avarez.Helper.winClass.windowFother()
+</div>

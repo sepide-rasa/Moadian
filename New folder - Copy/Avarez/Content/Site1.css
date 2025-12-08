@@ -1,0 +1,770 @@
+﻿@font-face
+{
+	font-family: 'Tahoma';
+	src: url('TTahoma.eot?#iefix') format('embedded-opentype'), url('TTahoma.woff') format('woff'), url('TTahoma.ttf') format('truetype');
+    
+}
+@-webkit-keyframes spin {
+  0% { -webkit-transform: rotate(0deg); }
+  100% { -webkit-transform: rotate(360deg); }
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+.badge:after{
+    content:"5";
+    position: absolute;
+    background:red; /*rgba(0,0,255,1);*/
+    height:1.2rem;
+    top:0.3rem;
+    right:0.5rem;
+    width:1.2rem;
+    text-align: center;
+    line-height: 1.2rem;
+    font-size: 0.7rem;
+    border-radius: 20%;
+    color:white;
+    border:1px solid white;
+}
+
+.badgeA:after{
+    content:"5";
+    position: absolute;
+    background:red; /*rgba(0,0,255,1);*/
+    height:1.2rem;
+    top:0.3rem;
+    right:0.5rem;
+    width:1.2rem;
+    text-align: center;
+    line-height: 1.2rem;
+    font-size: 0.7rem;
+    border-radius: 20%;
+    color:white;
+    border:1px solid white;
+}
+.shortcut_Tax_Person{
+    background-image:url("/Content/icon/tax/پرسنل.png");
+    background-size:cover!important;
+}
+.shortcut_Tax_User{
+    background-image:url("/Content/icon/tax/تعریف کاربر.png");
+    background-size:cover!important;
+}
+
+
+
+.shortcut-Ticketing{
+     background-image:url("/Content/ticket/تیکت.png");
+}
+ .shortcut_SendTicket{
+     background-image:url("/Content/ticket/ارسال تیکت.png")
+}
+a.linkButton {
+	overflow:visible; /* Shrinkwrap the text in IE7- */
+	margin:0;
+	padding:0;
+	border:0;
+	background:transparent;
+	font:inherit !important; /* Inherit font settings (doesn’t work in IE7-) */
+	line-height:normal; /* Override line-height to avoid spacing issues */
+	text-decoration:none; /* Make it look linky */
+	cursor:pointer; /* Buttons don’t make the cursor change in all browsers */
+	-moz-user-select:text; /* Make button text selectable in Gecko */
+}
+
+/* Remove mystery padding in Gecko browsers.
+ * See https://bugzilla.mozilla.org/show_bug.cgi?id=140562
+ */
+a.linkButton::-moz-focus-inner {
+	padding:0;
+	border:0;
+}
+.customOverStyle {
+color:red;
+text-decoration:none
+}
+.x-label-icon {
+    padding-left: 18px !important;
+	background-repeat: no-repeat;
+    background-position:0 -1px;
+}
+.DigitalTree{
+    background-image:url("/Content/icon/mini/ساختار درختی بایگانی دیجیتال.png");
+    background-size:cover!important;
+}
+.Enter{
+    background-image:url("/Content/icon/mini/enter green.png");
+    background-size:cover!important;
+}
+.shortcut-CartaxNew{
+    background-image:url("/Content/icon/Desktop/عوارض خودرو.png");
+    background-size:cover!important;
+}
+.shortcut-BasicInfNew{
+    background-image:url("/Content/icon/Desktop/اطلاعات پایه.png");
+    background-size:cover!important;
+}
+.BankType{
+    background-image:url("/Content/icon/mini/تعریف نوع بانک.png");
+    background-size:cover!important;
+}
+.Bank{
+    background-image:url("/Content/icon/mini/تعریف بانک.png");
+    background-size:cover!important;
+}
+.Municipality{
+    background-image:url("/Content/icon/mini/تعریف شهرداری.png");
+    background-size:cover!important;
+}
+.BankBranch{
+    background-image:url("/Content/icon/mini/تعریف شعبه.png");
+    background-size:cover!important;
+}
+.State{
+    background-image:url("/Content/icon/mini/تعریف استان.png");
+    background-size:cover!important;
+}
+.County{
+    background-image:url("/Content/icon/mini/تعریف شهرستان.png");
+    background-size:cover!important;
+}
+.Zone{
+    background-image:url("/Content/icon/mini/تعریف بخش.png");
+    background-size:cover!important;
+}
+.samanTrn{
+    background-image:url("/Content/icon/mini/bank-samanmini.png");
+    background-size:cover!important;
+}
+.City{
+    background-image:url("/Content/icon/mini/تعریف شهر.png");
+    background-size:cover!important;
+}
+.Local{
+    background-image:url("/Content/icon/mini/تعریف منطقه.png");
+    background-size:cover!important;
+}
+.Area{
+    background-image:url("/Content/icon/mini/تعریف ناحیه.png");
+    background-size:cover!important;
+}
+.OfficeType{
+    background-image:url("/Content/icon/mini/تعریف نوع دفتر.png");
+    background-size:cover!important;
+}
+.Offices{
+    background-image:url("/Content/icon/mini/تعریف دفتر.png");
+    background-size:cover!important;
+}
+.CarColor{
+    background-image:url("/Content/icon/mini/رنگ خودرو.png");
+    background-size:cover!important;
+}
+.FuelType{
+    background-image:url("/Content/icon/mini/نوع سوخت.png");
+    background-size:cover!important;
+}
+.ShortTerm{
+    background-image:url("/Content/icon/mini/کشورهای سازنده.png");
+    background-size:cover!important;
+}
+.CarMak{
+    background-image:url("/Content/icon/mini/نوع ساخت.png");
+    background-size:cover!important;
+}
+.CarAccountType{
+    background-image:url("/Content/icon/mini/نوع کاربری.png");
+    background-size:cover!important;
+}
+.CarCabin{
+    background-image:url("/Content/icon/mini/نوع کابین.png");
+    background-size:cover!important;
+}
+.CarSystem{
+    background-image:url("/Content/icon/mini/سیستم خودرو.png");
+    background-size:cover!important;
+}
+.CarPatternModel{
+    background-image:url("/Content/icon/mini/الگوی تیپ خودرو.png");
+    background-size:cover!important;
+}
+.CarTip{
+    background-image:url("/Content/icon/mini/تیپ خودرو.png");
+    background-size:cover!important;
+}
+.CarClass{
+    background-image:url("/Content/icon/mini/کلاس خودرو.png");
+    background-size:cover!important;
+}
+.CharPerPlaque{
+    background-image:url("/Content/icon/mini/کاراکتر وسط پلاک.png");
+    background-size:cover!important;
+}
+.PlaqueType{
+    background-image:url("/Content/icon/mini/نوع پلاک.png");
+    background-size:cover!important;
+}
+.PlaqueSerial{
+    background-image:url("/Content/icon/mini/سریال پلاک.png");
+    background-size:cover!important;
+}
+.StatusPelaque{
+    background-image:url("/Content/icon/mini/وضعیت پلاک.png");
+    background-size:cover!important;
+}
+.PelaqueCity{
+    background-image:url("/Content/icon/mini/شهر پلاک.png");
+    background-size:cover!important;
+}
+.ComplicationRate{
+    background-image:url("/Content/icon/mini/ورود نرخ عوارض سالیانه.png");
+    background-size:cover!important;
+}
+.UpdateRate{
+    background-image:url("/Content/icon/mini/دریافت نرخ ها از وب سرویس.png");
+    background-size:cover!important;
+}
+.Cost{
+    background-image:url("/Content/icon/mini/تعریف هزینه.png");
+    background-size:cover!important;
+}
+.AmountCost{
+    background-image:url("/Content/icon/mini/تعریف مقدار هزینه.png");
+    background-size:cover!important;
+}
+.FinesRule{
+    background-image:url("/Content/icon/mini/تعریف قانون جریمه.png");
+    background-size:cover!important;
+}
+.Discount{
+    background-image:url("/Content/icon/mini/تعریف تخفیف.png");
+    background-size:cover!important;
+}
+ .SendLetter{
+    background-image:url("/Content/icon/mini/تعریف نوع مرسوله پستی.png");
+    background-size:cover!important;
+}
+ .shortcut-Archive{
+    background-image:url("/Content/icon/Desktop/آرشیو پرونده.png");
+    background-size:cover!important;
+}
+ 
+ .SettleType{
+    background-image:url("/Content/icon/mini/تعریف نوع پرداخت.png");
+    background-size:cover!important;
+}
+.Post{
+background-image:url("/Content/icon/mini/تعریف سمت ها.png");
+background-size:cover!important;
+}
+.ImpFine{
+background-image:url("/Content/icon/mini/اعمال قانون جریمه.png");
+background-size:cover!important;
+}
+.AccountBank{
+background-image:url("/Content/icon/mini/تعریف شماره حساب.png");
+background-size:cover!important;
+}
+.Signer{
+background-image:url("/Content/icon/mini/تعریف اشخاص صاحب امضا.png");
+background-size:cover!important;
+}
+.BankInf{
+background-image:url("/Content/icon/mini/تعریف اطلاعات پرداخت آنلاین.png");
+background-size:cover!important;
+} 
+.Parvande{
+background-image:url("/Content/icon/mini/پرونده های خودرو.png");
+background-size:cover!important;
+} 
+.Fishchart{
+background-image:url("/Content/icon/mini/نمودار فیش های ماه جاری.png");
+background-size:cover!important;
+} 
+.Piechart{
+background-image:url("/Content/icon/mini/نمودار خودروهای ماه جاری.png");
+background-size:cover!important;
+}
+.SearchColl{
+background-image:url("/Content/icon/mini/جستجوی واریزی ها mini.png");
+background-size:cover!important;
+}
+.RptCountMafasa {
+    background-image: url("/Content/icon/mini/تعداد مفاصاهای صادر شده در روز.png");
+    background-size: cover !important;
+}
+.RptLogCarFile {
+    background-image: url("/Content/icon/mini/تاریخچه ویرایش پرونده.png");
+    background-size: cover !important;
+} 
+.RptCarExperience_File {
+    background-image: url("/Content/icon/mini/انتقال سوابق ثبت شده در روز.png");
+    background-size: cover !important;
+}    
+.shortcut-UserHelp{
+    background-image:url("/Content/icon/Desktop/help.png");
+    background-size:cover!important;
+}
+.shortcut-UserGuestHelp{
+    background-image:url("/Content/icon/Desktop/help.png");
+    background-size:cover!important;
+}
+.shortcut-ParvandeInf{
+    background-image:url("/Content/icon/Desktop/اطلاعات پرونده.png");
+    background-size:cover!important;
+}
+.shortcut-KhodEzhari{
+    background-image:url("/Content/icon/Desktop/خود اظهاری.png");
+    background-size:cover!important;
+}
+.shortcut_Financial{
+    background-image:url("/Content/icon/Desktop/اطلاعات مالی.png");
+    background-size:cover!important;
+}
+.shortcut-FirstCalc{
+    background-image:url("/Content/icon/Desktop/محاسبات سرانگشتی.png");
+    background-size:cover!important;
+}
+.shortcut_Config{
+    background-image:url("/Content/icon/Desktop/پیکربندی سیستم.png");
+    background-size:cover!important;
+}
+.shortcut_AppReport{
+    background-image:url("/Content/icon/Desktop/گزارش های کاربردی.png");
+    background-size:cover!important;
+}
+.shortcut_MgrReport{
+    background-image:url("/Content/icon/Desktop/گزارشات مدیریتی.png");
+    background-size:cover!important;
+}
+.shortcut-PageHtml{
+    background-image:url("/Content/icon/Desktop/html.png");
+    background-size:cover!important;
+}
+.shortcut-Dashboard{
+    background-image:url("/Content/icon/Desktop/داشبورد.png");
+    background-size:cover!important;
+}
+.RptPlaqueSerial{
+background-image:url("/Content/icon/mini/سریال پلاکها.png");
+background-size:cover!important;
+} 
+.RptColorCar{
+background-image:url("/Content/icon/mini/رنگ های خودرو.png");
+background-size:cover!important;
+} 
+.RptCarSystem{
+background-image:url("/Content/icon/mini/سیستم های خودرو.png");
+background-size:cover!important;
+} 
+.RptCarSystemCom{
+background-image:url("/Content/icon/mini/سیستم های کامل خودرو.png");
+background-size:cover!important;
+} 
+.Budjet{
+background-image:url("/Content/icon/mini/مقایسه درآمد mini.png");
+background-size:cover!important;
+} 
+.News_New{
+background-image:url("/Content/icon/mini/تعیین اخبار.png");
+background-size:cover!important;
+}
+.PicMun_New{
+background-image:url("/Content/icon/mini/تعیین تصاویر.png");
+background-size:cover!important;
+}
+
+.RptOrganization{
+background-image:url("/Content/icon/mini/سازمان ها.png");
+background-size:cover!important;
+} 
+.RptCost{
+background-image:url("/Content/icon/mini/هزینه ها.png");
+background-size:cover!important;
+} 
+.RptPlaqueType{
+background-image:url("/Content/icon/mini/انواع پلاکها.png");
+background-size:cover!important;
+} 
+.RptStatusPlaque{
+background-image:url("/Content/icon/mini/انواع وضعیت پلاکها.png");
+background-size:cover!important;
+} 
+.RptCarFile{
+background-image:url("/Content/icon/mini/پرونده های خودرو.png");
+background-size:cover!important;
+}
+.RptOwner{
+background-image:url("/Content/icon/mini/مالکان خودرو.png");
+background-size:cover!important;
+} 
+.RptCharacterPersianPlaque{
+background-image:url("/Content/icon/mini/کاراکترهای مجاز پلاک ملی.png");
+background-size:cover!important;
+} 
+.RptUser{
+background-image:url("/Content/icon/mini/کاربرهای تعریف شده.png");
+background-size:cover!important;
+}  
+.RptPaid{
+background-image:url("/Content/icon/mini/فیش های صادرشده و پرداخت شده.png");
+background-size:cover!important;
+}  
+.RptNotPaid{
+background-image:url("/Content/icon/mini/فیش های صادرشده و پرداخت نشده.png");
+background-size:cover!important;
+}  
+.RptCarPlaque{
+background-image:url("/Content/icon/mini/شماره پلاک ها.png");
+background-size:cover!important;
+}  
+.RptComplicationsRate{
+background-image:url("/Content/icon/mini/نرخ عوارض سالیانه.png");
+background-size:cover!important;
+}  
+.RptCollection{
+background-image:url("/Content/icon/mini/جدول وصول.png");
+background-size:cover!important;
+}  
+.RptuserCount{
+background-image:url("/Content/icon/mini/فیش وصولی به تفکیک کاربران .png");
+background-size:cover!important;
+}  
+.RptuserCount_Date{
+background-image:url("/Content/icon/mini/فیش وصولی به تفکیک کاربران بازه زمانی.png");
+background-size:cover!important;
+}  
+.RptCollectionLog{
+background-image:url("/Content/icon/mini/تاریخچه پرداخت ها.png");
+background-size:cover!important;
+}  
+
+.PishkhanService{
+background-image:url("/Content/icon/mini/mini ثبت سرویس پیشخوان.png");
+background-size:cover!important;
+}
+
+.pishkhanpos{
+    background-image:url("/Content/icon/mini/miniپیگیری pos.png");
+background-size:cover!important;
+}
+
+.pishkhanReciept{
+    background-image:url("/Content/icon/mini/پیگیری رسیدهای pos mini.png");
+background-size:cover!important;
+}
+
+.ReportType_New{
+    background-image:url("/Content/icon/mini/سفارشی سازی گزارشات.png");
+background-size:cover!important;
+}
+.MainSetting{
+    background-image:url("/Content/icon/mini/تنظیمات اصلی.png");
+background-size:cover!important;
+}
+.SubSetting
+{
+    background-image:url("/Content/icon/mini/تنظیمات فرعی.png");
+background-size:cover!important;
+}
+.DegreeMun{
+    background-image:url("/Content/icon/mini/تعیین درجه شهرداری.png");
+background-size:cover!important;
+}
+.Organization{
+    background-image:url("/Content/icon/mini/سازمان ها.png");
+background-size:cover!important;
+}
+.Pattern{
+    background-image:url("/Content/icon/mini/الگوی شماره دهی.png");
+background-size:cover!important;
+}
+.SmsSetting{
+    background-image:url("/Content/icon/mini/تنظیمات پنل ارسال پیامک.png");
+background-size:cover!important;
+}
+.SmsSending{
+    background-image:url("/Content/icon/mini/تنظیمات ارسال پیامک.png");
+background-size:cover!important;
+}
+.PcPosInfo{
+    background-image:url("/Content/icon/mini/تعیین بانک.png");
+background-size:cover!important;
+}
+.PcPosUser{
+    background-image:url("/Content/icon/mini/pcpos تعریف کاربران.png");
+background-size:cover!important;
+}
+.PcPosParametr{
+    background-image:url("/Content/icon/mini/pcpos پارامترهای.png");
+background-size:cover!important;
+}
+.PcPosParam_Detail{
+    background-image:url("/Content/icon/mini/مقداردهی.png");
+background-size:cover!important;
+}
+
+.RptRiyali
+{
+    background-image:url("/Content/icon/mini/گزارش آماری (ریالی(.png");
+background-size:cover!important;
+}
+.RptDarsadi{
+    background-image:url("/Content/icon/mini/گزارش آماری (درصدی).png");
+background-size:cover!important;
+}
+.RptTafkiki{
+    background-image:url("/Content/icon/mini/گزارش تفکیکی درآمد به ماه و سال.png");
+background-size:cover!important;
+}
+.RptFish{
+    background-image:url("/Content/icon/mini/گزارش تعداد فیش به تفکیک ماه و سال.png");
+background-size:cover!important;
+}
+.RptBudje{
+    background-image:url("/Content/icon/mini/تفریغ بودجه در سال.png");
+background-size:cover!important;
+}
+.RptSaliane{
+    background-image:url("/Content/icon/mini/درآمدسالیانه به تفکیک ماه و نوع خودرو.png");
+background-size:cover!important;
+}
+.AccostType{
+    background-image:url("/Content/icon/mini/تعریف مخاطب.png");
+background-size:cover!important;
+}
+.Contact{
+    background-image:url("/Content/icon/mini/تعریف و جستجوی مخاطب.png");
+background-size:cover!important;
+}
+.Error{
+    background-image:url("/Content/icon/mini/مدیریت خطا.png");
+background-size:cover!important;
+}
+.Announcement{
+    background-image:url("/Content/icon/mini/ثبت اطلاعیه ها.png");
+background-size:cover!important;
+}
+.BankParametr{
+    background-image:url("/Content/icon/mini/ثبت پارامترهای بانک ها.png");
+background-size:cover!important;
+}
+.OnlineUsers{
+    background-image:url("/Content/icon/mini/کاربران آنلاین.png");
+background-size:cover!important;
+}
+.SupportRate{
+    background-image:url("/Content/icon/mini/پشتیبانی نرخ ها.png");
+background-size:cover!important;
+}
+.UserLog{
+    background-image:url("/Content/icon/mini/تاریخچه کاربران.png");
+background-size:cover!important;
+}
+.shortcut_Tools{
+    background-image:url("/Content/icon/Desktop/ابزارهای سیستم.png");
+    background-size:cover!important;
+}
+.shortcut_User{
+    background-image:url("/Content/icon/Desktop/مدیریت کاربران.png");
+    background-size:cover!important;
+}
+.shortcut-Nahaii{
+    background-image:url("/Content/icon/Desktop/ورود فایل پرداخت الکترونیکی.png");
+    background-size:cover!important;
+}
+
+.MonitoringSavabegh{
+    background-image:url("/Content/icon/Desktop/مانیتورینگ.png");
+    background-size:cover!important;
+}
+
+.badge:after{
+    content:"5";
+    position: absolute;
+    background:red; /*rgba(0,0,255,1);*/
+    height:1.2rem;
+    top:0.3rem;
+    right:0.5rem;
+    width:1.2rem;
+    text-align: center;
+    line-height: 1.2rem;
+    font-size: 0.7rem;
+    border-radius: 20%;
+    color:white;
+    border:1px solid white;
+}
+
+
+.UserGroup{
+    background-image:url("/Content/icon/mini/گروه های کاری.png");
+    background-size:cover!important;
+}
+.Permission{
+    background-image:url("/Content/icon/mini/سطوح دسترسی.png");
+    background-size:cover!important;
+}
+.User{
+    background-image:url("/Content/icon/mini/کاربران نرم افزار.png");
+    background-size:cover!important;
+}
+.TransactionInf{
+    background-image:url("/Content/icon/mini/اطلاعات وب سرویس تراکنش.png");
+    background-size:cover!important;
+}
+.TaidSabtename{
+    background-image:url("/Content/icon/mini/تایید ثبت نام.png");
+    background-size:cover!important;
+}
+.scan{
+    background-image:url("/Content/icon/mini/پرونده های اسکن شدهmini.png");
+    background-size:cover!important;
+}
+.fish_Month{
+    background-image:url("/Content/icon/mini/فیش های صادرشده به تفکیک ماه.png");
+    background-size:cover!important;
+}
+.fish_Tavabe{
+    background-image:url("/Content/icon/mini/فیش های صادرشده به تفکیک توابع.png");
+    background-size:cover!important;
+}
+.fish_Tavabe_Month{
+    background-image:url("/Content/icon/mini/فیش های صادرشده به تفکیک توابع و ماهmini.png");
+    background-size:cover!important;
+}
+
+
+/*.State{
+     background-image:url("/Content/icon/mini/mini-استان.png")
+}*/
+/*.City{
+     background-image:url("/Content/icon/mini/mini-شهر.png")
+}*/
+
+.bullet_green
+{
+     background-image:url("/Content/bullet_green.png")
+}
+
+.menuCheck
+{
+	width: 100%;
+}
+.x-btn-default-large-icon-text-top .x-btn-icon-el
+{
+	height: 52px;
+}
+.x-btn-default-large-icon-text-top .x-btn-inner
+{
+	padding-top: 44px;
+}
+.x-datepicker-month .x-btn-inner {
+    color: #00001e;
+}
+.x-fieldset-header-text {
+    color: #38158b;
+    padding: 1px 0;
+    font-family: tahoma;
+    font-weight: bold;
+}
+.x-datepicker-header {
+    padding: 3px 6px;
+    text-align: center;
+    background-image: -webkit-linear-gradient(top,#dfe8f6,#cad9ee);
+    background-image: -moz-linear-gradient(top,#264888,#1f3a6c);
+    background-image: -o-linear-gradient(top,#264888,#1f3a6c);
+    background-image: linear-gradient(top,#264888,#1f3a6c);
+    color:black;
+}
+.x-menu
+{
+	background:#FFFFFF;
+}
+.x-panel-body {
+background-color:white;/*#dfe8f6;*/
+}
+.x-window-body-default{
+background:#FFFFFF;
+}
+
+.x-rtl.x-message-box-info, .x-rtl.x-message-box-warning, .x-rtl.x-message-box-question, .x-rtl.x-message-box-error
+{
+	
+	top: 10px;
+}
+
+.x-message-box-error {
+background-image: url("/content/Error.png");
+
+	top: 10px;
+}
+
+.x-message-box-info {
+background-image: url("/content/Info.png");
+right: -15px;
+	top: 10px;
+} 
+.x-message-box-warning {
+background-image: url("/content/warning.png");
+right: -15px;
+	top: 10px;
+}
+.x-message-box-question {
+background-image: url("/content/question.png");
+right: -15px;
+	top: 10px;
+}
+.field-validation-error{
+    color: #ff0000;
+}
+
+.msg-wrap {
+    word-wrap: break-word !important;
+}
+.x-message-box .x-form-display-field{
+    text-align: right !important;
+}
+.rotation90{
+transform: rotate(90deg);
+}
+.mylabel {
+font-weight: bold;
+font-size:11px;
+}
+
+.ux-desktop-shortcut-text {
+ color:black;
+/*width: 100px;*/
+}
+.ux-desktop-shortcut-text {
+ color:black;
+
+}
+.ux-desktop-shortcut-wrap {
+
+}
+.ux-desktop-shortcut-bg{
+    height:auto;
+    width:auto;
+   top:8px;
+  
+   margin:auto;
+}
+.ux-desktop-shortcut-text{
+    height:auto;
+   
+}
+.ux-desktop-shortcut{
+    padding:20px;
+    margin:20px;
+}
+
+.x-clear-button{
+    right:auto !important;
+    left:2px !important;
+} 
+
+
+

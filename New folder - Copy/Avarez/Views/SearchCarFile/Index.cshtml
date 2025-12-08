@@ -1,0 +1,194 @@
+﻿@using Kendo.Mvc.UI;
+<div class="modal" id="SearchCarFile">
+
+    <div>
+        @if (ViewBag.SearchState == 1)
+        {  
+            <img src="@Url.Content("~/Content/images/SabegheNAV1.png")" />
+             <a href="@Url.Content("~/Helps/انتقال سوابق.htm")" target="_blank" id="Help" title="راهنما" style="background-image:url('/Content/images/1381415123_help.png');background-repeat: no-repeat;height: 20px;float: left;top: 10px;left: 10px;"></a>
+        }
+        else if (ViewBag.SearchState == 2)
+        {
+            <img src="@Url.Content("~/Content/images/SabtFishNAV1.png")" />
+            <a href="@Url.Content("~/Helps/ثبت واریزی.htm")" target="_blank" id="Help" title="راهنما" style="background-image:url('/Content/images/1381415123_help.png');background-repeat: no-repeat;height: 20px;float: left;top: 10px;left: 10px;"></a>
+        }
+        else if (ViewBag.SearchState == 3)
+        {
+            <img src="@Url.Content("~/Content/images/ChOwnerNav1.png")" />            
+            <a href="@Url.Content("~/Helps/تعویض مالک.htm")" target="_blank" id="Help" title="راهنما" style="background-image:url('/Content/images/1381415123_help.png');background-repeat: no-repeat;height: 20px;float: left;top: 10px;left: 10px;"></a>
+        }
+        else if (ViewBag.SearchState == 4)
+        {
+            <img src="@Url.Content("~/Content/images/firstStep.png")" />            
+            <a href="@Url.Content("~/Helps/بايگاني ديجيتال.htm")" target="_blank" id="Help" title="راهنما" style="background-image:url('/Content/images/1381415123_help.png');background-repeat: no-repeat;height: 20px;float: left;top: 10px;left: 10px;"></a>
+        }
+        <br />
+        <div>
+            <center>
+                <table>
+                    <tr>
+                        <td align="center">
+                            فیلد جستجو:@Html.DropDownList("cboSearchFiald", new SelectList(new[] { new { ID = "2", Name = "ش موتور" }, new { ID = "0", Name = "VIN" }, new { ID = "1", Name = "ش موتور و شاسی" }, new { ID = "3", Name = "ش شاسی" }, new { ID = "4", Name = "نام مالک" }, new { ID = "5", Name = "کد ملی" }, new { ID = "6", Name = "پلاک" } }, "ID", "Name"))
+                        </td>
+                       <td>
+                                نوع جستجو: @Html.DropDownList("cboSearchType", new SelectList(new[] { new { ID = "0", Name = "مشابه عبارت" }, new { ID = "1", Name = "مشابه عبارت از سمت راست" }, new { ID = "2", Name = "عین عبارت" } }, "ID", "Name"))
+                       </td> 
+                    </tr>
+                <tr>
+                    <td align="center">
+                        <span id="span1">شماره موتور:</span> @Html.TextBox("txtSearch1")
+                    </td>
+                    <td>
+                        <span id="span2" style="display:none;">شماره شاسی: @Html.TextBox("txtSearch2")</span>
+                    </td>
+                </tr>
+                </table>
+                @Avarez.Helper.winClass.Buttons("search", "جستجو", "search")</center>
+            <br />
+        </div>
+        <center>
+            <div>
+                @Avarez.Helper.winClass.Buttons("next", "ادامه", "Next")
+                @Avarez.Helper.winClass.Buttons("exit", "خروج", "exit")
+            </div>
+        </center>
+        <div class="k-rtl demo-section">
+            @(Html.Kendo().Grid<Avarez.Models.sp_CarUserGuestSelect>()
+                .Name("Grid")
+                .Columns(columns =>
+                {
+                    columns.Bound(p => p.fldID).Title("کد").Visible(false);
+                    columns.Bound(p => p.fldMotorNumber).Title("ش موتور");
+                    columns.Bound(p => p.fldShasiNumber).Title("ش شاسی");
+                    columns.Bound(p => p.fldVIN).Title("VIN");
+                    columns.Bound(p => p.fldModel).Title("مدل");
+                    columns.Bound(p => p.fldCarModelName).Title("تیپ");
+                    columns.Bound(p => p.fldCarClassName).Title("کلاس");
+                    columns.Bound(p => p.fldCarFileId).Hidden(true);
+                })
+            .Selectable(selectable => selectable.Mode(GridSelectionMode.Single))
+            .Pageable()
+            .Scrollable()
+            .DataSource(data =>
+                data.Ajax()
+                .PageSize(10)
+                .Model(m => m.Id(p => p.fldID))
+            )
+        )
+        </div>
+    </div>
+    <script type="text/javascript">
+        $("document").ready(function () {
+            $("#next").button();
+            $("#search").button();
+            $("#exit").button();
+            $('#Help').button();
+          
+            $("#exit").click(function () {
+                $("#SearchCarFile").remove();
+            });
+            $('#SearchCarFile').on('keyup', 'input', function (event) {
+                if (event.which == 13) {
+                    //var inputs = $('#SearchCarFile').find(':input:visible');
+                    //inputs.eq(inputs.index(this) + 1).focus();
+                    Reload('/SearchCarFile/Reload', 'Grid', $('#cboSearchFiald').val(), $('#txtSearch1').val(), $('#txtSearch2').val(), $('#cboSearchType').val());
+                }
+            });
+            $('#search').click(function () {
+                Reload('/SearchCarFile/Reload', 'Grid', $('#cboSearchFiald').val(), $('#txtSearch1').val(), $('#txtSearch2').val(), $('#cboSearchType').val());
+            });
+
+            $('#cboSearchFiald').change(function () {
+                if ($('#cboSearchFiald').val() == 1) {
+                    $('#span2').attr('style', '');
+                    $('#span1').html('شماره موتور:');
+                    $('#value2').val('');
+                }
+                else {
+                    var x = new Array('VIN', 'ش موتور و شاسی', 'ش موتور', 'ش شاسی', 'نام مالک', 'کد ملی', 'پلاک');
+                    $('#span2').attr('style', 'display:none;');
+                    $('#span1').html(x[$("#cboSearchFiald").val()] + ':');
+                    $('#value2').val('');
+                }
+            });
+
+            $('#next').click(function () {
+                var entityGrid = $("#Grid").data("kendoGrid");
+                var selectedItem = entityGrid.dataItem(entityGrid.select());
+                if (selectedItem) {
+                    var id = selectedItem.fldID;
+                    var URL;
+                    switch ('@ViewBag.SearchState') {
+                        case '1':
+                            URL = '@Url.Content("~/Savabegh/Index")' + "/?id=" + id + "&state=1";
+                            break;
+                        case '2':
+                            URL = '@Url.Content("~/SaveFish/Index")' + "/" + id;
+                            break;
+                        case '3':
+                            URL = '@Url.Content("~/ChCarFilePelaquSearch/Index")' + "/" + id;
+                            break;
+                        case '4':
+                            URL = '@Url.Content("~/TempArchive/Index")' + "/?id=" + selectedItem.fldCarFileId + "&State=1";
+                            break;
+                        case '5':
+                            URL = '@Url.Content("~/BlackList/Index")' + "/" + id;
+                            break;
+                    }
+
+                    windows("#win", URL);
+                } else {
+                    alert('لطفا یک سطر را انتخاب کنید.');
+                }
+            });
+        });
+        function Reload(Url, gridname, field, value1, value2, searchType) {
+            var grid = $('#' + gridname).data('kendoGrid');
+            $.ajax({
+                url: Url,
+                type: 'get',
+                datatype: 'json',
+                data: { field: field, value1: value1, value2: value2, searchType: searchType },
+                error: function (xhr, status, error) {
+                    alert(xhr + status);
+                },
+                success: function (result) {
+                    $("#" + gridname).data("kendoGrid").dataSource.data(result);
+                }
+
+            });
+        }
+
+        function PostForm(datas, url, id) {
+            var sendInfo = datas;
+            $('#Lock').show();
+            $.ajax({
+                type: "POST",
+                url: url,
+                data: sendInfo,
+                datatype: "json",
+                success: function (data) {
+                    var m = data;
+                    windowAppend("body", "/metro/error");
+                    $("#message").html(m.data);
+                    $("#fldId").val(m.id);
+                    switch (m.state) {
+                        case 0:
+                            $("#error .wintitle").html("ذخیره موفق");
+                            break;
+                        case 1:
+                            $("#error .wintitle").html("خطا");
+                            break;
+                    }
+                    var url = '@Url.Action("Reload", "Owner")';
+                    Reload(url, 'Grid', '0', '', 30, 1);
+                    $('#Lock').hide();
+
+                },
+                failure: function (data) {
+                    alert(data.data);
+                }
+            });
+        }    
+    </script>
+</div>

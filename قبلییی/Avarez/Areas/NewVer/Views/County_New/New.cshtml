@@ -1,0 +1,207 @@
+﻿@using Ext.Net.MVC
+@using Hogaf.ExtNet.UX
+@using Ext.Net;
+@{
+    var X = Html.X();
+}
+
+@(Html.X().Window()
+    .Modal(true)
+       // .Listeners(li => li.AfterRender.Handler = "LoadCounty();")
+    .Resizable(false)
+    .Width(335)
+   // .Height(210)
+        .Title("تعریف شهرستان")
+    //.Layout(LayoutType.Fit)
+        .ID("NewCounty")
+    .Closable(true)
+    .ButtonAlign(Ext.Net.Alignment.Center)
+    .Buttons(
+        X.Button()
+            .Text("ذخیره")
+            .Icon(Ext.Net.Icon.Disk)
+        //.ToolTip("کلید میانبر F8")
+                .Listeners(l => l.Click.Handler = "SaveCounty();"),
+        X.Button()
+            .Text("خروج")
+            .Icon(Ext.Net.Icon.DoorOut)
+        //.ToolTip("کلید میانبر Esc")
+                .OnClientClick("App.NewCounty.destroy();"))
+    .CloseAction(Ext.Net.CloseAction.Destroy)
+    .Items(
+        X.FormPanel()
+            .Border(false)
+            .Layout(LayoutType.Fit)
+            .Items(
+                X.Panel()
+                    .Border(false)
+                    .PaddingSpec("15px 0 0 0")
+                           .Layout(LayoutType.VBox)
+                                    .LayoutConfig(new VBoxLayoutConfig { Align = VBoxAlign.Center })
+                    .Items(
+                        X.FieldSet()
+                            .Border(true)
+                            .Title("شهرستان").Height(145)
+                            .Defaults(new { Margin = 2 })
+                            .Layout(LayoutType.Table)
+                            .LayoutConfig(new TableLayoutConfig { Columns = 2 })
+                            .Items(
+                                X.Hidden()
+                                    .ItemID("fldId"),
+                                     X.Label("نام استان"),
+                                X.ComboBox()
+                                .ItemID("cboState")
+                                    .LabelAlign(Ext.Net.LabelAlign.Left)
+                                .Editable(false)
+                                .TypeAhead(true)
+                                .QueryMode(DataLoadMode.Local)
+                                .ForceSelection(true)
+                                .TriggerAction(TriggerAction.All)
+                                .AllowBlank(false)
+                                    .BlankText("لطفا نام استان را انتخاب نمایید.")
+                                        .MsgTarget(Ext.Net.MessageTarget.Side)
+                                .DisplayField("fldName")
+                                .ValueField("fldID")
+                                .EmptyText("استان...")
+                                .Width(190)
+                                        .Store(X.Store()//.AutoLoad(false)
+                                    .Model(X.Model()
+                                                .IDProperty("fldID")
+                                        .Fields(
+                                            new ModelField("fldID", ModelFieldType.String) { Mapping = "fldID" },
+                                            new ModelField("fldName", ModelFieldType.String) { Mapping = "fldName" }
+                                        )
+                                    )
+                                        .Proxy(X.AjaxProxy()
+                                                    .Url(Url.Action("GetState"))
+                                            .Reader(X.JsonReader().Root("data"))
+                                        )
+                                                .Listeners(li => li.Load.Handler = "LoadCounty();")
+                            ),
+                                   X.Label("نام شهرستان:"),
+                                X.TextField()
+                                        .ItemID("txtName")
+                                    .Width(190)
+                                    .AllowBlank(false)
+                                    .EnforceMaxLength(true)
+                                    .MaxLength(50)
+                                    .BlankText("لطفا نام شهرستان را وارد نمایید.")
+                                    .MsgTarget(Ext.Net.MessageTarget.Side),
+                                X.Label("توضیحات:"),
+                                X.TextArea()
+                                    .ItemID("txtDesc")
+                                    .Width(190)
+                            )
+                )
+            )
+        )
+)
+
+@(Html.X().KeyMap()
+                 .ID("NewCountyMap")
+                 .Target("={App.NewCounty.getTargetEl()}")
+            .Binding(b =>
+            {
+                b.Add(Html.X().KeyBinding()
+                .KeysString(((int)Ext.Net.KeyCode.F8).ToString())
+                .Handler("SaveCounty(); ")
+                );
+
+            }))
+<script type="text/javascript">
+    function LoadCounty() {
+        if ('@ViewBag.Id' != '0') {
+            App.NewCounty.body.mask("در حال بارگذاری...");
+            Ext.net.DirectMethod.request({
+                url: '/NewVer/County_New/Details',
+                params: {
+                    Id: '@ViewBag.Id'
+                },
+                success: function (data) {
+                    if (data.Er == 0) {
+                        var cboState = App.NewCounty.queryById('cboState');
+                        cboState.setValue(data.fldStateID);
+                        var txtName = App.NewCounty.queryById('txtName');
+                        txtName.setValue(data.fldName);
+                        var txtDesc = App.NewCounty.queryById('txtDesc');
+                        txtDesc.setValue(data.fldDesc);
+                        var Id = App.NewCounty.queryById('fldId');
+                        Id.setValue(data.fldID);
+                    }
+                    else if (data.Er == 1) {
+                        Ext.MessageBox.show({
+                            title: data.MsgTitle,
+                            msg: data.Msg,
+                            icon: Ext.MessageBox.ERROR,
+                            buttons: Ext.MessageBox.OK
+                        });
+                    }
+                    App.NewCounty.body.mask().hide();
+                }
+            });
+        }
+        else {
+            App.NewCounty.queryById('txtName').validate();
+            App.NewCounty.queryById('cboState').validate();
+            /*cboState.select(cboState.store.getAt(0));*/
+        }
+
+    }
+
+    function SaveCounty() {
+        var txtName = App.NewCounty.queryById('txtName');
+        var cboState = App.NewCounty.queryById('cboState');
+        var txtDesc = App.NewCounty.queryById('txtDesc');
+        var Id = App.NewCounty.queryById('fldId');
+            var er = false;
+
+            if (txtName.validate() == false) {
+                er = true;
+            }
+            if (cboState.validate() == false) {
+                er = true;
+            }
+            if (er == true)
+                return;
+
+            App.NewCounty.body.mask("در حال ذخیره سازی...");
+            Ext.net.DirectMethod.request({
+                url: '/NewVer/County_New/Save',
+                params: {
+                    fldID: Id.getValue(),
+                    fldName: txtName.getValue(),
+                    fldStateID: cboState.getValue(),
+                    fldDesc: txtDesc.getValue()
+                },
+                success: function (data) {
+                    var ic = Ext.MessageBox.INFO;
+                    if (data.Er == 1)
+                        ic = Ext.MessageBox.ERROR;
+                    Ext.MessageBox.show({
+                        title: data.MsgTitle,
+                        msg: data.Msg,
+                        icon:ic,
+                        buttons: Ext.MessageBox.OK
+                    });
+                    App.County.queryById('GridCounty').store.load();
+                    if (data.Er != 1)
+                        ClearCounty();
+                    App.NewCounty.body.mask().hide();
+                }
+
+            });
+        }
+    function ClearCounty() {
+        App.NewCounty.queryById('txtName').setValue("");
+        App.NewCounty.queryById('cboState').setValue("");
+        App.NewCounty.queryById('txtDesc').setValue("");
+        App.NewCounty.queryById('fldId').setValue(0);
+    }
+  /*  function EnterNext() {
+        var keyfield = App.NewCustomer.queryById(Ext.getCmp((Ext.Element.getActiveElement()).name).itemId);
+        var nextfld = keyfield.nextSibling();
+        nextfld.focus();
+        nextfld.selectText();
+    }*/
+
+</script>

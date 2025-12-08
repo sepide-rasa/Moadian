@@ -1,0 +1,138 @@
+﻿<div id="SearchUser" class="modal">
+    @Avarez.Helper.winClass.windowHeader("", "جستجو کاربر", 600, 430)
+    @using Kendo.Mvc.UI;
+    <div>
+        <center>
+            <br />
+            <table>
+                <tr>
+                    <td>
+                        فیلد جستجو:@Html.DropDownList("cboSearchFiald1", new SelectList(new[] { new { ID = "0", Name = "نام " }, new { ID = "1", Name = "نام خانوادگی " } }, "ID", "Name"))
+                    </td>
+                    <td>
+                        نوع جستجو: @Html.DropDownList("cboSearchType1", new SelectList(new[] { new { ID = "0", Name = "مشابه عبارت" }, new { ID = "1", Name = "مشابه عبارت از سمت راست" }, new { ID = "2", Name = "عین عبارت" } }, "ID", "Name"))
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        عبارت جستجو: @Avarez.Helper.winClass.textbox("txtSearch1")
+                    </td>
+                    <td>
+                        نتیجه رکوردها: @Html.TextBox("txtTop1", 30, new { @style = "width:30px;" }) رکورد
+                    </td>
+                </tr>
+            </table>
+            <br />
+        </center>
+    </div>
+    <center>
+        <div>
+            @Avarez.Helper.winClass.Buttons("_next1", "انتخاب", "Next")
+            @Avarez.Helper.winClass.Buttons("_exit1", "خروج", "exit")
+        </div>
+    </center>
+    <div class="k-rtl demo-section">
+        @(Html.Kendo().Grid<Avarez.Models.sp_UserSelect>()
+                .Name("UserGrid")
+                .Columns(columns =>
+                {
+                    columns.Template(@<text></text>).ClientTemplate("<input type='checkbox' value='#=fldID#' name='selected'/>").Width(35);
+                    columns.Bound(p => p.fldID).Title("کد").Visible(false);
+                    columns.Bound(p => p.fldName).Title("نام");
+                    columns.Bound(p => p.fldFamily).Title("نام خانوادگی");
+                    columns.Bound(p => p.fldMelliCode).Title("کد ملی");
+                    columns.Bound(p => p.fldUserName).Title("نام کاربری");
+                    columns.Bound(p => p.fldDesc).Title("توضیحات");
+                })
+            .Selectable(selectable => selectable.Mode(GridSelectionMode.Single))
+            .Pageable()
+            .Scrollable()
+            .DataSource(data =>
+                data.Ajax()
+                .PageSize(10)
+                .Read(read => read.Action("Fill", "SearchUser"))
+            )
+        )
+    </div>
+    <script type="text/javascript">
+        $("document").ready(function () {
+            $("#_next1").button();
+            $("#_search").button();
+            $("#_exit1").button();
+            $("#_exit1").click(function () {
+                $("#SearchUser").remove();
+                isWinOpen = false;
+            });
+            $('#SearchUser #btnClose').click(function () {
+                $("#SearchUser").remove();
+                isWinOpen = false;
+            });
+           
+            $('#txtSearch1').keyup(function () {
+                var url = '@Url.Action("Reload", "SearchUser")';
+                Reload(url, 'UserGrid', $("#cboSearchFiald1").val(), $("#txtSearch1").val(), $("#txtTop1").val(), $("#cboSearchType1").val());
+            });
+
+            $('#_next1').click(function () {
+                //var entityGrid = $("#UserGrid").data("kendoGrid");
+                //var selectedItem = entityGrid.dataItem(entityGrid.select());
+                //if (selectedItem) {
+                //    UserId = selectedItem.fldID;
+                //    $('#lblUser').html(selectedItem.fldName + " " + selectedItem.fldFamily);
+
+                var entityGrid = $("#UserGrid").data("kendoGrid");
+                var row = entityGrid.items();
+                var t = $('#SearchUser #UserGrid input[type=checkbox]');
+                //if (selectedItem) {
+                for (var j = 0; j < t.length; j++) {
+                    if (t.valueOf()[j].checked) {
+                        var selectedItem = entityGrid.dataItem(row[j]);
+                        var id = selectedItem.fldID;
+                        var name = selectedItem.fldName + " " + selectedItem.fldFamily;
+
+
+                        var h = UserId.split(';');
+                        var isid = false;
+                        for (var i = 0; i < h.length; i++) {
+                            if (h[i] == id) {
+                                isid = true;
+                                break;
+                            }
+                        }
+                        if (isid == false) {
+                            UserName = UserName + name + ';';
+                            UserId = UserId + id + ';';
+                        }
+                        else {
+                            windowAppend("body", "/metro/error");
+                            $("#message").html('کاربر تکراری است.');
+                            $("#error .wintitle").html("خطا");
+                        }
+
+                    }
+                }
+                $('#lblUser').html(UserName);
+                $('#txtUser').val('');
+                $("#SearchUser").remove();
+                isWinOpen = false;
+            });
+        });
+        function Reload(Url, gridname, field, value, top, searchType) {
+            var grid = $('#' + gridname).data('kendoGrid');
+            $.ajax({
+                url: Url,
+                type: 'get',
+                datatype: 'json',
+                data: { field: field, value: value, top: top, searchtype: searchType },
+                error: function (xhr, status, error) {
+                    alert(xhr + status);
+                },
+                success: function (result) {
+                    $("#" + gridname).data("kendoGrid").dataSource.data(result);
+                }
+
+            });
+        }
+    </script>
+    @Avarez.Helper.winClass.windowFother()
+</div>

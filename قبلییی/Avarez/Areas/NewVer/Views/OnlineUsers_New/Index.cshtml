@@ -1,0 +1,104 @@
+﻿@model IEnumerable<Avarez.Models.LogOnModel>
+@using Ext.Net.MVC;
+@{
+
+    var X = Html.X(); 
+}
+<script type="text/javascript">
+    var hub1 = $.connection.S_hub;
+
+    $(document).ready(function () {
+        $.connection.hub.start();
+        hub1.client.LoadOnlineUser = function () {
+            var grid = App.OnlineUsers.queryById("Grid");
+            $.ajax({
+                url: '/NewVer/OnlineUsers_New/ReloadOnlineUser',
+                type: 'get',
+                datatype: 'json',
+                error: function (xhr, status, error) {
+                    alert(xhr + status);
+                },
+                success: function (result) {
+                    grid.store.loadData(result);
+                }
+
+            });
+        }
+    });
+</script>
+
+@(Html.X().Window()
+    .Modal(true)
+    .Width(900)
+    .Height(400)
+    .Title(" کاربران آنلاین ")
+    .ID("OnlineUsers")
+    .Closable(true)
+    .Border(false)
+    .CloseAction(Ext.Net.CloseAction.Destroy)
+    .Layout(Ext.Net.LayoutType.Fit)
+    .Items(
+        X.Panel()
+            .Border(false)
+                .Layout(Ext.Net.LayoutType.Fit)
+            .Items(
+                X.GridPanel()
+                //.Listeners(l => l.ViewReady.Handler = "LoadGrid()")
+                    .AutoScroll(true)
+                    .ItemID("Grid")
+                    .Flex(2)
+                    .BottomBar(X.PagingToolbar())
+
+                    .Store(
+
+                        X.StoreForModel().AutoLoad(true)
+                .Proxy(Html.X().AjaxProxy()
+                    .Url(Url.Action("Read"))
+                    .Reader(Html.X().JsonReader().Root("data"))
+                )
+                        .PageSize(1000)
+                        .RemoteFilter(true)
+                        .RemotePaging(true)
+
+                    )
+                    /*.View(
+                        Html.X().GridView().LoadingText("در حال بارگذاری...").RTL(true)
+                    )*/
+                    .Plugins(X.FilterHeader().Remote(true))
+                    .ColumnModel(
+                        Html.X().RowNumbererColumn(),
+                                Html.X().Column().DataIndex(Model, m => m.userId).Text("کد").Hidden(true).Flex(1),
+                                Html.X().Column().DataIndex(Model, m => m.Name).Text("نام کاربر").Flex(2),
+                                    Html.X().Column().DataIndex(Model, m => m.IPAdress).Text("آدرس IP").Flex(2),
+                                    Html.X().Column().DataIndex(Model, m => m.Url).Text("موقعيت فعلي").Flex(4)
+                          
+
+        // Html.X().Column().DataIndex(Model, m => m.fldDesc).Text("توضیحات").Flex(5)
+                    )
+                    .SelectionModel(
+                        Html.X().RowSelectionModel()
+                            .Mode(Ext.Net.SelectionMode.Single)
+                    )
+
+            )
+        )
+)
+
+<script type="text/javascript">
+  
+
+    function LoadGrid() {
+        /*Ext.net.Mask.show({ msg: 'در حال بارگذاری...' });*/
+        Ext.net.DirectMethod.request({
+            url: '/NewVer/OnlineUsers_New/ReloadOnlineUser',
+          
+            success: function (result) {
+                App.OnlineUsers.queryById('Grid').getStore().loadData(result.data);              
+                Ext.net.Mask.hide();
+            }
+        });
+    }
+
+
+
+</script>

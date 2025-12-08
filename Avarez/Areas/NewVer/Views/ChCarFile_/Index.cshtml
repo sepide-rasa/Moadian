@@ -1,0 +1,412 @@
+﻿@model IEnumerable<Avarez.Models.sp_CarFileSelect>
+@using Ext.Net.MVC
+@using Hogaf.ExtNet.UX
+@using Ext.Net;
+@using Ext.Net.Utilities;
+@{
+    var X = Html.X();
+}
+<style>
+    .lblP {
+        background-color: rgb(255, 202, 153);
+    }
+</style>
+
+@(Html.X().Window()
+    .Border(false)
+    .ID("ChCarFile_")
+    .Title("مشاهده اطلاعات")
+    .AutoScroll(true)
+    .Closable(true)
+    .Listeners(l=>l.AfterRender.Handler="loadData();")
+    .Modal(true)
+    .CloseAction(CloseAction.Destroy)
+    .Height(590)
+    .Width(900)
+    .Layout(Ext.Net.LayoutType.Fit)
+    .Items(
+        X.Panel()
+            .Border(false)
+            .AutoScroll(true)
+            .KeyMap(
+                Html.X().KeyMap()
+                    .ID("ChCarFile_Map")
+                    .Target("={Ext.isGecko ? Ext.getDoc() : Ext.getBody()}")
+                    .Binding(b =>
+                    {
+                        b.Add(Html.X().KeyBinding()
+                            .KeysString(((int)Ext.Net.KeyCode.F8).ToString())
+                            .Handler("SaveChCarFile_(); ")
+                        );
+                    }))
+            .Items(
+                X.Panel()
+                    .Border(false)
+                    .Width(890)
+                    .PaddingSpec("0 0 5px 0")
+                    .Layout(LayoutType.VBox)
+                    .LayoutConfig(new VBoxLayoutConfig{Align=VBoxAlign.Center})
+                    .ButtonAlign(Alignment.Center)
+                    .Buttons(
+                        X.Button()
+                            .Text("ذخیره")
+                            .Icon(Ext.Net.Icon.Disk)
+                            .ToolTip("کلید میانبر F8")
+                            .Listeners(l =>
+                            {
+                                l.Click.Handler = "SaveChCarFile_();";
+                            }),
+                        X.Button()
+                            .Text("خروج")
+                            .Icon(Ext.Net.Icon.DoorOut)
+                            .ToolTip("کلید میانبر Esc")
+                            .OnClientClick("App.ChCarFile_.destroy();"))
+                    .Items(
+                        X.FieldSet()
+                            .Layout(LayoutType.Table)
+                            .Title("مشخصات مالک")
+                            .LayoutConfig(new TableLayoutConfig { Columns = 2 })
+                            .MarginSpec("5px 0 0 0")
+                            .Width(700)
+                            .Items(
+                                X.FieldSet()
+                                    .Border(false)
+                                    .Layout(LayoutType.HBox)
+                                    .LayoutConfig(new HBoxLayoutConfig { Align = HBoxAlign.Stretch })
+                                    .Items(
+                                        X.Label()
+                                            .Text("نام و نام خانوادگی مالک:")
+                                            .PaddingSpec("0 0 0 50px"),
+                                        X.Label()
+                                            .ItemID("txtNameFamilyMalek")
+                                    ),
+                                X.FieldSet()
+                                    .Border(false)
+                                    .Layout(LayoutType.HBox)
+                                    .LayoutConfig(new HBoxLayoutConfig { Align = HBoxAlign.Stretch })
+                                    .Items(
+                                        X.Label()
+                                            .Text("شماره پلاک:")
+                                            .PaddingSpec("0 0 0 50px"),
+                                        X.Label()
+                                            .ItemID("txtSh_Pelak")
+                                            .Cls("lblP")
+                                    ),
+                                X.FieldSet()
+                                    .Border(false)
+                                    .Layout(LayoutType.HBox)
+                                    .LayoutConfig(new HBoxLayoutConfig { Align = HBoxAlign.Stretch })
+                                    .Items(
+                                        X.Label()
+                                            .Text("نوع ساخت:")
+                                            .PaddingSpec("0 0 0 50px"),
+                                        X.Label()
+                                            .ItemID("txtNoeSakht")
+                                    ),
+                                X.FieldSet()
+                                    .Border(false)
+                                    .Layout(LayoutType.HBox)
+                                    .LayoutConfig(new HBoxLayoutConfig { Align = HBoxAlign.Stretch })
+                                    .Items(
+                                        X.Label()
+                                            .Text("نوع کاربری:")
+                                            .PaddingSpec("0 0 0 50px"),
+                                        X.Label()
+                                            .ItemID("txtCarAccountTypes2")
+                                    ),
+                                X.FieldSet()
+                                    .Border(false)
+                                    .Layout(LayoutType.HBox)
+                                    .LayoutConfig(new HBoxLayoutConfig { Align = HBoxAlign.Stretch })
+                                    .Items(
+                                        X.Label()
+                                            .Text("نوع کابین:")
+                                            .PaddingSpec("0 0 0 50px"),
+                                        X.Label()
+                                            .ItemID("txtCarCabin2")
+                                    ),
+                                X.FieldSet()
+                                    .Border(false)
+                                    .Layout(LayoutType.HBox)
+                                    .LayoutConfig(new HBoxLayoutConfig { Align = HBoxAlign.Stretch })
+                                    .Items(
+                                        X.Label()
+                                            .Text("سیستم خودرو:")
+                                            .PaddingSpec("0 0 0 50px"),
+                                        X.Label()
+                                            .ItemID("txtSystem2")
+                                    ),
+                                X.FieldSet()
+                                    .Border(false)
+                                    .Layout(LayoutType.HBox)
+                                    .LayoutConfig(new HBoxLayoutConfig { Align = HBoxAlign.Stretch })
+                                    .Items(
+                                        X.Label()
+                                            .Text("تیپ خودرو:")
+                                            .PaddingSpec("0 0 0 50px"),
+                                        X.Label()
+                                            .ItemID("txtModel2")
+                                    ),
+                                X.FieldSet()
+                                    .Border(false)
+                                    .Layout(LayoutType.HBox)
+                                    .LayoutConfig(new HBoxLayoutConfig { Align = HBoxAlign.Stretch })
+                                    .Items(
+                                        X.Label()
+                                            .Text("کلاس خودرو:")
+                                            .PaddingSpec("0 0 0 50px"),
+                                        X.Label()
+                                            .ItemID("txtClass2")
+                                    ),
+                                X.FieldSet()
+                                    .Border(false)
+                                    .Layout(LayoutType.HBox)
+                                    .LayoutConfig(new HBoxLayoutConfig { Align = HBoxAlign.Stretch })
+                                    .Items(
+                                        X.Label()
+                                            .Text("شماره موتور:")
+                                            .PaddingSpec("0 0 0 50px"),
+                                        X.Label()
+                                            .ItemID("txtMotor2")
+                                    ),
+                                X.FieldSet()
+                                    .Border(false)
+                                    .Layout(LayoutType.HBox)
+                                    .LayoutConfig(new HBoxLayoutConfig { Align = HBoxAlign.Stretch })
+                                    .Items(
+                                        X.Label()
+                                            .Text("شماره شاسی:")
+                                            .PaddingSpec("0 0 0 50px"),
+                                        X.Label()
+                                            .ItemID("txtShasi2")
+                                    ),
+                                X.FieldSet()
+                                    .Border(false)
+                                    .Layout(LayoutType.HBox)
+                                    .LayoutConfig(new HBoxLayoutConfig { Align = HBoxAlign.Stretch })
+                                    .Items(
+                                        X.Label()
+                                            .Text("رنگ خودرو:")
+                                            .PaddingSpec("0 0 0 50px"),
+                                        X.Label()
+                                            .ItemID("txtColor2")
+                                    ),
+                                X.FieldSet()
+                                    .Border(false)
+                                    .Layout(LayoutType.HBox)
+                                    .LayoutConfig(new HBoxLayoutConfig { Align = HBoxAlign.Stretch })
+                                    .Items(
+                                        X.Label()
+                                            .Text("سال تولید:")
+                                            .PaddingSpec("0 0 0 50px"),
+                                        X.Label()
+                                            .ItemID("txtYear2")
+                                    ),
+                                X.FieldSet()
+                                    .Border(false)
+                                    .Layout(LayoutType.HBox)
+                                    .LayoutConfig(new HBoxLayoutConfig { Align = HBoxAlign.Stretch })
+                                    .Items(
+                                        X.Label()
+                                            .Text("تاریخ پلاک گذاری:")
+                                            .PaddingSpec("0 0 0 50px"),
+                                        X.Label()
+                                            .ItemID("txtDateP2")
+                                    ),
+                                X.FieldSet()
+                                    .Border(false)
+                                    .Layout(LayoutType.HBox)
+                                    .LayoutConfig(new HBoxLayoutConfig { Align = HBoxAlign.Stretch })
+                                    .Items(
+                                        X.Label()
+                                            .Text("تاریخ اولین بیمه:")
+                                            .PaddingSpec("0 0 0 50px"),
+                                        X.Label()
+                                            .ItemID("txtDate2")
+                                        ),
+                                X.FieldSet()
+                                    .Border(false)
+                                    .Layout(LayoutType.HBox)
+                                    .LayoutConfig(new HBoxLayoutConfig { Align = HBoxAlign.Stretch })
+                                    .Items(
+                                        X.Label()
+                                            .Text("VIN:")
+                                            .PaddingSpec("0 0 0 50px"),
+                                        X.Label()
+                                            .ItemID("VIN2")
+                                            .Cls("lblP")
+                                    ))),                
+                    X.Panel()
+                        .Border(false)
+                        .Layout(LayoutType.Fit)
+                        .Height(295)
+                        //.Listeners(l => l.AfterRender.Handler = "setSizeGrid()")
+                        .ID("pnlGridMalek2")
+                        .Items(
+                            X.GridPanel()
+                                .ItemID("GridMalek2")
+                                .BottomBar(X.PagingToolbar())
+                                .Frame(true)
+                                .AutoScroll(true)
+                                //.Title("واریزی ها")
+                                .Store(
+                                    X.StoreForModel()
+                                        //.Parameters(new { CarId = @ViewBag.CarId })
+                                        //.Proxy(
+                                        //    Html.X().AjaxProxy()
+                                        //        .Url(Url.Action("Read"))
+                                        //        .Reader(Html.X().JsonReader().Root("data"))
+                                        //        )
+                                       // .Listeners(l => l.DataChanged.Handler = "App.ChCarFile_.queryById('GridVarizi').selModel.refresh();")
+                                        .PageSize(10)
+                                        .RemoteFilter(true)
+                                        .RemotePaging(true)
+                                )
+                                .View(
+                                    Html.X().GridView().LoadingText("در حال بارگذاری...")
+                                )
+                                //.Plugins(X.FilterHeader().Remote(false))
+                                .SelectionModel(
+                                    Html.X().RowSelectionModel()
+                                        .Mode(SelectionMode.Single))
+                                .ColumnModel(
+                                    Html.X().RowNumbererColumn(),
+                                    Html.X().Column().DataIndex(Model, m => m.fldID).Text("کد").Flex(1).Hidden(true).Hideable(false),
+                                    Html.X().Column().DataIndex(Model, m => m.fldOwnerName).Text("نام مالک").Flex(5).Wrap(true),
+                                    Html.X().Column().DataIndex(Model, m => m.fldPlaqueNumber).Text("شماره پلاک").Flex(4),
+                                    Html.X().Column().DataIndex(Model, m => m.fldMotorNumber).Text("شماره موتور").Flex(4),
+                                    Html.X().Column().DataIndex(Model, m => m.fldVIN).Text("VIN").Flex(4),
+                                    Html.X().Column().DataIndex(Model, m => m.fldShasiNumber).Text("شماره شاسی").Flex(4),
+                                    Html.X().Column().DataIndex(Model, m => m.fldDesc).Text("توضیحات").Flex(6).Wrap(true),
+                                    Html.X().Column().DataIndex(Model, m => m.fldCarID).Text("کد ماشین").Flex(1).Hidden(true).Hideable(false)
+                                        )
+                        )
+            )
+)
+)
+
+<script type="text/javascript">
+    var codeMelliM;
+
+    function loadData() {
+        Ext.net.Mask.show({ msg: 'در حال بارگذاری...' });
+        Ext.net.DirectMethod.request({
+            url: '/NewVer/ChCarFile_/Fill',
+            params: {
+                CarId: '@ViewBag.CarID',
+                PlaquId: '@ViewBag.PlaquId'
+            },
+            success: function (data) {
+                codeMelliM = data.CodeMelli;
+
+                var txtNameFamilyMalek = App.ChCarFile_.queryById('txtNameFamilyMalek');
+                txtNameFamilyMalek.setText(data.Malek);
+
+                var txtSh_Pelak = App.ChCarFile_.queryById('txtSh_Pelak');
+                txtSh_Pelak.setText(data.plaq);
+
+                var txtNoeSakht = App.ChCarFile_.queryById('txtNoeSakht');
+                txtNoeSakht.setText(data.make);
+
+                var txtCarAccountTypes2 = App.ChCarFile_.queryById('txtCarAccountTypes2');
+                txtCarAccountTypes2.setText(data.account);
+
+                var txtCarCabin2 = App.ChCarFile_.queryById('txtCarCabin2');
+                txtCarCabin2.setText(data.cabin);
+
+                var txtSystem2 = App.ChCarFile_.queryById('txtSystem2');
+                txtSystem2.setText(data.syst);
+
+                var txtModel2 = App.ChCarFile_.queryById('txtModel2');
+                txtModel2.setText(data.modell);
+
+                var txtClass2 = App.ChCarFile_.queryById('txtClass2');
+                txtClass2.setText(data.classs);
+
+                var txtMotor2 = App.ChCarFile_.queryById('txtMotor2');
+                txtMotor2.setText(data.motor);
+
+                var txtShasi2 = App.ChCarFile_.queryById('txtShasi2');
+                txtShasi2.setText(data.shasi);
+
+                var txtColor2 = App.ChCarFile_.queryById('txtColor2');
+                txtColor2.setText(data.color);
+
+                var txtYear2 = App.ChCarFile_.queryById('txtYear2');
+                txtYear2.setText(data.year);
+
+                var txtDateP2 = App.ChCarFile_.queryById('txtDateP2');
+                txtDateP2.setText('@ViewBag.Date');
+
+                var txtDate2 = App.ChCarFile_.queryById('txtDate2');
+                txtDate2.setText(data.date);
+
+                var VIN2 = App.ChCarFile_.queryById('VIN2');
+                VIN2.setText(data.vin);
+
+                Ext.net.DirectMethod.request({
+                    url: '/NewVer/ChCarFile_/Reload',
+                    params: {
+                        PlaquId: '@ViewBag.PlaquId',
+                    },
+                    success: function (q) {
+                        App.ChCarFile_.queryById('GridMalek2').getStore().loadData(q);
+                    }
+                });
+            }
+        });
+    }
+
+    function SaveChCarFile_() {
+        Ext.net.Mask.show({ msg: 'در حال بارگذاری...' });
+        Ext.net.DirectMethod.request({
+            url: '/NewVer/ChCarFile_/Save',
+            params: {
+                CarId: '@ViewBag.CarID',
+                PlaquId: '@ViewBag.PlaquId',
+                Date: App.ChCarFile_.queryById('txtDateP2').text
+            },
+            success: function (data) {
+                var ic = Ext.MessageBox.INFO;
+                if (data.Er == 1)
+                    ic = Ext.MessageBox.ERROR;
+                Ext.MessageBox.show({
+                    title: data.MSgTitle,
+                    msg: data.Msg,
+                    icon: ic,
+                    buttons: Ext.MessageBox.OK
+                });
+                if (data.Er != 1) {
+                    Ext.net.DirectMethod.request({
+                        url: '/NewVer/ChCarFile_/Reload',
+                        params: {
+                            PlaquId: '@ViewBag.PlaquId',
+                        },
+                        success: function (q) {
+                            App.ChCarFile_.queryById('GridMalek2').getStore().loadData(q);
+                        }
+                    });
+                    if (App.SearchParvande.activeTab.id == "SelectParvande") {
+                        App.SelectParvande.queryById('txtMalek').setText(App.ChCarFile_.queryById('txtNameFamilyMalek').text);
+                        App.SelectParvande.queryById('txtCodeMeli').setText(codeMelliM);
+                        App.SelectParvande.queryById('txtCarMake').setText(App.ChCarFile_.queryById('txtNoeSakht').text);
+                        App.SelectParvande.queryById('txtCarAccountTypes').setText(App.ChCarFile_.queryById('txtCarAccountTypes2').text);
+                        App.SelectParvande.queryById('txtCarCabin').setText(App.ChCarFile_.queryById('txtCarCabin2').text);
+                        App.SelectParvande.queryById('txtSystem').setText(App.ChCarFile_.queryById('txtSystem2').text);
+                        App.SelectParvande.queryById('txtModel').setText(App.ChCarFile_.queryById('txtModel2').text);
+                        App.SelectParvande.queryById('txtClass').setText(App.ChCarFile_.queryById('txtClass2').text);
+                        App.SelectParvande.queryById('txtMotor').setText(App.ChCarFile_.queryById('txtMotor2').text);
+                        App.SelectParvande.queryById('txtShasi').setText(App.ChCarFile_.queryById('txtShasi2').text);
+                        App.SelectParvande.queryById('txtColor').setText(App.ChCarFile_.queryById('txtColor2').text);
+                        App.SelectParvande.queryById('txtYear').setText(App.ChCarFile_.queryById('txtYear2').text);
+                        App.SelectParvande.queryById('txtDateP').setText(App.ChCarFile_.queryById('txtDateP2').text);
+                        App.SelectParvande.queryById('txtDate').setText(App.ChCarFile_.queryById('txtDate2').text);
+                        App.SelectParvande.queryById('VIN').setText(App.ChCarFile_.queryById('VIN2').text);
+                        App.SelectParvande.queryById('txtPlaqueNum').setText(App.ChCarFile_.queryById('txtSh_Pelak').text);
+                    }
+                }
+                Ext.net.Mask.hide();
+            }
+        });
+    }
+</script>

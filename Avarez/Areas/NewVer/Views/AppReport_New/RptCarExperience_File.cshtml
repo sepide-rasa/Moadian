@@ -1,0 +1,145 @@
+﻿@using Ext.Net.MVC
+@using Hogaf.ExtNet.UX
+@using Ext.Net;
+@{
+    var X = Html.X();
+}
+
+
+@(Html.X().Panel().Border(false)
+        .Title("انتقال سوابق ثبت شده در روز")
+                     .ID("RptCarExperience_File")
+    .Closable(true)
+    .CloseAction(Ext.Net.CloseAction.Destroy)
+    .Items(
+                    X.TabPanel().Border(false).ID("RptCarExperience_FileTab")
+                .Items(
+
+                        X.Panel().Border(false).Title("انتقال سوابق ثبت شده در روز").ID("InnerTab")
+                    .ButtonAlign(Ext.Net.Alignment.Center)
+                .DefaultButton("btn")
+            .TitleAlign(Ext.Net.TitleAlign.Center)
+                   .Buttons(X.Button().Text("چاپ").Icon(Ext.Net.Icon.Printer).Margin(10)
+                               .Listeners(l =>
+                               {
+                                   l.Click.Handler = "PrintCarExperience()";
+
+                               })
+                               .ItemID("btnSave")
+                                ,
+                                X.Button().Text("خروج").Icon(Ext.Net.Icon.DoorOut).ToolTip("کلید میانبر Esc")
+                                                   .OnClientClick("App.RptCarExperience_File.destroy()"))
+                .Items(
+
+                X.FieldSet().Border(false)
+                .Center()
+                .LayoutConfig(new Ext.Net.TableLayoutConfig { Columns = 2 })
+                .Defaults(new { Margin = 2 })
+                .Items(
+                    X.Label()
+                        .Text("تاریخ:"),
+                    X.PDateField()
+                        .ItemID("txtAzTarikh")
+                        .Width(160)
+                        .Editable(false)
+                        .MsgTarget(Ext.Net.MessageTarget.Side)
+                        .AllowBlank(false)
+                        .MaskRe("/[0-9,/]/")
+                        .BlankText("لطفا تاریخ را انتخاب نمایید.")
+                        .Listeners(l => l.Render.Handler = "AzTarikh()")
+                        .LabelAlign(Ext.Net.LabelAlign.Top),
+                X.Label("کاربر:"),
+                        X.ComboBox()
+                        .ItemID("cboUser")
+                        .Editable(false)
+                        .TypeAhead(true)
+                        .QueryMode(DataLoadMode.Local)
+                        .ForceSelection(true)
+                        .TriggerAction(TriggerAction.All)
+                        .DisplayField("fldName")
+                        .ValueField("fldID")
+                        .EmptyText("همه کاربران...")
+                        .Width(160)
+                            .Store(X.Store()//.AutoLoad(false)
+                                .Listeners(l => l.Load.Handler = "FormLoad()")
+                            .Model(X.Model()
+                            .IDProperty("fldID")
+                                .Fields(
+                                    new ModelField("fldID", ModelFieldType.String) { Mapping = "fldID" },
+                                    new ModelField("fldName", ModelFieldType.String) { Mapping = "fldName" }
+                                )
+                            )
+                                .Proxy(X.AjaxProxy()
+                                    .Url(Url.Action("GetUsers"))
+                                .Reader(X.JsonReader().Root("data"))
+                                ))
+                ).ColSpan(3)
+
+                       )
+                            .Layout(Ext.Net.LayoutType.VBox)
+                            .LayoutConfig(new Ext.Net.VBoxLayoutConfig { Align = Ext.Net.VBoxAlign.Center })
+                    )
+
+                )
+)
+
+
+<script type="text/javascript">
+    var state = '@ViewBag.state';
+    function FormLoad() {
+        App.RptCarExperience_File.queryById('cboUser').setValue('@ViewBag.User');
+    }
+
+    function AzTarikh() {
+        var txtAzTarikh = App.RptCarExperience_File.queryById('txtAzTarikh');
+        var dd = new Date();
+        txtAzTarikh.setMaxValue(dd);
+        txtAzTarikh.maxText = "تاریخ انتخاب شده نمی تواند از تاریخ روز بزرگتر باشد.";
+    }
+
+    function showBargozary() {
+        Ext.MessageBox.show({
+            msg: 'لطفاً منتظر باشید',
+            progressText: 'در حال بارگذاری...',
+            width: 300,
+            wait: true,
+            waitConfig:
+            {
+                /*duration: 10000,*/
+                interval: 200,
+                /*increment: 15,*/
+                text: 'در حال بارگذاری...',
+                scope: this
+                /*fn: function () {
+                    Ext.MessageBox.hide();
+                    Ext.Msg.alert('Status', 'Saved successfully!');
+                }*/
+            }
+        });
+    }
+    
+    function PrintCarExperience() {
+        var cboUser = App.RptCarExperience_File.queryById('cboUser');
+        var txtAzTarikh = App.RptCarExperience_File.queryById('txtAzTarikh');
+        var er=false;
+        if(txtAzTarikh.validate()==false){
+            er=true;
+        }
+        if(er==true){
+            return;
+        }
+        showBargozary();
+        Ext.net.DirectMethod.request({
+            url: '/NewVer/AppReport_New/PrintCarExperience_File',
+            params: {
+                containerId: "RptCarExperience_FileTab",
+                User: cboUser.getValue(),
+                Tarikh: txtAzTarikh.rawValue
+            },
+            success: function () {
+                Ext.MessageBox.hide();
+            }
+        });
+        }
+       
+</script>

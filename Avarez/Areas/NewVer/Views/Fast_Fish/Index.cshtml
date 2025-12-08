@@ -1,0 +1,268 @@
+﻿@model IEnumerable<Avarez.Models.sp_jCalcSingleBaze>
+@using Ext.Net.MVC
+@using Hogaf.ExtNet.UX
+@using Ext.Net;
+@using Ext.Net.Utilities;
+@{
+
+    var X = Html.X();
+}
+<style>
+    .lblF {
+        color: red;
+    }
+</style>
+<script src="~/Scripts/accounting.min.js"></script>
+@(X.Panel().Title("ثبت فیش سریع").Border(false).Height(500)//.Listeners(l => l.AfterRender.Handler = "FormLoad();")
+            .ID("Fast_Fish")
+                .AutoScroll(true).Closable(false)
+                .Layout(LayoutType.Fit)
+                .Items(
+        //    X.FieldSet().Border(true).Width(500)
+        //  .Layout(Ext.Net.LayoutType.VBox)
+        //                    .LayoutConfig(new Ext.Net.VBoxLayoutConfig { Align = Ext.Net.VBoxAlign.Center })
+        //.Items(
+        X.Panel()
+
+
+                .Layout(Ext.Net.LayoutType.VBox)
+                .LayoutConfig(new Ext.Net.VBoxLayoutConfig { Align = Ext.Net.VBoxAlign.Center })
+        .Border(false).ButtonAlign(Ext.Net.Alignment.Center)
+        .AutoScroll(true)
+
+        .Items(
+                X.Panel().Border(false)
+                    .Margins("20px 0px 0px 0px")
+                            .Listeners(l => l.Render.Fn = "addKeyMapFast_Fish")
+                .Center()
+                     .Layout(Ext.Net.LayoutType.VBox)
+                    .LayoutConfig(new Ext.Net.VBoxLayoutConfig { Align = Ext.Net.VBoxAlign.Center })
+                    .AutoScroll(true)
+        //.Defaults(new { Margin = 2 })
+                .Items(
+                      X.Panel()
+                            .ButtonAlign(Ext.Net.Alignment.Center)
+            .Buttons(
+                            X.Button().Text("ذخیره").Icon(Ext.Net.Icon.Disk).Margin(10)
+                        .Listeners(l =>
+                        {
+                            l.Click.Handler = "SaveFastFish();"; 
+
+                        })
+                        ,
+                        X.Button().Text("خروج").Icon(Ext.Net.Icon.DoorOut).ToolTip("کلید میانبر Esc")
+                                    .OnClientClick("App.AvarezWin.destroy();"))
+                        .Border(false)
+                        .Layout(Ext.Net.LayoutType.VBox)
+                        .LayoutConfig(new Ext.Net.VBoxLayoutConfig { Align = Ext.Net.VBoxAlign.Center })
+                        //.Defaults(new { Margin = 2 })
+                        .Items(
+                        
+                        X.FieldSet()
+                            .Width(650)
+                            .Layout(LayoutType.Table)
+                            .LayoutConfig(new Ext.Net.TableLayoutConfig { Columns = 2 })
+                        .Title("مشخصات واریز")
+                        .Items(
+                                X.Hidden().ItemID("fldId")
+                                   ,
+                                           X.Label().Cls("lblF").Text("<< لطفا پس از وارد کردن سریال قبض، کلید Enter صفحه کلید خود را بفشارید. >>").ColSpan(2).MarginSpec("0 80px 0 0")
+                                   ,
+                                            X.PDateField().PaddingSpec("10px 0 0 0")
+                                        .FieldLabel("تاریخ واریز")
+                                        .ItemID("txtTarikhVariz")
+                                            .Width(300)
+                                        .MsgTarget(Ext.Net.MessageTarget.Side)
+                                        .AllowBlank(false)
+                                        .BlankText("لطفا تاریخ واریز را وارد کنید.")
+                                        ,
+                                         X.TextField().PaddingSpec("10px 0 0 0")
+                                     .FieldLabel("سریال قبض")
+                                     .MaskRe("[0-9]")
+                                     .ItemID("txtSerialGhabz")
+                                         .Width(300)
+                                     .Listeners(l =>
+                            {
+                                l.SpecialKey.Handler = "EnterSerial(e.getKey());";
+                            })
+                                // .Listeners(l => l.Change.Handler = "ChangeTxtMotor()")
+                                     .MsgTarget(Ext.Net.MessageTarget.Side)
+                                     .AllowBlank(false)
+                                         .BlankText("لطفا سریال قبض را وارد کنید.")
+                                         ,
+                                         X.ComboBox()
+                                             .FieldLabel("نوع واریز")
+                                            .ItemID("cboNoeVAriz")
+                                            .TypeAhead(true)
+                                        .Editable(false)
+                                        .QueryMode(DataLoadMode.Local)
+                                        .BlankText("لطفا نوع واریز را انتخاب کنید.")
+                                        .ForceSelection(true)
+                                        .TriggerAction(TriggerAction.All)
+                                        .DisplayField("fldName")
+                                        .ValueField("fldID")
+                                        .EmptyText("...")
+                                            .Width(300)
+                                            .Store(X.Store()//.AutoLoad(false)
+                                                .Model(X.Model()
+                                                    .IDProperty("fldId")
+                                                    .Fields(
+                                                        new ModelField("fldID", ModelFieldType.String) { Mapping = "fldID" },
+                                                        new ModelField("fldName", ModelFieldType.String) { Mapping = "fldName" }
+                                                    )
+                                                    )
+                                                .Proxy(X.AjaxProxy()
+                                                        .Url(Url.Action("GetSettleType"))
+                                                    .Reader(X.JsonReader().Root("data"))
+                                    )
+                            )
+                                            .AllowBlank(false)
+                                            ,
+                                         X.TextField()
+                                         .FieldLabel("مبلغ واریزی")
+                                         .ItemID("txtMablagh")
+                                         .ReadOnly(true)
+                                            .Width(300)
+                             .Listeners(l => l.Change.Handler = "App.Fast_Fish.queryById('txtMablagh').setValue(accounting.formatNumber(App.Fast_Fish.queryById('txtMablagh').getValue()))")
+                                         .MsgTarget(Ext.Net.MessageTarget.Side)
+                                         .AllowBlank(false)
+                                         .BlankText("لطفا مبلغ واریزی را وارد کنید.")
+                                             ,
+                                                 X.TextField().PaddingSpec("-34px 0 0 0")
+                                             .FieldLabel("سریال برچسب")
+                                             .EnforceMaxLength(true)
+                                             .MaxLength(10)
+                                             //.MinLength(10)
+                                             .ItemID("txtSerial")
+                                             .Width(300)
+        // .Listeners(l => l.Change.Handler = "ChangeTxtMotor()")
+                                             .MsgTarget(Ext.Net.MessageTarget.Side)
+                                             //.AllowBlank(false)
+                                             .BlankText("لطفا سریال برچسب را وارد کنید.")
+                                             ,
+                                            X.TextArea()
+                                                 .Width(300)
+                                            .ItemID("txtDesc")
+                                            .FieldLabel("توضیحات")
+                                         //   .Width(160)
+                                         )
+                                )
+                              
+                )
+            )
+                )
+)
+<script type="text/javascript">
+    var carfile = 0;
+    function SaveFastFish() {
+        var txtTarikhVariz = App.Fast_Fish.queryById('txtTarikhVariz');
+        var txtSerialGhabz = App.Fast_Fish.queryById('txtSerialGhabz');
+        var cboNoeVAriz = App.Fast_Fish.queryById('cboNoeVAriz');
+        var txtMablagh = App.Fast_Fish.queryById('txtMablagh');
+        var txtSerial = App.Fast_Fish.queryById('txtSerial');
+        var txtDesc = App.Fast_Fish.queryById('txtDesc');
+        var Id = App.Fast_Fish.queryById('fldId');
+        var er = false;
+
+
+        if (txtTarikhVariz.validate() == false) {
+            er = true;
+        }
+        if (txtSerialGhabz.validate() == false) {
+            er = true;
+        }
+        if (cboNoeVAriz.validate() == false) {
+            er = true;
+        }
+        if (txtMablagh.validate() == false) {
+            er = true;
+        }
+        if (txtSerial.validate() == false) {
+            er = true;
+        }
+        if (txtDesc.validate() == false) {
+            er = true;
+        }
+        if (er == true)
+            return;
+
+        Ext.net.DirectMethod.request({
+            url: '/NewVer/Fast_Fish/Save',
+            params: {
+                fldId:  Id.getValue(), 
+                fldCarFileID: carfile, 
+                fldCollectionDate:  txtTarikhVariz.rawValue,
+                fldPrice: parseInt(txtMablagh.getValue().toString().replace(',', '').replace(',', '').replace(',', '')),
+                fldSettleTypeID: cboNoeVAriz.getValue(),
+                fldDesc:  txtDesc.getValue(), 
+                fldPeacockeryCode:txtSerialGhabz.getValue(),
+                fldSerialBarChasb: txtSerial.getValue()
+            },
+            success: function (data) {
+                var ic = Ext.MessageBox.INFO;
+                if (data.Err == 1)
+                    ic = Ext.MessageBox.ERROR;
+                Ext.MessageBox.show({
+                    Name: data.MsgName,
+                    msg: data.Msg,
+                    icon: ic,
+                    buttons: Ext.MessageBox.OK
+                });
+                if (data.Err != 1)
+                    ClearFastFish();
+            }
+
+        });
+    }
+    function EnterSerial(k) {
+        var txtSerialGhabz = App.Fast_Fish.queryById('txtSerialGhabz');
+        var txtMablagh = App.Fast_Fish.queryById('txtMablagh');
+        if (k == 13) {
+            Ext.net.Mask.show({ msg: 'در حال بارگذاری...' });
+            Ext.net.DirectMethod.request({
+                url: '/NewVer/Fast_Fish/GetFishPrice',
+                params: {
+                    id: txtSerialGhabz.getValue()
+                },
+                success: function (data) {
+                    Ext.net.Mask.hide();
+                    if (data == "") {
+                        txtMablagh.setValue(0);
+                        Ext.MessageBox.show({
+                            Name: "خطا",
+                            msg: "فیش با سریال قبض مورد نظر صادر نشده است.",
+                            icon: Ext.MessageBox.ERROR,
+                            buttons: Ext.MessageBox.OK
+                        });
+                    }
+                    else
+                        txtMablagh.setValue(accounting.formatNumber(data));
+                }
+            });
+        }
+    }
+    function ClearFastFish() {
+        App.Fast_Fish.queryById('txtSerialGhabz').setValue("");
+        App.Fast_Fish.queryById('cboNoeVAriz').setValue("");
+        App.Fast_Fish.queryById('txtMablagh').setValue("");
+        App.Fast_Fish.queryById('txtSerial').setValue("");
+        App.Fast_Fish.queryById('txtDesc').setValue("");
+        App.Fast_Fish.queryById('fldId').setValue(0);
+        carfile = 0;
+    }
+    var addKeyMapFast_Fish = function (cmp) {
+        this.keyMap = new Ext.util.KeyMap({
+            target: cmp.getEl(),
+            binding: [{
+                key: Ext.EventObject.ENTER,
+                fn: function () {
+                    var keyfield = App.Fast_Fish.queryById(Ext.getCmp((Ext.Element.getActiveElement()).name).itemId);
+
+                    nextfld = keyfield.nextSibling();
+                    nextfld.focus();
+
+                }
+            }]
+        });
+    };
+</script>

@@ -1,0 +1,92 @@
+﻿@model List<Avarez.Models.sp_CollectionSelect>
+@using Ext.Net.MVC;
+@using Ext.Net;
+@using Hogaf.ExtNet.UX;
+@{
+
+    var X = Html.X();
+}
+<script>
+
+    var getcoderahgiri = function (value) {
+        var indexx = value.indexOf('_');
+        var co = value.substring(0, indexx);
+        var a = co.indexOf("ResponseDescription");
+        if (a == -1) {
+            return co;
+        }
+        else {
+            return value.substring(3, a);
+        }
+    };
+
+    var getcodefish = function (value) {
+        var indexx = value.indexOf('_');
+        return value.substring(indexx + 1);
+
+
+        /*"RRN:008911519852ResponseDescription:عملیات موفق".indexOf("ResponseDescription")
+        16
+        "RRN:008911519852ResponseDescription:عملیات موفق".substring(4, 16)
+        "008911519852"*/
+    };
+</script>
+
+@(X.Panel()
+    .ID("CollectionList")
+    .Title("لیست واریزی ها")
+    .Closable(true)
+    .Border(false)
+    .CloseAction(Ext.Net.CloseAction.Destroy)
+    .Layout(Ext.Net.LayoutType.Fit)
+    .Items(
+        X.TabPanel()
+            .ID("FilterTab")
+            .AutoScroll(true)
+            .Border(false)
+            .Layout(Ext.Net.LayoutType.Fit)
+            .Items(
+                    X.GridPanel()
+                        .Title("واریزی ها")
+                        .AutoScroll(true)
+                        .ItemID("GridSearchCollection")
+                        .BottomBar(X.PagingToolbar())
+                        .Store(
+                            X.StoreForModel()
+                                .Proxy(Html.X().AjaxProxy()
+                                    .Url(Url.Action("ReadCollection"))
+                                    .Reader(Html.X().JsonReader().Root("data"))
+                            )
+                            .PageSize(25)
+                            .RemoteFilter(true)
+                            .RemotePaging(true)
+                        )
+                        .View(
+                            Html.X().GridView().LoadingText("در حال بارگذاری...").RTL(true)
+                        )
+                        .Plugins(X.FilterHeader().Remote(true))
+                        .ColumnModel(
+                            Html.X().RowNumbererColumn(),
+                            Html.X().Column().DataIndex(Model, m => m.fldID).Hidden(true),
+                            Html.X().Column().DataIndex(Model, m => m.fldMotorNumber).Flex(3).Text("شماره موتور"),                            
+                            Html.X().Column().DataIndex(Model, m => m.fldSettleTypeName).Text("نوع واریزی").Hidden(true),
+                            Html.X().Column().DataIndex(Model, m => m.fldPrice).Flex(3).Text("مبلغ واریزی").Renderer("seperatePrice"),
+                            Html.X().Column().DataIndex(Model, m => m.fldCollectionDate).Flex(3).Text("تاریخ واریزی"),       
+                            Html.X().Column().DataIndex(Model, m => m.fldCodeRahgiri).Flex(3).Text("کد رهگیری").Renderer("getcoderahgiri"),
+                            Html.X().Column().DataIndex(Model, m => m.fldFish).Flex(3).Text("شماره فیش").Renderer("getcodefish"),                            
+                            Html.X().Column().DataIndex(Model, m => m.fldSerialBarChasb).Flex(3).Text("سریال برچسب")
+                        )
+                .SelectionModel(
+                    Html.X().RowSelectionModel()
+                        .Mode(Ext.Net.SelectionMode.Single)
+    )
+))
+)
+
+<script type="text/javascript">
+
+    var seperatePrice = function (value, metadata, record, rowIndex, colIndex, store) {
+        return value.toLocaleString();
+    };
+
+</script>

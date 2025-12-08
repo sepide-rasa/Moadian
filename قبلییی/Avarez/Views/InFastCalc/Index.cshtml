@@ -1,0 +1,558 @@
+﻿@using Kendo.Mvc.UI;
+<div class="modal" id="FastCalc">
+    <script src="@Url.Content("~/Content/Base.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Scripts/jquery.ui.datepicker-cc.all.min.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Scripts/accounting.js")" type="text/javascript"></script>
+    <div>
+     <a href="@Url.Content("~/Helps/محاسبات سرانگشتی.htm")" target="_blank" id="Help" title="راهنما" style="background-image:url('/Content/images/1381415123_help.png');background-repeat: no-repeat;height: 20px;float: left;top: 10px;left: 10px;"></a>
+        <br />
+        <center>
+            <table>
+            @Avarez.Helper.winClass.Buttons("btnSearch", "جستجو کلاس", "search")
+                @Html.Hidden("fldId")
+                <tr>
+                    <td align="left">
+                        نوع مدل:
+                    </td>
+                    <td>
+                        @Html.TextBox("cboCarMake")
+                    </td>
+                    <td align="left">
+                        نوع خودرو:
+                    </td>
+                    <td>
+                        @Html.TextBox("cboCarAccountTypes")
+                    </td>
+                </tr>
+                <tr>
+                    <td align="left">
+                        نوع کابین:
+                    </td>
+                    <td>
+                        @Html.TextBox("cboCarCabin")
+                    </td>
+                    <td align="left">
+                        سیستم خودرو:
+                    </td> 
+                    <td>
+                        @Html.TextBox("cboSystem")
+                    </td>
+                </tr>
+                <tr>
+                    <td align="left">
+                        تیپ خودرو:
+                    </td>
+                    <td>
+                        @Html.TextBox("cboModel")
+                    </td>
+                    <td align="left">
+                        <span style="color: Red;">*</span> کلاس خودرو:
+                    </td>
+                    <td>
+                        @Html.TextBox("cboClass")
+                        <span id="lblClassError" style="color: Red;"></span>
+                    </td>
+                </tr>
+                <tr>
+                    <td align="left">
+                        <span style="color: Red;">*</span> مدل:
+                    </td>
+                    <td>
+                        @Html.TextBox("cboModelNum")
+                        <span id="lblModelNumError" style="color: Red;"></span>
+                    </td>
+                    <td align="left">
+                        <span style="color: Red;">*</span> تاریخ اولین بیمه:
+                    </td>
+                    <td>
+                        @Html.TextBox("txtDate", null, new { @style = "width:70px;", @readonly = "true" })
+                        <span id="lblDateError" style="color: Red;"></span>
+                    </td>
+                </tr>
+                <tr>
+                    <td align="left">
+                        <span style="color: Red;">*</span> از سال:
+                    </td>
+                    <td>
+                       @Html.TextBox("cboFromYear")
+                       <span id="lblFromYearError" style="color: Red;"></span>
+                    </td>
+                    <td align="left">
+                        تا سال:
+                    </td>
+                    <td>
+                        @Html.TextBox("cboToYear")
+                        <span id="lblToYearError" style="color: Red;"></span>
+                    </td>
+                </tr>
+
+            </table>
+            <br />
+            @Avarez.Helper.winClass.Buttons("Calc", "محاسبه", "Next")
+            @Avarez.Helper.winClass.Buttons("Print", "چاپ", "yes")
+            @Avarez.Helper.winClass.Buttons("exit", "خروج", "exit")
+
+        </center>
+        <br />
+        <tr>
+            <center>
+                <span id="Avarez"></span>
+                <span id="Mablagh"></span>
+                <span id="ArzeshAfzode"></span>
+            </center>
+        </tr>
+        <tr>
+            <center>
+                <span id="MablaghNahai"></span>
+                <span id="Jarime"></span>
+                <span id="price"></span>
+            </center>
+        </tr>
+        <br />
+        <div class="k-rtl demo-section">
+            @(Html.Kendo().Grid<Avarez.Models.sp_jCalcSingleBaze>()
+                .Name("Grid")
+                .Columns(columns =>
+                {
+                    columns.Bound(p => p.fldyear).Title("سال").Width(50);
+                    columns.Bound(p => p.fldFirstPrice).Title("عوارض").Format("{0:#,###0}").Width(100);
+                    columns.Bound(p => p.fldCurectPrice).Title("مبلغ موثر").Format("{0:#,###0}").Width(100);
+                    columns.Bound(p => p.fldValueAdded).Title("تبصره ب ماده43").Format("{0:#,###0}").Width(100);
+                    columns.Bound(p => p.fldFinalPrice).Title("مبلغ نهایی").Format("{0:#,###0}").Width(100);
+                    columns.Bound(p => p.fldFine).Title("جریمه").Format("{0:#,###0}").Width(100);
+                    columns.Bound(p => p.fldCountMonth).Title("تعداد ماه/روز").Width(100);
+                    columns.Bound(p => p.fldDiscount).Title("تخفیف").Format("{0:#,###0}").Width(100);
+                    columns.Bound(p => p.fldDept).Title("جمع کل").Format("{0:#,###0}").Width(100);
+                })
+            .Selectable(selectable => selectable.Mode(GridSelectionMode.Single))
+            .Pageable()
+            .Scrollable(sc => sc.Height(300))
+            .DataSource(data =>
+                data.Ajax()
+                .PageSize(200)
+                .Model(m => m.Id(p => p.fldFirstPrice))
+            )
+        )
+        </div>
+       
+    </div>
+    <script type="text/javascript">
+        function selectAccount() {
+            return {
+                cboCarMake: $("#cboCarMake").val()
+            };
+        }
+
+        function selectModelNum() {
+            return {
+                Noo: $("#cboCarMake").val()
+            };
+        }
+
+        function selectFromYear() {
+            return {
+                Noo: $("#cboCarMake").val(),
+                value: $('#cboModelNum').val()
+            };
+        }
+        function selectToYear() {
+            return {
+                Noo: $("#cboCarMake").val(),
+                value: $('#cboFromYear').val()
+            };
+        }
+        function selectShort() {
+
+            return {
+                cboCarMake: $("#cboCarMake").data("kendoDropDownList").text()
+            };
+        }
+
+        function selectCabin() {
+
+            return {
+                cboCarAccountTypes: $("#cboCarAccountTypes").val()
+            };
+        }
+        function selectSystem() {
+
+            return {
+                cboCarCabin: $("#cboCarCabin").val()
+            };
+        }
+        function selectModel() {
+
+            return {
+                cboSystem: $("#cboSystem").val()
+            };
+        }
+        function selectClass() {
+
+            return {
+                cboModel: $("#cboModel").val()
+            };
+        }
+        var vin;
+        var isWinOpen = false;
+        var _calc = 0;
+        $("document").ready(function () {
+            $("#Calc").button();
+            $("#exit").button();
+            $("#btnSearch").button();
+            $('#Print').button();
+            $('#Help').button();
+            $("#txtDate").datepicker({
+                showButtonPanel: true,
+                changeMonth: true,
+                changeYear: true
+            });
+            $("#btnSearch").click(function () {
+                windowAppend('#FastCalc', '/SearchClass');
+            });
+            $("#exit").click(function () {
+                $("#FastCalc").remove();
+            });
+
+            $('#Print').click(function () {
+                          
+                var cboCarMake = $("#cboCarMake").data("kendoDropDownList").text();
+                var cboCarAccountTypes = $("#cboCarAccountTypes").data("kendoDropDownList").text();
+                var cboCarCabin = $("#cboCarCabin").data("kendoDropDownList").text();
+                var cboSystem = $("#cboSystem").data("kendoDropDownList").text();
+                var cboModel = $("#cboModel").data("kendoDropDownList").text();
+                var cboClass = $("#cboClass").data("kendoDropDownList").text();
+                var cboModelNum = $("#cboModelNum").data("kendoDropDownList").text();
+                var cboAzYear = $("#cboFromYear").data("kendoDropDownList").text();
+                var cboToYear = $("#cboToYear").data("kendoDropDownList").text();
+                if (_calc == 1) {
+                    if (isWinOpen == false) {
+                        isWinOpen = true;
+                        windowAppend('body', '/Home/PreviewRptPDFBox');
+                        var t = "/AppReports/RptMohasebat" + '?carCode=' + $('#cboClass').val() + '&fromYear=' + $('#cboFromYear').val() + '&toYear=' + $('#cboToYear').val() + '&model=' + $('#cboModelNum').val()
+                            + '&Date=' + $('#txtDate').val() + '&CarMake=' + cboCarMake + '&CarAccountTypes=' + cboCarAccountTypes + '&CarCabin=' + cboCarCabin+
+                            '&System=' + cboSystem + '&Model=' + cboModel + '&Class=' + cboClass + '&ModelNum=' + cboModelNum + '&AzYear=' + cboAzYear + '&Tasal=' + cboToYear
+                        + '&DateBime=' + $('#txtDate').val();
+                        $('#pdf').html("<br/><object style='width: 900px;height: 500px;border: 1px solid #ccc;' id='pdfbox' type='application/pdf' data='" + t + "'></object> ");
+                    }
+                } else
+                    alert('لطفا ابتدا دكمه محاسبه را انتخاب كنيد.');
+            });
+            $('#FastCalc').on('keyup', 'input', function (event) {
+                if (event.which == 13) {
+                    var inputs = $('#FastCalc').find(':input:visible');
+                    inputs.eq(inputs.index(this) + 1).focus();
+                }
+            });
+
+            $("#txtDate").change(function () {
+                if ($("#txtDate").val() != '') {
+                    $("#txtDate").removeClass("input-validation-error");
+                    $("#lblDateError").html("");
+                }
+                else {
+                    $("#txtDate").addClass("input-validation-error");
+                    $('#lblDateError').html('لطفا تاریخ اولین بیمه ماشین را وارد کنید.');
+                }
+            });
+            $('#cboModelNum').change(function () {
+                $.ajax({
+                    url: '/infastcalc/FillDateText',
+                    type: 'get',
+                    datatype: 'json',
+                    data: { year: $('#cboModelNum').val() },
+                    error: function (xhr, status, error) {
+                        alert(xhr + status);
+                    },
+                    success: function (result) {
+                        $("#txtDate").val(result.date);
+                    }
+                });
+            });
+            $('#Calc').click(function () {
+                Calc();
+            });
+            function Calc() {
+                _calc = 1;
+                var er = false;
+                if ($("#cboClass").val() == '') {
+                    $("#cboClass").addClass("input-validation-error");
+                    $('#lblClassError').html('لطفا کلاس خودرو را وارد کنید.');
+                    er = true;
+                }
+                else {
+                    $("#cboClass").removeClass("input-validation-error");
+                    $('#lblClassError').html('');
+                }
+
+                if ($("#cboModelNum").val() == '') {
+                    $("#cboModelNum").addClass("input-validation-error");
+                    $('#lblModelNumError').html('لطفا مدل خودرو را وارد کنید.');
+                    er = true;
+                }
+                else {
+                    $("#cboModelNum").removeClass("input-validation-error");
+                    $('#lblModelNumError').html('');
+                }
+
+                if ($("#txtDate").val() == '') {
+                    $("#txtDate").addClass("input-validation-error");
+                    $('#lblDateError').html('لطفا تاریخ اولین بیمه را وارد کنید.');
+                    er = true;
+                }
+                else {
+                    $("#txtDate").removeClass("input-validation-error");
+                    $('#lblDateError').html('');
+                }
+                if ($("#cboFromYear").val() == '') {
+                    $("#cboFromYear").addClass("input-validation-error");
+                    $('#lblFromYearError').html('لطفا مقدار از سال را وارد کنید.');
+                    er = true;
+                }
+                else {
+                    $("#cboFromYear").removeClass("input-validation-error");
+                    $('#lblFromYearError').html('');
+                }
+                //if ($("#cboToYear").val() == '') {
+                //    $("#cboToYear").addClass("input-validation-error");
+                //    $('#lblToYearError').html('لطفا مقدار تا سال را وارد کنید.');
+                //    er = true;
+                //}
+                //else {
+                //    $("#cboToYear").removeClass("input-validation-error");
+                //    $('#lblToYearError').html('');
+                //}
+                //                if ($('#txtDate').val().substring(0, 4) > $('#cboModelNum').val()) {
+                //                    $("#txtDate").addClass("input-validation-error");
+                //                    $('#lblDateError').html('لطفا تاریخ اولین بیمه را کوچکتر از مدل وارد کنید.');
+                //                    er = true;
+                //                }
+                //                else {
+                //                    $("#txtDate").removeClass("input-validation-error");
+                //                    $('#lblDateError').html('');
+                //                }
+                if (er)
+                    return;
+                var grid = $('#Grid').data('kendoGrid');
+                $('#Lock').show();
+                $.ajax({
+                    url: '/infastcalc/Calc',
+                    type: 'get',
+                    datatype: 'json',
+                    data: { carCode: $('#cboClass').val(), fromYear: $('#cboFromYear').val(), toYear: $('#cboToYear').val(), model: $('#cboModelNum').val(), Date: $('#txtDate').val() },
+                    error: function (xhr, status, error) {
+                        alert(xhr + status);
+                    },
+                    success: function (result) {
+                        if (result.flag == 0) {
+                            $("#Grid").data("kendoGrid").dataSource.data(result.data);
+                            var entityGrid = $("#Grid").data("kendoGrid");
+                            var row = entityGrid.items();
+                            var Account = 0; var Avarez = 0; var Mablagh = 0; var ArzeshAfzode = 0; var MablaghNahai = 0; var Jarime = 0;
+                            for (var i = 0; i < row.length; i++) {
+
+                                Account = Account + parseInt(row[i].cells[8].textContent.toString().replace(',', '').replace(',', '').replace(',', ''));
+                                Avarez = Avarez + parseInt(row[i].cells[1].textContent.toString().replace(',', '').replace(',', '').replace(',', ''));
+                                Mablagh = Mablagh + parseInt(row[i].cells[2].textContent.toString().replace(',', '').replace(',', '').replace(',', ''));
+                                ArzeshAfzode = ArzeshAfzode + parseInt(row[i].cells[3].textContent.toString().replace(',', '').replace(',', '').replace(',', ''));
+                                MablaghNahai = MablaghNahai + parseInt(row[i].cells[4].textContent.toString().replace(',', '').replace(',', '').replace(',', ''));
+                                Jarime = Jarime + parseInt(row[i].cells[5].textContent.toString().replace(',', '').replace(',', '').replace(',', ''));
+                            }
+                            $('#price').html('جمع کل: ' + accounting.formatNumber(Account.toString()) + ' ریال');
+                            $('#Avarez').html('جمع عوارض: ' + accounting.formatNumber(Avarez.toString()) + ' ریال');
+                            $('#Mablagh').html('جمع مبلغ موثر: ' + accounting.formatNumber(Mablagh.toString()) + ' ریال');
+                            $('#ArzeshAfzode').html('جمع تبصره ب ماده43: ' + accounting.formatNumber(ArzeshAfzode.toString()) + ' ریال');
+                            $('#MablaghNahai').html('جمع مبلغ نهایی: ' + accounting.formatNumber(MablaghNahai.toString()) + ' ریال');
+                            $('#Jarime').html('جمع جریمه: ' + accounting.formatNumber(Jarime.toString()) + ' ریال');
+
+                        }
+                        else {
+                            $('#price').html('جمع کل: 0' + ' ریال');
+                            $('#Avarez').html('جمع عوارض: 0' + ' ریال');
+                            $('#Mablagh').html('جمع مبلغ موثر: 0' + ' ریال');
+                            $('#ArzeshAfzode').html('جمع تبصره ب ماده43: 0' + ' ریال');
+                            $('#MablaghNahai').html('جمع مبلغ نهایی: 0' + ' ریال');
+                            $('#Jarime').html('جمع جریمه: 0' + ' ریال');
+                            //windowAppend("body", "/metro/error");
+                            //$("#message").html(result.msg);
+                            //$("#error .wintitle").html("هشدار");
+                            var URL = '@Url.Content("~/InFacture/SendToSupporter")';
+                            URL = URL + "/?Year=" + result.Year + "&CarClassId=" + $('#cboClass').val();
+                            windowAppend("body", URL);
+                            $("#message1").html(result.msg);
+                            $("#error .wintitle").html("هشدار");
+                        }
+                        $('#Lock').hide();
+                    }
+                });
+            }
+        });
+    </script>
+</div>
+<div class="k-rtl">
+    @(Html.Kendo().DropDownList()
+          .Name("cboCarMake")
+          .OptionLabel("نوع مدل خودرو...")
+          .DataTextField("fldName")
+          .DataValueField("fldID")
+          .DataSource(source =>
+          {
+              source.Read(read =>
+              {
+                  read.Action("GetCascadeMake", "inFastCalc");
+              });
+          })
+          .HtmlAttributes(new { @style = "display: none;width:105px;" })
+    )
+    @(Html.Kendo().DropDownList()
+          .Name("cboModelNum")
+          .OptionLabel("مدل...")
+                  .DataTextField("fldName")
+                  .DataValueField("fldID")
+          .DataSource(source =>
+          {
+              source.Read(read =>
+              {
+                  read.Action("GetModel", "inFastCalc")
+                      .Data("selectModelNum");
+              })
+              .ServerFiltering(true);
+          })
+          .Enable(true)
+          .AutoBind(false)
+                  .CascadeFrom("cboCarMake")
+          .HtmlAttributes(new { @style = "display: none;width:105px;" })
+    )
+    @(Html.Kendo().DropDownList()
+          .Name("cboFromYear")
+          .OptionLabel("از سال...")
+                  .DataTextField("fldName")
+                  .DataValueField("fldID")
+          .DataSource(source =>
+          {
+              source.Read(read =>
+              {
+                  read.Action("GetFromYear", "inFastCalc")
+                      .Data("selectFromYear");
+              })
+              .ServerFiltering(true);
+          })
+          .Enable(true)
+          .AutoBind(false)
+          .CascadeFrom("cboModelNum")
+          .HtmlAttributes(new { @style = "display: none;width:105px;" })
+    )
+    @(Html.Kendo().DropDownList()
+          .Name("cboToYear")
+          .OptionLabel("تا سال...")
+                  .DataTextField("fldName")
+                  .DataValueField("fldID")
+          .DataSource(source =>
+          {
+              source.Read(read =>
+              {
+                  read.Action("GetToYear", "inFastCalc")
+                      .Data("selectToYear");
+              })
+              .ServerFiltering(true);
+          })
+          .Enable(true)
+          .AutoBind(false)
+          .CascadeFrom("cboFromYear")
+          .HtmlAttributes(new { @style = "display: none;width:105px;" })
+    )
+    @(Html.Kendo().DropDownList()
+        .Name("cboCarAccountTypes")
+          .OptionLabel("نوع کاربری خودرو...")
+                  .DataTextField("fldName")
+                  .DataValueField("fldID")
+          .DataSource(source =>
+          {
+              source.Read(read =>
+              {
+                  read.Action("GetCascadeAccount", "inFastCalc")
+                      .Data("selectAccount");
+              })
+              .ServerFiltering(true);
+          })
+          .Enable(true)
+          .AutoBind(false)
+                  .CascadeFrom("cboCarMake")
+          .HtmlAttributes(new { @style = "display: none;width:105px;" })
+    )
+    @(Html.Kendo().DropDownList()
+                .Name("cboCarCabin")
+          .OptionLabel("نوع کابین خودرو...")
+                  .DataTextField("fldName")
+                  .DataValueField("fldID")
+          .DataSource(source =>
+          {
+              source.Read(read =>
+              {
+                  read.Action("GetCascadeCabin", "inFastCalc")
+                      .Data("selectCabin");
+              })
+              .ServerFiltering(true);
+          })
+          .Enable(true)
+          .AutoBind(false)
+                          .CascadeFrom("cboCarAccountTypes")
+          .HtmlAttributes(new { @style = "display: none;width:105px;" })
+    )
+    @(Html.Kendo().DropDownList()
+          .Name("cboSystem")
+          .OptionLabel("سیستم خودرو...")
+                  .DataTextField("fldName")
+                  .DataValueField("fldID")
+          .DataSource(source =>
+          {
+              source.Read(read =>
+              {
+                  read.Action("GetCascadeSystem", "inFastCalc")
+                      .Data("selectSystem");
+              })
+              .ServerFiltering(true);
+          })
+          .Enable(true)
+          .AutoBind(false)
+          .CascadeFrom("cboCarCabin")
+          .HtmlAttributes(new { @style = "display: none;width:105px;" })
+    )
+    @(Html.Kendo().DropDownList()
+          .Name("cboModel")
+          .OptionLabel("تیپ خودرو...")
+                  .DataTextField("fldName")
+                  .DataValueField("fldID")
+          .DataSource(source =>
+          {
+              source.Read(read =>
+              {
+                  read.Action("GetCascadeModel", "inFastCalc")
+                      .Data("selectModel");
+              })
+              .ServerFiltering(true);
+          })
+          .Enable(true)
+          .AutoBind(false)
+            .CascadeFrom("cboSystem")
+          .HtmlAttributes(new { @style = "display: none;width:105px;" })
+    )
+    @(Html.Kendo().DropDownList()
+                  .Name("cboClass")
+          .OptionLabel("کلاس خودرو...")
+                  .DataTextField("fldName")
+                  .DataValueField("fldID")
+          .DataSource(source =>
+          {
+              source.Read(read =>
+              {
+                  read.Action("GetCascadeClass", "inFastCalc")
+                      .Data("selectClass");
+              })
+              .ServerFiltering(true);
+          })
+          .Enable(true)
+          .AutoBind(false)
+            .CascadeFrom("cboModel")
+          .HtmlAttributes(new { @style = "display: none;width:105px;" })
+    )
+</div>

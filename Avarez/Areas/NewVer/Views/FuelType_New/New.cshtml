@@ -1,0 +1,157 @@
+﻿@using Ext.Net.MVC
+@using Hogaf.ExtNet.UX
+@using Ext.Net;
+@{
+    var X = Html.X();
+}
+
+
+@(Html.X().Window()
+    .Modal(true)
+        .Listeners(li => li.AfterRender.Handler = "LoadFuelType();")
+    .Resizable(false)
+    .Width(320)
+    //.Height(185)
+    .Title("تعریف نوع سوخت")
+    .Layout(LayoutType.Fit)
+    .ID("NewFuelType")
+    .Closable(true)
+    .ButtonAlign(Ext.Net.Alignment.Center)
+    .Buttons(
+        X.Button()
+            .Text("ذخیره")
+            .Icon(Ext.Net.Icon.Disk)
+        //.ToolTip("کلید میانبر F8")
+            .Listeners(l => l.Click.Handler = "SaveFuelType();"),
+        X.Button()
+            .Text("خروج")
+            .Icon(Ext.Net.Icon.DoorOut)
+        //.ToolTip("کلید میانبر Esc")
+            .OnClientClick("App.NewFuelType.destroy();"))
+    .CloseAction(Ext.Net.CloseAction.Destroy)
+    .Items(
+        X.FormPanel()
+            .Border(false)
+            .Layout(LayoutType.Fit)
+            .Items(
+                X.Panel()
+                    .Border(false)
+                    .PaddingSpec("15px 0 0 0")
+                          .Layout(LayoutType.VBox)
+                        .LayoutConfig(new VBoxLayoutConfig { Align = VBoxAlign.Center })
+                    .Items(
+                        X.FieldSet().Height(120)
+                            .Border(true)
+                            .Title("نوع سوخت")
+                            .Defaults(new { Margin = 2 })
+                            .Layout(LayoutType.Table)
+                            .LayoutConfig(new TableLayoutConfig { Columns = 2 })
+                            .Items(
+                                X.Hidden().ItemID("fldId"),
+                                X.Label("نوع سوخت:"),
+                                X.TextField()
+                                    .ItemID("txtFuelType")
+                                    .Width(190)
+                                    .AllowBlank(false)
+                                    .MaxLength(50)
+                                    .EnforceMaxLength(true)
+                                    .BlankText("لطفا نوع سوخت را وارد نمایید.")
+                                    .MsgTarget(Ext.Net.MessageTarget.Side),
+                                X.Label("توضیحات:"),
+                                X.TextArea()
+                                    .ItemID("txtDesc")
+                                    .Width(190)
+                            )
+                )
+            )
+        )
+)
+
+<script type="text/javascript">
+    function LoadFuelType() {
+        if ('@ViewBag.Id' != '0') {
+            App.NewFuelType.body.mask("در حال بارگذاری...");
+            Ext.net.DirectMethod.request({
+                url: '/NewVer/FuelType_New/Details',
+                params: {
+                    Id: '@ViewBag.Id'
+                },
+                success: function (data) {
+                    if (data.Er == 0) {
+                        var txtFuelType = App.NewFuelType.queryById('txtFuelType');
+                        txtFuelType.setValue(data.fldType);
+                        var txtDesc = App.NewFuelType.queryById('txtDesc');
+                        txtDesc.setValue(data.fldDesc);
+                        var Id = App.NewFuelType.queryById('fldId');
+                        Id.setValue(data.fldId);
+                    }
+                    else if (data.Er == 1) {
+                        Ext.MessageBox.show({
+                            title: data.MsgTitle,
+                            msg: data.Msg,
+                            icon: Ext.MessageBox.ERROR,
+                            buttons: Ext.MessageBox.OK
+                        });
+                    }
+                    App.NewFuelType.body.mask().hide();
+                }
+            });
+        }
+        else {
+            App.NewFuelType.queryById('txtFuelType').validate();
+        }
+    }
+
+    function SaveFuelType() {
+        var txtFuelType = App.NewFuelType.queryById('txtFuelType');
+        var Id = App.NewFuelType.queryById('fldId');
+        var txtDesc = App.NewFuelType.queryById('txtDesc');
+
+        var er = false;
+
+        if (txtFuelType.validate() == false) {
+            er = true;
+        }
+        if (er == true)
+            return;
+        App.NewFuelType.body.mask("در حال ذخیره سازی...");
+        Ext.net.DirectMethod.request({
+            url: '/NewVer/FuelType_New/Save',
+            params: {
+                fldID: Id.getValue(),
+                fldType: txtFuelType.getValue(),
+                fldDesc: txtDesc.getValue()
+            },
+            success: function (data) {
+                var ic = Ext.MessageBox.INFO;
+                if (data.Er == 1)
+                    ic = Ext.MessageBox.ERROR;
+                Ext.MessageBox.show({
+                    title: data.MsgTitle,
+                    msg: data.Msg,
+                    icon: ic,
+                    buttons: Ext.MessageBox.OK
+                });
+                App.FuelType.queryById('GridFuelType').store.load();
+                if (data.Er != 1) {
+                    ClearFuelType();
+                }
+                App.NewFuelType.body.mask().hide();
+            }
+        });
+    }
+
+    function ClearFuelType() {
+        App.NewFuelType.queryById('txtDesc').setValue("");
+        App.NewFuelType.queryById('txtFuelType').setValue("");
+        App.NewFuelType.queryById('fldId').setValue(0);
+    }
+
+    /*function EnterNext() {
+        var keyfield = App.NewFuelType.queryById(Ext.getCmp((Ext.Element.getActiveElement()).name).itemId);
+        var nextfld = keyfield.nextSibling();
+        nextfld.focus();
+        nextfld.selectText();
+    }*/
+
+</script>

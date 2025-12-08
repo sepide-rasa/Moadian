@@ -1,0 +1,392 @@
+﻿@using Ext.Net.MVC
+@using Hogaf.ExtNet.UX
+@using Ext.Net;
+@{
+    var X = Html.X();
+}
+
+<style>
+    .LblStyle {
+        height: auto;
+    }
+
+    .LblRed {
+        color: red;
+    }
+
+    .trheight {
+        height: 48px;
+    }
+</style>
+
+@(Html.X().Window().Modal(true)
+.Width(612)
+.Resizable(false)
+            .Title("ثبت اطلاعیه")//.Listeners(l => l.AfterRender.Handler = "LoadAnnouncement()")
+                 .ID("NewAnnouncement")
+        .Closable(true).ButtonAlign(Ext.Net.Alignment.Center)
+    .CloseAction(Ext.Net.CloseAction.Destroy)
+        .Layout(LayoutType.Fit)
+                   .Buttons(X.Button().Text("ذخیره").Icon(Ext.Net.Icon.Disk)//.ToolTip("کلید میانبر F8")
+                               .Listeners(l =>
+                               {
+                                   l.Click.Handler = "SaveAnnouncement();";
+
+                               })
+                               .ItemID("btnSave")
+                                ,
+                                X.Button().Text("خروج").Icon(Ext.Net.Icon.DoorOut)//.ToolTip("کلید میانبر Esc")
+                                               .OnClientClick("App.NewAnnouncement.destroy()"))
+    .Items(
+        X.FormPanel()
+        .Border(false)
+        //.Margin(5)
+            .DefaultButton("btn")
+        .TitleAlign(Ext.Net.TitleAlign.Center)
+           .Layout(LayoutType.Fit)
+                .Items(
+
+                X.Panel().Border(false).PaddingSpec("5px 0 10px 0")
+                    .Layout(Ext.Net.LayoutType.VBox)
+                    .LayoutConfig(new Ext.Net.VBoxLayoutConfig { Align = VBoxAlign.Center })
+            .Items(
+            X.Panel().Layout(LayoutType.HBox).Border(false)
+                .LayoutConfig(new Ext.Net.HBoxLayoutConfig { Align = HBoxAlign.Middle })
+                  .Defaults(new { Margin = 5 })
+            .Items(
+                 X.FieldSet()
+                .Border(true)
+                    .Width(585)
+                    .Height(165)
+                .Defaults(new { Margin = 5 })
+                .Title("مشخصات")
+                   .LayoutConfig(new TableLayoutConfig { Columns = 4 })
+                .Items(
+                X.Hidden().ItemID("fldId"),
+                X.Hidden().ItemID("countryId"),
+                 X.Label()
+                    .Text("تاریخ:"),
+                    X.PDateField()
+                        .ItemID("txtDate")
+                    .Editable(false)
+                    .Width(190)
+                    .MsgTarget(Ext.Net.MessageTarget.Side)
+                     .AllowBlank(false)
+                    .MaskRe("/[0-9,/]/")
+                    .BlankText("لطفا تاریخ را وارد نمایید.")
+                    .LabelAlign(Ext.Net.LabelAlign.Top),
+                    X.Label().Text("عنوان اطلاعیه:")
+                    ,X.TextField()
+                    .ItemID("txtSubject")
+                    .Width(190)
+                    .MsgTarget(Ext.Net.MessageTarget.Side)
+                    .AllowBlank(false)
+                    .BlankText("لطفا عنوان اطلاعیه را وارد نمایید.")
+                    ,X.Label().Text("متن اطلاعیه:")
+                    ,X.TextArea()
+                    .ItemID("txtBody")
+                    .Width(190)
+                    .MsgTarget(Ext.Net.MessageTarget.Side)
+                    .AllowBlank(false)
+                    .BlankText("لطفا متن اطلاعیه را وارد نمایید.")
+                    , X.Label().Text("توضیحات:")
+                    , X.TextArea()
+                    .ItemID("txtDesc")
+                    .Width(190)
+                    , X.Label("وضعیت:")
+                    ,X.ComboBox()
+                    .Width(190)
+                        .AllowBlank(false)
+                        .BlankText("لطفا وضعیت را انتخاب نمایید.")
+                            .MsgTarget(Ext.Net.MessageTarget.Side)
+                        .ItemID("cboStatus")
+                    .Editable(false)
+                    .TypeAhead(true)
+                    .QueryMode(DataLoadMode.Local)
+                    .TriggerAction(TriggerAction.All)
+                    .SelectedItems(new { Value = "1" })
+                    .Items(
+                        new ListItem("فعال", "1"),
+                        new ListItem("غیرفعال", "0")
+                                        )
+                              )
+                        ),
+                    X.Panel().Layout(LayoutType.HBox).Border(false).Defaults(new { Margin = 5 })
+                    .Items(
+                    X.FieldSet()
+                    .Border(true)
+                    .Title("موقعیت در تقسیمات کشوری")
+                    .Width(580)
+                    .Height(400)
+                    .Layout(LayoutType.Column)
+                    .Defaults(new { Margin = 2 })
+                    .Items(
+                              X.TreePanel()
+                                .ID("TreeCountryAnn")
+                                .AutoScroll(true)
+                                .Width(555)
+                                .ColSpan(2)
+                                .Expand(true)
+                                .Height(300)
+                                .Expand(true)
+                                .Listeners(l => l.ItemExpand.Handler = "LoadAnnouncement()")
+                                .UseArrows(true)
+                                .Border(false)
+                                .Listeners(a =>
+                                    {
+                                        a.Select.Handler = "GetTreeCountryIdAnn(record);";
+                                        a.AfterRender.Handler = "this.getRootNode().expand();";
+                                    })
+                                            .Root(Html.X().Node().NodeID("0").DataPath("0").Cls("0").Text("تقسیمات کشوری"))
+                                                .Listeners(l =>
+                                                {
+                                                    l.BeforeLoad.Fn = "nodeLoadTreeCountryAnn";
+                                                })
+                                , X.Label()
+                                .Cls("LblRed")
+                                .Text("مورد انتخاب شده: ")
+                                , X.Label()
+
+                                .Cls("LblStyle")
+                                .ItemID("lblTitleCountry")
+                                )
+                                    )
+                                    )
+
+            )
+        )
+)
+<script type="text/javascript">
+    /*setTimeout("LoadAnnouncement()", 700);*/
+    var numberloadAnnouncement = 0;
+    var nodeLoadTreeCountryAnn = function (store, operation, options) {
+        var node = operation.node;
+        Ext.net.DirectMethod.request({
+            url: '/NewVer/Announcement_New/NodeLoadTreeCountry',
+            params: {
+                nod: node.getId()
+            },
+            success: function (result) {
+                node.set('loading', false);
+                node.set('loaded', true);
+                node.appendChild(result);
+                node.expand();
+            },
+
+            failure: function (errorMsg) {
+                Ext.Msg.alert('Failure', errorMsg);
+            }
+        });
+
+        return false;
+    };
+
+    function GetTreeCountryIdAnn(record) {
+        var path = record.getPath("text");
+        var Text = path.split('/').splice(1).join("-->");
+        App.NewAnnouncement.queryById('countryId').setValue(record.getId());
+        if (record.getId() != 0) {
+            App.NewAnnouncement.queryById('lblTitleCountry').setText(Text);
+        }
+        else {
+            App.NewAnnouncement.queryById('lblTitleCountry').setText("");
+        }
+    };
+
+
+
+    function SetDefault1() {
+        App.TreeCountryAnn.getSelectionModel().select(1);
+    }
+
+
+    function LoadAnnouncement() {
+        numberloadAnnouncement = numberloadAnnouncement + 1;
+        if (numberloadAnnouncement > 1)
+            return;
+        if ('@ViewBag.Id' != '0') {
+            App.NewAnnouncement.body.mask("در حال بارگذاری...");
+            Ext.net.DirectMethod.request({
+                url: '/NewVer/Announcement_New/Details',
+                params: {
+                    id: '@ViewBag.Id'
+                },
+                success: function (data) {
+                    if (data.Er == 0) {
+                        var txtDate = App.NewAnnouncement.queryById('txtDate');
+                        txtDate.setValue(data.fldDateInsert);
+                        var txtSubject = App.NewAnnouncement.queryById('txtSubject');
+                        txtSubject.setValue(data.fldSubject);
+                        var txtBody = App.NewAnnouncement.queryById('txtBody');
+                        txtBody.setValue(data.fldMemo);
+                        var txtDesc = App.NewAnnouncement.queryById('txtDesc');
+                        txtDesc.setValue(data.fldDesc);
+                        var cboStatus = App.NewAnnouncement.queryById('cboStatus');
+                        cboStatus.setValue(data.fldShowStatus);
+                        var Id = App.NewAnnouncement.queryById('fldId');
+                        Id.setValue(data.fldId);
+                        App.NewAnnouncement.queryById('countryId').setValue(data.fldCountryDivisonTempID);
+
+                        if (data.Path == "/1") {
+                            if (App.TreeCountryAnn.store.getNodeById(1) != undefined) {
+                                App.TreeCountryAnn.getSelectionModel().select(1);
+                            }
+                        }
+                        else {
+                            var jjj = 0;
+                            if (App.TreeCountryAnn.store.getNodeById(1) != undefined) {
+                                jjj = 1;
+                            }
+                            Ext.net.DirectMethod.request({
+                                url: '/NewVer/Announcement_New/LoadPath',
+                                params: {
+                                    Path: data.Path,
+                                    jj: jjj,
+                                    treeid: data.treeid
+                                },
+                                success: function (result) {
+                                    if (result.length != 0) {
+                                        if (App.TreeCountryAnn.store.getNodeById(1) != undefined) {
+                                            var idd = data.Path.split('/')[1];
+                                            App.TreeCountryAnn.store.getNodeById(idd).appendChild(result);
+                                            /*var nodee = App.TreeCountryD.store.getNodeById(data.Path.split('/')[data.Path.split('/').length-1]);*/
+                                            App.TreeCountryAnn.expandPath("/0" + data.Path);
+                                            App.TreeCountryAnn.selectPath("/0" + data.Path);
+                                        }
+                                        else {
+                                            App.TreeCountryAnn.store.getNodeById(data.treeid).appendChild(result);
+                                            var ind = data.Path.indexOf(data.treeid);
+                                            var pathh = data.Path.substring(ind);
+                                            /*var idd = data.Path.split('/')[2];
+                                            App.TreeCountryAnn.store.getNodeById(idd).appendChild(result);
+                                            var pathh = data.Path.replace("/1", "");
+                                            var nodee = App.TreeCountryD.store.getNodeById(pathh.split('/')[pathh.split('/').length - 1]);*/
+                                            App.TreeCountryAnn.expandPath("/0/" + pathh);
+                                            App.TreeCountryAnn.selectPath("/0/" + pathh);
+                                        }
+                                    }
+                                    else {
+                                        App.TreeCountryAnn.getSelectionModel().select(App.TreeCountryAnn.getStore().getNodeById(data.fldCountryDivisonTempID));
+                                        @*if (App.TreeCountryAnn.store.getNodeById(1) != undefined) {
+                                            App.TreeCountryAnn.selectPath("/0" + data.Path);
+                                        }
+                                        else {
+                                            var pathh = data.Path.replace("/1", "");
+                                            App.TreeCountryAnn.selectPath("/0" + pathh);
+                                        }*@
+                                        }
+                                },
+                                failure: function (errorMsg) {
+                                    Ext.Msg.alert('Failure', errorMsg);
+                                }
+                            });
+                        }
+                    }
+                    else if (data.Er == 1) {
+                        Ext.MessageBox.show({
+                            title: data.MsgTitle,
+                            msg: data.Msg,
+                            icon: Ext.MessageBox.ERROR,
+                            buttons: Ext.MessageBox.OK
+                        });
+                    }
+                    App.NewAnnouncement.body.mask().hide();
+                }
+            });
+        }
+        else {
+            App.NewAnnouncement.queryById('txtDate').validate();
+            App.NewAnnouncement.queryById('txtSubject').validate();
+            App.NewAnnouncement.queryById('txtBody').validate();
+            App.NewAnnouncement.queryById('txtDesc').validate();
+            App.NewAnnouncement.queryById('cboStatus').validate();
+            SetDefault1();
+        }
+
+    }
+
+    function SaveAnnouncement() {
+        var txtDate = App.NewAnnouncement.queryById('txtDate');
+        var txtSubject = App.NewAnnouncement.queryById('txtSubject');
+        var txtBody = App.NewAnnouncement.queryById('txtBody');
+        var txtDesc = App.NewAnnouncement.queryById('txtDesc');
+        var cboStatus = App.NewAnnouncement.queryById('cboStatus');
+        var Id = App.NewAnnouncement.queryById('fldId');
+        var er = false;
+        var Status = false;
+        if (txtDate.validate() == false) {
+            er = true;
+        }
+        if (txtSubject.validate() == false) {
+            er = true;
+        }
+        if (txtBody.validate() == false) {
+            er = true;
+        }
+        if (cboStatus.validate() == false) {
+            er = true;
+        }
+        if (cboStatus.getValue() == "1")
+            Status = true;
+        if (er == true)
+            return;
+        if (App.NewAnnouncement.queryById('countryId').getValue() == 0 || App.NewAnnouncement.queryById('countryId').getValue() == "") {
+            Ext.MessageBox.show({
+                title: "خطا",
+                msg: "لطفا موقعیت تقسیمات کشوری را انتخاب نمایید.",
+                icon: Ext.MessageBox.ERROR,
+                buttons: Ext.MessageBox.OK
+            });
+            return;
+        }
+
+        App.NewAnnouncement.body.mask("در حال ذخیره سازی...");
+        Ext.net.DirectMethod.request({
+            url: '/NewVer/Announcement_New/Save',
+            params: {
+                fldSubject: txtSubject.getValue(),
+                fldMemo: txtBody.getValue(),
+                fldShowStatus: Status,
+                fldCountryDivisonTempID: App.NewAnnouncement.queryById('countryId').getValue(),
+                fldDesc: txtDesc.getValue(),
+                fldDateInsert: txtDate.rawValue,
+                fldId: Id.getValue()
+
+            },
+            success: function (data) {
+                var ic = Ext.MessageBox.INFO;
+                if (data.Er == 1)
+                    ic = Ext.MessageBox.ERROR;
+                Ext.MessageBox.show({
+                    Name: data.MsgTile,
+                    msg: data.Msg,
+                    icon: ic,
+                    buttons: Ext.MessageBox.OK
+                });
+                App.NewAnnouncement.body.mask().hide();
+                App.Announcement.queryById('GridAnnouncement').store.load();
+                if (data.Er != 1)
+                    ClearAnnouncement();
+            }
+
+        });
+    }
+    function ClearAnnouncement() {
+        App.NewAnnouncement.queryById('txtSubject').setValue("");
+        App.NewAnnouncement.queryById('txtDate').setValue("");
+        App.NewAnnouncement.queryById('txtBody').setValue("");
+        App.NewAnnouncement.queryById('txtDesc').setValue("");
+        App.NewAnnouncement.queryById('cboStatus').setValue("");
+        App.NewAnnouncement.queryById('lblTitleCountry').setText("");
+        App.NewAnnouncement.queryById('countryId').setValue(0);
+        App.NewAnnouncement.queryById('fldId').setValue(0);
+        App.TreeCountryAnn.getSelectionModel().select(1);
+    }
+    /* function EnterNext() {
+         var keyfield = App.NewAnnouncement.queryById(Ext.getCmp((Ext.Element.getActiveElement()).name).itemId);
+         var nextfld = keyfield.nextSibling();
+         nextfld.focus();
+         nextfld.selectText();
+
+     }*/
+</script>

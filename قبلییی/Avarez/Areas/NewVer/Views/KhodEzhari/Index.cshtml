@@ -1,0 +1,719 @@
+﻿@using Ext.Net.MVC
+@using Hogaf.ExtNet.UX
+@using Ext.Net;
+@using Ext.Net.Utilities;
+@{
+
+    var X = Html.X();
+}
+<style>
+     .a{
+
+        text-align:justify;
+      font-size:12px
+    }
+</style>
+
+
+@(X.Window().Listeners(li => li.AfterRender.Handler = "LoadMalekInfo();")
+            .ID("GuestParvande_Malek")
+            .Closable(true)
+            .Height(588)
+            .Width(800)
+                .Title("ثبت اطلاعات مالک")
+            .AutoScroll(true)
+            .CloseAction(Ext.Net.CloseAction.Destroy)
+            .Layout(LayoutType.Fit)
+            .Buttons(
+        X.Button()
+            .Text("ادامه")
+            .Icon(Ext.Net.Icon.PreviousGreen)
+            .Listeners(l => l.Click.Handler = "SaveMalekInfo();"))
+    .Items(
+        X.FormPanel().BodyStyle("background-color:#dfe8f6;")
+            .DefaultButton("btn")
+            .ItemID("FormPanel1")
+            .Border(false)
+            .Layout(Ext.Net.LayoutType.VBox)
+            .LayoutConfig(new VBoxLayoutConfig { Align = VBoxAlign.Center })
+            .Items(
+                X.Panel()
+                        //.Layout(Ext.Net.LayoutType.Fit)
+                        .Height(50)
+                            .Width(514).BodyStyle("background-color:#dfe8f6;")
+        //.LayoutConfig(new VBoxLayoutConfig { Align = VBoxAlign.Center })
+                        .Border(false)
+                        .Items(
+                                X.Image()//.PaddingSpec("0 10px 0 0")
+                            .ItemID("Image1")
+                            .ImageUrl("/Content/images/New12.png")
+        //.SetSize(0, 0)
+                        )
+                            , X.FieldSet()
+                        .Title("راهنما")
+                        .AutoScroll(true)
+                        .Height(205)
+                        .Width(638)
+                        .Defaults(new { Margin = 2 })
+                        .Items(
+                            X.Label()
+                                .ItemID("lblMatnHtmlPersonal")
+                                  //.AlignTo("center") 
+                                  .Text("در بخش مربوط به خود اظهاری می توانید با ثبت اطلاعات مالک اعم از حقوقی و یا حقیقی با تکمیل اطلاعات در خواست شده، مالک مورد نظر را تعریف و ذخیره نمائید. پس از ثبت اطلاعات مالک یا کلیک بر روی دکمه ادامه به صفحه تعریف پلاک، راهنمایی خواهید شد. که با تکمیل اطلاعات در خواست شده مربوط به مشخصات پلاک، می توانید پلاک مورد نظر را نیز تعریف و ذخیره نمائید. در صورتی که پلاک هایی از قبل تعریف شده باشند نیز در این بخش نمایش داده خواهند شد. همچنین در این بخش می توانید اطلاعات مربوط به یک پلاک تعریف شده را ویرایش و یا حذف نمائید. چنانچه برای یک پلاک پرونده ثبت شده باشد قادر به حذف آن پلاک نخواهید بود. پس از ثبت مالک و تعریف پلاک، با کلیک بر روی دکمه ادامه به صفحه ثبت پرونده خودرو راهنمایی شده و می توانید برای پلاک تعریف شده اقدام به تشکیل پرونده نمائید. فیلدهای در خواستی مربوط به مشخصات پرونده خودرو را تکمیل و ذخیره نمائید. همچنین در این بخش قادر به ویرایش و یا حذف یک پرونده خودرو خواهید بود. در آخر نیز می توانید با انتخاب پرونده مورد نظر و کلیک بر روی دکمه پرداخت آنلاین، اقدام به پرداخت آنلاین مبلغ عوارض تعیین شده برای خودرو مورد نظر نمائید. توجه نمائید که در صورت بازگشت به هر یک از مراحل قبلی با کلیک بر روی دکمه بازگشت به مرحله قبل ارجاع داده خواهید شد.")
+                                
+                               .Cls("a")
+                            )
+                        ,
+                                X.FieldSet().Title("مشخصات مالک").ItemID("fieldsetMalek").Height(195).Width(638).Border(true)//.MarginSpec("30px 0 0 0").PaddingSpec("0 0 0 30px")
+        // .Title("اطلاعات مالک")
+                    .LayoutConfig(new Ext.Net.TableLayoutConfig { Columns = 2 })
+                    .Defaults(new { Margin = 2 })
+                    .Items(
+                                X.Hidden().ItemID("fldId")
+                                ,
+        //X.ComboBox()
+        //.ItemID("cboType")
+        //.FieldLabel("نوع مالکیت")
+        //.Editable(false)
+        //.TypeAhead(true)
+        //.Width(300)
+        //.QueryMode(DataLoadMode.Local)
+        //.TriggerAction(TriggerAction.All)
+        //.SelectedItems(new { Value = "1" })
+        //.Items(
+        //        new ListItem("حقیقی", "1"),
+        //        new ListItem("حقوقی", "0")
+        //    )
+        //    .Listeners(l => { l.Select.Handler = "ChangeCboType()"; })
+        //.ColSpan(2)
+                                    X.TextField()
+                                   .FieldLabel("کد اقتصادی")
+                                    .ItemID("txtCodeEghtesadi")
+                                    .Width(300)
+                                        .MaxLength(12)
+                                        .MaskRe("/[0-9]/")
+                                        .FieldStyle("direction:ltr;")
+                                    .EnforceMaxLength(true)
+                                    .MsgTarget(Ext.Net.MessageTarget.Side)
+                                    .AllowBlank(false)
+                                    .BlankText("لطفا کداقتصادی را وارد کنید.")
+                                    ,
+                                    X.TextField()
+                                    .FieldLabel("کد ملی")
+                                        .ItemID("txtCode")
+                                        .MaxLength(10)
+                                        .ReadOnly(true)
+                                        .EnforceMaxLength(true)
+                                    .Width(300)
+                                    .MsgTarget(Ext.Net.MessageTarget.Side)
+                                    .AllowBlank(false)
+                                    .BlankText("لطفا کدملی را وارد کنید.")
+                                    .MaskRe("/[0-9]/")
+                                    .FieldStyle("direction:ltr;")
+                                  ,
+                            //      X.FieldSet().PaddingSpec("3px 0 0 0")
+                            //      .Border(false)
+                            //                  .Layout(LayoutType.Table).Defaults(new { Margin = 2 })
+                            //.LayoutConfig(new Ext.Net.TableLayoutConfig { Columns = 2 })
+                            //    .Items(
+                                      X.PDateField()
+                                    .FieldLabel("تاریخ تولد")
+                                    .ItemID("txtTarikh")
+                                    .Width(300)
+                                    .MsgTarget(Ext.Net.MessageTarget.Side)
+                                    .AllowBlank(false)
+                                    .BlankText("لطفا تاریخ تولد را وارد کنید.")
+        //, X.Button().Text("...")
+        //.ItemID("btnSabtAhval").MarginSpec("3px 0 5px 0")
+        //.ToolTip("استعلام از اداره ثبت احوال")
+        //    .Listeners(li =>
+        //        {
+        //            li.Click.Handler = "Estelam()";
+        //        })
+                                           // )
+                                  ,
+                                  //X.FieldSet().PaddingSpec("3px 0 0 0")
+                                  //.Border(false)
+                                  //.Items(
+                                  X.TextField()
+                                    .FieldLabel("نام و نام خانوادگی")
+                                    .ItemID("txtName")
+                                    .Width(300)
+                                    .MaxLength(50)
+                                    .EnforceMaxLength(true)
+                                    .MsgTarget(Ext.Net.MessageTarget.Side)
+                                    .AllowBlank(false)
+                                    .BlankText("لطفا نام و نام خانوادگی را وارد کنید.")//)
+
+                                         ,
+                                      //    X.FieldSet().PaddingSpec("3px 0 0 0").ItemID("FFatherName")
+                                      //.Border(false).Items(
+                                      X.TextField()
+                                        .FieldLabel("نام پدر")
+                                        .ItemID("FatherName")
+                                        .ReadOnly(true)
+                                            .Width(300)//).Width(310)
+                                             ,
+                                          //        X.FieldSet().PaddingSpec("3px 0 0 0").ItemID("FTavalod")
+                                          //.Border(false).Items(
+                                          X.TextField()
+                                            .FieldLabel("محل تولد")
+                                            .ItemID("Tavalod")
+                                            .ReadOnly(true)
+                                            .Width(300)
+                                                ,
+        //    X.FieldSet().PaddingSpec("3px 0 0 0").ItemID("FShenasnameNo")
+        //.Border(false).Items(
+                                              X.TextField()
+                                                .FieldLabel("شماره شناسنامه")
+                                                .ItemID("ShenasnameNo")
+                                                .ReadOnly(true)
+                                                .FieldStyle("direction:ltr;")
+                                                .Width(300)//)
+                                                    ,
+        //    X.FieldSet().PaddingSpec("3px 0 0 0").ItemID("FShenasnameSeri")
+        //.Border(false).Items(
+                                              X.TextField()
+                                                .FieldLabel("سریال شناسنامه")
+                                                .ItemID("ShenasnameSeri")
+                                                .ReadOnly(true)
+                                                .FieldStyle("direction:ltr;")
+                                                .Width(300)//)
+
+                                           , // X.FieldSet().PaddingSpec("3px 0 0 0")
+        //.Border(false).Items(
+                                        X.TextField()
+                                        .FieldLabel("ایمیل")
+                                            .EnableKeyEvents(true)
+                                                    .Listeners(l => l.KeyUp.Fn = "onInitializeToEnK")
+                                            .MaxLength(50)
+                                            .EnforceMaxLength(true)
+                                            .ItemID("txtEmail")
+                                            .FieldStyle("direction:ltr;")
+                                        .Width(300)
+                                        .MsgTarget(Ext.Net.MessageTarget.Side)//)
+                                            ,
+        //      X.FieldSet().PaddingSpec("3px 0 0 0")
+        //.Border(false).Items(
+                                        X.TextField()
+                                        .FieldLabel("موبایل")
+                                        .ItemID("txtMobile")
+                                        .Width(300)
+                                        .MsgTarget(Ext.Net.MessageTarget.Side)
+                                            .AllowBlank(false)
+                                            .FieldStyle("direction:ltr;")
+                                        .BlankText("لطفا موبایل را وارد کنید.")//)
+                                            ,
+        //      X.FieldSet().PaddingSpec("3px 0 0 0")
+        //.Border(false).Items(
+                                            X.TextField().ColSpan(2)
+                                            .FieldLabel("کد پستی").FieldStyle("direction:ltr;")
+                                        .ItemID("txtPostal").MaxLength(10).EnforceMaxLength(true)
+                                            .Plugins(X.InputMask()
+                                                .Mask("AAAAAAAAAA")
+                                                .UnmaskOnBlur(true)
+                                                .ClearWhenInvalid(true)
+                                                .MaskSymbols(ls =>
+                                                {
+                                                    ls.Add(new MaskSymbol { Name = "A", Regex = "[0-9]", Placeholder = "_".ToCharArray()[0] });
+                                                })
+                                            )
+                                        .Width(300)
+                                        .MsgTarget(Ext.Net.MessageTarget.Side)//)
+                                        ,
+        //      X.FieldSet().PaddingSpec("3px 0 0 0")
+        //.Border(false).Items(
+                                            X.TextField().ColSpan(2)
+                                        .FieldLabel("آدرس")
+                                        .ItemID("txtAddress")
+                                        .Width(604)
+                                        .MsgTarget(Ext.Net.MessageTarget.Side)//)
+                                        ,
+        //  X.FieldSet().PaddingSpec("3px 0 0 0")
+        //.Border(false).Items(
+                                            X.TextArea().ColSpan(2)
+                                            .Width(604)
+                                        .FieldLabel("توضیحات")
+                                        .ItemID("txtDesc")//)
+                                            
+                                            )
+                                                 
+                                    )
+
+
+            )
+            )
+)
+
+
+<script type="text/javascript">
+
+    var onInitializeToEnK = function () {
+        var tt = App.GuestParvande_Malek.queryById('txtEmail');
+        changeLagToEn(tt);
+    };
+
+    function LoadMalekInfo() {
+        var FatherName = App.GuestParvande_Malek.queryById('FatherName');
+        var Tavalod = App.GuestParvande_Malek.queryById('Tavalod');
+        var ShenasnameNo = App.GuestParvande_Malek.queryById('ShenasnameNo');
+        var ShenasnameSeri = App.GuestParvande_Malek.queryById('ShenasnameSeri');
+        /*var FFatherName = App.GuestParvande_Malek.queryById('FFatherName');*/
+        var FatherName = App.GuestParvande_Malek.queryById('FatherName');
+        /*var FTavalod = App.GuestParvande_Malek.queryById('FTavalod');*/
+        var Tavalod = App.GuestParvande_Malek.queryById('Tavalod');
+        /*var FShenasnameNo = App.GuestParvande_Malek.queryById('FShenasnameNo');*/
+        var ShenasnameNo = App.GuestParvande_Malek.queryById('ShenasnameNo');
+        /*var FShenasnameSeri = App.GuestParvande_Malek.queryById('FShenasnameSeri');*/
+        var ShenasnameSeri = App.GuestParvande_Malek.queryById('ShenasnameSeri');
+        /*FFatherName.hide();*/
+        FatherName.hide();
+        /*FTavalod.hide();*/
+        Tavalod.hide();
+        /*FShenasnameNo.hide();*/
+        ShenasnameNo.hide();
+        /*FShenasnameSeri.hide();*/
+        ShenasnameSeri.hide();
+
+        /*App.GuestParvande_Malek.queryById('Image1').setImageUrl('/Content/images/NAV4_1.png');*/
+        var txtCodeEghtesadi = App.GuestParvande_Malek.queryById('txtCodeEghtesadi');
+        var txtTarikh = App.GuestParvande_Malek.queryById('txtTarikh');
+        var txtName = App.GuestParvande_Malek.queryById('txtName');
+        /*var btnSabtAhval = App.GuestParvande_Malek.queryById('btnSabtAhval');*/
+        var txtCode = App.GuestParvande_Malek.queryById('txtCode');
+
+        if ('@ViewBag.Malekid' != '0') {/*ویرایش*/
+            App.GuestParvande_Malek.queryById('fieldsetMalek').setHeight(195);
+            /* FFatherName.hide();*/
+            FatherName.hide();
+            /*FTavalod.hide();*/
+            Tavalod.hide();
+            /*FShenasnameNo.hide();*/
+            ShenasnameNo.hide();
+            /*FShenasnameSeri.hide();*/
+            ShenasnameSeri.hide();
+
+            Ext.net.DirectMethod.request({
+                url: '/NewVer/KhodEzhari/DetailsMalek',
+                params: {
+                    Id: '@ViewBag.Malekid'
+                },
+                success: function (data) {
+                    fldType = data.fldType;
+                    if ('@ViewBag.Type' == "True")/*شخص حقیقی*/ {
+                        txtCodeEghtesadi.hide();
+                        txtCode.show();
+                        txtCode.setValue(data.fldMelli_EconomicCode);
+                        txtCode.setReadOnly(true);
+                        txtName.setFieldLabel("نام و نام خانوادگی");
+                        txtTarikh.setFieldLabel("تاریخ تولد");
+                        txtTarikh.setReadOnly(true);
+                        /*btnSabtAhval.show();*/
+                        if (data.fldType) {
+                            txtName.setReadOnly(true);
+                            /*btnSabtAhval.setDisabled(true);*/
+                        }
+                    }
+                    else {
+                        txtCodeEghtesadi.show();
+                        txtCodeEghtesadi.setValue(data.fldMelli_EconomicCode);
+                        txtCodeEghtesadi.setReadOnly(true);
+                        txtCode.hide();
+                        txtName.setFieldLabel("نام شرکت");
+                        txtTarikh.setFieldLabel("تاریخ ثبت");
+                        /*btnSabtAhval.hide();*/
+                    }
+
+                    txtTarikh.setValue(data.fldDateShamsi);
+                    txtName.setValue(data.fldName);
+                    var txtEmail = App.GuestParvande_Malek.queryById('txtEmail');
+                    txtEmail.setValue(data.fldEmail);
+                    var txtMobile = App.GuestParvande_Malek.queryById('txtMobile');
+                    txtMobile.setValue(data.fldMobile);
+                    txtMobile.setReadOnly(true);
+                    var txtAddress = App.GuestParvande_Malek.queryById('txtAddress');
+                    txtAddress.setValue(data.fldAddress);
+                    var txtPostal = App.GuestParvande_Malek.queryById('txtPostal');
+                    txtPostal.setValue(data.fldPostalCode);
+                    var txtDesc = App.GuestParvande_Malek.queryById('txtDesc');
+                    txtDesc.setValue(data.fldDesc);
+                    var Id = App.GuestParvande_Malek.queryById('fldId');
+                    Id.setValue(data.fldId);
+
+                    /*fldType = data.fldType;
+                    var cboType = App.GuestParvande_Malek.queryById('cboType');
+                    cboType.setValue(data.fldOwnerType);
+                    var txtName = App.GuestParvande_Malek.queryById('txtName');
+                    txtName.setValue(data.fldName);
+                    var txtTarikh = App.GuestParvande_Malek.queryById('txtTarikh');
+                    txtTarikh.setValue(data.fldDateShamsi);
+
+
+                    var btnSabtAhval = App.GuestParvande_Malek.queryById('btnSabtAhval');
+                    var txtCode = App.GuestParvande_Malek.queryById('txtCode');
+                    var txtCodeEghtesadi = App.GuestParvande_Malek.queryById('txtCodeEghtesadi');
+                    if (data.fldOwnerType == "1") {
+                        txtName.setFieldLabel("نام و نام خانوادگی");
+                        txtTarikh.setFieldLabel("تاریخ تولد");
+                        btnSabtAhval.show();
+                        txtCodeEghtesadi.hide(true);
+                        txtCode.show(true);
+                        txtCode.setValue(data.fldMelli_EconomicCode);
+                        if (data.fldType) {
+                            txtName.setReadOnly(true);
+                            txtTarikh.setReadOnly(true);
+                            txtCode.setReadOnly(true);
+                            btnSabtAhval.setDisabled(true);
+                        }
+                    }
+                    else {
+                        btnSabtAhval.hide();
+                        txtName.setFieldLabel("نام شرکت");
+                        txtTarikh.setFieldLabel("تاریخ ثبت");
+                        txtCodeEghtesadi.show(true);
+                        txtCode.hide(true);
+                        txtCodeEghtesadi.setValue(data.fldMelli_EconomicCode);
+                    }
+
+                    var txtEmail = App.GuestParvande_Malek.queryById('txtEmail');
+                    txtEmail.setValue(data.fldEmail);
+                    var txtMobile = App.GuestParvande_Malek.queryById('txtMobile');
+                    txtMobile.setValue(data.fldMobile);
+                    var txtAddress = App.GuestParvande_Malek.queryById('txtAddress');
+                    txtAddress.setValue(data.fldAddress);
+                    var txtPostal = App.GuestParvande_Malek.queryById('txtPostal');
+                    txtPostal.setValue(data.fldPostalCode);
+                    var txtDesc = App.GuestParvande_Malek.queryById('txtDesc');
+                    txtDesc.setValue(data.fldDesc);
+                    var Id = App.GuestParvande_Malek.queryById('fldId');
+                    Id.setValue(data.fldId);*/
+
+                    if (data.IsAccept == true) {/*ثبت شده توسط دفتر پیشخوان*/
+                        txtName.setReadOnly(true);
+                        txtCode.setReadOnly(true);
+                        txtTarikh.setReadOnly(true);
+                        /*btnSabtAhval.setDisabled(true);*/
+                        txtCodeEghtesadi.setReadOnly(true);
+                        txtEmail.setReadOnly(true);
+                        txtMobile.setReadOnly(true);
+                        txtAddress.setReadOnly(true);
+                        txtPostal.inputMask.disable();
+                        txtPostal.setReadOnly(true);
+                        txtDesc.setReadOnly(true);
+                        /*cboType.setReadOnly(true);*/
+                    }
+                    else {/*خود کاربر ثبت نام کرده*/
+                        if (data.fldType==true) {
+                            txtName.setReadOnly(true);
+                        }
+                        else {
+                            txtName.setReadOnly(false);
+                        }
+                        txtCode.setReadOnly(true);
+                        if ('@ViewBag.Type' == "True") {/*شخص حقیقی*/
+                            txtTarikh.setReadOnly(true);
+                        }
+                        else {
+                            txtTarikh.setReadOnly(false);
+                        }
+                        /*btnSabtAhval.setDisabled(false);*/
+                        txtCodeEghtesadi.setReadOnly(true);
+                        txtEmail.setReadOnly(false);
+                        txtMobile.setReadOnly(true);
+                        txtAddress.setReadOnly(false);
+                        txtPostal.setReadOnly(false);
+                        txtDesc.setReadOnly(false);
+                        /*cboType.setReadOnly(false);*/
+                    }
+                }
+            });
+        }
+        else {
+            /*var cboType = App.GuestParvande_Malek.queryById('cboType');*/
+            var txtCode = App.GuestParvande_Malek.queryById('txtCode');
+            var txtName = App.GuestParvande_Malek.queryById('txtName');
+            var txtMobile = App.GuestParvande_Malek.queryById('txtMobile');
+            var txtCodeEghtesadi = App.GuestParvande_Malek.queryById('txtCodeEghtesadi');
+
+
+            if ('@ViewBag.Type' == "True")/*شخص حقیقی*/ {
+                Ext.net.Mask.show({ msg: 'در حال بررسی...' });
+                Ext.net.DirectMethod.request({
+                    url: '/NewVer/KhodEzhari/KhodEzhariDetail',
+                    success: function (data) {
+                        Ext.net.Mask.hide();
+                        if (data.state == "0") {/*استعلام*/
+                            txtName.setReadOnly(true);
+                            txtName.setValue(data.Name);
+                            fldType = true;
+
+                            App.GuestParvande_Malek.queryById('fieldsetMalek').setHeight(195);
+                            /*FFatherName.show();*/
+                            FatherName.show();
+                            /* FTavalod.show();*/
+                            Tavalod.show();
+                            /*FShenasnameNo.show();*/
+                            ShenasnameNo.show();
+                            /*FShenasnameSeri.show();*/
+                            ShenasnameSeri.show();
+                            FatherName.setValue(data.fatherName);
+                            Tavalod.setValue(data.officeName);
+                            ShenasnameNo.setValue(data.shenasnameNo);
+                            ShenasnameSeri.setValue(data.shenasnameSerial);
+                        }
+                        else {
+                            txtName.setReadOnly(false);
+                            /*alert('امکان دریافت مشخصات وجود ندارد. لطفا نام مودی را به صورت دستی وارد نمایید.');*/
+                            txtName.setValue('');
+                            App.GuestParvande_Malek.queryById('fieldsetMalek').setHeight(195);
+                            /* FFatherName.hide();*/
+                            FatherName.hide();
+                            /*FTavalod.hide();*/
+                            Tavalod.hide();
+                            /*FShenasnameNo.hide();*/
+                            ShenasnameNo.hide();
+                            /*FShenasnameSeri.hide();*/
+                            ShenasnameSeri.hide()
+                        }
+                    }
+                });
+                txtName.setFieldLabel("نام و نام خانوادگی");
+                txtTarikh.setFieldLabel("تاریخ تولد");
+                txtTarikh.setValue('@ViewBag.fldTarikhTavalod');
+                txtTarikh.setReadOnly(true);
+                txtCodeEghtesadi.hide();
+                txtCode.show();
+                txtCode.setValue('@ViewBag.MelliCode');
+                txtCode.setReadOnly(true);
+                txtMobile.setValue('@ViewBag.Mobile');
+                txtMobile.setReadOnly(true);
+                /*btnSabtAhval.show();*/
+            }
+            else {
+                txtName.setFieldLabel("نام شرکت");
+                txtTarikh.setFieldLabel("تاریخ ثبت");
+                txtCodeEghtesadi.show();
+                txtCode.hide();
+                txtCodeEghtesadi.setValue('@ViewBag.MelliCode');
+                txtCodeEghtesadi.setReadOnly(true);
+                txtMobile.setValue('@ViewBag.Mobile');
+                txtMobile.setReadOnly(true);
+
+                FatherName.hide();
+                Tavalod.hide();
+                ShenasnameNo.hide();
+                ShenasnameSeri.hide();
+                /*btnSabtAhval.hide();*/
+            }
+
+            /*cboType.setValue("1");
+            txtCodeEghtesadi.hide(true);
+            txtCode.show(true);
+            txtName.setReadOnly(true);
+            txtCode.setValue('ViewBag.MelliCode');
+            txtMobile.setValue('ViewBag.Mobile');*/
+        }
+    }
+
+    var fldType = false;
+    var FlagE = false;
+
+    function Estelam() {
+        var txtCode = App.GuestParvande_Malek.queryById('txtCode');
+        var txtName = App.GuestParvande_Malek.queryById('txtName');
+        var txtTarikhTavalod = App.GuestParvande_Malek.queryById('txtTarikh');
+        var er = false;
+        if (txtCode.validate() == false) {
+            er = true;
+        }
+        if (txtTarikhTavalod.validate() == false) {
+            er = true;
+        }
+        if (er == true)
+            return;
+        Ext.net.Mask.show({ msg: 'در حال بررسی...' });
+        Ext.net.DirectMethod.request({
+            url: '/NewVer/Parvande/EstelamSabt',
+            params: {
+                CodeMeli: txtCode.getValue(),
+                Tarikhtavalod: txtTarikhTavalod.getValue()
+            },
+            success: function (data) {
+                Ext.net.Mask.hide();
+                if (data.Error == "") {
+                    txtName.setReadOnly(true);
+                    txtName.setValue(data.Name);
+                    fldType = true;
+                }
+                else {
+                    txtName.setReadOnly(false);
+                   /* alert('امکان دریافت مشخصات وجود ندارد. لطفا نام مودی را به صورت دستی وارد نمایید.');*/
+                    txtName.setValue('');
+                    Ext.MessageBox.show({
+                        Name: 'خطا',
+                        msg: data.Error,
+                        icon: Ext.MessageBox.ERROR,
+                        buttons: Ext.MessageBox.OK
+                    });
+                }
+            }
+        });
+    }
+    /*function ChangeCboType() {
+        var Type = 'ViewBag.Type';
+        var txtCode = App.GuestParvande_Malek.queryById('txtCode');
+        var txtName = App.GuestParvande_Malek.queryById('txtName');
+        var txtTarikh = App.GuestParvande_Malek.queryById('txtTarikh');
+        var btnSabtAhval = App.GuestParvande_Malek.queryById('btnSabtAhval');
+        var txtCodeEghtesadi = App.GuestParvande_Malek.queryById('txtCodeEghtesadi');
+        if (Type == true) {
+            txtCodeEghtesadi.hide(true);
+            txtCode.show(true);
+            txtName.setFieldLabel("نام و نام خانوادگی");
+            txtName.setReadOnly(true);
+            txtName.setValue("");
+            txtTarikh.setFieldLabel("تاریخ تولد");
+            txtTarikh.setValue("");
+            btnSabtAhval.show();
+        }
+        else {
+            txtCodeEghtesadi.show(true);
+            txtCode.hide(true);
+            txtName.setFieldLabel("نام شرکت");
+            txtName.setReadOnly(false);
+            txtName.setValue("");
+            txtTarikh.setFieldLabel("تاریخ ثبت");
+            txtTarikh.setValue("");
+            btnSabtAhval.hide();
+        }
+    }*/
+    function SaveMalekInfo() {
+        var txtName = App.GuestParvande_Malek.queryById('txtName');
+        var txtEmail = App.GuestParvande_Malek.queryById('txtEmail');
+        /*var cboType = App.GuestParvande_Malek.queryById('cboType');*/
+        var txtCode = App.GuestParvande_Malek.queryById('txtCode');
+        var txtCodeEghtesadi = App.GuestParvande_Malek.queryById('txtCodeEghtesadi');
+        var txtMobile = App.GuestParvande_Malek.queryById('txtMobile');
+        var txtAddress = App.GuestParvande_Malek.queryById('txtAddress');
+        var txtPostal = App.GuestParvande_Malek.queryById('txtPostal');
+        var txtDesc = App.GuestParvande_Malek.queryById('txtDesc');
+        var txtTarikh = App.GuestParvande_Malek.queryById('txtTarikh');
+        var Id = App.GuestParvande_Malek.queryById('fldId');
+
+        var er = false;
+
+
+        if (txtName.validate() == false) {
+            er = true;
+        }
+        if (txtTarikh.validate() == false) {
+            er = true;
+        }
+        if (txtMobile.validate() == false) {
+            er = true;
+        }
+        if ('@ViewBag.Type' == "True") {
+
+            if (txtCode.validate() == false) {
+                er = true;
+            }
+            if (txtCode.getValue() == "") {
+                Ext.MessageBox.show({
+                    Name: 'خطا',
+                    msg: 'لطفا کد ملی را وارد نمایید.',
+                    icon: Ext.MessageBox.ERROR,
+                    buttons: Ext.MessageBox.OK
+                });
+                er = true;
+            }
+        }
+        else {
+            if (txtCodeEghtesadi.validate() == false) {
+                er = true;
+            }
+            if (txtCodeEghtesadi.getValue() == "") {
+                Ext.MessageBox.show({
+                    Name: 'خطا',
+                    msg: 'لطفا کد اقتصادی را وارد نمایید.',
+                    icon: Ext.MessageBox.ERROR,
+                    buttons: Ext.MessageBox.OK
+                });
+            }
+        }
+
+        if (er == true)
+            return;
+
+
+        var OwnerType = true;
+        var Code = txtCode.getValue();
+        if ('@ViewBag.Type' == "False") {
+            OwnerType = false;
+            Code = txtCodeEghtesadi.getValue();
+        }
+
+        Ext.net.Mask.show({ msg: 'در حال ذخیره سازی...' });
+        Ext.net.DirectMethod.request({
+            url: '/NewVer/KhodEzhari/SaveMalek',
+            params: {
+                fldID: Id.getValue(),
+                fldName: txtName.getValue(),
+                fldOwnerType: OwnerType,
+                fldMelli_EconomicCode: Code,
+                fldEmail: txtEmail.getValue(),
+                fldMobile: txtMobile.getValue(),
+                fldAddress: txtAddress.getValue(),
+                fldPostalCode: txtPostal.getValue(),
+                fldDesc: txtDesc.getValue(),
+                fldDateShamsi: txtTarikh.rawValue,
+                fldType: fldType
+            },
+            success: function (data) {
+                Ext.net.Mask.hide();
+                if (data.Err == 0) {
+                    Ext.net.Mask.show({ msg: 'در حال بارگذاری...' });
+                    Ext.net.DirectMethod.request({
+                        url: '/NewVer/KhodEzhari_Pelak/Index',
+                        params: {
+                            MalekId: data.MalekID
+                        },
+                        success: function () {
+                            Ext.net.Mask.hide();
+                            App.GuestParvande_Malek.destroy();
+                        }
+                    });
+                }
+                else {
+                    Ext.MessageBox.show({
+                        title: data.MsgTitle,
+                        msg: data.Msg,
+                        icon: Ext.MessageBox.ERROR,
+                        buttons: Ext.MessageBox.OK
+                    });
+                }
+            }
+        });
+    }
+
+    function EnterNext() {
+        var nextfld;
+        var keyfield = App.GuestParvande_Malek.queryById(Ext.getCmp((Ext.Element.getActiveElement()).name).itemId);
+        if (keyfield.itemId == "txtCode" || keyfield.itemId == "txtCodeEghtesadi") {
+            nextfld = App.GuestParvande_Malek.queryById("txtTarikh");
+        }
+        else if (keyfield.itemId == "txtTarikh") {
+            nextfld = keyfield.nextSibling();
+        }
+        else if (keyfield.itemId == "txtName") {
+            nextfld = App.GuestParvande_Malek.queryById("txtEmail");
+        }
+        else {
+            nextfld = keyfield.nextSibling();
+            if (nextfld.hidden == true) {
+                nextfld = nextfld.nextSibling();
+            }
+        }
+        nextfld.focus();
+        /*nextfld.selectText();*/
+    }
+</script>

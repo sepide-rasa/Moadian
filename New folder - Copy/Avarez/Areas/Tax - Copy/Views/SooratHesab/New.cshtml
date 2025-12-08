@@ -1,0 +1,488 @@
+﻿@model IEnumerable<Avarez.Areas.Tax.Models.prs_tblShakhsHaghighi_HoghoghiSelect>
+@using Ext.Net.MVC
+@using Hogaf.ExtNet.UX
+@using Ext.Net;
+
+@{ var X = Html.X();}
+
+<script src="~/Scripts/accounting.min.js"></script>
+<style>
+    .legend {
+        list-style: none;
+        direction: rtl;
+        text-align: right;
+        padding-right: 0px;
+        margin-top: 7px;
+    }
+
+        .legend li {
+            float: right;
+            margin-right: 10px;
+        }
+
+        .legend span {
+            border: none;
+            float: right;
+            width: 12px;
+            height: 14px;
+            margin: 2px;
+        }
+
+    .custom-NewSooratHesabicon {
+        margin-right: 243px !important;
+    }
+
+    .custom-NewSooratHesabicon2 {
+        margin-right: 258px !important;
+    }
+
+    .custom-NewSooratHesabicon3 {
+        margin-right: 445px !important;
+    }
+
+    .custom-NewSooratHesabicon4 {
+        margin-right: 121px !important;
+    }
+
+    .custom-NewSooratHesabicon5 {
+        margin-right: 138px !important;
+    }
+</style>
+
+
+
+@(Html.X().Window()
+    .Modal(true)
+           .Listeners(l =>
+        {
+            l.Render.Fn = "addKeyMapNewSooratHesab";
+            l.AfterRender.Handler = "App.NewSooratHesab.setWidth(Ext.getBody().getViewSize().width - 20);";
+        })
+        .Width(530)//.Height(300)
+        .ID("NewSooratHesab")
+        .Title("ثبت صورت حساب جدید")
+    .Resizable(false)
+    .Closable(true)
+    .CloseAction(Ext.Net.CloseAction.Destroy)
+    .ButtonAlign(Alignment.Center)
+    .Layout(LayoutType.Fit)
+    .Buttons(
+        X.Button()
+            .Text("ذخیره")
+            .Icon(Ext.Net.Icon.Disk)
+            .Listeners(l =>
+            {
+                l.Click.Handler = "SaveSooratHesab();";
+            })
+            .ItemID("btnSave"),
+        X.Button()
+            .Text("خروج")
+            .Icon(Ext.Net.Icon.BulletCross)
+            .ToolTip("کلید میانبر Esc")
+                    .OnClientClick("App.NewSooratHesab.destroy()"))
+    .Items(
+
+            X.Panel()
+                .Border(false)
+                .Layout(LayoutType.VBox)
+                .LayoutConfig(new VBoxLayoutConfig { Align = VBoxAlign.Center })
+                .Items(
+                X.FieldSet()
+                        .Title("مشخصات اصلی")
+                        .Border(true)
+                        .Defaults(new { Margin = 2 })
+                        .Layout(LayoutType.Table)
+                        .LayoutConfig(new TableLayoutConfig { Columns = 4 })
+                        .Items(
+
+                            X.Label("تاریخ ثبت سند:"),
+                            X.PDateField()
+                                .ItemID("txtDocDate")
+                                .AllowBlank(false)
+                                .Width(100)
+                                .Editable(true)
+                                .MaskRe("/[0-9 /]/")
+                                //.Listeners(l =>
+                                //{
+                                //    l.AfterRender.Handler = "SetDefaulttxtDocDate()";
+                                //    l.Change.Handler = "SetValidateDocDate()";
+                                //})
+                                .BlankText("لطفا تاریخ ثبت سند را وارد کنید.")
+                                .MaxLength(10)
+                                .EnforceMaxLength(true)
+                        ),
+                    X.FieldSet()
+                        .Title("مشخصات فروشنده")
+                        .Border(true)
+                        .Defaults(new { Margin = 2 })
+                        .Layout(LayoutType.Table)
+                        .LayoutConfig(new TableLayoutConfig { Columns = 10 })
+                        .Items(
+                            X.Hidden()
+                                .ItemID("fldForushandeId"),
+
+                            X.Label("فروشنده:"),
+                            X.TextField()
+                                    .ItemID("txtNameF")
+                                    .Icon(Icon.UserAdd)
+                                .AllowBlank(false)
+                                .AllowOnlyWhitespace(false)
+                                .EnableKeyEvents(true)
+                                .ReadOnly(true)
+                                .BlankText("لطفا فروشنده را انتخاب کنید.")
+                                //.ColSpan(5)
+                                .Width(466)
+                                .FieldStyle("padding-right:20px;")
+                                .Listeners(l =>
+                                {
+                                    //l.KeyDown.Fn = "SelectDescDoc";
+                                    //l.Focus.Handler = "App.NewSooratHesab.queryById('txtDescDoc').setFieldStyle('background-color:yellow;');";
+                                    //l.Blur.Handler = "App.NewSooratHesab.queryById('txtDescDoc').setFieldStyle('background-color:white;');";
+                                    l.IconClick.Handler = "GotoSearchShakhs(2)";
+                                    //l.AfterRender.Handler = "App.NewSooratHesab.queryById('txtDescDoc').icon.dom.classList.add('custom-NewSooratHesabicon3');";
+                                }),
+                            X.Label("شماره اقتصادی:"),
+                            X.TextField()
+                                .ItemID("txtShEghtesadiF")
+                                .AllowBlank(false)
+                                .Width(100)
+                                    .ReadOnly(true),
+                                X.Label("شناسه ملی:"),
+                                X.TextField()
+                                    .ItemID("txtShenaseF")
+                                    .AllowBlank(false)
+                                    .Width(100)
+                                    .ReadOnly(true),
+                            X.Label("کد شعبه:"),
+                            X.TextField()
+                                .ItemID("txtShobeF")
+                                .AllowBlank(false)
+                                .Width(100)
+                                .ReadOnly(true),
+
+            X.Label("کد پستی:"),
+                                X.TextField()
+                                    .ItemID("txtPostiF")
+                                    .AllowBlank(false)
+                                    .Width(100)
+                                    .ReadOnly(true)
+
+                        ),
+                            X.FieldSet()
+                            .Title("مشخصات خریدار")
+                            .Border(true)
+                            .Defaults(new { Margin = 2 })
+                            .Layout(LayoutType.Table)
+                            .LayoutConfig(new TableLayoutConfig { Columns = 10 })
+                            .Items(
+                                X.Hidden()
+                                    .ItemID("fldKharidarId"),
+
+                                X.Label("خریدار:"),
+                                X.TextField()
+                                        .ItemID("txtNameK")
+                                        .Icon(Icon.UserAdd)
+                                    .AllowBlank(false)
+                                    .AllowOnlyWhitespace(false)
+                                    .EnableKeyEvents(true)
+                                    .ReadOnly(true)
+                                    .BlankText("لطفا خریدار را انتخاب کنید.")
+                                   // .ColSpan(5)
+                                    .Width(466)
+                                    .FieldStyle("padding-right:20px;")
+                                    .Listeners(l =>
+                                    {
+                                        //l.KeyDown.Fn = "SelectDescDoc";
+                                        //l.Focus.Handler = "App.NewSooratHesab.queryById('txtDescDoc').setFieldStyle('background-color:yellow;');";
+                                        //l.Blur.Handler = "App.NewSooratHesab.queryById('txtDescDoc').setFieldStyle('background-color:white;');";
+                                        l.IconClick.Handler = "GotoSearchShakhs(3)";
+                                        //l.AfterRender.Handler = "App.NewSooratHesab.queryById('txtDescDoc').icon.dom.classList.add('custom-NewSooratHesabicon3');";
+                                    }),
+                                X.Label("شماره اقتصادی:"),
+                                X.TextField()
+                                    .ItemID("txtShEghtesadiK")
+                                    .AllowBlank(false)
+                                    .Width(100)
+                                        .ReadOnly(true),
+                                    X.Label("شناسه ملی:"),
+                                    X.TextField()
+                                        .ItemID("txtShenaseK")
+                                        .AllowBlank(false)
+                                        .Width(100)
+                                        .ReadOnly(true),
+                                X.Label("کد شعبه:"),
+                                X.TextField()
+                                    .ItemID("txtShobeK")
+                                    .AllowBlank(false)
+                                    .Width(100)
+                                    .ReadOnly(true),
+
+                X.Label("کد پستی:"),
+                                    X.TextField()
+                                        .ItemID("txtPostiK")
+                                        .AllowBlank(false)
+                                        .Width(100)
+                                        .ReadOnly(true)
+
+                            )
+                            ,
+                             X.FieldSet()
+                            .Title("مشخصات کالا/خدمت")
+                            .Border(true)
+                            .Defaults(new { Margin = 2 })
+                            .Layout(LayoutType.Table)
+                            .LayoutConfig(new TableLayoutConfig { Columns = 10 })
+                            .Items(
+                                X.Hidden()
+                                    .ItemID("fldKalaId"),
+
+                                X.Label("کد کالا/خدمت:"),
+                                X.TextField()
+                                        .ItemID("txtCode")
+                                        .Icon(Icon.UserAdd)
+                                    .AllowBlank(false)
+                                    .AllowOnlyWhitespace(false)
+                                    .EnableKeyEvents(true)
+                                    .ReadOnly(true)
+                                    .BlankText("لطفا کالا/ را انتخاب کنید.")
+                                    .ColSpan(4)
+                                    .Width(466)
+                                    .FieldStyle("padding-right:20px;")
+                                    .Listeners(l =>
+                                    {
+                                        //l.KeyDown.Fn = "SelectDescDoc";
+                                        //l.Focus.Handler = "App.NewSooratHesab.queryById('txtDescDoc').setFieldStyle('background-color:yellow;');";
+                                        //l.Blur.Handler = "App.NewSooratHesab.queryById('txtDescDoc').setFieldStyle('background-color:white;');";
+                                        l.IconClick.Handler = "GotoSearchkala()";
+                                        //l.AfterRender.Handler = "App.NewSooratHesab.queryById('txtDescDoc').icon.dom.classList.add('custom-NewSooratHesabicon3');";
+                                    }),
+                                X.Label("شرح کالا/خدمت:"),
+                                    X.TextField()
+                                        .ColSpan(4)
+                                    .ItemID("txtSharh")
+                                    .AllowBlank(false)
+                                         .Width(466),
+                                    X.Label("نرخ مالیات:"),
+                                    X.TextField()
+                                        .ItemID("txtNerkhMaliat")
+                                        .AllowBlank(false)
+                                        .Width(100),
+                                X.Label("واحد اندازگیری:"),
+                                X.ComboBox()
+                                    .ItemID("txtUnit")
+                                    .Width(100)
+                                        .TypeAhead(true)
+                                    .Editable(true)
+                                    .QueryMode(DataLoadMode.Local)
+                                    .AllowBlank(false)
+                                    .BlankText("لطفا واحد را انتخاب کنید.")
+                                    .TriggerAction(TriggerAction.All)
+                                    .DisplayField("fldName")
+                                    .ValueField("fldId")
+                                    .EnableKeyEvents(true)
+                                    .ForceSelection(true)
+                                    .Icon(Icon.Add)
+                                    .FieldStyle("padding-right:20px;")
+                                    .Listeners(l =>
+                                    {
+                                        l.BeforeQuery.Fn = "SearchMatch";
+                                     // l.Change.Fn = "EnableCboCostCenter";
+                                    })
+                                    .EmptyText("...")
+                                    .Store(X.Store()
+                                        .AutoLoad(false)
+                                        .Model(X.Model()
+                                            .IDProperty("fldId")
+                                            .Fields(
+                                                new ModelField("fldId", ModelFieldType.Int) { Mapping = "fldId" },
+                                                new ModelField("fldName", ModelFieldType.String) { Mapping = "fldName" }
+                                            )
+                                        )
+                                        .Proxy(X.AjaxProxy()
+                                            .Timeout(200000000)
+                                            .Url(Url.Action("GetUnits"))
+                                            .Reader(X.JsonReader().Root("data"))
+                                        )
+                                )
+                                    ,
+
+                X.Label("مقدار:"),
+                                    X.TextField()
+                                        .ItemID("txtMeghdar")
+                                        .AllowBlank(false)
+                                        .Width(100),
+                X.Label("فی:"),
+                                    X.TextField()
+                                        .ItemID("txtFee")
+                                        .AllowBlank(false)
+                                        .Width(100),
+                    X.Label("مبلغ تخفیف:"),
+                                        X.TextField()
+                                            .ItemID("txtTakhfif")
+                                            .AllowBlank(false)
+                                            .Width(100)
+
+                            )
+                            ,
+                    X.GridPanel()
+                        .Listeners(l =>
+                        {
+                            l.AfterRender.Handler = "App.NewSooratHesab.queryById('NewSooratHesabGrid').setSize(Ext.getBody().getViewSize().width - 40,Ext.getBody().getViewSize().height - 400);";
+                        })
+                        .ItemID("NewSooratHesabGrid")
+                        .Frame(true)
+                        .Title("آیتم های سند")
+                         .Store(
+                            X.StoreForModel().AutoLoad(false)
+                            .Proxy(Html.X().AjaxProxy()
+                                .Url(Url.Action("ReadDetail"))
+                                .Reader(Html.X().JsonReader().Root("data"))
+
+                            )
+                            .PageSize(20)
+                                .RemoteFilter(false)
+                                .RemotePaging(false)
+
+                        )
+                        .View(
+                            Html.X().GridView().LoadingText("در حال بارگذاری...").RTL(true)
+                        )
+
+                        .Plugins(X.FilterHeader().Remote(false))
+                        .ColumnModel(
+                            Html.X().Column().DataIndex(Model, m => m.fldId).Text("کد").Flex(1),
+                                Html.X().Column().DataIndex(Model, m => m.fldNameTypeShakhs).Text("شناسه کالا/خدمت").Flex(1),
+                                Html.X().Column().DataIndex(Model, m => m.fldName).Text("شرح کالا/ خدمت").Flex(1).Wrap(true),
+                                    Html.X().Column().DataIndex(Model, m => m.fldName).Text("شناسه یکتای ثبت قرارداد").Flex(1).Wrap(true),
+                                    Html.X().Column().DataIndex(Model, m => m.fldName).Text("واجد اندازگیری").Flex(1).Wrap(true),
+                                    Html.X().Column().DataIndex(Model, m => m.fldName).Text("وزن خالص").Flex(1).Wrap(true),
+                                    Html.X().Column().DataIndex(Model, m => m.fldName).Text("تعداد/مقدار").Flex(1).Wrap(true),
+                                    Html.X().Column().DataIndex(Model, m => m.fldName).Text("مبلغ واحد").Flex(1).Wrap(true),
+                                    Html.X().Column().DataIndex(Model, m => m.fldName).Text("مبلغ ارز").Flex(1).Wrap(true),
+                                    Html.X().Column().DataIndex(Model, m => m.fldName).Text("نوع ارز").Flex(1).Wrap(true),
+                                        Html.X().Column().DataIndex(Model, m => m.fldName).Text("نرخ برابری ارز با ریال").Flex(1).Wrap(true),
+                                        Html.X().Column().DataIndex(Model, m => m.fldName).Text("تفاوت نرخ خرد و فروش").Flex(1).Wrap(true),
+                                        Html.X().Column().DataIndex(Model, m => m.fldName).Text("ارزش ریالی کالا").Flex(1).Wrap(true),
+                                        Html.X().Column().DataIndex(Model, m => m.fldName).Text("ارزش ارزی کالا").Flex(1).Wrap(true),
+                                        Html.X().Column().DataIndex(Model, m => m.fldName).Text("اجرت ساخت").Flex(1).Wrap(true),
+                                        Html.X().Column().DataIndex(Model, m => m.fldName).Text("سود فروشنده").Flex(1).Wrap(true),
+                                            Html.X().Column().DataIndex(Model, m => m.fldName).Text("حق العمل").Flex(1).Wrap(true),
+                                            Html.X().Column().DataIndex(Model, m => m.fldName).Text("مجموع اجرت،سود،حق العمل").Flex(1).Wrap(true),
+                                            Html.X().Column().DataIndex(Model, m => m.fldName).Text("عیار").Flex(1).Wrap(true),
+                                                Html.X().Column().DataIndex(Model, m => m.fldName).Text("مبلغ تخفیف").Flex(1).Wrap(true),
+                                                Html.X().Column().DataIndex(Model, m => m.fldName).Text("مبلغ قبل از تخفیف").Flex(1).Wrap(true),
+                                                Html.X().Column().DataIndex(Model, m => m.fldName).Text("مبلغ بعد از تخفیف").Flex(1).Wrap(true),
+                                                Html.X().Column().DataIndex(Model, m => m.fldName).Text("نرخ مالیات").Flex(1).Wrap(true),
+                                                Html.X().Column().DataIndex(Model, m => m.fldName).Text("مبلغ مالیات").Flex(1).Wrap(true),
+                                                Html.X().Column().DataIndex(Model, m => m.fldName).Text("موضوع سایر مالیات").Flex(1).Wrap(true),
+                                                Html.X().Column().DataIndex(Model, m => m.fldName).Text("نرخ سایر مالیات").Flex(1).Wrap(true),
+                                                Html.X().Column().DataIndex(Model, m => m.fldName).Text("مبلغ سایر مالیات").Flex(1).Wrap(true),
+                                                Html.X().Column().DataIndex(Model, m => m.fldName).Text("مبلغ کل").Flex(1).Wrap(true),
+                                                    Html.X().Column().DataIndex(Model, m => m.fldName).Text("سهم نقدی").Flex(1).Wrap(true),
+                                                Html.X().Column().DataIndex(Model, m => m.fldName).Text("سهم مالیات").Flex(1).Wrap(true)
+                            )
+                        .SelectionModel(
+                            X.RowSelectionModel()
+                                .Mode(Ext.Net.SelectionMode.Single)
+                        )
+                )
+        )
+)
+<script type="text/javascript">
+    /*var HintEnterNewSooratHesab = 0;
+
+    function checkhintkeyDR_D(e) {
+        if (e == 13) {
+            HintEnterNewSooratHesab = 1;
+        }
+    };*/
+    var FirstLoadNewSooratHesabGrid = 0;
+    var FirstLoadCboHeadLine = 0;
+    var SelectTexttt = function () {
+        this.selectText();
+    };
+    var SearchMatch = function (record) {
+        return record.query = new RegExp(record.query.replace("(", "[(]").replace(")", "[)]"), 'i');
+    };
+
+    function GotoSearchShakhs(st) {
+        App.NewSooratHesab.body.mask("در حال بارگذاری");
+        Ext.net.DirectMethod.request({
+            url: '/Tax/SearchShakhs/Index',
+            params: {
+                State: st,
+                UserType: 1
+            },
+            success: function () {
+                App.NewSooratHesab.body.mask().hide();
+            }
+        });
+    }
+    function GotoSearchkala() {
+        App.NewSooratHesab.body.mask("در حال بارگذاری");
+        Ext.net.DirectMethod.request({
+            url: '/Tax/SearchKala-Khedmat/Index',
+          
+            success: function () {
+                App.NewSooratHesab.body.mask().hide();
+            }
+        });
+    }
+    
+    function SaveSooratHesab() {
+
+    }
+
+    
+
+
+
+   
+
+    
+
+    
+        var addKeyMapNewSooratHesab = function (cmp) {
+            this.keyMap = new Ext.util.KeyMap({
+                target: cmp.getEl(),
+                binding: [{
+                    key: [13, 9, 120], /*Ext.EventObject.ENTER,*/
+                    fn: function (key, e) {
+                        if (e.getKey() == 9 || e.getKey() == 120) {
+                            e.stopEvent();
+                        }
+                        if (e.getKey() == 120) {
+                            SaveNewSooratHesab();
+                        }
+                        else {
+                            var keyfield = App.NewSooratHesab.queryById(Ext.getCmp((Ext.Element.getActiveElement()).name).itemId);
+                            var nextfld;
+                            if (keyfield.itemId == "txtDescDoc") {
+                                /*nextfld = App.ColHeadLine.getComponent(0);*/
+                                /*var grid = App.NewSooratHesab.queryById('NewSooratHesabGrid');
+                                grid.editingPlugin.startEdit(0, 2);*/
+                                App.ColFile.getComponent(0).focus();
+                                return;
+                            }
+                            else if (keyfield.itemId == "txtFareiNum") {
+                                if (App.NewSooratHesab.queryById("CboDocumentType").disabled == true) {
+                                    nextfld = App.NewSooratHesab.queryById("txtDocDate");
+                                }
+                                else {
+                                    nextfld = App.NewSooratHesab.queryById("CboDocumentType");
+                                }
+                            }
+                            else {
+                                nextfld = keyfield.nextSibling().nextSibling();
+                                /*if (nextfld.itemId == "txtDescDoc") {
+                                    nextfld.el.swallowEvent(['keypress', 'keydown']);
+                                }*/
+                            }
+                            nextfld.focus();
+                            nextfld.selectText();
+                        }
+                    }
+                }]
+            });
+        };
+</script>

@@ -1,0 +1,185 @@
+﻿@using Kendo.Mvc.UI;
+<div class="modal" id="ShowTempArchive">
+    <script src="@Url.Content("~/Content/Base.js")" type="text/javascript"></script>
+    <script src="../../Scripts/jquery.ui.datepicker-cc.all.min.js" type="text/javascript"></script>
+    <div>
+
+
+        <br />
+        <div>
+            <table>
+                <tr>
+                    <td align="left">
+                        از تاریخ:
+                    </td>
+                    <td>
+                        @Avarez.Helper.winClass.textbox("txtStart")
+                    </td>
+               
+                    <td align="left">
+                        تا تاریخ:
+                    </td>
+                    <td>
+                        @Avarez.Helper.winClass.textbox("txtEnd")
+                    </td>
+                </tr>
+            </table>
+            <br />
+        </div>
+        <center>
+            <div>
+                @Avarez.Helper.winClass.Buttons("BtnSearch", "جستجو", "search")
+                @Avarez.Helper.winClass.Buttons("Tree", "مشاهده", "yes")
+            </div>
+        </center>
+        <br />
+        <div class="k-rtl demo-section">
+            @(Html.Kendo().Grid<Avarez.Models.sp_AllDigitalArchives>()
+                .Name("Grid")
+                .Columns(columns =>
+                {
+                    columns.Bound(p => p.fldID).Title("کد").Visible(false);
+                    columns.Bound(p => p.fldCarFileId).Visible(false);
+                    columns.Bound(p => p.fldModel).Title("مدل");
+                    columns.Bound(p => p.fldShasiNumber).Title("شماره شاسی");
+                    columns.Bound(p => p.fldMotorNumber).Title("شماره موتور");
+                    columns.Bound(p => p.fldVIN).Title("VIN");
+                    columns.Bound(p => p.fldUserName).Title("کاربر ثبت کننده");
+                })
+            .Selectable(selectable => selectable.Mode(GridSelectionMode.Single))
+            .Pageable()
+            .Scrollable()
+            .DataSource(data =>
+                data.Ajax()
+                .PageSize(10)
+                       // .Read("Fill", "ShowTempArchive")
+            )
+            )
+        </div>
+        
+    </div>
+    <script type="text/javascript">
+        $("document").ready(function () {
+            $('#Help').button();
+            $("#Tree").button();
+            $("#exit").button();
+            $("#BtnSearch").button();
+
+            $('#txtStart').datepicker({
+                onSelect: function (dateText, inst) {
+                    $('#txtEnd').datepicker('option', 'minDate', new JalaliDate(inst['selectedYear'], inst['selectedMonth'], inst['selectedDay']));
+                },
+                showButtonPanel: true,
+                changeMonth: true,
+                changeYear: true
+            });
+
+            $('#txtEnd').datepicker({
+                showButtonPanel: true,
+                changeMonth: true,
+                changeYear: true
+            });
+            $("#Tree").click(function () {
+                if (isWinOpen == false) {
+                    var entityGrid = $("#Grid").data("kendoGrid");
+                    var selectedItem = entityGrid.dataItem(entityGrid.select());
+                    if (selectedItem) {
+                        var carid = selectedItem.fldCarFileId;
+                        windowAppend('body', '@Url.Content("~/ListImageInTree/Index")' + '?carid=' + carid);
+                        isWinOpen = true;
+                    }
+                    else {
+                        alert('لطفا یک سطر را انتخاب کنید.');
+                    }
+                }
+            });
+            $("#exit").click(function () {
+                $("#ShowTempArchive").remove();
+                Dialog = 0;
+            });
+            $('#ShowTempArchive #btnClose').click(function () {
+                $("#ShowTempArchive").remove();
+                Dialog = 0;
+            });
+            $('#ShowTempArchive').on('keyup', 'input', function (event) {
+                if (event.which == 13) {
+                    var inputs = $('#ShowTempArchive').find(':input:visible');
+                    inputs.eq(inputs.index(this) + 1).focus();
+                }
+            });
+
+            $(document).keyup(function (event) {
+                if (event.which == 119) {
+                    SaveRecord();
+                }
+                else if (event.which == 113) {
+                    EditRecord();
+                }
+                else if (event.which == 115) {
+                    DeleteRecord();
+                }
+            });
+    
+
+        
+
+
+            $('#BtnSearch').click(function () {
+                var url = '@Url.Action("Reload", "ShowTempArchive")';
+                Reload(url, 'Grid', $("#txtStart").val(), $("#txtEnd").val());
+            });
+
+
+
+        });
+        
+        function Reload(Url, gridname, value1, value2) {
+            var grid = $('#' + gridname).data('kendoGrid');
+            $.ajax({
+                url: Url,
+                type: 'get',
+                datatype: 'json',
+                data: { value1: value1, value2: value2},
+                error: function (xhr, status, error) {
+                    alert(xhr + status);
+                },
+                success: function (result) {
+                    $("#" + gridname).data("kendoGrid").dataSource.data(result);
+                }
+
+            });
+        }
+
+        function PostForm(datas, url, id) {
+            var sendInfo = datas;
+            $('#Lock').show();
+            $.ajax({
+                type: "POST",
+                url: url,
+                data: sendInfo,
+                datatype: "json",
+                success: function (data) {
+                    var m = data;
+                    windowAppend("body", "/metro/error");
+                    $("#message").html(m.data);
+                    $("#fldId").val(m.id);
+                    switch (m.state) {
+                        case 0:
+                            $("#error .wintitle").html("ذخیره موفق");
+                            break;
+                        case 1:
+                            $("#error .wintitle").html("خطا");
+                            break;
+                    }
+                    var url = '@Url.Action("Reload", "ShowTempArchive")';
+                    Reload(url, 'Grid', '0', '', 30, 1);
+                    $('#Lock').hide();
+
+                },
+                failure: function (data) {
+                    alert(data.data);
+                }
+            });
+        }
+    </script>
+</div>

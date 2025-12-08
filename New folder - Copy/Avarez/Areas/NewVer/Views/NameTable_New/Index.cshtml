@@ -1,0 +1,193 @@
+﻿@model IEnumerable<Avarez.Models.sp_NameTablesSelect>
+@using Ext.Net.MVC
+@using Hogaf.ExtNet.UX
+@using Ext.Net;
+@{
+
+    var X = Html.X();
+}
+<script src="~/Scripts/accounting.js"></script>
+<script>
+    var getDetails = function (value, record) {
+        if ('@ViewBag.ImageSetting' == "3") {
+            if (record.record.data.fldId == 41) {
+                return value + '&nbsp;' + '<a href="javascript:myFunc()">(مشاهده جزئیات)</a>';
+            }
+            else {
+                return value;
+            }
+        }
+        else {
+            return value;
+        }
+    };
+
+    function myFunc() {
+        var txtAzTarikh = App.NameTable.queryById('txtAzTarikh');
+        var txtTaTarikh = App.NameTable.queryById('txtTaTarikh');
+        var er = false;
+        if (txtAzTarikh.validate() == false)
+            er = true;
+        if (txtTaTarikh.validate() == false)
+            er = true;
+        if (er == true)
+            return;
+
+        Ext.net.Mask.show({ msg: 'در حال بارگذاری...' });
+        Ext.net.DirectMethod.request({
+            url: '/NewVer/NameTable_New/getLogs',
+            params:{
+                AzTarikh:txtAzTarikh.getRawValue(),
+                TaTarikh: txtTaTarikh.getRawValue()
+            },
+            success: function (data) {
+                Ext.net.Mask.hide();
+            }
+        });
+    }
+</script>
+
+@(X.Window().Title("تاریخچه ی فعالیت کاربران").Border(false)
+                  .ID("NameTable")//.Maximized(true)
+              .Width(1100)
+              .Height(515)
+        .AutoScroll(true)
+    .Closable(true)
+    .CloseAction(Ext.Net.CloseAction.Destroy)
+    .Items(
+        //    X.TabPanel().ID("NameTableTab")
+        //.Border(false)
+        //.KeyMap(Html.X().KeyMap()
+        //    .Target("={Ext.isGecko ? Ext.getDoc() : Ext.getBody()}")
+        //)
+        //.DefaultButton("btn")
+        //.TitleAlign(Ext.Net.TitleAlign.Center)
+        //.Layout(Ext.Net.LayoutType.VBox)
+        //.LayoutConfig(new Ext.Net.VBoxLayoutConfig { Align = VBoxAlign.Center })
+
+        //.Items(
+            //X.Panel().Title("فعالیت کاربران").Border(false)
+            //.Items(
+                X.Panel().Border(false)
+                .TopBar(
+                Html.X().Toolbar()
+                    .Items(
+                        //X.Button().Text("خروجی اکسل").Icon(Ext.Net.Icon.PageExcel)
+                        //.Listeners(de =>
+                        //    {
+                        //        de.Click.Handler = "ExcelNameTable()";
+                        //    })
+                        //, 
+                        X.Button().Text("راهنما").Icon(Ext.Net.Icon.Help)
+                        .Listeners(de =>
+                            {
+                                de.Click.Handler = "HelpNameTable()";
+                            })
+                    )
+            )
+                    .LayoutConfig(new Ext.Net.TableLayoutConfig { Columns = 5 })
+                   .Defaults(new { Margin = 3 })
+                   .Items(
+                 
+                  X.Label("از تاریخ:"),
+                            X.PDateField()
+                            .ItemID("txtAzTarikh")
+                            .MaskRe("/[0-9,/]/")
+                            .MsgTarget(Ext.Net.MessageTarget.Side)
+                            .Editable(false)
+                            .AllowBlank(false)
+                            .BlankText("لطفا بازه تاریخ را وارد کنید.")
+                            .Width(190)
+                                 .Listeners(l => l.Change.Handler = "AzTarikh()")
+                            //.ColSpan(1),
+                            ,X.Label("تا تاریخ:"),
+                            X.PDateField()
+                            .ItemID("txtTaTarikh")
+                            .MaskRe("/[0-9,/]/")
+                            .MsgTarget(Ext.Net.MessageTarget.Side)
+                            .AllowBlank(false)
+                            .Editable(false)
+                            .BlankText("لطفا بازه تاریخ را وارد کنید.")
+                            .Width(190)
+                                .Listeners(l => l.Change.Handler = "TaTarikh()")
+                                 , X.Button().Text("خروجی اکسل").Icon(Ext.Net.Icon.PageExcel)
+                   .Listeners(l=>l.Click.Handler="ExcelNameTable()")
+                            //.ColSpan(1)
+
+
+                    ), X.GridPanel().AutoScroll(true)
+                    .Height(430)
+                        .BottomBar(X.PagingToolbar())
+                                    .ItemID("GridNameTable").Flex(2)
+            .Title("فعالیت کاربران")
+                .Store(
+                            X.StoreForModel()
+                            .Proxy(Html.X().AjaxProxy()
+                                .Url(Url.Action("Read"))
+                                .Reader(Html.X().JsonReader().Root("data"))
+
+                            )
+                            .PageSize(16)
+                            .RemoteFilter(true)
+                            .RemotePaging(true)
+                        )
+                .ColumnModel(
+             Html.X().Column().DataIndex(Model, m => m.fldId).Text("کد").Flex(1),
+            Html.X().Column().DataIndex(Model, m => m.fldName).Text("جدول").Flex(15)//.Renderer("getDetails")
+
+                        )
+            .View(Html.X().GridView().TrackOver(false))
+            .SelectionModel(Html.X().RowSelectionModel().PruneRemoved(false).Mode(SelectionMode.Multi))
+            .Features(Html.X().Grouping().HideGroupedHeader(false))
+      //  )
+            // )
+        )
+)
+<script type="text/javascript">
+    function AzTarikh() {
+        var txtAzTarikh = App.NameTable.queryById('txtAzTarikh');
+        var txtTaTarikh = App.NameTable.queryById('txtTaTarikh');
+        txtTaTarikh.setMinValue(txtAzTarikh.getValue());
+        txtTaTarikh.minText = "تاریخ شروع نباید از تاریخ پایان بزرگتر باشد.";
+    }
+    function TaTarikh() {
+        var txtAzTarikh = App.NameTable.queryById('txtAzTarikh');
+        var txtTaTarikh = App.NameTable.queryById('txtTaTarikh');
+        txtAzTarikh.setMaxValue(txtTaTarikh.getValue());
+        txtAzTarikh.maxText = "تاریخ شروع نباید از تاریخ پایان بزرگتر باشد.";
+    }
+    function ExcelNameTable() {
+        var txtAzTarikh = App.NameTable.queryById('txtAzTarikh');
+        var txtTaTarikh = App.NameTable.queryById('txtTaTarikh');
+        var er = false;
+        if (txtAzTarikh.validate() == false)
+            er = true;
+        if (txtTaTarikh.validate() == false)
+            er = true;
+        if (er == true)
+            return;
+        var SelectedRow = App.NameTable.queryById('GridNameTable').selModel.getLastSelected();
+        if (SelectedRow != null) {
+            window.location.href = '/NewVer/NameTable_New/FileExport?id=' + SelectedRow.data.fldId + '&start=' + txtAzTarikh.rawValue + '&end=' + txtTaTarikh.rawValue;
+        }
+        else {
+            Ext.MessageBox.show({
+                title: "خطا",
+                msg: "لطفا یک سطر را انتخاب نمایید.",
+                icon: Ext.MessageBox.ERROR,
+                buttons: Ext.MessageBox.OK
+            });
+        }
+
+    }
+
+    function HelpNameTable() {
+        Ext.net.Mask.show({ msg: 'در حال بارگذاری...' });
+        Ext.net.DirectMethod.request({
+            url: '/NewVer/NameTable_New/Help',
+            success: function (data) {
+                Ext.net.Mask.hide();
+            }
+        });
+    }
+</script>

@@ -1,0 +1,368 @@
+﻿@using Kendo.Mvc.UI;
+<div class="modal" id="PcPosParametr">
+    <script src="@Url.Content("~/Content/Base.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Scripts/jquery.ui.datepicker-cc.all.min.js")" type="text/javascript"></script>
+    <div>
+        @*<a href="@Url.Content("~/Helps/تنظیمات پنل پیامک.htm")" target="_blank" id="Help" title="راهنما" style="background-image:url('/Content/images/1381415123_help.png');background-repeat: no-repeat;height: 20px;float: left;top: 10px;left: 10px;"></a>*@
+
+        <br />
+        <center>
+            <table>
+                <tr>
+                    @Html.Hidden("fldId")
+                    <td align="left">
+                        اطلاعات PcPos:
+                    </td>
+                    <td>
+
+                        @(Html.Kendo().DropDownList()
+                                .Name("cboPcPosInfo")
+                                  .OptionLabel(" ...")
+                                  .DataTextField("fldName")
+                                  .DataValueField("fldID")
+                                  .DataSource(source =>
+                                  {
+                                      source.Read(read =>
+                                      {
+                                          read.Action("GetPcPosInfo", "PcPosParametr");
+                                      });
+                                  }).HtmlAttributes(new { @style = "display: none;width:220px;" })
+                        )
+                        <span id="lblPcPosInfoError" style="color: Red;"></span>
+                    </td>
+                 </tr>
+                <tr>
+                    <td align="left">
+                        <span style="color: Red;">*</span> نام فارسی پارامتر:
+                    </td>
+                    <td>
+                        @Avarez.Helper.winClass.textbox("txtFaName")
+                        <span id="lblFaNameError" style="color: Red;"></span>
+                    </td>
+
+
+                    <td align="left">
+                        <span style="color: Red;">*</span> نام انگلیسی پارامتر:
+                    </td>
+                    <td>
+                        @Avarez.Helper.winClass.textbox("txtEnName")
+                        <span id="lblEnNameError" style="color: Red;"></span>
+                    </td>
+                </tr>
+
+            </table>
+            <p>
+                @Avarez.Helper.winClass.Buttons("AddLink", "ذخیره", "Save")
+                @Avarez.Helper.winClass.Buttons("EditLink", "ویرایش", "Edit")
+                @Avarez.Helper.winClass.Buttons("DelLink", "حذف", "Del")
+                @Avarez.Helper.winClass.Buttons("exit", "خروج", "Exit")
+            </p>
+        </center>
+        @(Html.Kendo().PanelBar()
+        .Name("panelbar-images")
+        .Items(panelbar =>
+        {
+            panelbar.Add().Text("جستجو")
+                .ImageUrl(Url.Content("~/Content/images/search.png"))
+                .Content(@<div>
+                    <table>
+                        <tr>
+                            <td>
+                                فیلد جستجو:@Html.DropDownList("cboSearchFiald", new SelectList(new[] { new { ID = "0", Name = "نام فارسی پارامتر" }, new { ID = "1", Name = "نام انگلیسی پارامتر" } }, "ID", "Name"))
+                            </td>
+                            <td>
+                                نوع جستجو: @Html.DropDownList("cboSearchType", new SelectList(new[] { new { ID = "0", Name = "مشابه عبارت" }, new { ID = "1", Name = "مشابه عبارت از سمت راست" }, new { ID = "2", Name = "عین عبارت" } }, "ID", "Name"))
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                عبارت جستجو: @Avarez.Helper.winClass.textbox("txtSearch")
+                            </td>
+                            <td>
+                                نتیجه رکوردها: @Html.TextBox("txtTop", 30, new { @style = "width:30px;" }) رکورد
+                            </td>
+                        </tr>
+                    </table>
+                    <br />
+                </div>);
+        })
+        )
+        <div class="k-rtl demo-section">
+            @(Html.Kendo().Grid<Avarez.Models.sp_PcPosParametrSelect>()
+                .Name("Grid")
+                .Columns(columns =>
+                {
+                    columns.Bound(p => p.fldId).Title("کد").Visible(false);
+                    columns.Bound(p => p.fldFaName).Title("نام فارسی");
+                    columns.Bound(p => p.fldEnName).Title("نام انگلیسی");
+                })
+            .Selectable(selectable => selectable.Mode(GridSelectionMode.Single))
+            .Pageable()
+            .Scrollable()
+            .DataSource(data =>
+                data.Ajax()
+                .PageSize(10)
+                .Read("Fill", "PcPosParametr")
+            )
+            )
+        </div>
+    </div>
+    <script type="text/javascript">
+        var UserId = 0;
+
+        $("document").ready(function () {
+
+            $("#AddLink").button();
+            $("#EditLink").button();
+            $("#DelLink").button();
+            $("#exit").button();
+            $("#Help").button();
+
+
+            $("#exit").click(function () {
+                $("#PcPosParametr").remove();
+            });
+
+          
+            $('#PcPosParametr').on('keyup', 'input', function (event) {
+                if (event.which == 13) {
+                    var inputs = $('#PcPosParametr').find(':input:visible');
+                    inputs.eq(inputs.index(this) + 1).focus();
+                }
+            });
+
+            $('#cboPcPosInfo').change(function () {
+                var url = '@Url.Action("Reload", "PcPosParametr")';
+                if ($("#cboPcPosInfo").val() != "")
+                    Reload(url, 'Grid', 3, $("#cboPcPosInfo").val(), 0, 2);
+                else 
+                    Reload(url, 'Grid', 2, "", 0, 2);               
+            });
+
+            $(document).keyup(function (event) {
+                if (event.which == 119) {
+                    SaveRecord();
+                }
+                else if (event.which == 113) {
+                    EditRecord();
+                }
+                else if (event.which == 115) {
+                    DeleteRecord();
+                }
+            });
+            $('#AddLink').attr('title', 'کلید میانبر (F8)'); //119
+            $('#EditLink').attr('title', 'کلید میانبر (F2)'); //113
+            $('#DelLink').attr('title', 'کلید میانبر (F4)'); //115
+
+            jQuery("#EditLink").click(function () {
+                EditRecord();
+            });
+
+            $('#DelLink').click(function () {
+                DeleteRecord();
+            });
+
+            $("#AddLink").click(function () {
+                SaveRecord();
+            });
+
+            $('#txtSearch').keyup(function () {
+                var url = '@Url.Action("Reload", "PcPosParametr")';
+                Reload(url, 'Grid', $("#cboSearchFiald").val(), $("#txtSearch").val(), $("#txtTop").val(), $("#cboSearchType").val());
+            });
+
+
+            $("#txtUser").keyup(function () {
+                if ($("#txtUser").val() != '') {
+                    $("#txtUser").removeClass("input-validation-error");
+                    $("#lblUserError").html("");
+                }
+                else {
+                    $("#txtUser").addClass("input-validation-error");
+                    $('#lblUserError').html('لطفا نام کاربر را انتخاب کنید.');
+                }
+            });
+            $("#txtFaName").keyup(function () {
+                if ($("#txtFaName").val() != '') {
+                    $("#txtFaName").removeClass("input-validation-error");
+                    $("#lblFaNameError").html("");
+                }
+                else {
+                    $("#txtFaName").addClass("input-validation-error");
+                    $('#lblFaNameError').html('لطفا نام فارسی را وارد کنید.');
+                }
+            });
+            $("#txtEnName").keyup(function () {
+                if ($("#txtEnName").val() != '') {
+                    $("#txtEnName").removeClass("input-validation-error");
+                    $("#lblEnNameError").html("");
+                }
+                else {
+                    $("#txtEnName").addClass("input-validation-error");
+                    $('#lblEnNameError').html('لطفا نام انگلیسی را وارد کنید.');
+                }
+            });
+            $("#cboPcPosInfo").keyup(function () {
+                if ($("#cboPcPosInfo").val() != '') {
+                    $("#cboPcPosInfo").removeClass("input-validation-error");
+                    $("#lblPcPosInfoError").html("");
+                }
+                else {
+                    $("#cboPcPosInfo").addClass("input-validation-error");
+                    $('#lblPcPosInfoError').html('لطفا PcPos را انتخاب کنید.');
+                }
+            });
+
+        });
+        function Clear() {
+            $("#txtUser").val('');
+            UserId = 0;
+            $('#fldId').val('');
+            $('#cboPcPosInfo').val(0);
+            $('#txtFaName').val('');
+            $('#txtEnName').val('');
+        }
+         function SaveRecord() {
+                var er = false;
+                    if ($("#txtUser").val() != '') {
+                        $("#txtUser").removeClass("input-validation-error");
+                        $("#lblUserError").html("");
+                    }
+                    else {
+                        $("#txtUser").addClass("input-validation-error");
+                        $('#lblUserError').html('لطفا نام کاربر را انتخاب کنید.');
+                        er = true;
+                    }
+
+                    if ($("#txtFaName").val() != '') {
+                        $("#txtFaName").removeClass("input-validation-error");
+                        $("#lblFaNameError").html("");
+                    }
+                    else {
+                        $("#txtFaName").addClass("input-validation-error");
+                        $('#lblFaNameError').html('لطفا نام فارسی را وارد کنید.');
+                        er = true;
+                    }
+                    if ($("#txtEnName").val() != '') {
+                        $("#txtEnName").removeClass("input-validation-error");
+                        $("#lblEnNameError").html("");
+                    }
+                    else {
+                        $("#txtEnName").addClass("input-validation-error");
+                        $('#lblEnNameError').html('لطفا نام انگلیسی را وارد کنید.');
+                        er = true;
+                    }
+                    if ($("#cboPcPosInfo").val() != '') {
+                        $("#cboPcPosInfo").removeClass("input-validation-error");
+                        $("#lblPcPosInfoError").html("");
+                    }
+                    else {
+                        $("#cboPcPosInfo").addClass("input-validation-error");
+                        $('#lblPcPosInfoError').html('لطفا PcPos را انتخاب کنید.');
+                        er = true;
+                    }
+
+
+                if (er)
+                    return;
+                var data = {
+                    fldIdUser: UserId,
+                    fldPosInfoId: $("#cboPcPosInfo").val(),
+                    fldFaName: $("#txtFaName").val(),
+                    fldEnName: $("#txtEnName").val(),
+                    fldId: $("#fldId").val()
+                };
+                if (data != '') {
+                    PostForm(data, '@Url.Content("~/PcPosParametr/Save")', "#win");
+                }
+                Clear();
+            }
+            function EditRecord() {
+                var entityGrid = $("#Grid").data("kendoGrid");
+                var selectedItem = entityGrid.dataItem(entityGrid.select());
+                if (selectedItem) {
+                    var id = selectedItem.fldId;
+                    var URL = '@Url.Content("~/PcPosParametr/Details")';
+                    URL = URL + "/" + id;
+                    $.ajax({
+                        type: "GET",
+                        url: URL,
+                        success: function (data) {
+                            $("#fldId").val(data.fldId);
+                            var v = $("#cboPcPosInfo").data("kendoDropDownList");
+                            v.value(data.fldPosInfoId);
+                            $("#txtFaName").val(data.fldFaName);
+                            $("#txtEnName").val(data.fldEnName);
+                            UserId = data.fldIdUser;
+                            $("#txtUser").val(data.fldNameFamilyUser);
+                        }
+                    });
+                }
+                else {
+                    alert('لطفا یک سطر را انتخاب کنید.');
+                }
+            }
+        function DeleteRecord() {
+                var entityGrid = $("#Grid").data("kendoGrid");
+                var selectedItem = entityGrid.dataItem(entityGrid.select());
+                if (selectedItem) {
+                    var id = selectedItem.fldId;
+                    var URL = '@Url.Content("~/metro/YesNomsg")';
+                    URL = URL + "/?id=" + id + "&URL=" + '@Url.Content("~/PcPosParametr/Delete")';
+                    windowAppend("body", URL);
+                    $("#message").html('آیا مایل به حذف رکورد انتخاب شده هستید؟');
+                }
+                else {
+                    alert('لطفا یک سطر را انتخاب کنید.');
+                }
+                Clear();
+            }
+        function Reload(Url, gridname, field, value, top, searchType) {
+            var grid = $('#' + gridname).data('kendoGrid');
+            $.ajax({
+                url: Url,
+                type: 'get',
+                datatype: 'json',
+                data: { field: field, value: value, top: top, searchtype: searchType },
+                error: function (xhr, status, error) {
+                    alert(xhr + status);
+                },
+                success: function (result) {
+                    $("#" + gridname).data("kendoGrid").dataSource.data(result);
+                }
+
+            });
+        }
+
+        function PostForm(datas, url, id) {
+            var sendInfo = datas;
+            $('#Lock').show();
+            $.ajax({
+                type: "POST",
+                url: url,
+                data: sendInfo,
+                datatype: "json",
+                success: function (data) {
+                    var m = data;
+                    windowAppend("body", "/metro/error");
+                    $("#message").html(m.data);
+                    switch (m.state) {
+                        case 0:
+                            $("#error .wintitle").html("ذخیره موفق");
+                            break;
+                        case 1:
+                            $("#error .wintitle").html("خطا");
+                            break;
+                    }
+                    var url = '@Url.Action("Reload", "PcPosParametr")';
+                    Reload(url, 'Grid', '0', '', 30, 1);
+                    $('#Lock').hide();
+                },
+                failure: function (data) {
+                    alert(data.data);
+                }
+            });
+        }
+
+    </script>
+</div>

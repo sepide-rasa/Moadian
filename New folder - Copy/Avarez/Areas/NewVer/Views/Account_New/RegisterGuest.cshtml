@@ -1,0 +1,699 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>سامانه جامع تشخیص و وصول عوارض خودرو - استان زنجان</title>
+    <!-- CSS -->
+    <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Roboto:400,100,300,500">
+    <link rel="stylesheet" href="@Url.Content("~/Scripts/bootstarapLogin/assets/bootstrap/css/bootstrap.min.css")">
+    <link rel="stylesheet" href="@Url.Content("~/Scripts/bootstarapLogin/assets/font-awesome/css/font-awesome.min.css")">
+    <link rel="stylesheet" href="@Url.Content("~/Scripts/bootstarapLogin/assets/css/form-elements.css")">
+    <link rel="stylesheet" href="@Url.Content("~/Scripts/bootstarapLogin/assets/css/style.css")">
+    <link rel="shortcut icon" href="@Url.Content("~/Scripts/bootstarapLogin/assets/ico/favicon.ico")">
+    <style>
+        .form-group {
+            margin-bottom: 10px;
+        }
+
+        .inner-bg {
+            padding: 30px 0 30px 0;
+        }
+
+        .form-top {
+            padding: 0 25px 0 25px;
+        }
+
+        h3 {
+            margin-top: 10px;
+            margin-bottom: 10px;
+        }
+
+        .form-bottom {
+            padding-bottom: 15px;
+            padding-top: 20px;
+        }
+    </style>
+</head>
+<body dir="rtl" style="font-family:'B Zar'">
+    <center>
+        <div class="top-content">
+            <div class="inner-bg">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-sm-6 col-sm-offset-3">
+                            <div class="main-col form-top">
+                                <div style="text-align:center;">
+                                    <h3 style="color:white;">سامانه جامع تشخیص و وصول عوارض خودرو - استان زنجان</h3>
+                                    <h4 style="color:white;">« فرم ثبت نام کاربر مهمان »</h4>
+                                </div>
+                            </div>
+                            <div class="main-col form-bottom">
+                                <form onsubmit="return CheckOtherValidations()" role="form" id="register" action="/newver/account_new/SaveGeust" method="post">
+                                    <div class="form-group row">
+                                        <span style="font-family:'B Zar';font-weight:bold;font-size:15px;width:30%">شناسه کاربری: </span>
+                                        <label class="sr-only" for="form-username">نام کاربری</label>
+                                        <input type="text" style="width:70%; float:left;margin-right:3px; font-family:'B Zar';" name="fldUserName" id="username" placeholder="نام کاربری..."
+                                               class="form-username form-control boot" required oninvalid="this.setCustomValidity('لطفا شناسه کاربری را وارد نمایید.')" oninput="setCustomValidity('')" title="" autofocus>
+                                    </div>
+                                    <div class="form-group row">
+                                        <span style="font-family:'B Zar';font-weight:bold;font-size:15px;width:30%">رمز عبور: </span>
+                                        <label class="sr-only" for="form-password">رمز عبور</label>
+                                        <input type="password" style="width:70%;float:left;margin-right:3px; font-family:'B Zar';" name="fldPasssword" id="password" placeholder="رمز عبور..."
+                                               class="form-password form-control boot" required oninvalid="this.setCustomValidity('لطفا رمز عبور را وارد نمایید.')" oninput="setCustomValidity('')" title="">
+                                    </div>
+                                    <div class="form-group row">
+                                        <span style="font-family:'B Zar';font-weight:bold;font-size:15px;width:30%">تکرار رمز عبور: </span>
+                                        <label class="sr-only" for="form-password">رمز عبور</label>
+                                        <input type="password" style="width:70%;float:left;margin-right:3px; font-family:'B Zar';" name="repeat-password" id="repeat-password" placeholder="رمز عبور..."
+                                               class="form-password form-control boot" required oninvalid="this.setCustomValidity('لطفا رمز عبور را وارد نمایید.')" oninput="setCustomValidity('')" title="">
+                                    </div>
+                                    <div class="form-group row">
+                                        <span style="font-family:'B Zar';font-weight:bold;font-size:15px;width:30%">شهرداری: </span>
+                                        <select required style="width:70%;float:left;margin-right:3px; font-family:'B Zar';" class="form-control boot" id="Mun" name="fldMunId"
+                                                oninvalid="this.setCustomValidity('لطفا شهرداری را انتخاب نمایید.')" oninput="setCustomValidity('')" title="">
+                                            <option value="" disabled selected>شهرداری...</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group row">
+                                        <span style="font-family:'B Zar';font-weight:bold;font-size:15px; width:30%">نام: </span>
+                                        <label class="sr-only">نام...</label>
+                                        <input type="text" maxlength="100" style="width:70%;float:left;margin-right:3px; font-family:'B Zar';" name="fldName" id="name" placeholder="نام..."
+                                               oninput="CheckPersianChar('name');" class="form-control boot" required title="" />
+                                    </div>
+                                    <div class="form-group row">
+                                        <span style="font-family:'B Zar';font-weight:bold;font-size:15px;width:30%">نام خانوادگی: </span>
+                                        <label class="sr-only">نام خانوادگی...</label>
+                                        <input type="text" maxlength="150" style="width:70%;float:left;margin-right:3px; font-family:'B Zar';" name="fldFamily" id="family" placeholder="نام خانوادگی..."
+                                               oninput="CheckPersianChar('family')" class="form-control boot" required title="">
+                                    </div>
+                                    <div class="form-group row">
+                                        <span style="font-family:'B Zar';font-weight:bold;font-size:15px;width:30%">کد ملی: </span>
+                                        <label class="sr-only">کد ملی...</label>
+                                        <input type="text" maxlength="10" minlength="10" style="width:70%;float:left;margin-right:3px; font-family:'B Zar';" name="fldCodeMeli" id="nationalcode" placeholder="کد ملی..."
+                                               onkeydown="javascript: return ['Backspace', 'Delete', 'ArrowLeft', 'ArrowRight'].includes(event.code) ? true : !isNaN(Number(event.key)) && event.code !== 'Space';"
+                                               oninput="CheckValidations()" class="form-control boot" required title="">
+                                    </div>
+                                    <div class="form-group row">
+                                        <span style="font-family:'B Zar';font-weight:bold;font-size:15px;width:30%">موبایل: </span>
+                                        <label class="sr-only">موبایل...</label>
+                                        <input type="text" maxlength="11" minlength="11" style="width:70%;float:left;margin-right:3px; font-family:'B Zar';" name="fldMobile" id="mobile" placeholder="موبایل..."
+                                               onkeydown="javascript: return ['Backspace', 'Delete', 'ArrowLeft', 'ArrowRight'].includes(event.code) ? true : !isNaN(Number(event.key)) && event.code !== 'Space';"
+                                               oninput=" CheckValidations();" class="form-control boot" required title="">
+                                    </div>
+                                    <div class="form-group row">
+                                        <span style="font-family:'B Zar';font-weight:bold;font-size:15px;width:30%">ایمیل: </span>
+                                        <label class="sr-only">ایمیل...</label>
+                                        <input type="text" maxlength="100" style="width:70%;float:left;margin-right:3px; font-family:'B Zar';" name="fldDesc" id="email" placeholder="ایمیل..."
+                                               onkeyup="onInitializeToEnMail()" class="form-control boot" title="">
+                                    </div>
+                                    <button type="submit" class="btn" onclick="CheckValidations()" style="font-family:'B Zar'">ثبت</button>
+                                    <br />
+                                    <span id="err" style="width:100%;color:red;text-align:right;margin-bottom:4px;"></span>
+                                    <div dir="rtl" style="width:100%; color:red;text-align:right;margin-bottom:10px;">
+                                        @Html.ValidationSummary(true, "عملیات ناموفق", new { @style = "font-weight:bold;" })
+                                    </div>
+                                </form>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="landing-footer">
+            <ul class="navbar navbar-nav">
+                <li>
+                    <span class="latin-font hidden-xs ng-scope" style="font-size: medium;" translate="copyrighten"><a href="http://www.rasa-system.com">Rasa System Alborz</a> - Copyright ©</span>
+                    <span class="latin-font hidden-xs ng-binding" style="font-size: medium;" ng-bind="copyrightyear">2016</span>
+                </li>
+            </ul>
+            <ul style="margin-right: -40px;" class="navbar navbar-nav pull-left hidden-xs">
+                <li translate="helpDeskTel" style="font-size: medium;" class="ng-scope">تلفن پشتیبانی : 32347992-023</li>
+            </ul>
+        </div>
+    </center>
+    <!-- Javascript -->
+    <script src="@Url.Content("~/Scripts/bootstarapLogin/assets/js/jquery-1.11.1.min.js")"></script>
+    <script src="@Url.Content("~/Scripts/bootstarapLogin/assets/bootstrap/js/bootstrap.min.js")"></script>
+    <script src="@Url.Content("~/Scripts/bootstarapLogin/assets/js/jquery.backstretch.min.js")"></script>
+    <script type="text/javascript">
+
+        function showErrorMsg(ErrMsg) {
+            var $div = $('.validation-summary-errors');
+            if ($div.length == 0) {
+                $div = $('<div class="validation-summary-errors">');
+                var $span = $('<span style="font-size:12px;font-weight:bold;">');
+                var $ul = $('<ul>');
+                $span.appendTo($div).text("عملیات ناموفق");
+                $ul.appendTo($div);
+                $div.appendTo($('#err'));
+
+                $div.find('ul').append($('<li style="text-align:right;color:red;font-size:12px;font-weight:bold;">').text(ErrMsg));
+            }
+            else {
+                $div.find('ul').find('li').text(ErrMsg);
+            }
+        }
+
+        function CheckOtherValidations() {
+            if ($("#password").val() != $("#repeat-password").val()) {
+                showErrorMsg("رمز عبور و تکرار رمز عبور یکسان نیستند.");
+                return false;
+            }
+            else if ($("#password").val().match($("#username").val())) {
+                showErrorMsg("رمز عبور نمی تواند شامل  نام کاربری باشد.");
+                return false;
+            }
+            else if ($("#password").val().length <= 5) {
+                showErrorMsg("رمز عبور حداقل باید شامل 6 کاراکتر باشد.");
+                return false;
+            }
+            else if (!($("#password").val().match(/[0-9]/)) || !($("#password").val().match(/[a-z]/)) || !($("#password").val().match(/[A-Z]/))) {
+                showErrorMsg("رمز عبور باید فقط با حروف لاتین، حداقل یک حرف بزرگ، حداقل یک حرف کوچک و شامل ارقام باشد.");
+                return false;
+            }
+        }
+
+        function CheckValidations() {
+            if (document.getElementById("name").value == "") {
+                document.getElementById("name")
+                  .setCustomValidity('لطفا نام را وارد نمایید.');
+                return false;
+            }
+            else {
+                document.getElementById("name")
+                  .setCustomValidity('');
+            }
+            if (document.getElementById("family").value == "") {
+                document.getElementById("family")
+                  .setCustomValidity('لطفا نام خانوادگی را وارد نمایید.');
+                return false;
+            }
+            else {
+                document.getElementById("family")
+                  .setCustomValidity('');
+            }
+            if (document.getElementById("nationalcode").value == "") {
+                document.getElementById("nationalcode")
+                  .setCustomValidity('لطفا کد ملی را وارد نمایید.');
+                return false;
+            }
+            else if ($('#nationalcode').val().length != 10) {
+                document.getElementById("nationalcode")
+                  .setCustomValidity('کد ملی باید شامل ده رقم باشد');
+                return false;
+            }
+            else {
+                document.getElementById("nationalcode")
+                  .setCustomValidity('');
+            }
+            if (document.getElementById("mobile").value == "") {
+                document.getElementById("mobile")
+                  .setCustomValidity('لطفا شماره موبایل را وارد نمایید.');
+                return false;
+            }
+            else if ($('#mobile').val().length != 11) {
+                document.getElementById("mobile")
+                  .setCustomValidity('شماره موبایل وارد شده صحیح نمی باشد.');
+                return false;
+            }
+            else if (new RegExp("^[0][9]\\d{9}$").test($('#mobile').val()) == false) {
+                document.getElementById("mobile")
+                  .setCustomValidity('فرمت موبایل وارد شده صحیح نمی باشد.');
+                return false;
+            }
+            else {
+                document.getElementById("mobile")
+                  .setCustomValidity('');
+            }
+        }
+
+        function CheckPersianChar(id) {
+            let value = document.getElementById(id).value;
+            value = value.replace(/[^أ-ئ,ا-ی, ,آ]/ig, '');
+            document.getElementById(id).value = value;
+            CheckValidations();
+        }
+
+        var onInitializeToEnMail = function () {
+            var tt = document.getElementById("email");
+            tt.value = tt.value.replace('ش', 'a');
+            tt.value = tt.value.replace('ذ', 'b');
+            tt.value = tt.value.replace('ز', 'c');
+            tt.value = tt.value.replace('ی', 'd');
+            tt.value = tt.value.replace('ث', 'e');
+            tt.value = tt.value.replace('ب', 'f');
+            tt.value = tt.value.replace('ل', 'g');
+            tt.value = tt.value.replace('ا', 'h');
+            tt.value = tt.value.replace('ه', 'i');
+            tt.value = tt.value.replace('ت', 'j');
+            tt.value = tt.value.replace('ن', 'k');
+            tt.value = tt.value.replace('م', 'l');
+            tt.value = tt.value.replace('ئ', 'm');
+            tt.value = tt.value.replace('د', 'n');
+            tt.value = tt.value.replace('خ', 'o');
+            tt.value = tt.value.replace('ح', 'p');
+            tt.value = tt.value.replace('ض', 'q');
+            tt.value = tt.value.replace('ف', 't');
+            tt.value = tt.value.replace('ق', 'r');
+            tt.value = tt.value.replace('س', 's');
+            tt.value = tt.value.replace('ع', 'u');
+            tt.value = tt.value.replace('ر', 'v');
+            tt.value = tt.value.replace('ص', 'w');
+            tt.value = tt.value.replace('ط', 'x');
+            tt.value = tt.value.replace('غ', 'y');
+            tt.value = tt.value.replace('ظ', 'z');
+            tt.value = tt.value.replace('ک', ';');
+            tt.value = tt.value.replace('ج', '[');
+            tt.value = tt.value.replace('چ', ']');
+            tt.value = tt.value.replace('ژ', 'C');
+            tt.value = tt.value.replace('و', ',');
+            return tt;
+        };
+
+        jQuery(document).ready(function () {
+            $("input,select").keydown(
+                function (e) {
+                    if (e.keyCode === 13) {
+                        if (document.activeElement.id == "repeat-password") {
+                            document.getElementById("Mun").focus();
+                        }
+                        else if (document.activeElement.id == "Mun") {
+                            document.getElementById("name").focus();
+                        }
+                        else {
+                            var index = $('input').index($("#" + document.activeElement.id));
+                            $('input').eq(index + 1).focus();
+                        }
+                    }
+                });
+
+            var option = document.createElement("option");
+            var data1 = {
+                ID: 17
+            };
+            $.ajax({
+                type: "POST",
+                url: '/NewVer/Account_New/GetCascadeCounty2',
+                contentType: "application/json; charset=utf-8",
+                data: JSON.stringify(data1),
+                datatype: "json",
+                success: function (data) {
+                    var index=data.CountyId.findIndex(l=>l==548);
+                    data.CountyId=data.CountyId.filter(l=>l==548);
+                    for (var i = 0; i < data.CountyId.length; i++) {
+                        var opt = new Option(data.CountyName[index], data.CountyId[i]);
+                        $("#Mun").append(opt);
+                    }
+                },
+                failure: function (data) {
+                    alert(data.data);
+                }
+            });
+
+            $.backstretch("@Url.Content("~/Scripts/bootstarapLogin/assets/img/backgrounds/1.jpg")");
+
+            $('.login-form input[type="text"], .login-form input[type="password"], .login-form textarea').on('focus', function () {
+                $(this).removeClass('input-error');
+            });
+        });
+    </script>
+</body>
+</html>
+@*@using Ext.Net.MVC
+    @using Hogaf.ExtNet.UX
+    @using Ext.Net.Utilities;
+    @using Ext.Net
+
+    @{
+        var X = Html.X();
+    }
+
+    <style>
+        .BackgroundCls{
+            background-image:url(../../../../Scripts/bootstarapLogin/assets/img/backgrounds/1.jpg);
+            background-Repeat: no-repeat;
+            background-size:100%;
+            background-position:center;
+        }
+        .TransparentCls{
+            background:transparent !important;
+        }
+        #pnlSpecifications {
+            background-color:rgba(200,200,200,0.6) !important;
+        }
+        #NewGeust .x-panel-header-text-default {
+            font-size: 20px;
+            font-weight: bold;
+            line-height: 40px;
+        }
+        #pnlSpecifications  td{
+            font-size: 14px !important;
+        }
+        #pnlSpecifications  .x-panel-header-text-default-framed{
+            font-size: 14px !important;
+            font-weight: bold !important;
+            line-height: 30px !important;
+        }
+        #pnlSpecifications .x-form-trigger{
+            height:30px;
+        }
+        #pnlSpecifications .x-trigger-cell{
+            border-bottom-left-radius:5px;
+            border-top-left-radius:5px;
+        }
+        .btnCls {
+            height:25px;
+            width:70px;
+        }
+         .btnCls span{
+            font-size:15px !important;
+            font-weight:bold;
+        }
+    </style>
+
+    @(Html.X().Panel()
+        .Listeners(li =>
+        {
+            li.Render.Fn = "addKeyMapNewGeust";
+            li.AfterRender.Handler = "SetSizeNewGeust()";
+        })
+        .Title("سامانه جامع تشخیص و وصول عوارض خودرو - استان زنجان")
+        .TitleAlign(TitleAlign.Center)
+        .ID("NewGeust")
+        .Closable(false)
+        .Layout(LayoutType.VBox)
+        .LayoutConfig(new VBoxLayoutConfig { Align = VBoxAlign.Center })
+        .BodyCls("BackgroundCls")
+        .Items(
+            X.Panel()
+                .Border(false)
+                .ItemID("EnrollPnl")
+                .Layout(LayoutType.HBox)
+                .BaseCls("TransparentCls")
+                .LayoutConfig(new HBoxLayoutConfig {Align=HBoxAlign.Middle, Pack=BoxPack.Center })
+                .Items(
+                    X.Panel()
+                        .PaddingSpec("25px 25px 0 25px")
+                        .Title("فرم ثبت نام کاربر مهمان")
+                        .ID("pnlSpecifications")
+                        .Border(false)
+                        .ButtonAlign(Ext.Net.Alignment.Center)
+                        .BodyStyle("background-color:transparent !important;")
+                        .BottomBar(
+                            Html.X().Toolbar()
+                                .Height(30)
+                                .MarginSpec("25px -25px 0 -25px")
+                                .Layout(LayoutType.VBox)
+                                .LayoutConfig(new VBoxLayoutConfig { Align=VBoxAlign.Center})
+                                .Items(
+                                    X.Button()
+                                        .Text("ثبت")
+                                        .Icon(Ext.Net.Icon.Accept)
+                                        .Listeners(l => l.Click.Handler = "SaveGeust();")
+                                        .Cls("btnCls")
+                                )
+                        )
+                        .Frame(true)
+                        .Defaults(new { Margin = 5 })
+                        .Layout(LayoutType.Table)
+                        .LayoutConfig(new TableLayoutConfig { Columns = 2 })
+                        .Items(
+                            X.Label("شناسه کاربری:"),
+                            X.TextField()
+                                .ItemID("txtUserName")
+                                .AllowBlank(false)
+                                .BlankText("لطفا شناسه کاربری را وارد نمایید.")
+                                .FieldStyle("border-radius:5px;")
+                                .AutoFocus(true)
+                                .Width(250)
+                                .Height(30),
+                            X.Label("رمز عبور:"),
+                            X.TextField()
+                                .ItemID("txtPass")
+                                .InputType(Ext.Net.InputType.Password)
+                                .EnableKeyEvents(true)
+                                .AllowBlank(false)
+                                .FieldStyle("border-radius:5px;")
+                                .BlankText("لطفا رمز عبور را وارد نمایید.")
+                                .Width(250)
+                                .Height(30),
+                            X.Label("تکرار رمز عبور:"),
+                            X.TextField()
+                                .ItemID("txtRepeatedPass")
+                                .InputType(Ext.Net.InputType.Password)
+                                .EnableKeyEvents(true)
+                                .AllowBlank(false)
+                                .FieldStyle("border-radius:5px;")
+                                .BlankText("لطفا رمز عبور را وارد نمایید.")
+                                .Width(250)
+                                .Height(30),
+                            X.Label("شهرداری:"),
+                            X.ComboBox()
+                                .ItemID("CboMun")
+                                .TypeAhead(true)
+                                .AllowBlank(false)
+                                .BlankText("لطفا شهرداری را انتخاب نمایید.")
+                                .ForceSelection(true)
+                                .QueryMode(DataLoadMode.Local)
+                                .TriggerAction(TriggerAction.All)
+                                .DisplayField("fldName")
+                                .ValueField("fldId")
+                                .FieldStyle("border-bottom-right-radius:5px;border-top-right-radius:5px;")
+                                .Width(250)
+                                .Height(30)
+                                .Store(X.Store()
+                                    .Model(X.Model()
+                                        .IDProperty("fldId")
+                                        .Fields(
+                                                new ModelField("fldId", ModelFieldType.String) { Mapping = "fldID" },
+                                                new ModelField("fldName", ModelFieldType.String) { Mapping = "fldName" }
+                                            )
+                                    )
+                                    .Proxy(X.AjaxProxy()
+                                        .Url(Url.Action("GetCascadeCounty"))
+                                        .ExtraParams(l => l.Add(new { ID = "17" }))
+                                        .Reader(X.JsonReader().Root("data"))
+                                        .ActionMethods(l => l.Read = Ext.Net.HttpMethod.POST)
+                                    )
+                                ),
+                            X.Label("نام:"),
+                            X.TextField()
+                                .ItemID("txtName")
+                                .AllowBlank(false)
+                                .MaskRe("[أ-ئ,ا-ی, ,آ]")
+                                .BlankText("لطفا نام خود را وارد نمایید.")
+                                .FieldStyle("border-radius:5px;")
+                                .MaxLength(100)
+                                .EnforceMaxLength(true)
+                                .Width(250)
+                                .Height(30),
+                            X.Label("نام خانوادگی:"),
+                            X.TextField()
+                                .ItemID("txtFamily")
+                                .AllowBlank(false)
+                                .MaskRe("[أ-ئ,ا-ی, ,آ]")
+                                .BlankText("لطفا نام خانوادگی خود را وارد نمایید.")
+                                .FieldStyle("border-radius:5px;")
+                                .MaxLength(150)
+                                .EnforceMaxLength(true)
+                                .Width(250)
+                                .Height(30),
+                            X.Label("کد ملی:"),
+                            X.TextField()
+                                .ItemID("txtCodeMeli")
+                                .FieldStyle("direction:ltr;padding-left:5px;border-radius:5px;")
+                                .MaskRe("/[0-9]/")
+                                .AllowBlank(false)
+                                .BlankText("لطفا کد ملی خود را وارد نمایید.")
+                                .MinLength(10)
+                                .MaxLength(10)
+                                .EnforceMaxLength(true)
+                                .Width(250)
+                                .Height(30),
+                            X.Label("موبایل:"),
+                            X.TextField()
+                                .ItemID("txtMobile")
+                                .EnforceMaxLength(true)
+                                .FieldStyle("direction:ltr;padding-left:5px;border-radius:5px;")
+                                .MaxLength(11)
+                                .MinLength(11)
+                                .AllowBlank(false)
+                                .MaskRe("/[0-9]/")
+                                .Regex(@"^[0][9]")
+                                .BlankText("لطفا شماره موبایل را وارد نمایید.")
+                                .Width(250)
+                                .Height(30),
+                            X.Label("ایمیل:"),
+                            X.TextField()
+                                .ItemID("txtMail")
+                                .EnableKeyEvents(true)
+                                .Listeners(l => l.KeyUp.Fn = "onInitializeToEnMail")
+                                .EnforceMaxLength(true)
+                                .MaxLength(100)
+                                .AllowBlank(true)
+                                .BlankText("لطفا ایمیل را وارد نمایید.")
+                                .FieldStyle("direction:ltr;padding-left:5px;border-radius:5px;")
+                                .Width(250)
+                                .Height(30)
+                        )
+                    )
+            )
+    )
+    <script type="text/javascript">
+        var onInitializeToEnMail = function () {
+            var tt = App.NewGeust.queryById('txtMail');
+            changeLagToEn(tt);
+        };
+
+        function SetSizeNewGeust() {
+            App.NewGeust.setHeight(Ext.getBody().getViewSize().height);
+            App.NewGeust.queryById("EnrollPnl").setSize(Ext.getBody().getViewSize().width - 800, Ext.getBody().getViewSize().height - 52);
+            App.pnlSpecifications.setWidth(Ext.getBody().getViewSize().width - 930);
+        }
+
+        function SaveGeust() {
+            var txtUserName = App.NewGeust.queryById('txtUserName');
+            var txtPass = App.NewGeust.queryById('txtPass');
+            var txtRepeatedPass = App.NewGeust.queryById('txtRepeatedPass');
+            var CboMun = App.NewGeust.queryById('CboMun');
+            var txtName = App.NewGeust.queryById('txtName');
+            var txtFamily = App.NewGeust.queryById('txtFamily');
+            var txtCodeMeli = App.NewGeust.queryById('txtCodeMeli');
+            var txtMobile = App.NewGeust.queryById('txtMobile');
+            var txtMail = App.NewGeust.queryById('txtMail');
+
+            var er = false;
+
+            if (txtUserName.validate() == false) {
+                er = true;
+            }
+            if (txtPass.validate() == false) {
+                er = true;
+            }
+            if (txtRepeatedPass.validate() == false) {
+                er = true;
+            }
+            if (CboMun.validate() == false) {
+                er = true;
+            }
+            if (txtName.validate() == false) {
+                er = true;
+            }
+            if (txtFamily.validate() == false) {
+                er = true;
+            }
+            if (txtCodeMeli.validate() == false) {
+                er = true;
+            }
+            if (txtMobile.validate() == false) {
+                er = true;
+            }
+            if (er == true)
+                return;
+
+            if (txtPass.getValue() != txtRepeatedPass.getValue()) {
+                Ext.MessageBox.show({
+                    title: "خطا",
+                    msg: "رمز عبور و تکرار رمز عبور یکسان نیستند.",
+                    icon: Ext.MessageBox.ERROR,
+                    buttons: Ext.MessageBox.OK
+                });
+            }
+            else if (txtPass.getValue().match(txtUserName.getValue())) {
+                Ext.MessageBox.show({
+                    title: "خطا",
+                    msg: "رمز عبور نمی تواند شامل  نام کاربری باشد.",
+                    icon: Ext.MessageBox.ERROR,
+                    buttons: Ext.MessageBox.OK
+                });
+            }
+            else if (txtPass.getValue().length <= 5) {
+                Ext.MessageBox.show({
+                    title: "خطا",
+                    msg: "رمز عبور حداقل باید شامل 6 کاراکتر باشد.",
+                    icon: Ext.MessageBox.ERROR,
+                    buttons: Ext.MessageBox.OK
+                });
+            }
+            else if (!(txtPass.getValue().match(/[0-9]/)) || !(txtPass.getValue().match(/[a-z]/)) || !(txtPass.getValue().match(/[A-Z]/))) {
+                Ext.MessageBox.show({
+                    title: "خطا",
+                    msg: "رمز عبور باید فقط با حروف لاتین، حداقل یک حرف بزرگ، حداقل یک حرف کوچک و شامل ارقام باشد.",
+                    icon: Ext.MessageBox.ERROR,
+                    buttons: Ext.MessageBox.OK
+                });
+            }
+            else {
+                App.NewGeust.body.mask("در حال تکمیل ثبت نام");
+                Ext.net.DirectMethod.request({
+                    url: '/Account_New/SaveGeust',
+                    params: {
+                        fldName: txtName.getValue(),
+                        fldFamily: txtFamily.getValue(),
+                        fldCodeMeli: txtCodeMeli.getValue(),
+                        fldMobile: txtMobile.getValue(),
+                        fldMunId: CboMun.getValue(),
+                        fldUserName: txtUserName.getValue(),
+                        fldPasssword: txtPass.getValue(),
+                        fldDesc: txtMail.getRawValue()
+                    },
+                    success: function (data) {
+                        App.NewGeust.body.mask().hide();
+                        if (data.Er == 1) {
+                            Ext.MessageBox.show({
+                                title: data.MsgTitle,
+                                msg: data.Msg,
+                                icon: Ext.MessageBox.ERROR,
+                                buttons: Ext.MessageBox.OK
+                            });
+                        }
+                        else {
+                            Ext.MessageBox.show({
+                                title: data.MsgTitle,
+                                msg: data.Msg,
+                                icon: Ext.MessageBox.INFO,
+                                buttons: Ext.MessageBox.OK,
+                                buttonText: {
+                                    ok: 'ورود به سایت '
+                                },
+                                fn: function (btn) {
+                                    if (btn == "ok" && data.Er != 1) {
+                                        document.location.href = '/NewVer/Account_New/LogOn/3';
+                                    }
+                                }
+                            });
+                        }
+
+                    }
+                });
+            }
+        }
+
+        var addKeyMapNewGeust = function (cmp) {
+            this.keyMap = new Ext.util.KeyMap({
+                target: cmp.getEl(),
+                binding: [{
+                    key: [13, 9], /*Ext.EventObject.ENTER,*/
+                    fn: function (key, e) {
+                        if (e.getKey() == 9) {
+                            e.stopEvent();
+                        }
+                        var keyfield = App.NewGeust.queryById(Ext.getCmp((Ext.Element.getActiveElement()).name).itemId);
+                        var nextfld;
+
+                        if (keyfield.itemId == "txtMail") {
+                            SaveGeust();
+                        }
+                        else {
+                            nextfld = keyfield.nextSibling().nextSibling();
+                            nextfld.focus();
+                            nextfld.selectText();
+                        }
+                    }
+                }]
+            });
+        }
+    </script>*@

@@ -1,0 +1,456 @@
+﻿@using Kendo.Mvc.UI;
+<div class="modal" id="TempArchive">
+
+    <script src="~/Resources/dynamsoft.webtwain.initiate.js"></script>
+    <script src="~/Resources/dynamsoft.webtwain.config.js"></script>
+    <script src="~/Scripts/ScanAndUpload.js"></script>
+<script type="text/javascript">
+    function upload() {
+
+        $.ajax({
+            type: "get",
+            url: '/TempArchive/ContentSave',
+            data: {
+                id: carfile
+            },
+            success: function (data) {
+                var m = data;
+                t = m;
+                windowAppend("body", "/metro/error");
+                $("#message").html(m.data);
+                switch (m.state) {
+                    case 0:
+                        $("#error .wintitle").html("ذخیره موفق");
+                        break;
+                    case 1:
+                        $("#error .wintitle").html("خطا");
+                        break;
+                }
+                $.ajax({ url: '/TempArchive/listImage/' + carfile, cache: false, async: false, type: "GET" })
+                .done(function (e) {
+                    $('#listImage').html(e);
+                })
+                .fail(function (e) { console.log(e); });
+                $('#Lock').hide();
+            },
+            failure: function (data) {
+                alert(data.data);
+            }
+        });
+    }
+    var Pid = null;
+    var Pid2 = null;
+
+    function select(e) {
+        dataItem = this.dataItem(e.node);
+        Pid = dataItem.id;
+        Pid2 = Pid;
+
+        //if ('@ViewBag.State' == 4) {
+           // $.ajax({ url: '/TempArchive/ArchivelistImage?carid=' + '@ViewBag.CarfileID' + '&Pid=' + Pid, cache: false, async: false, type: "GET" })
+            //.done(function (e) {
+            //    $('#listImage').html(e);
+           // })
+        //.fail(function (e) { console.log(e); });
+        //}
+    }
+    function expand() {
+        var treeview = $("#treeview").data("kendoTreeView");
+        treeview.expand(".k-item");
+    }
+</script>
+    
+    <script src="@Url.Content("~/Content/Base.js")" type="text/javascript"></script>
+    @{
+        Avarez.Models.cartaxEntities car = new Avarez.Models.cartaxEntities();
+        var type = car.sp_BankTypeSelect("", "", 0, Convert.ToInt32(Session["UserId"]), Session["UserPass"].ToString()).ToList();
+    }
+    
+    <div>
+        @if (ViewBag.state == 4)
+        {
+            <img src="@Url.Content("~/Content/images/NAV4_4.png")" alt="" />
+        }
+        <br />
+        <center>
+           حجم فایل میبایست کمتر از  5 مگابایت باشد.
+            <table>
+                @Html.Hidden("fldID")
+                <tr>
+                    
+                    <td align="left">
+                        نوع انتخاب:
+
+                        از فایل @Html.RadioButton("Type", "1", true, new { @id = "One" })
+                    </td>
+                 <td   align="right" id="ContentUpload" style="">
+                        @(Html.Kendo().Upload()
+                                                .Name("UptContent")
+                                                .Multiple(true)
+                                                .Async(a => a
+                                                        .Save("UploadContent", "TempArchive")
+                                                .Remove("RemoveContent", "TempArchive")
+                                                    .AutoUpload(true)
+                                                    )
+                                                   .Events(ev => ev.Complete("upload"))
+                                                )
+
+                    </td>
+                   
+                    </tr>
+                    <tr></tr>
+                    <tr></tr>
+                    <tr></tr>
+                    <tr></tr>
+                    <tr></tr>
+                    <tr></tr>
+                    
+                    <tr>
+                  
+                        <td align="left">
+                            از اسکنر @Html.RadioButton("Type", "2", new { @id = "Two" })  
+                        </td>
+                <td  align="right" id="ContentScan" style="">
+                        @Avarez.Helper.winClass.Buttons("BtnScan", "اسکن", "1")
+                    </td>
+                        <td>
+                            <div id="dwtcontrolContainer" hidden="hidden" style="float:left;margin:10px; height:15px; width:10px;"></div>
+                            @*<input type="button" id="BtnScan" value="Scan" style="margin-left:20px;width:100px;" onclick="AcquireImage();" />*@
+
+
+                        </td>
+                </tr>
+                
+            </table>
+       
+            <table>
+                <tr>
+                    <td align="left"></td>
+                    <td>
+                        @Avarez.Helper.winClass.Buttons("Show", "نمایش", "yes")
+                    </td>
+                </tr>
+                <tr>
+                    <td align="left">
+                        ساختار درختی بایگانی دیجیتال:
+                    </td>
+                    <td colspan="2" dir="rtl" id="P_Tree" align="right"></td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td dir="rtl" id="Location" style="color: Red;" align="center"></td>
+                </tr>
+            </table>
+            <p>
+                @if (ViewBag.State == 4 && Avarez.Controllers.Users.Permossions.haveAccess(Convert.ToInt32(Session["UserId"]), 242))
+                {
+                    @Avarez.Helper.winClass.Buttons("next", "ادامه", "next")
+                }
+                @Avarez.Helper.winClass.Buttons("AddLink", "ذخیره", "Save")
+                @Avarez.Helper.winClass.Buttons("btncalc", "صورتحساب", "next")
+                @Avarez.Helper.winClass.Buttons("exit", "خروج", "Exit")
+            </p>
+        @(Html.Kendo().Splitter()
+        .Name("panelbar-images1")
+        .Panes(panelbar =>
+        {
+            panelbar.Add()//.Expanded(true).Text("فایل ها")
+                .HtmlAttributes(new { id = "finde" })
+                .Content(@<div id="listImage">
+</div>);
+        })
+)
+            
+            
+        </center>
+    </div>
+    <div class="treeview-back  k-rtl" dir="rtl" id="LocationDiv">
+        @(Html.Kendo().TreeView()
+                        .Name("treeview")
+                        .DataTextField("Name")
+
+                        .DataSource(dataSource => dataSource
+                        .Read(read => read
+                                 .Action("_ProductTree", "TempArchive")
+                        )
+                        )
+                        .Events(events =>
+                        {
+                            events.Select("select");
+                            events.DataBound("expand");
+                        })
+                        )
+    </div>
+    <style type="text/css">
+        .treeview-back
+        {
+            width: 400px;
+            margin: 30px;
+            padding: 20px;
+            -moz-box-shadow: 0 1px 2px rgba(0,0,0,0.45), inset 0 0 30px rgba(0,0,0,0.07);
+            -webkit-box-shadow: 0 1px 2px rgba(0,0,0,0.45), inset 0 0 30px rgba(0,0,0,0.07);
+            box-shadow: 0 1px 2px rgba(0,0,0,0.45), inner 0 0 30px rgba(0,0,0,0.07);
+            -webkit-border-radius: 8px;
+            -moz-border-radius: 8px;
+            border-radius: 8px;
+        }
+    </style>
+    <script type="text/javascript">
+        var t;
+        var tempId;
+
+        var carfile;
+
+        $("document").ready(function () {
+            $("#AddLink").button();
+            $("#DelLink").button();
+            $("#Show").button();
+            $("#next").button();
+            $("#BtnScan").button(); 
+            $('#BtnScan').hide();
+            $('#dwtcontrolContainer').hide();
+            $("#btncalc").button();
+            $("#exit").button();
+            $("#LetterPrint").button();
+            $('#P_Tree').html($('#LocationDiv').valueOf());
+            ShowRevord();
+            carfile = '@ViewBag.CarfileID';
+            $('#btncalc').click(function () {
+                var URL = '@Url.Content("~/infacture/Index")';
+                windows("#win", URL + "/@ViewBag.carId");
+                $("#CommonWin").remove();
+                $("#Savabegh").remove();
+                Dialog = 0;
+            });
+            $('#TempArchive').on('keyup', 'input', function (event) {
+                if (event.which == 13) {
+                    var inputs = $('#TempArchive').find(':input:visible');
+                    inputs.eq(inputs.index(this) + 1).focus();
+                }
+            });
+            $('#next').click(function () {
+                var URL = '@Url.Content("~/Savabegh/Index")' + "/?id=@ViewBag.carId" + "&state=@ViewBag.State";
+                var Win = "#win";
+                if (Dialog == 1)
+                    Win = "#CommonContent";
+                windows(Win, URL);
+            });
+            $("#Show").click(function () {
+                ShowRevord();
+            });
+
+            $("#exit").click(function () {
+                $("#TempArchive").remove();
+                $("#CommonWin").remove();
+                Dialog = 0;
+            });
+
+           
+            $(':radio[Type]').change(function () {
+               
+                if (One.checked) {
+                    $('#BtnScan').hide();
+                    $('#ContentUpload').show();                 
+                }
+                else if (Two.checked) {
+                    $('#BtnScan').show();
+                    $('#ContentUpload').hide();
+
+                    $('#BtnScan').click(function () {
+                        @*Scaner1.URL = "@ViewBag.SiteURL" + "/TempArchive/ScanedUpload/" + carfile;
+                        Scaner1.AcquireImageDefault();*@
+                        AcquireImage();
+                    });  
+                }
+            });
+           
+           
+            $(document).keyup(function (event) {
+                if (event.which == 119) {
+                    SaveRecord();
+                }
+                else if (event.which == 113) {
+                    EditRecord();
+                }
+                else if (event.which == 115) {
+                    DeleteRecord();
+                }
+            });
+            $('#AddLink').attr('title', 'کلید میانبر (F8)'); //119
+            $('#EditLink').attr('title', 'کلید میانبر (F2)'); //113
+            $('#DelLink').attr('title', 'کلید میانبر (F4)'); //115
+
+
+
+            jQuery("#EditLink").click(function () {
+                EditRecord();
+            });
+
+            $('#txtSearch').keyup(function () {
+                var url = '@Url.Action("Reload", "TempArchive")';
+                Reload(url, 'Grid', $("#cboSearchFiald").val(), $("#txtSearch").val(), $("#txtTop").val(), $("#cboSearchType").val());
+            });
+
+            $('#DelLink').click(function () {
+                DeleteRecord();
+            });
+
+            $("#AddLink").click(function () {
+                SaveRecord();
+            });
+
+        });
+
+        function ShowRevord() {
+            var URL = '/TempArchive/listImage/';
+            @*if ('@ViewBag.State' == 4)
+                URL = '/TempArchive/ArchivelistImage?carid='
+*@
+            $.ajax({ url: URL + carfile, cache: false, async: false, type: "GET" })
+                .done(function (e) {
+                    $('#listImage').html(e);
+                })
+                .fail(function (e) { console.log(e); });
+
+        }
+
+        function SaveRecord() {
+            var er = false;
+            if (er)
+                return;
+            var digtalArchive = new Array();
+
+            var t = $('input[type=checkbox]');
+            for (var i = 0; i < t.length; i++) {
+                if (t.valueOf()[i].checked) {
+                    tempId = t.valueOf()[i].value;
+
+                    digtalArchive.push({
+                        'PicId': tempId
+                    });
+                }
+            }
+            if (Pid != null) {
+                if (digtalArchive.length != 0) {
+                    var data = {
+                        digtalArchive: digtalArchive,
+                        fldDigitalTreeId: Pid,
+                        PId: Pid,
+                        fldCarFileId: carfile,
+                        fldID: $("#fldID").val()
+                    };
+                    if (data != '') {
+                        PostForm(data, '@Url.Content("~/TempArchive/Save")', "#win");
+                    }
+                } else {
+                    alert('هیچ تصویری برای ذخیره انتخاب نشده است.');
+                }
+            } else {
+                alert('لطفا یک پوشه را انتخاب کنید.');
+            }
+            
+            Clear();
+        }
+
+        function EditRecord() {
+            var entityGrid = $("#Grid").data("kendoGrid");
+            var selectedItem = entityGrid.dataItem(entityGrid.select());
+            if (selectedItem) {
+                var id = selectedItem.fldID;
+                var URL = '@Url.Content("~/TempArchive/Details")';
+                URL = URL + "/" + id;
+                $.ajax({
+                    type: "GET",
+                    url: URL,
+                    success: function (data) {
+                        $('#txtName').val(data.fldName);
+                        $('#fldId').val(data.fldId);
+                        var v = $("#cboBankType").data("kendoDropDownList");
+                        v.value(data.fldBankType);
+                        $('#txtInfinitiveBank').val(data.fldInfinitiveBank);
+                        $('#txtCentralBankCode').val(data.fldCentralBankCode);
+                        $('#txtDesc').val(data.fldDesc);
+                        var g = '@Url.Content("~/TempArchive/Image/")' + $('#fldId').val();
+                        $('#PreviewImage').attr('src', g);
+                    },
+                    failure: function (data) {
+                        alert(data.data);
+                    }
+                });
+            }
+            else {
+                alert('لطفا یک سطر را انتخاب کنید.');
+            }
+        }
+
+        function DeleteRecord() {
+            var entityGrid = $("#Grid").data("kendoGrid");
+            var selectedItem = entityGrid.dataItem(entityGrid.select());
+            if (selectedItem) {
+                var id = selectedItem.fldID;
+                var URL = '@Url.Content("~/metro/YesNomsg")';
+                URL = URL + "/?id=" + id + "&URL=" + '@Url.Content("~/TempArchive/Delete")';
+                windowAppend("body", URL);
+                $("#message").html('آیا مایل به حذف رکورد انتخاب شده هستید؟');
+            }
+            else {
+                alert('لطفا یک سطر را انتخاب کنید.');
+            }
+            Clear();
+        }
+        function Clear() {
+
+            $('#fldId').val(0);
+
+        }
+
+        function Reload(Url, gridname, field, value, top, searchType) {
+            var grid = $('#' + gridname).data('kendoGrid');
+            $.ajax({
+                url: Url,
+                type: 'get',
+                datatype: 'json',
+                data: { field: field, value: value, top: top, searchtype: searchType },
+                error: function (xhr, status, error) {
+                    alert(xhr + status);
+                },
+                success: function (result) {
+                    $("#" + gridname).data("kendoGrid").dataSource.data(result);
+                }
+
+            });
+        }
+
+        function PostForm(datas, url, id) {
+            var sendInfo = datas;
+            $('#Lock').show();
+            $.ajax({
+                type: "POST",
+                url: url,
+                data: JSON.stringify(sendInfo),
+                datatype: "json",
+                contentType: 'application/json',
+                success: function (data) {
+                    var m = data;
+                    windowAppend("body", "/metro/error");
+                    $("#message").html(m.data);
+                    switch (m.state) {
+                        case 0:
+                            $("#error .wintitle").html("ذخیره موفق");
+                            break;
+                        case 1:
+                            $("#error .wintitle").html("خطا");
+                            break;
+                    }
+
+                    ShowRevord();
+
+                    $('#Lock').hide();
+                },
+                failure: function (data) {
+                    alert(data.data);
+                }
+            });
+        }    
+    </script>
+</div>

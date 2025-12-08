@@ -1,0 +1,19 @@
+﻿<div id="CommonWin1" class="modal">
+    @Avarez.Helper.winClass.windowHeader("", ".", 800, 600)
+
+    <div id="CommonContent1">
+
+    </div>
+
+    @Avarez.Helper.winClass.windowFother()
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#CommonWin1 #btnClose').click(function () {
+                $("#CommonWin1").remove();
+                //isWinOpen = false;
+                Dialog1 = 0;
+            });
+        });
+    </script>
+</div>

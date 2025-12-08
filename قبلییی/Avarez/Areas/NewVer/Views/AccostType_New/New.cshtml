@@ -1,0 +1,166 @@
+﻿@using Ext.Net.MVC
+@using Hogaf.ExtNet.UX
+@using Ext.Net;
+@{
+    var X = Html.X();
+}
+
+@(Html.X().Window()
+    .Modal(true)
+         .Resizable(false)
+                    .Listeners(l => l.AfterRender.Handler = "LoadAccostType()")
+    .Width(308)
+    //.Height(185)
+    .Title("تعریف نوع مخاطب")
+    .Layout(LayoutType.Fit)
+            .ID("NewAccostType")
+    .Closable(true)
+    .ButtonAlign(Ext.Net.Alignment.Center)
+    .Buttons(
+        X.Button()
+            .Text("ذخیره")
+            .Icon(Ext.Net.Icon.Disk)
+        //.ToolTip("کلید میانبر F8")
+                    .Listeners(l => l.Click.Handler = "SaveAccostType();"),
+        X.Button()
+            .Text("خروج")
+            .Icon(Ext.Net.Icon.DoorOut)
+        //.ToolTip("کلید میانبر Esc")
+                    .OnClientClick("App.NewAccostType.destroy();"))
+    .CloseAction(Ext.Net.CloseAction.Destroy)
+    .Items(
+        X.FormPanel()
+            .Border(false)
+            .Layout(LayoutType.Fit)
+            .Items(
+                X.Panel()
+                    .Border(false)
+                    .PaddingSpec("15px 0 0 0")
+                    .Layout(LayoutType.VBox)
+                    .LayoutConfig(new VBoxLayoutConfig { Align = VBoxAlign.Center })
+                    .Items(
+                        X.FieldSet()
+                            .Border(true)
+                            .Height(145)
+                            .Defaults(new { Margin = 2 })
+                            .Layout(LayoutType.Table)
+                            .Title("نوع مخاطب")
+                            .Height(116)
+                            .LayoutConfig(new TableLayoutConfig { Columns = 2 })
+                            .Items(
+                                X.Hidden()
+                                    .ItemID("fldId"),
+
+                                X.Label("نوع مخاطب:"),
+                                X.TextField()
+                                            .ItemID("txtAccostType")
+                                    .Width(190)
+                                    .AllowBlank(false)
+                                    .BlankText("لطفا نوع مخاطب را وارد نمایید.")
+                                    .MsgTarget(Ext.Net.MessageTarget.Side),
+
+
+                                X.Label("توضیحات:"),
+                                X.TextArea()
+                                    .ItemID("txtDesc")
+                                    .Width(190)
+                            )
+
+
+                )
+            )
+        )
+)
+
+<script type="text/javascript">
+
+
+
+    function LoadAccostType() {
+        if ('@ViewBag.Id' != '0') {
+            App.NewAccostType.body.mask("در حال بارگذاری...");
+            Ext.net.DirectMethod.request({
+                url: '/NewVer/AccostType_New/Details',
+                params: {
+                    Id: '@ViewBag.Id'
+                },
+                success: function (data) {
+                    if (data.Er == 0) {
+                        var txtAccostType = App.NewAccostType.queryById('txtAccostType');
+                        txtAccostType.setValue(data.fldName);
+                        var txtDesc = App.NewAccostType.queryById('txtDesc');
+                        txtDesc.setValue(data.fldDesc);
+                        var Id = App.NewAccostType.queryById('fldId');
+                        Id.setValue(data.fldId);
+                    }
+                    else if (data.Er == 1) {
+                        Ext.MessageBox.show({
+                            title: data.MsgTitle,
+                            msg: data.Msg,
+                            icon: Ext.MessageBox.ERROR,
+                            buttons: Ext.MessageBox.OK
+                        });
+                    }
+                    App.NewAccostType.body.mask().hide();
+                }
+            });
+        }
+        else {
+            App.NewAccostType.queryById('txtAccostType').validate();
+        }
+    }
+
+
+    function SaveAccostType() {
+        var txtAccostType = App.NewAccostType.queryById('txtAccostType');
+        var Id = App.NewAccostType.queryById('fldId');
+        var txtDesc = App.NewAccostType.queryById('txtDesc');
+
+        var er = false;
+
+        if (txtAccostType.validate() == false) {
+            er = true;
+        }
+        if (er == true)
+            return;
+        App.NewAccostType.body.mask("در حال ذخیره سازی...");
+        Ext.net.DirectMethod.request({
+            url: '/NewVer/AccostType_New/Save',
+            params: {
+                fldID: Id.getValue(),
+                fldName: txtAccostType.getValue(),
+                fldDesc: txtDesc.getValue()
+            },
+            success: function (data) {
+                var ic = Ext.MessageBox.INFO;
+                if (data.Er == 1)
+                    ic = Ext.MessageBox.ERROR;
+                Ext.MessageBox.show({
+                    title: data.MsgTitle,
+                    msg: data.Msg,
+                    icon: ic,
+                    buttons: Ext.MessageBox.OK
+                });
+                if (data.Er != 1) {
+                    ClearAccostType();
+                }
+                App.NewAccostType.body.mask().hide();
+                App.AccostType.queryById('GridAccostType').store.load();
+            }
+        });
+    }
+
+    function ClearAccostType() {
+        App.NewAccostType.queryById('txtDesc').setValue("");
+        App.NewAccostType.queryById('txtAccostType').setValue("");
+        App.NewAccostType.queryById('fldId').setValue(0);
+    }
+
+    /*function EnterNext() {
+        var keyfield = App.NewCustomer.queryById(Ext.getCmp((Ext.Element.getActiveElement()).name).itemId);
+        var nextfld = keyfield.nextSibling();
+        nextfld.focus();
+        nextfld.selectText();
+    }*/
+
+</script>

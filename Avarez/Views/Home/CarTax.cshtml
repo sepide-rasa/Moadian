@@ -1,0 +1,274 @@
+﻿@using Avarez.Controllers.Users;
+
+<div id="CarTax">
+    @using Kendo.Mvc.UI;
+    
+    <link href="@Url.Content("~/Content/web/kendo.common.min.css")" rel="stylesheet" type="text/css" />
+    <link href="@Url.Content("~/Content/web/kendo.default.min.css")" rel="stylesheet" type="text/css" />
+    <link href="@Url.Content("~/Content/web/kendo.rtl.min.css")" rel="stylesheet" type="text/css" />
+    <script src="@Url.Content("~/Scripts/console.min.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Scripts/kendo.web.min.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Scripts/prettify.min.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Scripts/kendo.aspnetmvc.min.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Scripts/kendo.splitter.min.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Scripts/cultures/kendo.fa-IR.js")" type="text/javascript"></script>
+    <script type="text/javascript">
+        var Dialog = 0;
+        var Dialog1 = 0;
+        $("document").ready(function () {
+            $('#ChangeLocation').button();
+            $('#Exit').button();
+            $('#HomePage').button();
+            $('#HomePage').click(function () {
+                window.location.href = '/Home/Home';
+            });
+            $('#Exit').click(function () {
+                window.location.href = '/Account/LogOff';
+            });
+
+            $('#ChangeLocation').click(function () {
+                window.location.href = '/Home/ChangeLocation';
+            });
+            $("#Owner").click(function () {
+                windows("#win", "/Owner/Index/1");
+            });
+            $("#CarPlaque").click(function () {
+                windows("#win", "/Owner/Index/2");
+            });
+            $("#Car").click(function () {
+                windows("#win", "/Car/Index");
+            });
+            $("#CarFile").click(function () {
+                windows("#win", "/Owner/Index/3");
+            });
+            $("#FastCalc").click(function () {
+                windows("#win", "/InFastCalc/Index");
+            }); 
+            $("#ResidPardakhti").click(function () {
+                windows("#win", "/InSearchFile/Index?State=3");
+            });
+            $("#Fish").click(function () {
+                windows("#win", "/InSearchFile/Index?State=1");
+            });
+            $("#Sabeghe").click(function () {
+                windows("#win", "/SearchCarFile/Index/1");
+            });
+            $("#SaveFish").click(function () {
+                windows("#win", "/SearchCarFile/Index/2");
+            });
+            $("#ChCarFile").click(function () {
+                windows("#win", "/SearchCarFile/Index/3");
+            }); 
+            $("#DeleteDuplicateFish").click(function () {
+                windows("#win", "/DeleteDuplicateFish");
+            }); 
+            $("#InsFastFish").click(function () {
+                windows("#win", "/InsFastFish");
+            }); 
+            $("#TempArchive").click(function () {
+                windows("#win", "/SearchCarFile/Index/4");
+            }); 
+            $("#BudgetByMonth").click(function () {
+                windows("#win", "/BudgetByMonth/Index");
+            });
+            $("#BlackList").click(function () {
+                windows("#win", "/InSearchFile/Index?State=2");
+            }); 
+            $("#ShowTempArchive").click(function () {
+                windows("#win", "/ShowTempArchive/Index");
+            });
+            $("#ShowMafsa").click(function () {
+                windows("#win", "/InSearchFile/Index?State=4");
+            });
+            $("#DeleteDuplicateFishByCarFile").click(function () {
+                windows("#win", "/InSearchFile/Index?State=5");
+            });
+            $("#PcPosTransactionList").click(function () {
+                windows("#win", "/InSearchFile/Index?State=6");
+            }); 
+            $("#GroupFish").click(function () {
+                windows("#win", "/GroupSearch");
+            }); 
+            $("#ShowDigitalArchive").click(function () {
+                windows("#win", "/ShowDigitalArchive");
+            });
+            $("#Mafasa_Tarikh").click(function () {
+                windows("#win", "/Mafasa_Tarikh");
+            });
+        }); 
+    </script>
+    @{Avarez.Models.cartaxEntities p = new Avarez.Models.cartaxEntities();
+      var state = p.sp_StateSelect("fldId", Session["UserState"].ToString(), 1, Convert.ToInt32(Session["UserId"]), Session["UserPass"].ToString()).FirstOrDefault();
+      var Mnu = p.sp_MunicipalitySelect("fldId", Session["UserMnu"].ToString(), 1, Convert.ToInt32(Session["UserId"]), Session["UserPass"].ToString()).FirstOrDefault();
+      var Location = state.fldName + " --> " + Mnu.fldName + Session["Location"];}
+    @(Html.Kendo().Splitter()
+      .Name("vertical")
+      .Orientation(SplitterOrientation.Vertical)
+          .HtmlAttributes(new { style = "height: 750px;" })
+      .Panes(verticalPanes =>
+      {
+          verticalPanes.Add()
+            .Size("30px")
+            .Collapsible(false)
+            .Resizable(false)
+            .Content(@<div dir="rtl" style="text-align: center;">
+                <span style="font-weight: bold; color: #127AA3; font-size: 11px;">موقعیت فعلی شما: @Location
+                </span>
+                <button id="ChangeLocation" title="برای تغییر موقعیت از این گزینه استفاده کنید."
+                    style="font-size: 11px;">
+                    ...</button>
+                <button id="Exit" style="font-size: 11px; float: left; text-align: left; background-image: url('/Content/images/1377957633_exit.png');
+                        background-repeat: no-repeat; background-position: right; width: 70px; background-size: 14px;
+                        background-position-x: 50px;">
+                        خروج</button>
+                <button id="HomePage" style="float: right; font-size: 11px; text-align: left; background-image: url('/Content/images/1377958371_Home.png');
+                    background-repeat: no-repeat; background-position: right; width: 100px; background-size: 16px;
+                    background-position-x: 80px;">
+                    صفحه اصلی</button></div>);
+          verticalPanes.Add()
+              .HtmlAttributes(new { id = "top-pane" })
+              .Scrollable(false)
+              .Collapsible(false)
+              .Content(
+                Html.Kendo().Splitter()
+                    .Name("horizontal")
+                    .HtmlAttributes(new { style = "height: 100%;" })
+                    .Panes(horizontalPanes =>
+                    {
+                        horizontalPanes.Add()
+                            .HtmlAttributes(new { id = "left-pane" })
+                            .Size("688px")
+                            .Content(@<div id="win" class="pane-content">
+                            </div>);
+
+
+
+                        horizontalPanes.Add()
+                            .HtmlAttributes(new { id = "right-pane" })
+                            .Size("210px")
+                            .Content(@<div class="pane-content">
+                                @(Html.Kendo().PanelBar()
+        .Name("panelbar-images")
+        .Items(panelbar =>
+        {
+            panelbar.Add().Text("تشکیل پرونده")
+                .Expanded(true)
+                        .Visible(Permossions.haveAccess(Convert.ToInt32(Session["UserId"]), 225))
+                .ImageUrl(Url.Content("~/Content/images/1376733750_Card_file.png"))
+                .Items(File =>
+                {
+                    File.Add().Text("تعریف مالک")
+                        .HtmlAttributes(new { id = "Owner" })
+                        .Visible(Permossions.haveAccess(Convert.ToInt32(Session["UserId"]), 226))
+                        .ImageUrl(Url.Content("~/Content/images/1375796619_User Green.png"));
+                    File.Add().Text("تعریف پلاک")
+                        .HtmlAttributes(new { id = "CarPlaque" })
+                        .Visible(Permossions.haveAccess(Convert.ToInt32(Session["UserId"]), 229))
+                        .ImageUrl(Url.Content("~/Content/images/1375799182_tablet.png"));
+                    //File.Add().Text("تعریف وسیله نقلیه")
+                    //    .HtmlAttributes(new { id = "Car" })
+                    //    .Visible(Permossions.haveAccess(Convert.ToInt32(Session["UserId"]), 233))
+                    //    .ImageUrl(Url.Content("~/Content/images/1375798547_aiga_ground_transportation.png"));
+                    File.Add().Text("تعریف پرونده خودرو")
+                        .HtmlAttributes(new { id = "CarFile" })
+                        .Visible(Permossions.haveAccess(Convert.ToInt32(Session["UserId"]), 237))
+                        .ImageUrl(Url.Content("~/Content/images/تعریف پرونده خودرو.png"));
+                    File.Add().Text("تعویض مالک")
+                        .HtmlAttributes(new { id = "ChCarFile" })
+                        .Visible(Permossions.haveAccess(Convert.ToInt32(Session["UserId"]), 300))
+                        .ImageUrl(Url.Content("~/Content/images/1375797163_group.png"));
+                });
+
+            panelbar.Add().Text("عوارض")
+                .Expanded(true)
+                        .Visible(Permossions.haveAccess(Convert.ToInt32(Session["UserId"]), 241))
+                .ImageUrl(Url.Content("~/Content/images/1376573808_money_bag.png"))
+                .Items(Tax =>
+                {
+                    Tax.Add().Text("انتقال سوابق")
+                        .HtmlAttributes(new { id = "Sabeghe" })
+                        .Visible(Permossions.haveAccess(Convert.ToInt32(Session["UserId"]), 242))
+                        .ImageUrl(Url.Content("~/Content/images/1376570677_my_documents.png"));
+                    Tax.Add().Text("صدور فیش")
+                        .HtmlAttributes(new { id = "Fish" })
+                        .Visible(Permossions.haveAccess(Convert.ToInt32(Session["UserId"]), 246))
+                        .ImageUrl(Url.Content("~/Content/images/1376571366_table_money.png"));
+                    Tax.Add().Text("صدور فیش گروهی")
+                        .HtmlAttributes(new { id = "GroupFish" })
+                        .Visible(Permossions.haveAccess(Convert.ToInt32(Session["UserId"]), 246))
+                        .ImageUrl(Url.Content("~/Content/images/1376571366_table_money.png"));
+                    Tax.Add().Text("ثبت واریزی")
+                        .HtmlAttributes(new { id = "SaveFish" })
+                        .Visible(Permossions.haveAccess(Convert.ToInt32(Session["UserId"]), 290))
+                        .ImageUrl(Url.Content("~/Content/images/1376576264_Test-paper-128.png"));
+                    Tax.Add().Text("ثبت فیش سریع")
+                       .HtmlAttributes(new { id = "InsFastFish" })
+                        .Visible(Permossions.haveAccess(Convert.ToInt32(Session["UserId"]), 349))
+                       .ImageUrl(Url.Content("~/Content/images/ثبت فیش سریع.png"));
+                    Tax.Add().Text("مشاهده مفاصا حساب")
+                        .HtmlAttributes(new { id = "ShowMafsa" })
+                        .Visible(Permossions.haveAccess(Convert.ToInt32(Session["UserId"]), 351))
+                        .ImageUrl(Url.Content("~/Content/images/رسیدهای پرداختی.png"));
+                    Tax.Add().Text("محاسبات سرانگشتی")
+                        .HtmlAttributes(new { id = "FastCalc" })
+                        .Visible(Permossions.haveAccess(Convert.ToInt32(Session["UserId"]), 352))
+                        .ImageUrl(Url.Content("~/Content/images/1376574493_history.png"));
+                    Tax.Add().Text("حذف فیش های تکراری")
+                        .HtmlAttributes(new { id = "DeleteDuplicateFish" })
+                        .Visible(Permossions.haveAccess(Convert.ToInt32(Session["UserId"]), 302))
+                        .ImageUrl(Url.Content("~/Content/images/no_receipt.png"));
+                    Tax.Add().Text("حذف فیش های تکراری خودرو خاص")
+                        .HtmlAttributes(new { id = "DeleteDuplicateFishByCarFile" })
+                        .Visible(Permossions.haveAccess(Convert.ToInt32(Session["UserId"]), 302))
+                        .ImageUrl(Url.Content("~/Content/images/no_receipt.png"));
+                    //Tax.Add().Text("صدور مفاصا")
+                    //    .HtmlAttributes(new { id = "County" })
+                    //    .ImageUrl(Url.Content("~/Content/images/1375985871_template_source.png"));
+                    //Tax.Add().Text("صدور نامه به سازمان")
+                    //    .HtmlAttributes(new { id = "County" })
+                    //    .ImageUrl(Url.Content("~/Content/images/1376576820_Mail.png"));
+                    //Tax.Add().Text("گزارش وضعیت خودرو")
+                    //    .HtmlAttributes(new { id = "County" })
+                    //    .ImageUrl(Url.Content("~/Content/images/1375798749_Ford_Zodiac_MkIV.png"));
+                    //Tax.Add().Text("بایگانی دیجیتال")
+                    //    .HtmlAttributes(new { id = "TempArchive" })
+                    //    .Visible(Permossions.haveAccess(Convert.ToInt32(Session["UserId"]), 353))
+                    //    .ImageUrl(Url.Content("~/Content/images/بایگانی دیجیتال.png"));
+                    Tax.Add().Text("مقایسه درآمد")
+                        .HtmlAttributes(new { id = "BudgetByMonth" })
+                        .Visible(Permossions.haveAccess(Convert.ToInt32(Session["UserId"]), 354))
+                        .ImageUrl(Url.Content("~/Content/images/مقایسه درامد.png"));
+                    Tax.Add().Text("لیست سیاه")
+                        .HtmlAttributes(new { id = "BlackList" })
+                        .Visible(Permossions.haveAccess(Convert.ToInt32(Session["UserId"]), 308))
+                        .ImageUrl(Url.Content("~/Content/images/لیست سیاه.png"));
+                    Tax.Add().Text("رسیدهای پرداختی")
+                        .HtmlAttributes(new { id = "ResidPardakhti" })
+                        .Visible(Permossions.haveAccess(Convert.ToInt32(Session["UserId"]), 315))
+                        .ImageUrl(Url.Content("~/Content/images/رسیدهای پرداختی.png"));
+                    Tax.Add().Text("مشاهده بایگانی دیجیتال")
+                        .HtmlAttributes(new { id = "ShowTempArchive" })
+                        .Visible(Permossions.haveAccess(Convert.ToInt32(Session["UserId"]), 316))
+                        .ImageUrl(Url.Content("~/Content/images/مشاهده پرونده های دیجیتال.png"));
+                    Tax.Add().Text("لیست تراکنش های PcPos")
+                        .HtmlAttributes(new { id = "PcPosTransactionList" })
+                        .Visible(Permossions.haveAccess(Convert.ToInt32(Session["UserId"]), 342))
+                        .ImageUrl(Url.Content("~/Content/images/پیگیری تراکنشها.png"));
+                    Tax.Add().Text("مشاهده بایگانی دیجیتال(ساختار درختی)")
+                       .HtmlAttributes(new { id = "ShowDigitalArchive" })
+                       .Visible(Permossions.haveAccess(Convert.ToInt32(Session["UserId"]), 370))
+                       .ImageUrl(Url.Content("~/Content/images/مشاهده پرونده های دیجیتال.png"));
+                    Tax.Add().Text("مشاهده مفاصا در بازه زمانی")
+                       .HtmlAttributes(new { id = "Mafasa_Tarikh" })
+                       .Visible(Permossions.haveAccess(Convert.ToInt32(Session["UserId"]), 371))
+                       .ImageUrl(Url.Content("~/Content/images/مشاهده پرونده های دیجیتال.png"));
+                });
+
+        })
+    )
+                            </div>);
+                    }).ToHtmlString()
+              );
+      })
+)
+</div>

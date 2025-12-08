@@ -1,0 +1,249 @@
+﻿@model IEnumerable<Avarez.Areas.Tax.Models.prs_SelectParametr_Field_Template>
+@using Ext.Net.MVC
+@using Hogaf.ExtNet.UX
+@using Ext.Net;
+@using Ext.Net.Utilities;
+@{
+    var X = Html.X();
+}
+<style>
+    #fi-button-msg {
+        border: 2px solid #ccc;
+        padding: 5px 10px;
+        background: #eee;
+        margin: 5px;
+        float: left;
+    }
+</style>
+
+@(Html.X().Window()
+    .Modal(true)
+                .Listeners(li => li.AfterRender.Handler = "LoadExcelTemplate();")
+    .Width(530)//.Height(300)
+        .Title("الگوی جدید")
+                .ID("NewExcelTemplate")
+    .Resizable(false)
+    .Closable(true)
+    .CloseAction(Ext.Net.CloseAction.Destroy)
+    .ButtonAlign(Alignment.Center)
+    .Layout(LayoutType.Fit)
+    .Buttons(
+        X.Button()
+            .Text("ذخیره")
+            .Icon(Ext.Net.Icon.Disk)
+            .Listeners(l =>
+            {
+                l.Click.Handler = "SaveExcelTemplate();";
+            })
+            .ItemID("btnSave"),
+        X.Button()
+            .Text("خروج")
+            .Icon(Ext.Net.Icon.BulletCross)
+            .ToolTip("کلید میانبر Esc")
+                    .OnClientClick("App.NewExcelTemplate.destroy()"))
+    .Items(
+        X.FormPanel()
+            .MarginSpec("10px 0 10px 0")
+            .Border(false)
+            .Layout(Ext.Net.LayoutType.VBox)
+            .LayoutConfig(new Ext.Net.VBoxLayoutConfig { Align = Ext.Net.VBoxAlign.Center })
+            .Items(
+                X.Hidden().ItemID("fldId"),
+
+                X.FieldSet()
+                    .Border(true)
+                    .Title("الگو")
+                    .ItemID("test")
+                   // .Height(115)
+                    .Width(500)
+                    .Center()
+                    .LayoutConfig(new Ext.Net.TableLayoutConfig { Columns = 4 })
+                    .Defaults(new { Margin = 2 })
+                    .Items(
+                   
+                         X.Label("عنوان:")
+                        , X.TextField()
+                            .ItemID("txtTitle")
+                            .MsgTarget(Ext.Net.MessageTarget.Side)
+                            .AllowBlank(false)
+                            .BlankText("لطفا عنوان را وارد کنید.")
+                            .Focus(true)
+                            .Width(160)
+                      
+                             , X.Label("شماره سطر شروع:")
+                            , X.TextField()
+                                        .ItemID("txtStartRowNumber")
+                                .MsgTarget(Ext.Net.MessageTarget.Side)
+                                .AllowBlank(false)
+                                .MaskRe("[0-9]")
+                                .EnforceMaxLength(true)
+                                .MaxLength(10)
+                                .BlankText("لطفا شماره سطر شروع را وارد کنید.")
+                                .Width(160)
+                )
+, X.FieldSet().Border(false)
+                            .Items(
+                                 Html.X().GridPanel()
+                                .ID("GridFields")
+                    .Icon(Icon.Table)
+                    .Frame(true)
+                    .Title("ستون های اکسل")
+                    .Height(350)
+                    .Width(500)
+                    .Store(
+                        Html.X().StoreForModel().Control(s =>
+                        {
+                            // s.AutoSync = true;
+                        })
+
+                                   //.Listeners(li => li.BeforeLoad.Handler = "ReloadTajhizat()")
+                    )
+                       .ColumnModel(
+                                         Html.X().Column().DataIndex(Model, m => m.fldId).Text("کد").Flex(1).Hidden(true),
+                                         Html.X().Column().DataIndex(Model, m => m.fldEjbari).Text("fldEjbari").Flex(1).Hidden(true),
+                                         Html.X().Column().DataIndex(Model, m => m.fldNameFa).Text("عنوان فارسی").Flex(4),
+                                         Html.X().Column().DataIndex(Model, m => m.fldNameEn).Text("عنوان انگلیسی").Flex(2),
+                                         Html.X().Column().DataIndex(Model, m => m.fldEjbariName).Text("نوع").Flex(2),
+                                              Html.X().Column().DataIndex(Model, m => m.fldColumnNum).ItemID("ColumnNum").Text("شماره ستون").Flex(2).Editor(X.NumberField())
+
+                        )
+                        
+                    
+                        .Plugins(
+                                Html.X().CellEditing()
+                                    
+                        )
+                        )
+            )
+        )
+)
+
+<script type="text/javascript">
+    var ExcelTemplateId = 0;
+    var ImageId = 0;
+ 
+   function ReloadFields(Id) {
+
+
+        Ext.net.DirectMethod.request({
+            url: '/Tax/SooratHesabExcelTemplate/ReadFields',
+            params: {
+                TempId: Id
+            },
+            success: function (data) {
+                App.NewExcelTemplate.queryById('GridFields').getStore().loadData(data);
+            }
+        });
+
+    }
+  
+    function LoadExcelTemplate() {
+        ReloadFields('@ViewBag.Id');
+        if ('@ViewBag.Id' != '0') {
+            /*Edit*/
+            Ext.net.DirectMethod.request({
+                url: '/Tax/SooratHesabExcelTemplate/Details',
+                params: {
+                    id: '@ViewBag.Id'
+                },
+                success: function (data) {
+                    var txtTitle = App.NewExcelTemplate.queryById('txtTitle');
+                    txtTitle.setValue(data.fldTitle);
+                    var txtStartRowNumber = App.NewExcelTemplate.queryById('txtStartRowNumber');
+                    txtStartRowNumber.setValue(data.fldStartRowNumber);
+                  /*  var txtDesc = App.NewExcelTemplate.queryById('txtDesc');
+                    txtDesc.setValue(data.fldDesc);*/
+                    var Id = App.NewExcelTemplate.queryById('fldId');
+                    Id.setValue(data.fldId);
+                }
+            });
+        }
+    }
+
+    function SaveExcelTemplate() {
+        var txtTitle = App.NewExcelTemplate.queryById('txtTitle');
+        var txtStartRowNumber = App.NewExcelTemplate.queryById('txtStartRowNumber');
+        /*var txtDesc = App.NewExcelTemplate.queryById('txtDesc');*/
+        var Id = App.NewExcelTemplate.queryById('fldId');
+
+        var er = false;
+
+      
+        if (txtTitle.validate() == false) {
+            er = true;
+        }
+        if (txtStartRowNumber.validate() == false) {
+            er = true;
+        }
+
+         var ListFields = new Array();
+            var SelectedRow = App.NewExcelTemplate.queryById('GridFields');
+            for (var i = 0; i < SelectedRow.selModel.store.count() ; i++) {
+                row = SelectedRow.selModel.store.data.items[i];
+                fldParametrId = row.data.fldId;
+                fldColumnNum = row.data.fldColumnNum;
+                fldEjbari = row.data.fldEjbari;
+                fldNameFa = row.data.fldNameFa;
+                if (fldColumnNum != "" ) {
+                    ListFields.push({
+                        'fldParametrId': fldParametrId,
+                        'fldColumnNum': fldColumnNum
+                    });
+                }
+                else if (fldEjbari == 1) {
+                    alert("ثبت ستون "+fldNameFa+" اجباری است.");
+                    return;
+                }
+            }
+
+            if (er == true)
+                return;
+
+            var data = {
+                fldId: Id.getValue(),
+                fldTitle: txtTitle.getValue(),
+                fldStartRowNumber: txtStartRowNumber.getValue(),
+                fldDesc: "",
+                ListFields:ListFields
+            };
+
+            $.ajax({
+                type: "POST",
+                url: '/Tax/SooratHesabExcelTemplate/Save',
+                datatype: "json",
+                data: JSON.stringify(data),
+                contentType: 'application/json',
+                success: function (data) {
+                    var ic = Ext.MessageBox.INFO;
+                    if (data.Er == 1)
+                        ic = Ext.MessageBox.ERROR;
+                    Ext.MessageBox.show({
+                        title: data.MsgTitle,
+                        msg: data.Msg,
+                        icon: ic,
+                        buttons: Ext.MessageBox.OK
+                    });
+                    App.ExcelTemplateTab.queryById('Grid').store.load();
+                    if (Er == 0)
+                        ClearExcelTemplate();
+                },
+                failure: function (data) {
+                    alert(data.data);
+                }
+            });
+    }
+    function ClearExcelTemplate() {
+        App.NewExcelTemplate.queryById('txtTitle').setValue("");
+        App.NewExcelTemplate.queryById('txtStartRowNumber').setValue("");
+       /* App.NewExcelTemplate.queryById('txtDesc').setValue("");*/
+        App.NewExcelTemplate.queryById('fldId').setValue(0);
+        ReloadFields(0);
+    }
+
+    function EnterNext() {
+        var keyfield = App.ExcelTemplateTab.activeTab.queryById(Ext.getCmp((Ext.Element.getActiveElement()).name).itemId);
+        var nextfld = keyfield.nextSibling();
+        nextfld.focus();
+        nextfld.selectText();
+    }
+</script>

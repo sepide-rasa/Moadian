@@ -1,0 +1,200 @@
+﻿@using Ext.Net.MVC
+@using Hogaf.ExtNet.UX
+@using Ext.Net;
+@{
+    var X = Html.X();
+}
+
+<style>
+    .x-form-display-field{
+        text-align:right;
+    }
+</style>
+@(Html.X().Window()
+    .Modal(true)
+    .Resizable(false)
+    .Width(350)
+    .Height(150)
+    .Title("پیگیری تراکنش ناموفق")
+    .Layout(LayoutType.Fit)
+    .ID("TrnInf")
+    .Closable(false)
+    .ButtonAlign(Ext.Net.Alignment.Center)
+    .Buttons(
+        X.Button()
+            .Text("دریافت اطلاعات")
+            .Icon(Ext.Net.Icon.Disk)
+            .Listeners(l => l.Click.Handler = "getTrnInf();"),
+        X.Button()
+            .Text("خروج")
+            .Icon(Ext.Net.Icon.DoorOut)
+                .OnClientClick("App.TrnInf.destroy()"))
+    .Items(
+        X.FormPanel()
+            .LayoutConfig(new VBoxLayoutConfig { Align=VBoxAlign.Center})
+            .Border(false)
+            .Padding(10)
+            .Items(
+                X.FormPanel()
+                    .LayoutConfig(new TableLayoutConfig {Columns=2})
+                    .Border(false)
+                    .Items(
+                        X.Label("شناسه قبض:"),
+                        X.TextField()
+                            .ItemID("txtShGhabz")
+                            .AllowBlank(false)
+                            .BlankText("لطفا شناسه قبض را وارد نمایید")
+                            .MaskRe("[0-9]"),
+                        X.Label("شناسه پرداخت:"),
+                        X.TextField()
+                            .ItemID("txtShPardakht")
+                            .AllowBlank(false)
+                            .BlankText("لطفا شناسه پرداخت را وارد نمایید")
+                            .MaskRe("[0-9]")
+                    )
+                    )
+        )
+)
+<script type="text/javascript">
+    
+    var shghabz = "";
+    var shpardakht = "";
+    var varizi = true;
+    var parvandeId = "";
+
+    function savevarizi(coderahgiri) {
+        if (varizi == false) {
+            if (coderahgiri != null) {
+                Ext.MessageBox.show({
+                    title: "هشدار",
+                    msg: "آیا تمایل دارید مبلغ مورد نظر در لیست واریزی ها ثبت شود؟",
+                    icon: Ext.MessageBox.WARNING,
+                    buttons: Ext.MessageBox.YESNO,
+                    fn: function (btn) {
+                        if (btn == 'yes') {
+                            Ext.net.Mask.show({ msg: 'در حال بارگذاری...' });
+                            Ext.net.DirectMethod.request({
+                                url: '/NewVer/AppReport_New/SaveInCollection',
+                                params: {
+                                    ShGhabz: shghabz,
+                                    ShPardakht: shpardakht,
+                                    carFileId: parvandeId,
+                                    coderahgiri: coderahgiri
+                                },
+                                success: function (data) {
+                                    var ic=Ext.MessageBox.INFO;
+                                    if(data.Er==1){
+                                        ic=Ext.MessageBox.ERROR;
+                                    }
+                                    Ext.MessageBox.show({
+                                        title: data.MsgTitle,
+                                        msg: data.Msg,
+                                        icon: ic,
+                                        buttons: Ext.MessageBox.OK
+                                    });
+                                    Ext.net.Mask.hide();
+                                }
+                            });
+                        }
+                    }
+                });
+            }
+            else {
+                Ext.MessageBox.show({
+                    title: "خطا",
+                    msg: "عدم وجود کد رهگیری",
+                    icon: Ext.MessageBox.ERROR,
+                    buttons: Ext.MessageBox.OK
+                });
+            }
+        }
+    }
+
+    function getTrnInf() {
+        var txtShGhabz = App.TrnInf.queryById("txtShGhabz");
+        var txtShPardakht = App.TrnInf.queryById("txtShPardakht");
+        var er = false;
+
+        if (txtShGhabz.validate() == false) {
+            er = true;
+        }
+        if (txtShPardakht.validate() == false) {
+            er = true;
+        }
+        if (er == true)
+            return;
+        
+        Ext.net.Mask.show({ msg: 'در حال بارگذاری...' });
+        Ext.net.DirectMethod.request({
+            url: '/NewVer/AppReport_New/GetTrnInfo',
+            params: {
+                ShGhabz: txtShGhabz.getValue(),
+                ShPardakht: txtShPardakht.getValue()
+            },
+            success: function (data) {
+                if (data.Msg == "") {
+                    var info = data.re.split(',');
+                    shghabz = info[0];
+                    shpardakht = info[1];
+                    varizi = data.saveVariz;
+                    parvandeId = data.CarfileId;
+
+                    var paymentType = info[6];
+                    var flag = false;
+                    if (info[7] != undefined) {
+                        flag = true;
+                    }
+                    var paymentTypeName = "";
+                    if (paymentType == "59") {
+                        paymentTypeName = "اینترنتی";
+                    }
+                    else {
+                        paymentTypeName = "موبایلی";
+                    }
+                    var mablagh=info[5].toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+                    if (flag == true) {
+                        Ext.MessageBox.show({
+                            rtl: true,
+                            title: "",
+                            msg: "نتیجه تراکنش:تراکنش موفق" + "<br> تاریخ تراکنش:" + info[2] + "<br>شماره ترمینال:" + info[3] + "<br>شماره پیگیری:" + info[4] + "<br>مبلغ:" + mablagh +"ریال"+ "<br>نحوه پرداخت:" + paymentTypeName + "<br>کد رهگیری:" + info[7],
+                            icon: Ext.MessageBox.INFO,
+                            buttons: Ext.MessageBox.OK,
+                            closable: false,
+                            fn: function (btn) {
+                                if (btn == 'ok') {
+                                    savevarizi(info[7]);
+                                }
+                            }
+                        });
+                    }
+                    else {
+                        Ext.MessageBox.show({
+                            rtl: true,
+                            title: "",
+                            msg: "نتیجه تراکنش:تراکنش موفق" + "<br>تاریخ تراکنش:" + info[2] + "<br>شماره ترمینال:" + info[3] + "<br>شماره پیگیری:" + info[4] + "<br>مبلغ:" + mablagh +"ریال"+ "<br>نحوه پرداخت:" + paymentTypeName,
+                            icon: Ext.MessageBox.INFO,
+                            buttons: Ext.MessageBox.OK,
+                            closable: false,
+                            fn: function (btn) {
+                                if (btn == 'ok') {
+                                    savevarizi();
+                                }
+                            }
+                        });
+                    }
+                }
+                else {
+                    Ext.MessageBox.show({
+                        rtl: true,
+                        title: "خطا",
+                        msg: data.Msg,
+                        icon: Ext.MessageBox.ERROR,
+                        buttons: Ext.MessageBox.OK,
+                    });
+                }
+                Ext.net.Mask.hide();
+            }
+        });
+    }
+
+</script>

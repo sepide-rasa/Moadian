@@ -1,0 +1,294 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Report ScriptLanguage="CSharp" ReportInfo.Created="08/22/2013 12:59:48" ReportInfo.Modified="07/15/2020 08:16:01" ReportInfo.CreatorVersion="2015.1.2.0">
+  <ScriptText>using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Windows.Forms;
+using System.Drawing;
+using System.Data;
+using FastReport;
+using FastReport.Data;
+using FastReport.Dialog;
+using FastReport.Barcode;
+using FastReport.Table;
+using FastReport.Utils;
+
+namespace FastReport
+{
+  public class ReportScript
+  {
+
+    private void Cell64_AfterData(object sender, EventArgs e)
+    {
+      if(Cell63.Text==&quot;0&quot;){
+        Cell63.Text=((String)Report.GetColumnValue(&quot;rpt_Receipt.fldTemporaryCode&quot;));
+      }
+    }
+  }
+}
+</ScriptText>
+  <Dictionary>
+    <TableDataSource Name="sp_PictureSelect" ReferenceName="carTaxDataSet.sp_PictureSelect" DataType="System.Int32" Enabled="true">
+      <Column Name="fldID" DataType="System.Int32"/>
+      <Column Name="fldPic" DataType="System.Byte[]" BindableControl="Picture"/>
+      <Column Name="fldMunicipalityPic" DataType="System.String"/>
+      <Column Name="fldMunicipalityPicID" DataType="System.Int32"/>
+      <Column Name="fldBankPic" DataType="System.String"/>
+      <Column Name="fldBankPicID" DataType="System.Int32"/>
+      <Column Name="fldUserPic" DataType="System.String"/>
+      <Column Name="fldUserPicID" DataType="System.Int64"/>
+      <Column Name="fldUserName" DataType="System.String"/>
+      <Column Name="fldUserID" DataType="System.Int64"/>
+      <Column Name="fldDesc" DataType="System.String"/>
+      <Column Name="fldDate" DataType="System.String"/>
+    </TableDataSource>
+    <TableDataSource Name="sp_CarExperienceSelect" ReferenceName="carTaxDataSet.sp_CarExperienceSelect" DataType="System.Int32" Enabled="true">
+      <Column Name="fldID" DataType="System.Int64"/>
+      <Column Name="fldCarFileID" DataType="System.Int64"/>
+      <Column Name="fldStartDate" DataType="System.String"/>
+      <Column Name="fldEndDate" DataType="System.String"/>
+      <Column Name="fldMunicipalityID" DataType="System.Int32"/>
+      <Column Name="fldLetterNumber" DataType="System.String"/>
+      <Column Name="fldName" DataType="System.String"/>
+      <Column Name="fldCarID" DataType="System.Int64"/>
+      <Column Name="fldMotorNumber" DataType="System.String"/>
+      <Column Name="fldShasiNumber" DataType="System.String"/>
+      <Column Name="fldVIN" DataType="System.String"/>
+      <Column Name="fldModel" DataType="System.Int16"/>
+      <Column Name="fldStartDateInsurance" DataType="System.DateTime"/>
+      <Column Name="fldColor" DataType="System.String"/>
+      <Column Name="fldCarModelName" DataType="System.String"/>
+      <Column Name="fldCarClassName" DataType="System.String"/>
+      <Column Name="fldPlaqueNumber" DataType="System.String"/>
+      <Column Name="fldSerial" DataType="System.String"/>
+      <Column Name="fldPlaqueTypeName" DataType="System.String"/>
+      <Column Name="fldPlaqueCityName" DataType="System.String"/>
+      <Column Name="fldDatePlaque" DataType="System.String"/>
+      <Column Name="fldUserID" DataType="System.Int64"/>
+      <Column Name="fldDesc" DataType="System.String"/>
+      <Column Name="fldDate" DataType="System.String"/>
+      <Column Name="fldUserName" DataType="System.String"/>
+      <Column Name="fldFileId" DataType="System.Int32"/>
+      <Column Name="fldKarbarTaeed" DataType="System.Int64"/>
+      <Column Name="fldDateAccept" DataType="System.String"/>
+      <Column Name="fldNameTaeedKonande" DataType="System.String"/>
+      <Column Name="fldAccept" DataType="System.Boolean" BindableControl="CheckBox"/>
+      <Column Name="fldMobile" DataType="System.String"/>
+      <Column Name="fldAcceptCarFile" DataType="System.Boolean" BindableControl="CheckBox"/>
+      <Column Name="fldAcceptName" DataType="System.String"/>
+    </TableDataSource>
+    <TableDataSource Name="rpt_Receipt" ReferenceName="carTaxDataSet.rpt_Receipt" DataType="System.Int32" Enabled="true">
+      <Column Name="fldID" DataType="System.Int64"/>
+      <Column Name="fldCarId" DataType="System.Int64"/>
+      <Column Name="fldCollectionDate" DataType="System.String"/>
+      <Column Name="fldPrice" DataType="System.Int32"/>
+      <Column Name="fldTemporaryCode" DataType="System.String"/>
+      <Column Name="fldTrackCode" DataType="System.String"/>
+      <Column Name="fldPeacockeryID" DataType="System.String"/>
+      <Column Name="SettleType" DataType="System.String"/>
+      <Column Name="AccountBank" DataType="System.String"/>
+      <Column Name="BankName" DataType="System.String"/>
+      <Column Name="fldMunName" DataType="System.String"/>
+      <Column Name="Result" DataType="System.String"/>
+      <Column Name="UserName" DataType="System.String"/>
+      <Column Name="fldTrackCodePishkhan" DataType="System.String"/>
+      <Column Name="fldShGhabz" DataType="System.String"/>
+      <Column Name="fldShPardakht" DataType="System.String"/>
+      <Column Name="sabtkonande" DataType="System.String"/>
+      <Column Name="fldSerialBarChasb" DataType="System.String"/>
+      <Column Name="fldFileId" DataType="System.Int32"/>
+      <Column Name="fldMobile" DataType="System.String"/>
+      <Column Name="fldMobileSabtkonande" DataType="System.String"/>
+      <Column Name="fldAccept" DataType="System.Boolean" BindableControl="CheckBox"/>
+      <Column Name="fldAcceptName" DataType="System.String"/>
+    </TableDataSource>
+    <TableDataSource Name="rpt_RecoupmentAccount1" ReferenceName="carTaxDataSet.rpt_RecoupmentAccount1" DataType="System.Int32" Enabled="true">
+      <Column Name="fldCarSystem" DataType="System.String"/>
+      <Column Name="fldCarClassName" DataType="System.String"/>
+      <Column Name="fldVIN" DataType="System.String"/>
+      <Column Name="fldShasiNumber" DataType="System.String"/>
+      <Column Name="fldMotorNumber" DataType="System.String"/>
+      <Column Name="fldCylinderNumber" DataType="System.Byte"/>
+      <Column Name="fldModel" DataType="System.Int16"/>
+      <Column Name="fldDatePlaque" DataType="System.String"/>
+      <Column Name="fldPlaqueNumber" DataType="System.String"/>
+      <Column Name="fldPlaqeType" DataType="System.String"/>
+      <Column Name="fldPrice" DataType="System.Int32"/>
+      <Column Name="fldPlaqueSerial" DataType="System.String"/>
+      <Column Name="fldPlaqueCity" DataType="System.String"/>
+      <Column Name="fldNumber" DataType="System.Int32"/>
+      <Column Name="fldCollectionDate" DataType="System.String"/>
+      <Column Name="SumCollection" DataType="System.Decimal"/>
+      <Column Name="SerialFish" DataType="System.String"/>
+      <Column Name="fldName" DataType="System.String"/>
+      <Column Name="fldMelli_EconomicCode" DataType="System.String"/>
+    </TableDataSource>
+    <Parameter Name="date" DataType="System.String"/>
+    <Parameter Name="time" DataType="System.String"/>
+    <Parameter Name="StateName" DataType="System.String"/>
+    <Parameter Name="MunicipalityName" DataType="System.String"/>
+    <Parameter Name="AreaName" DataType="System.String"/>
+    <Parameter Name="OfficeName" DataType="System.String"/>
+    <Parameter Name="sal" DataType="System.String"/>
+    <Parameter Name="MyTablighat" DataType="System.String"/>
+    <Parameter Name="Num" DataType="System.String"/>
+    <Parameter Name="barcode" DataType="System.String"/>
+    <Parameter Name="UserName" DataType="System.String"/>
+  </Dictionary>
+  <ReportPage Name="Page1">
+    <ReportTitleBand Name="ReportTitle1" Top="20" Width="718.2"/>
+    <PageHeaderBand Name="PageHeader1" Top="40" Width="718.2" Height="102.83" Border.Lines="All">
+      <TableObject Name="Table3" Left="0.67" Top="0.95" Width="716.86" Height="101.88">
+        <TableColumn Name="Column10" Width="191.24"/>
+        <TableColumn Name="Column11" Width="334.27"/>
+        <TableColumn Name="Column12" Width="191.35"/>
+        <TableRow Name="Row3" Height="101.88">
+          <TableCell Name="Cell10" Text="شماره: [Num]&#13;&#10;تاریخ صدور: [date]&#13;&#10;ساعت صدور: [time]" HorzAlign="Center" VertAlign="Center" RightToLeft="true" Font="RasaFont, 10pt"/>
+          <TableCell Name="Cell11" Text="[StateName]&#13;&#10;[MunicipalityName]&#13;&#10;[AreaName]&#13;&#10;[OfficeName]&#13;&#10;" HorzAlign="Center" RightToLeft="true" Font="RasaFont, 10pt, style=Bold">
+            <TextObject Name="Text32" Left="98.92" Top="79.02" Width="136.43" Height="18.9" Text="مفاصا حساب" HorzAlign="Center" VertAlign="Center" Font="RasaFont, 16pt, style=Bold"/>
+          </TableCell>
+          <TableCell Name="Cell12" HorzAlign="Center" VertAlign="Center" RightToLeft="true" Font="RasaFont, 10pt">
+            <PictureObject Name="Picture1" Left="93.74" Top="8.81" Width="75.6" Height="75.6" DataColumn="sp_PictureSelect.fldPic"/>
+          </TableCell>
+        </TableRow>
+      </TableObject>
+    </PageHeaderBand>
+    <DataBand Name="Data1" Top="162.83" Width="718.2" Height="410.06" Border.Lines="Left, Right" DataSource="rpt_RecoupmentAccount1" Columns.Count="1" Columns.Layout="DownThenAcross">
+      <TableObject Name="Table1" Left="100.67" Top="67.58" Width="499.9" Height="109.62">
+        <TableColumn Name="Column13" Width="499.9"/>
+        <TableRow Name="Row4" Height="109.62">
+          <TableCell Name="Cell13"/>
+        </TableRow>
+      </TableObject>
+      <TableObject Name="Table2" Left="141.67" Top="63.25" Width="451.66" Height="116.22">
+        <TableColumn Name="Column14" Width="451.66"/>
+        <TableRow Name="Row5" Height="116.22">
+          <TableCell Name="Cell14">
+            <PictureObject Name="Picture2" Left="5.2" Top="9.91" Width="408.24" Height="99.22" Image="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"/>
+            <TextObject Name="Text9" Left="51.49" Top="21.26" Width="255.15" Height="74.65" Text="[rpt_RecoupmentAccount1.fldPlaqueNumber]" AutoShrink="FontSize" HorzAlign="Center" VertAlign="Center" RightToLeft="true" Font="RasaFont, 43pt, style=Bold"/>
+            <TextObject Name="Text8" Left="319.85" Top="45.83" Width="80.32" Height="51.03" Text="[rpt_RecoupmentAccount1.fldPlaqueSerial]" AutoShrink="FontSize" HorzAlign="Center" Font="RasaFont, 34pt, style=Bold"/>
+            <TextObject Name="Text7" Left="318.92" Top="19.38" Width="78.43" Height="25.51" Text="[rpt_RecoupmentAccount1.fldPlaqueCity]" AutoShrink="FontSize" HorzAlign="Center" RightToLeft="true" Font="RasaFont, 16pt, style=Bold"/>
+          </TableCell>
+        </TableRow>
+      </TableObject>
+      <TextObject Name="Text1" Left="125.28" Top="8.18" Width="362.9" Height="21.73" Border.Lines="All" Text="[rpt_RecoupmentAccount1.fldVIN]" HorzAlign="Center" VertAlign="Center" Font="Times New Roman, 10pt, style=Bold"/>
+      <TextObject Name="Text2" Left="488.04" Top="8.18" Width="94.5" Height="18.9" Text="شناسه خودرو:" HorzAlign="Right" VertAlign="Center" RightToLeft="true" Font="RasaFont, 10pt"/>
+      <TextObject Name="Text3" Left="371.43" Top="33.31" Width="193.65" Height="21.55" Border.Lines="All" Text="[rpt_RecoupmentAccount1.fldMotorNumber]" HorzAlign="Center" VertAlign="Center" Font="Times New Roman, 10pt"/>
+      <TextObject Name="Text4" Left="567.95" Top="33.31" Width="94.5" Height="18.9" Text="شماره موتور:" HorzAlign="Right" VertAlign="Center" RightToLeft="true" Font="RasaFont, 10pt"/>
+      <TextObject Name="Text5" Left="55.76" Top="33.31" Width="193.65" Height="21.55" Border.Lines="All" Text="[rpt_RecoupmentAccount1.fldShasiNumber]" HorzAlign="Center" VertAlign="Center" Font="Times New Roman, 10pt"/>
+      <TextObject Name="Text6" Left="253.31" Top="33.31" Width="103.95" Height="18.9" Text="شماره شاسی:" HorzAlign="Right" VertAlign="Center" RightToLeft="true" Font="RasaFont, 10pt"/>
+      <TextObject Name="Text10" Left="437.39" Top="257.13" Width="138.8" Height="21.55" Border.Lines="All" Text="[rpt_RecoupmentAccount1.fldPlaqeType]" HorzAlign="Center" VertAlign="Center" Font="RasaFont, 10pt"/>
+      <TextObject Name="Text11" Left="577.97" Top="258.64" Width="94.5" Height="21.55" Text="نوع پلاک:" HorzAlign="Right" VertAlign="Center" RightToLeft="true" Font="RasaFont, 10pt"/>
+      <TextObject Name="Text12" Left="437.39" Top="280.23" Width="138.8" Height="21.55" Border.Lines="All" Text="[rpt_RecoupmentAccount1.fldDatePlaque]" HorzAlign="Center" VertAlign="Center" Font="RasaFont, 10pt"/>
+      <TextObject Name="Text13" Left="577.97" Top="281.74" Width="126.63" Height="21.55" Text="تاریخ شماره گذاری:" HorzAlign="Right" VertAlign="Center" RightToLeft="true" Font="RasaFont, 10pt"/>
+      <TextObject Name="Text14" Left="11.58" Top="303.33" Width="564.6" Height="21.55" Border.Lines="All" Text="[rpt_RecoupmentAccount1.fldCarClassName]" HorzAlign="Center" VertAlign="Center" Font="RasaFont, 10pt"/>
+      <TextObject Name="Text15" Left="577.97" Top="304.84" Width="94.5" Height="21.55" Text="نوع خودرو:" HorzAlign="Right" VertAlign="Center" RightToLeft="true" Font="RasaFont, 10pt"/>
+      <TextObject Name="Text16" Left="437.39" Top="326.42" Width="138.8" Height="21.55" Border.Lines="All" Text="[rpt_RecoupmentAccount1.fldPrice]" Format="Number" Format.UseLocale="false" Format.DecimalDigits="0" Format.DecimalSeparator="." Format.GroupSeparator="," Format.NegativePattern="0" HorzAlign="Center" VertAlign="Center" Font="RasaFont, 10pt"/>
+      <TextObject Name="Text17" Left="577.97" Top="327.93" Width="130.4" Height="21.55" Text="آخرین پرداختی مبلغ" HorzAlign="Right" VertAlign="Center" RightToLeft="true" Font="RasaFont, 10pt"/>
+      <TextObject Name="Text18" Left="11.73" Top="257.13" Width="305.77" Height="21.55" Border.Lines="All" Text="[rpt_RecoupmentAccount1.fldCarSystem]" HorzAlign="Center" VertAlign="Center" Font="RasaFont, 10pt"/>
+      <TextObject Name="Text19" Left="318.56" Top="257.13" Width="94.5" Height="21.55" Text="سیستم:" HorzAlign="Right" VertAlign="Center" RightToLeft="true" Font="RasaFont, 10pt"/>
+      <TextObject Name="Text22" Left="200.72" Top="280.23" Width="116.29" Height="21.55" Border.Lines="All" Text="[rpt_RecoupmentAccount1.fldModel]" HorzAlign="Center" VertAlign="Center" Font="RasaFont, 10pt"/>
+      <TextObject Name="Text23" Left="318.56" Top="278.74" Width="40.63" Height="21.55" Text="مدل:" HorzAlign="Right" VertAlign="Center" RightToLeft="true" Font="RasaFont, 10pt"/>
+      <TextObject Name="Text24" Left="329.58" Top="327.18" Width="103" Height="21.55" Text="ریال طی رسید شماره" HorzAlign="Center" VertAlign="Center" RightToLeft="true" Font="RasaFont, 10pt"/>
+      <TextObject Name="Text25" Left="218.17" Top="327.18" Width="109.5" Height="21.55" Border.Lines="All" Text="[rpt_RecoupmentAccount1.fldNumber]" HorzAlign="Center" VertAlign="Center" Font="RasaFont, 10pt"/>
+      <TextObject Name="Text26" Left="577.07" Top="352.47" Width="57.63" Height="21.55" Text="در تاریخ:" HorzAlign="Right" VertAlign="Center" RightToLeft="true" Font="RasaFont, 10pt"/>
+      <TextObject Name="Text27" Left="436.92" Top="352.47" Width="138.22" Height="21.55" Border.Lines="All" Text="[rpt_RecoupmentAccount1.fldCollectionDate]" HorzAlign="Center" VertAlign="Center" Font="RasaFont, 10pt"/>
+      <TextObject Name="Text28" Left="37.8" Top="385.51" Width="646.38" Height="24.55" Text=".:: به استناد این گواهی، عوارض خودرو تا پایان سال [sal] پرداخت شده است ::." HorzAlign="Center" VertAlign="Center" RightToLeft="true" Font="RasaFont, 10pt">
+        <Formats>
+          <NumberFormat UseLocale="false" DecimalDigits="0" NegativePattern="3"/>
+          <NumberFormat UseLocale="false" DecimalDigits="0"/>
+          <GeneralFormat/>
+        </Formats>
+      </TextObject>
+      <TextObject Name="Text35" Left="134.85" Top="326.97" Width="81.45" Height="21.55" Text="وطی شماره فیش " HorzAlign="Center" VertAlign="Center" RightToLeft="true" Font="RasaFont, 10pt"/>
+      <TextObject Name="Text36" Left="11.72" Top="326.98" Width="121.58" Height="21.55" Border.Lines="All" Text="[rpt_RecoupmentAccount1.SerialFish]" HorzAlign="Center" VertAlign="Center" Font="RasaFont, 10pt"/>
+      <TextObject Name="Text37" Left="258.92" Top="182.57" Width="200.35" Height="18.9" Text="مشخصات مالک خودرو" HorzAlign="Center" Font="RasaFont, 12pt, style=Bold"/>
+      <TableObject Name="Table10" Left="27.97" Top="207.48" Width="662.25" Height="42.73">
+        <TableColumn Name="Column47" Width="326.04"/>
+        <TableColumn Name="Column48" Width="336.21"/>
+        <TableRow Name="Row12" Height="42.73">
+          <TableCell Name="Cell67" Border.Lines="All" Text="شماره ملی: [rpt_RecoupmentAccount1.fldMelli_EconomicCode]" HorzAlign="Center" VertAlign="Center" RightToLeft="true" Font="RasaFont, 10pt"/>
+          <TableCell Name="Cell68" Border.Lines="All" Text="نام و نام خانوادگی: [rpt_RecoupmentAccount1.fldName]" HorzAlign="Center" VertAlign="Center" RightToLeft="true" Font="RasaFont, 10pt"/>
+        </TableRow>
+      </TableObject>
+    </DataBand>
+    <DataBand Name="Data4" Top="655.44" Width="718.2" Height="18.9" Border.Lines="Left, Right" DataSource="sp_CarExperienceSelect" Filter="ToInt32(Substring([sp_CarExperienceSelect.fldEndDate],0,4))&lt;=ToInt32([sal])">
+      <TableObject Name="Table5" Left="26.49" Width="665.44" Height="18.9">
+        <TableColumn Name="Column20" Width="166.33"/>
+        <TableColumn Name="Column21" Width="255.31"/>
+        <TableColumn Name="Column22" Width="104.88"/>
+        <TableColumn Name="Column23" Width="95.43"/>
+        <TableColumn Name="Column24" Width="43.49"/>
+        <TableRow Name="Row7">
+          <TableCell Name="Cell40" Border.Lines="All" Text="[sp_CarExperienceSelect.fldLetterNumber]" HorzAlign="Center" VertAlign="Center" Font="RasaFont, 10pt"/>
+          <TableCell Name="Cell41" Border.Lines="All" Text="[sp_CarExperienceSelect.fldName]" HorzAlign="Center" VertAlign="Center" Font="RasaFont, 10pt"/>
+          <TableCell Name="Cell42" Border.Lines="All" Text="[sp_CarExperienceSelect.fldEndDate]" HorzAlign="Center" VertAlign="Center" Font="RasaFont, 10pt"/>
+          <TableCell Name="Cell43" Border.Lines="All" Text="[sp_CarExperienceSelect.fldStartDate]" HorzAlign="Center" VertAlign="Center" Font="RasaFont, 10pt"/>
+          <TableCell Name="Cell44" Border.Lines="All" Text="[Row#]" HorzAlign="Center" VertAlign="Center" Font="RasaFont, 10pt"/>
+        </TableRow>
+      </TableObject>
+      <DataHeaderBand Name="DataHeader3" Top="592.89" Width="718.2" Height="42.55" Border.Lines="Left, Right">
+        <TextObject Name="Text29" Left="258.92" Top="2.84" Width="200.35" Height="18.9" Text="تاریخچه انتقال سوابق" HorzAlign="Center" Font="RasaFont, 12pt, style=Bold"/>
+        <TableObject Name="Table4" Left="26.49" Top="23.65" Width="665.57" Height="18.9">
+          <TableColumn Name="Column15" Width="166.45"/>
+          <TableColumn Name="Column16" Width="255.32"/>
+          <TableColumn Name="Column17" Width="104.88"/>
+          <TableColumn Name="Column18" Width="95.43"/>
+          <TableColumn Name="Column19" Width="43.49"/>
+          <TableRow Name="Row6">
+            <TableCell Name="Cell15" Border.Lines="All" Text="شماره نامه/فیش" HorzAlign="Center" VertAlign="Center" Font="RasaFont, 10pt"/>
+            <TableCell Name="Cell36" Border.Lines="All" Text="نام شهرداری" HorzAlign="Center" VertAlign="Center" Font="RasaFont, 10pt"/>
+            <TableCell Name="Cell37" Border.Lines="All" Text="تا تاریخ" HorzAlign="Center" VertAlign="Center" Font="RasaFont, 10pt"/>
+            <TableCell Name="Cell38" Border.Lines="All" Text="از تاریخ" HorzAlign="Center" VertAlign="Center" Font="RasaFont, 10pt"/>
+            <TableCell Name="Cell39" Border.Lines="All" Text="ردیف" HorzAlign="Center" VertAlign="Center" Font="RasaFont, 10pt"/>
+          </TableRow>
+        </TableObject>
+      </DataHeaderBand>
+    </DataBand>
+    <DataBand Name="Data5" Top="767.26" Width="718.2" Height="18.9" Border.Lines="Left, Right" DataSource="rpt_Receipt" Filter="ToInt32(Substring([rpt_Receipt.fldCollectionDate],0,4))&lt;=ToInt32([sal])">
+      <TableObject Name="Table9" Left="2.9" Width="712.41" Height="18.9">
+        <TableColumn Name="Column41" Width="172.48"/>
+        <TableColumn Name="Column42" Width="153.07"/>
+        <TableColumn Name="Column43" Width="134.59"/>
+        <TableColumn Name="Column44" Width="114.61"/>
+        <TableColumn Name="Column45" Width="88.19"/>
+        <TableColumn Name="Column46" Width="49.47"/>
+        <TableRow Name="Row11">
+          <TableCell Name="Cell61" Border.Lines="All" Text="[rpt_Receipt.fldMunName]" HorzAlign="Center" VertAlign="Center" Font="RasaFont, 10pt"/>
+          <TableCell Name="Cell62" Border.Lines="All" Text="[rpt_Receipt.SettleType]" HorzAlign="Center" VertAlign="Center" Font="RasaFont, 10pt"/>
+          <TableCell Name="Cell63" Border.Lines="All" Text="[rpt_Receipt.fldPeacockeryID]" HorzAlign="Center" VertAlign="Center" Font="RasaFont, 10pt"/>
+          <TableCell Name="Cell64" Border.Lines="All" AfterDataEvent="Cell64_AfterData" Text="[rpt_Receipt.fldPrice]" Format="Number" Format.UseLocale="false" Format.DecimalDigits="0" Format.DecimalSeparator="." Format.GroupSeparator="," Format.NegativePattern="1" HorzAlign="Center" VertAlign="Center" Font="RasaFont, 10pt"/>
+          <TableCell Name="Cell65" Border.Lines="All" Text="[rpt_Receipt.fldCollectionDate]" HorzAlign="Center" VertAlign="Center" Font="RasaFont, 10pt"/>
+          <TableCell Name="Cell66" Border.Lines="All" Text="[rpt_Receipt.fldID]" AutoShrink="FontSize" HorzAlign="Center" VertAlign="Center" Font="RasaFont, 10pt"/>
+        </TableRow>
+      </TableObject>
+      <DataHeaderBand Name="DataHeader4" Top="694.34" Width="718.2" Height="52.92" Border.Lines="Left, Right">
+        <TextObject Name="Text31" Left="258.93" Top="12.3" Width="200.35" Height="18.9" Text="تاریخچه اطلاعات واریزی" HorzAlign="Center" Font="RasaFont, 12pt, style=Bold"/>
+        <TableObject Name="Table8" Left="2.9" Top="34.02" Width="712.41" Height="18.9">
+          <TableColumn Name="Column35" Width="172.48"/>
+          <TableColumn Name="Column36" Width="153.07"/>
+          <TableColumn Name="Column37" Width="134.59"/>
+          <TableColumn Name="Column38" Width="114.61"/>
+          <TableColumn Name="Column39" Width="88.19"/>
+          <TableColumn Name="Column40" Width="49.47"/>
+          <TableRow Name="Row10">
+            <TableCell Name="Cell55" Border.Lines="All" Text="نام صاحب حساب" HorzAlign="Center" VertAlign="Center" Font="RasaFont, 10pt"/>
+            <TableCell Name="Cell56" Border.Lines="All" Text="نحوه پرداخت" HorzAlign="Center" VertAlign="Center" Font="RasaFont, 10pt"/>
+            <TableCell Name="Cell57" Border.Lines="All" Text="سریال قبض/کد تراکنش" HorzAlign="Center" VertAlign="Center" Font="RasaFont, 10pt"/>
+            <TableCell Name="Cell58" Border.Lines="All" Text="مبلغ " HorzAlign="Center" VertAlign="Center" Font="RasaFont, 10pt"/>
+            <TableCell Name="Cell59" Border.Lines="All" Text="تاریخ پرداخت" HorzAlign="Center" VertAlign="Center" Font="RasaFont, 10pt"/>
+            <TableCell Name="Cell60" Border.Lines="All" Text="ش. رسید" HorzAlign="Center" VertAlign="Center" Font="RasaFont, 8pt, style=Bold"/>
+          </TableRow>
+        </TableObject>
+      </DataHeaderBand>
+    </DataBand>
+    <ReportSummaryBand Name="ReportSummary1" Top="806.16" Width="718.2" Height="221.14" Border.Lines="Left, Right, Bottom">
+      <TextObject Name="Text30" Left="476.24" Top="28.38" Width="204.21" Height="41.58" Text="نام کاربر: [UserName]&#13;&#10;مهر و امضاء" RightToLeft="true" Font="RasaFont, 10pt, style=Bold"/>
+      <TextObject Name="Text34" Left="9.53" Top="178.63" Width="700.23" Height="39.67" CanGrow="true" GrowToBottom="true" Text="[MyTablighat]" RightToLeft="true" Font="RasaFont, 11pt, style=Bold"/>
+      <TextObject Name="Text33" Left="9.45" Top="144.41" Width="700.29" Height="19.86" Text="جهت استعلام مفاصا حساب فقط کافی است بارکد مقابل را با تلفن هوشمند خود اسکن و اصالت گواهي را بررسي كنيد" HorzAlign="Right" Font="RasaFont, 10pt"/>
+      <BarcodeObject Name="Barcode1" Left="15.92" Top="9.45" Width="134.9" Height="134.9" AutoSize="false" Text="[barcode]" ShowText="false" AllowExpressions="true" Barcode="QR Code" Barcode.ErrorCorrection="L" Barcode.Encoding="UTF8" Barcode.QuietZone="true"/>
+      <TextObject Name="Text20" Left="141.42" Top="108.48" Width="567" Height="47.25" Text="جهت بررسی اصالت به آدرس [Url] مراجعه و کد رهگیری [ref] را وارد کنید." RightToLeft="true" Font="RasaFont, 10pt"/>
+    </ReportSummaryBand>
+  </ReportPage>
+</Report>

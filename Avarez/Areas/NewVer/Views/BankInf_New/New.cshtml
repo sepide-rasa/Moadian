@@ -1,0 +1,162 @@
+﻿@using Ext.Net.MVC
+@using Hogaf.ExtNet.UX
+@using Ext.Net;
+@{
+    var X = Html.X();
+}
+
+
+@(Html.X().Window()
+    .Modal(true)
+    .Resizable(false)
+    .Width(300)
+    .Height(120)
+    .Title("بانک جدید")
+    .Layout(LayoutType.Fit)
+    .ID("NewBank")
+    .Closable(true)
+    .ButtonAlign(Ext.Net.Alignment.Center)
+    .Buttons(
+        X.Button()
+            .Text("ذخیره")
+            .Icon(Ext.Net.Icon.Disk)
+            .ItemID("BtnSaveB")
+        //.ToolTip("کلید میانبر F8")
+            .Listeners(l => l.Click.Handler = "SaveBank();"),
+        X.Button()
+            .Text("خروج")
+            .Icon(Ext.Net.Icon.DoorOut)
+        //.ToolTip("کلید میانبر Esc")
+            .OnClientClick("App.NewBank.destroy();"))
+    .CloseAction(Ext.Net.CloseAction.Destroy)
+    .Items(
+        X.FormPanel()
+            .Border(false)
+            .Layout(LayoutType.Fit)
+            .Items(
+                X.Panel()
+                    .Border(false)
+                    .PaddingSpec("15px 0 0 0")
+                    .Items(
+                        X.FieldSet()
+                            .Border(false)
+                            .Defaults(new { Margin = 4 })
+                            .Layout(LayoutType.Table)
+                            .LayoutConfig(new TableLayoutConfig { Columns = 4 })
+                            .Items(
+                                X.Hidden()
+                                    .ItemID("fldId"),
+                                X.Label("نام بانک:"),
+                                X.ComboBox()
+                                    .ItemID("cboBankName")
+                                    .EmptyText("نام بانک...")
+                                    .TypeAhead(true)
+                                    .AllowBlank(false)
+                                    .BlankText("لطفا نام بانک را انتخاب نمایید.")
+                                    .MsgTarget(Ext.Net.MessageTarget.Side)
+                                    .QueryMode(DataLoadMode.Local)
+                                    .ForceSelection(true)
+                                    .Editable(false)
+                                    .Width(190)
+                                    .Listeners(ls =>
+                                            ls.Select.Handler = "CheckBank();"
+                                                )
+                                    .TriggerAction(TriggerAction.All)
+                                        .DisplayField("fldName")
+                                            .ValueField("fldID")
+                                            .Store(X.Store()
+                                                .Model(X.Model()
+                                                    .IDProperty("fldID")
+                                                    .Fields(
+                                                        new ModelField("fldID", ModelFieldType.String) { Mapping = "fldID" },
+                                                        new ModelField("fldName", ModelFieldType.String) { Mapping = "fldName" })
+                                                        )
+                                                .Proxy(X.AjaxProxy()
+                                                    .Url(Url.Action("GetCascadeBank"))
+                                                    .Reader(X.JsonReader().Root("data")))
+                                                    )
+                            )
+                )
+            )
+        )
+)
+
+<script type="text/javascript">
+
+
+    function SaveBank() {
+        var cboBankName = App.NewBank.queryById('cboBankName');
+
+        var er = false;
+
+        if (cboBankName.validate() == false) {
+            er = true;
+        }
+        if (er == true)
+            return;
+
+        App.NewBank.body.mask("در حال ذخیره سازی...");
+        Ext.net.DirectMethod.request({
+            url: '/NewVer/BankInf_New/Save_Bank',
+            params: {
+                fldBankId: cboBankName.getValue(),
+                fldMunID: '@ViewBag.MunId',
+                fldType: '@ViewBag.fldType'
+            },
+            success: function (data) {
+                var ic = Ext.MessageBox.INFO;
+                if (data.Er == 1)
+                    ic = Ext.MessageBox.ERROR;
+                Ext.MessageBox.show({
+                    title: data.MsgTitle,
+                    msg: data.Msg,
+                    icon: ic,
+                    buttons: Ext.MessageBox.OK
+                });
+                LoadGridInNew();
+                App.NewBank.body.mask().hide();
+            }
+        });
+    }
+    function LoadGridInNew() {
+        Ext.net.DirectMethod.request({
+            url: '/NewVer/BankInf_New/Reload',
+            params: {
+                type: '@ViewBag.fldType',
+                value: '@ViewBag.MunId'
+            },
+            success: function (data) {
+                Ext.net.Mask.hide();
+                App.BankInf.queryById('GridBankInf').getStore().loadData(data);
+            }
+        });
+    }
+    function CheckBank() {        
+        var cboBankName = App.NewBank.queryById('cboBankName');
+        var BtnSaveB = App.NewBank.queryById('BtnSaveB');
+        App.NewBank.body.mask("در حال بررسی...");
+        Ext.net.DirectMethod.request({
+            url: '/NewVer/BankInf_New/CheckBank',
+            params: {
+                Bank: cboBankName.getValue(),
+                type: '@ViewBag.fldType',
+                value: '@ViewBag.MunId'
+            },
+            success: function (data) {
+                App.NewBank.body.mask().hide();
+                BtnSaveB.setDisabled(false);
+                var ic = Ext.MessageBox.INFO;
+                if (data.Er == 1) {
+                    ic = Ext.MessageBox.ERROR;
+                    BtnSaveB.setDisabled(true);
+                Ext.MessageBox.show({
+                    title: data.MsgTitle,
+                    msg: data.Msg,
+                    icon: ic,
+                    buttons: Ext.MessageBox.OK
+                });
+                }
+            }
+        });
+    }
+</script>

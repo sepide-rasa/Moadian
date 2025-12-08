@@ -1,0 +1,546 @@
+﻿@using Kendo.Mvc.UI;
+<div class="modal" id="Signer">
+    @{
+        Avarez.Models.cartaxEntities car = new Avarez.Models.cartaxEntities();
+        var q = car.sp_StateSelect("", "", 0, Convert.ToInt32(Session["UserId"]), Session["UserPass"].ToString()).ToList();
+    }
+    <script src="@Url.Content("~/Content/Base.js")" type="text/javascript"></script>
+    <div>
+    <a href="@Url.Content("~/Helps/تعریف اشخاص صاحب امضا.htm")" target="_blank" id="Help" title="راهنما" style="background-image:url('/Content/images/1381415123_help.png');background-repeat: no-repeat;height: 20px;float: left;top: 10px;left: 10px;"></a>
+        <br />
+        <center>
+            <table>
+                <tr>
+                    <td align="left">
+                        <span style="color: Red;">*</span>استان:
+                    </td>
+                    <td>
+                        @Html.DropDownList("cboState", new SelectList(q, "", ""))
+                        <span id="lblStateError" style="color: Red;"></span>
+                    </td>
+                    <td align="left">
+                        <span style="color: Red;">*</span>شهرداری:
+                    </td>
+                    <td>
+                        @Html.TextBox("cboMun")
+                        <span id="lblMunError" style="color: Red;"></span>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td align="left">
+                        @Html.Hidden("fldId")
+                        <span style="color: Red;"></span>نام منطقه:
+                    </td>
+                    <td>
+                        @Html.TextBox("cboLocal")
+                    </td>
+                        <td align="left">
+                            <span style="color: Red;"></span> نام ناحیه:
+                        </td>
+                        <td>
+                            @Html.TextBox("cboArea")
+                        </td>
+                </tr>
+                    <tr>
+                        <td align="left">
+                            <span style="color: Red;"></span> نام دفتر:
+                        </td>
+                        <td>
+                            @Html.TextBox("cboOffice")
+                        </td>
+                        <td align="left">
+                            @Html.Hidden("fldId")
+                            <span style="color: Red;">*</span>نام:
+                        </td>
+                        <td>
+                            @Avarez.Helper.winClass.textbox("txtName")
+                            <span id="lblNameError" style="color: Red;"></span>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td align="left">
+                            <span style="color: Red;">*</span>نام خانوادگی:
+                        </td>
+                        <td>
+                            @Avarez.Helper.winClass.textbox("txtFamily")
+                            <span id="lblFamilyError" style="color: Red;"></span>
+                        </td>
+                        <td align="left">
+                            <span style="color: Red;">*</span> کد ملی:
+                        </td>
+                        <td>
+                            @Avarez.Helper.winClass.textbox("txtCode")
+                            <span id="lblCodeError" style="color: Red;"></span>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td align="left">
+                            <span style="color: Red;">*</span>سمت:
+                        </td>
+                        <td>
+                          @(Html.Kendo().DropDownList()
+                                  .Name("cboPost")
+                                  .OptionLabel("سمت...")
+                                  .DataTextField("fldName")
+                                  .DataValueField("fldID")
+                                  .DataSource(source =>
+                                  {
+                                      source.Read(read =>
+                                      {
+                                          read.Action("GetCascadePost", "Signer");
+                                      });
+                                  }).HtmlAttributes(new { @style = "display: none;width:169px;" })
+                            )
+                        </td>
+                        <td align="left">
+                            توضیحات:
+                        </td>
+                        <td>
+                            @Avarez.Helper.winClass.textArea("txtDesc", 4, 30)
+                        </td>
+                    </tr>
+
+            </table>
+            <p>
+                @Avarez.Helper.winClass.Buttons("AddLink", "ذخیره", "Save")
+                @Avarez.Helper.winClass.Buttons("EditLink", "ویرایش", "Edit")
+                @Avarez.Helper.winClass.Buttons("DelLink", "حذف", "Del")
+                @Avarez.Helper.winClass.Buttons("exit", "خروج", "Exit")
+            </p>
+        </center>
+        @(Html.Kendo().PanelBar()
+        .Name("panelbar-images")
+        .Items(panelbar =>
+        {
+            panelbar.Add().Text("جستجو")
+                .ImageUrl(Url.Content("~/Content/images/search.png"))
+                .Content(@<div>
+                    <table>
+                        <tr>
+                            <td>
+                                فیلد جستجو:@Html.DropDownList("cboSearchFiald", new SelectList(new[] { new { ID = "0", Name = " نام" }, new { ID = "1", Name = "نام خانوادگی" } }, "ID", "Name"))
+                            </td>
+                            <td>
+                                نوع جستجو: @Html.DropDownList("cboSearchType", new SelectList(new[] { new { ID = "0", Name = "مشابه عبارت" }, new { ID = "1", Name = "مشابه عبارت از سمت راست" }, new { ID = "2", Name = "عین عبارت" } }, "ID", "Name"))
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                عبارت جستجو: @Avarez.Helper.winClass.textbox("txtSearch")
+                            </td>
+                            <td>
+                                نتیجه رکوردها: @Html.TextBox("txtTop", 30, new { @style = "width:30px;" }) رکورد
+                            </td>
+                        </tr>
+                    </table>
+                    <br />
+                </div>);
+        })
+        )
+        <div class="k-rtl demo-section">
+            @(Html.Kendo().Grid<Avarez.Models.sp_SignerEmployeeSelect>()
+                .Name("Grid")
+                .Columns(columns =>
+                {
+                    columns.Bound(p => p.fldID).Title("کد").Visible(false);
+                    columns.Bound(p => p.fldName).Title("نام ");
+                    columns.Bound(p => p.fldFamily).Title("نام خانوادگی ");
+                    columns.Bound(p => p.fldMelliCode).Title("کد ملی ");
+                    columns.Bound(p => p.fldMunicipalityName).Title("شهرداری ");
+                    columns.Bound(p => p.fldLocalID).Title("منطقه ");
+                    columns.Bound(p => p.fldAreaID).Title("ناحیه ");
+                    columns.Bound(p => p.fldOfficeName).Title("دفتر ");
+                    columns.Bound(p => p.fldDesc).Title("توضیحات");
+                })
+            .Selectable(selectable => selectable.Mode(GridSelectionMode.Single))
+            .Pageable()
+            .Scrollable()
+            .DataSource(data =>
+                data.Ajax()
+                    .PageSize(10).Read("Fill", "Signer")
+            )
+        )
+        </div>
+    </div>
+    <script type="text/javascript">
+        function selectMun() {
+
+            return {
+                cboState: $("#cboState").val()
+            };
+        }
+        function selectLocal() {
+
+            return {
+                cboMun: $("#cboMun").val()
+            };
+        }
+        function selectArea() {
+
+            return {
+                cboMun: $("#cboMun").val()
+            };
+        }
+        function selectOffice() {
+
+            return {
+                cboMun: $("#cboMun").val()
+            };
+        }
+        $("document").ready(function () {
+
+
+            $("#AddLink").button();
+            $("#EditLink").button();
+            $("#DelLink").button();
+            $("#exit").button();
+            $('#Help').button();
+
+            $("#exit").click(function () {
+                $("#Signer").remove();
+            });
+
+            $('#Signer').on('keyup', 'input', function (event) {
+                if (event.which == 13) {
+                    var inputs = $('#Signer').find(':input:visible');
+                    inputs.eq(inputs.index(this) + 1).focus();
+                }
+            });
+
+            $(document).keyup(function (event) {
+                if (event.which == 119) {
+                    SaveRecord();
+                }
+                else if (event.which == 113) {
+                    EditRecord();
+                }
+                else if (event.which == 115) {
+                    DeleteRecord();
+                }
+            });
+            $('#AddLink').attr('title', 'کلید میانبر (F8)'); //119
+            $('#EditLink').attr('title', 'کلید میانبر (F2)'); //113
+            $('#DelLink').attr('title', 'کلید میانبر (F4)'); //115
+
+            jQuery("#EditLink").click(function () {
+                EditRecord();
+            });
+
+            $('#DelLink').click(function () {
+                DeleteRecord();
+            });
+
+            $("#AddLink").click(function () {
+                SaveRecord();
+            });
+
+            $('#txtSearch').keyup(function () {
+                var url = '@Url.Action("Reload", "Signer")';
+                Reload(url, 'Grid', $("#cboSearchFiald").val(), $("#txtSearch").val(), $("#txtTop").val(), $("#cboSearchType").val());
+            });
+
+            $("#txtName").keyup(function () {
+                if ($("#txtName").val() != '') {
+                    $("#txtName").removeClass("input-validation-error");
+                    $("#lblNameError").html("");
+                }
+                else {
+                    $("#txtName").addClass("input-validation-error");
+                    $('#lblNameError').html('لطفا نام را وارد کنید.');
+                }
+            });
+            $("#txtFamily").keyup(function () {
+                if ($("#txtFamily").val() != '') {
+                    $("#txtFamily").removeClass("input-validation-error");
+                    $("#lblFamilyError").html("");
+                }
+                else {
+                    $("#txtFamily").addClass("input-validation-error");
+                    $('#lblFamilyError').html('لطفا نام خانوادگی را وارد کنید.');
+                }
+            });
+            $("#txtCode").keyup(function () {
+                if ($("#txtCode").val() != '') {
+                    $("#txtCode").removeClass("input-validation-error");
+                    $("#lblCodeError").html("");
+                }
+                else {
+                    $("#txtCode").addClass("input-validation-error");
+                    $('#lblCodeError').html('لطفا کد ملی را وارد کنید.');
+                }
+            });
+            $("#cboMun").change(function () {
+                if ($("#cboMun").val() != '') {
+                    $("#cboMun").removeClass("input-validation-error");
+                    $("#lblMunError").html("");
+                }
+                else {
+                    $("#cboMun").addClass("input-validation-error");
+                    $('#lblMunError').html('لطفا کد ملی را وارد کنید.');
+                }
+            });
+ 
+        });
+        function Clear() {
+            $('#txtName').val('');
+            $('#txtCode').val('');
+            $('#txtFamily').val('');
+            
+            $('#fldId').val(0);
+            $('#txtDesc').val('');
+        }
+         function SaveRecord() {
+                var er = false;
+
+                if ($("#cboMun").val() == '') {
+                    $("#cboMun").addClass("input-validation-error");
+                    $('#lblMunError').html('لطفا شهرداری را انتخاب کنید.');
+                    er = true;
+                }
+                else
+                    $('#lblMunError').html('');
+
+                if ($("#txtName").val() == '') {
+                    $("#txtName").addClass("input-validation-error");
+                    $('#lblNameError').html('لطفا نام وارد کنید.');
+                    er = true;
+                }
+                else
+                    $('#lblNameError').html('');
+
+                if ($("#txtFamily").val() == '') {
+                    $("#txtFamily").addClass("input-validation-error");
+                    $('#lblFamilyError').html('لطفا نام خانوادگی وارد کنید.');
+                    er = true;
+                }
+                else
+                    $('#lblFamilyError').html('');
+
+                if ($("#txtCode").val() == '') {
+                    $("#txtCode").addClass("input-validation-error");
+                    $('#lblCodeError').html('لطفا کد ملی وارد کنید.');
+                    er = true;
+                }
+                else
+                    $('#lblCodeError').html('');
+                if (er)
+                    return;
+
+                var data = { fldName: $("#txtName").val(), fldFamily: $('#txtFamily').val(),
+                    fldMelliCode: $('#txtCode').val(),
+                    fldMunicipalityID: $('#cboMun').val(),
+                    fldLocalID: $('#cboLocal').val(),
+                    fldAreaID: $('#cboArea').val(),
+                    fldOfficesID: $('#cboOffice').val(),
+                    fldPostID: $('#cboPost').val(),
+                    fldUserID: 1, fldDesc: $("#txtDesc").val(),
+                    fldId: $("#fldId").val()
+                };
+                if (data != '') {
+                    PostForm(data, '@Url.Content("~/Signer/Save")', "#win");
+                }
+                Clear();
+            }
+        function EditRecord() {
+                var entityGrid = $("#Grid").data("kendoGrid");
+                var selectedItem = entityGrid.dataItem(entityGrid.select());
+                if (selectedItem) {
+                    var id = selectedItem.fldID;
+                    var URL = '@Url.Content("~/Signer/Details")';
+                    URL = URL + "/" + id;
+                    $.ajax({
+                        type: "GET",
+                        url: URL,
+                        success: function (data) {
+                            $('#txtName').val(data.fldName);
+                            $('#txtFamily').val(data.fldFamily);
+                            $('#fldId').val(data.fldId);
+                            $('#txtCode').val(data.fldMelliCode);
+                            $('#txtDesc').val(data.fldDesc);
+                            var post = $("#cboPost").data("kendoDropDownList");
+                            post.value(data.fldPostID);
+                            var state = $("#cboState").data("kendoDropDownList");
+                            state.value(data.fldState);
+                            var Mun = $("#cboMun").data("kendoDropDownList");
+                            Mun.enable(true);
+                            Mun.dataSource.read();
+                            Mun.value(data.fldMunicipalityID);
+                            var local = $("#cboLocal").data("kendoDropDownList");
+                            local.enable(true);
+                            local.dataSource.read();
+                            local.value(data.fldLocalID);
+                            var area = $("#cboArea").data("kendoDropDownList");
+                            area.enable(true);
+                            area.dataSource.read();
+                            area.value(data.fldAreaID);
+                            var office = $("#cboOffice").data("kendoDropDownList");
+                            office.enable(true);
+                            office.dataSource.read();
+                            office.value(data.fldOfficesID);
+
+                        },
+                        failure: function (data) {
+                            alert(data.data);
+                        }
+                    });
+                }
+                else {
+                    alert('لطفا یک سطر را انتخاب کنید.');
+                }
+            }
+            function DeleteRecord() {
+                var entityGrid = $("#Grid").data("kendoGrid");
+                var selectedItem = entityGrid.dataItem(entityGrid.select());
+                if (selectedItem) {
+                    var id = selectedItem.fldID;
+                    var URL = '@Url.Content("~/metro/YesNomsg")';
+                    URL = URL + "/?id=" + id + "&URL=" + '@Url.Content("~/Signer/Delete")';
+                    windowAppend("body", URL);
+                    $("#message").html('آیا مایل به حذف رکورد انتخاب شده هستید؟');
+                }
+                else {
+                    alert('لطفا یک سطر را انتخاب کنید.');
+                }
+                Clear();
+            }
+        function Reload(Url, gridname, field, value, top, searchType) {
+            var grid = $('#' + gridname).data('kendoGrid');
+            $.ajax({
+                url: Url,
+                type: 'get',
+                datatype: 'json',
+                data: { field: field, value: value, top: top, searchtype: searchType },
+                error: function (xhr, status, error) {
+                    alert(xhr + status);
+                },
+                success: function (result) {
+                    $("#" + gridname).data("kendoGrid").dataSource.data(result);
+                }
+
+            });
+        }
+
+        function PostForm(datas, url, id) {
+            var sendInfo = datas;
+            $('#Lock').show();
+            $.ajax({
+                type: "POST",
+                url: url,
+                data: sendInfo,
+                datatype: "json",
+                success: function (data) {
+                    var m = data;
+                    windowAppend("body", "/metro/error");
+                    $("#message").html(m.data);
+                    switch (m.state) {
+                        case 0:
+                            $("#error .wintitle").html("ذخیره موفق");
+                            break;
+                        case 1:
+                            $("#error .wintitle").html("خطا");
+                            break;
+                    }
+                    var url = '@Url.Action("Reload", "Signer")';
+                    Reload(url, 'Grid', '0', '', 30, 1);
+                    $('#Lock').hide();
+                },
+                failure: function (data) {
+                    alert(data.data);
+                }
+            });
+        }    
+    </script>
+</div>
+<div class="k-rtl">
+    @(Html.Kendo().DropDownList()
+          .Name("cboState")
+          .OptionLabel("نام استان...")
+          .DataTextField("fldName")
+          .DataValueField("fldID")
+          .DataSource(source =>
+          {
+              source.Read(read =>
+              {
+                  read.Action("GetCascadeState", "Signer");
+              });
+          }).HtmlAttributes(new { @style = "display: none;width:105px;" })
+    )
+    @(Html.Kendo().DropDownList()
+          .Name("cboMun")
+          .OptionLabel("نام شهرداری...")
+                  .DataTextField("fldName")
+                  .DataValueField("fldID")
+          .DataSource(source =>
+          {
+              source.Read(read =>
+              {
+                  read.Action("GetCascadeMun", "Signer").Data("selectMun");
+              })
+              .ServerFiltering(true);
+          })
+          .Enable(true)
+          .AutoBind(false)
+          .CascadeFrom("cboState")
+          .HtmlAttributes(new { @style = "display: none;width:105px;" })
+    )
+    @(Html.Kendo().DropDownList()
+          .Name("cboLocal")
+          .OptionLabel("نام منطقه...")
+          .DataTextField("fldName")
+          .DataValueField("fldID")
+          .DataSource(source =>
+          {
+              source.Read(read =>
+              {
+                  read.Action("GetCascadeLocal", "Signer")
+                      .Data("selectLocal");
+              })
+              .ServerFiltering(true);
+          })
+          .Enable(true)
+          .AutoBind(false)
+                  .CascadeFrom("cboMun")
+          .HtmlAttributes(new { @style = "display: none;width:105px;" })
+    )
+    @(Html.Kendo().DropDownList()
+                  .Name("cboArea")
+          .OptionLabel("نام ناحیه...")
+          .DataTextField("fldName")
+          .DataValueField("fldID")
+          .DataSource(source =>
+          {
+              source.Read(read =>
+              {
+                  read.Action("GetCascadeArea", "Signer")
+                      .Data("selectArea");
+              })
+              .ServerFiltering(true);
+          })
+          .Enable(true)
+          .AutoBind(false)
+          .CascadeFrom("cboMun")
+          .HtmlAttributes(new { @style = "display: none;width:105px;" })
+    )
+        @(Html.Kendo().DropDownList()
+          .Name("cboOffice")
+          .OptionLabel("نام دفتر...")
+          .DataTextField("fldName")
+          .DataValueField("fldID")
+          .DataSource(source =>
+          {
+              source.Read(read =>
+              {
+                  read.Action("GetCascadeOffice", "Signer")
+                      .Data("selectOffice");
+              })
+              .ServerFiltering(true);
+          })
+          .Enable(true)
+          .AutoBind(false)
+          .CascadeFrom("cboMun")
+          .HtmlAttributes(new { @style = "display: none;width:105px;" })
+    )
+</div>
