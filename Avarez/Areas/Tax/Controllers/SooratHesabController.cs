@@ -1524,42 +1524,43 @@ namespace Avarez.Areas.Tax.Controllers
                 // ایجاد نمونه ارسال کننده
                 var sender = new InvoiceSender(memoryId, apiUrl, privateKeyPath, certificatePath);
 
+                var mmsgg = "";
                 // ========== ارسال و استعلام هوشمند ==========
-                var result = await SendAndInquireWithRetry(sender, item);
+                var result = await SendAndInquireWithRetry(sender, item, memoryId);
 
                 if (result != null)
                 {
                     Console.WriteLine("\n✅ موفق:");
-                    sender.PrintInquiryResult(new List<InquiryResultModel> { result }, HeaderId, invoiceJson, Convert.ToInt64(Session["TaxUserId"]));
+                    mmsgg=sender.PrintInquiryResult(new List<InquiryResultModel> { result }, HeaderId, invoiceJson, Convert.ToInt64(Session["TaxUserId"]));
                 }
                 else
                 {
                     Console.WriteLine("\n❌ ناموفق: فاکتور پیدا نشد");
                 }
-/*
-                // ارسال فاکتور و دریافت نتیجه
-                var results = await sender.SendInvoiceAsync(item);
+                /*
+                                // ارسال فاکتور و دریافت نتیجه
+                                var results = await sender.SendInvoiceAsync(item);
 
-                // چاپ نتیجه
-                sender.PrintInquiryResult(results, HeaderId, invoiceJson, Convert.ToInt64(Session["TaxUserId"]));
-                string uid = "";
-                string referenceNumber = results[0].ReferenceNumber;
-                if (results[0].Uid != null)
-                    uid = results[0].Uid;
-                entities.prs_tblSooratHesabStatusInsert(HeaderId, 4, "", referenceNumber, invoiceJson, uid, Convert.ToInt64(Session["TaxUserId"]), "1");
-             
+                                // چاپ نتیجه
+                                sender.PrintInquiryResult(results, HeaderId, invoiceJson, Convert.ToInt64(Session["TaxUserId"]));
+                                string uid = "";
+                                string referenceNumber = results[0].ReferenceNumber;
+                                if (results[0].Uid != null)
+                                    uid = results[0].Uid;
+                                entities.prs_tblSooratHesabStatusInsert(HeaderId, 4, "", referenceNumber, invoiceJson, uid, Convert.ToInt64(Session["TaxUserId"]), "1");
 
-                Console.WriteLine("\n\n=== استعلام با شماره پیگیری ===");
-                var inquiryByRef = sender.InquiryByReferenceNumber(
-                    new List<string> { referenceNumber }
-                );
-                sender.PrintInquiryResult(inquiryByRef, HeaderId, invoiceJson,Convert.ToInt64(Session["TaxUserId"]));
 
-                //var st = entities.prs_tblSooratHesabStatusSelect("fldHeaderId", HeaderId.ToString(), 0).FirstOrDefault();
-                //await InquireInvoiceStatus(st.fldUid, st.fldReferenceNumber, CLIENT_ID);
+                                Console.WriteLine("\n\n=== استعلام با شماره پیگیری ===");
+                                var inquiryByRef = sender.InquiryByReferenceNumber(
+                                    new List<string> { referenceNumber }
+                                );
+                                sender.PrintInquiryResult(inquiryByRef, HeaderId, invoiceJson,Convert.ToInt64(Session["TaxUserId"]));
 
-                Console.WriteLine("=== ارسال فاکتور با موفقیت انجام شد ===");
-                */
+                                //var st = entities.prs_tblSooratHesabStatusSelect("fldHeaderId", HeaderId.ToString(), 0).FirstOrDefault();
+                                //await InquireInvoiceStatus(st.fldUid, st.fldReferenceNumber, CLIENT_ID);
+
+                                Console.WriteLine("=== ارسال فاکتور با موفقیت انجام شد ===");
+                                */
                 /*   List<InvoiceResponseModel> responseModels = taxApi.SendInvoices(invoiceList);
 
 
@@ -1587,13 +1588,13 @@ namespace Avarez.Areas.Tax.Controllers
 
                    var mmsgg=PrintInquiryResult(inquiryResults, HeaderId,Convert.ToInt64(Session["TaxUserId"]), SerializeObjectErsal,0);
                    */
-                var mmsgg = "";
+               
                 var msgtitle = "ارسال موفق";
                 var msg = "ارسال با موفقیت انجام شد.";
 
-                /*if (mmsgg.Split(';')[0] != "1")
+                if (mmsgg.Split(';')[0] != "1")
                     msg = mmsgg.Split(';')[1];
-               
+
 
                 if (mmsgg.Split(';')[0] == "2")
                 {
@@ -1604,7 +1605,7 @@ namespace Avarez.Areas.Tax.Controllers
                 {
                     msgtitle = "خطا";
                     msg = "خطا در ارسال.";
-                }*/
+                }
 
 
 
@@ -1615,7 +1616,7 @@ namespace Avarez.Areas.Tax.Controllers
                 {
                     Msg = msg,
                     MsgTitle = msgtitle,
-                    Er = mmsgg//.Split(';')[0]
+                    Er = mmsgg.Split(';')[0]
                 }, JsonRequestBehavior.AllowGet);
             }
             catch (Exception x)
@@ -1652,6 +1653,7 @@ namespace Avarez.Areas.Tax.Controllers
         static async System.Threading.Tasks.Task<InquiryResultModel> SendAndInquireWithRetry(
             InvoiceSender sender,
             InvoiceDto invoice,
+            string memoryId,
             int maxAttempts = 6)
         {
             Console.WriteLine("📤 ارسال فاکتور...");
@@ -1725,6 +1727,7 @@ namespace Avarez.Areas.Tax.Controllers
                         var uidResult = InquireByUid(
                             taxApi,
                             response.Uid,
+                            memoryId,
                             sender
                         );
 
@@ -1790,11 +1793,12 @@ namespace Avarez.Areas.Tax.Controllers
         static InquiryResultModel InquireByUid(
             ITaxApi taxApi,
             string uid,
+            string memoryIdd,
             InvoiceSender sender)
         {
             try
             {
-                var memoryId = "A11216"; // از تنظیمات بگیر
+                var memoryId = memoryIdd;// "A11216"; // از تنظیمات بگیر
 
                 var inquiryDto = new InquiryByUidDto(
                     new List<string> { uid },

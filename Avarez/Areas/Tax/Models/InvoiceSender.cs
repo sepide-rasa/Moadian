@@ -202,7 +202,7 @@ namespace Avarez.Areas.Tax.Models
 
         
         // تابع چاپ نتیجه استعلام
-        public void PrintInquiryResult(List<InquiryResultModel> inquiryResults, long HeaderId, string SerializeObjectErsal, long UserId)
+        public string PrintInquiryResult(List<InquiryResultModel> inquiryResults, long HeaderId, string SerializeObjectErsal, long UserId)
         {
             //string IP = System.Web.HttpContext.Current.Request.ServerVariables["REMOTE_HOST"];
 
@@ -313,7 +313,7 @@ namespace Avarez.Areas.Tax.Models
 
             //}
 
-            //return (num.ToString() + ";" + fldMatn);
+            return (num.ToString() + ";" + fldMatn);
         }
 
         // تابع ایجاد TaxApi

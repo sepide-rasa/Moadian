@@ -31,6 +31,11 @@ namespace Avarez.Areas.Tax.Models
         public Nullable<long> torv { get; set; }
         public Nullable<decimal> tocv { get; set; }
         public Nullable<long> tvop { get; set; }
+        public Nullable<long> tax17 { get; set; }
+
+        public string cdcn { get; set; }
+        public string cdcd { get; set; }
+        public string bilid { get; set; }
 
     }
 }

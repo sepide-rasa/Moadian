@@ -740,7 +740,7 @@
             App.NewForush1.queryById('CboIns').setValue("1");
 
 
-             App.NewForush1.queryById('fldForushandeId').setValue('@ViewBag.ForushandeId');
+            App.NewForush1.queryById('fldForushandeId').setValue('@ViewBag.ForushandeId');
                 App.NewForush1.queryById('txtNameF').setValue('@ViewBag.NameF');
                 App.NewForush1.queryById('txtShEghtesadiF').setValue('@ViewBag.ShEghtesadiF');
                 App.NewForush1.queryById('txtShenaseF').setValue('@ViewBag.ShenaseF');
@@ -859,8 +859,10 @@
         var summaryRec = App.NewForush1.queryById("NewForush1Grid").getView().getFeature("summaryDocuments").summaryRecord;
         var sum = 0;
         store.each(function (rec) {
-            if (rec.get('fldvam') != '')
-                sum += parseInt(rec.get('fldvam'));
+            if (rec.get('fldvam') != '') {
+                sum += parseFloat(rec.get('fldvam'));
+                 /*sum += Math.round(parseFloat(rec.get('fldvam')));*/
+            }
         });
             return  sum.toLocaleString() ;
     }
@@ -967,7 +969,7 @@
                 if (Ext.getCmp("Colvra").getComponent(App.NewForush1.queryById("NewForush1Grid").store.indexOf(Fieldd.record)).getValue() != '0')
                     v = Ext.getCmp("Colvra").getComponent(App.NewForush1.queryById("NewForush1Grid").store.indexOf(Fieldd.record)).getValue();
             if (Ext.getCmp("Colvam").getComponent(App.NewForush1.queryById("NewForush1Grid").store.indexOf(Fieldd.record)))
-                Ext.getCmp("Colvam").getComponent(App.NewForush1.queryById("NewForush1Grid").store.indexOf(Fieldd.record)).setValue(parseFloat(v) * parseInt((parseInt(f) * parseFloat(a)) - parseInt(d)) / 100);
+                Ext.getCmp("Colvam").getComponent(App.NewForush1.queryById("NewForush1Grid").store.indexOf(Fieldd.record)).setValue(Math.floor(parseFloat(v) * parseInt((parseInt(f) * parseFloat(a)) - parseInt(d)) / 100));
 
             var o = 0;
             if (Ext.getCmp("Colodr").getComponent(App.NewForush1.queryById("NewForush1Grid").store.indexOf(Fieldd.record)))
@@ -1017,7 +1019,7 @@
                 if (Ext.getCmp("Colvra").getComponent(App.NewForush1.queryById("NewForush1Grid").store.indexOf(Fieldd.record)).getValue() != '')
                     v = Ext.getCmp("Colvra").getComponent(App.NewForush1.queryById("NewForush1Grid").store.indexOf(Fieldd.record)).getValue();
             if (Ext.getCmp("Colvam").getComponent(App.NewForush1.queryById("NewForush1Grid").store.indexOf(Fieldd.record)))
-                Ext.getCmp("Colvam").getComponent(App.NewForush1.queryById("NewForush1Grid").store.indexOf(Fieldd.record)).setValue(parseFloat(v) * parseInt((parseInt(f) * parseFloat(a)) - parseInt(d)) / 100);
+                Ext.getCmp("Colvam").getComponent(App.NewForush1.queryById("NewForush1Grid").store.indexOf(Fieldd.record)).setValue((parseFloat(v) * parseInt((parseInt(f) * parseFloat(a)) - parseInt(d)) / 100));
 
             var o = 0;
             if (Ext.getCmp("Colodr").getComponent(App.NewForush1.queryById("NewForush1Grid").store.indexOf(Fieldd.record)))
@@ -1057,7 +1059,7 @@
                 if (Ext.getCmp("Colvra").getComponent(App.NewForush1.queryById("NewForush1Grid").store.indexOf(Fieldd.record)).getValue() != '')
                     v = Ext.getCmp("Colvra").getComponent(App.NewForush1.queryById("NewForush1Grid").store.indexOf(Fieldd.record)).getValue();
             if (Ext.getCmp("Colvam").getComponent(App.NewForush1.queryById("NewForush1Grid").store.indexOf(Fieldd.record)))
-                Ext.getCmp("Colvam").getComponent(App.NewForush1.queryById("NewForush1Grid").store.indexOf(Fieldd.record)).setValue(parseFloat(v) * parseInt((parseInt(f) * parseFloat(a)) - parseInt(d)) / 100);
+                Ext.getCmp("Colvam").getComponent(App.NewForush1.queryById("NewForush1Grid").store.indexOf(Fieldd.record)).setValue(Math.floor(parseFloat(v) * parseInt((parseInt(f) * parseFloat(a)) - parseInt(d)) / 100));
 
             var o = 0;
             if (Ext.getCmp("Colodr").getComponent(App.NewForush1.queryById("NewForush1Grid").store.indexOf(Fieldd.record)))
@@ -1085,8 +1087,9 @@
                     a = Ext.getCmp("Coladis").getComponent(App.NewForush1.queryById("NewForush1Grid").store.indexOf(Fieldd.record)).getValue();
 
             if (Ext.getCmp("Colvam").getComponent(App.NewForush1.queryById("NewForush1Grid").store.indexOf(Fieldd.record)))
-                Ext.getCmp("Colvam").getComponent(App.NewForush1.queryById("NewForush1Grid").store.indexOf(Fieldd.record)).setValue(parseFloat(v) * parseInt(a) / 100);
-            var vv = parseFloat(v) * parseInt(a) / 100;
+                Ext.getCmp("Colvam").getComponent(App.NewForush1.queryById("NewForush1Grid").store.indexOf(Fieldd.record)).setValue(Math.floor(parseFloat(v) * parseInt(a) / 100));
+           /* var vv = parseFloat(v) * parseInt(a) / 100;*/
+             var vv = Math.floor(parseFloat(v) * parseInt(a) / 100);
 
             var o = 0;
             if (Ext.getCmp("Colodam").getComponent(App.NewForush1.queryById("NewForush1Grid").store.indexOf(Fieldd.record)))
@@ -1242,6 +1245,8 @@ grid.getView().refresh();
            var txtinsp = App.NewForush1.queryById('txtinsp');
            var txtTax17 = App.NewForush1.queryById('txtTax17');
 
+        var HaveMaliatDeci = 0;
+       
         var er = false;
 
         if (CboIns.getValue() != "1") {
@@ -1261,6 +1266,10 @@ if (txtFishId.validate() == false) {
 
         for (var i = 0; i < NewForush1Grid.getStore().count() ; i++) {
 
+            var sss = App.Colvam.getComponent(i).getValue();
+            if (sss % 1 !== 0) {
+                HaveMaliatDeci = 1;
+            }
 
             Forush1Grid_DetailsArray.push({
                 fldadis: App.Coladis.getComponent(i).getValue(),
@@ -1280,7 +1289,7 @@ if (txtFishId.validate() == false) {
                 fldsstt: App.Colsstt.getComponent(i).getValue(),
                 fldsstid: App.Colssttid.getComponent(i).getValue(),
                 fldtsstam: App.Coltsstam.getComponent(i).getValue(),
-                fldvam: Math.round(App.Colvam.getComponent(i).getValue()),
+                fldvam: Math.floor(App.Colvam.getComponent(i).getValue()),
                 fldvop: App.Colvop.getComponent(i).getValue(),
                 fldvra: App.Colvra.getComponent(i).getValue()
             });
@@ -1291,6 +1300,17 @@ if (txtFishId.validate() == false) {
 
         if (er == true)
             return;
+
+        
+       /* if (HaveMaliatDeci != 0) {
+            Ext.MessageBox.show({
+                    title: "خطا",
+                    msg: "مبلغ مالیات نمی تواند اعشاری باشد. ابتدا آن را اصلاح نمایید.",
+                    icon: Ext.MessageBox.ERROR,
+                    buttons: Ext.MessageBox.OK
+                });
+            return;
+        }*/
 
         var id = 0;
         if (fldId.getValue() != '')
